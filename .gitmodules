@@ -1,0 +1,3 @@
+[submodule "phone/libs/network"]
+	path = phone/libs/network
+	url = git@git.oschina.net:yanxiu/yxnetworklib_android.git

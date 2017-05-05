@@ -92,7 +92,7 @@ dependencies {
     //    compile project(':CommonCoreLib')
     //    compile project(':LoginCommonLibs')
     //    compile project(':ShareCommonLibs')
-    //    compile project(':network')
+        compile project(':libs:network')
     //    compile project(':SettingProblemsSystem')
     //        compile fileTree(include: ['*.jar'], dir: 'libs')
     //    compile 'com.getui:sdk:2.9.5.0'
