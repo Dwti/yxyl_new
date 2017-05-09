@@ -1,4 +1,4 @@
-package com.yanxiu.gphone.student;
+package com.yanxiu.gphone.student.util;
 
 import com.test.yanxiu.network.RequestBase;
 

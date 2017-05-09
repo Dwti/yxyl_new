@@ -1,4 +1,4 @@
-package com.yanxiu.gphone.student;
+package com.yanxiu.gphone.student.homework.data;
 
 /**
  * Created by sunpeng on 2017/5/8.
