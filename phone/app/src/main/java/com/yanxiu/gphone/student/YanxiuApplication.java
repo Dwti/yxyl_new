@@ -13,6 +13,7 @@ public class YanxiuApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+        Stetho.initializeWithDefaults(this);
     }
 
     @Override
