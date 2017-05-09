@@ -5,7 +5,7 @@ android {
     buildToolsVersion "25.0.0"
     defaultConfig {
         applicationId "com.yanxiu.gphone.student"
-        minSdkVersion 16
+        minSdkVersion 17
         targetSdkVersion 22
         versionCode 21
         versionName "2.4.1"
