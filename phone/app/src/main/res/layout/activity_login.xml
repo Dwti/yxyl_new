@@ -1,7 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-</RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_89e00d">
+
+        <View
+            android:id="@+id/in_title"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"/>
+
+        <ImageView
+            android:id="@+id/iv_top"
+            android:layout_width="match_parent"
+            android:layout_height="152dp"
+            android:layout_below="@+id/in_title"
+            android:background="@color/colorPrimary"
+            android:contentDescription="@null"/>
+
+        <LinearLayout
+            android:id="@+id/ll_user_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="90dp"
+            android:layout_marginRight="90dp"
+            android:layout_marginStart="90dp"
+            android:layout_marginEnd="90dp"
+            android:layout_below="@+id/iv_top"
+            android:background="@color/color_69ad0a"
+            android:orientation="horizontal">
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="15dp"
+                android:inputType="text"
+                android:layout_marginLeft="15dp"/>
+            <ImageView
+                android:layout_width="13dp"
+                android:layout_height="13dp"
+                android:contentDescription="@null"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="90dp"
+            android:layout_marginRight="90dp"
+            android:layout_marginStart="90dp"
+            android:layout_marginEnd="90dp"
+
+            android:layout_below="@+id/ll_user_name"
+            android:background="@color/color_69ad0a"
+            android:orientation="horizontal">
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="15dp"
+                android:inputType="text"
+                android:layout_marginLeft="15dp"/>
+            <ImageView
+                android:layout_width="13dp"
+                android:layout_height="13dp"
+                android:contentDescription="@null"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</ScrollView>
