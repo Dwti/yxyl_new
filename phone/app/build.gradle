@@ -12,6 +12,10 @@ android {
 
         multiDexEnabled true//multiDexEnabled true
 
+        jackOptions {
+            enabled true
+        }
+
 //        buildConfigField "boolean", "YANXIU_DEBUG", "${yanxiu_debug}"
 //        buildConfigField "boolean", "YANXIU_ERROR_CATCH", "${yanxiu_error_catch}"
 //        buildConfigField "boolean", "YANXIU_FORTEST", "${yanxiu_fortest}"
@@ -26,6 +30,12 @@ android {
         ndk {
             abiFilters "armeabi", "armeabi-v7a", "arm64-v8a", "mips", "mips64", "x86", "x86_64"
         }
+
+        compileOptions {
+            sourceCompatibility JavaVersion.VERSION_1_8
+            targetCompatibility JavaVersion.VERSION_1_8
+        }
+
     }
     sourceSets {
         main {
@@ -92,12 +102,13 @@ dependencies {
     //    compile project(':CommonCoreLib')
     //    compile project(':LoginCommonLibs')
     //    compile project(':ShareCommonLibs')
-        compile project(':libs:network')
+    compile project(':libs:network')
     //    compile project(':SettingProblemsSystem')
     //        compile fileTree(include: ['*.jar'], dir: 'libs')
     //    compile 'com.getui:sdk:2.9.5.0'
-    compile 'com.android.support:support-v4:+'
+    compile 'com.android.support:support-v4:22.2.1'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.google.android.gms:play-services-appindexing:8.4.0'
-    compile 'com.android.support:appcompat-v7:21.+'
+    compile 'com.android.support:appcompat-v7:21.0.3'
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha9'
 }
