@@ -22,7 +22,7 @@ public class HomeworkListRequest extends ExerciseRequestBase {
 
     @Override
     protected String urlPath() {
-        return "listGroupPaper.do?";
+        return "listGroupPaper.do";
     }
 
     public String getPage() {

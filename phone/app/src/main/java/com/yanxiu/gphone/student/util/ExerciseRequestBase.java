@@ -1,6 +1,7 @@
 package com.yanxiu.gphone.student.util;
 
 import com.test.yanxiu.network.RequestBase;
+import com.yanxiu.gphone.student.login.LoginInfo;
 
 import okhttp3.Interceptor;
 
@@ -11,8 +12,8 @@ import okhttp3.Interceptor;
 public abstract class ExerciseRequestBase extends RequestBase {
     protected String osType = "0";
     protected String pcode = "010110000";
-    protected String token = "19fef6d78ec209250c88083b71935de5";
-    protected String trace_uid = "18256";
+    protected String token = LoginInfo.token;
+    protected String trace_uid = LoginInfo.uid;
     protected String version = "2.4.1";
 
     public String getOsType() {

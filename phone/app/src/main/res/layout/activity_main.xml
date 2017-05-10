@@ -52,10 +52,28 @@
             android:orientation="vertical">
 
             <Button
+                android:id="@+id/btn_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="登陆"/>
+
+            <Button
                 android:id="@+id/btn_request_homeworklist"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="请求作业列表" />
+
+            <Button
+                android:id="@+id/btn_request_paper"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="请求试题"/>
+
+            <Button
+                android:id="@+id/btn_upload_startinfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="启动打点"/>
 
             <TextView
                 android:id="@+id/tv_result"
