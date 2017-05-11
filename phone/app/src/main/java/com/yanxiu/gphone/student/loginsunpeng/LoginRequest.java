@@ -1,7 +1,7 @@
 package com.yanxiu.gphone.student.loginsunpeng;
 
 import com.test.yanxiu.network.RequestBase;
-import com.yanxiu.gphone.student.utilsunpneg.DeviceUtil;
+import com.yanxiu.gphone.student.util.DeviceUtil;
 
 /**
  * Created by sunpeng on 2017/5/9.

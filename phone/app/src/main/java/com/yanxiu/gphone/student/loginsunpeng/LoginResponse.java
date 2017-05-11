@@ -1,6 +1,6 @@
 package com.yanxiu.gphone.student.loginsunpeng;
 
-import com.yanxiu.gphone.student.homework.datasunpeng.StatusBean;
+import com.yanxiu.gphone.student.homework.data.StatusBean;
 
 import java.util.List;
 
