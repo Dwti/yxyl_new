@@ -8,6 +8,32 @@
         <!--<item name="colorAccent">@color/colorAccent</item>-->
     </style>
 
+    <style name="AppFullscreen" parent="AppTheme">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+    
+    <style name="Login_Layout_Button_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/dimen_50</item>
+        <item name="android:background">@drawable/shape_login_unclick</item>
+        <item name="android:layout_marginLeft">@dimen/dimen_35</item>
+        <item name="android:layout_marginStart">@dimen/dimen_35</item>
+        <item name="android:layout_marginRight">@dimen/dimen_35</item>
+        <item name="android:layout_marginEnd">@dimen/dimen_35</item>
+    </style>
+
+    <style name="Login_Edit_style">
+        <item name="android:layout_width">@dimen/dimen_0</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginLeft">@dimen/dimen_20</item>
+        <item name="android:layout_marginStart">@dimen/dimen_20</item>
+        <item name="android:textColorHint">@color/color_89e00d</item>
+        <item name="android:textColor">@color/color_89e00d</item>
+        <item name="android:background">@null</item>
+        <item name="android:textSize">@dimen/dimen_18sp</item>
+    </style>
     <style name="home_nav_bar_style">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>

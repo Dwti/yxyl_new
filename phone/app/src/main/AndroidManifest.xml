@@ -28,6 +28,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".login.view.ui.LoginActivity"
+            android:theme="@style/AppFullscreen"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"
+            android:screenOrientation="portrait"/>
 
         <!--<activity-->
             <!--android:name=".MainActivity"-->

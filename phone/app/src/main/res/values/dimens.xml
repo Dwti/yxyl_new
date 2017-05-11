@@ -182,4 +182,8 @@
     <dimen name="dimen_102">102dp</dimen>
     <dimen name="dimen_135">135dp</dimen>
 
+
+    <dimen name="dimen_14sp">14sp</dimen>
+    <dimen name="dimen_16sp">16sp</dimen>
+    <dimen name="dimen_18sp">18sp</dimen>
 </resources>
