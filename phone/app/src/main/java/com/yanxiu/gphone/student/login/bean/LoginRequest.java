@@ -1,4 +1,4 @@
-package com.yanxiu.gphone.student.loginsunpeng;
+package com.yanxiu.gphone.student.login.bean;
 
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.util.DeviceUtil;

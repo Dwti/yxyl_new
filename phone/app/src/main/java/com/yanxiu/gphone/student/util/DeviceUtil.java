@@ -5,6 +5,8 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.telephony.TelephonyManager;
 
+import com.yanxiu.gphone.student.YanxiuApplication;
+
 /**
  * Created by sunpeng on 2017/5/9.
  */
@@ -12,11 +14,10 @@ import android.telephony.TelephonyManager;
 public class DeviceUtil {
     public static String getAppDeviceId() {
 
-        TelephonyManager telephonyManager = (TelephonyManager) YXApplication.getContext().getSystemService(
-                Context.TELEPHONY_SERVICE);
+        TelephonyManager telephonyManager = (TelephonyManager) YanxiuApplication.getInstance().getSystemService(Context.TELEPHONY_SERVICE);
         String deviceId = telephonyManager.getDeviceId();
 
-        WifiManager wifiManager = (WifiManager) YXApplication.getContext().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        WifiManager wifiManager = (WifiManager) YanxiuApplication.getInstance().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
 
         if (wifiInfo != null) {

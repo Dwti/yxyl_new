@@ -1,4 +1,4 @@
-package com.yanxiu.gphone.student.loginsunpeng;
+package com.yanxiu.gphone.student.login.bean;
 
 /**
  * Created by sunpeng on 2017/5/9.
