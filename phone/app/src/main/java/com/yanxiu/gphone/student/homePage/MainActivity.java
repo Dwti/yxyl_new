@@ -16,21 +16,20 @@ import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 
 public class MainActivity extends YanxiuBaseActivity implements View.OnClickListener{
 
-    private FrameLayout contentMain;
-
+    private FrameLayout mContentMain;
     private final int INDEX_HOMEWORK = 0;//练习tab
     private final int INDEX_GROUP = 1;//作业tab
     private final int INDEX_MY = 2;//我的tab
 
-    private int lastSelectIndex = -1;
+    private int mLastSelectIndex = -1;
 
-    private View[] navBarViews = new View[3];
-    private ImageView[] navIconViews = new ImageView[3];
-    private TextView[] navTextViews = new TextView[3];
-    private int normalNavTxtColor, selNavTxtColor;
+    private View[] mNavBarViews = new View[3];
+    private ImageView[] mNavIconViews = new ImageView[3];
+    private TextView[] mNavTextViews = new TextView[3];
+    private int mNormalNavTxtColor, mSelNavTxtColor;
 
     public NaviFragmentFactory mNaviFragmentFactory;
-    public FragmentManager fragmentManager;
+    public FragmentManager mFragmentManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,29 +60,29 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
     }
 
     private void initView() {
-        contentMain = (FrameLayout) findViewById(R.id.content_main);
-        fragmentManager = getSupportFragmentManager();
+        mContentMain = (FrameLayout) findViewById(R.id.content_main);
+        mFragmentManager = getSupportFragmentManager();
         mNaviFragmentFactory = new NaviFragmentFactory();
         initBottomBar();
         showCurrentFragment(0);
     }
 
     private void initBottomBar() {
-        selNavTxtColor = getResources().getColor(R.color.color_805500);
-        normalNavTxtColor = getResources().getColor(R.color.color_006666);
-        navBarViews[0] = findViewById(R.id.navi_homework);
-        navBarViews[1] = findViewById(R.id.navi_group);
-        navBarViews[2] = findViewById(R.id.navi_my);
+        mSelNavTxtColor = getResources().getColor(R.color.color_805500);
+        mNormalNavTxtColor = getResources().getColor(R.color.color_006666);
+        mNavBarViews[0] = findViewById(R.id.navi_homework);
+        mNavBarViews[1] = findViewById(R.id.navi_group);
+        mNavBarViews[2] = findViewById(R.id.navi_my);
         for (int i = 0; i < 3; i++) {
-            navBarViews[i].setOnClickListener(this);
-            navIconViews[i] = (ImageView) navBarViews[i].findViewById(R.id.nav_icon);
-            navTextViews[i] = (TextView) navBarViews[i].findViewById(R.id.nav_txt);
+            mNavBarViews[i].setOnClickListener(this);
+            mNavIconViews[i] = (ImageView) mNavBarViews[i].findViewById(R.id.nav_icon);
+            mNavTextViews[i] = (TextView) mNavBarViews[i].findViewById(R.id.nav_txt);
         }
-//        Util.setViewTypeface(YanxiuTypefaceTextView.TypefaceType.FANGZHENG, navTextViews[0],
-//                navTextViews[1], navTextViews[2]);
-        navTextViews[0].setText(R.string.exercises);
-        navTextViews[1].setText(R.string.navi_tbm_group);
-        navTextViews[2].setText(R.string.navi_tbm_my);
+//        Util.setViewTypeface(YanxiuTypefaceTextView.TypefaceType.FANGZHENG, mNavTextViews[0],
+//                mNavTextViews[1], mNavTextViews[2]);
+        mNavTextViews[0].setText(R.string.exercises);
+        mNavTextViews[1].setText(R.string.navi_tbm_group);
+        mNavTextViews[2].setText(R.string.navi_tbm_my);
     }
 
     @Override
@@ -109,56 +108,56 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
     private void checkBottomBarProcess(int index){
         if(index>=0 && index<3) {
             resetBottomBar();
-            navBarViews[index].setBackgroundResource(R.drawable.home_nav_bar_sel);
-            navTextViews[index].setTextColor(selNavTxtColor);
-            navTextViews[index].setShadowLayer(2, 0, 2, getResources().getColor(R.color.color_ffff99));
+            mNavBarViews[index].setBackgroundResource(R.drawable.home_nav_bar_sel);
+            mNavTextViews[index].setTextColor(mSelNavTxtColor);
+            mNavTextViews[index].setShadowLayer(2, 0, 2, getResources().getColor(R.color.color_ffff99));
             switch (index) {
                 case INDEX_HOMEWORK:
-                    navIconViews[0].setBackgroundResource(R.drawable.navi_main_selected);
+                    mNavIconViews[0].setBackgroundResource(R.drawable.navi_main_selected);
                     break;
                 case INDEX_GROUP:
-                    navIconViews[1].setBackgroundResource(R.drawable.navi_group_selected);
+                    mNavIconViews[1].setBackgroundResource(R.drawable.navi_group_selected);
                     break;
                 case INDEX_MY:
-                    navIconViews[2].setBackgroundResource(R.drawable.navi_my_selected);
+                    mNavIconViews[2].setBackgroundResource(R.drawable.navi_my_selected);
                     break;
             }
         }
     }
     private void resetBottomBar() {
         for (int i = 0; i < 3; i++) {
-            navBarViews[i].setBackgroundResource(R.drawable.home_nav_bar_nor);
-            navTextViews[i].setTextColor(normalNavTxtColor);
-            navTextViews[i].setShadowLayer(2, 0, 2, getResources().getColor(R.color.color_33ffff));
+            mNavBarViews[i].setBackgroundResource(R.drawable.home_nav_bar_nor);
+            mNavTextViews[i].setTextColor(mNormalNavTxtColor);
+            mNavTextViews[i].setShadowLayer(2, 0, 2, getResources().getColor(R.color.color_33ffff));
         }
-        navIconViews[0].setBackgroundResource(R.drawable.navi_main_normal);
-        navIconViews[1].setBackgroundResource(R.drawable.navi_group_normal);
-        navIconViews[2].setBackgroundResource(R.drawable.navi_my_normal);
+        mNavIconViews[0].setBackgroundResource(R.drawable.navi_main_normal);
+        mNavIconViews[1].setBackgroundResource(R.drawable.navi_group_normal);
+        mNavIconViews[2].setBackgroundResource(R.drawable.navi_my_normal);
 
     }
 
     private void showCurrentFragment(int index) {
-        if (index == lastSelectIndex) {
+        if (index == mLastSelectIndex) {
             return;
         }
-        lastSelectIndex = index;
+        mLastSelectIndex = index;
         checkBottomBarProcess(index);
         if (mNaviFragmentFactory == null) {
             mNaviFragmentFactory = new NaviFragmentFactory();
         }
-        if (fragmentManager == null) {
-            fragmentManager = getSupportFragmentManager();
+        if (mFragmentManager == null) {
+            mFragmentManager = getSupportFragmentManager();
         }
         if (index != INDEX_GROUP) {
 //            requestGroupHwDotNumTask();
         }
-        mNaviFragmentFactory.hideAndShowFragment(fragmentManager, index);
+        mNaviFragmentFactory.hideAndShowFragment(mFragmentManager, index);
     }
 
     /**
      * 退出间隔时间戳
      */
-    private long backTimestamp = 0;
+    private long mBackTimestamp = 0;
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
@@ -166,12 +165,12 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
                 && event.getRepeatCount() == 0
                 && event.getAction() == KeyEvent.ACTION_DOWN) {
 
-            if (System.currentTimeMillis() - backTimestamp <= 2000) {
+            if (System.currentTimeMillis() - mBackTimestamp <= 2000) {
                 //Todo 退出程序
 
                 finish();
             } else {
-                backTimestamp = System.currentTimeMillis();
+                mBackTimestamp = System.currentTimeMillis();
                 Toast.makeText(this, getString(R.string.app_exit_tip), Toast.LENGTH_SHORT).show();
             }
             return false;
