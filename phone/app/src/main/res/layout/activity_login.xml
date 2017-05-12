@@ -56,6 +56,7 @@
                     android:id="@+id/ed_pass_word"
                     style="@style/Login_Edit_style"
                     android:hint="@string/input_password"
+                    android:maxLength="18"
                     android:inputType="textPassword" />
 
                 <ImageView
@@ -67,7 +68,7 @@
                     android:contentDescription="@null" />
             </LinearLayout>
 
-            <com.yanxiu.gphone.student.login.utils.WavesLayout
+            <com.yanxiu.gphone.student.util.view.WavesLayout
                 android:id="@+id/wl_login_waves"
                 style="@style/Login_Layout_Button_style"
                 android:layout_below="@+id/ll_pass_word"
@@ -85,7 +86,7 @@
                     android:text="@string/bt_login"
                     android:textColor="@color/color_89e00d"
                     android:textSize="@dimen/dimen_18sp" />
-            </com.yanxiu.gphone.student.login.utils.WavesLayout>
+            </com.yanxiu.gphone.student.util.view.WavesLayout>
         </RelativeLayout>
 
         <LinearLayout

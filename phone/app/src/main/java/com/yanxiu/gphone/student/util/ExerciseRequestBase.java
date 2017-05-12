@@ -1,7 +1,7 @@
 package com.yanxiu.gphone.student.util;
 
 import com.test.yanxiu.network.RequestBase;
-import com.yanxiu.gphone.student.login.bean.LoginInfo;
+import com.yanxiu.gphone.student.user.bean.LoginInfo;
 
 /**
  * Created by sunpeng on 2017/5/8.

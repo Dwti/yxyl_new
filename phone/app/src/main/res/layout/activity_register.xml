@@ -30,7 +30,7 @@
                 <EditText
                     android:id="@+id/ed_mobile"
                     style="@style/Login_Edit_style"
-                    android:hint="@string/input_mobile"
+                    android:hint="@string/register_input_mobile"
                     android:inputType="number"
                     android:maxLength="11" />
 
@@ -50,7 +50,7 @@
                 style="@style/Login_Layout_Button_style"
                 android:layout_below="@+id/ll_mobile"
                 android:layout_marginTop="@dimen/dimen_2"
-                android:background="@drawable/shape_login_edit_bottom"
+                android:background="@drawable/shape_login_edit_center"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -59,7 +59,6 @@
                     style="@style/Login_Edit_style"
                     android:hint="@string/input_verCode"
                     android:inputType="number"
-                    android:maxEms="4"
                     android:maxLength="4" />
 
                 <View
@@ -77,27 +76,54 @@
                     android:textSize="@dimen/dimen_16sp" />
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/ll_pass_word"
+                style="@style/Login_Layout_Button_style"
+                android:layout_below="@+id/ll_ver_code"
+                android:layout_marginTop="@dimen/dimen_2"
+                android:background="@drawable/shape_login_edit_bottom"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/ed_pass_word"
+                    style="@style/Login_Edit_style"
+                    android:hint="@string/register_password"
+                    android:inputType="textPassword"
+                    android:maxLength="18" />
+
+                <ImageView
+                    android:id="@+id/iv_cipher"
+                    android:layout_width="@dimen/dimen_13"
+                    android:layout_height="@dimen/dimen_13"
+                    android:layout_marginEnd="@dimen/dimen_13"
+                    android:background="@color/colorPrimary"
+                    android:contentDescription="@null" />
+
+            </LinearLayout>
+
             <com.yanxiu.gphone.student.util.view.WavesLayout
                 android:id="@+id/wl_forget_waves"
                 style="@style/Login_Layout_Button_style"
-                android:layout_below="@+id/ll_ver_code"
+                android:layout_below="@+id/ll_pass_word"
                 android:layout_marginTop="@dimen/dimen_15"
+                app:waves_animend_alpha="102"
                 app:waves_canshowwave="false"
-                app:waves_radius="@dimen/dimen_5"
-                app:waves_animend_alpha="102">
+                app:waves_radius="@dimen/dimen_5">
 
                 <TextView
-                    android:id="@+id/tv_next"
+                    android:id="@+id/tv_register"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen_50"
                     android:background="@drawable/shape_login_unclick"
                     android:gravity="center"
-                    android:text="@string/next"
+                    android:text="@string/register"
                     android:textColor="@color/color_89e00d"
                     android:textSize="@dimen/dimen_18sp" />
 
             </com.yanxiu.gphone.student.util.view.WavesLayout>
         </RelativeLayout>
     </RelativeLayout>
+
 
 </ScrollView>

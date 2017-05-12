@@ -17,4 +17,15 @@
     <string name="input_verCode">请输入验证码</string>
     <string name="input_mobile">请输入绑定或注册的手机号</string>
     <string name="verCode_progress">%dS</string>
+    <string name="register_password">请输入6&#8211;18位密码</string>
+    <string name="register_input_mobile">请输入手机号</string>
+    <string name="register">注册</string>
+    <string name="send_verCode_more">再次获取</string>
+
+    <string name="input_true_account">请输入正确的账号</string>
+    <string name="input_true_password">请输入正确的密码</string>
+    <string name="input_true_mobile">请输入正确的手机号码</string>
+    <string name="input_true_verCode">请输入正确的验证码</string>
+    <string name="input_password_error">密码不符合要求</string>
+    <string name="send_verCode_finish">验证码已发送,请注意查收</string>
 </resources>

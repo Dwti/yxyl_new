@@ -19,7 +19,7 @@
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".login.view.ui.LoginActivity"
+        <activity android:name=".user.view.ui.LoginActivity"
             android:theme="@style/AppFullscreen"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan"
             android:screenOrientation="portrait">
@@ -31,10 +31,16 @@
 
         </activity>
 
-        <activity android:name=".login.view.ui.ForgetPassWordActivity"
+        <activity android:name=".user.view.ui.ForgetPassWordActivity"
             android:theme="@style/AppFullscreen"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan"
             android:screenOrientation="portrait"/>
+
+        <activity android:name=".user.view.ui.RegisterActivity"
+            android:theme="@style/AppFullscreen"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"
+            android:screenOrientation="portrait"/>
+
 
         <!--<activity-->
             <!--android:name=".MainActivity"-->
