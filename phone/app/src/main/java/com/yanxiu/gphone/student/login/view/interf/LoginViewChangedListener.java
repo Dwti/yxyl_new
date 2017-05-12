@@ -10,5 +10,8 @@ import com.yanxiu.gphone.student.login.interf.OnViewChangedListener;
  */
 
 public interface LoginViewChangedListener extends OnViewChangedListener<LoginBean>{
-    void setButtonFocusChanged(boolean hasFocus);
+    void setEditUserNameClear(String text);
+    void setEditUserNameIsEmpty(boolean isEmpty);
+    void setEditPassWordChange(boolean isCipher);
+    void setButtonFocusChange(boolean hasFocus);
 }

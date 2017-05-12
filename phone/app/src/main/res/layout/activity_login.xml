@@ -2,30 +2,22 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/color_89e00d">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <View
-            android:id="@+id/in_title"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_55" />
-
-        <ImageView
-            android:id="@+id/iv_top"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_below="@+id/in_title"
-            android:background="@color/colorPrimary"
-            android:contentDescription="@null" />
+        <include
+            android:id="@+id/include"
+            layout="@layout/layout_login_top_image"/>
 
         <RelativeLayout
             android:id="@+id/rl_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/iv_top"
+            android:layout_below="@+id/include"
             android:layout_marginTop="@dimen/dimen_10">
 
             <LinearLayout
@@ -36,14 +28,18 @@
                 android:orientation="horizontal">
 
                 <EditText
+                    android:id="@+id/ed_user_name"
                     style="@style/Login_Edit_style"
-                    android:hint="@string/input_account"
-                    android:inputType="text" />
+                    android:maxLength="16"
+                    android:hint="@string/input_account" />
 
                 <ImageView
+                    android:id="@+id/iv_clear"
                     android:layout_width="@dimen/dimen_13"
                     android:layout_height="@dimen/dimen_13"
                     android:layout_marginEnd="@dimen/dimen_13"
+                    android:visibility="invisible"
+                    android:background="@color/colorPrimary"
                     android:contentDescription="@null" />
             </LinearLayout>
 
@@ -57,25 +53,39 @@
                 android:orientation="horizontal">
 
                 <EditText
+                    android:id="@+id/ed_pass_word"
                     style="@style/Login_Edit_style"
                     android:hint="@string/input_password"
-                    android:inputType="text" />
+                    android:inputType="textPassword" />
 
                 <ImageView
+                    android:id="@+id/iv_cipher"
                     android:layout_width="@dimen/dimen_13"
                     android:layout_height="@dimen/dimen_13"
                     android:layout_marginEnd="@dimen/dimen_13"
+                    android:background="@color/colorPrimary"
                     android:contentDescription="@null" />
             </LinearLayout>
 
-            <TextView
+            <com.yanxiu.gphone.student.login.utils.WavesLayout
+                android:id="@+id/wl_login_waves"
                 style="@style/Login_Layout_Button_style"
                 android:layout_below="@+id/ll_pass_word"
                 android:layout_marginTop="@dimen/dimen_15"
-                android:text="@string/bt_login"
-                android:gravity="center"
-                android:textColor="@color/color_89e00d"
-                android:textSize="@dimen/dimen_18sp" />
+                app:waves_radius="@dimen/dimen_5"
+                app:waves_canshowwave="false"
+                app:waves_animend_alpha="102">
+
+                <TextView
+                    android:id="@+id/tv_login"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_50"
+                    android:background="@drawable/shape_login_unclick"
+                    android:gravity="center"
+                    android:text="@string/bt_login"
+                    android:textColor="@color/color_89e00d"
+                    android:textSize="@dimen/dimen_18sp" />
+            </com.yanxiu.gphone.student.login.utils.WavesLayout>
         </RelativeLayout>
 
         <LinearLayout
@@ -92,7 +102,7 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/dimen_5"
                 android:text="@string/tv_forget_pass"
-                android:textColor="@color/color_ffffff"
+                android:textColor="@drawable/select_login_text_color"
                 android:textSize="@dimen/dimen_16sp" />
 
             <View
@@ -106,7 +116,7 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/dimen_5"
                 android:text="@string/tv_fast_registered"
-                android:textColor="@color/color_ffffff"
+                android:textColor="@drawable/select_login_text_color"
                 android:textSize="@dimen/dimen_16sp" />
 
         </LinearLayout>
@@ -122,54 +132,62 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/dimen_5"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_5">
+
                 <View
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="@dimen/dimen_1"
-                    android:background="@color/color_7dbb24"/>
+                    android:layout_weight="1"
+                    android:background="@color/color_7dbb24" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/color_69ad0a"
-                    android:textSize="@dimen/dimen_14sp"
-                    android:layout_marginLeft="@dimen/dimen_12"
-                    android:layout_marginStart="@dimen/dimen_12"
                     android:layout_marginEnd="@dimen/dimen_12"
+                    android:layout_marginLeft="@dimen/dimen_12"
                     android:layout_marginRight="@dimen/dimen_12"
-                    android:text="@string/third_login"/>
+                    android:layout_marginStart="@dimen/dimen_12"
+                    android:text="@string/third_login"
+                    android:textColor="@color/color_69ad0a"
+                    android:textSize="@dimen/dimen_14sp" />
+
                 <View
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="@dimen/dimen_1"
-                    android:background="@color/color_7dbb24"/>
+                    android:layout_weight="1"
+                    android:background="@color/color_7dbb24" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/dimen_23"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dimen_23"
                 android:orientation="horizontal">
+
                 <ImageView
+                    android:id="@+id/iv_third_qq"
                     android:layout_width="@dimen/dimen_42"
                     android:layout_height="@dimen/dimen_42"
-                    android:contentDescription="@null"
+                    android:layout_marginEnd="@dimen/dimen_33"
                     android:layout_marginLeft="@dimen/dimen_33"
                     android:layout_marginRight="@dimen/dimen_33"
                     android:layout_marginStart="@dimen/dimen_33"
                     android:background="@color/colorPrimary"
-                    android:layout_marginEnd="@dimen/dimen_33"/>
+                    android:contentDescription="@null" />
+
                 <ImageView
+                    android:id="@+id/iv_third_wx"
                     android:layout_width="@dimen/dimen_42"
                     android:layout_height="@dimen/dimen_42"
-                    android:contentDescription="@null"
-                    android:background="@color/colorPrimary"
+                    android:layout_marginEnd="@dimen/dimen_33"
                     android:layout_marginLeft="@dimen/dimen_33"
                     android:layout_marginRight="@dimen/dimen_33"
                     android:layout_marginStart="@dimen/dimen_33"
-                    android:layout_marginEnd="@dimen/dimen_33"/>
+                    android:background="@color/colorPrimary"
+                    android:contentDescription="@null" />
             </LinearLayout>
         </LinearLayout>
 

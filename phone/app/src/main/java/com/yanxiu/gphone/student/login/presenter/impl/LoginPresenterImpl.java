@@ -38,9 +38,30 @@ public class LoginPresenterImpl implements LoginPresenter, OnHttpFinishedListene
     private LoginModelImpl mLoginModelImpl;
     private LoginViewChangedListener mLoginViewChangedListener;
 
+    /**
+     * The default username and password are empty
+     */
+    private boolean isUserNameReady = false;
+    private boolean isPassWordReady = false;
+    /**
+     * The default passwor is cipher
+     */
+    private boolean IsCipher = true;
+
     public LoginPresenterImpl(LoginViewChangedListener listener) {
         this.mLoginViewChangedListener = listener;
         this.mLoginModelImpl = new LoginModelImpl();
+    }
+
+    @Override
+    public void setUserNameChange() {
+        getListener(listener -> listener.setEditUserNameClear(""));
+    }
+
+    @Override
+    public void setPassWorkChange() {
+        this.IsCipher = !IsCipher;
+        getListener(listener -> listener.setEditPassWordChange(IsCipher));
     }
 
     @Override
@@ -59,6 +80,39 @@ public class LoginPresenterImpl implements LoginPresenter, OnHttpFinishedListene
     public void LoginByQQ() {
         getListener(listener -> listener.onHttpStart(UUID_QQ));
         getModel(model -> model.LoginByQQ(this));
+    }
+
+    public void setUserNameValue(String value) {
+        int length = value.length();
+        if (length >= 11 && length <= 16) {
+            setUserNameIsReady(false, true);
+        } else {
+            if (length == 0) {
+                setUserNameIsReady(true, false);
+            } else {
+                setUserNameIsReady(false, false);
+            }
+        }
+    }
+
+    private void setUserNameIsReady(boolean isEmpty, boolean isReady) {
+        this.isUserNameReady = isReady;
+        getListener(listener -> listener.setEditUserNameIsEmpty(isEmpty));
+        getListener(listener -> listener.setButtonFocusChange(isUserNameReady && isPassWordReady));
+    }
+
+    public void setPassWordValue(String value) {
+        int length = value.length();
+        if (length == 0) {
+            setPassWordIsReady(false);
+        } else {
+            setPassWordIsReady(true);
+        }
+    }
+
+    private void setPassWordIsReady(boolean isReady) {
+        this.isPassWordReady = isReady;
+        getListener(listener -> listener.setButtonFocusChange(isUserNameReady && isPassWordReady));
     }
 
     @Override

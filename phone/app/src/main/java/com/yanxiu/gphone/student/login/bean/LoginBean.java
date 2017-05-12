@@ -6,7 +6,7 @@ package com.yanxiu.gphone.student.login.bean;
  * Function :
  */
 
-public class LoginBean {
+public class LoginBean extends BaseBean{
     public int id;
 
     public LoginBean(int id){

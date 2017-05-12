@@ -6,9 +6,10 @@ package com.yanxiu.gphone.student.login.presenter.interf;
  * Function :
  */
 
-public interface LoginPresenter {
+public interface LoginPresenter extends BasePresenter{
+    void setUserNameChange();
+    void setPassWorkChange();
     void LoginByAccount(String user_name,String pass_word);
     void LoginByWX();
     void LoginByQQ();
-    void onDestory();
 }
