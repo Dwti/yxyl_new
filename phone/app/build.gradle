@@ -20,7 +20,6 @@ android {
             }
         }
 
-
         manifestPlaceholders = [
                 PACKAGE_NAME: applicationId   //applicationId
         ]
