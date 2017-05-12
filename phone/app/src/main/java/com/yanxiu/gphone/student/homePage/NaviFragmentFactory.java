@@ -11,14 +11,14 @@ import com.yanxiu.gphone.student.homePage.fragment.MyFragment;
 
 
 public class NaviFragmentFactory {
-	private int currItem = 0;
+	private int mCurrItem = 0;
 	private HomeWorkFragment mHomeWorkFragment;    //练习
 	private GroupFragment mGroupFragment;          //作业
 	private MyFragment mMyFragment;                //我的
 	public NaviFragmentFactory() {
 	}
 	public int getCurrentItem(){
-		return currItem;
+		return mCurrItem;
 	}
 	public int getCount() {
 		return 3;
@@ -35,29 +35,29 @@ public class NaviFragmentFactory {
 		}
 	}
 	private void hideFragment(FragmentTransaction transaction){
-		if (currItem == 0 && mHomeWorkFragment != null) {
+		if (mCurrItem == 0 && mHomeWorkFragment != null) {
 			transaction.hide(mHomeWorkFragment);
 		}
-		if (currItem == 1 && mGroupFragment != null) {
+		if (mCurrItem == 1 && mGroupFragment != null) {
 			transaction.hide(mGroupFragment);
 		}
-		if (currItem == 2 && mMyFragment != null) {
+		if (mCurrItem == 2 && mMyFragment != null) {
 			transaction.hide(mMyFragment);
 		}
 	}
 	public void hideAndShowFragment(FragmentManager fragmentManager, int index){
 		FragmentTransaction transaction = fragmentManager.beginTransaction();
-		if (currItem == 0 && mHomeWorkFragment != null) {
+		if (mCurrItem == 0 && mHomeWorkFragment != null) {
 			transaction.hide(mHomeWorkFragment);
 		}
-		if (currItem == 1 && mGroupFragment != null) {
+		if (mCurrItem == 1 && mGroupFragment != null) {
 			transaction.hide(mGroupFragment);
 		}
-		if (currItem == 2 && mMyFragment != null) {
+		if (mCurrItem == 2 && mMyFragment != null) {
 			transaction.hide(mMyFragment);
 		}
-		currItem = index;
-		switch (currItem) {
+		mCurrItem = index;
+		switch (mCurrItem) {
 			case 0:
 				if (mHomeWorkFragment == null) {
 					mHomeWorkFragment = new HomeWorkFragment();
