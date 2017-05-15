@@ -1,4 +1,4 @@
-package com.yanxiu.gphone.student.homePage;
+package com.yanxiu.gphone.student.homepage;
 
 import android.app.Activity;
 import android.content.Intent;

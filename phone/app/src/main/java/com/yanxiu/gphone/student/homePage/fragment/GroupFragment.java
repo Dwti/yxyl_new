@@ -1,4 +1,4 @@
-package com.yanxiu.gphone.student.homePage.fragment;
+package com.yanxiu.gphone.student.homepage.fragment;
 
 
 import android.os.Bundle;

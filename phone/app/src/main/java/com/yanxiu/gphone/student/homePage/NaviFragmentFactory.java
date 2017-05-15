@@ -1,13 +1,13 @@
-package com.yanxiu.gphone.student.homePage;
+package com.yanxiu.gphone.student.homepage;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
-import com.yanxiu.gphone.student.homePage.fragment.GroupFragment;
+import com.yanxiu.gphone.student.homepage.fragment.GroupFragment;
 import com.yanxiu.gphone.student.R;
-import com.yanxiu.gphone.student.homePage.fragment.HomeWorkFragment;
-import com.yanxiu.gphone.student.homePage.fragment.MyFragment;
+import com.yanxiu.gphone.student.homepage.fragment.HomeWorkFragment;
+import com.yanxiu.gphone.student.homepage.fragment.MyFragment;
 
 
 public class NaviFragmentFactory {
