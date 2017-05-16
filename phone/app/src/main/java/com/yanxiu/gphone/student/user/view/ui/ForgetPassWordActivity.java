@@ -174,11 +174,11 @@ public class ForgetPassWordActivity extends YanxiuBaseActivity implements Forget
         if (hasFocus){
             mWavesView.setCanShowWave(true);
             mNextView.setEnabled(true);
-            mNextView.setBackground(ContextCompat.getDrawable(mContext,R.drawable.shape_login_click));
+            mNextView.setBackground(ContextCompat.getDrawable(mContext,R.drawable.shape_common_button_bg_normal));
         }else {
             mWavesView.setCanShowWave(false);
             mNextView.setEnabled(false);
-            mNextView.setBackground(ContextCompat.getDrawable(mContext,R.drawable.shape_login_unclick));
+            mNextView.setBackground(ContextCompat.getDrawable(mContext,R.drawable.shape_common_button_bg_disable));
         }
     }
 

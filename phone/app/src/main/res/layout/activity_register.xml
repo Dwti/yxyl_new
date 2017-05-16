@@ -115,7 +115,7 @@
                     android:id="@+id/tv_register"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen_50"
-                    android:background="@drawable/shape_login_unclick"
+                    android:background="@drawable/shape_common_button_bg_disable"
                     android:gravity="center"
                     android:text="@string/register"
                     android:textColor="@color/color_89e00d"

@@ -81,7 +81,7 @@
                     android:id="@+id/tv_login"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen_50"
-                    android:background="@drawable/shape_login_unclick"
+                    android:background="@drawable/selector_common_button_bg"
                     android:gravity="center"
                     android:text="@string/bt_login"
                     android:textColor="@color/color_89e00d"
