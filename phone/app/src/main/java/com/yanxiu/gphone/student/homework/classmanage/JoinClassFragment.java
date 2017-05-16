@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 
 import com.yanxiu.gphone.student.R;
 
@@ -23,7 +22,7 @@ public class JoinClassFragment extends Fragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.join_class_fragment,container,false);
+        View root = inflater.inflate(R.layout.fragment_join_class,container,false);
         return root;
     }
 

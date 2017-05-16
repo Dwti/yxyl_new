@@ -14,13 +14,13 @@ import com.yanxiu.gphone.student.homework.classmanage.JoinClassFragment;
 /**
  * 首页 作业列表Fragment
  */
-public class GroupFragment extends Fragment {
-//    HomeWorkFragment
-    private final static String TAG = GroupFragment.class.getSimpleName();
+public class HomeworkFragment extends Fragment {
+//    ExerciseFragment
+    private final static String TAG = HomeworkFragment.class.getSimpleName();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.group_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_homework, container, false);
         Button mJoinClass = (Button) view.findViewById(R.id.btn_join_class);
         mJoinClass.setOnClickListener(new View.OnClickListener() {
             @Override
