@@ -1,7 +1,7 @@
 package com.yanxiu.gphone.student.homework.questions;
 
 import com.yanxiu.gphone.student.homework.data.StatusBean;
-import com.yanxiu.gphone.student.homework.questions.source.PaperBean;
+import com.yanxiu.gphone.student.homework.questions.bean.PaperBean;
 
 import java.util.List;
 

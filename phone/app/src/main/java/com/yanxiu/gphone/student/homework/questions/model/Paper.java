@@ -1,6 +1,6 @@
 package com.yanxiu.gphone.student.homework.questions.model;
 
-import com.yanxiu.gphone.student.homework.questions.source.PaperStatusBean;
+import com.yanxiu.gphone.student.homework.questions.bean.PaperStatusBean;
 
 import java.util.List;
 

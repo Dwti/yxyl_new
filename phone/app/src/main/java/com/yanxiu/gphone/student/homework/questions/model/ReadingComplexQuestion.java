@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 
 import com.yanxiu.gphone.student.homework.questions.QuestionConvertFactory;
 import com.yanxiu.gphone.student.homework.questions.QuestionShowType;
-import com.yanxiu.gphone.student.homework.questions.source.PaperTestBean;
+import com.yanxiu.gphone.student.homework.questions.bean.PaperTestBean;
 
 import java.util.List;
 

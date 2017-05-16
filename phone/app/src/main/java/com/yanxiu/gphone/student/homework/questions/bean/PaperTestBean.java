@@ -1,4 +1,4 @@
-package com.yanxiu.gphone.student.homework.questions.source;
+package com.yanxiu.gphone.student.homework.questions.bean;
 
 /**
  * Created by sunpeng on 2017/5/10.

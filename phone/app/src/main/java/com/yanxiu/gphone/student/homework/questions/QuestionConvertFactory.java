@@ -4,8 +4,8 @@ import com.yanxiu.gphone.student.homework.questions.model.BaseQuestion;
 import com.yanxiu.gphone.student.homework.questions.model.Paper;
 import com.yanxiu.gphone.student.homework.questions.model.ReadingComplexQuestion;
 import com.yanxiu.gphone.student.homework.questions.model.SingleChoiceQuestion;
-import com.yanxiu.gphone.student.homework.questions.source.PaperBean;
-import com.yanxiu.gphone.student.homework.questions.source.PaperTestBean;
+import com.yanxiu.gphone.student.homework.questions.bean.PaperBean;
+import com.yanxiu.gphone.student.homework.questions.bean.PaperTestBean;
 
 import java.util.ArrayList;
 import java.util.List;

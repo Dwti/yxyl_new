@@ -3,9 +3,9 @@ package com.yanxiu.gphone.student.homework.questions.model;
 import android.support.v4.app.Fragment;
 
 import com.yanxiu.gphone.student.homework.questions.QuestionShowType;
-import com.yanxiu.gphone.student.homework.questions.source.PadBean;
-import com.yanxiu.gphone.student.homework.questions.source.PaperTestBean;
-import com.yanxiu.gphone.student.homework.questions.source.PointBean;
+import com.yanxiu.gphone.student.homework.questions.bean.PadBean;
+import com.yanxiu.gphone.student.homework.questions.bean.PaperTestBean;
+import com.yanxiu.gphone.student.homework.questions.bean.PointBean;
 
 import java.util.List;
 

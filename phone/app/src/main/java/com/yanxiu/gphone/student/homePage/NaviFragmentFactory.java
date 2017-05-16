@@ -4,16 +4,16 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
-import com.yanxiu.gphone.student.homepage.fragment.GroupFragment;
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.homepage.fragment.ExerciseFragment;
 import com.yanxiu.gphone.student.homepage.fragment.HomeWorkFragment;
 import com.yanxiu.gphone.student.homepage.fragment.MyFragment;
 
 
 public class NaviFragmentFactory {
 	private int mCurrItem = 0;
-	private HomeWorkFragment mHomeWorkFragment;    //练习
-	private GroupFragment mGroupFragment;          //作业
+	private ExerciseFragment mExerciseFragment;    //练习
+	private HomeWorkFragment mHomeWorkFragment;    //作业
 	private MyFragment mMyFragment;                //我的
 	public NaviFragmentFactory() {
 	}
@@ -25,21 +25,21 @@ public class NaviFragmentFactory {
 	}
 	public Fragment getItem(int item){
 		if(item == 0){
-			return mHomeWorkFragment;
+			return mExerciseFragment;
 		} else if(item == 1){
-			return mGroupFragment;
+			return mHomeWorkFragment;
 		}else if(item == 2){
 			return mMyFragment;
 		}else {
-			return mHomeWorkFragment;
+			return mExerciseFragment;
 		}
 	}
 	private void hideFragment(FragmentTransaction transaction){
-		if (mCurrItem == 0 && mHomeWorkFragment != null) {
-			transaction.hide(mHomeWorkFragment);
+		if (mCurrItem == 0 && mExerciseFragment != null) {
+			transaction.hide(mExerciseFragment);
 		}
-		if (mCurrItem == 1 && mGroupFragment != null) {
-			transaction.hide(mGroupFragment);
+		if (mCurrItem == 1 && mHomeWorkFragment != null) {
+			transaction.hide(mHomeWorkFragment);
 		}
 		if (mCurrItem == 2 && mMyFragment != null) {
 			transaction.hide(mMyFragment);
@@ -47,11 +47,11 @@ public class NaviFragmentFactory {
 	}
 	public void hideAndShowFragment(FragmentManager fragmentManager, int index){
 		FragmentTransaction transaction = fragmentManager.beginTransaction();
-		if (mCurrItem == 0 && mHomeWorkFragment != null) {
-			transaction.hide(mHomeWorkFragment);
+		if (mCurrItem == 0 && mExerciseFragment != null) {
+			transaction.hide(mExerciseFragment);
 		}
-		if (mCurrItem == 1 && mGroupFragment != null) {
-			transaction.hide(mGroupFragment);
+		if (mCurrItem == 1 && mHomeWorkFragment != null) {
+			transaction.hide(mHomeWorkFragment);
 		}
 		if (mCurrItem == 2 && mMyFragment != null) {
 			transaction.hide(mMyFragment);
@@ -59,21 +59,21 @@ public class NaviFragmentFactory {
 		mCurrItem = index;
 		switch (mCurrItem) {
 			case 0:
+				if (mExerciseFragment == null) {
+					mExerciseFragment = new ExerciseFragment();
+					transaction.add(R.id.content_main, mExerciseFragment);
+				} else {
+					transaction.show(mExerciseFragment);
+				}
+				break;
+			case 1:
 				if (mHomeWorkFragment == null) {
 					mHomeWorkFragment = new HomeWorkFragment();
 					transaction.add(R.id.content_main, mHomeWorkFragment);
 				} else {
 					transaction.show(mHomeWorkFragment);
-				}
-				break;
-			case 1:
-				if (mGroupFragment == null) {
-					mGroupFragment = new GroupFragment();
-					transaction.add(R.id.content_main, mGroupFragment);
-				} else {
-					transaction.show(mGroupFragment);
 //					LogInfo.log("king", "transaction.show");
-//					mGroupFragment.requestGroupData(true,false);
+//					mHomeWorkFragment.requestGroupData(true,false);
 				}
 				break;
 			case 2:

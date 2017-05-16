@@ -1,4 +1,4 @@
-package com.yanxiu.gphone.student.homework.questions.source;
+package com.yanxiu.gphone.student.homework.questions.bean;
 
 import java.util.List;
 
