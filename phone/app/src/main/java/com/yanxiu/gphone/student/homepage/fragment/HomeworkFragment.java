@@ -15,7 +15,6 @@ import com.yanxiu.gphone.student.homework.classmanage.JoinClassFragment;
  * 首页 作业列表Fragment
  */
 public class HomeworkFragment extends Fragment {
-//    ExerciseFragment
     private final static String TAG = HomeworkFragment.class.getSimpleName();
 
     @Override
