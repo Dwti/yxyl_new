@@ -210,6 +210,7 @@ public class ForgetPassWordActivity extends YanxiuBaseActivity implements Forget
                     return;
                 }
                 presenter.onNext(mobileCode,verCode);
+                ResetPassWordActivity.LaunchActivity(mContext);
                 break;
         }
     }

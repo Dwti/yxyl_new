@@ -28,4 +28,5 @@
     <string name="input_true_verCode">请输入正确的验证码</string>
     <string name="input_password_error">密码不符合要求</string>
     <string name="send_verCode_finish">验证码已发送,请注意查收</string>
+    <string name="bt_reset_passWord">确认重置</string>
 </resources>
