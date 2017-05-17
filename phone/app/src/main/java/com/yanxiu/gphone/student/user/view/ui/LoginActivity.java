@@ -170,11 +170,9 @@ public class LoginActivity extends YanxiuBaseActivity implements LoginViewChange
         if (hasFocus) {
             mWavesView.setCanShowWave(true);
             mLoginView.setEnabled(true);
-            mLoginView.setBackgroundResource(R.drawable.shape_login_click);
         } else {
             mWavesView.setCanShowWave(false);
             mLoginView.setEnabled(false);
-            mLoginView.setBackgroundResource(R.drawable.shape_login_unclick);
         }
     }
 

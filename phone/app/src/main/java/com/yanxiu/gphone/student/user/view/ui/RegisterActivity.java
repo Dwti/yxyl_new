@@ -222,11 +222,11 @@ public class RegisterActivity extends YanxiuBaseActivity implements RegisterView
         if (hasFocus){
             mWavesView.setCanShowWave(true);
             mRegisterView.setEnabled(true);
-            mRegisterView.setBackground(ContextCompat.getDrawable(mContext,R.drawable.shape_login_click));
+            mRegisterView.setBackground(ContextCompat.getDrawable(mContext,R.drawable.shape_common_button_bg_normal));
         }else {
             mWavesView.setCanShowWave(false);
             mRegisterView.setEnabled(false);
-            mRegisterView.setBackground(ContextCompat.getDrawable(mContext,R.drawable.shape_login_unclick));
+            mRegisterView.setBackground(ContextCompat.getDrawable(mContext,R.drawable.shape_common_button_bg_disable));
         }
     }
 

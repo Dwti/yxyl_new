@@ -16,7 +16,7 @@
     <style name="Login_Layout_Button_style">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/dimen_50</item>
-        <item name="android:background">@drawable/shape_login_unclick</item>
+        <item name="android:background">@drawable/shape_common_button_bg_disable</item>
         <item name="android:layout_marginLeft">@dimen/dimen_35</item>
         <item name="android:layout_marginStart">@dimen/dimen_35</item>
         <item name="android:layout_marginRight">@dimen/dimen_35</item>
@@ -42,6 +42,11 @@
         <item name="android:textColor">@color/color_006666</item>
         <item name="android:textSize">@dimen/dimen_16</item>
         <item name="android:duplicateParentState">true</item>
+    </style>
+
+    <style name="CommonButton">
+
+
     </style>
 
 </resources>
