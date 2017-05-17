@@ -76,8 +76,17 @@ public class CharacterSeparatedEditLayout extends FrameLayout{
                 mAdapter.replaceData(s.toString());
             }
         });
+
+        mEditText.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mEditText.setSelection(mEditText.getText().toString().length());
+            }
+        });
+
+        mEditText.requestFocus();
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(mEditText,0);
+        postDelayed(() -> imm.showSoftInput(mEditText,0),100);
     }
 
     public String getText(){

@@ -1,19 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_89e00d">
 
-    <com.yanxiu.gphone.student.customviews.CharacterSeparatedEditLayout
+    <include
+        layout="@layout/main_public_top_layout"/>
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/shape_common_button_bg_disable">
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    </com.yanxiu.gphone.student.customviews.CharacterSeparatedEditLayout>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@android:color/holo_blue_light"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="加入班级页面"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_marginLeft="@dimen/content_left_right_margin"
+                android:layout_marginRight="@dimen/content_left_right_margin">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp"
+                    android:text="同学，你需要先加入一个班级"
+                    android:layout_marginTop="10dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:text="请输入8位班级号"
+                    android:textColor="@color/color_69ad0a"
+                    android:textSize="18sp"/>
+
+
+                <com.yanxiu.gphone.student.customviews.CharacterSeparatedEditLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/common_button_height"
+                    android:layout_marginTop="15dp"/>
+
+                <com.yanxiu.gphone.student.util.view.WavesLayout
+                    android:id="@+id/wavesLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    app:waves_radius="@dimen/wavesRadius"
+                    app:waves_animend_alpha="102">
+
+                    <Button
+                        android:id="@+id/btn_next"
+                        style="@style/CommonWavesLayout"
+                        android:text="下一步"
+                        android:textColor="@color/color_89e00d"/>
+                </com.yanxiu.gphone.student.util.view.WavesLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginTop="30dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="没有班级可加，跳过此步骤"
+                        android:textSize="16sp"
+                        android:textColor="@android:color/white"/>
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_marginLeft="5dp"
+                        android:background="@android:color/holo_blue_light"/>
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>
