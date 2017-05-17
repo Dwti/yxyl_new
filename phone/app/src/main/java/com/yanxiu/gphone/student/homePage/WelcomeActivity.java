@@ -1,4 +1,4 @@
-package com.yanxiu.gphone.student.homePage;
+package com.yanxiu.gphone.student.homepage;
 
 import android.os.Bundle;
 import android.view.KeyEvent;

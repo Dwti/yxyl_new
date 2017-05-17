@@ -15,7 +15,7 @@
         <!--android:name=".WelcomeActivity"-->
         <activity
 
-            android:name=".homePage.MainActivity"
+            android:name=".homepage.MainActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"></activity>
         <activity

@@ -1,4 +1,4 @@
-package com.yanxiu.gphone.student.homePage.fragment;
+package com.yanxiu.gphone.student.homepage.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,16 +10,15 @@ import com.yanxiu.gphone.student.R;
 
 
 /**
- * "我的"Fragment
+ * 首页"我的"Fragment
  */
 public class MyFragment extends Fragment implements View.OnClickListener {
     private static final String TAG=MyFragment.class.getSimpleName();
-    private View rootView;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.my_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_my, container, false);
         return view;
     }
 
