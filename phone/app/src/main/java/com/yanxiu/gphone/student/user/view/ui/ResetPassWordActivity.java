@@ -7,6 +7,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
@@ -109,13 +110,12 @@ public class ResetPassWordActivity extends YanxiuBaseActivity implements ResetPa
             case R.id.tv_reset_password:
                 passWord=mPassWordView.getText().toString().trim();
                 passWordAgain=mPassWordAgainView.getText().toString().trim();
-                if (passWord.length()<6||passWord.length()>18){
-                    return;
-                }
-                if(passWordAgain.length()<6||passWordAgain.length()>18){
-                    return;
-                }
                 if (!passWord.endsWith(passWordAgain)){
+                    Toast.makeText(mContext,getText(R.string.input_password_not_same),Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (passWord.length()<6||passWord.length()>18){
+                    Toast.makeText(mContext,getText(R.string.input_password_error),Toast.LENGTH_SHORT).show();
                     return;
                 }
                 presenter.onResetPassWord(mobile,verCode,passWord);
@@ -128,11 +128,9 @@ public class ResetPassWordActivity extends YanxiuBaseActivity implements ResetPa
         if (hasFocus){
             mWavesView.setCanShowWave(true);
             mResetPassWordView.setEnabled(true);
-            mResetPassWordView.setBackground(ContextCompat.getDrawable(mContext,R.drawable.shape_login_click));
         }else {
             mWavesView.setCanShowWave(false);
             mResetPassWordView.setEnabled(false);
-            mResetPassWordView.setBackground(ContextCompat.getDrawable(mContext,R.drawable.shape_login_unclick));
         }
     }
 }

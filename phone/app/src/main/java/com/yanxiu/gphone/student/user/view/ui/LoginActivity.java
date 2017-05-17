@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
+import com.yanxiu.gphone.student.homepage.MainActivity;
 import com.yanxiu.gphone.student.user.bean.LoginBean;
 import com.yanxiu.gphone.student.user.presenter.impl.LoginPresenterImpl;
 import com.yanxiu.gphone.student.util.EditTextManger;
@@ -112,7 +113,9 @@ public class LoginActivity extends YanxiuBaseActivity implements LoginViewChange
 
     @Override
     public void onSuccess(int uuid, LoginBean bean) {
-
+        if (uuid==LoginPresenterImpl.UUID_ACCOUNT){
+            MainActivity.invoke(LoginActivity.this);
+        }
     }
 
     @Override

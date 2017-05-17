@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginTop="30dp"
-        android:background="@drawable/shape_common_edit_bg">
+        android:background="@drawable/shape_common_button_bg_disable">
 
     </com.yanxiu.gphone.student.customviews.CharacterSeparatedEditLayout>
 
