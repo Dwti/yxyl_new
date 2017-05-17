@@ -1,4 +1,4 @@
-package com.yanxiu.gphone.student.user.bean;
+package com.yanxiu.gphone.student.user.http;
 
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.util.DeviceUtil;
