@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="60dp">
+    android:layout_height="50dp">
 
     <TextView
         android:id="@+id/tv_text"
@@ -12,14 +12,14 @@
         android:gravity="center"
         android:textColor="@android:color/white"
         android:textStyle="bold"
-        android:textSize="25sp"/>
+        android:textSize="20sp"/>
 
     <View
         android:id="@+id/separate_line"
         android:layout_width="1dp"
         android:layout_height="match_parent"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         android:background="@color/color_89e00d"
         android:layout_gravity="center_vertical"/>
 

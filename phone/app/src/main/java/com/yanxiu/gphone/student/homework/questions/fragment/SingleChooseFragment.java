@@ -37,15 +37,15 @@ public class SingleChooseFragment extends SimpleExerciseFragmentBase {
 //        return view;
 //    }
 
-
     /**
      * 当Fragment对用户的可见性发生了改变的时候就会回调此方法
      *
-     * @param isVisibleToUser                      true：用户能看见当前Fragment；false：用户看不见当前Fragment
-     * @param isHappenedInSetUserVisibleHintMethod true：本次回调发生在setUserVisibleHintMethod方法里；false：发生在onResume或onPause方法里
+     * @param isVisibleToUser       true：用户能看见当前Fragment；false：用户看不见当前Fragment
+     * @param invokeInResumeOrPause true：发生在onResume或onPause方法里；false：本次回调发生在setUserVisibleHintMethod方法里
      */
     @Override
-    public void onVisibilityChangedToUser(boolean isVisibleToUser, boolean isHappenedInSetUserVisibleHintMethod) {
+    public void onVisibilityChangedToUser(boolean isVisibleToUser, boolean invokeInResumeOrPause) {
 
     }
+
 }

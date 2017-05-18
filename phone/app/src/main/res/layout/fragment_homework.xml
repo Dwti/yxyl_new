@@ -3,18 +3,10 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_33ffff">
+    android:background="@color/color_89e00d">
 
     <include
-        android:id="@+id/main_public_top_group"
-        layout="@layout/main_public_top_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <com.yanxiu.gphone.student.customviews.CharacterSeparatedEditLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="@drawable/shape_common_button_bg_normal" />
+        layout="@layout/main_public_top_layout"/>
 
     <Button
         android:id="@+id/btn_join_class"

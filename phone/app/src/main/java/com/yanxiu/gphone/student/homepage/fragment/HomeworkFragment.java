@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.yanxiu.gphone.student.R;
-import com.yanxiu.gphone.student.homework.classmanage.JoinClassFragment;
+import com.yanxiu.gphone.student.homework.classmanage.InputClassNumberFragment;
 
 /**
  * 首页 作业列表Fragment
@@ -24,7 +24,7 @@ public class HomeworkFragment extends Fragment {
         mJoinClass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getFragmentManager().beginTransaction().replace(getId(),JoinClassFragment.getInstance()).commit();
+                getFragmentManager().beginTransaction().replace(getId(), InputClassNumberFragment.getInstance()).commit();
             }
         });
         return view;
