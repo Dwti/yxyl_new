@@ -41,6 +41,7 @@
                     android:layout_marginLeft="8dp"
                     android:textSize="20sp"
                     android:text="七年级20班"
+                    android:textStyle="bold"
                     />
 
             </LinearLayout>

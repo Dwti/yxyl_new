@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="wrap_content"
-              android:layout_height="@dimen/dimen_40"
-              android:layout_margin="@dimen/dimen_3"
+              android:layout_height="@dimen/home_nav_bar_height"
+              android:layout_margin="@dimen/home_nav_bar_margin"
               android:layout_weight="1"
               android:background="@drawable/home_nav_bar_selecter"
               android:duplicateParentState="true"
@@ -11,8 +11,8 @@
 
     <ImageView
         android:id="@+id/nav_icon"
-        android:layout_width="@dimen/dimen_33"
-        android:layout_height="@dimen/dimen_33"
+        android:layout_width="@dimen/nav_icon_width"
+        android:layout_height="@dimen/nav_icon_width"
         android:background="@drawable/navi_main_normal"
         android:scaleType="centerInside"/>
 
@@ -21,7 +21,7 @@
         style="@style/HomeNavBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dimen_1"
+        android:layout_marginLeft="@dimen/home_nav_bar_marginleft"
         android:gravity="center_vertical"
         android:text="@string/exercises"/>
 </LinearLayout>
