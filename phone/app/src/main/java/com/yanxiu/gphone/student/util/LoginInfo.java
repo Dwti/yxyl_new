@@ -1,12 +1,8 @@
 package com.yanxiu.gphone.student.util;
 
-import android.database.sqlite.SQLiteDatabase;
-
-import com.yanxiu.gphone.student.user.bean.PassportBean;
-import com.yanxiu.gphone.student.user.bean.UserMessageBean;
+import com.yanxiu.gphone.student.user.Response.UserMessageBean;
 
 import org.litepal.crud.DataSupport;
-import org.litepal.tablemanager.Connector;
 
 /**
  * Created by Canghaixiao.
@@ -28,7 +24,11 @@ public class LoginInfo {
 
     static {
         LOGIN_STATUS=LOGIN_DEFAULT;
-        bean=getCacheData();
+        try {
+            bean=getCacheData();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         if (bean==null){
             LOGIN_STATUS=LOGIN_OUT;
         }else {

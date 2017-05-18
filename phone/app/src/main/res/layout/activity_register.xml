@@ -1,30 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_89e00d">
+    android:background="@color/color_89e00d"
+    android:orientation="vertical">
 
-    <RelativeLayout
+    <include
+        android:id="@+id/include_top"
+        layout="@layout/main_public_top_layout" />
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <include
-            android:id="@+id/include"
-            layout="@layout/layout_login_top_image" />
+        android:layout_height="wrap_content"
+        android:background="@null">
 
         <RelativeLayout
             android:id="@+id/rl_forget_password"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/include"
-            android:layout_marginTop="@dimen/dimen_10">
+            android:layout_height="wrap_content">
+
+            <include
+                android:id="@+id/include_img"
+                layout="@layout/layout_login_top_image" />
 
             <LinearLayout
                 android:id="@+id/ll_mobile"
                 style="@style/LoginLayoutButton"
                 android:background="@drawable/shape_login_edit_top"
+                android:layout_below="@+id/include_img"
                 android:gravity="center_vertical"
+                android:layout_marginTop="@dimen/login_margin_top_img"
                 android:orientation="horizontal">
 
                 <EditText
@@ -36,9 +42,9 @@
 
                 <ImageView
                     android:id="@+id/iv_clear"
-                    android:layout_width="@dimen/dimen_13"
-                    android:layout_height="@dimen/dimen_13"
-                    android:layout_marginEnd="@dimen/dimen_13"
+                    android:layout_width="@dimen/login_edit_icon_w_h"
+                    android:layout_height="@dimen/login_edit_icon_w_h"
+                    android:layout_marginEnd="@dimen/login_edit_icon_w_h"
                     android:background="@color/colorPrimary"
                     android:contentDescription="@null"
                     android:visibility="invisible" />
@@ -49,7 +55,7 @@
                 android:id="@+id/ll_ver_code"
                 style="@style/LoginLayoutButton"
                 android:layout_below="@+id/ll_mobile"
-                android:layout_marginTop="@dimen/dimen_2"
+                android:layout_marginTop="@dimen/login_edit_margin_top"
                 android:background="@drawable/shape_login_edit_center"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
@@ -62,25 +68,25 @@
                     android:maxLength="4" />
 
                 <View
-                    android:layout_width="@dimen/dimen_2"
-                    android:layout_height="@dimen/dimen_18"
+                    android:layout_width="@dimen/login_edit_margin_top"
+                    android:layout_height="@dimen/login_edit_default_textsize"
                     android:background="@color/color_89e00d" />
 
                 <TextView
                     android:id="@+id/tv_send_verCode"
-                    android:layout_width="@dimen/dimen_103"
+                    android:layout_width="@dimen/send_verCode_width"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
                     android:text="@string/send_verCode"
                     android:textColor="@drawable/selector_send_vercode_text_color"
-                    android:textSize="@dimen/dimen_16sp" />
+                    android:textSize="@dimen/send_verCode_textsize" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/ll_pass_word"
                 style="@style/LoginLayoutButton"
                 android:layout_below="@+id/ll_ver_code"
-                android:layout_marginTop="@dimen/dimen_2"
+                android:layout_marginTop="@dimen/login_edit_margin_top"
                 android:background="@drawable/shape_login_edit_bottom"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
@@ -94,36 +100,35 @@
 
                 <ImageView
                     android:id="@+id/iv_cipher"
-                    android:layout_width="@dimen/dimen_13"
-                    android:layout_height="@dimen/dimen_13"
-                    android:layout_marginEnd="@dimen/dimen_13"
+                    android:layout_width="@dimen/login_edit_icon_w_h"
+                    android:layout_height="@dimen/login_edit_icon_w_h"
+                    android:layout_marginEnd="@dimen/login_edit_icon_w_h"
                     android:background="@color/colorPrimary"
                     android:contentDescription="@null" />
 
             </LinearLayout>
 
-            <com.yanxiu.gphone.student.util.view.WavesLayout
+            <com.yanxiu.gphone.student.customviews.WavesLayout
                 android:id="@+id/wl_forget_waves"
                 style="@style/LoginLayoutButton"
                 android:layout_below="@+id/ll_pass_word"
-                android:layout_marginTop="@dimen/dimen_15"
+                android:layout_marginTop="@dimen/login_button_margin_top"
                 app:waves_animend_alpha="102"
                 app:waves_canshowwave="false"
-                app:waves_radius="@dimen/dimen_5">
+                app:waves_radius="@dimen/wavesRadius">
 
                 <TextView
                     android:id="@+id/tv_register"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen_50"
+                    android:layout_height="@dimen/common_button_height"
                     android:background="@drawable/selector_common_button_bg"
                     android:gravity="center"
                     android:text="@string/register"
                     android:textColor="@color/color_89e00d"
-                    android:textSize="@dimen/dimen_18sp" />
+                    android:textSize="@dimen/login_edit_default_textsize" />
 
-            </com.yanxiu.gphone.student.util.view.WavesLayout>
+            </com.yanxiu.gphone.student.customviews.WavesLayout>
         </RelativeLayout>
-    </RelativeLayout>
 
-
-</ScrollView>
+    </ScrollView>
+</LinearLayout>

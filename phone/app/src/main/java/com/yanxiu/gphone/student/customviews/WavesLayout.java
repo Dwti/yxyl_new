@@ -1,4 +1,4 @@
-package com.yanxiu.gphone.student.util.view;
+package com.yanxiu.gphone.student.customviews;
 
 import android.content.Context;
 import android.content.res.TypedArray;

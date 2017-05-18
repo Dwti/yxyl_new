@@ -1,6 +1,7 @@
 package com.yanxiu.gphone.student.user.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -17,13 +18,12 @@ import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.homepage.MainActivity;
-import com.yanxiu.gphone.student.user.bean.LoginBean;
-import com.yanxiu.gphone.student.user.http.LoginRequestTask;
+import com.yanxiu.gphone.student.user.Response.LoginResponse;
+import com.yanxiu.gphone.student.user.http.LoginRequest;
 import com.yanxiu.gphone.student.util.EditTextManger;
 import com.yanxiu.gphone.student.util.LoginInfo;
-import com.yanxiu.gphone.student.util.NetWorkUtils;
 import com.yanxiu.gphone.student.util.ToastManager;
-import com.yanxiu.gphone.student.util.view.WavesLayout;
+import com.yanxiu.gphone.student.customviews.WavesLayout;
 
 import java.util.regex.Pattern;
 @SuppressWarnings("all")
@@ -48,18 +48,6 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
     private ImageView mThirdWXView;
     private RelativeLayout mTitleView;
     private WavesLayout mWavesView;
-    /**
-     * Login using the account password
-     */
-    private static final int UUID_ACCOUNT = 0x000;
-    /**
-     * Login using the wx
-     */
-    private static final int UUID_WX = 0x001;
-    /**
-     * Login using the qq
-     */
-    private static final int UUID_QQ = 0x002;
 
     /**
      * The default username and password are empty
@@ -72,7 +60,12 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
     private boolean isCipher = true;
 
     private Pattern pattern = Pattern.compile("[0-9]*");
-    private LoginRequestTask request;
+    private LoginRequest mLoginRequest;
+
+    public static void LaunchActivity(Context context){
+        Intent intent=new Intent(context,LoginActivity.class);
+        context.startActivity(intent);
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -94,7 +87,7 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
         mFastRegisteredView = (TextView) findViewById(R.id.tv_fast_registered);
         mThirdQQView = (ImageView) findViewById(R.id.iv_third_qq);
         mThirdWXView = (ImageView) findViewById(R.id.iv_third_wx);
-        mTitleView= (RelativeLayout) findViewById(R.id.in_title);
+        mTitleView= (RelativeLayout) findViewById(R.id.include_top);
         mWavesView= (WavesLayout) findViewById(R.id.wl_login_waves);
     }
 
@@ -140,45 +133,10 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (request!=null){
-            request.cancelRequest();
-            request=null;
+        if (mLoginRequest!=null){
+            mLoginRequest.cancelRequest();
+            mLoginRequest=null;
         }
-    }
-
-    public void onHttpStart(int uuid) {
-
-    }
-
-    public void onReturntError(int uuid, LoginBean bean) {
-        if (uuid==UUID_ACCOUNT){
-            if (bean.status.getCode()==80){
-                //to perfect information
-                ToastManager.showMsg("to perfect information");
-            }else {
-                ToastManager.showMsg(bean.status.getDesc());
-            }
-        }
-    }
-
-    public void onHttpSuccess(int uuid, LoginBean bean) {
-        if (uuid==UUID_ACCOUNT){
-            LoginInfo.savaCacheData(bean.data.get(0));
-            MainActivity.invoke(LoginActivity.this);
-            LoginActivity.this.finish();
-        }
-    }
-
-    public void onNetWorkError(int uuid, String msg) {
-        ToastManager.showMsg(getText(R.string.net_null));
-    }
-
-    public void onDataError(int uuid, String msg) {
-        ToastManager.showMsg(getText(R.string.data_error));
-    }
-
-    public void onHttpFinished(int uuid) {
-
     }
 
     public void setEditUserNameIsEmpty(boolean isEmpty) {
@@ -260,30 +218,28 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
                 break;
         }
     }
+
     public void LoginByAccount(String user_name, String pass_word) {
-        onHttpStart(UUID_ACCOUNT);
-        request = new LoginRequestTask();
-        request.mobile=user_name;
-        request.password=pass_word;
-        request.startRequest(LoginBean.class, new HttpCallback<LoginBean>() {
+        mLoginRequest = new LoginRequest();
+        mLoginRequest.mobile=user_name;
+        mLoginRequest.password=pass_word;
+        mLoginRequest.startRequest(LoginResponse.class, new HttpCallback<LoginResponse>() {
             @Override
-            public void onSuccess(RequestBase request, LoginBean ret) {
+            public void onSuccess(RequestBase request, LoginResponse ret) {
                 if (ret.status.getCode()==0){
-                    onHttpSuccess(UUID_ACCOUNT,ret);
+                    LoginInfo.savaCacheData(ret.data.get(0));
+                    MainActivity.invoke(LoginActivity.this);
+                    LoginActivity.this.finish();
+                }else if (ret.status.getCode()==80){
+                    ToastManager.showMsg("to perfect information");
                 }else {
-                    onReturntError(UUID_ACCOUNT,ret);
+                    ToastManager.showMsg(ret.status.getDesc());
                 }
-                onHttpFinished(UUID_ACCOUNT);
             }
 
             @Override
             public void onFail(RequestBase request, Error error) {
-                if (NetWorkUtils.isNetAvailable()) {
-                    onDataError(UUID_ACCOUNT,error.getMessage());
-                }else {
-                    onNetWorkError(UUID_ACCOUNT,error.getMessage());
-                }
-                onHttpFinished(UUID_ACCOUNT);
+                ToastManager.showMsg(error.getMessage());
             }
         });
     }

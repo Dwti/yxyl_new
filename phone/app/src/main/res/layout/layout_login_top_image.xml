@@ -4,19 +4,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/in_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <include layout="@layout/main_public_top_layout" />
-    </RelativeLayout>
-
     <ImageView
         android:id="@+id/iv_top"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_below="@+id/in_title"
+        android:layout_height="@dimen/login_top_img_height"
         android:background="@color/colorPrimary"
         android:contentDescription="@null" />
 

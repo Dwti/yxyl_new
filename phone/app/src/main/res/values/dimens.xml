@@ -190,4 +190,16 @@
     <dimen name="content_left_right_margin">35dp</dimen>
     <dimen name="common_button_height">50dp</dimen>
     <dimen name="wavesRadius">5dp</dimen>
+    <dimen name="login_top_img_height">200dp</dimen>
+    <dimen name="login_margin_top_img">10dp</dimen>
+    <dimen name="login_edit_margin_l_and_r">35dp</dimen>
+    <dimen name="login_default_width">0dp</dimen>
+    <dimen name="login_edit_margin_parent_l">20dp</dimen>
+    <dimen name="login_edit_default_textsize">18dp</dimen>
+    <dimen name="login_edit_icon_w_h">13dp</dimen>
+    <dimen name="login_edit_margin_top">2dp</dimen>
+    <dimen name="login_button_margin_top">15dp</dimen>
+    <dimen name="complete_info_textsize">16dp</dimen>
+    <dimen name="send_verCode_width">103dp</dimen>
+    <dimen name="send_verCode_textsize">16dp</dimen>
 </resources>

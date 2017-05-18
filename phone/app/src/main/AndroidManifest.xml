@@ -60,6 +60,18 @@
         <activity android:name=".homework.classmanage.JoinClassActivity"
             android:screenOrientation="portrait"
             android:launchMode="singleTop"/>
+
+        <activity android:name=".user.activity.JoinClassActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppFullscreen"
+            android:configChanges="keyboardHidden|orientation"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+
+        <activity android:name=".user.activity.CompleteInfoActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppFullscreen"
+            android:configChanges="keyboardHidden|orientation"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
         <!--<activity-->
         <!--android:name=".MainActivity"-->
         <!--android:launchMode="singleTask"-->

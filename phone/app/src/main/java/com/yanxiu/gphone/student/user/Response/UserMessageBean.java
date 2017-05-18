@@ -1,4 +1,4 @@
-package com.yanxiu.gphone.student.user.bean;
+package com.yanxiu.gphone.student.user.Response;
 
 import org.litepal.crud.DataSupport;
 

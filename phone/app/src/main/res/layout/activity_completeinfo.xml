@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_89e00d"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/include_top"
+        layout="@layout/main_public_top_layout" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <include
+                android:id="@+id/include_img"
+                layout="@layout/layout_login_top_image" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/include_img"
+                android:layout_marginTop="@dimen/login_margin_top_img">
+
+                <LinearLayout
+                    android:id="@+id/ll_user_name"
+                    style="@style/LoginLayoutButton"
+                    android:background="@drawable/shape_login_edit_top"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView style="@style/LoginInfoText"
+                        android:text="@string/user_name"/>
+
+                    <EditText
+                        android:id="@+id/ed_user_name"
+                        style="@style/LoginEdit"
+                        android:hint="@string/input_true_name"
+                        android:inputType="text"
+                        android:maxLength="16"
+                        android:textColor="@color/color_ffffff" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_school"
+                    style="@style/LoginLayoutButton"
+                    android:layout_below="@+id/ll_user_name"
+                    android:layout_marginTop="@dimen/login_edit_margin_top"
+                    android:background="@drawable/shape_login_edit_center"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView style="@style/LoginInfoText"
+                        android:text="@string/school"/>
+
+                    <TextView
+                        android:id="@+id/ed_school"
+                        style="@style/LoginEdit"
+                        android:textColor="@color/color_ffffff" />
+
+                    <ImageView
+                        android:layout_width="@dimen/login_edit_icon_w_h"
+                        android:layout_height="@dimen/login_edit_icon_w_h"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="@dimen/login_edit_icon_w_h"
+                        android:background="@color/color_00cccc"
+                        android:contentDescription="@null" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_period"
+                    style="@style/LoginLayoutButton"
+                    android:layout_below="@+id/ll_school"
+                    android:layout_marginTop="@dimen/login_edit_margin_top"
+                    android:background="@drawable/shape_login_edit_bottom"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView style="@style/LoginInfoText"
+                        android:text="@string/period"/>
+
+                    <TextView
+                        android:id="@+id/ed_period"
+                        style="@style/LoginEdit"
+                        android:textColor="@color/color_ffffff" />
+
+                    <ImageView
+                        android:layout_width="@dimen/login_edit_icon_w_h"
+                        android:layout_height="@dimen/login_edit_icon_w_h"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="@dimen/login_edit_icon_w_h"
+                        android:background="@color/color_00cccc"
+                        android:contentDescription="@null" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_submit"
+                    style="@style/LoginLayoutButton"
+                    android:layout_below="@+id/ll_period"
+                    android:layout_marginTop="@dimen/login_button_margin_top"
+                    android:background="@drawable/selector_common_button_bg"
+                    android:gravity="center"
+                    android:text="@string/submit"
+                    android:textColor="@color/color_89e00d"
+                    android:textSize="@dimen/login_edit_default_textsize" />
+
+            </RelativeLayout>
+        </RelativeLayout>
+    </ScrollView>
+</LinearLayout>

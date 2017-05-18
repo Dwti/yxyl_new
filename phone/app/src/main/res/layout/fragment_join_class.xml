@@ -23,6 +23,7 @@
                 android:layout_height="200dp"
                 android:background="@android:color/holo_blue_light"/>
             <TextView
+                android:id="@+id/tv_join_class"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
@@ -31,6 +32,7 @@
                 android:layout_marginTop="10dp"/>
 
             <TextView
+                android:id="@+id/tv_class_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
@@ -52,12 +54,13 @@
                     android:layout_height="@dimen/common_button_height"
                     android:layout_marginTop="15dp"/>
 
-                <com.yanxiu.gphone.student.util.view.WavesLayout
+                <com.yanxiu.gphone.student.customviews.WavesLayout
                     android:id="@+id/wavesLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
                     app:waves_radius="@dimen/wavesRadius"
+                    app:waves_canshowwave="false"
                     app:waves_animend_alpha="102">
 
                     <Button
@@ -65,12 +68,13 @@
                         style="@style/CommonWavesLayout"
                         android:text="下一步"
                         android:textColor="@color/color_89e00d"/>
-                </com.yanxiu.gphone.student.util.view.WavesLayout>
+                </com.yanxiu.gphone.student.customviews.WavesLayout>
 
 
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_complete_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"

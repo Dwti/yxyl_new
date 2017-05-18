@@ -17,10 +17,10 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/common_button_height</item>
         <item name="android:background">@drawable/shape_common_button_bg_disable</item>
-        <item name="android:layout_marginLeft">@dimen/dimen_35</item>
-        <item name="android:layout_marginStart">@dimen/dimen_35</item>
-        <item name="android:layout_marginRight">@dimen/dimen_35</item>
-        <item name="android:layout_marginEnd">@dimen/dimen_35</item>
+        <item name="android:layout_marginLeft">@dimen/login_edit_margin_l_and_r</item>
+        <item name="android:layout_marginStart">@dimen/login_edit_margin_l_and_r</item>
+        <item name="android:layout_marginRight">@dimen/login_edit_margin_l_and_r</item>
+        <item name="android:layout_marginEnd">@dimen/login_edit_margin_l_and_r</item>
     </style>
 
     <style name="CommonWavesLayout">
@@ -29,16 +29,26 @@
         <item name="android:background">@drawable/selector_common_button_bg</item>
     </style>
 
+    <style name="LoginInfoText">
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">@dimen/login_edit_margin_parent_l</item>
+        <item name="android:textColor">@color/color_336600</item>
+        <item name="android:textSize">@dimen/complete_info_textsize</item>
+        <item name="android:background">@null</item>
+    </style>
+
     <style name="LoginEdit">
-        <item name="android:layout_width">@dimen/dimen_0</item>
+        <item name="android:layout_width">@dimen/login_default_width</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">1</item>
-        <item name="android:layout_marginLeft">@dimen/dimen_20</item>
-        <item name="android:layout_marginStart">@dimen/dimen_20</item>
+        <item name="android:layout_marginLeft">@dimen/login_edit_margin_parent_l</item>
+        <item name="android:layout_marginStart">@dimen/login_edit_margin_parent_l</item>
         <item name="android:textColorHint">@color/color_89e00d</item>
         <item name="android:textColor">@color/color_89e00d</item>
         <item name="android:background">@null</item>
-        <item name="android:textSize">@dimen/dimen_18sp</item>
+        <item name="android:textSize">@dimen/login_edit_default_textsize</item>
     </style>
     <style name="HomeNavBar">
         <item name="android:layout_width">wrap_content</item>

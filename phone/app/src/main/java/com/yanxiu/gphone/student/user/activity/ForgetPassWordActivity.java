@@ -8,13 +8,18 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.test.yanxiu.network.HttpCallback;
+import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
-import com.yanxiu.gphone.student.user.bean.BaseBean;
+import com.yanxiu.gphone.student.user.Response.ForgerPassWordResponse;
+import com.yanxiu.gphone.student.user.Response.VerCodeResponse;
+import com.yanxiu.gphone.student.user.http.ForgetPassWordRequest;
+import com.yanxiu.gphone.student.user.http.SendVerCodeRequest;
 import com.yanxiu.gphone.student.util.EditTextManger;
 import com.yanxiu.gphone.student.util.ToastManager;
 import com.yanxiu.gphone.student.util.time.CountDownManager;
-import com.yanxiu.gphone.student.util.view.WavesLayout;
+import com.yanxiu.gphone.student.customviews.WavesLayout;
 @SuppressWarnings("all")
 /**
  * Created by Canghaixiao.
@@ -25,6 +30,7 @@ import com.yanxiu.gphone.student.util.view.WavesLayout;
 public class ForgetPassWordActivity extends YanxiuBaseActivity implements View.OnClickListener {
 
     private static final String INTENT_MOBILE="mobile";
+    private static final String TYPE="1";
 
     private Context mContext;
 
@@ -34,17 +40,11 @@ public class ForgetPassWordActivity extends YanxiuBaseActivity implements View.O
     private TextView mSendVerCodeView;
     private TextView mNextView;
     private WavesLayout mWavesView;
-    /**
-     * send verification code
-     */
-    private static final int UUID_VERCODE = 0x000;
-    /**
-     * do next
-     */
-    private static final int UUID_NEXT = 0x001;
 
     private boolean isMobileReady = false;
     private boolean isVerCodeReady = false;
+    private SendVerCodeRequest mSendVerCodeRequest;
+    private ForgetPassWordRequest mForgetPassWordRequest;
 
     public static void LaunchActivity(Context context,String mobile){
         Intent intent=new Intent(context,ForgetPassWordActivity.class);
@@ -66,6 +66,14 @@ public class ForgetPassWordActivity extends YanxiuBaseActivity implements View.O
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (mSendVerCodeRequest!=null){
+            mSendVerCodeRequest.cancelRequest();
+            mSendVerCodeRequest=null;
+        }
+        if (mForgetPassWordRequest!=null){
+            mForgetPassWordRequest.cancelRequest();
+            mForgetPassWordRequest=null;
+        }
     }
 
     private void initView() {
@@ -117,30 +125,6 @@ public class ForgetPassWordActivity extends YanxiuBaseActivity implements View.O
         mNextView.setOnClickListener(ForgetPassWordActivity.this);
     }
 
-    public void onHttpStart(int uuid) {
-
-    }
-
-    public void onReturntError(int uuid, BaseBean baseBean) {
-
-    }
-
-    public void onSuccess(int uuid, BaseBean baseBean) {
-
-    }
-
-    public void onNetWorkError(int uuid, String msg) {
-        ToastManager.showMsg(getText(R.string.net_null));
-    }
-
-    public void onDataError(int uuid, String msg) {
-        ToastManager.showMsg(getText(R.string.data_error));
-    }
-
-    public void onHttpFinished(int uuid) {
-
-    }
-
     public void setEditMobileIsEmpty(boolean isEmpty) {
         if (isEmpty){
             mClearView.setEnabled(false);
@@ -160,6 +144,7 @@ public class ForgetPassWordActivity extends YanxiuBaseActivity implements View.O
     }
 
     public void startTiming(int totalTime) {
+        ToastManager.showMsg(getText(R.string.send_verCode_finish));
         CountDownManager.getManager().setTotalTime(totalTime).setScheduleListener(new CountDownManager.ScheduleListener() {
             @Override
             public void onProgress(long progress) {
@@ -200,7 +185,6 @@ public class ForgetPassWordActivity extends YanxiuBaseActivity implements View.O
                     return;
                 }
                 sendVerCode(mobileCode);
-                startTiming(45000);
                 break;
             case R.id.tv_next:
                 mobileCode=mMobileView.getText().toString().trim();
@@ -214,16 +198,50 @@ public class ForgetPassWordActivity extends YanxiuBaseActivity implements View.O
                     return;
                 }
                 onNext(mobileCode,verCode);
-                ResetPassWordActivity.LaunchActivity(mContext);
                 break;
         }
     }
 
     public void sendVerCode(String mobile) {
-        onHttpStart(UUID_VERCODE);
+        mSendVerCodeRequest=new SendVerCodeRequest();
+        mSendVerCodeRequest.mobile=mobile;
+        mSendVerCodeRequest.type=TYPE;
+        mSendVerCodeRequest.startRequest(VerCodeResponse.class, new HttpCallback<VerCodeResponse>() {
+            @Override
+            public void onSuccess(RequestBase request, VerCodeResponse ret) {
+                if (ret.status.getCode()==0){
+                    startTiming(45000);
+                }else {
+                    ToastManager.showMsg(ret.status.getDesc());
+                }
+            }
+
+            @Override
+            public void onFail(RequestBase request, Error error) {
+                ToastManager.showMsg(error.getMessage());
+            }
+        });
     }
 
     public void onNext(String mobile, String verCode) {
-        onHttpStart(UUID_NEXT);
+        mForgetPassWordRequest=new ForgetPassWordRequest();
+        mForgetPassWordRequest.mobile=mobile;
+        mForgetPassWordRequest.code=verCode;
+        mForgetPassWordRequest.type=TYPE;
+        mForgetPassWordRequest.startRequest(ForgerPassWordResponse.class, new HttpCallback<ForgerPassWordResponse>() {
+            @Override
+            public void onSuccess(RequestBase request, ForgerPassWordResponse ret) {
+                if (ret.status.getCode()==0){
+                    ResetPassWordActivity.LaunchActivity(mContext);
+                }else {
+                    ToastManager.showMsg(ret.status.getDesc());
+                }
+            }
+
+            @Override
+            public void onFail(RequestBase request, Error error) {
+                ToastManager.showMsg(error.getMessage());
+            }
+        });
     }
 }

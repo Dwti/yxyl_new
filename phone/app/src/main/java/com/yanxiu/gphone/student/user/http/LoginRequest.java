@@ -9,7 +9,7 @@ import com.yanxiu.gphone.student.constant.Constants;
  * Function :
  */
 
-public class LoginRequestTask extends RequestBase {
+public class LoginRequest extends RequestBase {
     public String mobile;
     public String password;
     public String deviceId= "-";
