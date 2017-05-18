@@ -24,6 +24,7 @@ import com.yanxiu.gphone.student.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimerTask;
 
 /**
  * Created by sp on 17-5-15.
@@ -85,8 +86,13 @@ public class CharacterSeparatedEditLayout extends FrameLayout{
         });
 
         mEditText.requestFocus();
-        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        postDelayed(() -> imm.showSoftInput(mEditText,0),100);
+        final InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        postDelayed(new TimerTask() {
+            @Override
+            public void run() {
+                imm.showSoftInput(mEditText,0);
+            }
+        }, 100);
     }
 
     public String getText(){

@@ -13,7 +13,7 @@
         <item name="android:windowNoTitle">true</item>
     </style>
     
-    <style name="Login_Layout_Button_style">
+    <style name="LoginLayoutButton">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/common_button_height</item>
         <item name="android:background">@drawable/shape_common_button_bg_disable</item>
@@ -29,7 +29,7 @@
         <item name="android:background">@drawable/selector_common_button_bg</item>
     </style>
 
-    <style name="Login_Edit_style">
+    <style name="LoginEdit">
         <item name="android:layout_width">@dimen/dimen_0</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">1</item>
@@ -40,7 +40,7 @@
         <item name="android:background">@null</item>
         <item name="android:textSize">@dimen/dimen_18sp</item>
     </style>
-    <style name="home_nav_bar_style">
+    <style name="HomeNavBar">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>

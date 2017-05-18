@@ -82,8 +82,6 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
         initView();
         initData();
         initListener();
-        String mobile=LoginInfo.getMobile();
-        mobile="";
     }
 
     private void initView() {

@@ -22,14 +22,14 @@
 
             <LinearLayout
                 android:id="@+id/ll_user_name"
-                style="@style/Login_Layout_Button_style"
+                style="@style/LoginLayoutButton"
                 android:background="@drawable/shape_login_edit_top"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <EditText
                     android:id="@+id/ed_user_name"
-                    style="@style/Login_Edit_style"
+                    style="@style/LoginEdit"
                     android:maxLength="16"
                     android:hint="@string/input_account" />
 
@@ -45,7 +45,7 @@
 
             <LinearLayout
                 android:id="@+id/ll_pass_word"
-                style="@style/Login_Layout_Button_style"
+                style="@style/LoginLayoutButton"
                 android:layout_below="@+id/ll_user_name"
                 android:layout_marginTop="@dimen/dimen_2"
                 android:background="@drawable/shape_login_edit_bottom"
@@ -54,7 +54,7 @@
 
                 <EditText
                     android:id="@+id/ed_pass_word"
-                    style="@style/Login_Edit_style"
+                    style="@style/LoginEdit"
                     android:hint="@string/input_password"
                     android:maxLength="18"
                     android:inputType="textPassword" />
@@ -70,7 +70,7 @@
 
             <com.yanxiu.gphone.student.util.view.WavesLayout
                 android:id="@+id/wl_login_waves"
-                style="@style/Login_Layout_Button_style"
+                style="@style/LoginLayoutButton"
                 android:layout_below="@+id/ll_pass_word"
                 android:layout_marginTop="@dimen/dimen_15"
                 app:waves_radius="@dimen/dimen_5"
@@ -90,7 +90,7 @@
         </RelativeLayout>
 
         <LinearLayout
-            style="@style/Login_Layout_Button_style"
+            style="@style/LoginLayoutButton"
             android:layout_height="wrap_content"
             android:layout_below="@+id/rl_login"
             android:layout_marginTop="@dimen/dimen_15"
@@ -123,7 +123,7 @@
         </LinearLayout>
 
         <LinearLayout
-            style="@style/Login_Layout_Button_style"
+            style="@style/LoginLayoutButton"
             android:layout_height="wrap_content"
             android:layout_below="@+id/rl_login"
             android:layout_marginTop="@dimen/dimen_75"

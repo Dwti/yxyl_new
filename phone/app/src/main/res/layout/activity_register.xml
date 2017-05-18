@@ -22,14 +22,14 @@
 
             <LinearLayout
                 android:id="@+id/ll_mobile"
-                style="@style/Login_Layout_Button_style"
+                style="@style/LoginLayoutButton"
                 android:background="@drawable/shape_login_edit_top"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <EditText
                     android:id="@+id/ed_mobile"
-                    style="@style/Login_Edit_style"
+                    style="@style/LoginEdit"
                     android:hint="@string/register_input_mobile"
                     android:inputType="number"
                     android:maxLength="11" />
@@ -47,7 +47,7 @@
 
             <LinearLayout
                 android:id="@+id/ll_ver_code"
-                style="@style/Login_Layout_Button_style"
+                style="@style/LoginLayoutButton"
                 android:layout_below="@+id/ll_mobile"
                 android:layout_marginTop="@dimen/dimen_2"
                 android:background="@drawable/shape_login_edit_center"
@@ -56,7 +56,7 @@
 
                 <EditText
                     android:id="@+id/ed_ver_code"
-                    style="@style/Login_Edit_style"
+                    style="@style/LoginEdit"
                     android:hint="@string/input_verCode"
                     android:inputType="number"
                     android:maxLength="4" />
@@ -78,7 +78,7 @@
 
             <LinearLayout
                 android:id="@+id/ll_pass_word"
-                style="@style/Login_Layout_Button_style"
+                style="@style/LoginLayoutButton"
                 android:layout_below="@+id/ll_ver_code"
                 android:layout_marginTop="@dimen/dimen_2"
                 android:background="@drawable/shape_login_edit_bottom"
@@ -87,7 +87,7 @@
 
                 <EditText
                     android:id="@+id/ed_pass_word"
-                    style="@style/Login_Edit_style"
+                    style="@style/LoginEdit"
                     android:hint="@string/register_password"
                     android:inputType="textPassword"
                     android:maxLength="18" />
@@ -104,7 +104,7 @@
 
             <com.yanxiu.gphone.student.util.view.WavesLayout
                 android:id="@+id/wl_forget_waves"
-                style="@style/Login_Layout_Button_style"
+                style="@style/LoginLayoutButton"
                 android:layout_below="@+id/ll_pass_word"
                 android:layout_marginTop="@dimen/dimen_15"
                 app:waves_animend_alpha="102"

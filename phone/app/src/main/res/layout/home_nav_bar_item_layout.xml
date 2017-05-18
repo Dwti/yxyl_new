@@ -18,7 +18,7 @@
 
     <TextView
         android:id="@+id/nav_txt"
-        style="@style/home_nav_bar_style"
+        style="@style/HomeNavBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dimen_1"
