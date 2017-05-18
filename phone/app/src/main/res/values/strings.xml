@@ -30,4 +30,8 @@
     <string name="send_verCode_finish">验证码已发送,请注意查收</string>
     <string name="bt_reset_passWord">确认重置</string>
     <string name="input_password_not_same">两次输入密码不一致</string>
+    <string name="what_is_class_1">班级是由老师在“易学易练老师端”中创建，给学生布置批发作业的班级群。</string>
+    <string name="what_is_class_2">每个易学易练班级都有一个8位数班级号码如：“班级号码：12345678”。</string>
+    <string name="how_to_join_class_1">第一步：老师在“易学易练教师端”中创建班级，并将班级号码 分享或告知学生们。</string>
+    <string name="how_to_join_class_2">第二步：同学们在“易学易练学生端”作业页面，点击“加入班级”输入班级号码，即可加入班级，然后 就可以通过手机来完成来自老师布置的作业了。</string>
 </resources>

@@ -15,12 +15,28 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:gravity="center"
             android:orientation="vertical">
 
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:background="@android:color/holo_blue_light"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                android:text="同学，你需要先加入一个班级"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:text="请输入8位班级号"
+                android:textColor="@color/color_69ad0a"
+                android:textSize="18sp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -29,22 +45,6 @@
                 android:gravity="center"
                 android:layout_marginLeft="@dimen/content_left_right_margin"
                 android:layout_marginRight="@dimen/content_left_right_margin">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@android:color/white"
-                    android:textSize="20sp"
-                    android:text="同学，你需要先加入一个班级"
-                    android:layout_marginTop="10dp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="25dp"
-                    android:text="请输入8位班级号"
-                    android:textColor="@color/color_69ad0a"
-                    android:textSize="18sp"/>
 
 
                 <com.yanxiu.gphone.student.customviews.CharacterSeparatedEditLayout
@@ -67,24 +67,26 @@
                         android:textColor="@color/color_89e00d"/>
                 </com.yanxiu.gphone.student.util.view.WavesLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginTop="30dp">
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center"
-                    android:layout_marginTop="30dp">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="没有班级可加，跳过此步骤"
-                        android:textSize="16sp"
-                        android:textColor="@android:color/white"/>
-                    <ImageView
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
-                        android:layout_marginLeft="5dp"
-                        android:background="@android:color/holo_blue_light"/>
-                </LinearLayout>
+                    android:text="没有班级可加，跳过此步骤"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/white"/>
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginLeft="5dp"
+                    android:background="@android:color/holo_blue_light"/>
             </LinearLayout>
 
         </LinearLayout>
