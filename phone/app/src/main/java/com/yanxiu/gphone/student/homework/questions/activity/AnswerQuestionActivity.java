@@ -1,6 +1,8 @@
 package com.yanxiu.gphone.student.homework.questions.activity;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -16,29 +18,42 @@ import com.yanxiu.gphone.student.homework.questions.fragment.SimpleExerciseFragm
 import com.yanxiu.gphone.student.homework.questions.model.BaseQuestion;
 import com.yanxiu.gphone.student.homework.questions.view.QAViewPager;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 /**
  * 答题页面
  */
 public class AnswerQuestionActivity extends AppCompatActivity implements AnswerCardFragment.OnCardItemSelectListener {
-    private static final String EXTRA_NODES = "extra mNodes";
+    private static final String EXTRA_NODES = "extra mQuestions";
 
     private FragmentManager mFragmentManager;
     private QAViewPager mViewPager;
     private QAViewPagerAdapter mAdapter;
-    private ArrayList<BaseQuestion> mNodes;
+    private ArrayList<BaseQuestion> mQuestions;
     private AnswerCardFragment mCardFragment;
+
+    private Handler mHandler;
+    private long mTotalTime;//总计时间
+    /**
+     * 刷新计时
+     */
+    private static final int HANDLER_TIME = 0x100;
+    /**
+     * 一秒
+     */
+    private final int HANDLER_TIME_DELAYED = 1000;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_answerquestion);
-        mNodes = (ArrayList<BaseQuestion>) getIntent().getSerializableExtra(EXTRA_NODES);
-        if (mNodes == null) { // 表明是第一级界面
-            mNodes = new ArrayList<>();
+        mQuestions = (ArrayList<BaseQuestion>) getIntent().getSerializableExtra(EXTRA_NODES);
+        if (mQuestions == null) { // 表明是第一级界面
+            mQuestions = new ArrayList<>();
         }
-//        mNodes = DataClass.getPaper().mChildren;//Todo 获取数据
+//        mQuestions = DataClass.getPaper().mChildren;//Todo 获取数据
         initView();
     }
 
@@ -48,7 +63,7 @@ public class AnswerQuestionActivity extends AppCompatActivity implements AnswerC
         mViewPager.setOffscreenPageLimit(1);
         mAdapter = new QAViewPagerAdapter(mFragmentManager);
 //        mViewPager.setFragmentManager(fm);
-        mAdapter.setData(mNodes);
+        mAdapter.setData(mQuestions);
         mViewPager.setAdapter(mAdapter);
 
         mViewPager.setOnSwipeOutListener(new QAViewPager.OnSwipeOutListener() {
@@ -58,6 +73,8 @@ public class AnswerQuestionActivity extends AppCompatActivity implements AnswerC
                 showAnswerCardFragment();
             }
         });
+        mHandler = new TimingHandler(this);
+        mTotalTime = 0;
     }
 
     /**
@@ -67,7 +84,7 @@ public class AnswerQuestionActivity extends AppCompatActivity implements AnswerC
      */
     private ArrayList<BaseQuestion> allNodesThatHasNumber() {
         ArrayList<BaseQuestion> retNodes = new ArrayList<>();
-        for (BaseQuestion node : mNodes) {
+        for (BaseQuestion node : mQuestions) {
 //            retNodes.addAll(node.allNodesThatHasNumber()); // TODO: 2017/5/15  等设置题号逻辑融合进孙鹏的数据里后，再添加
         }
         return retNodes;
@@ -220,5 +237,74 @@ public class AnswerQuestionActivity extends AppCompatActivity implements AnswerC
                 mViewPager.setCurrentItem(index - 1);
             }
         }
+    }
+
+    /**
+     * 计时用Handler
+     */
+    private static class TimingHandler extends Handler {
+        private WeakReference<AnswerQuestionActivity> mActivity;
+
+        public TimingHandler(AnswerQuestionActivity activity) {
+            mActivity = new WeakReference<>(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            AnswerQuestionActivity activity = mActivity.get();
+
+            if (msg.what == activity.HANDLER_TIME) {
+                activity.mHandler.sendEmptyMessageDelayed(activity.HANDLER_TIME, activity.HANDLER_TIME_DELAYED);
+                activity.updateTime();
+            }
+        }
+    }
+
+    ;
+
+    /**
+     * 开始计时
+     */
+    private void startTiming() {
+        if (mHandler != null) {
+            mHandler.removeMessages(HANDLER_TIME);
+            mHandler.sendEmptyMessageDelayed(HANDLER_TIME, HANDLER_TIME_DELAYED);
+        }
+    }
+
+    /**
+     * 结束计时
+     */
+    private void endTiming() {
+        if (mHandler != null) {
+            mHandler.removeMessages(HANDLER_TIME);
+        }
+    }
+
+    /**
+     * 更新计时
+     */
+    private void updateTime() {
+        mTotalTime++;
+        //Todo 显示时间
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        startTiming();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        endTiming();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mHandler.removeCallbacksAndMessages(null);
+        mHandler = null;
     }
 }
