@@ -1,6 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'me.tatarka.retrolambda'
-
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
@@ -31,11 +29,6 @@ android {
 
     }
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
     sourceSets {
         main {
             jniLibs.srcDir(['libs'])
@@ -50,8 +43,9 @@ android {
 
     dependencies {
         compile fileTree(include: ['*.jar'], dir: 'libs')
-        releaseCompile project(path:':libs:network',configuration:'release')
-        debugCompile project(path:':libs:network',configuration:'debug')
+        compile files('libs/litepal_db_1.1.1.jar')
+        releaseCompile project(path: ':libs:network', configuration: 'release')
+        debugCompile project(path: ':libs:network', configuration: 'debug')
         compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
         compile "com.android.support:cardview-v7:$rootProject.supportLibraryVersion"
         compile "com.android.support:design:$rootProject.supportLibraryVersion"

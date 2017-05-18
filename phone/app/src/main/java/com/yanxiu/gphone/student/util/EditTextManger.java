@@ -6,24 +6,17 @@ import android.text.TextWatcher;
 import android.text.method.NumberKeyListener;
 import android.widget.EditText;
 
+
 /**
  * Created by Canghaixiao.
  * Time : 2017/5/10 11:25.
  * Function :
  */
-
+@SuppressWarnings("unused")
 public class EditTextManger implements TextWatcher {
 
     public interface onTextLengthChangedListener {
         void onChanged(EditText view, String value, boolean isEmpty);
-    }
-
-    private interface GetTextChangedListener {
-        void setListener(onTextLengthChangedListener listener);
-    }
-
-    private interface GetEditTextListener {
-        void setEditText(EditText editText);
     }
 
     private static final String INPUT_NUMBER = "0123456789";
@@ -44,58 +37,62 @@ public class EditTextManger implements TextWatcher {
 
     public void setTextChangedListener(onTextLengthChangedListener listener) {
         this.mTextLengthChangedListener=listener;
-        getEditText(editText -> editText.addTextChangedListener(EditTextManger.this));
+        if (mEditText!=null){
+           mEditText.addTextChangedListener(EditTextManger.this);
+        }
     }
 
     public EditTextManger setInputOnlyNumber() {
-        getEditText(editText -> setKeyType(editText, INPUT_NUMBER));
+        if (mEditText!=null){
+            setKeyType(mEditText, INPUT_NUMBER);
+        }
         return this;
     }
 
     public EditTextManger setInputOnlyLetterLowercase() {
-        getEditText(editText -> setKeyType(editText, INPUT_LETTER_LOWERCASE));
+        if (mEditText!=null){
+            setKeyType(mEditText, INPUT_LETTER_LOWERCASE);
+        }
         return this;
     }
 
     public EditTextManger setInputOnlyLetterUppercase() {
-        getEditText(editText -> setKeyType(editText, INPUT_LETTER_UPPERCASE));
+        if (mEditText!=null){
+            setKeyType(mEditText, INPUT_LETTER_UPPERCASE);
+        }
         return this;
     }
 
     public EditTextManger setInputNumberAndLetterLowercase() {
-        getEditText(editText -> setKeyType(editText, INPUT_NUMBER + INPUT_LETTER_LOWERCASE));
+        if (mEditText!=null){
+            setKeyType(mEditText, INPUT_NUMBER + INPUT_LETTER_LOWERCASE);
+        }
         return this;
     }
 
     public EditTextManger setInputNumberAndLetterUppercase() {
-        getEditText(editText -> setKeyType(editText, INPUT_NUMBER + INPUT_LETTER_UPPERCASE));
+        if (mEditText!=null){
+            setKeyType(mEditText, INPUT_NUMBER + INPUT_LETTER_UPPERCASE);
+        }
         return this;
     }
 
     public EditTextManger setInputNumberAndLetter() {
-        getEditText(editText -> setKeyType(editText, INPUT_NUMBER + INPUT_LETTER_LOWERCASE + INPUT_LETTER_UPPERCASE));
+        if (mEditText!=null){
+            setKeyType(mEditText, INPUT_NUMBER + INPUT_LETTER_LOWERCASE + INPUT_LETTER_UPPERCASE);
+        }
         return this;
     }
 
     public EditTextManger setInputAllNotHanzi(){
-        getEditText(editText -> setKeyType(editText,INPUT_LETTER_LOWERCASE+INPUT_LETTER_UPPERCASE+INPUT_NUMBER+INPUT_SYMBOL));
+        if (mEditText!=null){
+            setKeyType(mEditText, INPUT_LETTER_LOWERCASE+INPUT_LETTER_UPPERCASE+INPUT_NUMBER+INPUT_SYMBOL);
+        }
         return this;
     }
 
-    private void getTextChangedListener(GetTextChangedListener listener) {
-        if (mTextLengthChangedListener!=null){
-            listener.setListener(mTextLengthChangedListener);
-        }
-    }
-
-    private void getEditText(GetEditTextListener listener) {
-        if (mEditText!=null){
-            listener.setEditText(mEditText);
-        }
-    }
-
-    private void setKeyType(EditText editText, String chars) {
-        int inputType = editText.getInputType();
+    private void setKeyType(EditText editText, final String chars) {
+        final int inputType = editText.getInputType();
         editText.setKeyListener(new NumberKeyListener() {
             @Override
             protected char[] getAcceptedChars() {
@@ -130,6 +127,10 @@ public class EditTextManger implements TextWatcher {
     }
 
     private void setChanged(String value, boolean isEmpty) {
-        getTextChangedListener(listener -> getEditText(editText -> listener.onChanged(editText, value, isEmpty)));
+        if (mTextLengthChangedListener!=null){
+            if (mEditText!=null){
+                mTextLengthChangedListener.onChanged(mEditText, value, isEmpty);
+            }
+        }
     }
 }

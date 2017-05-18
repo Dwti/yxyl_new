@@ -1,31 +1,34 @@
 package com.yanxiu.gphone.student.user.bean;
 
-/**
- * Created by sunpeng on 2017/5/9.
- */
+import org.litepal.crud.DataSupport;
 
-public class PassportBean {
-    private String id;
-    private String uid;
+/**
+ * Created by Canghaixiao.
+ * Time : 2017/5/18 10:25.
+ * Function :
+ */
+public class PassportBean extends DataSupport{
+    private int uid;
     private String mobile;
     private String password;
     private String token;
     private String deviceId;
     private String type;
+    private UserMessageBean bean;
 
-    public String getId() {
-        return id;
+    public UserMessageBean getBean() {
+        return bean;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setBean(UserMessageBean bean) {
+        this.bean = bean;
     }
 
-    public String getUid() {
+    public int getUid() {
         return uid;
     }
 
-    public void setUid(String uid) {
+    public void setUid(int uid) {
         this.uid = uid;
     }
 

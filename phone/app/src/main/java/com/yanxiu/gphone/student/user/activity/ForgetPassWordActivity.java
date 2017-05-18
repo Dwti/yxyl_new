@@ -1,43 +1,50 @@
-package com.yanxiu.gphone.student.user.view.ui;
+package com.yanxiu.gphone.student.user.activity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.user.bean.BaseBean;
-import com.yanxiu.gphone.student.user.presenter.impl.ForgetPassWordPresenterImpl;
 import com.yanxiu.gphone.student.util.EditTextManger;
+import com.yanxiu.gphone.student.util.ToastManager;
 import com.yanxiu.gphone.student.util.time.CountDownManager;
 import com.yanxiu.gphone.student.util.view.WavesLayout;
-import com.yanxiu.gphone.student.user.view.interf.ForgetPassWordViewChangeListener;
-
+@SuppressWarnings("all")
 /**
  * Created by Canghaixiao.
  * Time : 2017/5/8 16:26.
  * Function :
  */
 
-public class ForgetPassWordActivity extends YanxiuBaseActivity implements ForgetPassWordViewChangeListener, View.OnClickListener {
+public class ForgetPassWordActivity extends YanxiuBaseActivity implements View.OnClickListener {
 
     private static final String INTENT_MOBILE="mobile";
 
     private Context mContext;
 
-    private ForgetPassWordPresenterImpl presenter;
     private EditText mMobileView;
     private ImageView mClearView;
     private EditText mVerCodeView;
     private TextView mSendVerCodeView;
     private TextView mNextView;
     private WavesLayout mWavesView;
+    /**
+     * send verification code
+     */
+    private static final int UUID_VERCODE = 0x000;
+    /**
+     * do next
+     */
+    private static final int UUID_NEXT = 0x001;
+
+    private boolean isMobileReady = false;
+    private boolean isVerCodeReady = false;
 
     public static void LaunchActivity(Context context,String mobile){
         Intent intent=new Intent(context,ForgetPassWordActivity.class);
@@ -50,7 +57,6 @@ public class ForgetPassWordActivity extends YanxiuBaseActivity implements Forget
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forget_password);
         mContext=ForgetPassWordActivity.this;
-        presenter=new ForgetPassWordPresenterImpl(ForgetPassWordActivity.this);
         String mobile=getIntent().getStringExtra(INTENT_MOBILE);
         initView();
         initData(mobile);
@@ -60,7 +66,6 @@ public class ForgetPassWordActivity extends YanxiuBaseActivity implements Forget
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        presenter.onDestory();
     }
 
     private void initView() {
@@ -76,8 +81,30 @@ public class ForgetPassWordActivity extends YanxiuBaseActivity implements Forget
         mClearView.setEnabled(false);
         mSendVerCodeView.setEnabled(false);
         mNextView.setEnabled(false);
-        EditTextManger.getManager(mMobileView).setInputOnlyNumber().setTextChangedListener((view, value, isEmpty) -> presenter.setMobileValue(value));
-        EditTextManger.getManager(mVerCodeView).setInputOnlyNumber().setTextChangedListener((view, value, isEmpty) -> presenter.setVerCodeValue(value));
+        EditTextManger.getManager(mMobileView).setInputOnlyNumber().setTextChangedListener(new EditTextManger.onTextLengthChangedListener() {
+            @Override
+            public void onChanged(EditText view, String value, boolean isEmpty) {
+                if (isEmpty){
+                    isMobileReady=false;
+                }else {
+                    isMobileReady=true;
+                }
+                setSendVerCodeViewFocusChange(isMobileReady);
+                setButtonFocusChange(isMobileReady&&isVerCodeReady);
+                setEditMobileIsEmpty(isEmpty);
+            }
+        });
+        EditTextManger.getManager(mVerCodeView).setInputOnlyNumber().setTextChangedListener(new EditTextManger.onTextLengthChangedListener() {
+            @Override
+            public void onChanged(EditText view, String value, boolean isEmpty) {
+                if (isEmpty){
+                    isVerCodeReady=false;
+                }else {
+                    isVerCodeReady=true;
+                }
+                setButtonFocusChange(isMobileReady&&isVerCodeReady);
+            }
+        });
         mMobileView.setText(mobile);
         if (mobile.length()>0) {
             mMobileView.setSelection(mobile.length());
@@ -90,42 +117,30 @@ public class ForgetPassWordActivity extends YanxiuBaseActivity implements Forget
         mNextView.setOnClickListener(ForgetPassWordActivity.this);
     }
 
-    @Override
     public void onHttpStart(int uuid) {
 
     }
 
-    @Override
     public void onReturntError(int uuid, BaseBean baseBean) {
 
     }
 
-    @Override
     public void onSuccess(int uuid, BaseBean baseBean) {
 
     }
 
-    @Override
-    public void onCancel(int uuid) {
-
-    }
-
-    @Override
     public void onNetWorkError(int uuid, String msg) {
-
+        ToastManager.showMsg(getText(R.string.net_null));
     }
 
-    @Override
     public void onDataError(int uuid, String msg) {
-
+        ToastManager.showMsg(getText(R.string.data_error));
     }
 
-    @Override
     public void onHttpFinished(int uuid) {
 
     }
 
-    @Override
     public void setEditMobileIsEmpty(boolean isEmpty) {
         if (isEmpty){
             mClearView.setEnabled(false);
@@ -136,23 +151,14 @@ public class ForgetPassWordActivity extends YanxiuBaseActivity implements Forget
         }
     }
 
-    @Override
-    public void setEditMobileClear(String text) {
-        mMobileView.setText(text);
-    }
-
-    @Override
     public void setSendVerCodeViewFocusChange(boolean hasFocus) {
         if (hasFocus){
             mSendVerCodeView.setEnabled(true);
-            mSendVerCodeView.setTextColor(ContextCompat.getColor(mContext,R.color.color_ffffff));
         }else {
             mSendVerCodeView.setEnabled(false);
-            mSendVerCodeView.setTextColor(ContextCompat.getColor(mContext,R.color.color_89e00d));
         }
     }
 
-    @Override
     public void startTiming(int totalTime) {
         CountDownManager.getManager().setTotalTime(totalTime).setScheduleListener(new CountDownManager.ScheduleListener() {
             @Override
@@ -169,16 +175,13 @@ public class ForgetPassWordActivity extends YanxiuBaseActivity implements Forget
         }).start();
     }
 
-    @Override
     public void setButtonFocusChange(boolean hasFocus) {
         if (hasFocus){
             mWavesView.setCanShowWave(true);
             mNextView.setEnabled(true);
-            mNextView.setBackground(ContextCompat.getDrawable(mContext,R.drawable.shape_common_button_bg_normal));
         }else {
             mWavesView.setCanShowWave(false);
             mNextView.setEnabled(false);
-            mNextView.setBackground(ContextCompat.getDrawable(mContext,R.drawable.shape_common_button_bg_disable));
         }
     }
 
@@ -188,30 +191,39 @@ public class ForgetPassWordActivity extends YanxiuBaseActivity implements Forget
         String verCode;
         switch (v.getId()){
             case R.id.iv_clear:
-                presenter.setMobileChange();
+                mMobileView.setText("");
                 break;
             case R.id.tv_send_verCode:
                 mobileCode=mMobileView.getText().toString().trim();
                 if (mobileCode.length()!=11||!mobileCode.substring(0,1).equals("1")){
-                    Toast.makeText(mContext,getText(R.string.input_true_mobile),Toast.LENGTH_SHORT).show();
+                    ToastManager.showMsg(getText(R.string.input_true_mobile));
                     return;
                 }
-                presenter.sendVerCode(mobileCode);
+                sendVerCode(mobileCode);
+                startTiming(45000);
                 break;
             case R.id.tv_next:
                 mobileCode=mMobileView.getText().toString().trim();
                 verCode=mVerCodeView.getText().toString().trim();
                 if (mobileCode.length()!=11||!mobileCode.substring(0,1).equals("1")){
-                    Toast.makeText(mContext,getText(R.string.input_true_mobile),Toast.LENGTH_SHORT).show();
+                    ToastManager.showMsg(getText(R.string.input_true_mobile));
                     return;
                 }
                 if (verCode.length()!=4){
-                    Toast.makeText(mContext,getText(R.string.input_true_verCode),Toast.LENGTH_SHORT).show();
+                    ToastManager.showMsg(getText(R.string.input_true_verCode));
                     return;
                 }
-                presenter.onNext(mobileCode,verCode);
+                onNext(mobileCode,verCode);
                 ResetPassWordActivity.LaunchActivity(mContext);
                 break;
         }
+    }
+
+    public void sendVerCode(String mobile) {
+        onHttpStart(UUID_VERCODE);
+    }
+
+    public void onNext(String mobile, String verCode) {
+        onHttpStart(UUID_NEXT);
     }
 }

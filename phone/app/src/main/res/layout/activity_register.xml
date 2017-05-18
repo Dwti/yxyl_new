@@ -72,7 +72,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
                     android:text="@string/send_verCode"
-                    android:textColor="@color/color_89e00d"
+                    android:textColor="@drawable/selector_send_vercode_text_color"
                     android:textSize="@dimen/dimen_16sp" />
             </LinearLayout>
 
@@ -115,7 +115,7 @@
                     android:id="@+id/tv_register"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen_50"
-                    android:background="@drawable/shape_common_button_bg_disable"
+                    android:background="@drawable/selector_common_button_bg"
                     android:gravity="center"
                     android:text="@string/register"
                     android:textColor="@color/color_89e00d"

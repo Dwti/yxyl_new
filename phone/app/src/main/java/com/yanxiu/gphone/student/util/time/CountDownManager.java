@@ -10,6 +10,7 @@ import java.lang.ref.WeakReference;
  * Function :
  */
 
+@SuppressWarnings("unused")
 public class CountDownManager {
 
     private static final long DEFAULT_TOTALTIME=60000;

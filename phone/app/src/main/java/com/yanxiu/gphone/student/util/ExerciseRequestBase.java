@@ -1,7 +1,6 @@
 package com.yanxiu.gphone.student.util;
 
 import com.test.yanxiu.network.RequestBase;
-import com.yanxiu.gphone.student.user.bean.LoginInfo;
 
 /**
  * Created by sunpeng on 2017/5/8.
@@ -10,8 +9,8 @@ import com.yanxiu.gphone.student.user.bean.LoginInfo;
 public abstract class ExerciseRequestBase extends RequestBase {
     protected String osType = "0";
     protected String pcode = "010110000";
-    protected String token = LoginInfo.token;
-    protected String trace_uid = LoginInfo.uid;
+    protected String token = LoginInfo.getToken();
+    protected String trace_uid = LoginInfo.getUID();
     protected String version = "2.4.1";
 
     public String getOsType() {

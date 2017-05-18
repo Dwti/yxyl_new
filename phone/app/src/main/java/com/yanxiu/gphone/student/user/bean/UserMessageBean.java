@@ -1,11 +1,13 @@
 package com.yanxiu.gphone.student.user.bean;
 
-/**
- * Created by sunpeng on 2017/5/9.
- */
+import org.litepal.crud.DataSupport;
 
-public class UserBean {
-    private String id;
+/**
+ * Created by Canghaixiao.
+ * Time : 2017/5/17 12:17.
+ * Function :
+ */
+public class UserMessageBean extends DataSupport {
     private String mobile;
     private String nickname;
     private String realname;
@@ -23,15 +25,6 @@ public class UserBean {
     private String createtime;
     private String head;
     private PassportBean passport;
-
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getMobile() {
         return mobile;

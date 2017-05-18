@@ -1,4 +1,4 @@
-package com.yanxiu.gphone.student.user.view.ui;
+package com.yanxiu.gphone.student.user.activity;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -11,30 +11,32 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.test.yanxiu.network.HttpCallback;
+import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.homepage.MainActivity;
 import com.yanxiu.gphone.student.user.bean.LoginBean;
-import com.yanxiu.gphone.student.user.presenter.impl.LoginPresenterImpl;
+import com.yanxiu.gphone.student.user.http.LoginRequestTask;
 import com.yanxiu.gphone.student.util.EditTextManger;
+import com.yanxiu.gphone.student.util.LoginInfo;
+import com.yanxiu.gphone.student.util.NetWorkUtils;
+import com.yanxiu.gphone.student.util.ToastManager;
 import com.yanxiu.gphone.student.util.view.WavesLayout;
-import com.yanxiu.gphone.student.user.view.interf.LoginViewChangedListener;
 
 import java.util.regex.Pattern;
-
+@SuppressWarnings("all")
 /**
  * Created by Canghaixiao.
  * Time : 2017/5/8 16:23.
  * Function :
  */
 
-public class LoginActivity extends YanxiuBaseActivity implements LoginViewChangedListener, View.OnClickListener {
+public class LoginActivity extends YanxiuBaseActivity implements View.OnClickListener {
 
     private Context mContext;
 
-    private LoginPresenterImpl presenter;
     private EditText mUserNameView;
     private ImageView mClearView;
     private EditText mPassWordView;
@@ -46,18 +48,42 @@ public class LoginActivity extends YanxiuBaseActivity implements LoginViewChange
     private ImageView mThirdWXView;
     private RelativeLayout mTitleView;
     private WavesLayout mWavesView;
+    /**
+     * Login using the account password
+     */
+    private static final int UUID_ACCOUNT = 0x000;
+    /**
+     * Login using the wx
+     */
+    private static final int UUID_WX = 0x001;
+    /**
+     * Login using the qq
+     */
+    private static final int UUID_QQ = 0x002;
+
+    /**
+     * The default username and password are empty
+     */
+    private boolean isUserNameReady = false;
+    private boolean isPassWordReady = false;
+    /**
+     * The default password is cipher
+     */
+    private boolean isCipher = true;
 
     private Pattern pattern = Pattern.compile("[0-9]*");
+    private LoginRequestTask request;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         mContext=LoginActivity.this;
-        presenter = new LoginPresenterImpl(LoginActivity.this);
         initView();
         initData();
         initListener();
+        String mobile=LoginInfo.getMobile();
+        mobile="";
     }
 
     private void initView() {
@@ -78,8 +104,29 @@ public class LoginActivity extends YanxiuBaseActivity implements LoginViewChange
         mTitleView.setVisibility(View.INVISIBLE);
         mClearView.setEnabled(false);
         mLoginView.setEnabled(false);
-        EditTextManger.getManager(mUserNameView).setInputNumberAndLetter().setTextChangedListener((view, value, isEmpty) -> presenter.setUserNameValue(value));
-        EditTextManger.getManager(mPassWordView).setInputAllNotHanzi().setTextChangedListener((view, value, isEmpty) -> presenter.setPassWordValue(value));
+        EditTextManger.getManager(mUserNameView).setInputNumberAndLetter().setTextChangedListener(new EditTextManger.onTextLengthChangedListener() {
+            @Override
+            public void onChanged(EditText view, String value, boolean isEmpty) {
+                if (isEmpty){
+                    isUserNameReady = false;
+                }else {
+                    isUserNameReady = true;
+                }
+                setEditUserNameIsEmpty(isEmpty);
+                setButtonFocusChange(isUserNameReady&&isPassWordReady);
+            }
+        });
+        EditTextManger.getManager(mPassWordView).setInputAllNotHanzi().setTextChangedListener(new EditTextManger.onTextLengthChangedListener() {
+            @Override
+            public void onChanged(EditText view, String value, boolean isEmpty) {
+                if (isEmpty){
+                    isPassWordReady = false;
+                }else {
+                    isPassWordReady = true;
+                }
+                setButtonFocusChange(isUserNameReady&&isPassWordReady);
+            }
+        });
     }
 
     private void initListener() {
@@ -95,55 +142,47 @@ public class LoginActivity extends YanxiuBaseActivity implements LoginViewChange
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (presenter != null) {
-            presenter.onDestory();
-            presenter = null;
+        if (request!=null){
+            request.cancelRequest();
+            request=null;
         }
     }
 
-    @Override
     public void onHttpStart(int uuid) {
 
     }
 
-    @Override
     public void onReturntError(int uuid, LoginBean bean) {
-
-    }
-
-    @Override
-    public void onSuccess(int uuid, LoginBean bean) {
-        if (uuid==LoginPresenterImpl.UUID_ACCOUNT){
-            MainActivity.invoke(LoginActivity.this);
+        if (uuid==UUID_ACCOUNT){
+            if (bean.status.getCode()==80){
+                //to perfect information
+                ToastManager.showMsg("to perfect information");
+            }else {
+                ToastManager.showMsg(bean.status.getDesc());
+            }
         }
     }
 
-    @Override
-    public void onCancel(int uuid) {
-
+    public void onHttpSuccess(int uuid, LoginBean bean) {
+        if (uuid==UUID_ACCOUNT){
+            LoginInfo.savaCacheData(bean.data.get(0));
+            MainActivity.invoke(LoginActivity.this);
+            LoginActivity.this.finish();
+        }
     }
 
-    @Override
     public void onNetWorkError(int uuid, String msg) {
-
+        ToastManager.showMsg(getText(R.string.net_null));
     }
 
-    @Override
     public void onDataError(int uuid, String msg) {
-
+        ToastManager.showMsg(getText(R.string.data_error));
     }
 
-    @Override
     public void onHttpFinished(int uuid) {
 
     }
 
-    @Override
-    public void setEditUserNameClear(String text) {
-        mUserNameView.setText(text);
-    }
-
-    @Override
     public void setEditUserNameIsEmpty(boolean isEmpty) {
         if (isEmpty) {
             mClearView.setEnabled(false);
@@ -154,7 +193,6 @@ public class LoginActivity extends YanxiuBaseActivity implements LoginViewChange
         }
     }
 
-    @Override
     public void setEditPassWordChange(boolean isCipher) {
         if (isCipher) {
 //            mCipherView.setBackgroundResource();
@@ -168,7 +206,6 @@ public class LoginActivity extends YanxiuBaseActivity implements LoginViewChange
         }
     }
 
-    @Override
     public void setButtonFocusChange(boolean hasFocus) {
         if (hasFocus) {
             mWavesView.setCanShowWave(true);
@@ -185,26 +222,27 @@ public class LoginActivity extends YanxiuBaseActivity implements LoginViewChange
         String passWord;
         switch (v.getId()) {
             case R.id.iv_clear:
-                presenter.setUserNameChange();
+                mUserNameView.setText("");
                 break;
             case R.id.iv_cipher:
-                presenter.setPassWorkChange();
+                this.isCipher = !isCipher;
+                setEditPassWordChange(isCipher);
                 break;
             case R.id.tv_login:
                 userName = mUserNameView.getText().toString().trim();
                 passWord = mPassWordView.getText().toString().trim();
 
                 if (userName.length()<11||userName.length()>16){
-                    Toast.makeText(mContext,getText(R.string.input_true_account),Toast.LENGTH_SHORT).show();
+                    ToastManager.showMsg(getText(R.string.input_true_account));
                     return;
                 }
 
                 if (passWord.length()<6||passWord.length()>18){
-                    Toast.makeText(mContext,getText(R.string.input_true_password),Toast.LENGTH_SHORT).show();
+                    ToastManager.showMsg(getText(R.string.input_true_password));
                     return;
                 }
 
-                presenter.LoginByAccount(userName, passWord);
+                LoginByAccount(userName, passWord);
                 break;
             case R.id.tv_forget_password:
                 userName = mUserNameView.getText().toString().trim();
@@ -217,11 +255,46 @@ public class LoginActivity extends YanxiuBaseActivity implements LoginViewChange
                 RegisterActivity.LaunchActivity(mContext);
                 break;
             case R.id.iv_third_qq:
-                presenter.LoginByQQ();
+                LoginByQQ();
                 break;
             case R.id.iv_third_wx:
-                presenter.LoginByWX();
+                LoginByWX();
                 break;
         }
     }
+    public void LoginByAccount(String user_name, String pass_word) {
+        onHttpStart(UUID_ACCOUNT);
+        request = new LoginRequestTask();
+        request.mobile=user_name;
+        request.password=pass_word;
+        request.startRequest(LoginBean.class, new HttpCallback<LoginBean>() {
+            @Override
+            public void onSuccess(RequestBase request, LoginBean ret) {
+                if (ret.status.getCode()==0){
+                    onHttpSuccess(UUID_ACCOUNT,ret);
+                }else {
+                    onReturntError(UUID_ACCOUNT,ret);
+                }
+                onHttpFinished(UUID_ACCOUNT);
+            }
+
+            @Override
+            public void onFail(RequestBase request, Error error) {
+                if (NetWorkUtils.isNetAvailable()) {
+                    onDataError(UUID_ACCOUNT,error.getMessage());
+                }else {
+                    onNetWorkError(UUID_ACCOUNT,error.getMessage());
+                }
+                onHttpFinished(UUID_ACCOUNT);
+            }
+        });
+    }
+
+
+    public void LoginByWX() {
+    }
+
+    public void LoginByQQ() {
+    }
+
 }

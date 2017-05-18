@@ -1,10 +1,10 @@
 package com.yanxiu.gphone.student;
 
-import android.app.Application;
-
 import com.facebook.stetho.Stetho;
 
-public class YanxiuApplication extends Application {
+import org.litepal.LitePalApplication;
+
+public class YanxiuApplication extends LitePalApplication {
     private static YanxiuApplication instance;
 
     public static YanxiuApplication getInstance() {

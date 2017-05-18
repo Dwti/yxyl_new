@@ -22,6 +22,7 @@ import com.yanxiu.gphone.student.R;
  * Function :
  */
 
+@SuppressWarnings("unused")
 public class WavesLayout extends RelativeLayout {
 
     private static final int DEFAULT_FRAME_RATE = 10;

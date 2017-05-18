@@ -1,9 +1,8 @@
-package com.yanxiu.gphone.student.user.view.ui;
+package com.yanxiu.gphone.student.user.activity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -11,28 +10,25 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.user.bean.BaseBean;
-import com.yanxiu.gphone.student.user.presenter.impl.RegisterPresenterImpl;
+import com.yanxiu.gphone.student.util.ToastManager;
 import com.yanxiu.gphone.student.util.time.CountDownManager;
 import com.yanxiu.gphone.student.util.EditTextManger;
 import com.yanxiu.gphone.student.util.view.WavesLayout;
-import com.yanxiu.gphone.student.user.view.interf.RegisterViewChangedListener;
-
+@SuppressWarnings("all")
 /**
  * Created by Canghaixiao.
  * Time : 2017/5/8 16:25.
  * Function :
  */
 
-public class RegisterActivity extends YanxiuBaseActivity implements RegisterViewChangedListener, View.OnClickListener {
+public class RegisterActivity extends YanxiuBaseActivity implements View.OnClickListener {
 
     private Context mContext;
 
-    private RegisterPresenterImpl presenter;
     private EditText mMobileView;
     private ImageView mClearView;
     private EditText mVerCodeView;
@@ -41,6 +37,25 @@ public class RegisterActivity extends YanxiuBaseActivity implements RegisterView
     private ImageView mCipherView;
     private WavesLayout mWavesView;
     private TextView mRegisterView;
+    /**
+     * send verification code
+     */
+    private static final int UUID_VERCODE = 0x000;
+    /**
+     * do register
+     */
+    private static final int UUID_REGISTER = 0x001;
+    /**
+     * the default they are empty
+     */
+    private boolean isMobileReady = false;
+    private boolean isVerCodeReady = false;
+    private boolean isPassWordReady = false;
+
+    /**
+     * the default password is cipher
+     */
+    private boolean isCipher = true;
 
     public static void LaunchActivity(Context context){
         Intent intent=new Intent(context,RegisterActivity.class);
@@ -52,7 +67,6 @@ public class RegisterActivity extends YanxiuBaseActivity implements RegisterView
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         mContext=RegisterActivity.this;
-        presenter=new RegisterPresenterImpl(RegisterActivity.this);
         initView();
         initData();
         Listener();
@@ -73,9 +87,41 @@ public class RegisterActivity extends YanxiuBaseActivity implements RegisterView
         mClearView.setEnabled(false);
         mSendVerCodeView.setEnabled(false);
         mRegisterView.setEnabled(false);
-        EditTextManger.getManager(mMobileView).setInputOnlyNumber().setTextChangedListener((view, value, isEmpty) -> presenter.setMobileValue(value));
-        EditTextManger.getManager(mVerCodeView).setInputOnlyNumber().setTextChangedListener((view, value, isEmpty) -> presenter.setVerCodeValue(value));
-        EditTextManger.getManager(mPassWordView).setInputAllNotHanzi().setTextChangedListener((view, value, isEmpty) -> presenter.setPassWordValue(value));
+        EditTextManger.getManager(mMobileView).setInputOnlyNumber().setTextChangedListener(new EditTextManger.onTextLengthChangedListener() {
+            @Override
+            public void onChanged(EditText view, String value, boolean isEmpty) {
+                if (isEmpty){
+                    isMobileReady=false;
+                }   else {
+                    isMobileReady=true;
+                }
+                setEditMobileIsEmpty(isEmpty);
+                setSendVerCodeViewFocusChange(isMobileReady);
+                setButtonFocusChange(isMobileReady&&isPassWordReady&&isVerCodeReady);
+            }
+        });
+        EditTextManger.getManager(mVerCodeView).setInputOnlyNumber().setTextChangedListener(new EditTextManger.onTextLengthChangedListener() {
+            @Override
+            public void onChanged(EditText view, String value, boolean isEmpty) {
+                if (isEmpty){
+                    isVerCodeReady=false;
+                }else {
+                    isVerCodeReady=true;
+                }
+                setButtonFocusChange(isMobileReady&&isPassWordReady&&isVerCodeReady);
+            }
+        });
+        EditTextManger.getManager(mPassWordView).setInputAllNotHanzi().setTextChangedListener(new EditTextManger.onTextLengthChangedListener() {
+            @Override
+            public void onChanged(EditText view, String value, boolean isEmpty) {
+                if (isEmpty){
+                    isPassWordReady=false;
+                }               else {
+                    isPassWordReady=true;
+                }
+                setButtonFocusChange(isMobileReady&&isPassWordReady&&isVerCodeReady);
+            }
+        });
     }
 
     private void Listener() {
@@ -88,40 +134,28 @@ public class RegisterActivity extends YanxiuBaseActivity implements RegisterView
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        presenter.onDestory();
     }
 
-    @Override
     public void onHttpStart(int uuid) {
 
     }
 
-    @Override
     public void onReturntError(int uuid, BaseBean baseBean) {
 
     }
 
-    @Override
     public void onSuccess(int uuid, BaseBean baseBean) {
 
     }
 
-    @Override
-    public void onCancel(int uuid) {
-
-    }
-
-    @Override
     public void onNetWorkError(int uuid, String msg) {
-
+        ToastManager.showMsg(getText(R.string.net_null));
     }
 
-    @Override
     public void onDataError(int uuid, String msg) {
-
+        ToastManager.showMsg(getText(R.string.data_error));
     }
 
-    @Override
     public void onHttpFinished(int uuid) {
 
     }
@@ -133,20 +167,22 @@ public class RegisterActivity extends YanxiuBaseActivity implements RegisterView
         String passWord;
         switch (v.getId()){
             case R.id.iv_clear:
-                presenter.setMobileChange();
+                mMobileView.setText("");
                 break;
             case R.id.iv_cipher:
-                presenter.setPassWordChange();
+                this.isCipher = !isCipher;
+                setEditPassWordChange(isCipher);
                 break;
             case R.id.tv_send_verCode:
                 mobileCode=mMobileView.getText().toString().trim();
 
                 if (mobileCode.length()!=11||!mobileCode.substring(0,1).equals("1")){
-                    Toast.makeText(mContext,getText(R.string.input_true_mobile),Toast.LENGTH_SHORT).show();
+                    ToastManager.showMsg(getText(R.string.input_true_mobile));
                     return;
                 }
 
-                presenter.sendVerCode(mobileCode);
+                sendVerCode(mobileCode);
+                startTiming(45000);
                 break;
             case R.id.tv_register:
                 mobileCode=mMobileView.getText().toString().trim();
@@ -154,26 +190,33 @@ public class RegisterActivity extends YanxiuBaseActivity implements RegisterView
                 passWord=mPassWordView.getText().toString().trim();
 
                 if (mobileCode.length()!=11||!mobileCode.substring(0,1).equals("1")){
-                    Toast.makeText(mContext,getText(R.string.input_true_mobile),Toast.LENGTH_SHORT).show();
+                    ToastManager.showMsg(getText(R.string.input_true_mobile));
                     return;
                 }
 
                 if (verCode.length()!=4){
-                    Toast.makeText(mContext,getText(R.string.input_true_verCode),Toast.LENGTH_SHORT).show();
+                    ToastManager.showMsg(getText(R.string.input_true_verCode));
                     return;
                 }
 
                 if (passWord.length()<6||passWord.length()>18){
-                    Toast.makeText(mContext,getText(R.string.input_password_error),Toast.LENGTH_SHORT).show();
+                    ToastManager.showMsg(getText(R.string.input_password_error));
                     return;
                 }
 
-                presenter.onRegister(mobileCode,verCode,passWord);
+                onRegister(mobileCode,verCode,passWord);
                 break;
         }
     }
 
-    @Override
+    public void sendVerCode(String mobile) {
+
+    }
+
+    public void onRegister(String mobile, String verCode, String passWord) {
+
+    }
+
     public void setEditMobileIsEmpty(boolean isEmpty) {
         if (isEmpty){
             mClearView.setEnabled(false);
@@ -184,23 +227,14 @@ public class RegisterActivity extends YanxiuBaseActivity implements RegisterView
         }
     }
 
-    @Override
-    public void setEditMobileClear(String text) {
-        mMobileView.setText(text);
-    }
-
-    @Override
     public void setSendVerCodeViewFocusChange(boolean hasFocus) {
         if (hasFocus){
             mSendVerCodeView.setEnabled(true);
-            mSendVerCodeView.setTextColor(ContextCompat.getColor(mContext,R.color.color_ffffff));
         }else {
             mSendVerCodeView.setEnabled(false);
-            mSendVerCodeView.setTextColor(ContextCompat.getColor(mContext,R.color.color_89e00d));
         }
     }
 
-    @Override
     public void startTiming(int totalTime) {
         CountDownManager.getManager().setTotalTime(totalTime).setScheduleListener(new CountDownManager.ScheduleListener() {
             @Override
@@ -217,20 +251,16 @@ public class RegisterActivity extends YanxiuBaseActivity implements RegisterView
         }).start();
     }
 
-    @Override
     public void setButtonFocusChange(boolean hasFocus) {
         if (hasFocus){
             mWavesView.setCanShowWave(true);
             mRegisterView.setEnabled(true);
-            mRegisterView.setBackground(ContextCompat.getDrawable(mContext,R.drawable.shape_common_button_bg_normal));
         }else {
             mWavesView.setCanShowWave(false);
             mRegisterView.setEnabled(false);
-            mRegisterView.setBackground(ContextCompat.getDrawable(mContext,R.drawable.shape_common_button_bg_disable));
         }
     }
 
-    @Override
     public void setEditPassWordChange(boolean isCipher) {
         if (isCipher) {
 //            mCipherView.setBackgroundResource();

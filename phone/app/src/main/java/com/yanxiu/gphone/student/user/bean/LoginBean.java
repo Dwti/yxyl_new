@@ -1,5 +1,9 @@
 package com.yanxiu.gphone.student.user.bean;
 
+import com.yanxiu.gphone.student.homework.data.StatusBean;
+
+import java.util.List;
+
 /**
  * Created by Canghaixiao.
  * Time : 2017/5/8 16:44.
@@ -7,9 +11,8 @@ package com.yanxiu.gphone.student.user.bean;
  */
 
 public class LoginBean extends BaseBean{
-    public int id;
 
-    public LoginBean(int id){
-        this.id=id;
-    }
+    public StatusBean status;
+    public List<UserMessageBean> data;
+
 }
