@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.homework.classmanage.InputClassNumberFragment;
@@ -20,7 +21,7 @@ public class HomeworkFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_homework, container, false);
-        Button mJoinClass = (Button) view.findViewById(R.id.btn_join_class);
+        ImageView mJoinClass = (ImageView) view.findViewById(R.id.iv_join_class);
         mJoinClass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
