@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <corners
-        android:bottomLeftRadius="@dimen/dimen_5"
-        android:bottomRightRadius="@dimen/dimen_5"/>
+        android:bottomLeftRadius="@dimen/wavesRadius"
+        android:bottomRightRadius="@dimen/wavesRadius"/>
     <solid android:color="@color/color_69ad0a"/>
 </shape>
