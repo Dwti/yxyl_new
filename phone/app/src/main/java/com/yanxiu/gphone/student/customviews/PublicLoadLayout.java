@@ -17,7 +17,7 @@ import com.yanxiu.gphone.student.R;
  * Created by 戴延枫 on 2017/5/17.
  */
 
-public class PublicLoadLayout extends FrameLayout {
+public class PublicLoadLayout extends FrameLayout{
 
     private Context mContext;
     private FrameLayout mContentViewContainer;//加载具体页面的contentView
@@ -120,6 +120,14 @@ public class PublicLoadLayout extends FrameLayout {
         inflate(mContext, rootViewId, mContentViewContainer);//加载传进来的具体页面的contentView
 
     }
+    /**
+     * 设置rootview
+     *
+     * @param rootView 页面的根viewid
+     */
+    public void setContentView(View rootView) {
+        mContentViewContainer.addView(rootView);//加载传进来的具体页面的contentView
+    }
 
     /**
      * 设置要展示的view（如数据为空的view）
@@ -129,6 +137,15 @@ public class PublicLoadLayout extends FrameLayout {
         if (childCound > 0)
             mErrorLayoutContainer.removeAllViews();//先移除容器内的默认布局
         inflate(mContext, viewId, mErrorLayoutContainer);//加载其他页面（如数据为空页面）
+    }
+    /**
+     * 设置要展示的view（如数据为空的view）
+     */
+    public void setCustomView(View view) {
+        int childCound = mErrorLayoutContainer.getChildCount();
+        if (childCound > 0)
+            mErrorLayoutContainer.removeAllViews();//先移除容器内的默认布局
+        mErrorLayoutContainer.addView(view);//加载其他页面（如数据为空页面）
     }
 
     /**
