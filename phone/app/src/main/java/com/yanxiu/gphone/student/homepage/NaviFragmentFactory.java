@@ -12,8 +12,8 @@ import com.yanxiu.gphone.student.homepage.fragment.MyFragment;
 
 public class NaviFragmentFactory {
 	private int mCurrItem = 0;
-	private ExerciseFragment mExerciseFragment;    //练习
 	private HomeworkFragment mHomeWorkFragment;    //作业
+	private ExerciseFragment mExerciseFragment;    //练习
 	private MyFragment mMyFragment;                //我的
 	public NaviFragmentFactory() {
 	}
@@ -25,9 +25,9 @@ public class NaviFragmentFactory {
 	}
 	public Fragment getItem(int item){
 		if(item == 0){
-			return mExerciseFragment;
-		} else if(item == 1){
 			return mHomeWorkFragment;
+		} else if(item == 1){
+			return mExerciseFragment;
 		}else if(item == 2){
 			return mMyFragment;
 		}else {
@@ -35,11 +35,12 @@ public class NaviFragmentFactory {
 		}
 	}
 	private void hideFragment(FragmentTransaction transaction){
-		if (mCurrItem == 0 && mExerciseFragment != null) {
-			transaction.hide(mExerciseFragment);
-		}
-		if (mCurrItem == 1 && mHomeWorkFragment != null) {
+
+		if (mCurrItem == 0 && mHomeWorkFragment != null) {
 			transaction.hide(mHomeWorkFragment);
+		}
+		if (mCurrItem == 1 && mExerciseFragment != null) {
+			transaction.hide(mExerciseFragment);
 		}
 		if (mCurrItem == 2 && mMyFragment != null) {
 			transaction.hide(mMyFragment);
@@ -47,11 +48,11 @@ public class NaviFragmentFactory {
 	}
 	public void hideAndShowFragment(FragmentManager fragmentManager, int index){
 		FragmentTransaction transaction = fragmentManager.beginTransaction();
-		if (mCurrItem == 0 && mExerciseFragment != null) {
-			transaction.hide(mExerciseFragment);
-		}
-		if (mCurrItem == 1 && mHomeWorkFragment != null) {
+		if (mCurrItem == 0 && mHomeWorkFragment != null) {
 			transaction.hide(mHomeWorkFragment);
+		}
+		if (mCurrItem == 1 && mExerciseFragment != null) {
+			transaction.hide(mExerciseFragment);
 		}
 		if (mCurrItem == 2 && mMyFragment != null) {
 			transaction.hide(mMyFragment);
@@ -59,14 +60,6 @@ public class NaviFragmentFactory {
 		mCurrItem = index;
 		switch (mCurrItem) {
 			case 0:
-				if (mExerciseFragment == null) {
-					mExerciseFragment = new ExerciseFragment();
-					transaction.add(R.id.content_main, mExerciseFragment);
-				} else {
-					transaction.show(mExerciseFragment);
-				}
-				break;
-			case 1:
 				if (mHomeWorkFragment == null) {
 					mHomeWorkFragment = new HomeworkFragment();
 					transaction.add(R.id.content_main, mHomeWorkFragment);
@@ -74,6 +67,14 @@ public class NaviFragmentFactory {
 					transaction.show(mHomeWorkFragment);
 //					LogInfo.log("king", "transaction.show");
 //					mHomeWorkFragment.requestGroupData(true,false);
+				}
+				break;
+			case 1:
+				if (mExerciseFragment == null) {
+					mExerciseFragment = new ExerciseFragment();
+					transaction.add(R.id.content_main, mExerciseFragment);
+				} else {
+					transaction.show(mExerciseFragment);
 				}
 				break;
 			case 2:
