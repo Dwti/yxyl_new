@@ -1,6 +1,6 @@
 package com.yanxiu.gphone.student.user.Response;
 
-import com.yanxiu.gphone.student.homework.data.StatusBean;
+import com.yanxiu.gphone.student.base.StatusBean;
 
 import java.util.List;
 
@@ -11,7 +11,6 @@ import java.util.List;
  */
 
 public class LoginResponse {
-
     public StatusBean status;
     public List<UserMessageBean> data;
 

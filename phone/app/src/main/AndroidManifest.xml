@@ -77,16 +77,12 @@
             android:theme="@style/AppFullscreen"
             android:configChanges="keyboardHidden|orientation"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
-        <!--<activity-->
-        <!--android:name=".MainActivity"-->
-        <!--android:launchMode="singleTask"-->
-        <!--android:screenOrientation="portrait">-->
-        <!--<intent-filter>-->
-        <!--<action android:name="android.intent.action.VIEW" />-->
-
-        <!--<category android:name="android.intent.category.DEFAULT" />-->
-        <!--</intent-filter>-->
-        <!--</activity>-->
+        <activity android:name=".homework.classmanage.HowToJoinClassActivity"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop"/>
+        <activity android:name=".homework.HomeworkDetailActivity"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop"/>
     </application>
 
 </manifest>

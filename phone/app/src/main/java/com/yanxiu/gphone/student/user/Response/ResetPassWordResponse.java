@@ -1,6 +1,7 @@
 package com.yanxiu.gphone.student.user.Response;
 
-import com.yanxiu.gphone.student.homework.data.StatusBean;
+
+import com.yanxiu.gphone.student.base.StatusBean;
 
 /**
  * Created by Canghaixiao.

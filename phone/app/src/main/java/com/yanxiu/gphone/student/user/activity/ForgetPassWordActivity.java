@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.base.BaseBean;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.user.Response.ForgerPassWordResponse;
 import com.yanxiu.gphone.student.user.Response.VerCodeResponse;

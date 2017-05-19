@@ -41,12 +41,10 @@ public class LoginInfo {
     }
 
     public static void savaCacheData(UserMessageBean messageBean){
-        if (!IsLogIn()) {
             LOGIN_STATUS=LOGIN_IN;
             bean = messageBean;
             bean.getPassport().save();
             bean.save();
-        }
     }
 
     /**

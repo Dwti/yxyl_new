@@ -1,33 +1,134 @@
 package com.yanxiu.gphone.student.homepage.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
 
+import com.test.yanxiu.network.HttpCallback;
+import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.homework.HomeworkDetailActivity;
 import com.yanxiu.gphone.student.homework.classmanage.InputClassNumberFragment;
+import com.yanxiu.gphone.student.homework.data.SubjectBean;
+import com.yanxiu.gphone.student.homework.data.SubjectRequest;
+import com.yanxiu.gphone.student.homework.data.SubjectResponse;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 首页 作业列表Fragment
  */
 public class HomeworkFragment extends Fragment {
     private final static String TAG = HomeworkFragment.class.getSimpleName();
-
+    private HomeworkAdapter mHomeworkAdapter;
+    TextView mTitle;
+    ListView mListView;
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_homework, container, false);
-        ImageView mJoinClass = (ImageView) view.findViewById(R.id.iv_join_class);
-        mJoinClass.setOnClickListener(new View.OnClickListener() {
+        ImageView joinClass = (ImageView) view.findViewById(R.id.iv_join_class);
+        mTitle = (TextView) view.findViewById(R.id.tv_title);
+        mListView = (ListView) view.findViewById(R.id.list_view);
+        mHomeworkAdapter = new HomeworkAdapter(new ArrayList<SubjectBean>(0));
+        mListView.setAdapter(mHomeworkAdapter);
+        joinClass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getFragmentManager().beginTransaction().replace(getId(), InputClassNumberFragment.getInstance()).commit();
             }
         });
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), HomeworkDetailActivity.class);
+                intent.putExtra(HomeworkDetailActivity.EXTRA_SUBJECT_ID,((SubjectBean)mHomeworkAdapter.getItem(position)).getId());
+                startActivity(intent);
+            }
+        });
+        loadSubject();
         return view;
+    }
+
+    private void loadSubject() {
+        SubjectRequest request = new SubjectRequest();
+        request.startRequest(SubjectResponse.class,mLoadHomeworkCallback);
+    }
+
+
+    HttpCallback<SubjectResponse> mLoadHomeworkCallback = new HttpCallback<SubjectResponse>(){
+
+        @Override
+        public void onSuccess(RequestBase request, SubjectResponse ret) {
+            if(ret.getStatus().getCode() == 0){
+                mHomeworkAdapter.replaceData(ret.getData());
+                mTitle.setText(ret.getProperty().getClassName());
+            }
+            //TODO 失败的时候需要处理  如果没有班级，需要跳转加入班级界面
+            //TODO 返回的各种状态处理  比如code = 71 未加入班级  code = 72 加入的班级正在审核之中
+        }
+
+        @Override
+        public void onFail(RequestBase request, Error error) {
+
+        }
+    } ;
+
+    private static class HomeworkAdapter extends BaseAdapter{
+
+        private List<SubjectBean> subjects;
+
+        public HomeworkAdapter(List<SubjectBean> subjects) {
+            this.subjects = subjects;
+        }
+
+        public void replaceData(List<SubjectBean> data){
+            if(data != null){
+                subjects = data;
+                notifyDataSetChanged();
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return subjects.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return subjects.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if(convertView == null){
+                convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_subject,parent,false);
+            }
+            TextView name = (TextView) convertView.findViewById(R.id.tv_name);
+            TextView state = (TextView) convertView.findViewById(R.id.tv_state);
+            name.setText(subjects.get(position).getName());
+            if(subjects.get(position).getWaitFinishNum() > 0){
+                state.setText(String.format(parent.getContext().getResources().getString(R.string.homework_todo), subjects.get(position).getWaitFinishNum()));
+                state.setTextColor(parent.getResources().getColor(R.color.color_99cc00));
+            }else {
+                state.setText(R.string.check_homework_done);
+                state.setTextColor(parent.getResources().getColor(R.color.color_999999));
+            }
+            return convertView;
+        }
     }
 }

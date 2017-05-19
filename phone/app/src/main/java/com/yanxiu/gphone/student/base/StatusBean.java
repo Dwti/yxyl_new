@@ -1,10 +1,12 @@
-package com.yanxiu.gphone.student.homework.data;
+package com.yanxiu.gphone.student.base;
+
+import com.yanxiu.gphone.student.base.BaseBean;
 
 /**
  * Created by sunpeng on 2017/5/8.
  */
 
-public class StatusBean {
+public class StatusBean extends BaseBean{
     private String desc;
     private int code;
 
