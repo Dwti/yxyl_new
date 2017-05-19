@@ -17,8 +17,8 @@ import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 public class MainActivity extends YanxiuBaseActivity implements View.OnClickListener{
 
     private FrameLayout mContentMain;
-    private final int INDEX_HOMEWORK = 0;//练习tab
-    private final int INDEX_GROUP = 1;//作业tab
+    private final int INDEX_EXERCISE = 0;//练习tab
+    private final int INDEX_HOMEWORK = 1;//作业tab
     private final int INDEX_MY = 2;//我的tab
 
     private int mLastSelectIndex = -1;
@@ -70,8 +70,8 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
     private void initBottomBar() {
         mSelNavTxtColor = getResources().getColor(R.color.color_805500);
         mNormalNavTxtColor = getResources().getColor(R.color.color_006666);
-        mNavBarViews[0] = findViewById(R.id.navi_homework);
-        mNavBarViews[1] = findViewById(R.id.navi_group);
+        mNavBarViews[0] = findViewById(R.id.navi_exercise);
+        mNavBarViews[1] = findViewById(R.id.navi_homework);
         mNavBarViews[2] = findViewById(R.id.navi_my);
         for (int i = 0; i < 3; i++) {
             mNavBarViews[i].setOnClickListener(this);
@@ -87,13 +87,13 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
 
     @Override
     public void onClick(View view) {
-        int curItem = INDEX_HOMEWORK;
+        int curItem = INDEX_EXERCISE;
         switch (view.getId()) {
+            case R.id.navi_exercise:
+                curItem = INDEX_EXERCISE;
+                break;
             case R.id.navi_homework:
                 curItem = INDEX_HOMEWORK;
-                break;
-            case R.id.navi_group:
-                curItem = INDEX_GROUP;
                 break;
             case R.id.navi_my:
                 curItem = INDEX_MY;
@@ -112,11 +112,11 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
             mNavTextViews[index].setTextColor(mSelNavTxtColor);
             mNavTextViews[index].setShadowLayer(2, 0, 2, getResources().getColor(R.color.color_ffff99));
             switch (index) {
-                case INDEX_HOMEWORK:
-                    mNavIconViews[0].setBackgroundResource(R.drawable.navi_main_selected);
+                case INDEX_EXERCISE:
+                    mNavIconViews[0].setBackgroundResource(R.drawable.navi_exercise_selected);
                     break;
-                case INDEX_GROUP:
-                    mNavIconViews[1].setBackgroundResource(R.drawable.navi_group_selected);
+                case INDEX_HOMEWORK:
+                    mNavIconViews[1].setBackgroundResource(R.drawable.navi_homework_selected);
                     break;
                 case INDEX_MY:
                     mNavIconViews[2].setBackgroundResource(R.drawable.navi_my_selected);
@@ -130,8 +130,8 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
             mNavTextViews[i].setTextColor(mNormalNavTxtColor);
             mNavTextViews[i].setShadowLayer(2, 0, 2, getResources().getColor(R.color.color_33ffff));
         }
-        mNavIconViews[0].setBackgroundResource(R.drawable.navi_main_normal);
-        mNavIconViews[1].setBackgroundResource(R.drawable.navi_group_normal);
+        mNavIconViews[0].setBackgroundResource(R.drawable.navi_exercise_normal);
+        mNavIconViews[1].setBackgroundResource(R.drawable.navi_homework_normal);
         mNavIconViews[2].setBackgroundResource(R.drawable.navi_my_normal);
 
     }
@@ -148,7 +148,7 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
         if (mFragmentManager == null) {
             mFragmentManager = getSupportFragmentManager();
         }
-        if (index != INDEX_GROUP) {
+        if (index != INDEX_HOMEWORK) {
 //            requestGroupHwDotNumTask();
         }
         mNaviFragmentFactory.hideAndShowFragment(mFragmentManager, index);
