@@ -258,9 +258,7 @@ public class AnswerQuestionActivity extends AppCompatActivity implements AnswerC
                 activity.updateTime();
             }
         }
-    }
-
-    ;
+    };
 
     /**
      * 开始计时
