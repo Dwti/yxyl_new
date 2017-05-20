@@ -12,12 +12,18 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.homework.HomeworkDetailActivity;
+import com.yanxiu.gphone.student.homework.classmanage.ClassInfoActivity;
+import com.yanxiu.gphone.student.homework.classmanage.ClassStatus;
 import com.yanxiu.gphone.student.homework.classmanage.SearchClassFragment;
+import com.yanxiu.gphone.student.homework.data.ClassBean;
+import com.yanxiu.gphone.student.homework.data.SearchClassRequest;
+import com.yanxiu.gphone.student.homework.data.SearchClassResponse;
 import com.yanxiu.gphone.student.homework.data.SubjectBean;
 import com.yanxiu.gphone.student.homework.data.SubjectRequest;
 import com.yanxiu.gphone.student.homework.data.SubjectResponse;
@@ -28,23 +34,27 @@ import java.util.List;
 /**
  * 首页 作业列表Fragment
  */
-public class HomeworkFragment extends Fragment {
+public class HomeworkFragment extends Fragment implements SearchClassFragment.OnJoinClassCompleteListener {
     private final static String TAG = HomeworkFragment.class.getSimpleName();
+    public static final int REQUEST_CLASS_INFO = 0x01;
+    private int mStatus = -1;  //班级状态，0：已加入班级 71：未加入班级  72：班级正在审核
+    private String mClassId;
     private HomeworkAdapter mHomeworkAdapter;
+    private SearchClassFragment mSearchClassFragment;
     TextView mTitle;
     ListView mListView;
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_homework, container, false);
-        ImageView joinClass = (ImageView) view.findViewById(R.id.iv_join_class);
+        ImageView btnCheckClassInfo = (ImageView) view.findViewById(R.id.iv_join_class);
         mTitle = (TextView) view.findViewById(R.id.tv_title);
         mListView = (ListView) view.findViewById(R.id.list_view);
         mHomeworkAdapter = new HomeworkAdapter(new ArrayList<SubjectBean>(0));
         mListView.setAdapter(mHomeworkAdapter);
-        joinClass.setOnClickListener(new View.OnClickListener() {
+        btnCheckClassInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getFragmentManager().beginTransaction().replace(getId(), SearchClassFragment.getInstance()).commit();
+                checkClassInfo();
             }
         });
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -59,29 +69,103 @@ public class HomeworkFragment extends Fragment {
         return view;
     }
 
-    private void loadSubject() {
-        SubjectRequest request = new SubjectRequest();
-        request.startRequest(SubjectResponse.class,mLoadHomeworkCallback);
+    private void checkClassInfo() {
+        if(mStatus == ClassStatus.HAS_CLASS.getCode() || mStatus == ClassStatus.APPLYING_CLASS.getCode()){
+            searchClass(mClassId);
+        }
+    }
+    private void searchClass(String id){
+        SearchClassRequest request = new SearchClassRequest();
+        request.setClassId(id);
+        request.startRequest(SearchClassResponse.class,mSearchClassCallback);
     }
 
-
-    HttpCallback<SubjectResponse> mLoadHomeworkCallback = new HttpCallback<SubjectResponse>(){
-
+    HttpCallback<SearchClassResponse> mSearchClassCallback = new HttpCallback<SearchClassResponse>() {
         @Override
-        public void onSuccess(RequestBase request, SubjectResponse ret) {
-            if(ret.getStatus().getCode() == 0){
-                mHomeworkAdapter.replaceData(ret.getData());
-                mTitle.setText(ret.getProperty().getClassName());
+        public void onSuccess(RequestBase request, SearchClassResponse ret) {
+            if(ret.getStatus().getCode() == 0 ){
+                ClassBean bean = ret.getData().get(0);
+                Intent intent = new Intent(getActivity(),ClassInfoActivity.class);
+                intent.putExtra(ClassInfoActivity.EXTRA_CLASS_INFO,bean);
+                intent.putExtra(ClassInfoActivity.EXTRA_STATUS,mStatus);
+                startActivityForResult(intent,REQUEST_CLASS_INFO);
+            }else {
+                Toast.makeText(getActivity(),ret.getStatus().getDesc(),Toast.LENGTH_SHORT).show();
             }
-            //TODO 失败的时候需要处理  如果没有班级，需要跳转加入班级界面
-            //TODO 返回的各种状态处理  比如code = 71 未加入班级  code = 72 加入的班级正在审核之中
         }
 
         @Override
         public void onFail(RequestBase request, Error error) {
+            Toast.makeText(getActivity(),error.getLocalizedMessage(),Toast.LENGTH_SHORT).show();
+        }
+    };
 
+    private void loadSubject() {
+        SubjectRequest request = new SubjectRequest();
+        request.startRequest(SubjectResponse.class, mLoadSubjectCallback);
+    }
+
+
+    HttpCallback<SubjectResponse> mLoadSubjectCallback = new HttpCallback<SubjectResponse>(){
+
+        @Override
+        public void onSuccess(RequestBase request, SubjectResponse ret) {
+            if(ret.getStatus().getCode() == ClassStatus.HAS_CLASS.getCode()){  //已经加入班级
+                mClassId = ret.getProperty().getClassId();
+                if(ret.getData() == null || ret.getData().size() == 0){
+                    //TODO 错误界面，加入的班级未布置过作业
+                    Toast.makeText(getActivity(),"加入的班级未布置过作业",Toast.LENGTH_SHORT).show();
+                }else {
+                    mHomeworkAdapter.replaceData(ret.getData());
+                    mTitle.setText(ret.getProperty().getClassName());
+                }
+            }else if(ret.getStatus().getCode() == ClassStatus.APPLYING_CLASS.getCode()){ //班级正在审核
+                //TODO 错误界面，入班申请正在审核
+                mClassId = ret.getProperty().getClassId();
+                Toast.makeText(getActivity(),"入班申请正在审核",Toast.LENGTH_SHORT).show();
+            }else if(ret.getStatus().getCode() == ClassStatus.NO_CLASS.getCode()){   //未加入班级
+                //跳转到加入班级界面
+                openJoinClassUI();
+            }
+            mStatus = ret.getStatus().getCode();
+        }
+
+        @Override
+        public void onFail(RequestBase request, Error error) {
+            //TODO 弹出错误界面
         }
     } ;
+
+    @Override
+    public void onAttachFragment(Fragment childFragment) {
+        super.onAttachFragment(childFragment);
+        ((SearchClassFragment)childFragment).setOnJoinClassCompleteListener(this);
+    }
+
+
+    private void openJoinClassUI(){
+        mSearchClassFragment  = SearchClassFragment.getInstance();
+        getChildFragmentManager().beginTransaction().replace(R.id.frame_content, mSearchClassFragment).commitAllowingStateLoss();
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case REQUEST_CLASS_INFO:
+                if(resultCode == getActivity().RESULT_OK){
+                    openJoinClassUI();
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onJoinClassComplete() {
+        getChildFragmentManager().beginTransaction().remove(mSearchClassFragment).commitAllowingStateLoss();
+        loadSubject();
+    }
 
     private static class HomeworkAdapter extends BaseAdapter{
 
@@ -131,4 +215,6 @@ public class HomeworkFragment extends Fragment {
             return convertView;
         }
     }
+
+
 }

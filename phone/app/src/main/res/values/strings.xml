@@ -56,4 +56,9 @@
     <string name="homework_done_uncheck">已完成，等待老师批改</string>
     <string name="homework_checked">已批改</string>
     <string name="title_homework">作业</string>
+    <string name="class_info">班级信息</string>
+    <string name="join_class">加入班级</string>
+    <string name="cacel_apply_for_class">取消申请</string>
+    <string name="exit_class">退出班级</string>
+    <string name="guid_join_class">怎样加入班级？</string>
 </resources>

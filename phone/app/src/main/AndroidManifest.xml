@@ -77,9 +77,15 @@
             android:theme="@style/AppFullscreen"
             android:configChanges="keyboardHidden|orientation"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
+
+        <activity android:name=".homework.classmanage.ClassInfoActivity"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop"/>
+
         <activity android:name=".homework.classmanage.HowToJoinClassActivity"
             android:screenOrientation="portrait"
             android:launchMode="singleTop"/>
+        
         <activity android:name=".homework.HomeworkDetailActivity"
             android:screenOrientation="portrait"
             android:launchMode="singleTop"/>

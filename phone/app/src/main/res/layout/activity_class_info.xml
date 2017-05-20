@@ -41,10 +41,10 @@
                     android:layout_marginLeft="8dp"
                     android:textSize="20sp"
                     android:text="七年级20班"
+                    android:textStyle="bold"
                     />
 
             </LinearLayout>
-
 
 
             <LinearLayout
@@ -67,17 +67,17 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
-                        android:textSize="16sp"
+                        android:textSize="14dp"
                         android:textColor="#336600"
                         android:text="班级号码"/>
 
                     <TextView
+                        android:id="@+id/tv_class_num"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
-                        android:textSize="18sp"
-                        android:textColor="@android:color/white"
-                        android:text="20171308"/>
+                        android:textSize="16dp"
+                        android:textColor="@android:color/white"/>
 
                 </LinearLayout>
 
@@ -93,17 +93,19 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
-                        android:textSize="16sp"
+                        android:textSize="14dp"
                         android:textColor="#336600"
                         android:text="老师姓名"/>
 
                     <TextView
+                        android:id="@+id/tv_teacher_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
-                        android:textSize="18sp"
-                        android:textColor="@android:color/white"
-                        android:text="黄磊"/>
+                        android:textSize="16dp"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:textColor="@android:color/white"/>
 
                 </LinearLayout>
 
@@ -119,17 +121,17 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
-                        android:textSize="16sp"
+                        android:textSize="14dp"
                         android:textColor="#336600"
                         android:text="班级成员"/>
 
                     <TextView
+                        android:id="@+id/tv_student_num"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
-                        android:textSize="18sp"
-                        android:textColor="@android:color/white"
-                        android:text="48人"/>
+                        android:textSize="16dp"
+                        android:textColor="@android:color/white"/>
 
                 </LinearLayout>
 
@@ -145,17 +147,19 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
-                        android:textSize="16sp"
+                        android:textSize="14dp"
                         android:textColor="#336600"
+                        android:maxLines="1"
+                        android:ellipsize="end"
                         android:text="学校名称"/>
 
                     <TextView
+                        android:id="@+id/tv_school_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
-                        android:textSize="18sp"
-                        android:textColor="@android:color/white"
-                        android:text="北京西城区第二中学"/>
+                        android:textSize="16dp"
+                        android:textColor="@android:color/white"/>
 
                 </LinearLayout>
 
@@ -168,9 +172,8 @@
                     app:waves_animend_alpha="102">
 
                     <Button
-                        android:id="@+id/btn_next"
+                        android:id="@+id/btn_cancel"
                         style="@style/CommonWavesLayout"
-                        android:text="取消申请"
                         android:textColor="@color/color_89e00d"/>
                 </com.yanxiu.gphone.student.customviews.WavesLayout>
 

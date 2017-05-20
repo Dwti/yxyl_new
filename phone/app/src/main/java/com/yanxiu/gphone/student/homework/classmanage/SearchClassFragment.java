@@ -24,7 +24,8 @@ import com.yanxiu.gphone.student.homework.data.SearchClassResponse;
  */
 
 public class SearchClassFragment extends Fragment{
-
+    private static final int REQUEST_JOIN_CLASS = 0x01;
+    private OnJoinClassCompleteListener mOnJoinClassCompleteListener;
     public static SearchClassFragment getInstance(){
         return new SearchClassFragment();
     }
@@ -35,11 +36,19 @@ public class SearchClassFragment extends Fragment{
         final CharacterSeparatedEditLayout inputNum = (CharacterSeparatedEditLayout) root.findViewById(R.id.input_number_layout);
         TextView title = (TextView) root.findViewById(R.id.tv_title);
         title.setText(R.string.title_homework);
-        Button btn_next = (Button) root.findViewById(R.id.btn_next);
-        btn_next.setOnClickListener(new View.OnClickListener() {
+        Button next = (Button) root.findViewById(R.id.btn_next);
+        View howToJoinClass = root.findViewById(R.id.how_to_join_class);
+        next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
             searchClass(inputNum.getText());
+            }
+        });
+        howToJoinClass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(),HowToJoinClassActivity.class);
+                startActivity(intent);
             }
         });
         return root;
@@ -51,6 +60,10 @@ public class SearchClassFragment extends Fragment{
         request.startRequest(SearchClassResponse.class,mSearchClassCallback);
     }
 
+    public void setOnJoinClassCompleteListener(OnJoinClassCompleteListener listener){
+        mOnJoinClassCompleteListener = listener;
+    }
+
     HttpCallback<SearchClassResponse> mSearchClassCallback = new HttpCallback<SearchClassResponse>() {
         @Override
         public void onSuccess(RequestBase request, SearchClassResponse ret) {
@@ -58,7 +71,7 @@ public class SearchClassFragment extends Fragment{
                 ClassBean bean = ret.getData().get(0);
                 Intent intent = new Intent(getActivity(),JoinClassActivity.class);
                 intent.putExtra(JoinClassActivity.EXTRA_CLASS_INFO,bean);
-                startActivity(intent);
+                startActivityForResult(intent,REQUEST_JOIN_CLASS);
             }else {
                 Toast.makeText(getActivity(),ret.getStatus().getDesc(),Toast.LENGTH_SHORT).show();
             }
@@ -69,4 +82,25 @@ public class SearchClassFragment extends Fragment{
             Toast.makeText(getActivity(),error.getLocalizedMessage(),Toast.LENGTH_SHORT).show();
         }
     };
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case REQUEST_JOIN_CLASS:
+                if(resultCode == getActivity().RESULT_OK ){
+                    if(mOnJoinClassCompleteListener != null){
+                        mOnJoinClassCompleteListener.onJoinClassComplete();
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+
+    public interface OnJoinClassCompleteListener {
+        void onJoinClassComplete();
+    }
 }

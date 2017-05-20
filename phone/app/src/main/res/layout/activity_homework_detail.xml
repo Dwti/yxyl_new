@@ -10,7 +10,7 @@
         android:background="@android:color/white">
 
         <ImageView
-            android:id="@+id/iv_join_class"
+            android:id="@+id/iv_back"
             android:layout_width="26dp"
             android:layout_height="26dp"
             android:background="@android:color/holo_blue_light"

@@ -39,10 +39,17 @@ public class HomeworkDetailActivity extends Activity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homework_detail);
+        View back = findViewById(R.id.iv_back);
         mHomeworkListView = (ListView) findViewById(R.id.list_view);
         mHomeworkDetailAdapter = new HomeworkDetailAdapter(mHomeworkList);
         mHomeworkListView.setAdapter(mHomeworkDetailAdapter);
         mHomeworkId = getIntent().getStringExtra(EXTRA_SUBJECT_ID);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         loadHomework(mHomeworkId,mPageIndex);
     }
 
