@@ -17,7 +17,7 @@ import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.homework.HomeworkDetailActivity;
-import com.yanxiu.gphone.student.homework.classmanage.InputClassNumberFragment;
+import com.yanxiu.gphone.student.homework.classmanage.SearchClassFragment;
 import com.yanxiu.gphone.student.homework.data.SubjectBean;
 import com.yanxiu.gphone.student.homework.data.SubjectRequest;
 import com.yanxiu.gphone.student.homework.data.SubjectResponse;
@@ -44,7 +44,7 @@ public class HomeworkFragment extends Fragment {
         joinClass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getFragmentManager().beginTransaction().replace(getId(), InputClassNumberFragment.getInstance()).commit();
+                getFragmentManager().beginTransaction().replace(getId(), SearchClassFragment.getInstance()).commit();
             }
         });
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

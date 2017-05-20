@@ -55,4 +55,5 @@
     <string name="comment">评语：</string>
     <string name="homework_done_uncheck">已完成，等待老师批改</string>
     <string name="homework_checked">已批改</string>
+    <string name="title_homework">作业</string>
 </resources>

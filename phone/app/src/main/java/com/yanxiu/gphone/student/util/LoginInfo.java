@@ -74,4 +74,19 @@ public class LoginInfo {
         }
         return bean.getPassport().getToken();
     }
+
+    public static String getRealName(){
+        if(!IsLogIn()){
+            return "";
+        }
+        return bean.getRealname();
+    }
+
+    public static void setRealName(String name){
+        if(!IsLogIn()){
+            return;
+        }
+        bean.setRealname(name);
+        bean.save();
+    }
 }
