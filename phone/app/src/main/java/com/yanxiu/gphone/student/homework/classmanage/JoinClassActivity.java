@@ -91,6 +91,7 @@ public class JoinClassActivity extends Activity {
     HttpCallback<JoinClassResponse> mJoinClassCallback = new ExerciseBaseCallback<JoinClassResponse>() {
         @Override
         public void onSuccess(RequestBase request, JoinClassResponse ret) {
+            super.onSuccess(request,ret);
             if(ret.getStatus().getCode() == 0){
                 updateUserInfo(mName);
             }
@@ -106,6 +107,7 @@ public class JoinClassActivity extends Activity {
     HttpCallback<UpdateUserInfoResponse> mUpdateUserInfoCallback = new ExerciseBaseCallback<UpdateUserInfoResponse>() {
         @Override
         public void onSuccess(RequestBase request, UpdateUserInfoResponse ret) {
+            super.onSuccess(request,ret);
             setResult(RESULT_OK);
             finish();
         }

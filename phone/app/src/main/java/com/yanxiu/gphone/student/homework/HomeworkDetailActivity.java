@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.base.ExerciseBaseCallback;
 import com.yanxiu.gphone.student.homework.data.HomeworkDetailBean;
 import com.yanxiu.gphone.student.homework.data.HomeworkDetailRequest;
 import com.yanxiu.gphone.student.homework.data.HomeworkDetailResponse;
@@ -61,9 +62,10 @@ public class HomeworkDetailActivity extends Activity {
 
     }
 
-    HttpCallback<HomeworkDetailResponse> mLoadHomeworkCallback = new HttpCallback<HomeworkDetailResponse>() {
+    HttpCallback<HomeworkDetailResponse> mLoadHomeworkCallback = new ExerciseBaseCallback<HomeworkDetailResponse>() {
         @Override
         public void onSuccess(RequestBase request, HomeworkDetailResponse ret) {
+            super.onSuccess(request,ret);
             if(ret.getStatus().getCode() ==0){
                 if(mPageIndex ==1){
                     mHomeworkList = ret.getData();
