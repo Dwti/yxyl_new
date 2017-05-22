@@ -18,6 +18,7 @@
     <string name="input_mobile">请输入绑定或注册的手机号</string>
     <string name="verCode_progress">%dS</string>
     <string name="register_password">请输入6&#8211;18位密码</string>
+    <string name="input_password_again">请再次输入密码</string>
     <string name="register_input_mobile">请输入手机号</string>
     <string name="register">注册</string>
     <string name="send_verCode_more">再次获取</string>

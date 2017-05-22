@@ -23,7 +23,7 @@ import com.yanxiu.gphone.student.customviews.WavesLayout;
  * Time : 2017/5/16 15:41.
  * Function :
  */
-public class ResetPassWordActivity extends YanxiuBaseActivity implements View.OnClickListener{
+public class ResetPassWordActivity extends YanxiuBaseActivity implements View.OnClickListener, EditTextManger.onTextLengthChangedListener {
 
     private Context mContext;
     private TextView mResetPassWordView;
@@ -50,8 +50,8 @@ public class ResetPassWordActivity extends YanxiuBaseActivity implements View.On
         setContentView(R.layout.activity_resetpassword);
         mContext=ResetPassWordActivity.this;
         initView();
+        listener();
         initData();
-        Listener();
     }
 
     @Override
@@ -73,32 +73,12 @@ public class ResetPassWordActivity extends YanxiuBaseActivity implements View.On
     private void initData() {
         mWavesView.setCanShowWave(false);
         mResetPassWordView.setEnabled(false);
-        EditTextManger.getManager(mPassWordView).setInputAllNotHanzi().setTextChangedListener(new EditTextManger.onTextLengthChangedListener() {
-            @Override
-            public void onChanged(EditText view, String value, boolean isEmpty) {
-                if (isEmpty){
-                    isPassWordReady=false;
-                }else {
-                    isPassWordReady=true;
-                }
-                setButtonFocusChange(isPassWordReady&&isPassWordAgainReady);
-            }
-        });
-        EditTextManger.getManager(mPassWordAgainView).setInputAllNotHanzi().setTextChangedListener(new EditTextManger.onTextLengthChangedListener() {
-            @Override
-            public void onChanged(EditText view, String value, boolean isEmpty) {
-                if (isEmpty){
-                    isPassWordAgainReady=false;
-                }   else {
-                    isPassWordAgainReady=true;
-                }
-                setButtonFocusChange(isPassWordReady&&isPassWordAgainReady);
-            }
-        });
     }
 
-    private void Listener() {
+    private void listener() {
         mResetPassWordView.setOnClickListener(ResetPassWordActivity.this);
+        EditTextManger.getManager(mPassWordView).setInputAllNotHanzi().setTextChangedListener(ResetPassWordActivity.this);
+        EditTextManger.getManager(mPassWordAgainView).setInputAllNotHanzi().setTextChangedListener(ResetPassWordActivity.this);
     }
 
     @Override
@@ -122,7 +102,7 @@ public class ResetPassWordActivity extends YanxiuBaseActivity implements View.On
         }
     }
 
-    public void onResetPassWord(String mobile, String passWord) {
+    private void onResetPassWord(String mobile, String passWord) {
         mResetPassWordRequest=new ResetPassWordRequest();
         mResetPassWordRequest.mobile=mobile;
         mResetPassWordRequest.password=passWord;
@@ -144,7 +124,7 @@ public class ResetPassWordActivity extends YanxiuBaseActivity implements View.On
         });
     }
 
-    public void setButtonFocusChange(boolean hasFocus) {
+    private void setButtonFocusChange(boolean hasFocus) {
         if (hasFocus){
             mWavesView.setCanShowWave(true);
             mResetPassWordView.setEnabled(true);
@@ -152,5 +132,26 @@ public class ResetPassWordActivity extends YanxiuBaseActivity implements View.On
             mWavesView.setCanShowWave(false);
             mResetPassWordView.setEnabled(false);
         }
+    }
+
+    @Override
+    public void onChanged(View view, String value, boolean isEmpty) {
+        switch (view.getId()){
+            case R.id.ed_pass_word:
+                if (isEmpty){
+                    isPassWordReady=false;
+                }else {
+                    isPassWordReady=true;
+                }
+                break;
+            case R.id.ed_pass_word_again:
+                if (isEmpty){
+                    isPassWordAgainReady=false;
+                }   else {
+                    isPassWordAgainReady=true;
+                }
+                break;
+        }
+        setButtonFocusChange(isPassWordReady&&isPassWordAgainReady);
     }
 }

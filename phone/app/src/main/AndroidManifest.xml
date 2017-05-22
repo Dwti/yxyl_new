@@ -72,6 +72,12 @@
             android:theme="@style/AppFullscreen"
             android:configChanges="keyboardHidden|orientation"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
+
+        <activity android:name=".user.activity.ChooseLocationActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppFullscreen"
+            android:configChanges="keyboardHidden|orientation"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
         <!--<activity-->
         <!--android:name=".MainActivity"-->
         <!--android:launchMode="singleTask"-->
