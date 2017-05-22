@@ -85,7 +85,7 @@
         <activity android:name=".homework.classmanage.HowToJoinClassActivity"
             android:screenOrientation="portrait"
             android:launchMode="singleTop"/>
-        
+
         <activity android:name=".homework.HomeworkDetailActivity"
             android:screenOrientation="portrait"
             android:launchMode="singleTop"/>
