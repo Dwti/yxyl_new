@@ -230,4 +230,5 @@
     <dimen name="text_size_16">16dp</dimen>
 
     <dimen name="login_thrid_padding">5dp</dimen>
+    <dimen name="select_city_view_padding">15dp</dimen>
 </resources>

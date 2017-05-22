@@ -11,7 +11,7 @@ import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
-import com.yanxiu.gphone.student.user.Response.ResetPassWordResponse;
+import com.yanxiu.gphone.student.user.response.ResetPassWordResponse;
 import com.yanxiu.gphone.student.user.http.ResetPassWordRequest;
 import com.yanxiu.gphone.student.util.EditTextManger;
 import com.yanxiu.gphone.student.util.ToastManager;

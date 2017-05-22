@@ -1,10 +1,12 @@
 package com.yanxiu.gphone.student.homework.data;
 
+import com.yanxiu.gphone.student.base.BaseBean;
+
 /**
  * Created by sunpeng on 2017/5/8.
  */
 
-public class HomeworkBean {
+public class HomeworkDetailBean extends BaseBean {
     private String id;
     private String ptye;
     private String authorid;

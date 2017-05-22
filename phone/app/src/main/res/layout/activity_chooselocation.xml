@@ -1,38 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:paddingLeft="15dp"
-    android:paddingRight="15dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:background="@color/color_edf0ee"
+    android:orientation="vertical">
 
-    <com.yanxiu.gphone.student.user.PickerView
-        android:id="@+id/province"
-        android:layout_width="wrap_content"
-        android:layout_weight="1"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_vertical"
-        android:background="#ff0000"
-        app:choose_max_textsize="18dp"
-        app:choose_min_textsize="16dp"/>
-    <com.yanxiu.gphone.student.user.PickerView
-        android:id="@+id/city"
-        android:layout_width="wrap_content"
-        android:layout_weight="1"
-        android:background="#00ff00"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_vertical"
-        app:choose_max_textsize="18dp"
-        app:choose_min_textsize="16dp"/>
-    <com.yanxiu.gphone.student.user.PickerView
-        android:id="@+id/area"
-        android:layout_width="wrap_content"
-        android:layout_weight="1"
-        android:background="#0000ff"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_vertical"
-        app:choose_max_textsize="18dp"
-        app:choose_min_textsize="16dp"/>
+    <include
+        android:id="@+id/include_top"
+        layout="@layout/main_public_top_layout" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/select_city_view_padding"
+        android:paddingRight="@dimen/select_city_view_padding"
+        android:orientation="horizontal">
+
+        <com.yanxiu.gphone.student.customviews.PickerView
+            android:id="@+id/pv_province"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            app:choose_max_textsize="@dimen/login_edit_default_textsize"
+            app:choose_min_textsize="@dimen/complete_info_textsize" />
+
+        <com.yanxiu.gphone.student.customviews.PickerView
+            android:id="@+id/pv_city"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            app:choose_max_textsize="@dimen/login_edit_default_textsize"
+            app:choose_min_textsize="@dimen/complete_info_textsize" />
+
+        <com.yanxiu.gphone.student.customviews.PickerView
+            android:id="@+id/pv_area"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            app:choose_max_textsize="@dimen/login_edit_default_textsize"
+            app:choose_min_textsize="@dimen/complete_info_textsize" />
+    </LinearLayout>
 </LinearLayout>

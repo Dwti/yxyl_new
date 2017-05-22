@@ -20,7 +20,7 @@
             android:id="@+id/navi_homework"
             layout="@layout/home_nav_bar_item_layout"/>
         <include
-            android:id="@+id/navi_group"
+            android:id="@+id/navi_exercise"
             layout="@layout/home_nav_bar_item_layout"/>
         <include
             android:id="@+id/navi_my"

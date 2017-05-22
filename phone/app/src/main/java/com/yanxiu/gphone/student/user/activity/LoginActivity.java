@@ -18,7 +18,7 @@ import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.homepage.MainActivity;
-import com.yanxiu.gphone.student.user.Response.LoginResponse;
+import com.yanxiu.gphone.student.user.response.LoginResponse;
 import com.yanxiu.gphone.student.user.http.LoginRequest;
 import com.yanxiu.gphone.student.util.EditTextManger;
 import com.yanxiu.gphone.student.util.LoginInfo;

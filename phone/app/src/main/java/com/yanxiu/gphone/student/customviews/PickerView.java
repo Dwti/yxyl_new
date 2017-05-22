@@ -1,4 +1,4 @@
-package com.yanxiu.gphone.student.user;
+package com.yanxiu.gphone.student.customviews;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -14,7 +14,6 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-
 import com.yanxiu.gphone.student.R;
 
 import java.util.ArrayList;
@@ -25,9 +24,9 @@ import java.util.TimerTask;
 
 public class PickerView extends View {
 
-    public static final int DEFAULT_LEFT=0x000;
-    public static final int DEFAULT_CENTER=0x001;
-    public static final int DEFAULT_RIGHT=0x002;
+    public static final int DEFAULT_LEFT = 0x000;
+    public static final int DEFAULT_CENTER = 0x001;
+    public static final int DEFAULT_RIGHT = 0x002;
 
     /**
      * 新增字段 控制是否首尾相接循环显示 默认为循环显示
@@ -100,10 +99,10 @@ public class PickerView extends View {
 
     public PickerView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        if (attrs!=null){
+        if (attrs != null) {
             TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.PickerView);
-            mMaxTextSize=array.getDimensionPixelSize(R.styleable.PickerView_choose_max_textsize,40);
-            mMinTextSize=array.getDimensionPixelSize(R.styleable.PickerView_choose_min_textsize,20);
+            mMaxTextSize = array.getDimensionPixelSize(R.styleable.PickerView_choose_max_textsize, 40);
+            mMinTextSize = array.getDimensionPixelSize(R.styleable.PickerView_choose_min_textsize, 20);
             array.recycle();
         }
         init(context);
@@ -115,7 +114,7 @@ public class PickerView extends View {
 
     private void performSelect() {
         if (mSelectListener != null)
-            mSelectListener.onSelect(mDataList.get(mCurrentSelected));
+            mSelectListener.onSelect(PickerView.this,mDataList.get(mCurrentSelected));
     }
 
     public void setData(List<String> datas) {
@@ -146,6 +145,7 @@ public class PickerView extends View {
         }
         invalidate();
     }
+
     /**
      * 选择选中的内容
      *
@@ -159,15 +159,15 @@ public class PickerView extends View {
             }
     }
 
-    public void setTextLocation(int location_type){
-        this.locationType=location_type;
-        if (locationType==DEFAULT_LEFT){
+    public void setTextLocation(int location_type) {
+        this.locationType = location_type;
+        if (locationType == DEFAULT_LEFT) {
             mPaint.setTextAlign(Align.LEFT);
             nPaint.setTextAlign(Align.LEFT);
-        }else if (locationType==DEFAULT_CENTER){
+        } else if (locationType == DEFAULT_CENTER) {
             mPaint.setTextAlign(Align.CENTER);
             nPaint.setTextAlign(Align.CENTER);
-        }else if (locationType==DEFAULT_RIGHT){
+        } else if (locationType == DEFAULT_RIGHT) {
             mPaint.setTextAlign(Align.RIGHT);
             nPaint.setTextAlign(Align.RIGHT);
         }
@@ -180,6 +180,7 @@ public class PickerView extends View {
             mDataList.add(head);
         }
     }
+
     private void moveTailToHead() {
         if (loop) {
             String tail = mDataList.get(mDataList.size() - 1);
@@ -204,8 +205,9 @@ public class PickerView extends View {
         isInit = true;
         invalidate();
     }
+
     private void init(Context context) {
-        this.mContext=context;
+        this.mContext = context;
         timer = new Timer();
         mDataList = new ArrayList<String>();
         //第一个paint
@@ -218,16 +220,16 @@ public class PickerView extends View {
         nPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         nPaint.setStyle(Style.FILL);
         nPaint.setTextAlign(Align.RIGHT);
-        nPaint.setColor(ContextCompat.getColor(mContext,R.color.color_666666));
+        nPaint.setColor(ContextCompat.getColor(mContext, R.color.color_666666));
     }
 
-    private float getDraw_X(){
-        if (locationType==DEFAULT_LEFT){
-            return 20;
-        }else if (locationType==DEFAULT_CENTER){
+    private float getDraw_X() {
+        if (locationType == DEFAULT_LEFT) {
+            return 0;
+        } else if (locationType == DEFAULT_CENTER) {
             return (float) (mViewWidth / 2.0);
-        }else if (locationType==DEFAULT_RIGHT){
-            return mViewWidth-20;
+        } else if (locationType == DEFAULT_RIGHT) {
+            return mViewWidth;
         }
         return 0;
     }
@@ -239,6 +241,7 @@ public class PickerView extends View {
         if (isInit)
             drawData(canvas);
     }
+
     private void drawData(Canvas canvas) {
         // 先绘制选中的text再往上往下绘制其余的text
         float scale = parabola(mViewHeight / 4.0f, mMoveLen);
@@ -251,34 +254,48 @@ public class PickerView extends View {
         FontMetricsInt fmi = mPaint.getFontMetricsInt();
         float baseline = (float) (y - (fmi.bottom / 2.0 + fmi.top / 2.0));
 
-        canvas.drawText(mDataList.get(mCurrentSelected), x, baseline, mPaint);
+        String text = shearString(mDataList.get(mCurrentSelected), mViewWidth, mPaint);
+        canvas.drawText(text, x, baseline, mPaint);
         drawLines(canvas);
         // 绘制上方data
-        for (int i = 1; i<4; i++) {
+        for (int i = 1; i < 4; i++) {
             if ((mCurrentSelected - i) >= 0) {
                 drawOtherText(canvas, i, -1);
             }
         }
         // 绘制下方data
-        for (int i = 1; i<4; i++) {
+        for (int i = 1; i < 4; i++) {
             if ((mCurrentSelected + i) < mDataList.size()) {
                 drawOtherText(canvas, i, 1);
             }
         }
     }
 
-    private void drawLines(Canvas canvas){
+    private String shearString(String text, int max_width, Paint paint) {
+        int width = (int) paint.measureText(text + "...");
+        if (width>max_width) {
+            while (width >= max_width) {
+                text = text.substring(0, text.length() - 1);
+                width = (int) paint.measureText(text + "...");
+            }
+            return text + "...";
+        }else {
+            return text;
+        }
+    }
+
+    private void drawLines(Canvas canvas) {
         Paint nPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         nPaint.setStyle(Style.FILL);
         nPaint.setTextAlign(Align.CENTER);
-        nPaint.setColor(ContextCompat.getColor(mContext,R.color.color_89e00d));
+        nPaint.setColor(ContextCompat.getColor(mContext, R.color.color_89e00d));
         nPaint.setStrokeWidth(4);
         nPaint.setTextSize(mMinTextSize);
         Paint.FontMetrics metrics = nPaint.getFontMetrics();
         float text_height = metrics.descent - metrics.ascent;
 
-        canvas.drawLine(0,mViewHeight/2+text_height,mViewWidth,mViewHeight/2+text_height,nPaint);
-        canvas.drawLine(0,mViewHeight/2-text_height,mViewWidth,mViewHeight/2-text_height,nPaint);
+        canvas.drawLine(0, mViewHeight / 2 + text_height, mViewWidth, mViewHeight / 2 + text_height, nPaint);
+        canvas.drawLine(0, mViewHeight / 2 - text_height, mViewWidth, mViewHeight / 2 - text_height, nPaint);
     }
 
     /**
@@ -296,8 +313,9 @@ public class PickerView extends View {
         float y = (float) (mViewHeight / 2.0 + type * d);
         FontMetricsInt fmi = nPaint.getFontMetricsInt();
         float baseline = (float) (y - (fmi.bottom / 2.0 + fmi.top / 2.0));
-        canvas.drawText(mDataList.get(mCurrentSelected + type * position),
-                getDraw_X(), baseline, nPaint);
+
+        String text = shearString(mDataList.get(mCurrentSelected + type * position), mViewWidth, mPaint);
+        canvas.drawText(text, getDraw_X(), baseline, nPaint);
     }
 
     /**
@@ -408,7 +426,7 @@ public class PickerView extends View {
     }
 
     public interface onSelectListener {
-        void onSelect(String text);
+        void onSelect(View view,String text);
     }
 
     public void setCanScroll(boolean canScroll) {

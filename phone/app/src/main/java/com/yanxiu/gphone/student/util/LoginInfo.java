@@ -1,6 +1,6 @@
 package com.yanxiu.gphone.student.util;
 
-import com.yanxiu.gphone.student.user.Response.UserMessageBean;
+import com.yanxiu.gphone.student.user.response.UserMessageBean;
 
 import org.litepal.crud.DataSupport;
 
@@ -41,12 +41,10 @@ public class LoginInfo {
     }
 
     public static void savaCacheData(UserMessageBean messageBean){
-        if (!IsLogIn()) {
             LOGIN_STATUS=LOGIN_IN;
             bean = messageBean;
             bean.getPassport().save();
             bean.save();
-        }
     }
 
     /**
@@ -75,5 +73,20 @@ public class LoginInfo {
             return "";
         }
         return bean.getPassport().getToken();
+    }
+
+    public static String getRealName(){
+        if(!IsLogIn()){
+            return "";
+        }
+        return bean.getRealname();
+    }
+
+    public static void setRealName(String name){
+        if(!IsLogIn()){
+            return;
+        }
+        bean.setRealname(name);
+        bean.save();
     }
 }

@@ -20,4 +20,13 @@ public class ToastManager {
         }
         toast.show();
     }
+
+    public static void showMsg(int resId){
+        if (toast==null){
+            toast=Toast.makeText(YanxiuApplication.getContext(),YanxiuApplication.getContext().getResources().getString(resId),Toast.LENGTH_SHORT);
+        }else {
+            toast.setText(YanxiuApplication.getContext().getResources().getString(resId));
+        }
+        toast.show();
+    }
 }

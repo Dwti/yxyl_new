@@ -1,39 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/color_edf0ee">
+    android:layout_height="match_parent">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/top_layout_height"
-        android:background="@android:color/white">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/color_edf0ee">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/top_layout_height"
+            android:background="@android:color/white">
 
-        <ImageView
-            android:id="@+id/iv_join_class"
-            android:layout_width="38dp"
-            android:layout_height="38dp"
-            android:background="@android:color/holo_blue_light"
-            android:layout_marginRight="11dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"/>
+            <ImageView
+                android:id="@+id/iv_join_class"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:background="@android:color/holo_blue_light"
+                android:layout_marginRight="11dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"/>
 
-        <TextView
-            android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="七年级二十班"
+                android:textSize="20sp"
+                android:textColor="#666666"
+                android:textStyle="bold"
+                android:layout_centerInParent="true"/>
+        </RelativeLayout>
+
+        <ListView
+            android:id="@+id/list_view"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="七年级二十班"
-            android:textSize="20sp"
-            android:textColor="#666666"
-            android:textStyle="bold"
-            android:layout_centerInParent="true"/>
-    </RelativeLayout>
+            android:layout_marginTop="10dp"
+            android:dividerHeight="1dp"
+            android:divider="@color/color_edf0ee"
+            android:scrollbars="none">
+        </ListView>
 
-    <ListView
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/frame_content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:dividerHeight="1dp"
-        android:divider="@color/color_edf0ee"
-        android:scrollbars="none">
-    </ListView>
-</LinearLayout>
+        android:layout_height="match_parent" />
+</FrameLayout>

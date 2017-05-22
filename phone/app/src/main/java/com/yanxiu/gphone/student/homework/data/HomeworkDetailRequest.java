@@ -1,15 +1,15 @@
 package com.yanxiu.gphone.student.homework.data;
 
-import com.yanxiu.gphone.student.util.ExerciseRequestBase;
+import com.yanxiu.gphone.student.base.ExerciseBaseRequest;
 
 /**
  * Created by sunpeng on 2017/5/8.
  */
 
-public class HomeworkListRequest extends ExerciseRequestBase {
-    private String page = "1";
-    private String pageSize = "20";
-    private String groupId = "126100";
+public class HomeworkDetailRequest extends ExerciseBaseRequest {
+    protected String page = "1";
+    protected String pageSize = "20";
+    protected String groupId ;
     @Override
     protected boolean shouldLog() {
         return false;
@@ -43,7 +43,7 @@ public class HomeworkListRequest extends ExerciseRequestBase {
 
     @Override
     protected HttpType httpType() {
-        return HttpType.POST;
+        return HttpType.GET;
     }
 
     public String getGroupId() {

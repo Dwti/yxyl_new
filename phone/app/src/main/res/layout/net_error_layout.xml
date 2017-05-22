@@ -25,7 +25,7 @@
         android:textSize="@dimen/text_size_16" />
 
 
-    <com.yanxiu.gphone.student.util.view.WavesLayout
+    <com.yanxiu.gphone.student.customviews.WavesLayout
         android:id="@+id/wavesLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -43,6 +43,6 @@
             android:text="@string/retry"
             android:textColor="@drawable/selector_refresh_text_color"
             android:background="@drawable/selector_refresh_button_bg"/>
-    </com.yanxiu.gphone.student.util.view.WavesLayout>
+    </com.yanxiu.gphone.student.customviews.WavesLayout>
 
 </RelativeLayout>

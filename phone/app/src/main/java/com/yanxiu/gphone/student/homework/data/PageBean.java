@@ -1,10 +1,12 @@
 package com.yanxiu.gphone.student.homework.data;
 
+import com.yanxiu.gphone.student.base.BaseBean;
+
 /**
  * Created by sunpeng on 2017/5/8.
  */
 
-public class PageBean {
+public class PageBean extends BaseBean {
     private int totalPage ;
     private int pageSize ;
     private int nextPage;

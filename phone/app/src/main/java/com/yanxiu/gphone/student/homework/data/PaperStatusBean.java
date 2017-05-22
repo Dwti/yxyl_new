@@ -1,10 +1,12 @@
 package com.yanxiu.gphone.student.homework.data;
 
+import com.yanxiu.gphone.student.base.BaseBean;
+
 /**
  * Created by sunpeng on 2017/5/8.
  */
 
-public class PaperStatusBean {
+public class PaperStatusBean extends BaseBean{
     private String tid;
     private String ppid;
     private int status ;
@@ -13,6 +15,8 @@ public class PaperStatusBean {
     private String gid;
     private int userCount;
     private int scoreRate;
+    private String teachercomments;
+    private String teacherName;
 
     public String getTid() {
         return tid;
@@ -76,5 +80,21 @@ public class PaperStatusBean {
 
     public void setScoreRate(int scoreRate) {
         this.scoreRate = scoreRate;
+    }
+
+    public String getTeachercomments() {
+        return teachercomments;
+    }
+
+    public void setTeachercomments(String teachercomments) {
+        this.teachercomments = teachercomments;
+    }
+
+    public String getTeacherName() {
+        return teacherName;
+    }
+
+    public void setTeacherName(String teacherName) {
+        this.teacherName = teacherName;
     }
 }

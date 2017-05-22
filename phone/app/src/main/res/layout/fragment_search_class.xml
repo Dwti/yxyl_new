@@ -50,6 +50,7 @@
 
 
                 <com.yanxiu.gphone.student.customviews.CharacterSeparatedEditLayout
+                    android:id="@+id/input_number_layout"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/common_button_height"
                     android:layout_marginTop="15dp"/>
@@ -81,9 +82,10 @@
                 android:gravity="center"
                 android:layout_marginTop="30dp">
                 <TextView
+                    android:id="@+id/how_to_join_class"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="没有班级可加，跳过此步骤"
+                    android:text="@string/guid_join_class"
                     android:textSize="16sp"
                     android:textColor="@android:color/white"/>
                 <ImageView
