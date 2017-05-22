@@ -27,6 +27,7 @@ import com.yanxiu.gphone.student.homework.data.SearchClassResponse;
 import com.yanxiu.gphone.student.homework.data.SubjectBean;
 import com.yanxiu.gphone.student.homework.data.SubjectRequest;
 import com.yanxiu.gphone.student.homework.data.SubjectResponse;
+import com.yanxiu.gphone.student.base.ExerciseBaseCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,10 +107,11 @@ public class HomeworkFragment extends Fragment implements SearchClassFragment.On
     }
 
 
-    HttpCallback<SubjectResponse> mLoadSubjectCallback = new HttpCallback<SubjectResponse>(){
+    HttpCallback<SubjectResponse> mLoadSubjectCallback = new ExerciseBaseCallback<SubjectResponse>(){
 
         @Override
         public void onSuccess(RequestBase request, SubjectResponse ret) {
+            super.onSuccess(request,ret);
             if(ret.getStatus().getCode() == ClassStatus.HAS_CLASS.getCode()){  //已经加入班级
                 mClassId = ret.getProperty().getClassId();
                 if(ret.getData() == null || ret.getData().size() == 0){
@@ -124,8 +126,10 @@ public class HomeworkFragment extends Fragment implements SearchClassFragment.On
                 mClassId = ret.getProperty().getClassId();
                 Toast.makeText(getActivity(),"入班申请正在审核",Toast.LENGTH_SHORT).show();
             }else if(ret.getStatus().getCode() == ClassStatus.NO_CLASS.getCode()){   //未加入班级
-                //跳转到加入班级界面
+                //TODO 跳转到加入班级界面
                 openJoinClassUI();
+            }else {
+                //TODO 无数据或者数据错误 或者未登陆 code=99
             }
             mStatus = ret.getStatus().getCode();
         }

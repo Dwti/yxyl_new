@@ -1,12 +1,12 @@
 package com.yanxiu.gphone.student.homework.data;
 
-import com.yanxiu.gphone.student.util.ExerciseRequestBase;
+import com.yanxiu.gphone.student.base.ExerciseBaseRequest;
 
 /**
  * Created by sunpeng on 2017/5/9.
  */
 
-public class PaperRequest extends ExerciseRequestBase {
+public class PaperRequest extends ExerciseBaseRequest {
     private String paperId = "279219";
     @Override
     protected boolean shouldLog() {

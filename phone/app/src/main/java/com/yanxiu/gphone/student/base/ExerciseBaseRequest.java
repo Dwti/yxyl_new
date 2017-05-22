@@ -1,13 +1,14 @@
-package com.yanxiu.gphone.student.util;
+package com.yanxiu.gphone.student.base;
 
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.constant.Constants;
+import com.yanxiu.gphone.student.util.LoginInfo;
 
 /**
  * Created by sunpeng on 2017/5/8.
  */
 
-public abstract class ExerciseRequestBase extends RequestBase {
+public abstract class ExerciseBaseRequest extends RequestBase {
     protected String osType = Constants.osType;
     protected String pcode = Constants.pcode;
     protected String token = LoginInfo.getToken();

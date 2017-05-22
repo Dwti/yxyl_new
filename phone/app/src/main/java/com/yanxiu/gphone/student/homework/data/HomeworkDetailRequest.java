@@ -1,12 +1,12 @@
 package com.yanxiu.gphone.student.homework.data;
 
-import com.yanxiu.gphone.student.util.ExerciseRequestBase;
+import com.yanxiu.gphone.student.base.ExerciseBaseRequest;
 
 /**
  * Created by sunpeng on 2017/5/8.
  */
 
-public class HomeworkDetailRequest extends ExerciseRequestBase {
+public class HomeworkDetailRequest extends ExerciseBaseRequest {
     protected String page = "1";
     protected String pageSize = "20";
     protected String groupId ;

@@ -1,19 +1,11 @@
 package com.yanxiu.gphone.student.homework.data;
 
-import com.yanxiu.gphone.student.base.StatusBean;
+import com.yanxiu.gphone.student.base.ExerciseBaseResponse;
 
 /**
  * Created by sp on 17-5-20.
  */
 
-public class CancelAppayClassResponse {
-    private StatusBean status;
+public class CancelAppayClassResponse extends ExerciseBaseResponse {
 
-    public StatusBean getStatus() {
-        return status;
-    }
-
-    public void setStatus(StatusBean status) {
-        this.status = status;
-    }
 }

@@ -18,6 +18,7 @@ import com.yanxiu.gphone.student.customviews.CharacterSeparatedEditLayout;
 import com.yanxiu.gphone.student.homework.data.ClassBean;
 import com.yanxiu.gphone.student.homework.data.SearchClassRequest;
 import com.yanxiu.gphone.student.homework.data.SearchClassResponse;
+import com.yanxiu.gphone.student.base.ExerciseBaseCallback;
 
 /**
  * Created by sp on 17-5-15.
@@ -64,7 +65,7 @@ public class SearchClassFragment extends Fragment{
         mOnJoinClassCompleteListener = listener;
     }
 
-    HttpCallback<SearchClassResponse> mSearchClassCallback = new HttpCallback<SearchClassResponse>() {
+    HttpCallback<SearchClassResponse> mSearchClassCallback = new ExerciseBaseCallback<SearchClassResponse>() {
         @Override
         public void onSuccess(RequestBase request, SearchClassResponse ret) {
             if(ret.getStatus().getCode() == 0 ){

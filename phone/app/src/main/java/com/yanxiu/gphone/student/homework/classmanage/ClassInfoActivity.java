@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,7 +17,7 @@ import com.yanxiu.gphone.student.homework.data.CancelApplyClassRequest;
 import com.yanxiu.gphone.student.homework.data.ClassBean;
 import com.yanxiu.gphone.student.homework.data.ExitClassRequest;
 import com.yanxiu.gphone.student.homework.data.ExitClassResponse;
-import com.yanxiu.gphone.student.util.LoginInfo;
+import com.yanxiu.gphone.student.base.ExerciseBaseCallback;
 
 /**
  * Created by sp on 17-5-18.
@@ -95,7 +94,7 @@ public class ClassInfoActivity extends Activity {
         request.startRequest(CancelAppayClassResponse.class,mCancelApplyClassCallback);
     }
 
-    HttpCallback<ExitClassResponse> mExitClassCallback = new HttpCallback<ExitClassResponse>() {
+    HttpCallback<ExitClassResponse> mExitClassCallback = new ExerciseBaseCallback<ExitClassResponse>() {
         @Override
         public void onSuccess(RequestBase request, ExitClassResponse ret) {
             if(ret.getStatus().getCode() == 0 ){
@@ -111,9 +110,10 @@ public class ClassInfoActivity extends Activity {
         }
     };
 
-    HttpCallback<CancelAppayClassResponse> mCancelApplyClassCallback = new HttpCallback<CancelAppayClassResponse>() {
+    HttpCallback<CancelAppayClassResponse> mCancelApplyClassCallback = new ExerciseBaseCallback<CancelAppayClassResponse>() {
         @Override
         public void onSuccess(RequestBase request, CancelAppayClassResponse ret) {
+            super.onSuccess(request,ret);
             if(ret.getStatus().getCode() == 0 ){
                 setResult(RESULT_OK);
                 finish();

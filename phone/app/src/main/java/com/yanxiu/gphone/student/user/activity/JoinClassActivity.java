@@ -34,7 +34,7 @@ public class JoinClassActivity extends YanxiuBaseActivity implements View.OnClic
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_join_class);
+        setContentView(R.layout.activity_join_class);
         mContext=JoinClassActivity.this;
         initView();
         initData();

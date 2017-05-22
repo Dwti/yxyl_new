@@ -17,6 +17,7 @@ import com.yanxiu.gphone.student.homework.data.JoinClassRequest;
 import com.yanxiu.gphone.student.homework.data.JoinClassResponse;
 import com.yanxiu.gphone.student.homework.data.UpdateUserInfoRequest;
 import com.yanxiu.gphone.student.homework.data.UpdateUserInfoResponse;
+import com.yanxiu.gphone.student.base.ExerciseBaseCallback;
 import com.yanxiu.gphone.student.util.LoginInfo;
 
 /**
@@ -87,7 +88,7 @@ public class JoinClassActivity extends Activity {
         request.startRequest(JoinClassResponse.class,mJoinClassCallback);
     }
 
-    HttpCallback<JoinClassResponse> mJoinClassCallback = new HttpCallback<JoinClassResponse>() {
+    HttpCallback<JoinClassResponse> mJoinClassCallback = new ExerciseBaseCallback<JoinClassResponse>() {
         @Override
         public void onSuccess(RequestBase request, JoinClassResponse ret) {
             if(ret.getStatus().getCode() == 0){
@@ -102,7 +103,7 @@ public class JoinClassActivity extends Activity {
         }
     };
 
-    HttpCallback<UpdateUserInfoResponse> mUpdateUserInfoCallback = new HttpCallback<UpdateUserInfoResponse>() {
+    HttpCallback<UpdateUserInfoResponse> mUpdateUserInfoCallback = new ExerciseBaseCallback<UpdateUserInfoResponse>() {
         @Override
         public void onSuccess(RequestBase request, UpdateUserInfoResponse ret) {
             setResult(RESULT_OK);
