@@ -63,4 +63,6 @@
     <string name="exit_class">退出班级</string>
     <string name="guid_join_class">怎样加入班级？</string>
     <string name="score_rate">正确率</string>
+    <string name="text_loading">正在加载...</string>
+    <string name="text_click_to_load_more">点击加载更多</string>
 </resources>

@@ -1,17 +1,12 @@
 package com.yanxiu.gphone.student.homework;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
@@ -31,36 +26,104 @@ import java.util.List;
 public class HomeworkDetailActivity extends Activity {
     public static final String EXTRA_SUBJECT_ID = "HOMEWORK_ID";
     private int mPageIndex = 1;
+    private int mTotalPage = 0;
     private String mHomeworkId;
     private List<HomeworkDetailBean> mHomeworkList = new ArrayList<>();
     private HomeworkDetailAdapter mHomeworkDetailAdapter;
-    private ListView mHomeworkListView;
+    private RecyclerView mRecyclerView;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private boolean mIsLoadingMore = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homework_detail);
         View back = findViewById(R.id.iv_back);
-        mHomeworkListView = (ListView) findViewById(R.id.list_view);
-        mHomeworkDetailAdapter = new HomeworkDetailAdapter(mHomeworkList);
-        mHomeworkListView.setAdapter(mHomeworkDetailAdapter);
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
+        mHomeworkDetailAdapter = new HomeworkDetailAdapter(mHomeworkList,mItemClickListener,mLoadMoreItemClickListener);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setAdapter(mHomeworkDetailAdapter);
         mHomeworkId = getIntent().getStringExtra(EXTRA_SUBJECT_ID);
+        loadHomework(1);
+
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-        loadHomework(mHomeworkId,mPageIndex);
+
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if(dy > 0){
+                    LinearLayoutManager layoutManager = (LinearLayoutManager) mRecyclerView.getLayoutManager();
+                    int totalItemCount = layoutManager.getItemCount();
+                    int lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
+                    if(!mIsLoadingMore && lastVisibleItemPosition + 1 == totalItemCount){
+                        loadMoreHomework();
+                    }
+                }
+            }
+        });
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mPageIndex = 1;
+                setLoadingIndicator(true);
+                loadHomework(1);
+            }
+        });
     }
 
-    private void loadHomework(String homeworkId, int pageIndex) {
+    private void loadHomework(int pageIndex) {
         HomeworkDetailRequest request = new HomeworkDetailRequest();
-        request.setGroupId(homeworkId);
+        request.setGroupId(mHomeworkId);
         request.setPage(pageIndex+"");
         request.startRequest(HomeworkDetailResponse.class,mLoadHomeworkCallback);
 
     }
+
+    private void loadMoreHomework(){
+        if(mPageIndex >= mTotalPage){
+            return;
+        }
+        mPageIndex++;
+        mIsLoadingMore = true;
+        setLoadingMoreIndicator(true);
+        loadHomework(mPageIndex);
+    }
+
+    public void setLoadingIndicator(boolean active) {
+        mSwipeRefreshLayout.setRefreshing(active);
+    }
+
+    public void setLoadingMoreIndicator(boolean active) {
+        if(active){
+            mHomeworkDetailAdapter.addFooterView();
+        }else {
+            mIsLoadingMore = false;
+            mHomeworkDetailAdapter.removeFooterView();
+        }
+    }
+
+    HomeworkDetailAdapter.HomeworkItemClickListener mItemClickListener = new HomeworkDetailAdapter.HomeworkItemClickListener() {
+        @Override
+        public void onHomeworkClick(HomeworkDetailBean homework) {
+           //TODO 点击进入答题
+        }
+    };
+
+    HomeworkDetailAdapter.HomeworkLoadMoreItemClickListener mLoadMoreItemClickListener = new HomeworkDetailAdapter.HomeworkLoadMoreItemClickListener() {
+        @Override
+        public void onLoadMoreClick() {
+            if(!mIsLoadingMore){
+                loadMoreHomework();
+            }
+        }
+    };
 
     HttpCallback<HomeworkDetailResponse> mLoadHomeworkCallback = new ExerciseBaseCallback<HomeworkDetailResponse>() {
         @Override
@@ -72,9 +135,17 @@ public class HomeworkDetailActivity extends Activity {
                 }else if(mPageIndex > 1){
                     mHomeworkList.addAll(ret.getData());
                 }
+                mTotalPage = ret.getPage().getTotalPage();
                 mHomeworkDetailAdapter.replaceData(mHomeworkList);
             }
-            //TODO 错误的时候没有处理(别的界面也没有处理)
+
+            //TODO 要考虑先上拉没返回的同时下拉的情况
+            if(mPageIndex == 1){
+                setLoadingIndicator(false);
+            }else if(mPageIndex > 1){
+                setLoadingMoreIndicator(false);
+            }
+            //TODO 错误的时候没有处理(别的界面也没有处理) 上拉刷新跟上拉加载是两种不同的处理
         }
 
         @Override
@@ -82,89 +153,4 @@ public class HomeworkDetailActivity extends Activity {
 
         }
     };
-
-    private static class HomeworkDetailAdapter extends BaseAdapter{
-        List<HomeworkDetailBean> homeworkDetails;
-        Context mContext;
-        public HomeworkDetailAdapter(List<HomeworkDetailBean> homeworkDetails) {
-            this.homeworkDetails = homeworkDetails;
-        }
-
-        @Override
-        public int getCount() {
-            return homeworkDetails.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return homeworkDetails.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        public void replaceData(List<HomeworkDetailBean> data){
-            if(data != null){
-                homeworkDetails = data;
-                notifyDataSetChanged();
-            }
-        }
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            Holder holder;
-            HomeworkDetailBean bean = homeworkDetails.get(position);
-            if(mContext == null){
-                mContext = parent.getContext();
-            }
-            if(convertView == null){
-                holder = new Holder();
-                convertView = LayoutInflater.from(mContext).inflate(R.layout.item_homework_detail,parent,false);
-                holder.mIcon = (ImageView) convertView.findViewById(R.id.iv_icon);
-                holder.mName = (TextView) convertView.findViewById(R.id.tv_name);
-                holder.mState1 = (TextView) convertView.findViewById(R.id.tv_state1);
-                holder.mState2 = (TextView) convertView.findViewById(R.id.tv_state2);
-                holder.mComment = (TextView) convertView.findViewById(R.id.tv_comment);
-                holder.mCommentLayout = convertView.findViewById(R.id.ll_comment);
-                convertView.setTag(holder);
-            }else {
-                holder = (Holder) convertView.getTag();
-            }
-            holder.mName.setText(bean.getName());
-            //TODO 根据状态设置icon
-            if(bean.getPaperStatus().getStatus() == 0){   //待完成
-                holder.mState1.setText(mContext.getString(R.string.homework_done_num) + bean.getAnswernum()  + "/" + bean.getQuesnum());
-                if(bean.getIsEnd() == 0){  //未截止
-                    holder.mState2.setText(mContext.getString(R.string.homework_remain_time)+ bean.getRemaindertimeStr());
-                }else {   //已截止
-                    holder.mState2.setText(R.string.can_redo);
-                }
-                holder.mCommentLayout.setVisibility(View.GONE);
-            }else if(bean.getPaperStatus().getStatus() ==1){ // 未完成
-                holder.mState1.setText(R.string.over_deadline);
-                holder.mState2.setText("");
-                holder.mCommentLayout.setVisibility(View.GONE);
-            }else if(bean.getPaperStatus().getStatus() == 2){//已完成
-                if(TextUtils.isEmpty(bean.getPaperStatus().getTeachercomments()) || TextUtils.isEmpty(bean.getPaperStatus().getTeacherName())){
-                    holder.mCommentLayout.setVisibility(View.GONE);
-                    holder.mState1.setText(R.string.homework_done_uncheck);
-                }else {
-                    holder.mCommentLayout.setVisibility(View.VISIBLE);
-                    holder.mState1.setText(R.string.homework_checked);
-                    holder.mState2.setText(mContext.getString(R.string.score_rate) + bean.getPaperStatus().getScoreRate());
-                    //TODO 前面几个字儿需要加粗
-                    String text = bean.getPaperStatus().getTeacherName() + mContext.getString(R.string.comment) + bean.getPaperStatus().getTeachercomments();
-                    holder.mComment.setText(text);
-                }
-            }
-            return convertView;
-        }
-
-        class Holder {
-            ImageView mIcon;
-            TextView mName,mState1,mState2,mComment;
-            View mCommentLayout;
-        }
-    }
 }
