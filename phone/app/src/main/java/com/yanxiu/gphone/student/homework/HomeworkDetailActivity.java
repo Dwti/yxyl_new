@@ -23,34 +23,44 @@ import java.util.List;
  * Created by sp on 17-5-18.
  */
 
-public class HomeworkDetailActivity extends Activity {
+public class HomeworkDetailActivity extends Activity implements HomeworkDetailContract.View{
     public static final String EXTRA_SUBJECT_ID = "HOMEWORK_ID";
-    private int mPageIndex = 1;
-    private int mTotalPage = 0;
-    private String mHomeworkId;
+
     private List<HomeworkDetailBean> mHomeworkList = new ArrayList<>();
+
     private HomeworkDetailAdapter mHomeworkDetailAdapter;
+
     private RecyclerView mRecyclerView;
+
     private SwipeRefreshLayout mSwipeRefreshLayout;
+
     private boolean mIsLoadingMore = false;
+
+    private HomeworkDetailContract.Presenter mPresenter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homework_detail);
+
         View back = findViewById(R.id.iv_back);
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
-        mHomeworkDetailAdapter = new HomeworkDetailAdapter(mHomeworkList,mItemClickListener,mLoadMoreItemClickListener);
+
+        mHomeworkDetailAdapter = new HomeworkDetailAdapter(mHomeworkList,mItemClickListener);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mHomeworkDetailAdapter);
-        mHomeworkId = getIntent().getStringExtra(EXTRA_SUBJECT_ID);
-        loadHomework(1);
+
+        String homeworkId = getIntent().getStringExtra(EXTRA_SUBJECT_ID);
+
+        HomeworkDetailPresenter presenter = new HomeworkDetailPresenter(homeworkId,HomeworkDetailRepository.getInstance(),this);
+        setPresenter(presenter);
+        mPresenter.start();
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                mPresenter.finishUI();
             }
         });
 
@@ -63,7 +73,8 @@ public class HomeworkDetailActivity extends Activity {
                     int totalItemCount = layoutManager.getItemCount();
                     int lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
                     if(!mIsLoadingMore && lastVisibleItemPosition + 1 == totalItemCount){
-                        loadMoreHomework();
+                        mIsLoadingMore = true;
+                        mPresenter.loadMoreHomework();
                     }
                 }
             }
@@ -71,35 +82,18 @@ public class HomeworkDetailActivity extends Activity {
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mPageIndex = 1;
-                setLoadingIndicator(true);
-                loadHomework(1);
+                mPresenter.loadHomework();
             }
         });
     }
 
-    private void loadHomework(int pageIndex) {
-        HomeworkDetailRequest request = new HomeworkDetailRequest();
-        request.setGroupId(mHomeworkId);
-        request.setPage(pageIndex+"");
-        request.startRequest(HomeworkDetailResponse.class,mLoadHomeworkCallback);
 
-    }
-
-    private void loadMoreHomework(){
-        if(mPageIndex >= mTotalPage){
-            return;
-        }
-        mPageIndex++;
-        mIsLoadingMore = true;
-        setLoadingMoreIndicator(true);
-        loadHomework(mPageIndex);
-    }
-
+    @Override
     public void setLoadingIndicator(boolean active) {
         mSwipeRefreshLayout.setRefreshing(active);
     }
 
+    @Override
     public void setLoadingMoreIndicator(boolean active) {
         if(active){
             mHomeworkDetailAdapter.addFooterView();
@@ -109,48 +103,73 @@ public class HomeworkDetailActivity extends Activity {
         }
     }
 
+    @Override
+    public void showHomework(List<HomeworkDetailBean> homeworkList) {
+        mHomeworkDetailAdapter.replaceData(homeworkList);
+    }
+
+    @Override
+    public void showDataEmpty() {
+        //TODO
+    }
+
+    @Override
+    public void showDataError() {
+        //TODO
+    }
+
+    @Override
+    public void showApplyingForClass() {
+        //TODO
+    }
+
+    @Override
+    public void openJoinClassUI() {
+        //TODO
+    }
+
+    @Override
+    public void openAnswerQuestionUI() {
+        //TODO
+    }
+
+    @Override
+    public void showNoMoreData() {
+        //TODO
+    }
+
+    @Override
+    public void showLoadMoreDataError(String msg) {
+        //TODO
+    }
+
+    @Override
+    public boolean isActive() {
+        return !(isDestroyed() || isFinishing());
+    }
+
+    @Override
+    public void finishUI() {
+        finish();
+    }
+
+    @Override
+    public void setPresenter(HomeworkDetailContract.Presenter presenter) {
+        mPresenter = presenter;
+    }
+
     HomeworkDetailAdapter.HomeworkItemClickListener mItemClickListener = new HomeworkDetailAdapter.HomeworkItemClickListener() {
         @Override
         public void onHomeworkClick(HomeworkDetailBean homework) {
-           //TODO 点击进入答题
+            mPresenter.openAnswerQuestion(homework);
         }
-    };
 
-    HomeworkDetailAdapter.HomeworkLoadMoreItemClickListener mLoadMoreItemClickListener = new HomeworkDetailAdapter.HomeworkLoadMoreItemClickListener() {
         @Override
         public void onLoadMoreClick() {
             if(!mIsLoadingMore){
-                loadMoreHomework();
+                mIsLoadingMore = true;
+                mPresenter.loadMoreHomework();
             }
-        }
-    };
-
-    HttpCallback<HomeworkDetailResponse> mLoadHomeworkCallback = new ExerciseBaseCallback<HomeworkDetailResponse>() {
-        @Override
-        public void onSuccess(RequestBase request, HomeworkDetailResponse ret) {
-            super.onSuccess(request,ret);
-            if(ret.getStatus().getCode() ==0){
-                if(mPageIndex ==1){
-                    mHomeworkList = ret.getData();
-                }else if(mPageIndex > 1){
-                    mHomeworkList.addAll(ret.getData());
-                }
-                mTotalPage = ret.getPage().getTotalPage();
-                mHomeworkDetailAdapter.replaceData(mHomeworkList);
-            }
-
-            //TODO 要考虑先上拉没返回的同时下拉的情况
-            if(mPageIndex == 1){
-                setLoadingIndicator(false);
-            }else if(mPageIndex > 1){
-                setLoadingMoreIndicator(false);
-            }
-            //TODO 错误的时候没有处理(别的界面也没有处理) 上拉刷新跟上拉加载是两种不同的处理
-        }
-
-        @Override
-        public void onFail(RequestBase request, Error error) {
-
         }
     };
 }

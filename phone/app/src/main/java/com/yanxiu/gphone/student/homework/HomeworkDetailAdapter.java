@@ -29,12 +29,9 @@ public class HomeworkDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     private HomeworkItemClickListener mItemListener;
 
-    private HomeworkLoadMoreItemClickListener mLoadMoreItemClickListener;
-
-    public HomeworkDetailAdapter(List<HomeworkDetailBean> data, HomeworkItemClickListener mItemListener, HomeworkLoadMoreItemClickListener mLoadMoreItemClickListener) {
+    public HomeworkDetailAdapter(List<HomeworkDetailBean> data, HomeworkItemClickListener mItemListener) {
         this.mData = data;
         this.mItemListener = mItemListener;
-        this.mLoadMoreItemClickListener = mLoadMoreItemClickListener;
     }
 
     @Override
@@ -169,8 +166,8 @@ public class HomeworkDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(mLoadMoreItemClickListener != null){
-                        mLoadMoreItemClickListener.onLoadMoreClick();
+                    if(mItemListener != null){
+                        mItemListener.onLoadMoreClick();
                     }
                 }
             });
@@ -179,8 +176,7 @@ public class HomeworkDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     public interface HomeworkItemClickListener{
         void onHomeworkClick(HomeworkDetailBean homeworkDetailBean);
-    }
-    public interface HomeworkLoadMoreItemClickListener{
+
         void onLoadMoreClick();
     }
 }
