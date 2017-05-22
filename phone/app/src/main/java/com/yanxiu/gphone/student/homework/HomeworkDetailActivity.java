@@ -152,6 +152,7 @@ public class HomeworkDetailActivity extends Activity {
                 }else {
                     holder.mCommentLayout.setVisibility(View.VISIBLE);
                     holder.mState1.setText(R.string.homework_checked);
+                    holder.mState2.setText(mContext.getString(R.string.score_rate) + bean.getPaperStatus().getScoreRate());
                     //TODO 前面几个字儿需要加粗
                     String text = bean.getPaperStatus().getTeacherName() + mContext.getString(R.string.comment) + bean.getPaperStatus().getTeachercomments();
                     holder.mComment.setText(text);
