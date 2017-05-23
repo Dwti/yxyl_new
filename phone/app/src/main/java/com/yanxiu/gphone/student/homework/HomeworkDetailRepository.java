@@ -3,9 +3,13 @@ package com.yanxiu.gphone.student.homework;
 import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.base.ExerciseBaseCallback;
+import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.homework.data.HomeworkDetailBean;
 import com.yanxiu.gphone.student.homework.data.HomeworkDetailRequest;
 import com.yanxiu.gphone.student.homework.data.HomeworkDetailResponse;
+import com.yanxiu.gphone.student.homework.data.PaperRequest;
+import com.yanxiu.gphone.student.homework.data.PaperResponse;
+import com.yanxiu.gphone.student.util.DESBodyDealer;
 
 import java.util.List;
 
@@ -55,7 +59,7 @@ public class HomeworkDetailRepository implements HomeworkDetailDataSource {
 
             @Override
             public void onFail(RequestBase request, Error error) {
-                    loadHomeworkDetailCallback.onDataError(-1, error.getLocalizedMessage());
+                    loadHomeworkDetailCallback.onDataError(Constants.NET_ERROR, error.getLocalizedMessage());
             }
         });
     }
@@ -86,7 +90,34 @@ public class HomeworkDetailRepository implements HomeworkDetailDataSource {
 
             @Override
             public void onFail(RequestBase request, Error error) {
-                loadHomeworkDetailCallback.onDataError(-1,error.getLocalizedMessage());
+                loadHomeworkDetailCallback.onDataError(Constants.NET_ERROR,error.getLocalizedMessage());
+            }
+        });
+    }
+
+    @Override
+    public void getPaper(String paperId, final LoadPaperCallback loadPaperCallback) {
+        PaperRequest request = new PaperRequest();
+        request.setPaperId(paperId);
+        request.bodyDealer = new DESBodyDealer();
+        request.startRequest(PaperResponse.class, new HttpCallback<PaperResponse>() {
+            @Override
+            public void onSuccess(RequestBase request, PaperResponse ret) {
+                if(ret.getStatus().getCode() == 0){
+                    if(ret.getData().size() > 0){
+                        //TODO 先存起来
+                        loadPaperCallback.onPaperLoaded(ret.getData());
+                    }else {
+                        loadPaperCallback.onDataEmpty();
+                    }
+                }else {
+                    loadPaperCallback.onDataError(ret.getStatus().getCode(),ret.getStatus().getDesc());
+                }
+            }
+
+            @Override
+            public void onFail(RequestBase request, Error error) {
+                loadPaperCallback.onDataError(Constants.NET_ERROR,error.getLocalizedMessage());
             }
         });
     }

@@ -8,6 +8,7 @@ import com.yanxiu.gphone.student.util.LoginInfo;
  */
 
 public class Constants {
+    public static final int  NET_ERROR = -1;
     public static final String OS = "android";
     public static final String osType = "0";
     public static final String pcode = "010110000";

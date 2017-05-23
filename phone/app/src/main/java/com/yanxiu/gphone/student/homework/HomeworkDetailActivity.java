@@ -10,13 +10,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.test.yanxiu.network.HttpCallback;
-import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
-import com.yanxiu.gphone.student.base.ExerciseBaseCallback;
 import com.yanxiu.gphone.student.homework.data.HomeworkDetailBean;
-import com.yanxiu.gphone.student.homework.data.HomeworkDetailRequest;
-import com.yanxiu.gphone.student.homework.data.HomeworkDetailResponse;
+import com.yanxiu.gphone.student.util.ToastManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,9 +33,9 @@ public class HomeworkDetailActivity extends Activity implements HomeworkDetailCo
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
-    private View mTipsView;
+    private View mTipsView, mBack;
 
-    private TextView mTips;
+    private TextView mTitle, mTips;
 
     private Button mRefreshBtn;
 
@@ -51,9 +47,13 @@ public class HomeworkDetailActivity extends Activity implements HomeworkDetailCo
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homework_detail);
+        initView();
+        initListener();
+    }
 
-        TextView title = (TextView) findViewById(R.id.tv_title);
-        View back = findViewById(R.id.iv_back);
+    private void initView(){
+        mTitle = (TextView) findViewById(R.id.tv_title);
+        mBack = findViewById(R.id.iv_back);
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
         mTipsView = findViewById(R.id.tips_layout);
@@ -66,13 +66,16 @@ public class HomeworkDetailActivity extends Activity implements HomeworkDetailCo
 
         String subjectId = getIntent().getStringExtra(EXTRA_SUBJECT_ID);
         String subjectName = getIntent().getStringExtra(EXTRA_SUBJECT_NAME);
-        title.setText(subjectName);
+        mTitle.setText(subjectName);
 
         HomeworkDetailPresenter presenter = new HomeworkDetailPresenter(subjectId,HomeworkDetailRepository.getInstance(),this);
         setPresenter(presenter);
         mPresenter.start();
 
-        back.setOnClickListener(new View.OnClickListener() {
+    }
+
+    private void initListener(){
+        mBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mPresenter.finishUI();
@@ -109,7 +112,6 @@ public class HomeworkDetailActivity extends Activity implements HomeworkDetailCo
         });
     }
 
-
     @Override
     public void setLoadingIndicator(boolean active) {
         mSwipeRefreshLayout.setRefreshing(active);
@@ -142,9 +144,8 @@ public class HomeworkDetailActivity extends Activity implements HomeworkDetailCo
     }
 
     @Override
-    public void openAnswerQuestionUI() {
-        //TODO
-
+    public void openAnswerQuestionUI(String key) {
+        ToastManager.showMsg("获取成功，paperId ：" + key);
     }
 
     @Override
@@ -194,7 +195,7 @@ public class HomeworkDetailActivity extends Activity implements HomeworkDetailCo
     HomeworkDetailAdapter.HomeworkItemClickListener mItemClickListener = new HomeworkDetailAdapter.HomeworkItemClickListener() {
         @Override
         public void onHomeworkClick(HomeworkDetailBean homework) {
-            mPresenter.openAnswerQuestion(homework);
+            mPresenter.getPaper(homework.getId());
         }
 
         @Override

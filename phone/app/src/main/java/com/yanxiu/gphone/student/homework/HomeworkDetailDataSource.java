@@ -1,6 +1,8 @@
 package com.yanxiu.gphone.student.homework;
 
 import com.yanxiu.gphone.student.homework.data.HomeworkDetailBean;
+import com.yanxiu.gphone.student.homework.data.PageBean;
+import com.yanxiu.gphone.student.homework.questions.bean.PaperBean;
 
 import java.util.List;
 
@@ -18,7 +20,18 @@ public interface HomeworkDetailDataSource {
         void onDataError(int code, String msg);
     }
 
+    interface LoadPaperCallback{
+
+        void onPaperLoaded(List<PaperBean> papers);
+
+        void onDataEmpty();
+
+        void onDataError(int code, String msg);
+    }
+
     void getHomeworkDetails(String homeworkId, LoadHomeworkDetailCallback loadHomeworkDetailCallback);
 
-    void getMoreHomeworkDetails(String homeworkId,LoadHomeworkDetailCallback loadHomeworkDetailCallback);
+    void getMoreHomeworkDetails(String homeworkId, LoadHomeworkDetailCallback loadHomeworkDetailCallback);
+
+    void getPaper(String paperId, LoadPaperCallback loadPaperCallback);
 }

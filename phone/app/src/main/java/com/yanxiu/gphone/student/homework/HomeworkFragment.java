@@ -1,4 +1,4 @@
-package com.yanxiu.gphone.student.homepage.fragment;
+package com.yanxiu.gphone.student.homework;
 
 
 import android.content.Intent;
@@ -17,7 +17,6 @@ import android.widget.Toast;
 import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
-import com.yanxiu.gphone.student.homework.HomeworkDetailActivity;
 import com.yanxiu.gphone.student.homework.classmanage.ClassInfoActivity;
 import com.yanxiu.gphone.student.homework.classmanage.ClassStatus;
 import com.yanxiu.gphone.student.homework.classmanage.SearchClassFragment;

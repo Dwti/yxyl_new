@@ -1,6 +1,7 @@
 package com.yanxiu.gphone.student.homework;
 
 import com.yanxiu.gphone.student.homework.data.HomeworkDetailBean;
+import com.yanxiu.gphone.student.homework.questions.bean.PaperBean;
 
 import java.util.List;
 
@@ -9,15 +10,15 @@ import java.util.List;
  */
 
 public class HomeworkDetailPresenter implements HomeworkDetailContract.Presenter {
-    private final HomeworkDetailRepository mHomeworkResponsitory ;
+    private final HomeworkDetailRepository mHomeworkRepository;
 
     private final HomeworkDetailContract.View mHomeworkDetailView;
 
     private String mHomeworkId;
 
-    public HomeworkDetailPresenter(String classId, HomeworkDetailRepository mHomeworkResponsitory, HomeworkDetailContract.View mHomeworkDetailView) {
-        this.mHomeworkId = classId;
-        this.mHomeworkResponsitory = mHomeworkResponsitory;
+    public HomeworkDetailPresenter(String homeworkId, HomeworkDetailRepository mHomeworkRepository, HomeworkDetailContract.View mHomeworkDetailView) {
+        this.mHomeworkId = homeworkId;
+        this.mHomeworkRepository = mHomeworkRepository;
         this.mHomeworkDetailView = mHomeworkDetailView;
     }
 
@@ -29,7 +30,7 @@ public class HomeworkDetailPresenter implements HomeworkDetailContract.Presenter
     @Override
     public void loadHomework() {
         mHomeworkDetailView.setLoadingIndicator(true);
-        mHomeworkResponsitory.getHomeworkDetails(mHomeworkId, new HomeworkDetailDataSource.LoadHomeworkDetailCallback() {
+        mHomeworkRepository.getHomeworkDetails(mHomeworkId, new HomeworkDetailDataSource.LoadHomeworkDetailCallback() {
             @Override
             public void onHomeworkDetailLoaded(List<HomeworkDetailBean> homeworkDetails) {
                 if(!mHomeworkDetailView.isActive()){
@@ -61,12 +62,12 @@ public class HomeworkDetailPresenter implements HomeworkDetailContract.Presenter
 
     @Override
     public void loadMoreHomework() {
-        if(!mHomeworkResponsitory.canLoadMore()){
+        if(!mHomeworkRepository.canLoadMore()){
             mHomeworkDetailView.showNoMoreData();
             return;
         }
         mHomeworkDetailView.setLoadingMoreIndicator(true);
-        mHomeworkResponsitory.getMoreHomeworkDetails(mHomeworkId, new HomeworkDetailDataSource.LoadHomeworkDetailCallback() {
+        mHomeworkRepository.getMoreHomeworkDetails(mHomeworkId, new HomeworkDetailDataSource.LoadHomeworkDetailCallback() {
             @Override
             public void onHomeworkDetailLoaded(List<HomeworkDetailBean> homeworkDetails) {
                 if(!mHomeworkDetailView.isActive()){
@@ -97,8 +98,32 @@ public class HomeworkDetailPresenter implements HomeworkDetailContract.Presenter
     }
 
     @Override
-    public void openAnswerQuestion(HomeworkDetailBean homeworkDetail) {
-        mHomeworkDetailView.openAnswerQuestionUI();
+    public void getPaper(final String paperId) {
+        mHomeworkRepository.getPaper(paperId, new HomeworkDetailDataSource.LoadPaperCallback() {
+            @Override
+            public void onPaperLoaded(List<PaperBean> papers) {
+                if(!mHomeworkDetailView.isActive()){
+                    return;
+                }
+                mHomeworkDetailView.openAnswerQuestionUI(paperId);
+            }
+
+            @Override
+            public void onDataEmpty() {
+                if(!mHomeworkDetailView.isActive()){
+                    return;
+                }
+                mHomeworkDetailView.showDataEmpty();
+            }
+
+            @Override
+            public void onDataError(int code, String msg) {
+                if(!mHomeworkDetailView.isActive()){
+                    return;
+                }
+                mHomeworkDetailView.showDataError();
+            }
+        });
     }
 
     @Override

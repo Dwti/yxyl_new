@@ -24,7 +24,7 @@ public interface HomeworkDetailContract {
 
         void showDataError();
 
-        void openAnswerQuestionUI();
+        void openAnswerQuestionUI(String key);
 
         void showNoMoreData();
 
@@ -41,7 +41,7 @@ public interface HomeworkDetailContract {
 
         void loadMoreHomework();
 
-        void openAnswerQuestion(HomeworkDetailBean homeworkDetail);
+        void getPaper(String paperId);
 
         void finishUI();
     }
