@@ -9,6 +9,7 @@ import java.util.List;
  */
 
 public class SearchClassResponse extends ExerciseBaseResponse {
+
     private List<ClassBean> data;
 
     public List<ClassBean> getData() {
