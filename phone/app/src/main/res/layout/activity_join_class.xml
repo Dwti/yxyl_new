@@ -187,6 +187,7 @@
                         android:layout_marginLeft="20dp"
                         android:maxLines="1"
                         android:ellipsize="end"
+                        android:maxLength="16"
                         android:textColorHint="@color/color_89e00d"
                         android:textSize="16dp"
                         android:textColor="@android:color/white"

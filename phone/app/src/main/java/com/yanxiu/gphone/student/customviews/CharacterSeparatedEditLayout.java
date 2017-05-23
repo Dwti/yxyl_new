@@ -1,9 +1,12 @@
 package com.yanxiu.gphone.student.customviews;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.annotation.AttrRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
+import android.support.annotation.StyleRes;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
@@ -54,6 +57,11 @@ public class CharacterSeparatedEditLayout extends FrameLayout{
         initView(context);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public CharacterSeparatedEditLayout(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr, @StyleRes int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+        initView(context);
+    }
 
     private void initView(Context context){
         mContext = context;
