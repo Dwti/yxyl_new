@@ -8,12 +8,14 @@ import com.yanxiu.gphone.student.util.LoginInfo;
  */
 
 public class Constants {
+    public static final int NET_ERROR = -1;
     public static final String OS = "android";
     public static final String osType = "0";
     public static final String pcode = "010110000";
     public static String token = LoginInfo.getToken();
     public static String trace_uid = LoginInfo.getUID();
-//    public static String deviceId= DeviceUtil.getAppDeviceId();
+    //    public static String deviceId= DeviceUtil.getAppDeviceId();
+    public static String deviceId = "-";
     public static String version = "2.4.1";
 
 }

@@ -8,11 +8,20 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.test.yanxiu.network.HttpCallback;
+import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
 import com.yanxiu.gphone.student.customviews.WavesLayout;
+import com.yanxiu.gphone.student.homepage.MainActivity;
+import com.yanxiu.gphone.student.user.http.JoinClassSubmitRequest;
+import com.yanxiu.gphone.student.user.response.JoinClassResponse;
+import com.yanxiu.gphone.student.user.response.JoinClassSubmitResponse;
 import com.yanxiu.gphone.student.util.EditTextManger;
+import com.yanxiu.gphone.student.util.LoginInfo;
+import com.yanxiu.gphone.student.util.SysEncryptUtil;
+import com.yanxiu.gphone.student.util.ToastManager;
 
 /**
  * Created by Canghaixiao.
@@ -31,9 +40,11 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
     private ImageView mWriteNameView;
     private WavesLayout mWavesView;
     private TextView mAddClassView;
+    private JoinClassResponse.Data mData;
 
-    public static void LaunchActivity(Context context){
+    public static void LaunchActivity(Context context, JoinClassResponse.Data response){
         Intent intent=new Intent(context,JoinClassSubmitActivity.class);
+        intent.putExtra(JoinClassActivity.KEY,response);
         context.startActivity(intent);
     }
 
@@ -43,7 +54,9 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
         mContext=JoinClassSubmitActivity.this;
         rootView=new PublicLoadLayout(mContext);
         rootView.setContentView(R.layout.activity_join_class_submit);
+        rootView.finish();
         setContentView(rootView);
+        mData= (JoinClassResponse.Data) getIntent().getSerializableExtra(JoinClassActivity.KEY);
         initView();
         listener();
         initData();
@@ -70,6 +83,12 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
         mInputNameView.setEnabled(false);
         mWavesView.setCanShowWave(false);
         mAddClassView.setEnabled(false);
+        if (mData!=null){
+            mClassIdView.setText(mData.id);
+            mTeacherNameView.setText(mData.adminName);
+            mStudentNumberView.setText(mData.teachernum);
+            mSchoolNameView.setText(mData.schoolname);
+        }
     }
 
     @Override
@@ -97,6 +116,36 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
     }
 
     private void addClass(String userName){
+        rootView.showLoadingView();
+        JoinClassSubmitRequest mJoinClassSubmitRequest=new JoinClassSubmitRequest();
+        mJoinClassSubmitRequest.realname=userName;
+        mJoinClassSubmitRequest.areaid="";
+        mJoinClassSubmitRequest.cityid="";
+        mJoinClassSubmitRequest.classId=mData.id;
+        mJoinClassSubmitRequest.stageid=mData.stageid;
+        mJoinClassSubmitRequest.mobile= LoginInfo.getMobile();
+        mJoinClassSubmitRequest.schoolid=mData.schoolid;
+        mJoinClassSubmitRequest.schoolName=mData.schoolname;
+        mJoinClassSubmitRequest.provinceid="";
+        mJoinClassSubmitRequest.validKey=SysEncryptUtil.getMd5_32(LoginInfo.getMobile() + "&" + "yxylmobile");
+        mJoinClassSubmitRequest.startRequest(JoinClassSubmitResponse.class, new HttpCallback<JoinClassSubmitResponse>() {
+            @Override
+            public void onSuccess(RequestBase request, JoinClassSubmitResponse ret) {
+                rootView.hiddenLoadingView();
+                if (ret.status.getCode()==0){
+                    LoginInfo.saveCacheData(ret.data.get(0));
+                    MainActivity.invoke(JoinClassSubmitActivity.this);
+                    JoinClassSubmitActivity.this.finish();
+                }else {
+                    ToastManager.showMsg(ret.status.getDesc());
+                }
+            }
 
+            @Override
+            public void onFail(RequestBase request, Error error) {
+                rootView.hiddenLoadingView();
+                ToastManager.showMsg(error.getMessage().trim());
+            }
+        });
     }
 }

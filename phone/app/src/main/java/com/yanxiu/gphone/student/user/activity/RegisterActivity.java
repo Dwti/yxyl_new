@@ -20,6 +20,7 @@ import com.yanxiu.gphone.student.user.response.RegisterResponse;
 import com.yanxiu.gphone.student.user.response.VerCodeResponse;
 import com.yanxiu.gphone.student.user.http.RegisterRequet;
 import com.yanxiu.gphone.student.user.http.SendVerCodeRequest;
+import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.ToastManager;
 import com.yanxiu.gphone.student.util.time.CountDownManager;
 import com.yanxiu.gphone.student.util.EditTextManger;
@@ -71,6 +72,7 @@ public class RegisterActivity extends YanxiuBaseActivity implements View.OnClick
         mContext = RegisterActivity.this;
         rootView=new PublicLoadLayout(mContext);
         rootView.setContentView(R.layout.activity_register);
+        rootView.finish();
         setContentView(rootView);
         initView();
         listener();
@@ -183,7 +185,7 @@ public class RegisterActivity extends YanxiuBaseActivity implements View.OnClick
         });
     }
 
-    private void onRegister(String mobile, String verCode, String passWord) {
+    private void onRegister(final String mobile, String verCode, final String passWord) {
         rootView.showLoadingView();
         mRegisterRequet = new RegisterRequet();
         mRegisterRequet.mobile = mobile;
@@ -194,6 +196,8 @@ public class RegisterActivity extends YanxiuBaseActivity implements View.OnClick
             public void onSuccess(RequestBase request, RegisterResponse ret) {
                 rootView.hiddenLoadingView();
                 if (ret.status.getCode() == 0) {
+                    LoginInfo.setMobile(mobile);
+                    LoginInfo.setPassWord(passWord);
                     JoinClassActivity.LaunchActivity(mContext);
                 } else {
                     ToastManager.showMsg(ret.status.getDesc());

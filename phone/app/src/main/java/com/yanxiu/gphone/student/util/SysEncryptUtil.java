@@ -139,4 +139,31 @@ public class SysEncryptUtil {
         }
         return null;
     }
+
+    public static String getMd5_32(String md5Str) {
+        String result = "";
+        try {
+            MessageDigest algorithm = MessageDigest.getInstance("MD5");
+            algorithm.reset();
+            algorithm.update(md5Str.getBytes("utf-8"));
+
+            byte[] bytes=algorithm.digest();
+            StringBuilder hexString = new StringBuilder();
+
+            for (int b : bytes) {
+                if (b < 0)
+                    b += 256;
+                if (b < 16)
+                    hexString.append("0");
+                hexString.append(Integer.toHexString(b));
+            }
+            result=hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
 }

@@ -61,6 +61,7 @@ public class ForgetPassWordActivity extends YanxiuBaseActivity implements View.O
         mContext = ForgetPassWordActivity.this;
         rootView=new PublicLoadLayout(mContext);
         rootView.setContentView(R.layout.activity_forget_password);
+        rootView.finish();
         setContentView(rootView);
         String mobile = getIntent().getStringExtra(INTENT_MOBILE);
         initView();

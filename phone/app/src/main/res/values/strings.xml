@@ -73,4 +73,12 @@
     <string name="school_name">学校名称</string>
     <string name="input_user_name">你的姓名</string>
     <string name="input_user_true_name">请输入你的真实姓名</string>
+    <string name="score_rate">正确率</string>
+    <string name="text_loading">正在加载...</string>
+    <string name="text_click_to_load_more">点击加载更多</string>
+    <string name="click_to_refresh">点击刷新</string>
+    <string name="click_to_retry">点击重试</string>
+    <string name="load_failed">页面加载失败...</string>
+    <string name="class_no_homework">您加入的班级尚未布置过作业</string>
+    <string name="apply_for_class_checking">入班申请正在审核中...</string>
 </resources>

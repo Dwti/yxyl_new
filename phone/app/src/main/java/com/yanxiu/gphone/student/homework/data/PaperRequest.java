@@ -7,7 +7,9 @@ import com.yanxiu.gphone.student.base.ExerciseBaseRequest;
  */
 
 public class PaperRequest extends ExerciseBaseRequest {
-    private String paperId = "279219";
+
+    private String paperId;
+
     @Override
     protected boolean shouldLog() {
         return false;

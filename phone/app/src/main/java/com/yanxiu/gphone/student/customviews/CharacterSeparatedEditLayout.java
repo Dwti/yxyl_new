@@ -1,12 +1,9 @@
 package com.yanxiu.gphone.student.customviews;
 
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.os.Build;
 import android.support.annotation.AttrRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
@@ -22,8 +19,6 @@ import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.TimerTask;
 
 /**
@@ -31,11 +26,19 @@ import java.util.TimerTask;
  */
 
 public class CharacterSeparatedEditLayout extends FrameLayout{
+
     private GridView mGridView;
+
     private EditText mEditText;
+
     private static final int ITEM_COUNT = 8;
+
     private Context mContext;
+
     private GridAdapter mAdapter;
+
+    private OnTextChangedListener mOnTextChangedListener;
+
     public CharacterSeparatedEditLayout(@NonNull Context context) {
         super(context);
         initView(context);
@@ -75,6 +78,9 @@ public class CharacterSeparatedEditLayout extends FrameLayout{
             @Override
             public void afterTextChanged(Editable s) {
                 mAdapter.replaceData(s.toString());
+                if(mOnTextChangedListener != null){
+                    mOnTextChangedListener.onTextChanged(s);
+                }
             }
         });
 
@@ -98,6 +104,15 @@ public class CharacterSeparatedEditLayout extends FrameLayout{
     public String getText(){
         return mEditText.getText().toString();
     }
+
+    public void setOnTextChangedListener(OnTextChangedListener onTextChangedListener) {
+        this.mOnTextChangedListener = onTextChangedListener;
+    }
+
+    public interface OnTextChangedListener{
+        void onTextChanged(Editable s);
+    }
+
     private static class GridAdapter extends BaseAdapter{
 
         private Context context;

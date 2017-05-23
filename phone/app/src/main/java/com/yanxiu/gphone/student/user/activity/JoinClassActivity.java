@@ -3,6 +3,7 @@ package com.yanxiu.gphone.student.user.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -25,7 +26,9 @@ import com.yanxiu.gphone.student.util.ToastManager;
  * Time : 2017/5/18 16:03.
  * Function :
  */
-public class JoinClassActivity extends YanxiuBaseActivity implements View.OnClickListener {
+public class JoinClassActivity extends YanxiuBaseActivity implements View.OnClickListener, CharacterSeparatedEditLayout.OnTextChangedListener {
+
+    public static final String KEY="bean";
 
     private Context mContext;
     private LinearLayout mCompleteInfoView;
@@ -47,8 +50,8 @@ public class JoinClassActivity extends YanxiuBaseActivity implements View.OnClic
         mContext=JoinClassActivity.this;
         rootView=new PublicLoadLayout(mContext);
         rootView.setContentView(R.layout.fragment_search_class);
+        rootView.finish();
         setContentView(rootView);
-
         initView();
         initData();
         Listener();
@@ -81,6 +84,7 @@ public class JoinClassActivity extends YanxiuBaseActivity implements View.OnClic
     private void Listener() {
         mCompleteInfoView.setOnClickListener(JoinClassActivity.this);
         mNextView.setOnClickListener(JoinClassActivity.this);
+        mInputClassNumberView.setOnTextChangedListener(JoinClassActivity.this);
     }
 
     @Override
@@ -109,7 +113,7 @@ public class JoinClassActivity extends YanxiuBaseActivity implements View.OnClic
             public void onSuccess(RequestBase request, JoinClassResponse ret) {
                 rootView.hiddenLoadingView();
                 if (ret.status.getCode()==0) {
-                    JoinClassSubmitActivity.LaunchActivity(mContext);
+                    JoinClassSubmitActivity.LaunchActivity(mContext,ret.data.get(0));
                 }else {
                     ToastManager.showMsg(ret.status.getDesc());
                 }
@@ -121,5 +125,17 @@ public class JoinClassActivity extends YanxiuBaseActivity implements View.OnClic
                 ToastManager.showMsg(error.getMessage().trim());
             }
         });
+    }
+
+    @Override
+    public void onTextChanged(Editable s) {
+        String text=s.toString().trim();
+        if (text.length()>0){
+            mWavasView.setCanShowWave(true);
+            mNextView.setEnabled(true);
+        }else {
+            mWavasView.setCanShowWave(false);
+            mNextView.setEnabled(false);
+        }
     }
 }

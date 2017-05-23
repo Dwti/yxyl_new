@@ -75,6 +75,7 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
         mContext=LoginActivity.this;
         rootView=new PublicLoadLayout(mContext);
         rootView.setContentView(R.layout.activity_login);
+        rootView.finish();
         setContentView(rootView);
         initView();
         listener();
@@ -210,7 +211,7 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
             public void onSuccess(RequestBase request, LoginResponse ret) {
                 rootView.hiddenLoadingView();
                 if (ret.status.getCode()==0){
-                    LoginInfo.savaCacheData(ret.data.get(0));
+                    LoginInfo.saveCacheData(ret.data.get(0));
                     MainActivity.invoke(LoginActivity.this);
                     LoginActivity.this.finish();
                 }else if (ret.status.getCode()==80){
