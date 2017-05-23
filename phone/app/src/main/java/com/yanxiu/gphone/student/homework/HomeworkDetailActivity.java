@@ -7,6 +7,8 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
@@ -24,7 +26,8 @@ import java.util.List;
  */
 
 public class HomeworkDetailActivity extends Activity implements HomeworkDetailContract.View{
-    public static final String EXTRA_SUBJECT_ID = "HOMEWORK_ID";
+    public static final String EXTRA_SUBJECT_ID = "SUBJECT_ID";
+    public static final String EXTRA_SUBJECT_NAME = "SUBJECT_NAME";
 
     private List<HomeworkDetailBean> mHomeworkList = new ArrayList<>();
 
@@ -33,6 +36,12 @@ public class HomeworkDetailActivity extends Activity implements HomeworkDetailCo
     private RecyclerView mRecyclerView;
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
+
+    private View mTipsView;
+
+    private TextView mTips;
+
+    private Button mRefreshBtn;
 
     private boolean mIsLoadingMore = false;
 
@@ -43,17 +52,23 @@ public class HomeworkDetailActivity extends Activity implements HomeworkDetailCo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homework_detail);
 
+        TextView title = (TextView) findViewById(R.id.tv_title);
         View back = findViewById(R.id.iv_back);
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
+        mTipsView = findViewById(R.id.tips_layout);
+        mTips = (TextView) findViewById(R.id.tv_tips);
+        mRefreshBtn = (Button) findViewById(R.id.btn_refresh);
 
         mHomeworkDetailAdapter = new HomeworkDetailAdapter(mHomeworkList,mItemClickListener);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mHomeworkDetailAdapter);
 
-        String homeworkId = getIntent().getStringExtra(EXTRA_SUBJECT_ID);
+        String subjectId = getIntent().getStringExtra(EXTRA_SUBJECT_ID);
+        String subjectName = getIntent().getStringExtra(EXTRA_SUBJECT_NAME);
+        title.setText(subjectName);
 
-        HomeworkDetailPresenter presenter = new HomeworkDetailPresenter(homeworkId,HomeworkDetailRepository.getInstance(),this);
+        HomeworkDetailPresenter presenter = new HomeworkDetailPresenter(subjectId,HomeworkDetailRepository.getInstance(),this);
         setPresenter(presenter);
         mPresenter.start();
 
@@ -65,23 +80,30 @@ public class HomeworkDetailActivity extends Activity implements HomeworkDetailCo
         });
 
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            LinearLayoutManager layoutManager = (LinearLayoutManager) mRecyclerView.getLayoutManager();
+            int totalItemCount ;
+            int lastVisibleItemPosition;
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if(dy > 0){
-                    LinearLayoutManager layoutManager = (LinearLayoutManager) mRecyclerView.getLayoutManager();
-                    int totalItemCount = layoutManager.getItemCount();
-                    int lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
-                    if(!mIsLoadingMore && lastVisibleItemPosition + 1 == totalItemCount){
-                        mIsLoadingMore = true;
-                        mPresenter.loadMoreHomework();
-                    }
+                totalItemCount = layoutManager.getItemCount();
+                lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
+                if(dy > 0 && !mIsLoadingMore && lastVisibleItemPosition + 1 == totalItemCount){
+                    mIsLoadingMore = true;
+                    mPresenter.loadMoreHomework();
                 }
             }
         });
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                mPresenter.loadHomework();
+            }
+        });
+        mRefreshBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 mPresenter.loadHomework();
             }
         });
@@ -105,32 +127,24 @@ public class HomeworkDetailActivity extends Activity implements HomeworkDetailCo
 
     @Override
     public void showHomework(List<HomeworkDetailBean> homeworkList) {
+        showContentView();
         mHomeworkDetailAdapter.replaceData(homeworkList);
     }
 
     @Override
     public void showDataEmpty() {
-        //TODO
+        showDataEmptyView();
     }
 
     @Override
     public void showDataError() {
-        //TODO
-    }
-
-    @Override
-    public void showApplyingForClass() {
-        //TODO
-    }
-
-    @Override
-    public void openJoinClassUI() {
-        //TODO
+        showDataErrorView();
     }
 
     @Override
     public void openAnswerQuestionUI() {
         //TODO
+
     }
 
     @Override
@@ -156,6 +170,25 @@ public class HomeworkDetailActivity extends Activity implements HomeworkDetailCo
     @Override
     public void setPresenter(HomeworkDetailContract.Presenter presenter) {
         mPresenter = presenter;
+    }
+
+    private void showContentView(){
+        mSwipeRefreshLayout.setVisibility(View.VISIBLE);
+        mTipsView.setVisibility(View.GONE);
+    }
+
+    private void showDataEmptyView(){
+        mSwipeRefreshLayout.setVisibility(View.GONE);
+        mTipsView.setVisibility(View.VISIBLE);
+        mTips.setText(R.string.class_no_homework);
+        mRefreshBtn.setText(R.string.click_to_refresh);
+    }
+
+    private void showDataErrorView(){
+        mSwipeRefreshLayout.setVisibility(View.GONE);
+        mTipsView.setVisibility(View.VISIBLE);
+        mTips.setText(R.string.load_failed);
+        mRefreshBtn.setText(R.string.click_to_retry);
     }
 
     HomeworkDetailAdapter.HomeworkItemClickListener mItemClickListener = new HomeworkDetailAdapter.HomeworkItemClickListener() {

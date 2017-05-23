@@ -24,10 +24,6 @@ public interface HomeworkDetailContract {
 
         void showDataError();
 
-        void showApplyingForClass();
-
-        void openJoinClassUI();
-
         void openAnswerQuestionUI();
 
         void showNoMoreData();

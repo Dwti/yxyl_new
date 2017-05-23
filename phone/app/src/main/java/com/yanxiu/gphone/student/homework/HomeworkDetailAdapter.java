@@ -87,11 +87,13 @@ public class HomeworkDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }else if(holder instanceof FooterViewHolder){
             FooterViewHolder viewHolder = (FooterViewHolder) holder;
             if(mIsLoadingMore){
-                ((FooterViewHolder)holder).mProgressBar.setVisibility(View.VISIBLE);
-                ((FooterViewHolder)holder).mLoadingText.setText(((FooterViewHolder) holder).mLoadingText.getContext().getResources().getString(R.string.text_loading));
+                viewHolder.mItemVIew.setVisibility(View.VISIBLE);
+                viewHolder.mProgressBar.setVisibility(View.VISIBLE);
+                viewHolder.mLoadingText.setText(((FooterViewHolder) holder).mLoadingText.getContext().getResources().getString(R.string.text_loading));
             }else {
-                ((FooterViewHolder)holder).mProgressBar.setVisibility(View.GONE);
-                ((FooterViewHolder)holder).mLoadingText.setText(((FooterViewHolder) holder).mLoadingText.getContext().getResources().getString(R.string.text_click_to_load_more));
+                viewHolder.mItemVIew.setVisibility(View.GONE);
+                viewHolder.mProgressBar.setVisibility(View.GONE);
+                viewHolder.mLoadingText.setText(((FooterViewHolder) holder).mLoadingText.getContext().getResources().getString(R.string.text_click_to_load_more));
             }
         }
     }
@@ -159,8 +161,10 @@ public class HomeworkDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         ProgressBar mProgressBar;
         TextView mLoadingText;
+        View mItemVIew;
         public FooterViewHolder(View itemView) {
             super(itemView);
+            mItemVIew = itemView;
             mProgressBar = (ProgressBar) itemView.findViewById(R.id.progressBar);
             mLoadingText = (TextView) itemView.findViewById(R.id.loadingText);
             itemView.setOnClickListener(new View.OnClickListener() {

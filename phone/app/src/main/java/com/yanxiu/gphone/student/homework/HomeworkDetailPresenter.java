@@ -1,6 +1,5 @@
 package com.yanxiu.gphone.student.homework;
 
-import com.yanxiu.gphone.student.homework.classmanage.ClassStatus;
 import com.yanxiu.gphone.student.homework.data.HomeworkDetailBean;
 
 import java.util.List;
@@ -14,10 +13,10 @@ public class HomeworkDetailPresenter implements HomeworkDetailContract.Presenter
 
     private final HomeworkDetailContract.View mHomeworkDetailView;
 
-    private String mClassId;
+    private String mHomeworkId;
 
     public HomeworkDetailPresenter(String classId, HomeworkDetailRepository mHomeworkResponsitory, HomeworkDetailContract.View mHomeworkDetailView) {
-        this.mClassId = classId;
+        this.mHomeworkId = classId;
         this.mHomeworkResponsitory = mHomeworkResponsitory;
         this.mHomeworkDetailView = mHomeworkDetailView;
     }
@@ -30,7 +29,7 @@ public class HomeworkDetailPresenter implements HomeworkDetailContract.Presenter
     @Override
     public void loadHomework() {
         mHomeworkDetailView.setLoadingIndicator(true);
-        mHomeworkResponsitory.getHomeworkDetails(mClassId, new HomeworkDetailDataSource.LoadHomeworkDetailCallback() {
+        mHomeworkResponsitory.getHomeworkDetails(mHomeworkId, new HomeworkDetailDataSource.LoadHomeworkDetailCallback() {
             @Override
             public void onHomeworkDetailLoaded(List<HomeworkDetailBean> homeworkDetails) {
                 if(!mHomeworkDetailView.isActive()){
@@ -55,13 +54,7 @@ public class HomeworkDetailPresenter implements HomeworkDetailContract.Presenter
                     return;
                 }
                 mHomeworkDetailView.setLoadingIndicator(false);
-                if(code == ClassStatus.NO_CLASS.getCode()){
-                    mHomeworkDetailView.openJoinClassUI();
-                }else if(code == ClassStatus.APPLYING_CLASS.getCode()){
-                    mHomeworkDetailView.showApplyingForClass();
-                }else {
-                    mHomeworkDetailView.showDataError();
-                }
+                mHomeworkDetailView.showDataError();
             }
         });
     }
@@ -73,7 +66,7 @@ public class HomeworkDetailPresenter implements HomeworkDetailContract.Presenter
             return;
         }
         mHomeworkDetailView.setLoadingMoreIndicator(true);
-        mHomeworkResponsitory.getMoreHomeworkDetails(mClassId, new HomeworkDetailDataSource.LoadHomeworkDetailCallback() {
+        mHomeworkResponsitory.getMoreHomeworkDetails(mHomeworkId, new HomeworkDetailDataSource.LoadHomeworkDetailCallback() {
             @Override
             public void onHomeworkDetailLoaded(List<HomeworkDetailBean> homeworkDetails) {
                 if(!mHomeworkDetailView.isActive()){
@@ -98,13 +91,7 @@ public class HomeworkDetailPresenter implements HomeworkDetailContract.Presenter
                     return;
                 }
                 mHomeworkDetailView.setLoadingMoreIndicator(false);
-                if(code == ClassStatus.NO_CLASS.getCode()){
-                    mHomeworkDetailView.openJoinClassUI();
-                }else if(code == ClassStatus.APPLYING_CLASS.getCode()){
-                    mHomeworkDetailView.showApplyingForClass();
-                }else {
-                    mHomeworkDetailView.showLoadMoreDataError(msg);
-                }
+                mHomeworkDetailView.showLoadMoreDataError(msg);
             }
         });
     }
