@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
+import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
 import com.yanxiu.gphone.student.customviews.WavesLayout;
 import com.yanxiu.gphone.student.util.EditTextManger;
 
@@ -36,6 +37,7 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
     private boolean isUserNameReady = false;
     private boolean isSchoolReady = false;
     private boolean isPeriodReady = false;
+    private PublicLoadLayout rootView;
 
     public static void LaunchActivity(Context context) {
         Intent intent = new Intent(context, CompleteInfoActivity.class);
@@ -45,8 +47,10 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_completeinfo);
         mContext = CompleteInfoActivity.this;
+        rootView=new PublicLoadLayout(mContext);
+        rootView.setContentView(R.layout.activity_completeinfo);
+        setContentView(rootView);
         initView();
         listener();
         initData();
@@ -95,8 +99,13 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
                 ChooseLocationActivity.LaunchActivity(mContext);
                 break;
             case R.id.tv_submit:
+                submitInfo();
                 break;
         }
+    }
+
+    private void submitInfo(){
+        rootView.showLoadingView();
     }
 
     @Override

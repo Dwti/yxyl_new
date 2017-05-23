@@ -8,9 +8,16 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.test.yanxiu.network.HttpCallback;
+import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
+import com.yanxiu.gphone.student.customviews.CharacterSeparatedEditLayout;
+import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
 import com.yanxiu.gphone.student.customviews.WavesLayout;
+import com.yanxiu.gphone.student.user.http.JoinClassRequest;
+import com.yanxiu.gphone.student.user.response.JoinClassResponse;
+import com.yanxiu.gphone.student.util.ToastManager;
 
 @SuppressWarnings("all")
 /**
@@ -25,6 +32,9 @@ public class JoinClassActivity extends YanxiuBaseActivity implements View.OnClic
     private TextView mJoinClassView;
     private WavesLayout mWavasView;
     private Button mNextView;
+    private CharacterSeparatedEditLayout mInputClassNumberView;
+    private PublicLoadLayout rootView;
+    private JoinClassRequest mJoinClassRequest;
 
     public static void LaunchActivity(Context context){
         Intent intent=new Intent(context,JoinClassActivity.class);
@@ -34,11 +44,23 @@ public class JoinClassActivity extends YanxiuBaseActivity implements View.OnClic
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_join_class);
         mContext=JoinClassActivity.this;
+        rootView=new PublicLoadLayout(mContext);
+        rootView.setContentView(R.layout.fragment_search_class);
+        setContentView(rootView);
+
         initView();
         initData();
         Listener();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mJoinClassRequest!=null){
+            mJoinClassRequest.cancelRequest();
+            mJoinClassRequest=null;
+        }
     }
 
     private void initView() {
@@ -47,6 +69,7 @@ public class JoinClassActivity extends YanxiuBaseActivity implements View.OnClic
         TextView mClassNumberView= (TextView) findViewById(R.id.tv_class_number);
         mWavasView= (WavesLayout) findViewById(R.id.wavesLayout);
         mNextView= (Button) findViewById(R.id.btn_next);
+        mInputClassNumberView= (CharacterSeparatedEditLayout) findViewById(R.id.input_number_layout);
     }
 
     private void initData() {
@@ -64,10 +87,39 @@ public class JoinClassActivity extends YanxiuBaseActivity implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_next:
+                String classNumber=mInputClassNumberView.getText().trim();
+                if (classNumber.length()<8){
+                    ToastManager.showMsg(getText(R.string.class_number_error));
+                    return;
+                }
+                searchClass(classNumber);
                 break;
             case R.id.ll_complete_info:
                 CompleteInfoActivity.LaunchActivity(mContext);
                 break;
         }
+    }
+
+    private void searchClass(String classNumber){
+        rootView.showLoadingView();
+        mJoinClassRequest=new JoinClassRequest();
+        mJoinClassRequest.classId=classNumber;
+        mJoinClassRequest.startRequest(JoinClassResponse.class, new HttpCallback<JoinClassResponse>() {
+            @Override
+            public void onSuccess(RequestBase request, JoinClassResponse ret) {
+                rootView.hiddenLoadingView();
+                if (ret.status.getCode()==0) {
+                    JoinClassSubmitActivity.LaunchActivity(mContext);
+                }else {
+                    ToastManager.showMsg(ret.status.getDesc());
+                }
+            }
+
+            @Override
+            public void onFail(RequestBase request, Error error) {
+                rootView.hiddenLoadingView();
+                ToastManager.showMsg(error.getMessage().trim());
+            }
+        });
     }
 }

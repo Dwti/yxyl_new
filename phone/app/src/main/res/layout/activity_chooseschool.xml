@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/color_edf0ee"
     android:orientation="vertical">
 
     <include
@@ -11,14 +12,105 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <EditText
-            android:layout_width="wrap_content"
+        android:background="@color/color_ffffff"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_button_height"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/input_school_layout_margin_l_r"
+            android:layout_marginRight="@dimen/input_school_layout_margin_l_r"
+            android:layout_marginTop="@dimen/login_button_margin_top"
+            android:background="@drawable/shape_input_school_layout"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/et_school_name"
+                android:layout_width="@dimen/login_default_width"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/input_school_name_margin_l"
+                android:layout_weight="1"
+                android:background="@color/color_ffffff"
+                android:hint="@string/input_school_name"
+                android:textColor="@color/color_333333"
+                android:textColorHint="@color/color_999999"
+                android:textSize="@dimen/login_edit_default_textsize" />
+
+            <View
+                android:layout_width="@dimen/common_line_height"
+                android:layout_height="@dimen/input_school_lines_h"
+                android:background="@color/color_cccccc" />
+
+            <ImageView
+                android:id="@+id/iv_search"
+                android:layout_width="@dimen/login_edit_icon_w_h"
+                android:layout_height="@dimen/login_edit_icon_w_h"
+                android:layout_marginEnd="@dimen/input_school_r_icon_margin"
+                android:layout_marginStart="@dimen/input_school_r_icon_margin"
+                android:background="@color/color_33ffff"
+                android:contentDescription="@null" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"/>
-        <View
-            android:layout_width="@dimen/common_line_height"
-            android:layout_height="wrap_content"/>
+            android:layout_marginLeft="@dimen/input_school_layout_margin_l_r"
+            android:layout_marginRight="@dimen/input_school_layout_margin_l_r"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/input_school_layout_margin_l_r"
+            android:paddingTop="@dimen/input_school_layout_margin_l_r">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/input_school_text_location"
+                android:textColor="@color/color_89e00d"
+                android:textSize="@dimen/complete_info_textsize" />
+
+            <TextView
+                android:id="@+id/tv_province"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_89e00d"
+                android:textSize="@dimen/complete_info_textsize" />
+
+            <View
+                android:layout_width="@dimen/input_school_round_w_h"
+                android:layout_height="@dimen/input_school_round_w_h"
+                android:layout_marginEnd="@dimen/input_school_round_margin_l_r"
+                android:layout_marginStart="@dimen/input_school_round_margin_l_r"
+                android:background="@drawable/shape_round_conter" />
+
+            <TextView
+                android:id="@+id/tv_city"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_89e00d"
+                android:textSize="@dimen/complete_info_textsize" />
+
+            <View
+                android:layout_width="@dimen/input_school_round_w_h"
+                android:layout_height="@dimen/input_school_round_w_h"
+                android:layout_marginEnd="@dimen/input_school_round_margin_l_r"
+                android:layout_marginStart="@dimen/input_school_round_margin_l_r"
+                android:background="@drawable/shape_round_conter" />
+
+            <TextView
+                android:id="@+id/tv_area"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_89e00d"
+                android:textSize="@dimen/complete_info_textsize" />
+
+        </LinearLayout>
     </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recy_school_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </LinearLayout>

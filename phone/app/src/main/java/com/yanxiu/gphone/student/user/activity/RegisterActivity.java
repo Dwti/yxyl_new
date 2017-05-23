@@ -15,6 +15,7 @@ import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
+import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
 import com.yanxiu.gphone.student.user.response.RegisterResponse;
 import com.yanxiu.gphone.student.user.response.VerCodeResponse;
 import com.yanxiu.gphone.student.user.http.RegisterRequet;
@@ -57,6 +58,7 @@ public class RegisterActivity extends YanxiuBaseActivity implements View.OnClick
     private boolean isCipher = true;
     private SendVerCodeRequest mSendVerCodeRequest;
     private RegisterRequet mRegisterRequet;
+    private PublicLoadLayout rootView;
 
     public static void LaunchActivity(Context context) {
         Intent intent = new Intent(context, RegisterActivity.class);
@@ -66,8 +68,10 @@ public class RegisterActivity extends YanxiuBaseActivity implements View.OnClick
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
         mContext = RegisterActivity.this;
+        rootView=new PublicLoadLayout(mContext);
+        rootView.setContentView(R.layout.activity_register);
+        setContentView(rootView);
         initView();
         listener();
         initData();
@@ -156,12 +160,14 @@ public class RegisterActivity extends YanxiuBaseActivity implements View.OnClick
     }
 
     private void sendVerCode(String mobile) {
+        rootView.showLoadingView();
         mSendVerCodeRequest = new SendVerCodeRequest();
         mSendVerCodeRequest.mobile = mobile;
         mSendVerCodeRequest.type = TYPE;
         mSendVerCodeRequest.startRequest(VerCodeResponse.class, new HttpCallback<VerCodeResponse>() {
             @Override
             public void onSuccess(RequestBase request, VerCodeResponse ret) {
+                rootView.hiddenLoadingView();
                 if (ret.status.getCode() == 0) {
                     startTiming(45000);
                 } else {
@@ -171,12 +177,14 @@ public class RegisterActivity extends YanxiuBaseActivity implements View.OnClick
 
             @Override
             public void onFail(RequestBase request, Error error) {
+                rootView.hiddenLoadingView();
                 ToastManager.showMsg(error.getMessage());
             }
         });
     }
 
     private void onRegister(String mobile, String verCode, String passWord) {
+        rootView.showLoadingView();
         mRegisterRequet = new RegisterRequet();
         mRegisterRequet.mobile = mobile;
         mRegisterRequet.code = verCode;
@@ -184,6 +192,7 @@ public class RegisterActivity extends YanxiuBaseActivity implements View.OnClick
         mRegisterRequet.startRequest(RegisterResponse.class, new HttpCallback<RegisterResponse>() {
             @Override
             public void onSuccess(RequestBase request, RegisterResponse ret) {
+                rootView.hiddenLoadingView();
                 if (ret.status.getCode() == 0) {
                     JoinClassActivity.LaunchActivity(mContext);
                 } else {
@@ -193,6 +202,7 @@ public class RegisterActivity extends YanxiuBaseActivity implements View.OnClick
 
             @Override
             public void onFail(RequestBase request, Error error) {
+                rootView.hiddenLoadingView();
                 ToastManager.showMsg(error.getMessage());
             }
         });

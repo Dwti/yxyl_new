@@ -198,7 +198,7 @@
     <dimen name="login_default_width">0dp</dimen>
     <dimen name="login_edit_margin_parent_l">20dp</dimen>
     <dimen name="login_edit_default_textsize">18dp</dimen>
-    <dimen name="login_edit_icon_w_h">13dp</dimen>
+    <dimen name="login_edit_icon_w_h">17dp</dimen>
     <dimen name="login_edit_margin_top">2dp</dimen>
     <dimen name="login_button_margin_top">15dp</dimen>
     <dimen name="complete_info_textsize">16dp</dimen>
@@ -231,4 +231,18 @@
 
     <dimen name="login_thrid_padding">5dp</dimen>
     <dimen name="select_city_view_padding">15dp</dimen>
+    <dimen name="input_school_lines_h">14dp</dimen>
+    <dimen name="input_school_name_margin_l">18dp</dimen>
+    <dimen name="input_school_layout_margin_l_r">15dp</dimen>
+    <dimen name="input_school_r_icon_margin">16dp</dimen>
+    <dimen name="input_school_layout_stroke_w">2dp</dimen>
+    <dimen name="input_school_round_w_h">3dp</dimen>
+    <dimen name="input_school_round_margin_l_r">7dp</dimen>
+
+    <dimen name="join_class_submit_image_top_h">120dp</dimen>
+    <dimen name="join_class_sunmit_round_w_h">5dp</dimen>
+    <dimen name="join_class_submit_class_margin_l">8dp</dimen>
+    <dimen name="join_class_submit_text_size">21dp</dimen>
+    <dimen name="join_class_submit_edit_margin_t">25dp</dimen>
+    <dimen name="join_class_submit_edit_margin_l">20dp</dimen>
 </resources>

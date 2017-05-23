@@ -12,6 +12,7 @@ import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
+import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
 import com.yanxiu.gphone.student.user.response.ForgerPassWordResponse;
 import com.yanxiu.gphone.student.user.response.VerCodeResponse;
 import com.yanxiu.gphone.student.user.http.ForgetPassWordRequest;
@@ -46,6 +47,7 @@ public class ForgetPassWordActivity extends YanxiuBaseActivity implements View.O
     private boolean isVerCodeReady = false;
     private SendVerCodeRequest mSendVerCodeRequest;
     private ForgetPassWordRequest mForgetPassWordRequest;
+    private PublicLoadLayout rootView;
 
     public static void LaunchActivity(Context context, String mobile) {
         Intent intent = new Intent(context, ForgetPassWordActivity.class);
@@ -56,8 +58,10 @@ public class ForgetPassWordActivity extends YanxiuBaseActivity implements View.O
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_forget_password);
         mContext = ForgetPassWordActivity.this;
+        rootView=new PublicLoadLayout(mContext);
+        rootView.setContentView(R.layout.activity_forget_password);
+        setContentView(rootView);
         String mobile = getIntent().getStringExtra(INTENT_MOBILE);
         initView();
         listener();
@@ -182,12 +186,14 @@ public class ForgetPassWordActivity extends YanxiuBaseActivity implements View.O
     }
 
     private void sendVerCode(String mobile) {
+        rootView.showLoadingView();
         mSendVerCodeRequest = new SendVerCodeRequest();
         mSendVerCodeRequest.mobile = mobile;
         mSendVerCodeRequest.type = TYPE;
         mSendVerCodeRequest.startRequest(VerCodeResponse.class, new HttpCallback<VerCodeResponse>() {
             @Override
             public void onSuccess(RequestBase request, VerCodeResponse ret) {
+                rootView.hiddenLoadingView();
                 if (ret.status.getCode() == 0) {
                     startTiming(45000);
                 } else {
@@ -197,12 +203,14 @@ public class ForgetPassWordActivity extends YanxiuBaseActivity implements View.O
 
             @Override
             public void onFail(RequestBase request, Error error) {
+                rootView.hiddenLoadingView();
                 ToastManager.showMsg(error.getMessage());
             }
         });
     }
 
     private void onNext(String mobile, String verCode) {
+        rootView.showLoadingView();
         mForgetPassWordRequest = new ForgetPassWordRequest();
         mForgetPassWordRequest.mobile = mobile;
         mForgetPassWordRequest.code = verCode;
@@ -210,6 +218,7 @@ public class ForgetPassWordActivity extends YanxiuBaseActivity implements View.O
         mForgetPassWordRequest.startRequest(ForgerPassWordResponse.class, new HttpCallback<ForgerPassWordResponse>() {
             @Override
             public void onSuccess(RequestBase request, ForgerPassWordResponse ret) {
+                rootView.hiddenLoadingView();
                 if (ret.status.getCode() == 0) {
                     ResetPassWordActivity.LaunchActivity(mContext);
                 } else {
@@ -219,6 +228,7 @@ public class ForgetPassWordActivity extends YanxiuBaseActivity implements View.O
 
             @Override
             public void onFail(RequestBase request, Error error) {
+                rootView.hiddenLoadingView();
                 ToastManager.showMsg(error.getMessage());
             }
         });

@@ -62,4 +62,15 @@
     <string name="cacel_apply_for_class">取消申请</string>
     <string name="exit_class">退出班级</string>
     <string name="guid_join_class">怎样加入班级？</string>
+
+    <string name="input_school_name">请输入学校名字</string>
+    <string name="input_school_text_location">范围：</string>
+
+    <string name="class_number_error">班级号位数不对</string>
+    <string name="class_id">班级号码</string>
+    <string name="teacher_name">老师姓名</string>
+    <string name="student_number">班级成员</string>
+    <string name="school_name">学校名称</string>
+    <string name="input_user_name">你的姓名</string>
+    <string name="input_user_true_name">请输入你的真实姓名</string>
 </resources>

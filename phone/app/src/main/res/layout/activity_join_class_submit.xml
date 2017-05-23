@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_89e00d"
+    android:orientation="vertical">
+
+    <include layout="@layout/main_public_top_layout" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/join_class_submit_image_top_h"
+                android:background="@android:color/holo_blue_light"
+                android:contentDescription="@null" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/login_margin_top_img"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="@dimen/join_class_sunmit_round_w_h"
+                    android:layout_height="@dimen/join_class_sunmit_round_w_h"
+                    android:background="@drawable/shape_round_conter_white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/join_class_submit_class_margin_l"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/join_class_submit_text_size"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/login_edit_margin_l_and_r"
+                android:layout_marginRight="@dimen/login_edit_margin_l_and_r"
+                android:layout_marginTop="@dimen/join_class_submit_edit_margin_t"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/common_button_height"
+                    android:background="@drawable/shape_login_edit_top"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/join_class_submit_edit_margin_l"
+                        android:text="@string/class_id"
+                        android:textColor="@color/color_336600"
+                        android:textSize="@dimen/complete_info_textsize" />
+
+                    <TextView
+                        android:id="@+id/tv_class_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/join_class_submit_edit_margin_l"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/login_edit_default_textsize" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/common_button_height"
+                    android:layout_marginTop="@dimen/common_line_height"
+                    android:background="@drawable/shape_login_edit_center"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/join_class_submit_edit_margin_l"
+                        android:text="@string/teacher_name"
+                        android:textColor="@color/color_336600"
+                        android:textSize="@dimen/complete_info_textsize" />
+
+                    <TextView
+                        android:id="@+id/tv_teacher_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/join_class_submit_edit_margin_l"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/login_edit_default_textsize" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/common_button_height"
+                    android:layout_marginTop="1dp"
+                    android:background="@drawable/shape_login_edit_center"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/join_class_submit_edit_margin_l"
+                        android:text="@string/student_number"
+                        android:textColor="@color/color_336600"
+                        android:textSize="@dimen/complete_info_textsize" />
+
+                    <TextView
+                        android:id="@+id/tv_student_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/join_class_submit_edit_margin_l"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/login_edit_default_textsize" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/common_button_height"
+                    android:layout_marginTop="1dp"
+                    android:background="@drawable/shape_login_edit_bottom"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/join_class_submit_edit_margin_l"
+                        android:text="@string/school_name"
+                        android:textColor="@color/color_336600"
+                        android:textSize="@dimen/complete_info_textsize" />
+
+                    <TextView
+                        android:id="@+id/tv_school_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/join_class_submit_edit_margin_l"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/login_edit_default_textsize" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/common_button_height"
+                    android:layout_marginTop="@dimen/login_button_margin_top"
+                    android:background="@drawable/shape_common_button_bg_disable"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/join_class_submit_edit_margin_l"
+                        android:text="@string/input_user_name"
+                        android:textColor="@color/color_336600"
+                        android:textSize="@dimen/complete_info_textsize" />
+
+                    <EditText
+                        android:id="@+id/et_name"
+                        android:layout_width="@dimen/login_default_width"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/join_class_submit_edit_margin_l"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:ellipsize="end"
+                        android:hint="@string/input_user_true_name"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:textColor="@android:color/white"
+                        android:textColorHint="@color/color_89e00d"
+                        android:textSize="@dimen/login_edit_default_textsize" />
+
+                    <ImageView
+                        android:id="@+id/iv_write"
+                        android:layout_width="@dimen/login_edit_icon_w_h"
+                        android:layout_height="@dimen/login_edit_icon_w_h"
+                        android:layout_marginLeft="@dimen/login_edit_icon_w_h"
+                        android:layout_marginRight="@dimen/login_edit_icon_w_h"
+                        android:background="@android:color/holo_blue_light"
+                        android:contentDescription="@null" />
+
+                </LinearLayout>
+
+
+                <com.yanxiu.gphone.student.customviews.WavesLayout
+                    android:id="@+id/wavesLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    app:waves_animend_alpha="102"
+                    app:waves_canshowwave="false"
+                    app:waves_radius="@dimen/wavesRadius">
+
+                    <TextView
+                        android:id="@+id/tv_add_class"
+                        style="@style/CommonWavesLayout"
+                        android:text="@string/join_class"
+                        android:gravity="center"
+                        android:textColor="@color/color_89e00d" />
+                </com.yanxiu.gphone.student.customviews.WavesLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
