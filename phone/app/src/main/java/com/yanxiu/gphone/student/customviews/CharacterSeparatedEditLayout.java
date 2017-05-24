@@ -98,15 +98,6 @@ public class CharacterSeparatedEditLayout extends FrameLayout{
                 mEditText.setSelection(mEditText.getText().toString().length());
             }
         });
-
-        mEditText.requestFocus();
-        final InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        postDelayed(new TimerTask() {
-            @Override
-            public void run() {
-                imm.showSoftInput(mEditText,0);
-            }
-        }, 100);
     }
 
     public String getText(){
