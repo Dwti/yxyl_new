@@ -16,6 +16,7 @@ import java.util.List;
 
 public class QuestionConvertFactory {
 
+    /**
     public static Paper convertSourcePaperData(PaperBean bean, QuestionShowType showType){
         if (bean == null)
             return null;
@@ -49,7 +50,7 @@ public class QuestionConvertFactory {
         paper.setQuestions(convertQuestion(bean.getPaperTest(),showType));
 
         return paper;
-    }
+    }**/
 
     public static List<BaseQuestion> convertQuestion(List<PaperTestBean> list, QuestionShowType showType){
         if(list == null || list.size()==0)
