@@ -1,5 +1,8 @@
 package com.yanxiu.gphone.student.homework.questions.model;
 
+import com.yanxiu.gphone.student.homework.questions.QuestionConvertFactory;
+import com.yanxiu.gphone.student.homework.questions.QuestionShowType;
+import com.yanxiu.gphone.student.homework.questions.bean.PaperBean;
 import com.yanxiu.gphone.student.homework.questions.bean.PaperStatusBean;
 
 import java.util.ArrayList;
@@ -36,6 +39,35 @@ public class Paper {
     private String subquesnum;
     private String volume;
     private String volumeName;
+
+    public Paper(PaperBean paperBean, QuestionShowType showType) {
+        this.authorid = paperBean.getAuthorid();
+        this.bedition = paperBean.getBedition();
+        this.begintime = paperBean.getBegintime();
+        this.buildtime = paperBean.getBuildtime();
+        this.chapterid = paperBean.getChapterid();
+        this.classid = paperBean.getClassid();
+        this.editionName = paperBean.getEditionName();
+        this.endtime = paperBean.getEndtime();
+        this.id = paperBean.getId();
+        this.name = paperBean.getName();
+        this.paperStatus = paperBean.getPaperStatus();
+        this.questions = QuestionConvertFactory.convertQuestion(paperBean.getPaperTest(),showType);
+        this.parentId = paperBean.getParentId();
+        this.ptype = paperBean.getPtype();
+        this.quesnum = paperBean.getQuesnum();
+        this.redoDays = paperBean.getRedoDays();
+        this.sectionid = paperBean.getSectionid();
+        this.showana = paperBean.getShowana();
+        this.stageName = paperBean.getStageName();
+        this.stageid = paperBean.getStageid();
+        this.status = paperBean.getStatus();
+        this.subjectName = paperBean.getSubjectName();
+        this.subjectid = paperBean.getSubjectid();
+        this.subquesnum = paperBean.getSubquesnum();
+        this.volume = paperBean.getVolume();
+        this.volumeName = paperBean.getVolumeName();
+    }
 
     public String getAuthorid() {
         return authorid;

@@ -3,6 +3,7 @@ package com.yanxiu.gphone.student.homework;
 import com.yanxiu.gphone.student.homework.data.HomeworkDetailBean;
 import com.yanxiu.gphone.student.homework.data.PageBean;
 import com.yanxiu.gphone.student.homework.questions.bean.PaperBean;
+import com.yanxiu.gphone.student.homework.questions.model.Paper;
 
 import java.util.List;
 
@@ -22,7 +23,7 @@ public interface HomeworkDetailDataSource {
 
     interface LoadPaperCallback{
 
-        void onPaperLoaded(List<PaperBean> papers);
+        void onPaperLoaded(Paper paper);
 
         void onDataEmpty();
 

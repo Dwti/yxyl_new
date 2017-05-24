@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -35,22 +36,40 @@ import java.util.List;
  * 首页 作业列表Fragment
  */
 public class HomeworkFragment extends Fragment implements SearchClassFragment.OnJoinClassCompleteListener {
+
     private final static String TAG = HomeworkFragment.class.getSimpleName();
+
     public static final int REQUEST_CLASS_INFO = 0x01;
+
     private int mStatus = -1;  //班级状态，0：已加入班级 71：未加入班级  72：班级正在审核
+
     private String mClassId;
+
     private HomeworkAdapter mHomeworkAdapter;
+
     private SearchClassFragment mSearchClassFragment;
-    TextView mTitle;
-    ListView mListView;
+
+    private View mTipsView;
+
+    private TextView mTitle, mTips;
+
+    private Button mRefreshBtn;
+
+    private ListView mListView;
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_homework, container, false);
-        ImageView btnCheckClassInfo = (ImageView) view.findViewById(R.id.iv_join_class);
-        mTitle = (TextView) view.findViewById(R.id.tv_title);
-        mListView = (ListView) view.findViewById(R.id.list_view);
+
+        View root = inflater.inflate(R.layout.fragment_homework, container, false);
+        ImageView btnCheckClassInfo = (ImageView) root.findViewById(R.id.iv_join_class);
+        mTitle = (TextView) root.findViewById(R.id.tv_title);
+        mListView = (ListView) root.findViewById(R.id.list_view);
+        mTipsView = root.findViewById(R.id.tips_layout);
+        mTips = (TextView) root.findViewById(R.id.tv_tips);
+        mRefreshBtn = (Button) root.findViewById(R.id.btn_refresh);
+
         mHomeworkAdapter = new HomeworkAdapter(new ArrayList<SubjectBean>(0));
         mListView.setAdapter(mHomeworkAdapter);
+
         btnCheckClassInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,8 +85,14 @@ public class HomeworkFragment extends Fragment implements SearchClassFragment.On
                 startActivity(intent);
             }
         });
+        mRefreshBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadSubject();
+            }
+        });
         loadSubject();
-        return view;
+        return root;
     }
 
     private void checkClassInfo() {
@@ -115,28 +140,25 @@ public class HomeworkFragment extends Fragment implements SearchClassFragment.On
             if(ret.getStatus().getCode() == ClassStatus.HAS_CLASS.getCode()){  //已经加入班级
                 mClassId = ret.getProperty().getClassId();
                 if(ret.getData() == null || ret.getData().size() == 0){
-                    //TODO 错误界面，加入的班级未布置过作业
-                    Toast.makeText(getActivity(),"加入的班级未布置过作业",Toast.LENGTH_SHORT).show();
+                    showDataEmptyView();
                 }else {
-                    mHomeworkAdapter.replaceData(ret.getData());
+                    showSubjects(ret.getData());
                     mTitle.setText(ret.getProperty().getClassName());
                 }
             }else if(ret.getStatus().getCode() == ClassStatus.APPLYING_CLASS.getCode()){ //班级正在审核
-                //TODO 错误界面，入班申请正在审核
                 mClassId = ret.getProperty().getClassId();
-                Toast.makeText(getActivity(),"入班申请正在审核",Toast.LENGTH_SHORT).show();
+                showClassApplyView();
             }else if(ret.getStatus().getCode() == ClassStatus.NO_CLASS.getCode()){   //未加入班级
-                //TODO 跳转到加入班级界面
                 openJoinClassUI();
-            }else {
-                //TODO 无数据或者数据错误 或者未登陆 code=99
+            }else {           //其它错误
+                showDataErrorView();
             }
             mStatus = ret.getStatus().getCode();
         }
 
         @Override
         public void onFail(RequestBase request, Error error) {
-            //TODO 弹出错误界面
+            showDataErrorView();
         }
     } ;
 
@@ -146,6 +168,36 @@ public class HomeworkFragment extends Fragment implements SearchClassFragment.On
         ((SearchClassFragment)childFragment).setOnJoinClassCompleteListener(this);
     }
 
+    private void showSubjects(List<SubjectBean> data){
+        showContentView();
+        mHomeworkAdapter.replaceData(data);
+    }
+
+    private void showContentView(){
+        mListView.setVisibility(View.VISIBLE);
+        mTipsView.setVisibility(View.GONE);
+    }
+
+    private void showDataEmptyView(){
+        mListView.setVisibility(View.GONE);
+        mTipsView.setVisibility(View.VISIBLE);
+        mTips.setText(R.string.class_no_homework);
+        mRefreshBtn.setText(R.string.click_to_refresh);
+    }
+
+    private void showClassApplyView(){
+        mListView.setVisibility(View.GONE);
+        mTipsView.setVisibility(View.VISIBLE);
+        mTips.setText(R.string.apply_for_class_checking);
+        mRefreshBtn.setText(R.string.click_to_refresh);
+    }
+
+    private void showDataErrorView(){
+        mListView.setVisibility(View.GONE);
+        mTipsView.setVisibility(View.VISIBLE);
+        mTips.setText(R.string.load_failed);
+        mRefreshBtn.setText(R.string.click_to_retry);
+    }
 
     private void openJoinClassUI(){
         mSearchClassFragment  = SearchClassFragment.getInstance();

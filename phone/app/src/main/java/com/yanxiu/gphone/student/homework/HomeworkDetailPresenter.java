@@ -2,6 +2,7 @@ package com.yanxiu.gphone.student.homework;
 
 import com.yanxiu.gphone.student.homework.data.HomeworkDetailBean;
 import com.yanxiu.gphone.student.homework.questions.bean.PaperBean;
+import com.yanxiu.gphone.student.homework.questions.model.Paper;
 
 import java.util.List;
 
@@ -101,11 +102,11 @@ public class HomeworkDetailPresenter implements HomeworkDetailContract.Presenter
     public void getPaper(final String paperId) {
         mHomeworkRepository.getPaper(paperId, new HomeworkDetailDataSource.LoadPaperCallback() {
             @Override
-            public void onPaperLoaded(List<PaperBean> papers) {
+            public void onPaperLoaded(Paper paper) {
                 if(!mHomeworkDetailView.isActive()){
                     return;
                 }
-                mHomeworkDetailView.openAnswerQuestionUI(paperId);
+                mHomeworkDetailView.openAnswerQuestionUI(paper.getId());
             }
 
             @Override

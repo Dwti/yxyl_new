@@ -8,13 +8,5 @@ import com.yanxiu.gphone.student.base.StatusBean;
  */
 
 public class JoinClassResponse extends ExerciseBaseResponse {
-    private StatusBean status;
 
-    public StatusBean getStatus() {
-        return status;
-    }
-
-    public void setStatus(StatusBean status) {
-        this.status = status;
-    }
 }
