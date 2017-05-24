@@ -30,8 +30,6 @@ import java.util.ArrayList;
  * 答题页面
  */
 public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.OnClickListener,AnswerCardFragment.OnCardItemSelectListener {
-    private static final String EXTRA_NODES = "extra mQuestions";
-
     private FragmentManager mFragmentManager;
     private QAViewPager mViewPager;
     private QAViewPagerAdapter mAdapter;

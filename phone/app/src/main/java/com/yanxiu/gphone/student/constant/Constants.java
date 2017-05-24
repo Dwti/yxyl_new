@@ -17,4 +17,6 @@ public class Constants {
 //    public static String deviceId= DeviceUtil.getAppDeviceId();
     public static String version = "2.4.1";
 
+    public static final String EXTRA_PAPER = "extra_Paper";//传递给答题页的paper数据的key
+
 }
