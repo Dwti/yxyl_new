@@ -18,6 +18,7 @@
     <string name="input_mobile">请输入绑定或注册的手机号</string>
     <string name="verCode_progress">%dS</string>
     <string name="register_password">请输入6&#8211;18位密码</string>
+    <string name="input_password_again">请再次输入密码</string>
     <string name="register_input_mobile">请输入手机号</string>
     <string name="register">注册</string>
     <string name="send_verCode_more">再次获取</string>
@@ -61,6 +62,17 @@
     <string name="cacel_apply_for_class">取消申请</string>
     <string name="exit_class">退出班级</string>
     <string name="guid_join_class">怎样加入班级？</string>
+
     <string name="previous_question">上一题</string>
     <string name="next_question">下一题</string>
+
+    <string name="score_rate">正确率</string>
+    <string name="text_loading">正在加载...</string>
+    <string name="text_click_to_load_more">点击加载更多</string>
+    <string name="click_to_refresh">点击刷新</string>
+    <string name="click_to_retry">点击重试</string>
+    <string name="load_failed">页面加载失败...</string>
+    <string name="class_no_homework">您加入的班级尚未布置过作业</string>
+    <string name="apply_for_class_checking">入班申请正在审核中...</string>
+
 </resources>

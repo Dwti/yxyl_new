@@ -1,6 +1,6 @@
 package com.yanxiu.gphone.student.util;
 
-import com.yanxiu.gphone.student.user.Response.UserMessageBean;
+import com.yanxiu.gphone.student.user.response.UserMessageBean;
 
 import org.litepal.crud.DataSupport;
 

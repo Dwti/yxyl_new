@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.homepage.fragment.ExerciseFragment;
-import com.yanxiu.gphone.student.homepage.fragment.HomeworkFragment;
+import com.yanxiu.gphone.student.homework.HomeworkFragment;
 import com.yanxiu.gphone.student.homepage.fragment.MyFragment;
 
 

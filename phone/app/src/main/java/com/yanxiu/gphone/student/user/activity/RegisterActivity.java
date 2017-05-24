@@ -14,10 +14,9 @@ import android.widget.TextView;
 import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
-import com.yanxiu.gphone.student.base.BaseBean;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
-import com.yanxiu.gphone.student.user.Response.RegisterResponse;
-import com.yanxiu.gphone.student.user.Response.VerCodeResponse;
+import com.yanxiu.gphone.student.user.response.RegisterResponse;
+import com.yanxiu.gphone.student.user.response.VerCodeResponse;
 import com.yanxiu.gphone.student.user.http.RegisterRequet;
 import com.yanxiu.gphone.student.user.http.SendVerCodeRequest;
 import com.yanxiu.gphone.student.util.ToastManager;
@@ -32,7 +31,7 @@ import com.yanxiu.gphone.student.customviews.WavesLayout;
  * Function :
  */
 
-public class RegisterActivity extends YanxiuBaseActivity implements View.OnClickListener {
+public class RegisterActivity extends YanxiuBaseActivity implements View.OnClickListener, EditTextManger.onTextLengthChangedListener {
 
     private static final String TYPE = "0";
     private Context mContext;
@@ -70,8 +69,8 @@ public class RegisterActivity extends YanxiuBaseActivity implements View.OnClick
         setContentView(R.layout.activity_register);
         mContext = RegisterActivity.this;
         initView();
+        listener();
         initData();
-        Listener();
     }
 
     private void initView() {
@@ -89,48 +88,16 @@ public class RegisterActivity extends YanxiuBaseActivity implements View.OnClick
         mClearView.setEnabled(false);
         mSendVerCodeView.setEnabled(false);
         mRegisterView.setEnabled(false);
-        EditTextManger.getManager(mMobileView).setInputOnlyNumber().setTextChangedListener(new EditTextManger.onTextLengthChangedListener() {
-            @Override
-            public void onChanged(EditText view, String value, boolean isEmpty) {
-                if (isEmpty) {
-                    isMobileReady = false;
-                } else {
-                    isMobileReady = true;
-                }
-                setEditMobileIsEmpty(isEmpty);
-                setSendVerCodeViewFocusChange(isMobileReady);
-                setButtonFocusChange(isMobileReady && isPassWordReady && isVerCodeReady);
-            }
-        });
-        EditTextManger.getManager(mVerCodeView).setInputOnlyNumber().setTextChangedListener(new EditTextManger.onTextLengthChangedListener() {
-            @Override
-            public void onChanged(EditText view, String value, boolean isEmpty) {
-                if (isEmpty) {
-                    isVerCodeReady = false;
-                } else {
-                    isVerCodeReady = true;
-                }
-                setButtonFocusChange(isMobileReady && isPassWordReady && isVerCodeReady);
-            }
-        });
-        EditTextManger.getManager(mPassWordView).setInputAllNotHanzi().setTextChangedListener(new EditTextManger.onTextLengthChangedListener() {
-            @Override
-            public void onChanged(EditText view, String value, boolean isEmpty) {
-                if (isEmpty) {
-                    isPassWordReady = false;
-                } else {
-                    isPassWordReady = true;
-                }
-                setButtonFocusChange(isMobileReady && isPassWordReady && isVerCodeReady);
-            }
-        });
     }
 
-    private void Listener() {
+    private void listener() {
         mClearView.setOnClickListener(RegisterActivity.this);
         mCipherView.setOnClickListener(RegisterActivity.this);
         mSendVerCodeView.setOnClickListener(RegisterActivity.this);
         mRegisterView.setOnClickListener(RegisterActivity.this);
+        EditTextManger.getManager(mMobileView).setInputOnlyNumber().setTextChangedListener(RegisterActivity.this);
+        EditTextManger.getManager(mVerCodeView).setInputOnlyNumber().setTextChangedListener(RegisterActivity.this);
+        EditTextManger.getManager(mPassWordView).setInputAllNotHanzi().setTextChangedListener(RegisterActivity.this);
     }
 
     @Override
@@ -140,9 +107,9 @@ public class RegisterActivity extends YanxiuBaseActivity implements View.OnClick
             mSendVerCodeRequest.cancelRequest();
             mSendVerCodeRequest = null;
         }
-        if (mRegisterRequet!=null){
+        if (mRegisterRequet != null) {
             mRegisterRequet.cancelRequest();
-            mRegisterRequet=null;
+            mRegisterRequet = null;
         }
     }
 
@@ -188,7 +155,7 @@ public class RegisterActivity extends YanxiuBaseActivity implements View.OnClick
         }
     }
 
-    public void sendVerCode(String mobile) {
+    private void sendVerCode(String mobile) {
         mSendVerCodeRequest = new SendVerCodeRequest();
         mSendVerCodeRequest.mobile = mobile;
         mSendVerCodeRequest.type = TYPE;
@@ -209,15 +176,15 @@ public class RegisterActivity extends YanxiuBaseActivity implements View.OnClick
         });
     }
 
-    public void onRegister(String mobile, String verCode, String passWord) {
-        mRegisterRequet =new RegisterRequet();
-        mRegisterRequet.mobile=mobile;
-        mRegisterRequet.code=verCode;
-        mRegisterRequet.password=passWord;
+    private void onRegister(String mobile, String verCode, String passWord) {
+        mRegisterRequet = new RegisterRequet();
+        mRegisterRequet.mobile = mobile;
+        mRegisterRequet.code = verCode;
+        mRegisterRequet.password = passWord;
         mRegisterRequet.startRequest(RegisterResponse.class, new HttpCallback<RegisterResponse>() {
             @Override
             public void onSuccess(RequestBase request, RegisterResponse ret) {
-                if (ret.status.getCode()==0){
+                if (ret.status.getCode() == 0) {
                     JoinClassActivity.LaunchActivity(mContext);
                 } else {
                     ToastManager.showMsg(ret.status.getDesc());
@@ -231,7 +198,7 @@ public class RegisterActivity extends YanxiuBaseActivity implements View.OnClick
         });
     }
 
-    public void setEditMobileIsEmpty(boolean isEmpty) {
+    private void setEditMobileIsEmpty(boolean isEmpty) {
         if (isEmpty) {
             mClearView.setEnabled(false);
             mClearView.setVisibility(View.INVISIBLE);
@@ -241,7 +208,7 @@ public class RegisterActivity extends YanxiuBaseActivity implements View.OnClick
         }
     }
 
-    public void setSendVerCodeViewFocusChange(boolean hasFocus) {
+    private void setSendVerCodeViewFocusChange(boolean hasFocus) {
         if (hasFocus) {
             mSendVerCodeView.setEnabled(true);
         } else {
@@ -249,7 +216,7 @@ public class RegisterActivity extends YanxiuBaseActivity implements View.OnClick
         }
     }
 
-    public void startTiming(int totalTime) {
+    private void startTiming(int totalTime) {
         ToastManager.showMsg(getText(R.string.send_verCode_finish));
         CountDownManager.getManager().setTotalTime(totalTime).setScheduleListener(new CountDownManager.ScheduleListener() {
             @Override
@@ -266,7 +233,7 @@ public class RegisterActivity extends YanxiuBaseActivity implements View.OnClick
         }).start();
     }
 
-    public void setButtonFocusChange(boolean hasFocus) {
+    private void setButtonFocusChange(boolean hasFocus) {
         if (hasFocus) {
             mWavesView.setCanShowWave(true);
             mRegisterView.setEnabled(true);
@@ -276,7 +243,7 @@ public class RegisterActivity extends YanxiuBaseActivity implements View.OnClick
         }
     }
 
-    public void setEditPassWordChange() {
+    private void setEditPassWordChange() {
         this.isCipher = !isCipher;
         if (isCipher) {
 //            mCipherView.setBackgroundResource();
@@ -288,5 +255,31 @@ public class RegisterActivity extends YanxiuBaseActivity implements View.OnClick
         if (!TextUtils.isEmpty(text)) {
             mPassWordView.setSelection(text.length());
         }
+    }
+
+    @Override
+    public void onChanged(View view, String value, boolean isEmpty) {
+        if (view == mMobileView) {
+            if (isEmpty) {
+                isMobileReady = false;
+            } else {
+                isMobileReady = true;
+            }
+            setEditMobileIsEmpty(isEmpty);
+            setSendVerCodeViewFocusChange(isMobileReady);
+        } else if (view == mPassWordView) {
+            if (isEmpty) {
+                isPassWordReady = false;
+            } else {
+                isPassWordReady = true;
+            }
+        } else if (view == mVerCodeView) {
+            if (isEmpty) {
+                isVerCodeReady = false;
+            } else {
+                isVerCodeReady = true;
+            }
+        }
+        setButtonFocusChange(isMobileReady && isPassWordReady && isVerCodeReady);
     }
 }

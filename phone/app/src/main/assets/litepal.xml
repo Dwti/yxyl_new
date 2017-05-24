@@ -3,7 +3,7 @@
     <dbname value="yan_xiu_student_db"/>
     <version value="7"/>
     <list>
-        <mapping class="com.yanxiu.gphone.student.user.Response.UserMessageBean" />
-        <mapping class="com.yanxiu.gphone.student.user.Response.PassportBean" />
+        <mapping class="com.yanxiu.gphone.student.user.response.UserMessageBean" />
+        <mapping class="com.yanxiu.gphone.student.user.response.PassportBean" />
     </list>
 </litepal>

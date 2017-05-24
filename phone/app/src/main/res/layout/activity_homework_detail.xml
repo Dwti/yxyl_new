@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_edf0ee">
+    android:background="@color/color_edf0ee"
+    android:orientation="vertical">
+
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -13,27 +15,42 @@
             android:id="@+id/iv_back"
             android:layout_width="26dp"
             android:layout_height="26dp"
-            android:background="@android:color/holo_blue_light"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="12dp"
-            android:layout_centerVertical="true"/>
+            android:background="@android:color/holo_blue_light" />
 
         <TextView
+            android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:text="七年级二十班"
-            android:textSize="20sp"
             android:textColor="#666666"
-            android:textStyle="bold"
-            android:layout_centerInParent="true"/>
+            android:textSize="20sp"
+            android:textStyle="bold" />
     </RelativeLayout>
 
-    <ListView
-        android:id="@+id/list_view"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:dividerHeight="10dp"
-        android:divider="@color/color_edf0ee"
-        android:scrollbars="none">
-    </ListView>
+        android:layout_height="match_parent">
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+        <include
+            android:id="@+id/tips_layout"
+            layout="@layout/homework_tips_layout"
+            android:visibility="gone" />
+
+    </FrameLayout>
+
+
 </LinearLayout>

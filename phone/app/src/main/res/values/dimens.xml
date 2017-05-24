@@ -246,5 +246,8 @@
     <dimen name="question_bottom_layout_image_width">15dp</dimen>
     <dimen name="question_bottom_layout_image_right">5dp</dimen>
     <dimen name="question_bottom_layout_shape">2dp</dimen>
+
+    <dimen name="select_city_view_padding">15dp</dimen>
+
 </resources>
 

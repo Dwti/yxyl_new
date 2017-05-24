@@ -1,4 +1,4 @@
-package com.yanxiu.gphone.student.user.Response;
+package com.yanxiu.gphone.student.user.response;
 
 
 import com.yanxiu.gphone.student.base.StatusBean;

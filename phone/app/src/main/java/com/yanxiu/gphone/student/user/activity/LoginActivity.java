@@ -18,7 +18,7 @@ import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.homepage.MainActivity;
-import com.yanxiu.gphone.student.user.Response.LoginResponse;
+import com.yanxiu.gphone.student.user.response.LoginResponse;
 import com.yanxiu.gphone.student.user.http.LoginRequest;
 import com.yanxiu.gphone.student.util.EditTextManger;
 import com.yanxiu.gphone.student.util.LoginInfo;
@@ -33,7 +33,7 @@ import java.util.regex.Pattern;
  * Function :
  */
 
-public class LoginActivity extends YanxiuBaseActivity implements View.OnClickListener {
+public class LoginActivity extends YanxiuBaseActivity implements View.OnClickListener, EditTextManger.onTextLengthChangedListener {
 
     private Context mContext;
 
@@ -73,8 +73,8 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
         setContentView(R.layout.activity_login);
         mContext=LoginActivity.this;
         initView();
+        listener();
         initData();
-        initListener();
     }
 
     private void initView() {
@@ -95,32 +95,9 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
         mTitleView.setVisibility(View.INVISIBLE);
         mClearView.setEnabled(false);
         mLoginView.setEnabled(false);
-        EditTextManger.getManager(mUserNameView).setInputNumberAndLetter().setTextChangedListener(new EditTextManger.onTextLengthChangedListener() {
-            @Override
-            public void onChanged(EditText view, String value, boolean isEmpty) {
-                if (isEmpty){
-                    isUserNameReady = false;
-                }else {
-                    isUserNameReady = true;
-                }
-                setEditUserNameIsEmpty(isEmpty);
-                setButtonFocusChange(isUserNameReady&&isPassWordReady);
-            }
-        });
-        EditTextManger.getManager(mPassWordView).setInputAllNotHanzi().setTextChangedListener(new EditTextManger.onTextLengthChangedListener() {
-            @Override
-            public void onChanged(EditText view, String value, boolean isEmpty) {
-                if (isEmpty){
-                    isPassWordReady = false;
-                }else {
-                    isPassWordReady = true;
-                }
-                setButtonFocusChange(isUserNameReady&&isPassWordReady);
-            }
-        });
     }
 
-    private void initListener() {
+    private void listener() {
         mClearView.setOnClickListener(LoginActivity.this);
         mCipherView.setOnClickListener(LoginActivity.this);
         mLoginView.setOnClickListener(LoginActivity.this);
@@ -128,6 +105,8 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
         mFastRegisteredView.setOnClickListener(LoginActivity.this);
         mThirdQQView.setOnClickListener(LoginActivity.this);
         mThirdWXView.setOnClickListener(LoginActivity.this);
+        EditTextManger.getManager(mPassWordView).setInputAllNotHanzi().setTextChangedListener(LoginActivity.this);
+        EditTextManger.getManager(mUserNameView).setInputNumberAndLetter().setTextChangedListener(LoginActivity.this);
     }
 
     @Override
@@ -139,7 +118,7 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
         }
     }
 
-    public void setEditUserNameIsEmpty(boolean isEmpty) {
+    private void setEditUserNameIsEmpty(boolean isEmpty) {
         if (isEmpty) {
             mClearView.setEnabled(false);
             mClearView.setVisibility(View.INVISIBLE);
@@ -149,7 +128,7 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
         }
     }
 
-    public void setEditPassWordChange(boolean isCipher) {
+    private void setEditPassWordChange(boolean isCipher) {
         if (isCipher) {
 //            mCipherView.setBackgroundResource();
             mPassWordView.setTransformationMethod(PasswordTransformationMethod.getInstance());
@@ -162,7 +141,7 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
         }
     }
 
-    public void setButtonFocusChange(boolean hasFocus) {
+    private void setButtonFocusChange(boolean hasFocus) {
         if (hasFocus) {
             mWavesView.setCanShowWave(true);
             mLoginView.setEnabled(true);
@@ -208,7 +187,8 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
                 ForgetPassWordActivity.LaunchActivity(mContext,userName);
                 break;
             case R.id.tv_fast_registered:
-                RegisterActivity.LaunchActivity(mContext);
+//                RegisterActivity.LaunchActivity(mContext);
+                ChooseLocationActivity.LaunchActivity(mContext);
                 break;
             case R.id.iv_third_qq:
                 LoginByQQ();
@@ -219,7 +199,7 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
         }
     }
 
-    public void LoginByAccount(String user_name, String pass_word) {
+    private void LoginByAccount(String user_name, String pass_word) {
         mLoginRequest = new LoginRequest();
         mLoginRequest.mobile=user_name;
         mLoginRequest.password=pass_word;
@@ -231,7 +211,7 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
                     MainActivity.invoke(LoginActivity.this);
                     LoginActivity.this.finish();
                 }else if (ret.status.getCode()==80){
-                    ToastManager.showMsg("to perfect information");
+                    JoinClassActivity.LaunchActivity(mContext);
                 }else {
                     ToastManager.showMsg(ret.status.getDesc());
                 }
@@ -244,11 +224,28 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
         });
     }
 
-
-    public void LoginByWX() {
+    private void LoginByWX() {
     }
 
-    public void LoginByQQ() {
+    private void LoginByQQ() {
     }
 
+    @Override
+    public void onChanged(View view, String value, boolean isEmpty) {
+        if (view==mUserNameView){
+            if (isEmpty){
+                isUserNameReady = false;
+            }else {
+                isUserNameReady = true;
+            }
+            setEditUserNameIsEmpty(isEmpty);
+        }else if (view==mPassWordView){
+            if (isEmpty){
+                isPassWordReady = false;
+            }else {
+                isPassWordReady = true;
+            }
+        }
+        setButtonFocusChange(isUserNameReady&&isPassWordReady);
+    }
 }

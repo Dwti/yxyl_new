@@ -16,4 +16,9 @@
         <attr name="waves_radius_bottom_right" format="dimension" />
     </declare-styleable>
 
+    <declare-styleable name="PickerView">
+        <attr name="choose_max_textsize" format="dimension"/>
+        <attr name="choose_min_textsize" format="dimension"/>
+    </declare-styleable>
+
 </resources>

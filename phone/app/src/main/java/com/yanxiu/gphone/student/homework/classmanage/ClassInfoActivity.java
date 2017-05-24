@@ -12,7 +12,7 @@ import android.widget.Toast;
 import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
-import com.yanxiu.gphone.student.homework.data.CancelAppayClassResponse;
+import com.yanxiu.gphone.student.homework.data.CancelApplyClassResponse;
 import com.yanxiu.gphone.student.homework.data.CancelApplyClassRequest;
 import com.yanxiu.gphone.student.homework.data.ClassBean;
 import com.yanxiu.gphone.student.homework.data.ExitClassRequest;
@@ -43,7 +43,7 @@ public class ClassInfoActivity extends Activity {
         TextView teacherName = (TextView) findViewById(R.id.tv_teacher_name);
         TextView studentNum = (TextView) findViewById(R.id.tv_student_num);
         TextView schoolName = (TextView) findViewById(R.id.tv_school_name);
-        Button btnCalcel = (Button) findViewById(R.id.btn_cancel);
+        Button btnCancel = (Button) findViewById(R.id.btn_cancel);
         ImageView back = (ImageView) findViewById(R.id.iv_left);
 
         back.setVisibility(View.VISIBLE);
@@ -57,12 +57,12 @@ public class ClassInfoActivity extends Activity {
             schoolName.setText(classInfo.getSchoolname());
         }
         if(status == ClassStatus.APPLYING_CLASS.getCode()){
-            btnCalcel.setText(R.string.cacel_apply_for_class);
+            btnCancel.setText(R.string.cacel_apply_for_class);
         }else if(status == ClassStatus.HAS_CLASS.getCode()){
-            btnCalcel.setText(R.string.exit_class);
+            btnCancel.setText(R.string.exit_class);
         }
 
-        btnCalcel.setOnClickListener(new View.OnClickListener() {
+        btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(status == ClassStatus.HAS_CLASS.getCode()){
@@ -91,7 +91,7 @@ public class ClassInfoActivity extends Activity {
     private void cacelApplyClass(String classId){
         CancelApplyClassRequest request = new CancelApplyClassRequest();
         request.setClassId(classId);
-        request.startRequest(CancelAppayClassResponse.class,mCancelApplyClassCallback);
+        request.startRequest(CancelApplyClassResponse.class,mCancelApplyClassCallback);
     }
 
     HttpCallback<ExitClassResponse> mExitClassCallback = new ExerciseBaseCallback<ExitClassResponse>() {
@@ -111,9 +111,9 @@ public class ClassInfoActivity extends Activity {
         }
     };
 
-    HttpCallback<CancelAppayClassResponse> mCancelApplyClassCallback = new ExerciseBaseCallback<CancelAppayClassResponse>() {
+    HttpCallback<CancelApplyClassResponse> mCancelApplyClassCallback = new ExerciseBaseCallback<CancelApplyClassResponse>() {
         @Override
-        public void onSuccess(RequestBase request, CancelAppayClassResponse ret) {
+        public void onSuccess(RequestBase request, CancelApplyClassResponse ret) {
             super.onSuccess(request,ret);
             if(ret.getStatus().getCode() == 0 ){
                 setResult(RESULT_OK);
