@@ -1,26 +1,34 @@
 package com.yanxiu.gphone.student.homework.questions.activity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
+import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.QuestionProgressView;
 import com.yanxiu.gphone.student.customviews.QuestionTimeTextView;
+import com.yanxiu.gphone.student.homepage.MainActivity;
 import com.yanxiu.gphone.student.homework.questions.adapter.QAViewPagerAdapter;
 import com.yanxiu.gphone.student.homework.questions.fragment.AnswerCardFragment;
 import com.yanxiu.gphone.student.homework.questions.fragment.ComplexExerciseFragmentBase;
 import com.yanxiu.gphone.student.homework.questions.fragment.ExerciseFragmentBase;
 import com.yanxiu.gphone.student.homework.questions.fragment.SimpleExerciseFragmentBase;
 import com.yanxiu.gphone.student.homework.questions.model.BaseQuestion;
+import com.yanxiu.gphone.student.homework.questions.model.Paper;
+import com.yanxiu.gphone.student.homework.questions.model.SingleChoiceQuestion;
 import com.yanxiu.gphone.student.homework.questions.view.QAViewPager;
+import com.yanxiu.gphone.student.util.DataFetcher;
 import com.yanxiu.gphone.student.util.ToastManager;
 
 import java.lang.ref.WeakReference;
@@ -29,16 +37,18 @@ import java.util.ArrayList;
 /**
  * 答题页面
  */
-public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.OnClickListener,AnswerCardFragment.OnCardItemSelectListener {
+public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.OnClickListener, AnswerCardFragment.OnCardItemSelectListener {
     private FragmentManager mFragmentManager;
     private QAViewPager mViewPager;
     private QAViewPagerAdapter mAdapter;
-    private ArrayList<BaseQuestion> mQuestions;
+    private String mKey;//获取数据的key
+    private Paper mPaper;//试卷数据
+    private ArrayList<BaseQuestion> mQuestions;//题目数据
     private AnswerCardFragment mCardFragment;
 
     private QuestionTimeTextView mTimer;//计时
     private QuestionProgressView mProgressView;
-    private LinearLayout mPrevious_question,mNext_question;//上一题，下一题
+    private LinearLayout mPrevious_question, mNext_question;//上一题，下一题
 
     private Handler mHandler;
     private int mTotalTime;//总计时间
@@ -56,12 +66,24 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_answerquestion);
-        mQuestions = (ArrayList<BaseQuestion>) getIntent().getSerializableExtra(EXTRA_NODES);
+        initData();
         if (mQuestions == null) { // 表明是第一级界面
             mQuestions = new ArrayList<>();
         }
 //        mQuestions = DataClass.getPaper().children;//Todo 获取数据
         initView();
+    }
+
+    private void initData() {
+        mKey = getIntent().getStringExtra(Constants.EXTRA_PAPER);
+        if (TextUtils.isEmpty(mKey))
+            finish();
+        mPaper = DataFetcher.getInstance().getPaper(mKey);
+        mQuestions = mPaper.getQuestions();
+        if (mQuestions == null) { // 表明是第一级界面
+            mQuestions = new ArrayList<>();
+            mQuestions.add(new SingleChoiceQuestion());
+        }
     }
 
     private void initView() {
@@ -77,7 +99,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         mTotalTime = 3580;
     }
 
-    private void setListener(){
+    private void setListener() {
         mPrevious_question.setOnClickListener(this);
         mNext_question.setOnClickListener(this);
     }
@@ -266,13 +288,13 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
     @Override
     public void onClick(View v) {
 
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.previous_question:
-                    previousQuestion();
+                previousQuestion();
                 ToastManager.showMsg("上一题");
                 break;
             case R.id.next_question:
-                    nextQuestion();
+                nextQuestion();
                 ToastManager.showMsg("下一题");
                 break;
         }
@@ -347,5 +369,16 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         super.onDestroy();
         mHandler.removeCallbacksAndMessages(null);
         mHandler = null;
+    }
+
+    /**
+     * 跳转AnswerQuestionActivity
+     *
+     * @param activity
+     */
+    public static void invoke(Activity activity , String key) {
+        Intent intent = new Intent(activity, AnswerQuestionActivity.class);
+        intent.putExtra(Constants.EXTRA_PAPER,key);
+        activity.startActivity(intent);
     }
 }

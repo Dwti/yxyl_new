@@ -21,7 +21,7 @@ public class Paper {
     private String id;
     private String name;
     private PaperStatusBean paperStatus;
-    private List<BaseQuestion> questions;
+    private ArrayList<BaseQuestion> questions;
     private String parentId;
     private String ptype;
     private String quesnum;
@@ -125,11 +125,11 @@ public class Paper {
         this.paperStatus = paperStatus;
     }
 
-    public List<BaseQuestion> getQuestions() {
+    public ArrayList<BaseQuestion> getQuestions() {
         return questions;
     }
 
-    public void setQuestions(List<BaseQuestion> questions) {
+    public void setQuestions(ArrayList<BaseQuestion> questions) {
         this.questions = questions;
     }
 
