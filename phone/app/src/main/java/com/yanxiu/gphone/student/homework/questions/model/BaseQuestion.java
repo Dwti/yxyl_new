@@ -2,11 +2,14 @@ package com.yanxiu.gphone.student.homework.questions.model;
 
 import android.support.v4.app.Fragment;
 
+import com.yanxiu.gphone.student.homework.questions.QuestionConvertFactory;
 import com.yanxiu.gphone.student.homework.questions.QuestionShowType;
+import com.yanxiu.gphone.student.homework.questions.QuestionTemplate;
 import com.yanxiu.gphone.student.homework.questions.bean.PadBean;
 import com.yanxiu.gphone.student.homework.questions.bean.PaperTestBean;
 import com.yanxiu.gphone.student.homework.questions.bean.PointBean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,6 +39,7 @@ public abstract class BaseQuestion {
     protected String type_id;
     protected String sectionid;
     protected String typeid;
+    protected List<BaseQuestion> children;
     protected QuestionShowType showType;
 
     public BaseQuestion(PaperTestBean bean,QuestionShowType showType){
@@ -57,6 +61,7 @@ public abstract class BaseQuestion {
         this.type_id = bean.getQuestions().getType_id();
         this.sectionid = bean.getSectionid();
         this.typeid = bean.getTypeid();
+        children = QuestionConvertFactory.convertQuestion(bean.getQuestions().getChildren(),showType);
         this.showType = showType;
     }
 
@@ -206,11 +211,165 @@ public abstract class BaseQuestion {
         this.typeid = typeid;
     }
 
+    public List<BaseQuestion> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<BaseQuestion> children) {
+        this.children = children;
+    }
+
     public QuestionShowType getShowType() {
         return showType;
     }
 
     public void setShowType(QuestionShowType showType) {
         this.showType = showType;
+    }
+
+    public ArrayList<Integer> levelPositions = new ArrayList<>();//标记该题所处的准确位置
+    public int prefixNumber;//题号前缀--分子
+    public int postfixNumber;//题号后缀--分母
+
+
+    /**
+     * 标记层级和所处层级的index
+     * @param level
+     * @param position
+     * @param levelPosition
+     */
+    public void markLevelAndPosition(int level, int position, ArrayList<Integer> levelPosition) {
+//        this.level = level;
+//        this.position = position;
+        if (levelPosition != null) {
+            this.levelPositions.addAll(levelPosition);
+        }
+        this.levelPositions.add(position);
+
+        int childPosition = 0;
+        for (BaseQuestion node : children) {
+            node.markLevelAndPosition(level+1, childPosition++, this.levelPositions);
+        }
+    }
+
+    /**
+     * 生成总数量
+     * @param total
+     * @param indexOfSameLevel
+     * @param totalOfSameLevel
+     * @return
+     */
+    public int generateTotalNumber(int total, int indexOfSameLevel, int totalOfSameLevel) {
+        prefixNumber = total + 1;
+
+        if (isNodeCountForTotal()) { //该题目是记题号的
+            total++;
+        }
+
+        if (isChildNodeCountForTotal()) { //该题目下的子题不重新记题号
+            int childPosition = 0;
+            for (BaseQuestion node : children) {
+                total = node.generateTotalNumber(total, childPosition, children.size());   // 子题也改变total值
+            }
+        } else { //子题重新记题号
+            int childPosition = 0;
+            for (BaseQuestion node : children) {
+                node.generateTotalNumber(0, childPosition, children.size());   // 子题不改变total值
+            }
+        }
+
+        return total;
+    }
+
+    /**
+     *
+     * @param total
+     */
+    public void setPostfixNumber(int total) {
+        this.postfixNumber = total;
+        if (!isChildNodeCountForTotal()) {  // 子题重新计算total
+            total = 0;
+            int childPosition = 0;
+            for (BaseQuestion node : children) {
+                total = node.generateTotalNumber(total, childPosition, children.size());
+            }
+            for (BaseQuestion node : children) {
+                node.setPostfixNumber(total);
+            }
+            return;
+        }
+
+        // 子题继续父题的total
+        for (BaseQuestion node : children) {
+            node.setPostfixNumber(total);
+        }
+    }
+
+    public String numberStringForShow() {
+        if (!isNodeCountForTotal()) {
+            return "";
+        }
+
+        return prefixNumber + " / " + postfixNumber;
+    }
+
+    /**
+     * 判断当前题目是否是记题号的
+     * @return
+     */
+    public Boolean isNodeCountForTotal() {
+        if (template.equals(QuestionTemplate.CLOZE)) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 判断该题目下的子题是否重记题号
+     * 如果当前题目是计数的，那么其子题题号重记；
+     * 判断如果是不计入题号的题，子题不重新记号；如果是计入题号的题，子题重新记号
+     * true 不重新记号
+     * false 重新记号
+     * @return
+     */
+    public Boolean isChildNodeCountForTotal() {
+        if (template.equals(QuestionTemplate.CLOZE)) {
+            return true;
+        }
+
+        // 子题不改变total值，则需要重新计数，total为此层级的Total
+        return false;
+    }
+
+    /**
+     * 答题卡生成题号
+     * @return
+     */
+    public ArrayList<BaseQuestion> allNodesThatHasNumber() {
+        ArrayList<BaseQuestion> retNodes = new ArrayList<>();
+        if (isNodeCountForTotal()) {
+            retNodes.add(this);
+        }
+
+        if (children.size() > 0) {
+            for (BaseQuestion node : children) {
+                retNodes.addAll(node.allNodesThatHasNumber());
+            }
+        }
+
+        return retNodes;
+    }
+
+    protected void clearAllNumberData() {
+//        level = 0;
+//        position = 0;
+        levelPositions.clear();
+        prefixNumber = 0;
+        postfixNumber = 0;
+        if (children != null) {
+            for (BaseQuestion node : children) {
+                node.clearAllNumberData();
+            }
+        }
     }
 }

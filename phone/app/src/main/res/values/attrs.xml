@@ -21,4 +21,9 @@
         <attr name="choose_min_textsize" format="dimension"/>
     </declare-styleable>
 
+    <declare-styleable name="MyMaxHeightLinearLayout">
+        <attr name="maxHeight" format="dimension"></attr>
+        <attr name="minHeight" format="dimension"></attr>
+    </declare-styleable>
+
 </resources>

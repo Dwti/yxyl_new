@@ -13,22 +13,12 @@ import java.util.List;
  */
 
 public class ReadingComplexQuestion extends BaseQuestion {
-    private List<BaseQuestion> children;
     public ReadingComplexQuestion(PaperTestBean bean, QuestionShowType showType) {
         super(bean, showType);
-        children = QuestionConvertFactory.convertQuestion(bean.getQuestions().getChildren(),showType);
     }
 
     @Override
     public Fragment getFragment() {
         return null;
-    }
-
-    public List<BaseQuestion> getChildren() {
-        return children;
-    }
-
-    public void setChildren(List<BaseQuestion> children) {
-        this.children = children;
     }
 }

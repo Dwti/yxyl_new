@@ -2,6 +2,7 @@ package com.yanxiu.gphone.student.homework.questions.model;
 
 import com.yanxiu.gphone.student.homework.questions.bean.PaperStatusBean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -242,5 +243,33 @@ public class Paper {
 
     public void setVolumeName(String volumeName) {
         this.volumeName = volumeName;
+    }
+
+    /**
+     * 生成题号
+     * @param nodes
+     */
+
+    public static void generateUsedNumbersForNodes(List<BaseQuestion> nodes) {
+        if (nodes == null) return;
+        // 先要清空所有已有位置数据，否则会叠加
+        for (BaseQuestion node : nodes) {
+            node.clearAllNumberData();
+        }
+
+        int position = 0;
+        for (BaseQuestion node : nodes) {
+            node.markLevelAndPosition(0, position++, null);
+        }
+
+        int total = 0;
+        position = 0;
+        for (BaseQuestion node : nodes) {
+            total = node.generateTotalNumber(total, position++, nodes.size());
+        }
+
+        for (BaseQuestion node : nodes) {
+            node.setPostfixNumber(total);
+        }
     }
 }

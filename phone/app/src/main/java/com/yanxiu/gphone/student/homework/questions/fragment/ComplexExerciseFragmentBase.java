@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.customviews.MyMaxHeightLinearLayout;
 import com.yanxiu.gphone.student.homework.questions.adapter.QAViewPagerAdapter;
 import com.yanxiu.gphone.student.homework.questions.model.BaseQuestion;
 import com.yanxiu.gphone.student.homework.questions.view.QAViewPager;
@@ -28,10 +29,10 @@ import java.util.List;
 
 public abstract class ComplexExerciseFragmentBase extends ExerciseFragmentBase {
 
-    private QAViewPager viewPager;
+    private QAViewPager mViewPager;
 
-    public QAViewPager getViewPager() {
-        return viewPager;
+    public QAViewPager getmViewPager() {
+        return mViewPager;
     }
 
     private QAViewPagerAdapter mAdapter;
@@ -42,6 +43,9 @@ public abstract class ComplexExerciseFragmentBase extends ExerciseFragmentBase {
     private View mRootView;
 
     private BaseQuestion mNode;
+
+    private int minHight;//topfragment的最小高度
+    private int mBottom_min_distance;//滑动image距离底边最小距离
 
     @Override
     public void setNode(BaseQuestion node) {
@@ -76,11 +80,11 @@ public abstract class ComplexExerciseFragmentBase extends ExerciseFragmentBase {
                     .add(R.id.ll_top_container, topFragment)
                     .commit();
         }
-        viewPager = (QAViewPager) mRootView.findViewById(R.id.ll_bottom_container);
+        mViewPager = (QAViewPager) mRootView.findViewById(R.id.ll_bottom_container);
         mAdapter = new QAViewPagerAdapter(fm);
-//        mAdapter.setData(mNode.mChildren);// TODO: 2017/5/15  等设置题号逻辑融合进孙鹏的数据里后，再添加
-        viewPager.setAdapter(mAdapter);
-        viewPager.setOnSwipeOutListener(new QAViewPager.OnSwipeOutListener() {
+//        mAdapter.setData(mNode.children);// TODO: 2017/5/15  等设置题号逻辑融合进孙鹏的数据里后，再添加
+        mViewPager.setAdapter(mAdapter);
+        mViewPager.setOnSwipeOutListener(new QAViewPager.OnSwipeOutListener() {
             @Override
             public void onSwipeOutAtEnd() {
                 Log.e("TAG", "Inner swipe out at end");
@@ -88,7 +92,9 @@ public abstract class ComplexExerciseFragmentBase extends ExerciseFragmentBase {
 
         });
 
-        final LinearLayout topLayout = (LinearLayout) mRootView.findViewById(R.id.ll_top_container);
+        final MyMaxHeightLinearLayout topLayout = (MyMaxHeightLinearLayout) mRootView.findViewById(R.id.ll_top_container);
+        minHight = (int)getResources().getDimension(R.dimen.question_ll_top_container_minheight);
+        mBottom_min_distance = (int)getResources().getDimension(R.dimen.question_bottom_layout_height);
 
         mImageViewSplitter.setOnTouchListener(new View.OnTouchListener() {
             private float startY;
@@ -102,21 +108,22 @@ public abstract class ComplexExerciseFragmentBase extends ExerciseFragmentBase {
                     case MotionEvent.ACTION_DOWN:
                         startTop = v.getTop();
                         startY = event.getRawY();
-
+                        topLayout.setCanChangeHeight();
                         break;
                     case MotionEvent.ACTION_MOVE:
                         float top = startTop + (event.getRawY() - startY);
-                        top = Math.max(0, Math.min(top, parentView.getHeight() - v.getHeight()));
+//                        top = Math.max(0, Math.min(top, parentView.getHeight() - v.getHeight()));
+                        top = Math.max(minHight, Math.min(top, parentView.getHeight() - v.getHeight() - mBottom_min_distance));
                         ViewGroup.LayoutParams params = v.getLayoutParams();
                         float topHeight = top;
                         float bottomHeight = parentView.getHeight() - topHeight - v.getHeight();
 
                         LinearLayout.LayoutParams topParams = (LinearLayout.LayoutParams) topLayout.getLayoutParams();
-                        LinearLayout.LayoutParams bottomParams = (LinearLayout.LayoutParams) viewPager.getLayoutParams();
+                        LinearLayout.LayoutParams bottomParams = (LinearLayout.LayoutParams) mViewPager.getLayoutParams();
                         topParams.weight = topHeight;
                         bottomParams.weight = bottomHeight;
                         topLayout.setLayoutParams(topParams);
-                        viewPager.setLayoutParams(bottomParams);
+                        mViewPager.setLayoutParams(bottomParams);
                         break;
                     case MotionEvent.ACTION_UP:
                         break;
@@ -137,8 +144,8 @@ public abstract class ComplexExerciseFragmentBase extends ExerciseFragmentBase {
      */
     public void setChildrenPositionRecursively(ArrayList<Integer> postions) {
         int index = postions.get(0);
-        if (viewPager != null) {
-            viewPager.setCurrentItem(index);
+        if (mViewPager != null) {
+            mViewPager.setCurrentItem(index);
         } else {
 //            isFromCardSelect = true;
 //            mToIndex = index;
@@ -147,8 +154,8 @@ public abstract class ComplexExerciseFragmentBase extends ExerciseFragmentBase {
         ArrayList<Integer> remainPositions = new ArrayList<>(postions);
         remainPositions.remove(0);
         if (remainPositions.size() > 0) { // 表明这层依然是 复合题
-            FragmentStatePagerAdapter a = (FragmentStatePagerAdapter) viewPager.getAdapter();
-            ComplexExerciseFragmentBase f = (ComplexExerciseFragmentBase) a.instantiateItem(viewPager, index);
+            FragmentStatePagerAdapter a = (FragmentStatePagerAdapter) mViewPager.getAdapter();
+            ComplexExerciseFragmentBase f = (ComplexExerciseFragmentBase) a.instantiateItem(mViewPager, index);
             f.setChildrenPositionRecursively(remainPositions);
         }
     }
@@ -156,10 +163,10 @@ public abstract class ComplexExerciseFragmentBase extends ExerciseFragmentBase {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (!isVisibleToUser && null != viewPager) {
+        if (!isVisibleToUser && null != mViewPager) {
             try {
                 Log.w(TAG, "setCurrent: _______" + this.getClass().getSimpleName());
-                viewPager.setCurrentItem(0);
+                mViewPager.setCurrentItem(0);
             } catch (Exception e) {
                 e.toString();
             }

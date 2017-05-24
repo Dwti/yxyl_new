@@ -6,12 +6,14 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.view.ViewGroup;
 
 import com.yanxiu.gphone.student.homework.questions.model.BaseQuestion;
+import com.yanxiu.gphone.student.homework.questions.model.Paper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by dyf
+ * Created by 戴延枫
+ * 答题adapter,是否需要基类，看以后需求而定
  */
 
 public class QAViewPagerAdapter extends FragmentStatePagerAdapter {
@@ -28,8 +30,9 @@ public class QAViewPagerAdapter extends FragmentStatePagerAdapter {
         }
     }
 
-    public void setData(List<BaseQuestion> datas) {
+    public void setData(ArrayList<BaseQuestion> datas) {
         this.mDatas = datas;
+        Paper.generateUsedNumbersForNodes(mDatas);
     }
 
     public List<BaseQuestion> getDatas() {

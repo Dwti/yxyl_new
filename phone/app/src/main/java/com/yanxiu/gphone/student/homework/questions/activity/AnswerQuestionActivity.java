@@ -9,7 +9,6 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
@@ -63,7 +62,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         if (mQuestions == null) { // 表明是第一级界面
             mQuestions = new ArrayList<>();
         }
-//        mQuestions = DataClass.getPaper().mChildren;//Todo 获取数据
+//        mQuestions = DataClass.getPaper().children;//Todo 获取数据
         initView();
     }
 
@@ -183,7 +182,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
 
         if (currentFramgent instanceof ComplexExerciseFragmentBase) {
             ComplexExerciseFragmentBase complexExerciseFragment = (ComplexExerciseFragmentBase) currentFramgent;
-            ViewPager innerViewPager = complexExerciseFragment.getViewPager();
+            ViewPager innerViewPager = complexExerciseFragment.getmViewPager();
             FragmentStatePagerAdapter innerAdapter = (FragmentStatePagerAdapter) innerViewPager.getAdapter();
             int innerIndex = innerViewPager.getCurrentItem();
             int innerSize = innerViewPager.getAdapter().getCount();
@@ -242,7 +241,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
 
         if (currentFramgent instanceof ComplexExerciseFragmentBase) {
             ComplexExerciseFragmentBase complexExerciseFragment = (ComplexExerciseFragmentBase) currentFramgent;
-            ViewPager innerViewPager = complexExerciseFragment.getViewPager();
+            ViewPager innerViewPager = complexExerciseFragment.getmViewPager();
             FragmentStatePagerAdapter innerAdapter = (FragmentStatePagerAdapter) innerViewPager.getAdapter();
             int innerIndex = innerViewPager.getCurrentItem();
             int innerSize = innerViewPager.getAdapter().getCount();
