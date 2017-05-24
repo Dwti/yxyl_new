@@ -218,6 +218,10 @@
                         android:textColor="@color/color_89e00d"/>
                 </com.yanxiu.gphone.student.customviews.WavesLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"/>
+
             </LinearLayout>
 
         </LinearLayout>
