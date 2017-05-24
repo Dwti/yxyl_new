@@ -228,6 +228,23 @@
     <dimen name="net_error_layout_retrybutton_height">40dp</dimen>
 
     <dimen name="text_size_16">16dp</dimen>
+    <dimen name="text_size_15">15dp</dimen>
 
     <dimen name="login_thrid_padding">5dp</dimen>
+
+    <dimen name="common_top_layout_marginLeft">12dp</dimen>
+    <dimen name="common_top_layout_leftimage_wdith">26dp</dimen>
+    <dimen name="question_top_layout_time_textsize">23dp</dimen>
+    <dimen name="question_top_layout_time_maohao">20dp</dimen>
+    <dimen name="question_top_layout_time_maohao_width">10dp</dimen>
+    <dimen name="question_top_layout_time_margin">2dp</dimen>
+    <dimen name="question_top_layout_rightimage_width">38dp</dimen>
+    <dimen name="question_top_layout_rightimage_marginRight">11dp</dimen>
+    <dimen name="question_top_layout_height">58dp</dimen>
+    <dimen name="question_bottom_layout_height">45dp</dimen>
+    <dimen name="question_bottom_layout_marginLeft">12dp</dimen>
+    <dimen name="question_bottom_layout_image_width">15dp</dimen>
+    <dimen name="question_bottom_layout_image_right">5dp</dimen>
+    <dimen name="question_bottom_layout_shape">2dp</dimen>
 </resources>
+

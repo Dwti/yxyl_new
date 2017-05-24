@@ -14,9 +14,9 @@ public abstract class ExerciseBaseCallback<T extends ExerciseBaseResponse> imple
     @Override
     public void onSuccess(RequestBase request, T ret) {
         //code =99 表示token失效
-        if(ret.getStatus().getCode() == 99){
-            LoginActivity.LaunchActivity(YanxiuApplication.getContext());
-            return;
-        }
+//        if(ret.getStatus().getCode() == 99){
+//            LoginActivity.LaunchActivity(YanxiuApplication.getContext());
+//            return;
+//        }
     }
 }

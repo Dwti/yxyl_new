@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/question_top_layout_height">
+
+    <ImageView
+        android:id="@+id/iv_left"
+        android:layout_width="@dimen/common_top_layout_leftimage_wdith"
+        android:layout_height="@dimen/common_top_layout_leftimage_wdith"
+        android:background="@android:color/holo_blue_light"
+        android:layout_marginLeft="@dimen/common_top_layout_marginLeft"
+        android:layout_centerVertical="true" />
+
+    <com.yanxiu.gphone.student.customviews.QuestionTimeTextView
+        android:id="@+id/timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"/>
+
+    <ImageView
+        android:id="@+id/iv_right"
+        android:layout_width="@dimen/question_top_layout_rightimage_width"
+        android:layout_height="@dimen/question_top_layout_rightimage_width"
+        android:background="@android:color/holo_blue_light"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/question_top_layout_rightimage_marginRight" />
+
+    <com.yanxiu.gphone.student.customviews.QuestionProgressView
+        android:id="@+id/progressBar"
+        android:layout_width="0dp"
+        android:layout_height="3dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/progressbar" />
+
+</RelativeLayout>

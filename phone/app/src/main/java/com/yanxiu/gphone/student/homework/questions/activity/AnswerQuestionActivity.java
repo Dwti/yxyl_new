@@ -6,10 +6,15 @@ import android.os.Message;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
+import com.yanxiu.gphone.student.customviews.QuestionProgressView;
+import com.yanxiu.gphone.student.customviews.QuestionTimeTextView;
 import com.yanxiu.gphone.student.homework.questions.adapter.QAViewPagerAdapter;
 import com.yanxiu.gphone.student.homework.questions.fragment.AnswerCardFragment;
 import com.yanxiu.gphone.student.homework.questions.fragment.ComplexExerciseFragmentBase;
@@ -17,6 +22,7 @@ import com.yanxiu.gphone.student.homework.questions.fragment.ExerciseFragmentBas
 import com.yanxiu.gphone.student.homework.questions.fragment.SimpleExerciseFragmentBase;
 import com.yanxiu.gphone.student.homework.questions.model.BaseQuestion;
 import com.yanxiu.gphone.student.homework.questions.view.QAViewPager;
+import com.yanxiu.gphone.student.util.ToastManager;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -24,7 +30,7 @@ import java.util.ArrayList;
 /**
  * 答题页面
  */
-public class AnswerQuestionActivity extends AppCompatActivity implements AnswerCardFragment.OnCardItemSelectListener {
+public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.OnClickListener,AnswerCardFragment.OnCardItemSelectListener {
     private static final String EXTRA_NODES = "extra mQuestions";
 
     private FragmentManager mFragmentManager;
@@ -33,8 +39,12 @@ public class AnswerQuestionActivity extends AppCompatActivity implements AnswerC
     private ArrayList<BaseQuestion> mQuestions;
     private AnswerCardFragment mCardFragment;
 
+    private QuestionTimeTextView mTimer;//计时
+    private QuestionProgressView mProgressView;
+    private LinearLayout mPrevious_question,mNext_question;//上一题，下一题
+
     private Handler mHandler;
-    private long mTotalTime;//总计时间
+    private int mTotalTime;//总计时间
     /**
      * 刷新计时
      */
@@ -42,11 +52,11 @@ public class AnswerQuestionActivity extends AppCompatActivity implements AnswerC
     /**
      * 一秒
      */
-    private final int HANDLER_TIME_DELAYED = 1000;
+    private final int HANDLER_TIME_DELAYED = 100;
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_answerquestion);
         mQuestions = (ArrayList<BaseQuestion>) getIntent().getSerializableExtra(EXTRA_NODES);
@@ -58,6 +68,24 @@ public class AnswerQuestionActivity extends AppCompatActivity implements AnswerC
     }
 
     private void initView() {
+        mTimer = (QuestionTimeTextView) findViewById(R.id.timer);
+        mProgressView = (QuestionProgressView) findViewById(R.id.progressBar);
+        mProgressView.setMaxCount(20);
+        mPrevious_question = (LinearLayout) findViewById(R.id.previous_question);
+        mNext_question = (LinearLayout) findViewById(R.id.next_question);
+        setListener();
+        initViewPager();
+
+        mHandler = new TimingHandler(this);
+        mTotalTime = 3580;
+    }
+
+    private void setListener(){
+        mPrevious_question.setOnClickListener(this);
+        mNext_question.setOnClickListener(this);
+    }
+
+    private void initViewPager() {
         mFragmentManager = getSupportFragmentManager();
         mViewPager = (QAViewPager) findViewById(R.id.vp_viewPager);
         mViewPager.setOffscreenPageLimit(1);
@@ -73,8 +101,6 @@ public class AnswerQuestionActivity extends AppCompatActivity implements AnswerC
                 showAnswerCardFragment();
             }
         });
-        mHandler = new TimingHandler(this);
-        mTotalTime = 0;
     }
 
     /**
@@ -119,18 +145,19 @@ public class AnswerQuestionActivity extends AppCompatActivity implements AnswerC
 
     /**
      * 显示答题卡
+     * 第一版本不显示答题卡
      */
     private void showAnswerCardFragment() {
         // 可以在这里打个断点，所有Fill Blank的答案均已存入nodes里
-        if (mCardFragment == null) {
-            mCardFragment = new AnswerCardFragment();
-            mCardFragment.nodes = allNodesThatHasNumber();
-            mCardFragment.setOnCardItemSelectListener(AnswerQuestionActivity.this);
-        }
-        if (mFragmentManager.findFragmentById(R.id.fragment_card) == null) {
-            // 有一个滑动event的问题，导致card fragment上能滑动下面的viewpager，可能导致重复加载card getFragment
-            mFragmentManager.beginTransaction().add(R.id.fragment_card, mCardFragment).commit();
-        }
+//        if (mCardFragment == null) {
+//            mCardFragment = new AnswerCardFragment();
+//            mCardFragment.nodes = allNodesThatHasNumber();
+//            mCardFragment.setOnCardItemSelectListener(AnswerQuestionActivity.this);
+//        }
+//        if (mFragmentManager.findFragmentById(R.id.fragment_card) == null) {
+//            // 有一个滑动event的问题，导致card fragment上能滑动下面的viewpager，可能导致重复加载card getFragment
+//            mFragmentManager.beginTransaction().add(R.id.fragment_card, mCardFragment).commit();
+//        }
     }
 
     /**
@@ -239,6 +266,21 @@ public class AnswerQuestionActivity extends AppCompatActivity implements AnswerC
         }
     }
 
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()){
+            case R.id.previous_question:
+                    previousQuestion();
+                ToastManager.showMsg("上一题");
+                break;
+            case R.id.next_question:
+                    nextQuestion();
+                ToastManager.showMsg("下一题");
+                break;
+        }
+    }
+
     /**
      * 计时用Handler
      */
@@ -258,7 +300,9 @@ public class AnswerQuestionActivity extends AppCompatActivity implements AnswerC
                 activity.updateTime();
             }
         }
-    };
+    }
+
+    ;
 
     /**
      * 开始计时
@@ -285,6 +329,8 @@ public class AnswerQuestionActivity extends AppCompatActivity implements AnswerC
     private void updateTime() {
         mTotalTime++;
         //Todo 显示时间
+        mTimer.setTime(mTotalTime);
+        mProgressView.updateProgress();
     }
 
     @Override
