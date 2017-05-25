@@ -1,39 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:orientation="vertical"
-    android:background="@android:color/holo_green_dark">
+    android:orientation="vertical">
 
     <include layout="@layout/answerquestion_common_number" />
 
-    <LinearLayout
+    <com.yanxiu.gphone.student.customviews.MyMaxHeightLinearLayout
         android:id="@+id/ll_top_container"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        app:maxHeight="150dp"
         android:orientation="vertical"
-        android:layout_weight="1">
-    </LinearLayout>
+        android:layout_weight="1"/>
 
     <ImageView
         android:id="@+id/iv_splitter"
-        android:layout_height="wrap_content"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:src="@drawable/complex_down" />
 
-    <dyf.test.mytestqagframe.View.QAViewPager
-        android:id="@+id/ll_bottom_container"
-        android:layout_height="0dp"
+    <View
         android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_weight="1">
-    </dyf.test.mytestqagframe.View.QAViewPager>
+        android:layout_height="10dp" />
+
+    <com.yanxiu.gphone.student.homework.questions.view.QAViewPager
+        android:id="@+id/ll_bottom_container"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="vertical" />
 
 </LinearLayout>

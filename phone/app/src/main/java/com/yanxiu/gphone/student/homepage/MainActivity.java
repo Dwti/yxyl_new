@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
+import com.yanxiu.gphone.student.util.DataFetcher;
 
 public class MainActivity extends YanxiuBaseActivity implements View.OnClickListener{
 
@@ -167,7 +168,7 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
 
             if (System.currentTimeMillis() - mBackTimestamp <= 2000) {
                 //Todo 退出程序
-
+                DataFetcher.getInstance().destory();
                 finish();
             } else {
                 mBackTimestamp = System.currentTimeMillis();

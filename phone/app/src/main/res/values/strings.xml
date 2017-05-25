@@ -47,8 +47,8 @@
     <string name="what_is_class_2">每个易学易练班级都有一个8位数班级号码如：“班级号码：12345678”。</string>
     <string name="how_to_join_class_1">第一步：老师在“易学易练教师端”中创建班级，并将班级号码 分享或告知学生们。</string>
     <string name="how_to_join_class_2">第二步：同学们在“易学易练学生端”作业页面，点击“加入班级”输入班级号码，即可加入班级，然后 就可以通过手机来完成来自老师布置的作业了。</string>
-    <string name="homework_todo">%1$d份待完成</string>
-    <string name="check_homework_done">查看已完成</string>
+    <string name="homework_todo"> • %1$d份待完成</string>
+    <string name="check_homework_done"> • 查看已完成</string>
     <string name="homework_done_num">完成题量 </string>
     <string name="homework_remain_time">剩余时间</string>
     <string name="can_redo">可补做</string>
@@ -73,6 +73,9 @@
     <string name="school_name">学校名称</string>
     <string name="input_user_name">你的姓名</string>
     <string name="input_user_true_name">请输入你的真实姓名</string>
+    <string name="previous_question">上一题</string>
+    <string name="next_question">下一题</string>
+
     <string name="score_rate">正确率</string>
     <string name="text_loading">正在加载...</string>
     <string name="text_click_to_load_more">点击加载更多</string>
@@ -87,4 +90,6 @@
     <string name="high_txt">高中</string>
     <string name="ok">确定</string>
     <string name="search_school_no">没有搜索到相应学校</string>
+    <string name="input_correct_class_number">请输入正确的班级号</string>
+    <string name="class_not_allowed_join">此班级不允许学生加入</string>
 </resources>

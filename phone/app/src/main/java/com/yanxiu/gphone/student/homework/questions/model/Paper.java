@@ -1,7 +1,11 @@
 package com.yanxiu.gphone.student.homework.questions.model;
 
+import com.yanxiu.gphone.student.homework.questions.QuestionConvertFactory;
+import com.yanxiu.gphone.student.homework.questions.QuestionShowType;
+import com.yanxiu.gphone.student.homework.questions.bean.PaperBean;
 import com.yanxiu.gphone.student.homework.questions.bean.PaperStatusBean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,7 +24,7 @@ public class Paper {
     private String id;
     private String name;
     private PaperStatusBean paperStatus;
-    private List<BaseQuestion> questions;
+    private ArrayList<BaseQuestion> questions;
     private String parentId;
     private String ptype;
     private String quesnum;
@@ -35,6 +39,35 @@ public class Paper {
     private String subquesnum;
     private String volume;
     private String volumeName;
+
+    public Paper(PaperBean paperBean, QuestionShowType showType) {
+        this.authorid = paperBean.getAuthorid();
+        this.bedition = paperBean.getBedition();
+        this.begintime = paperBean.getBegintime();
+        this.buildtime = paperBean.getBuildtime();
+        this.chapterid = paperBean.getChapterid();
+        this.classid = paperBean.getClassid();
+        this.editionName = paperBean.getEditionName();
+        this.endtime = paperBean.getEndtime();
+        this.id = paperBean.getId();
+        this.name = paperBean.getName();
+        this.paperStatus = paperBean.getPaperStatus();
+        this.questions = QuestionConvertFactory.convertQuestion(paperBean.getPaperTest(),showType);
+        this.parentId = paperBean.getParentId();
+        this.ptype = paperBean.getPtype();
+        this.quesnum = paperBean.getQuesnum();
+        this.redoDays = paperBean.getRedoDays();
+        this.sectionid = paperBean.getSectionid();
+        this.showana = paperBean.getShowana();
+        this.stageName = paperBean.getStageName();
+        this.stageid = paperBean.getStageid();
+        this.status = paperBean.getStatus();
+        this.subjectName = paperBean.getSubjectName();
+        this.subjectid = paperBean.getSubjectid();
+        this.subquesnum = paperBean.getSubquesnum();
+        this.volume = paperBean.getVolume();
+        this.volumeName = paperBean.getVolumeName();
+    }
 
     public String getAuthorid() {
         return authorid;
@@ -124,11 +157,11 @@ public class Paper {
         this.paperStatus = paperStatus;
     }
 
-    public List<BaseQuestion> getQuestions() {
+    public ArrayList<BaseQuestion> getQuestions() {
         return questions;
     }
 
-    public void setQuestions(List<BaseQuestion> questions) {
+    public void setQuestions(ArrayList<BaseQuestion> questions) {
         this.questions = questions;
     }
 
@@ -242,5 +275,33 @@ public class Paper {
 
     public void setVolumeName(String volumeName) {
         this.volumeName = volumeName;
+    }
+
+    /**
+     * 生成题号
+     * @param nodes
+     */
+
+    public static void generateUsedNumbersForNodes(List<BaseQuestion> nodes) {
+        if (nodes == null) return;
+        // 先要清空所有已有位置数据，否则会叠加
+        for (BaseQuestion node : nodes) {
+            node.clearAllNumberData();
+        }
+
+        int position = 0;
+        for (BaseQuestion node : nodes) {
+            node.markLevelAndPosition(0, position++, null);
+        }
+
+        int total = 0;
+        position = 0;
+        for (BaseQuestion node : nodes) {
+            total = node.generateTotalNumber(total, position++, nodes.size());
+        }
+
+        for (BaseQuestion node : nodes) {
+            node.setPostfixNumber(total);
+        }
     }
 }

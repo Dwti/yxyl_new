@@ -43,6 +43,11 @@
             android:scrollbars="none">
         </ListView>
 
+        <include
+            android:id="@+id/tips_layout"
+            layout="@layout/homework_tips_layout"
+            android:visibility="gone" />
+
     </LinearLayout>
 
     <FrameLayout

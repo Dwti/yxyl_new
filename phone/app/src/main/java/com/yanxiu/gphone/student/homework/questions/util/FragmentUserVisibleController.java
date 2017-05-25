@@ -158,7 +158,7 @@ public class FragmentUserVisibleController {
                             UserVisibleCallback userVisibleCallback = (UserVisibleCallback) childFragment;
                             if (fragment instanceof ComplexExerciseFragmentBase) {
                                 ComplexExerciseFragmentBase complexExerciseFragmentBase = (ComplexExerciseFragmentBase) fragment;
-                                ViewPager viewPager = complexExerciseFragmentBase.getViewPager();
+                                ViewPager viewPager = complexExerciseFragmentBase.getmViewPager();
                                 if (null != viewPager) {
                                     int index = viewPager.getCurrentItem();
                                     if (childFragment.getUserVisibleHint() && index == 0) {

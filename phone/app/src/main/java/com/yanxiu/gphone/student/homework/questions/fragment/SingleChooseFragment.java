@@ -1,41 +1,70 @@
 package com.yanxiu.gphone.student.homework.questions.fragment;
 
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.customviews.ChooseLayout;
 import com.yanxiu.gphone.student.homework.questions.model.BaseQuestion;
+import com.yanxiu.gphone.student.homework.questions.model.SingleChoiceQuestion;
 
 /**
  * Created by 戴延枫 on 2017/5/5.
  */
 
 public class SingleChooseFragment extends SimpleExerciseFragmentBase {
-//    SingleChooseQuestion model;
+    private SingleChoiceQuestion mData;
+    private TextView mQuestionView;
+    private ChooseLayout mAnswerView;
 
     @Override
-    public void setNode(BaseQuestion node) {
-//        model = (SingleChooseQuestion) node;
+    public void setData(BaseQuestion data) {
+        super.setData(data);
+        mData = (SingleChoiceQuestion) data;
     }
 
-//    @Override
-//    public void onCreate(@Nullable Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        if (savedInstanceState != null) {
-//            model = (SingleChooseQuestion) savedInstanceState.getSerializable(KEY_NODE);
-//        }
-//    }
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState != null && mData ==null) {
+            setData((SingleChoiceQuestion) savedInstanceState.getSerializable(KEY_NODE));
+        }
+    }
 
-//    @Override
-//    public void onSaveInstanceState(Bundle outState) {
-//        super.onSaveInstanceState(outState);
-//        outState.putSerializable(KEY_NODE, model);
-//    }
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(KEY_NODE, mData);
+    }
 
-//    @Nullable
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//        View view = inflater.inflate(R.layout.fragment_single_choose, container, false);
-//        setQaNumber(view);
-//        return view;
-//    }
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_single_choose, container, false);
+        setQaNumber(view);
+        initView(view);
+        listener();
+        initData();
+        return view;
+    }
+
+    private void initView(View view) {
+        mQuestionView= (TextView) view.findViewById(R.id.tv_question);
+        mAnswerView= (ChooseLayout) view.findViewById(R.id.cl_answer);
+    }
+
+    private void listener() {
+
+    }
+
+    private void initData() {
+
+    }
 
     /**
      * 当Fragment对用户的可见性发生了改变的时候就会回调此方法

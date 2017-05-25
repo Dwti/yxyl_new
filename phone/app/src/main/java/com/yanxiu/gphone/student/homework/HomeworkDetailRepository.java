@@ -9,7 +9,10 @@ import com.yanxiu.gphone.student.homework.data.HomeworkDetailRequest;
 import com.yanxiu.gphone.student.homework.data.HomeworkDetailResponse;
 import com.yanxiu.gphone.student.homework.data.PaperRequest;
 import com.yanxiu.gphone.student.homework.data.PaperResponse;
+import com.yanxiu.gphone.student.homework.questions.QuestionShowType;
+import com.yanxiu.gphone.student.homework.questions.model.Paper;
 import com.yanxiu.gphone.student.util.DESBodyDealer;
+import com.yanxiu.gphone.student.util.DataFetcher;
 
 import java.util.List;
 
@@ -105,8 +108,9 @@ public class HomeworkDetailRepository implements HomeworkDetailDataSource {
             public void onSuccess(RequestBase request, PaperResponse ret) {
                 if(ret.getStatus().getCode() == 0){
                     if(ret.getData().size() > 0){
-                        //TODO 先存起来
-                        loadPaperCallback.onPaperLoaded(ret.getData());
+                        Paper paper = new Paper(ret.getData().get(0), QuestionShowType.ANSWER);
+                        DataFetcher.getInstance().save(paper.getId(),paper);
+                        loadPaperCallback.onPaperLoaded(paper);
                     }else {
                         loadPaperCallback.onDataEmpty();
                     }

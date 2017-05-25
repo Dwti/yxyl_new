@@ -210,6 +210,7 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
 
     public void onEventMainThread(SchoolMessage message) {
         if (message!=null) {
+            this.message=message;
             mSchoolView.setText(message.schoolName);
         }
     }

@@ -24,4 +24,6 @@
     <color name="color_black">#ff000000</color>
     <color name="color_99cc00">#99cc00</color>
     <color name="color_cccccc">#cccccc</color>
+    <color name="color_EFffffff">#EFffffff</color>
+    <color name="color_5002c0f">#05002c0f</color>
 </resources>

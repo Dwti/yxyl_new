@@ -21,5 +21,6 @@ public class Constants {
 
     public static int[] StageTxtId = {R.string.primary_txt, R.string.juinor_txt, R.string.high_txt};
     public static String[] StageId = {"1202", "1203", "1204"};
+    public static final String EXTRA_PAPER = "extra_Paper";//传递给答题页的paper数据的key
 
 }

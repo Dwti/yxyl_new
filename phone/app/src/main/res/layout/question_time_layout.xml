@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical">
+
+    <LinearLayout
+        android:id="@+id/hourlayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/hourleft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:textColor="@color/color_ffffff"
+            android:textSize="@dimen/question_top_layout_time_textsize"
+            android:background="@drawable/question_timer_shape"
+            android:layout_marginRight="@dimen/question_top_layout_time_margin"
+            tools:text="0" />
+
+        <TextView
+            android:id="@+id/hour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:textColor="@color/color_ffffff"
+            android:textSize="@dimen/question_top_layout_time_textsize"
+            android:background="@drawable/question_timer_shape"
+            tools:text="0" />
+
+        <TextView
+            android:layout_width="@dimen/question_top_layout_time_maohao_width"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text=":"
+            android:textColor="@color/color_cccccc"
+            android:textSize="@dimen/question_top_layout_time_maohao" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/minutelayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/minuteleft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:textColor="@color/color_ffffff"
+            android:textSize="@dimen/question_top_layout_time_textsize"
+            android:background="@drawable/question_timer_shape"
+            android:layout_marginRight="@dimen/question_top_layout_time_margin"
+            tools:text="0" />
+
+        <TextView
+            android:id="@+id/minute"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:textColor="@color/color_ffffff"
+            android:textSize="@dimen/question_top_layout_time_textsize"
+            android:background="@drawable/question_timer_shape"
+            tools:text="0" />
+
+        <TextView
+            android:layout_width="@dimen/question_top_layout_time_maohao_width"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text=":"
+            android:textColor="@color/color_cccccc"
+            android:textSize="@dimen/question_top_layout_time_maohao" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/secondlayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/secondleft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:textColor="@color/color_ffffff"
+            android:textSize="@dimen/question_top_layout_time_textsize"
+            android:background="@drawable/question_timer_shape"
+            android:layout_marginRight="@dimen/question_top_layout_time_margin"
+            tools:text="0" />
+
+        <TextView
+            android:id="@+id/second"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="clip_vertical"
+            android:textColor="@color/color_ffffff"
+            android:textSize="@dimen/question_top_layout_time_textsize"
+            android:background="@drawable/question_timer_shape"
+            tools:text="0" />
+    </LinearLayout>
+</LinearLayout>

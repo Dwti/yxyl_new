@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.yanxiu.gphone.student.homework.questions.model.BaseQuestion;
+import com.yanxiu.gphone.student.homework.questions.model.ReadingComplexQuestion;
 
 
 /**
@@ -12,18 +13,18 @@ import com.yanxiu.gphone.student.homework.questions.model.BaseQuestion;
  */
 
 public class ReadingComplexExerciseFragment extends ComplexExerciseFragmentBase {
-//    ReadingComplexQuestion model;
+    ReadingComplexQuestion mData;
 
     @Override
-    public void setNode(BaseQuestion node) {
-        super.setNode(node);
-//        model = (ReadingComplexQuestion) node;
+    public void setData(BaseQuestion baseQuestion) {
+        super.setData(baseQuestion);
+        mData = (ReadingComplexQuestion) baseQuestion;
     }
 
     @Override
     protected TopFragment getTopFragment() {
         ReadingComplexTopFragment topFragment = new ReadingComplexTopFragment();
-//        topFragment.setNode(model);
+        topFragment.setData(mData);
         return topFragment;
     }
 
@@ -31,14 +32,14 @@ public class ReadingComplexExerciseFragment extends ComplexExerciseFragmentBase 
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
-//            model = (ListenComplexQuestion) savedInstanceState.getSerializable(KEY_NODE);
+            mData = (ReadingComplexQuestion) savedInstanceState.getSerializable(KEY_NODE);
         }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-//        outState.putSerializable(KEY_NODE, model);
+        outState.putSerializable(KEY_NODE, mData);
     }
 
     /**
