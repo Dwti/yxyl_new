@@ -35,7 +35,7 @@
             android:screenOrientation="portrait"
             android:launchMode="singleTask"
             android:configChanges="keyboardHidden|orientation"
-            android:windowSoftInputMode="adjustPan|stateAlwaysHidden"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
             android:taskAffinity="com.yanxiu.gphone.student.homepage.MainActivity"/>
         <activity
             android:name=".user.activity.LoginActivity"

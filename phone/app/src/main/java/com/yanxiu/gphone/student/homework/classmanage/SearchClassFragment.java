@@ -5,18 +5,20 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.customviews.CharacterSeparatedEditLayout;
 import com.yanxiu.gphone.student.customviews.WavesLayout;
+import com.yanxiu.gphone.student.homepage.MainActivity;
 import com.yanxiu.gphone.student.homework.data.ClassBean;
 import com.yanxiu.gphone.student.homework.data.SearchClassRequest;
 import com.yanxiu.gphone.student.homework.data.SearchClassResponse;
@@ -37,6 +39,14 @@ public class SearchClassFragment extends Fragment {
 
     private WavesLayout mWavesLayout;
 
+    private View mRootView, mHowToJoinClass;
+
+    private int mBottom;
+
+    private boolean mKeyBoardVisible = false;
+
+    private CharacterSeparatedEditLayout mInputNumWidget;
+
     public static SearchClassFragment getInstance() {
         return new SearchClassFragment();
     }
@@ -45,35 +55,43 @@ public class SearchClassFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View root = inflater.inflate(R.layout.fragment_search_class, container, false);
-        final CharacterSeparatedEditLayout inputNum = (CharacterSeparatedEditLayout) root.findViewById(R.id.input_number_layout);
-        TextView title = (TextView) root.findViewById(R.id.tv_title);
+        mRootView = inflater.inflate(R.layout.fragment_search_class, container, false);
+        initView();
+        initListener();
+        return mRootView;
+    }
+
+    private void initView(){
+        mInputNumWidget = (CharacterSeparatedEditLayout) mRootView.findViewById(R.id.input_number_layout);
+        TextView title = (TextView) mRootView.findViewById(R.id.tv_title);
         title.setText(R.string.title_homework);
-        mBtnNext = (Button) root.findViewById(R.id.btn_next);
-        mWavesLayout = (WavesLayout) root.findViewById(R.id.wavesLayout);
-        View howToJoinClass = root.findViewById(R.id.how_to_join_class);
+        mBtnNext = (Button) mRootView.findViewById(R.id.btn_next);
+        mWavesLayout = (WavesLayout) mRootView.findViewById(R.id.wavesLayout);
+        mHowToJoinClass = mRootView.findViewById(R.id.how_to_join_class);
 
         mWavesLayout.setCanShowWave(false);
         mBtnNext.setEnabled(false);
+    }
 
+    private void initListener(){
         mBtnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(inputNum.getText().length() < 8){
+                if(mInputNumWidget.getText().length() < 8){
                     ToastManager.showMsg(getString(R.string.input_correct_class_number));
-                }else if(inputNum.getText().length() == 8){
-                    searchClass(inputNum.getText());
+                }else if(mInputNumWidget.getText().length() == 8){
+                    searchClass(mInputNumWidget.getText());
                 }
             }
         });
-        howToJoinClass.setOnClickListener(new View.OnClickListener() {
+        mHowToJoinClass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), HowToJoinClassActivity.class);
                 startActivity(intent);
             }
         });
-        inputNum.setOnTextChangedListener(new CharacterSeparatedEditLayout.OnTextChangedListener() {
+        mInputNumWidget.setOnTextChangedListener(new CharacterSeparatedEditLayout.OnTextChangedListener() {
             @Override
             public void onTextChanged(Editable s) {
                 if (s.toString().length() > 0) {
@@ -86,8 +104,30 @@ public class SearchClassFragment extends Fragment {
             }
         });
 
-        return root;
+        mRootView.post(new Runnable() {
+            @Override
+            public void run() {
+                mBottom = mRootView.getBottom();
+            }
+        });
+
+        mRootView.getViewTreeObserver().addOnGlobalLayoutListener(mOnGlobalLayoutListener);
     }
+
+    //根据键盘的弹出收起，去隐藏显示下面的导航栏
+    ViewTreeObserver.OnGlobalLayoutListener mOnGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+        @Override
+        public void onGlobalLayout() {
+            if(mRootView.getBottom() < mBottom && !mKeyBoardVisible){
+                mKeyBoardVisible = true;
+                ((MainActivity)getActivity()).setBottomNaviBarsVisibility(View.GONE);
+                mRootView.requestLayout();
+            }else if(mRootView.getBottom() >= mBottom && mKeyBoardVisible){
+                mKeyBoardVisible = false;
+                ((MainActivity)getActivity()).setBottomNaviBarsVisibility(View.VISIBLE);
+            }
+        }
+    };
 
     private void searchClass(String id) {
         SearchClassRequest request = new SearchClassRequest();
@@ -137,6 +177,11 @@ public class SearchClassFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onDestroy() {
+        mRootView.getViewTreeObserver().removeOnGlobalLayoutListener(mOnGlobalLayoutListener);
+        super.onDestroy();
+    }
 
     public interface OnJoinClassCompleteListener {
         void onJoinClassComplete();
