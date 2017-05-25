@@ -10,6 +10,7 @@ import com.yanxiu.gphone.student.util.SystemUtil;
 
 public class Constants {
     public static final int  NET_ERROR = -1;
+    public static final int NOT_LOGGED_IN = 99;
     public static final String OS = "android";
     public static final String osType = "0";
     public static final String pcode = "010110000";

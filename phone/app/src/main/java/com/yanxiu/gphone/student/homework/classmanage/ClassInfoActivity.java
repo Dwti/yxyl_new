@@ -96,8 +96,7 @@ public class ClassInfoActivity extends Activity {
 
     HttpCallback<ExitClassResponse> mExitClassCallback = new ExerciseBaseCallback<ExitClassResponse>() {
         @Override
-        public void onSuccess(RequestBase request, ExitClassResponse ret) {
-            super.onSuccess(request,ret);
+        public void onResponse(RequestBase request, ExitClassResponse ret) {
             if(ret.getStatus().getCode() == 0 ){
                 setResult(RESULT_OK);
                 finish();
@@ -113,8 +112,7 @@ public class ClassInfoActivity extends Activity {
 
     HttpCallback<CancelApplyClassResponse> mCancelApplyClassCallback = new ExerciseBaseCallback<CancelApplyClassResponse>() {
         @Override
-        public void onSuccess(RequestBase request, CancelApplyClassResponse ret) {
-            super.onSuccess(request,ret);
+        public void onResponse(RequestBase request, CancelApplyClassResponse ret) {
             if(ret.getStatus().getCode() == 0 ){
                 setResult(RESULT_OK);
                 finish();

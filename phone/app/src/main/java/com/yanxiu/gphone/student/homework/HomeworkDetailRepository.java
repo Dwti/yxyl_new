@@ -44,8 +44,7 @@ public class HomeworkDetailRepository implements HomeworkDetailDataSource {
         request.startRequest(HomeworkDetailResponse.class, new ExerciseBaseCallback<HomeworkDetailResponse>() {
 
             @Override
-            public void onSuccess(RequestBase request, HomeworkDetailResponse ret) {
-                super.onSuccess(request, ret);
+            public void onResponse(RequestBase request, HomeworkDetailResponse ret) {
                 if(ret.getStatus().getCode() == 0 ){
                     mPageIndex = 1;
                     mTotalPage = ret.getPage().getTotalPage();
@@ -76,8 +75,7 @@ public class HomeworkDetailRepository implements HomeworkDetailDataSource {
         request.startRequest(HomeworkDetailResponse.class, new ExerciseBaseCallback<HomeworkDetailResponse>() {
 
             @Override
-            public void onSuccess(RequestBase request, HomeworkDetailResponse ret) {
-                super.onSuccess(request, ret);
+            public void onResponse(RequestBase request, HomeworkDetailResponse ret) {
                 if(ret.getStatus().getCode() == 0 ){
                     mTotalPage = ret.getPage().getTotalPage();
                     if(ret.getData().size() == 0){

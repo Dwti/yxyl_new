@@ -141,8 +141,7 @@ public class SearchClassFragment extends Fragment {
 
     HttpCallback<SearchClassResponse> mSearchClassCallback = new ExerciseBaseCallback<SearchClassResponse>() {
         @Override
-        public void onSuccess(RequestBase request, SearchClassResponse ret) {
-            super.onSuccess(request, ret);
+        public void onResponse(RequestBase request, SearchClassResponse ret) {
             if (ret.getStatus().getCode() == 0 && (ret.getData().get(0).getStatus() == 0 || ret.getData().get(0).getStatus() == 1)) {
                 ClassBean bean = ret.getData().get(0);
                 Intent intent = new Intent(getActivity(), JoinClassActivity.class);
