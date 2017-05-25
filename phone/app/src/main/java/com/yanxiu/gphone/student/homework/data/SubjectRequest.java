@@ -1,6 +1,7 @@
 package com.yanxiu.gphone.student.homework.data;
 
 import com.yanxiu.gphone.student.base.ExerciseBaseRequest;
+import com.yanxiu.gphone.student.db.UrlRepository;
 
 /**
  * Created by sp on 17-5-18.
@@ -9,11 +10,11 @@ import com.yanxiu.gphone.student.base.ExerciseBaseRequest;
 public class SubjectRequest extends ExerciseBaseRequest {
     @Override
     protected String urlServer() {
-        return "http://mobile.hwk.yanxiu.com/app/class";
+        return UrlRepository.getInstance().getServer();
     }
 
     @Override
     protected String urlPath() {
-        return "/listGroups.do";
+        return "/class/listGroups.do";
     }
 }
