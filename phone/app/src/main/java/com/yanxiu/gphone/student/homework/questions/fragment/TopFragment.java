@@ -2,6 +2,7 @@ package com.yanxiu.gphone.student.homework.questions.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.View;
 
 import com.yanxiu.gphone.student.homework.questions.model.BaseQuestion;
 
@@ -10,8 +11,8 @@ import com.yanxiu.gphone.student.homework.questions.model.BaseQuestion;
  */
 
 public abstract class TopFragment extends Fragment {
-    abstract void setNode(BaseQuestion node);
-
+    abstract void setData(BaseQuestion data);
+    public View mRootView;
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);

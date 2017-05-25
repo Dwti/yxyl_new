@@ -1,14 +1,15 @@
 package com.yanxiu.gphone.student.homework.questions.model;
 
-import android.support.v4.app.Fragment;
-
 import com.yanxiu.gphone.student.homework.questions.QuestionConvertFactory;
 import com.yanxiu.gphone.student.homework.questions.QuestionShowType;
 import com.yanxiu.gphone.student.homework.questions.QuestionTemplate;
 import com.yanxiu.gphone.student.homework.questions.bean.PadBean;
 import com.yanxiu.gphone.student.homework.questions.bean.PaperTestBean;
 import com.yanxiu.gphone.student.homework.questions.bean.PointBean;
+import com.yanxiu.gphone.student.homework.questions.fragment.ExerciseFragmentBase;
 
+import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,7 @@ import java.util.List;
  * Created by sunpeng on 2017/5/11.
  */
 
-public abstract class BaseQuestion {
+public abstract class BaseQuestion implements Serializable {
     protected String id;
     protected String correctRate;
     protected String difficulty;
@@ -39,7 +40,7 @@ public abstract class BaseQuestion {
     protected String type_id;
     protected String sectionid;
     protected String typeid;
-    protected List<BaseQuestion> children;
+    protected ArrayList<BaseQuestion> children;
     protected QuestionShowType showType;
 
     public BaseQuestion(PaperTestBean bean,QuestionShowType showType){
@@ -62,10 +63,28 @@ public abstract class BaseQuestion {
         this.sectionid = bean.getSectionid();
         this.typeid = bean.getTypeid();
         children = QuestionConvertFactory.convertQuestion(bean.getQuestions().getChildren(),showType);
+        if(children == null)
+            children = new ArrayList<>();
         this.showType = showType;
     }
 
-    public abstract Fragment getFragment();
+    public ExerciseFragmentBase getFragment() {
+        ExerciseFragmentBase fm = null;
+        if (showType.equals(QuestionShowType.ANSWER)) {
+            fm = answerFragment();
+        }
+
+        if (showType.equals(QuestionShowType.ANALYSIS)) {
+            fm = analysisFragment();
+        }
+
+        fm.setData(this);
+        return fm;
+    }
+
+    abstract ExerciseFragmentBase answerFragment();
+
+    abstract ExerciseFragmentBase analysisFragment();
 
     public String getId() {
         return id;
@@ -211,11 +230,11 @@ public abstract class BaseQuestion {
         this.typeid = typeid;
     }
 
-    public List<BaseQuestion> getChildren() {
+    public ArrayList<BaseQuestion> getChildren() {
         return children;
     }
 
-    public void setChildren(List<BaseQuestion> children) {
+    public void setChildren(ArrayList<BaseQuestion> children) {
         this.children = children;
     }
 

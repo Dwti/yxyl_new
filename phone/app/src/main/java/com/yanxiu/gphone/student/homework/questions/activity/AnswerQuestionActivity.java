@@ -67,9 +67,9 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_answerquestion);
         initData();
-        if (mQuestions == null) { // 表明是第一级界面
-            mQuestions = new ArrayList<>();
-        }
+//        if (mQuestions == null) { // 表明是第一级界面
+//            mQuestions = new ArrayList<>();
+//        }
 //        mQuestions = DataClass.getPaper().children;//Todo 获取数据
         initView();
     }
@@ -80,10 +80,6 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
             finish();
         mPaper = DataFetcher.getInstance().getPaper(mKey);
         mQuestions = mPaper.getQuestions();
-        if (mQuestions == null) { // 表明是第一级界面
-            mQuestions = new ArrayList<>();
-            mQuestions.add(new SingleChoiceQuestion());
-        }
     }
 
     private void initView() {

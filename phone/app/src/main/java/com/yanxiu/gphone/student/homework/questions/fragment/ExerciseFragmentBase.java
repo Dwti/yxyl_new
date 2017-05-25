@@ -3,9 +3,13 @@ package com.yanxiu.gphone.student.homework.questions.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.View;
+import android.widget.TextView;
 
+import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.homework.questions.activity.AnswerQuestionActivity;
 import com.yanxiu.gphone.student.homework.questions.interf.IExercise;
+import com.yanxiu.gphone.student.homework.questions.model.BaseQuestion;
 import com.yanxiu.gphone.student.homework.questions.util.FragmentUserVisibleController;
 
 /**
@@ -18,6 +22,8 @@ public abstract class ExerciseFragmentBase extends Fragment implements IExercise
 
     public static final String KEY_NODE = "key_question";
 
+    public BaseQuestion mBaseQuestion;
+
     public long mTotalTime ;//总计时间
     public long mStartTime ;//开始时间
     public long mEndTime;//结束时间
@@ -29,9 +35,20 @@ public abstract class ExerciseFragmentBase extends Fragment implements IExercise
     }
 
     @Override
+    public void setData(BaseQuestion node) {
+        mBaseQuestion = node;
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         userVisibleController.activityCreated();
+    }
+
+    public void setQaNumber(View v) {
+        TextView tv = (TextView) v.findViewById(R.id.tv_qa_number);
+        String str = mBaseQuestion.numberStringForShow();
+        tv.setText(str);
     }
 
     @Override

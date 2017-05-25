@@ -8,5 +8,5 @@ import com.yanxiu.gphone.student.homework.questions.model.BaseQuestion;
  */
 
 public interface IExercise {
-    void setNode(BaseQuestion node);
+    void setData(BaseQuestion data);
 }

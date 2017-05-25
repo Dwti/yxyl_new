@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.homework.data.HomeworkDetailBean;
+import com.yanxiu.gphone.student.homework.questions.activity.AnswerQuestionActivity;
 import com.yanxiu.gphone.student.util.ToastManager;
 
 import java.util.ArrayList;
@@ -146,6 +147,7 @@ public class HomeworkDetailActivity extends Activity implements HomeworkDetailCo
     @Override
     public void openAnswerQuestionUI(String key) {
         ToastManager.showMsg("获取成功，paperId ：" + key);
+        AnswerQuestionActivity.invoke(HomeworkDetailActivity.this,key);
     }
 
     @Override

@@ -39,18 +39,19 @@ public abstract class ComplexExerciseFragmentBase extends ExerciseFragmentBase {
     private List<String> datas = new ArrayList<>();
     private boolean isFromCardSelect;
 
+    private MyMaxHeightLinearLayout mTopLayout;
     private ImageView mImageViewSplitter;
     private View mRootView;
 
-    private BaseQuestion mNode;
+//    private BaseQuestion mBaseQuestion;
 
     private int minHight;//topfragment的最小高度
     private int mBottom_min_distance;//滑动image距离底边最小距离
 
-    @Override
-    public void setNode(BaseQuestion node) {
-        mNode = node;
-    }
+//    @Override
+//    public void setData(BaseQuestion node) {
+//        mBaseQuestion = node;
+//    }
 
     @Nullable
     @Override
@@ -60,12 +61,6 @@ public abstract class ComplexExerciseFragmentBase extends ExerciseFragmentBase {
         setQaNumber(mRootView);
         isFromCardSelect = false;
         return mRootView;
-    }
-
-    protected void setQaNumber(View v) {
-        TextView tv = (TextView) v.findViewById(R.id.tv_qa_number);
-//        String str = mNode.numberStringForShow();// TODO: 2017/5/15  等设置题号逻辑融合进孙鹏的数据里后，再添加
-//        tv.setText(str);
     }
 
     private void initView() {
@@ -82,7 +77,7 @@ public abstract class ComplexExerciseFragmentBase extends ExerciseFragmentBase {
         }
         mViewPager = (QAViewPager) mRootView.findViewById(R.id.ll_bottom_container);
         mAdapter = new QAViewPagerAdapter(fm);
-//        mAdapter.setData(mNode.children);// TODO: 2017/5/15  等设置题号逻辑融合进孙鹏的数据里后，再添加
+        mAdapter.setData(mBaseQuestion.getChildren());
         mViewPager.setAdapter(mAdapter);
         mViewPager.setOnSwipeOutListener(new QAViewPager.OnSwipeOutListener() {
             @Override
@@ -92,7 +87,7 @@ public abstract class ComplexExerciseFragmentBase extends ExerciseFragmentBase {
 
         });
 
-        final MyMaxHeightLinearLayout topLayout = (MyMaxHeightLinearLayout) mRootView.findViewById(R.id.ll_top_container);
+        mTopLayout = (MyMaxHeightLinearLayout) mRootView.findViewById(R.id.ll_top_container);
         minHight = (int)getResources().getDimension(R.dimen.question_ll_top_container_minheight);
         mBottom_min_distance = (int)getResources().getDimension(R.dimen.question_bottom_layout_height);
 
@@ -108,21 +103,21 @@ public abstract class ComplexExerciseFragmentBase extends ExerciseFragmentBase {
                     case MotionEvent.ACTION_DOWN:
                         startTop = v.getTop();
                         startY = event.getRawY();
-                        topLayout.setCanChangeHeight();
+                        mTopLayout.setCanChangeHeight();
                         break;
                     case MotionEvent.ACTION_MOVE:
                         float top = startTop + (event.getRawY() - startY);
-//                        top = Math.max(0, Math.min(top, parentView.getHeight() - v.getHeight()));
                         top = Math.max(minHight, Math.min(top, parentView.getHeight() - v.getHeight() - mBottom_min_distance));
                         ViewGroup.LayoutParams params = v.getLayoutParams();
-                        float topHeight = top;
-                        float bottomHeight = parentView.getHeight() - topHeight - v.getHeight();
+                        int topHeight = (int)top;
+                        int bottomHeight = parentView.getHeight() - topHeight - v.getHeight();
 
-                        LinearLayout.LayoutParams topParams = (LinearLayout.LayoutParams) topLayout.getLayoutParams();
+                        LinearLayout.LayoutParams topParams = (LinearLayout.LayoutParams) mTopLayout.getLayoutParams();
                         LinearLayout.LayoutParams bottomParams = (LinearLayout.LayoutParams) mViewPager.getLayoutParams();
-                        topParams.weight = topHeight;
-                        bottomParams.weight = bottomHeight;
-                        topLayout.setLayoutParams(topParams);
+
+                        topParams.height = topHeight;
+                        bottomParams.height = bottomHeight;
+                        mTopLayout.setLayoutParams(topParams);
                         mViewPager.setLayoutParams(bottomParams);
                         break;
                     case MotionEvent.ACTION_UP:
@@ -139,7 +134,6 @@ public abstract class ComplexExerciseFragmentBase extends ExerciseFragmentBase {
 
     /**
      * 递归
-     *
      * @param postions
      */
     public void setChildrenPositionRecursively(ArrayList<Integer> postions) {
