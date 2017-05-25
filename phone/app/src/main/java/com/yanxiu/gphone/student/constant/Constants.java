@@ -1,5 +1,6 @@
 package com.yanxiu.gphone.student.constant;
 
+import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.util.LoginInfo;
 
 /**
@@ -17,5 +18,8 @@ public class Constants {
     //    public static String deviceId= DeviceUtil.getAppDeviceId();
     public static String deviceId = "-";
     public static String version = "2.4.1";
+
+    public static int[] StageTxtId = {R.string.primary_txt, R.string.juinor_txt, R.string.high_txt};
+    public static String[] StageId = {"1202", "1203", "1204"};
 
 }

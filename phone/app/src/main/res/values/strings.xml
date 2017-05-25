@@ -81,4 +81,10 @@
     <string name="load_failed">页面加载失败...</string>
     <string name="class_no_homework">您加入的班级尚未布置过作业</string>
     <string name="apply_for_class_checking">入班申请正在审核中...</string>
+
+    <string name="primary_txt">小学</string>
+    <string name="juinor_txt">初中</string>
+    <string name="high_txt">高中</string>
+    <string name="ok">确定</string>
+    <string name="search_school_no">没有搜索到相应学校</string>
 </resources>

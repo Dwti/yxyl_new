@@ -8,30 +8,43 @@
         android:id="@+id/iv_left"
         android:layout_width="26dp"
         android:layout_height="26dp"
-        android:background="@android:color/holo_blue_light"
-        android:layout_marginLeft="12dp"
         android:layout_centerVertical="true"
-        android:visibility="gone"/>
+        android:layout_marginLeft="12dp"
+        android:background="@android:color/holo_blue_light"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="title"
         android:textColor="@android:color/white"
         android:textSize="20sp"
-        android:text="title"
-        android:textStyle="bold"
-        android:layout_centerInParent="true"/>
+        android:textStyle="bold" />
 
-    <ImageView
-        android:id="@+id/iv_right"
-        android:layout_width="26dp"
-        android:layout_height="26dp"
-        android:background="@android:color/holo_blue_light"
-        android:layout_marginLeft="12dp"
-        android:layout_centerVertical="true"
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="12dp"
-        android:visibility="gone"/>
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp">
 
+        <ImageView
+            android:id="@+id/iv_right"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:background="@android:color/holo_blue_light"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/title_padding"
+            android:textSize="@dimen/complete_info_textsize"
+            android:textColor="@drawable/selector_refresh_text_color"
+            android:visibility="gone" />
+    </RelativeLayout>
 </RelativeLayout>

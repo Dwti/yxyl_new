@@ -2,23 +2,35 @@ package com.yanxiu.gphone.student.user.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.test.yanxiu.network.HttpCallback;
+import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
+import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
+import com.yanxiu.gphone.student.user.adapter.ChooseSchoolAdapter;
+import com.yanxiu.gphone.student.user.http.ChooseSchoolRequest;
+import com.yanxiu.gphone.student.user.response.ChooseSchoolResponse;
 import com.yanxiu.gphone.student.util.EditTextManger;
+import com.yanxiu.gphone.student.util.ToastManager;
 
+import de.greenrobot.event.EventBus;
+
+@SuppressWarnings("all")
 /**
  * Created by Canghaixiao.
  * Time : 2017/5/22 17:54.
  * Function :
  */
-public class ChooseSchoolActivity extends YanxiuBaseActivity implements View.OnClickListener, EditTextManger.onTextLengthChangedListener {
+public class ChooseSchoolActivity extends YanxiuBaseActivity implements View.OnClickListener, EditTextManger.onTextLengthChangedListener, ChooseSchoolAdapter.OnItemClickListener {
 
     private Context mContext;
     private EditText mSchoolNameView;
@@ -27,38 +39,70 @@ public class ChooseSchoolActivity extends YanxiuBaseActivity implements View.OnC
     private TextView mCityView;
     private TextView mAreaView;
     private RecyclerView mSchoolListView;
+    private TextView mTitleRightView;
+    private ImageView mTitleLeftView;
+    private View mTopView;
 
-    public static void LuanchActivity(Context context){
+    private CompleteInfoActivity.SchoolMessage message;
+    private PublicLoadLayout rootView;
+    private ChooseSchoolRequest mChooseSchoolRequest;
+    private ChooseSchoolAdapter adapter;
+
+    public static void LuanchActivity(Context context, CompleteInfoActivity.SchoolMessage message){
         Intent intent=new Intent(context,ChooseSchoolActivity.class);
+        intent.putExtra(ChooseLocationActivity.KEY,message);
         context.startActivity(intent);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chooseschool);
         mContext=ChooseSchoolActivity.this;
+        rootView=new PublicLoadLayout(mContext);
+        rootView.finish();
+        rootView.setContentView(R.layout.activity_chooseschool);
+        setContentView(rootView);
+        message= (CompleteInfoActivity.SchoolMessage) getIntent().getSerializableExtra(ChooseLocationActivity.KEY);
         initView();
         listener();
         initData();
+        searchSchool("");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        cancelRequest();
     }
 
     private void initView() {
+        mTopView=findViewById(R.id.include_top);
+        mTitleLeftView= (ImageView) findViewById(R.id.iv_left);
         mSchoolNameView= (EditText) findViewById(R.id.et_school_name);
         mSearchView= (ImageView) findViewById(R.id.iv_search);
         mProvinceView= (TextView) findViewById(R.id.tv_province);
         mCityView= (TextView) findViewById(R.id.tv_city);
         mAreaView= (TextView) findViewById(R.id.tv_area);
         mSchoolListView= (RecyclerView) findViewById(R.id.recy_school_list);
+        mSchoolListView.setLayoutManager(new LinearLayoutManager(mContext));
+        adapter=new ChooseSchoolAdapter(mContext);
     }
 
     private void listener() {
+        mTitleLeftView.setOnClickListener(ChooseSchoolActivity.this);
         mSearchView.setOnClickListener(ChooseSchoolActivity.this);
+        adapter.setOnItemClickListener(ChooseSchoolActivity.this);
         EditTextManger.getManager(mSchoolNameView).setTextChangedListener(ChooseSchoolActivity.this);
     }
 
     private void initData() {
+        mTopView.setBackgroundColor(Color.WHITE);
+        mTitleLeftView.setVisibility(View.VISIBLE);
         mSearchView.setEnabled(false);
+        mProvinceView.setText(message.provinceName);
+        mCityView.setText(message.cityName);
+        mAreaView.setText(message.areaName);
+        mSchoolListView.setAdapter(adapter);
     }
 
     @Override
@@ -67,6 +111,9 @@ public class ChooseSchoolActivity extends YanxiuBaseActivity implements View.OnC
             case R.id.iv_search:
                 String schoolName=mSchoolNameView.getText().toString().trim();
                 searchSchool(schoolName);
+                break;
+            case R.id.iv_left:
+                ChooseSchoolActivity.this.finish();
                 break;
         }
     }
@@ -78,9 +125,47 @@ public class ChooseSchoolActivity extends YanxiuBaseActivity implements View.OnC
         } else {
             mSearchView.setEnabled(true);
         }
+        searchSchool(value);
+    }
+
+    private void cancelRequest(){
+        if (mChooseSchoolRequest!=null){
+            mChooseSchoolRequest.cancelRequest();
+            mChooseSchoolRequest=null;
+        }
     }
 
     private void searchSchool(String schoolName){
+        cancelRequest();
+        rootView.showLoadingView();
+        mChooseSchoolRequest=new ChooseSchoolRequest();
+        mChooseSchoolRequest.school=schoolName;
+        mChooseSchoolRequest.regionId=message.areaId;
+        mChooseSchoolRequest.startRequest(ChooseSchoolResponse.class, new HttpCallback<ChooseSchoolResponse>() {
+            @Override
+            public void onSuccess(RequestBase request, ChooseSchoolResponse ret) {
+                rootView.hiddenLoadingView();
+                if (ret.status.getCode()==0&&ret.data!=null){
+                    adapter.setDatas(ret.data);
+                }else {
+                    adapter.setDatas(null);
+                    ToastManager.showMsg(getText(R.string.search_school_no));
+                }
+            }
 
+            @Override
+            public void onFail(RequestBase request, Error error) {
+                rootView.hiddenLoadingView();
+                ToastManager.showMsg(error.getMessage());
+            }
+        });
+    }
+
+    @Override
+    public void onItemClick(View view, ChooseSchoolResponse.School school, int position) {
+        message.schoolId=school.id;
+        message.schoolName=school.name;
+        EventBus.getDefault().post(message);
+        ChooseSchoolActivity.this.finish();
     }
 }

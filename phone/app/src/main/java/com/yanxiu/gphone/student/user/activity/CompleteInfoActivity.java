@@ -8,11 +8,23 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.test.yanxiu.network.HttpCallback;
+import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
 import com.yanxiu.gphone.student.customviews.WavesLayout;
+import com.yanxiu.gphone.student.homepage.MainActivity;
+import com.yanxiu.gphone.student.user.http.CompleteInfoRequest;
+import com.yanxiu.gphone.student.user.response.LoginResponse;
 import com.yanxiu.gphone.student.util.EditTextManger;
+import com.yanxiu.gphone.student.util.LoginInfo;
+import com.yanxiu.gphone.student.util.SysEncryptUtil;
+import com.yanxiu.gphone.student.util.ToastManager;
+
+import java.io.Serializable;
+
+import de.greenrobot.event.EventBus;
 
 @SuppressWarnings("all")
 /**
@@ -25,10 +37,10 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
     private Context mContext;
     private EditText mUserNameView;
     private TextView mSchoolView;
-    private TextView mPeriodView;
+    private TextView mStageView;
     private TextView mSubmitView;
     private WavesLayout mWavesView;
-    private ImageView mChoosePeriodView;
+    private ImageView mChooseStageView;
     private ImageView mChooseSchoolView;
 
     /**
@@ -36,8 +48,16 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
      */
     private boolean isUserNameReady = false;
     private boolean isSchoolReady = false;
-    private boolean isPeriodReady = false;
+    private boolean isStageReady = false;
     private PublicLoadLayout rootView;
+
+    /**
+     * stage message
+     * */
+    public String stageText;
+    public String stageId;
+    public SchoolMessage message;
+    private CompleteInfoRequest mCompleteInfoRequest;
 
     public static void LaunchActivity(Context context) {
         Intent intent = new Intent(context, CompleteInfoActivity.class);
@@ -48,6 +68,7 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = CompleteInfoActivity.this;
+        EventBus.getDefault().register(mContext);
         rootView=new PublicLoadLayout(mContext);
         rootView.setContentView(R.layout.activity_completeinfo);
         rootView.finish();
@@ -57,14 +78,24 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
         initData();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(mContext);
+        if (mCompleteInfoRequest!=null){
+            mCompleteInfoRequest.cancelRequest();
+            mCompleteInfoRequest=null;
+        }
+    }
+
     private void initView() {
         mUserNameView = (EditText) findViewById(R.id.ed_user_name);
         mSchoolView = (TextView) findViewById(R.id.tv_school);
-        mPeriodView = (TextView) findViewById(R.id.tv_period);
+        mStageView = (TextView) findViewById(R.id.tv_stage);
         mSubmitView = (TextView) findViewById(R.id.tv_submit);
         mWavesView = (WavesLayout) findViewById(R.id.wl_waves);
         mChooseSchoolView = (ImageView) findViewById(R.id.iv_choose_school);
-        mChoosePeriodView = (ImageView) findViewById(R.id.iv_choose_period);
+        mChooseStageView = (ImageView) findViewById(R.id.iv_choose_stage);
     }
 
     private void initData() {
@@ -75,10 +106,10 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
     private void listener() {
         mSubmitView.setOnClickListener(CompleteInfoActivity.this);
         mChooseSchoolView.setOnClickListener(CompleteInfoActivity.this);
-        mChoosePeriodView.setOnClickListener(CompleteInfoActivity.this);
+        mChooseStageView.setOnClickListener(CompleteInfoActivity.this);
         EditTextManger.getManager(mUserNameView).setTextChangedListener(CompleteInfoActivity.this);
         EditTextManger.getManager(mSchoolView).setTextChangedListener(CompleteInfoActivity.this);
-        EditTextManger.getManager(mPeriodView).setTextChangedListener(CompleteInfoActivity.this);
+        EditTextManger.getManager(mStageView).setTextChangedListener(CompleteInfoActivity.this);
     }
 
     private void setButtonFocusChange(boolean hasFocus) {
@@ -94,19 +125,50 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.iv_choose_period:
+            case R.id.iv_choose_stage:
+                ChooseStageActivity.LaunchActivity(mContext);
                 break;
             case R.id.iv_choose_school:
                 ChooseLocationActivity.LaunchActivity(mContext);
                 break;
             case R.id.tv_submit:
-                submitInfo();
+                String userName=mUserNameView.getText().toString().trim();
+                submitInfo(userName);
                 break;
         }
     }
 
-    private void submitInfo(){
+    private void submitInfo(String userName){
         rootView.showLoadingView();
+        mCompleteInfoRequest=new CompleteInfoRequest();
+        mCompleteInfoRequest.mobile= LoginInfo.getMobile();
+        mCompleteInfoRequest.realname=userName;
+        mCompleteInfoRequest.provinceid=message.provinceId;
+        mCompleteInfoRequest.cityid=message.cityId;
+        mCompleteInfoRequest.areaid=message.areaId;
+        mCompleteInfoRequest.schoolid=message.schoolId;
+        mCompleteInfoRequest.stageid=stageId;
+        mCompleteInfoRequest.schoolName=message.schoolName;
+        mCompleteInfoRequest.validKey= SysEncryptUtil.getMd5_32(LoginInfo.getMobile() + "&" + "yxylmobile");
+        mCompleteInfoRequest.startRequest(LoginResponse.class, new HttpCallback<LoginResponse>() {
+            @Override
+            public void onSuccess(RequestBase request, LoginResponse ret) {
+                rootView.hiddenLoadingView();
+                if (ret.status.getCode()==0&&ret.data!=null){
+                    LoginInfo.saveCacheData(ret.data.get(0));
+                    MainActivity.invoke(CompleteInfoActivity.this);
+                    CompleteInfoActivity.this.finish();
+                }else {
+                    ToastManager.showMsg(ret.status.getDesc());
+                }
+            }
+
+            @Override
+            public void onFail(RequestBase request, Error error) {
+                rootView.hiddenLoadingView();
+                ToastManager.showMsg(error.getMessage());
+            }
+        });
     }
 
     @Override
@@ -123,13 +185,47 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
             } else {
                 isSchoolReady = true;
             }
-        }else if (view==mPeriodView){
+        }else if (view==mStageView){
             if (isEmpty) {
-                isPeriodReady = false;
+                isStageReady = false;
             } else {
-                isPeriodReady = true;
+                isStageReady = true;
             }
         }
-        setButtonFocusChange(isUserNameReady && isSchoolReady && isPeriodReady);
+        setButtonFocusChange(isUserNameReady && isSchoolReady && isStageReady);
     }
+
+    public void onEventMainThread(StageMessage message){
+        if (message!=null){
+            mStageView.setText(message.stageText);
+            stageText=message.stageText;
+            stageId=message.stageId;
+        }
+    }
+
+    public static class StageMessage{
+        public String stageText;
+        public String stageId;
+    }
+
+    public void onEventMainThread(SchoolMessage message) {
+        if (message!=null) {
+            mSchoolView.setText(message.schoolName);
+        }
+    }
+
+    public static class SchoolMessage implements Serializable{
+        public String provinceId;
+        public String provinceName;
+
+        public String cityId;
+        public String cityName;
+
+        public String areaId;
+        public String areaName;
+
+        public String schoolId;
+        public String schoolName;
+    }
+
 }

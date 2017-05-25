@@ -17,12 +17,12 @@ import com.yanxiu.gphone.student.customviews.WavesLayout;
 import com.yanxiu.gphone.student.homepage.MainActivity;
 import com.yanxiu.gphone.student.user.http.JoinClassSubmitRequest;
 import com.yanxiu.gphone.student.user.response.JoinClassResponse;
-import com.yanxiu.gphone.student.user.response.JoinClassSubmitResponse;
+import com.yanxiu.gphone.student.user.response.LoginResponse;
 import com.yanxiu.gphone.student.util.EditTextManger;
 import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.SysEncryptUtil;
 import com.yanxiu.gphone.student.util.ToastManager;
-
+@SuppressWarnings("all")
 /**
  * Created by Canghaixiao.
  * Time : 2017/5/23 11:27.
@@ -128,9 +128,9 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
         mJoinClassSubmitRequest.schoolName=mData.schoolname;
         mJoinClassSubmitRequest.provinceid="";
         mJoinClassSubmitRequest.validKey=SysEncryptUtil.getMd5_32(LoginInfo.getMobile() + "&" + "yxylmobile");
-        mJoinClassSubmitRequest.startRequest(JoinClassSubmitResponse.class, new HttpCallback<JoinClassSubmitResponse>() {
+        mJoinClassSubmitRequest.startRequest(LoginResponse.class, new HttpCallback<LoginResponse>() {
             @Override
-            public void onSuccess(RequestBase request, JoinClassSubmitResponse ret) {
+            public void onSuccess(RequestBase request, LoginResponse ret) {
                 rootView.hiddenLoadingView();
                 if (ret.status.getCode()==0){
                     LoginInfo.saveCacheData(ret.data.get(0));

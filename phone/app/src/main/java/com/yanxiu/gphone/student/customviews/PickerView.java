@@ -60,7 +60,7 @@ public class PickerView extends View {
     private int mViewHeight;
     private int mViewWidth;
 
-    private int locationType;
+    private int locationType=DEFAULT_CENTER;
 
     private float mLastDownY;
     /**
@@ -114,7 +114,7 @@ public class PickerView extends View {
 
     private void performSelect() {
         if (mSelectListener != null)
-            mSelectListener.onSelect(PickerView.this,mDataList.get(mCurrentSelected));
+            mSelectListener.onSelect(PickerView.this,mDataList.get(mCurrentSelected),mCurrentSelected);
     }
 
     public void setData(List<String> datas) {
@@ -239,7 +239,10 @@ public class PickerView extends View {
         super.onDraw(canvas);
         // 根据index绘制view
         if (isInit)
-            drawData(canvas);
+            drawLines(canvas);
+            if (mDataList.size()>0) {
+                drawData(canvas);
+            }
     }
 
     private void drawData(Canvas canvas) {
@@ -256,7 +259,6 @@ public class PickerView extends View {
 
         String text = shearString(mDataList.get(mCurrentSelected), mViewWidth, mPaint);
         canvas.drawText(text, x, baseline, mPaint);
-        drawLines(canvas);
         // 绘制上方data
         for (int i = 1; i < 4; i++) {
             if ((mCurrentSelected - i) >= 0) {
@@ -426,7 +428,7 @@ public class PickerView extends View {
     }
 
     public interface onSelectListener {
-        void onSelect(View view,String text);
+        void onSelect(View view,String text,int selectId);
     }
 
     public void setCanScroll(boolean canScroll) {

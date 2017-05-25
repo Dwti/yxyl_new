@@ -110,6 +110,11 @@
             android:configChanges="keyboardHidden|orientation"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
 
+        <activity android:name=".user.activity.ChooseStageActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppFullscreen"
+            android:configChanges="keyboardHidden|orientation"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
     </application>
 
 </manifest>

@@ -245,4 +245,9 @@
     <dimen name="join_class_submit_text_size">21dp</dimen>
     <dimen name="join_class_submit_edit_margin_t">25dp</dimen>
     <dimen name="join_class_submit_edit_margin_l">20dp</dimen>
+
+    <dimen name="title_padding">5dp</dimen>
+    <dimen name="search_school_margin_l">35dp</dimen>
+    <dimen name="search_school_margin_r">25dp</dimen>
+    <dimen name="search_school_margin_t">35dp</dimen>
 </resources>
