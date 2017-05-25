@@ -20,6 +20,7 @@ public class Constants {
     public static String version = String.valueOf(SystemUtil.getVersionCode());
 
     public static final String EXTRA_PAPER = "extra_Paper";//传递给答题页的paper数据的key
+    public static final String URL_SERVER_FILE_NAME = "env_config.json"; //存放server配置的文件名
 
     public static final String MAINAVTIVITY_REFRESH = "mainActivity_refresh";//跳转到首页需要刷新数据
     public static String deviceId = "-";
