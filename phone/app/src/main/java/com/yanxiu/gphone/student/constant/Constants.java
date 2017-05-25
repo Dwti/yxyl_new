@@ -1,6 +1,7 @@
 package com.yanxiu.gphone.student.constant;
 
 import com.yanxiu.gphone.student.util.LoginInfo;
+import com.yanxiu.gphone.student.util.SystemUtil;
 
 /**
  * Created by dyf
@@ -15,7 +16,7 @@ public class Constants {
     public static String token = LoginInfo.getToken();
     public static String trace_uid = LoginInfo.getUID();
 //    public static String deviceId= DeviceUtil.getAppDeviceId();
-    public static String version = "2.4.1";
+    public static String version = String.valueOf(SystemUtil.getVersionCode());
 
     public static final String EXTRA_PAPER = "extra_Paper";//传递给答题页的paper数据的key
 

@@ -16,7 +16,7 @@ import com.yanxiu.gphone.student.homework.questions.model.SingleChoiceQuestion;
  */
 
 public class SingleChooseFragment extends SimpleExerciseFragmentBase {
-    SingleChoiceQuestion mData;
+    private SingleChoiceQuestion mData;
 
 
     @Override
@@ -44,6 +44,7 @@ public class SingleChooseFragment extends SimpleExerciseFragmentBase {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_single_choose, container, false);
         setQaNumber(view);
+        setQaName(view);
         return view;
     }
 

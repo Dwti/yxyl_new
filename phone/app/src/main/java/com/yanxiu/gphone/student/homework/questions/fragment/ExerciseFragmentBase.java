@@ -3,6 +3,8 @@ package com.yanxiu.gphone.student.homework.questions.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextPaint;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -11,6 +13,9 @@ import com.yanxiu.gphone.student.homework.questions.activity.AnswerQuestionActiv
 import com.yanxiu.gphone.student.homework.questions.interf.IExercise;
 import com.yanxiu.gphone.student.homework.questions.model.BaseQuestion;
 import com.yanxiu.gphone.student.homework.questions.util.FragmentUserVisibleController;
+import com.yanxiu.gphone.student.util.StringUtil;
+
+import static android.graphics.Typeface.DEFAULT_BOLD;
 
 /**
  * Created by 戴延枫 on 2017/5/5.
@@ -30,6 +35,9 @@ public abstract class ExerciseFragmentBase extends Fragment implements IExercise
 
     private FragmentUserVisibleController userVisibleController;
 
+    public TextView mQaNumber; //题号
+    public TextView mQaName; //题目名称
+
     public ExerciseFragmentBase() {
         userVisibleController = new FragmentUserVisibleController(this, this);
     }
@@ -46,9 +54,34 @@ public abstract class ExerciseFragmentBase extends Fragment implements IExercise
     }
 
     public void setQaNumber(View v) {
-        TextView tv = (TextView) v.findViewById(R.id.tv_qa_number);
+        mQaNumber = (TextView) v.findViewById(R.id.qa_number);
         String str = mBaseQuestion.numberStringForShow();
-        tv.setText(str);
+        Fragment parentFragment = getParentFragment();
+        if(parentFragment instanceof ComplexExerciseFragmentBase){
+            mQaNumber.setTextColor(getResources().getColor(R.color.color_999999));
+        }
+        mQaNumber.setText(str);
+    }
+
+    /**
+     * 设置题目标题
+     * 单题型和复合题的题干部分，默认显示template；
+     * 复合题的子题，题目标题如果不显示template,传入name；
+     * @param v
+     */
+    public void setQaName(View v) {
+        mQaName = (TextView) v.findViewById(R.id.qa_name);
+        String templateName;
+        Fragment parentFragment = getParentFragment();
+        if(parentFragment instanceof ComplexExerciseFragmentBase){
+            templateName = getString(R.string.question);
+            TextPaint tp = mQaName.getPaint();
+            tp.setTypeface(DEFAULT_BOLD);
+            mQaName.setTextColor(getResources().getColor(R.color.color_333333));
+        }else{
+            templateName = StringUtil.getTemplateName(mBaseQuestion.getTemplate());
+        }
+        mQaName.setText(templateName);
     }
 
     @Override

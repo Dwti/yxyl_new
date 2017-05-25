@@ -15,8 +15,7 @@
         android:id="@+id/vp_viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/question_top_layout_height"
-        android:background="@color/color_edf0ee" />
+        android:layout_marginTop="@dimen/question_top_layout_height" />
 
     <RelativeLayout
         android:id="@+id/bottom"

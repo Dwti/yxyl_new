@@ -241,12 +241,22 @@
     <dimen name="question_top_layout_rightimage_width">38dp</dimen>
     <dimen name="question_top_layout_rightimage_marginRight">11dp</dimen>
     <dimen name="question_top_layout_height">58dp</dimen>
+    <dimen name="question_top_container_maxheight">150dp</dimen>
     <dimen name="question_bottom_layout_height">45dp</dimen>
     <dimen name="question_ll_top_container_minheight">65dp</dimen>
     <dimen name="question_bottom_layout_marginLeft">12dp</dimen>
     <dimen name="question_bottom_layout_image_width">15dp</dimen>
     <dimen name="question_bottom_layout_image_right">5dp</dimen>
     <dimen name="question_bottom_layout_shape">2dp</dimen>
+    <dimen name="question_splitter_width">69dp</dimen>
+    <dimen name="question_splitter_height">20dp</dimen>
+    <dimen name="question_splitter_bottomview_height">10dp</dimen>
+
+    <dimen name="question_commonnumber_left">15dp</dimen>
+    <dimen name="question_commonnumber_height">39dp</dimen>
+    <dimen name="question_commonnumber_name_textsize">16dp</dimen>
+    <dimen name="question_commonnumber_number_textsize">18dp</dimen>
+    <dimen name="question_commonnumber_line_hight">1dp</dimen>
 
     <dimen name="select_city_view_padding">15dp</dimen>
 
