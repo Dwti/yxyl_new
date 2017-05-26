@@ -94,7 +94,7 @@ public class HomeworkFragment extends HomePageBaseFragment implements SearchClas
                 loadSubject();
             }
         });
-        loadSubject();
+        requestData();
         return root;
     }
 
@@ -103,7 +103,7 @@ public class HomeworkFragment extends HomePageBaseFragment implements SearchClas
      */
     @Override
     public void requestData() {
-        Log.e("dyf",TAG);
+        loadSubject();
     }
 
     private void checkClassInfo() {
