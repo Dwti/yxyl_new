@@ -66,6 +66,7 @@ public class MultiChooseFragment extends SimpleExerciseFragmentBase implements C
     private void initData() {
         mQuestionView.setText(mData.getStem());
         mAnswerView.setData(mData.getChoice());
+        mAnswerView.setChooseType(ChooseLayout.TYPE_MULTI);
     }
 
     /**
