@@ -1,4 +1,4 @@
-package com.yanxiu.gphone.student.homework;
+package com.yanxiu.gphone.student.homework.homeworkdetail;
 
 import com.yanxiu.gphone.student.base.BasePresenter;
 import com.yanxiu.gphone.student.base.BaseView;

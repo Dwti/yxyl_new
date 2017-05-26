@@ -19,8 +19,8 @@ import android.widget.Toast;
 import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.base.ExerciseBaseCallback;
 import com.yanxiu.gphone.student.base.HomePageBaseFragment;
-import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.homework.classmanage.ClassInfoActivity;
 import com.yanxiu.gphone.student.homework.classmanage.ClassStatus;
 import com.yanxiu.gphone.student.homework.classmanage.SearchClassFragment;
@@ -30,7 +30,7 @@ import com.yanxiu.gphone.student.homework.data.SearchClassResponse;
 import com.yanxiu.gphone.student.homework.data.SubjectBean;
 import com.yanxiu.gphone.student.homework.data.SubjectRequest;
 import com.yanxiu.gphone.student.homework.data.SubjectResponse;
-import com.yanxiu.gphone.student.base.ExerciseBaseCallback;
+import com.yanxiu.gphone.student.homework.homeworkdetail.HomeworkDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;

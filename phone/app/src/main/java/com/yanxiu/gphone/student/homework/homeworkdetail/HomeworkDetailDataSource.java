@@ -1,4 +1,4 @@
-package com.yanxiu.gphone.student.homework;
+package com.yanxiu.gphone.student.homework.homeworkdetail;
 
 import com.yanxiu.gphone.student.homework.data.HomeworkDetailBean;
 import com.yanxiu.gphone.student.homework.data.PageBean;
