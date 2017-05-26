@@ -1,6 +1,7 @@
 package com.yanxiu.gphone.student.homework.questions;
 
 import com.yanxiu.gphone.student.homework.questions.model.BaseQuestion;
+import com.yanxiu.gphone.student.homework.questions.model.MultiChoiceQuestion;
 import com.yanxiu.gphone.student.homework.questions.model.Paper;
 import com.yanxiu.gphone.student.homework.questions.model.ReadingComplexQuestion;
 import com.yanxiu.gphone.student.homework.questions.model.SingleChoiceQuestion;
@@ -63,7 +64,8 @@ public class QuestionConvertFactory {
                     questions.add(singleChoiceQuestion);
                     break;
                 case QuestionTemplate.MULTI_CHOICES:
-                    //TODO 下面类似的写法
+                    MultiChoiceQuestion multiChoiceQuestion=new MultiChoiceQuestion(paperTestBean,showType);
+                    questions.add(multiChoiceQuestion);
                     break;
                 case QuestionTemplate.FILL_BLANK:
                     break;

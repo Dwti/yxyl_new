@@ -1,33 +1,37 @@
 package com.yanxiu.gphone.student.homework.questions.model;
 
-import android.support.v4.app.Fragment;
-
 import com.yanxiu.gphone.student.homework.questions.QuestionShowType;
 import com.yanxiu.gphone.student.homework.questions.bean.PaperTestBean;
 import com.yanxiu.gphone.student.homework.questions.fragment.ExerciseFragmentBase;
-import com.yanxiu.gphone.student.homework.questions.fragment.SingleChooseFragment;
+import com.yanxiu.gphone.student.homework.questions.fragment.MultiChooseFragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by sunpeng on 2017/5/11.
+ * Created by Canghaixiao.
+ * Time : 2017/5/26 15:34.
+ * Function :
  */
-
-public class SingleChoiceQuestion extends BaseQuestion {
-    private String answer;
+public class MultiChoiceQuestion extends BaseQuestion {
+    private List<String> answer=new ArrayList<>();
     private List<String> choice;
 
-    public SingleChoiceQuestion(PaperTestBean bean, QuestionShowType showType) {
+    public MultiChoiceQuestion(PaperTestBean bean, QuestionShowType showType) {
         super(bean, showType);
-        answer= (String) bean.getQuestions().getAnswer().get(0);
+        answer.clear();
+        List<Object> data=bean.getQuestions().getAnswer();
+        for (Object o:data){
+            answer.add((String) o);
+        }
         choice= bean.getQuestions().getContent().getChoices();
     }
 
-    public String getAnswer() {
+    public List<String> getAnswer() {
         return answer;
     }
 
-    public void setAnswer(String answer) {
+    public void setAnswer(List<String> answer) {
         this.answer = answer;
     }
 
@@ -41,12 +45,11 @@ public class SingleChoiceQuestion extends BaseQuestion {
 
     @Override
     ExerciseFragmentBase answerFragment() {
-        return new SingleChooseFragment();
+        return new MultiChooseFragment();
     }
 
     @Override
     ExerciseFragmentBase analysisFragment() {
-//        return new SingleChooseAnalysisFragment();
         return null;
     }
 }

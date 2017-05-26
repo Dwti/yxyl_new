@@ -21,16 +21,16 @@ import java.util.List;
  */
 public class ChooseLayout extends LinearLayout implements View.OnClickListener {
 
-    public static final int SINGLE = 0x000;
-    public static final int MULTI = 0x001;
-
+    public static final int TYPE_SINGLE = 0x000;
+    public static final int TYPE_MULTI = 0x001;
     private static final String[] mEms = new String[]{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N"};
-    private Context mContext;
-    private onSelectItemListener mOnSelectItemListener;
-    private int mQuestionType = SINGLE;
 
-    public interface onSelectItemListener {
-        void onSelect(int position);
+    private Context mContext;
+    private onItemClickListener mOnItemClickListener;
+    private int mChooseType = TYPE_SINGLE;
+
+    public interface onItemClickListener {
+        void onClick(int position, boolean isSelected);
     }
 
     public ChooseLayout(Context context) {
@@ -50,10 +50,10 @@ public class ChooseLayout extends LinearLayout implements View.OnClickListener {
 
     private void init(Context context) {
         this.mContext = context;
-//        if (isInEditMode()) {
-//            return;
-//        }
-
+        if (isInEditMode()) {
+            return;
+        }
+        this.setOrientation(LinearLayout.VERTICAL);
     }
 
     public void setData(List<String> list) {
@@ -66,12 +66,12 @@ public class ChooseLayout extends LinearLayout implements View.OnClickListener {
             View view = LayoutInflater.from(mContext).inflate(R.layout.layout_choose_item, this, false);
             ViewHolder holder = new ViewHolder();
             holder.position = i;
-            holder.mQuestionIdView = (TextView) findViewById(R.id.tv_question_id);
+            holder.mQuestionIdView = (TextView) view.findViewById(R.id.tv_question_id);
             holder.mQuestionIdView.setText(getEmsByNum(i));
-            holder.mQuestionContentView = (TextView) findViewById(R.id.tv_question_content);
+            holder.mQuestionContentView = (TextView) view.findViewById(R.id.tv_question_content);
             holder.mQuestionContentView.setText(list.get(i));
             holder.mQuestionSelectView = view.findViewById(R.id.v_question_select);
-            ViewCompat.setBackground(holder.mQuestionSelectView,ContextCompat.getDrawable(mContext, R.drawable.shape_choose_round_unselect));
+            ViewCompat.setBackground(holder.mQuestionSelectView, ContextCompat.getDrawable(mContext, R.drawable.shape_choose_round_unselect));
             view.setOnClickListener(ChooseLayout.this);
             view.setTag(holder);
             this.addView(view);
@@ -90,27 +90,44 @@ public class ChooseLayout extends LinearLayout implements View.OnClickListener {
         return mEms[num];
     }
 
-    public void setQuestionType(int type) {
-        this.mQuestionType = type;
+    public void setIsClick(boolean isClick) {
+        int count = this.getChildCount();
+        for (int i = 0; i < count; i++) {
+            View view = this.getChildAt(i);
+            if (isClick) {
+                view.setEnabled(true);
+            } else {
+                view.setEnabled(false);
+            }
+        }
     }
 
-    public void setSelectItemListener(onSelectItemListener mOnSelectItemListener) {
-        this.mOnSelectItemListener = mOnSelectItemListener;
+    public void setChooseType(int type) {
+        this.mChooseType = type;
+    }
+
+    public void setSelectItemListener(onItemClickListener mOnItemClickListener) {
+        this.mOnItemClickListener = mOnItemClickListener;
     }
 
     public void setSelect(int position) {
         int count = this.getChildCount();
+        if (position>=count){
+            return;
+        }
         for (int i = 0; i < count; i++) {
             View chileView = this.getChildAt(i);
             ViewHolder holder = (ViewHolder) chileView.getTag();
             if (i == position) {
                 if (holder.mSelect) {
                     setItemUnSelect(holder);
+                    onClick(i,false);
                 } else {
                     setItemSelect(holder);
+                    onClick(i,true);
                 }
             } else {
-                if (mQuestionType == SINGLE) {
+                if (mChooseType == TYPE_SINGLE) {
                     setItemUnSelect(holder);
                 }
             }
@@ -119,20 +136,23 @@ public class ChooseLayout extends LinearLayout implements View.OnClickListener {
 
     private void setItemUnSelect(ViewHolder holder) {
         holder.mSelect = false;
-        ViewCompat.setBackground(holder.mQuestionSelectView,ContextCompat.getDrawable(mContext, R.drawable.shape_choose_round_unselect));
+        ViewCompat.setBackground(holder.mQuestionSelectView, ContextCompat.getDrawable(mContext, R.drawable.shape_choose_round_unselect));
     }
 
     private void setItemSelect(ViewHolder holder) {
         holder.mSelect = true;
-        ViewCompat.setBackground(holder.mQuestionSelectView,ContextCompat.getDrawable(mContext, R.drawable.shape_choose_round_select));
+        ViewCompat.setBackground(holder.mQuestionSelectView, ContextCompat.getDrawable(mContext, R.drawable.shape_choose_round_select));
+    }
+
+    private void onClick(int position, boolean isSelected) {
+        if (mOnItemClickListener != null) {
+            mOnItemClickListener.onClick(position, isSelected);
+        }
     }
 
     @Override
     public void onClick(View v) {
         ViewHolder holder = (ViewHolder) v.getTag();
-        if (mOnSelectItemListener != null) {
-            mOnSelectItemListener.onSelect(holder.position);
-        }
         setSelect(holder.position);
     }
 }

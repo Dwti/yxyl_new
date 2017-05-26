@@ -10,28 +10,29 @@ import android.widget.TextView;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.customviews.ChooseLayout;
 import com.yanxiu.gphone.student.homework.questions.model.BaseQuestion;
-import com.yanxiu.gphone.student.homework.questions.model.SingleChoiceQuestion;
+import com.yanxiu.gphone.student.homework.questions.model.MultiChoiceQuestion;
 
 /**
- * Created by 戴延枫 on 2017/5/5.
+ * Created by Canghaixiao.
+ * Time : 2017/5/26 15:32.
+ * Function :
  */
-
-public class SingleChooseFragment extends SimpleExerciseFragmentBase implements ChooseLayout.onItemClickListener {
-    private SingleChoiceQuestion mData;
+public class MultiChooseFragment extends SimpleExerciseFragmentBase implements ChooseLayout.onItemClickListener {
+    private MultiChoiceQuestion mData;
     private TextView mQuestionView;
     private ChooseLayout mAnswerView;
 
     @Override
     public void setData(BaseQuestion data) {
         super.setData(data);
-        mData = (SingleChoiceQuestion) data;
+        mData = (MultiChoiceQuestion) data;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null && mData ==null) {
-            setData((SingleChoiceQuestion) savedInstanceState.getSerializable(KEY_NODE));
+            setData((MultiChoiceQuestion) savedInstanceState.getSerializable(KEY_NODE));
         }
     }
 
@@ -59,7 +60,7 @@ public class SingleChooseFragment extends SimpleExerciseFragmentBase implements 
     }
 
     private void listener() {
-        mAnswerView.setSelectItemListener(SingleChooseFragment.this);
+        mAnswerView.setSelectItemListener(MultiChooseFragment.this);
     }
 
     private void initData() {
