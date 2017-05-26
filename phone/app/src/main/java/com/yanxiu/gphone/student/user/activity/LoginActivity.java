@@ -17,6 +17,7 @@ import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
+import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
 import com.yanxiu.gphone.student.homepage.MainActivity;
 import com.yanxiu.gphone.student.user.response.LoginResponse;
 import com.yanxiu.gphone.student.user.http.LoginRequest;
@@ -61,6 +62,7 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
 
     private Pattern pattern = Pattern.compile("[0-9]*");
     private LoginRequest mLoginRequest;
+    private PublicLoadLayout rootView;
 
     public static void LaunchActivity(Context context){
         Intent intent=new Intent(context,LoginActivity.class);
@@ -70,8 +72,11 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
         mContext=LoginActivity.this;
+        rootView=new PublicLoadLayout(mContext);
+        rootView.setContentView(R.layout.activity_login);
+        rootView.finish();
+        setContentView(rootView);
         initView();
         listener();
         initData();
@@ -166,17 +171,14 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
             case R.id.tv_login:
                 userName = mUserNameView.getText().toString().trim();
                 passWord = mPassWordView.getText().toString().trim();
-
                 if (userName.length()<11||userName.length()>16){
                     ToastManager.showMsg(getText(R.string.input_true_account));
                     return;
                 }
-
                 if (passWord.length()<6||passWord.length()>18){
                     ToastManager.showMsg(getText(R.string.input_true_password));
                     return;
                 }
-
                 LoginByAccount(userName, passWord);
                 break;
             case R.id.tv_forget_password:
@@ -187,8 +189,8 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
                 ForgetPassWordActivity.LaunchActivity(mContext,userName);
                 break;
             case R.id.tv_fast_registered:
-//                RegisterActivity.LaunchActivity(mContext);
-                ChooseLocationActivity.LaunchActivity(mContext);
+                RegisterActivity.LaunchActivity(mContext);
+//                ChooseLocationActivity.LaunchActivity(mContext);
                 break;
             case R.id.iv_third_qq:
                 LoginByQQ();
@@ -200,14 +202,16 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
     }
 
     private void LoginByAccount(String user_name, String pass_word) {
+        rootView.showLoadingView();
         mLoginRequest = new LoginRequest();
         mLoginRequest.mobile=user_name;
         mLoginRequest.password=pass_word;
         mLoginRequest.startRequest(LoginResponse.class, new HttpCallback<LoginResponse>() {
             @Override
             public void onSuccess(RequestBase request, LoginResponse ret) {
+                rootView.hiddenLoadingView();
                 if (ret.status.getCode()==0){
-                    LoginInfo.savaCacheData(ret.data.get(0));
+                    LoginInfo.saveCacheData(ret.data.get(0));
                     MainActivity.invoke(LoginActivity.this);
                     LoginActivity.this.finish();
                 }else if (ret.status.getCode()==80){
@@ -219,6 +223,7 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
 
             @Override
             public void onFail(RequestBase request, Error error) {
+                rootView.hiddenLoadingView();
                 ToastManager.showMsg(error.getMessage());
             }
         });

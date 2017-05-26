@@ -66,6 +66,16 @@
     <string name="previous_question">上一题</string>
     <string name="next_question">下一题</string>
 
+    <string name="input_school_name">请输入学校名字</string>
+    <string name="input_school_text_location">范围：</string>
+
+    <string name="class_number_error">班级号位数不对</string>
+    <string name="class_id">班级号码</string>
+    <string name="teacher_name">老师姓名</string>
+    <string name="student_number">班级成员</string>
+    <string name="school_name">学校名称</string>
+    <string name="input_user_name">你的姓名</string>
+    <string name="input_user_true_name">请输入你的真实姓名</string>
     <string name="score_rate">正确率</string>
     <string name="text_loading">正在加载...</string>
     <string name="text_click_to_load_more">点击加载更多</string>

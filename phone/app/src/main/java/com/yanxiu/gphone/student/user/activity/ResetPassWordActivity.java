@@ -11,6 +11,7 @@ import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
+import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
 import com.yanxiu.gphone.student.user.response.ResetPassWordResponse;
 import com.yanxiu.gphone.student.user.http.ResetPassWordRequest;
 import com.yanxiu.gphone.student.util.EditTextManger;
@@ -38,6 +39,7 @@ public class ResetPassWordActivity extends YanxiuBaseActivity implements View.On
     private boolean isPassWordReady = false;
     private boolean isPassWordAgainReady = false;
     private ResetPassWordRequest mResetPassWordRequest;
+    private PublicLoadLayout rootView;
 
     public static void LaunchActivity(Context context){
         Intent intent=new Intent(context,ResetPassWordActivity.class);
@@ -47,8 +49,11 @@ public class ResetPassWordActivity extends YanxiuBaseActivity implements View.On
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_resetpassword);
         mContext=ResetPassWordActivity.this;
+        rootView=new PublicLoadLayout(mContext);
+        rootView.setContentView(R.layout.activity_resetpassword);
+        rootView.finish();
+        setContentView(rootView);
         initView();
         listener();
         initData();
@@ -103,12 +108,14 @@ public class ResetPassWordActivity extends YanxiuBaseActivity implements View.On
     }
 
     private void onResetPassWord(String mobile, String passWord) {
+        rootView.showLoadingView();
         mResetPassWordRequest=new ResetPassWordRequest();
         mResetPassWordRequest.mobile=mobile;
         mResetPassWordRequest.password=passWord;
         mResetPassWordRequest.startRequest(ResetPassWordResponse.class, new HttpCallback<ResetPassWordResponse>() {
             @Override
             public void onSuccess(RequestBase request, ResetPassWordResponse ret) {
+                rootView.hiddenLoadingView();
                 if (ret.status.getCode()==0){
                     ToastManager.showMsg(getText(R.string.reset_password_success));
                     LoginActivity.LaunchActivity(mContext);
@@ -119,6 +126,7 @@ public class ResetPassWordActivity extends YanxiuBaseActivity implements View.On
 
             @Override
             public void onFail(RequestBase request, Error error) {
+                rootView.hiddenLoadingView();
                 ToastManager.showMsg(error.getMessage());
             }
         });

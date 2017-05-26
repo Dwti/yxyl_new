@@ -111,7 +111,7 @@ public class WelcomeActivity extends YanxiuBaseActivity implements View.OnClickL
             SpManager.setAppVersionCode(version);
         } else {
             //
-            if (!LoginInfo.IsLogIn()) {
+            if (!LoginInfo.isLogIn()) {
                 //TODO 用户信息不完整,跳转登录页
                 mHander.sendEmptyMessageDelayed(GO_LOGIN, 1000);
             } else {
