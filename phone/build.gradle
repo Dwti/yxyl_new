@@ -29,5 +29,6 @@ ext {
 
     // App dependencies
     supportLibraryVersion = '25.3.0'
+    glideLibraryVersion = '3.8.0'
     junitVersion = '4.12'
 }

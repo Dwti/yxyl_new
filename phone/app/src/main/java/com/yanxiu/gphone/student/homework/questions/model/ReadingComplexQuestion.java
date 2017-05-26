@@ -4,7 +4,7 @@ package com.yanxiu.gphone.student.homework.questions.model;
 import com.yanxiu.gphone.student.homework.questions.QuestionShowType;
 import com.yanxiu.gphone.student.homework.questions.bean.PaperTestBean;
 import com.yanxiu.gphone.student.homework.questions.fragment.ExerciseFragmentBase;
-import com.yanxiu.gphone.student.homework.questions.fragment.ReadingComplexExerciseFragment;
+import com.yanxiu.gphone.student.homework.questions.fragment.ReadingComplexFragment;
 
 /**
  * Created by sunpeng on 2017/5/11.
@@ -17,7 +17,7 @@ public class ReadingComplexQuestion extends BaseQuestion {
 
     @Override
     ExerciseFragmentBase answerFragment() {
-        return new ReadingComplexExerciseFragment();
+        return new ReadingComplexFragment();
     }
 
     @Override
