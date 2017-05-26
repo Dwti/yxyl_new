@@ -61,6 +61,8 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
      */
     private final int HANDLER_TIME_DELAYED = 100;
 
+    private int mTotalAnsweredQuestion;//已经作答的题目数量
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -80,12 +82,13 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
             finish();
         mPaper = DataFetcher.getInstance().getPaper(mKey);
         mQuestions = mPaper.getQuestions();
+        initProgressViewData();
     }
 
     private void initView() {
         mTimer = (QuestionTimeTextView) findViewById(R.id.timer);
         mProgressView = (QuestionProgressView) findViewById(R.id.progressBar);
-        mProgressView.setMaxCount(20);
+        mProgressView.setMaxCount(mQuestions.size());
         mPrevious_question = (LinearLayout) findViewById(R.id.previous_question);
         mNext_question = (LinearLayout) findViewById(R.id.next_question);
         setListener();
@@ -116,6 +119,16 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
                 showAnswerCardFragment();
             }
         });
+    }
+
+    /**
+     * 初始化进度条相关数据
+     */
+    private void initProgressViewData() {
+        for (int i = 0; i < mQuestions.size(); i++) {
+            if (mQuestions.get(i).getIsAnswer())
+                mTotalAnsweredQuestion++;
+        }
     }
 
     /**
@@ -281,6 +294,14 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         }
     }
 
+    public Paper getPaper() {
+        return mPaper;
+    }
+
+    public QuestionProgressView getProgressView() {
+        return mProgressView;
+    }
+
     @Override
     public void onClick(View v) {
 
@@ -345,7 +366,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         mTotalTime++;
         //Todo 显示时间
         mTimer.setTime(mTotalTime);
-        mProgressView.updateProgress();
+//        mProgressView.updateProgress();
     }
 
     @Override
@@ -372,9 +393,9 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
      *
      * @param activity
      */
-    public static void invoke(Activity activity , String key) {
+    public static void invoke(Activity activity, String key) {
         Intent intent = new Intent(activity, AnswerQuestionActivity.class);
-        intent.putExtra(Constants.EXTRA_PAPER,key);
+        intent.putExtra(Constants.EXTRA_PAPER, key);
         activity.startActivity(intent);
     }
 }

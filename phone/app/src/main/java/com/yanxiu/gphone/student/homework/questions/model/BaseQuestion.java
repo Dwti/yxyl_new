@@ -43,6 +43,8 @@ public abstract class BaseQuestion implements Serializable {
     protected ArrayList<BaseQuestion> children;
     protected QuestionShowType showType;
 
+    protected boolean isAnswer;
+
     public BaseQuestion(PaperTestBean bean,QuestionShowType showType){
         this.id = bean.getId();
         this.correctRate = bean.getCorrectRate();
@@ -246,9 +248,21 @@ public abstract class BaseQuestion implements Serializable {
         this.showType = showType;
     }
 
-    public ArrayList<Integer> levelPositions = new ArrayList<>();//标记该题所处的准确位置
-    public int prefixNumber;//题号前缀--分子
-    public int postfixNumber;//题号后缀--分母
+    public boolean getIsAnswer() {
+        return isAnswer;
+    }
+
+    public void setAnswer(boolean answer) {
+        isAnswer = answer;
+    }
+
+
+    /**
+     * 题号逻辑开始
+     */
+    private ArrayList<Integer> levelPositions = new ArrayList<>();//标记该题所处的准确位置
+    private int prefixNumber;//题号前缀--分子
+    private int postfixNumber;//题号后缀--分母
 
 
     /**
@@ -390,5 +404,9 @@ public abstract class BaseQuestion implements Serializable {
                 node.clearAllNumberData();
             }
         }
+    }
+
+    public ArrayList<Integer> getLevelPositions() {
+        return levelPositions;
     }
 }
