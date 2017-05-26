@@ -9,7 +9,7 @@ import com.yanxiu.gphone.student.db.UrlRepository;
 
 public class HomeworkDetailRequest extends ExerciseBaseRequest {
     protected String page = "1";
-    protected String pageSize = "20";
+    protected String pageSize = "10";
     protected String groupId ;
     @Override
     protected boolean shouldLog() {
