@@ -71,7 +71,7 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
         EventBus.getDefault().register(mContext);
         rootView=new PublicLoadLayout(mContext);
         rootView.setContentView(R.layout.activity_completeinfo);
-        rootView.finish();
+//        rootView.finish();
         setContentView(rootView);
         initView();
         listener();

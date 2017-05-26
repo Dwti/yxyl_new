@@ -50,7 +50,7 @@ public class JoinClassActivity extends YanxiuBaseActivity implements View.OnClic
         mContext=JoinClassActivity.this;
         rootView=new PublicLoadLayout(mContext);
         rootView.setContentView(R.layout.fragment_search_class);
-        rootView.finish();
+//        rootView.finish();
         setContentView(rootView);
         initView();
         initData();

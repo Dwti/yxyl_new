@@ -70,7 +70,7 @@ public class ChooseLocationActivity extends YanxiuBaseActivity implements Picker
         mContext=ChooseLocationActivity.this;
         PublicLoadLayout rootView=new PublicLoadLayout(mContext);
         rootView.setContentView(R.layout.activity_chooselocation);
-        rootView.finish();
+//        rootView.finish();
         setContentView(rootView);
         EventBus.getDefault().register(mContext);
         initView();

@@ -75,7 +75,7 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
         mContext=LoginActivity.this;
         rootView=new PublicLoadLayout(mContext);
         rootView.setContentView(R.layout.activity_login);
-        rootView.finish();
+//        rootView.finish();
         setContentView(rootView);
         initView();
         listener();

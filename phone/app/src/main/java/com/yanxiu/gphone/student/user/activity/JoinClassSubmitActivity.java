@@ -54,7 +54,7 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
         mContext=JoinClassSubmitActivity.this;
         rootView=new PublicLoadLayout(mContext);
         rootView.setContentView(R.layout.activity_join_class_submit);
-        rootView.finish();
+//        rootView.finish();
         setContentView(rootView);
         mData= (JoinClassResponse.Data) getIntent().getSerializableExtra(JoinClassActivity.KEY);
         initView();

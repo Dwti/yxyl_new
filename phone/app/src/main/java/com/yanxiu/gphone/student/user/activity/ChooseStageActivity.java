@@ -50,7 +50,7 @@ public class ChooseStageActivity extends YanxiuBaseActivity implements PickerVie
         mContext=ChooseStageActivity.this;
         PublicLoadLayout rootView=new PublicLoadLayout(mContext);
         rootView.setContentView(R.layout.activity_choosestage);
-        rootView.finish();
+//        rootView.finish();
         setContentView(rootView);
         initView();
         listener();

@@ -72,7 +72,7 @@ public class RegisterActivity extends YanxiuBaseActivity implements View.OnClick
         mContext = RegisterActivity.this;
         rootView=new PublicLoadLayout(mContext);
         rootView.setContentView(R.layout.activity_register);
-        rootView.finish();
+//        rootView.finish();
         setContentView(rootView);
         initView();
         listener();

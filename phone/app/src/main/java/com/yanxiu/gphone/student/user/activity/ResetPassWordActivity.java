@@ -52,7 +52,7 @@ public class ResetPassWordActivity extends YanxiuBaseActivity implements View.On
         mContext=ResetPassWordActivity.this;
         rootView=new PublicLoadLayout(mContext);
         rootView.setContentView(R.layout.activity_resetpassword);
-        rootView.finish();
+//        rootView.finish();
         setContentView(rootView);
         initView();
         listener();

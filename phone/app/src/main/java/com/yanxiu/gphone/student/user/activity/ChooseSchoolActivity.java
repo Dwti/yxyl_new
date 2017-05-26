@@ -59,7 +59,7 @@ public class ChooseSchoolActivity extends YanxiuBaseActivity implements View.OnC
         super.onCreate(savedInstanceState);
         mContext=ChooseSchoolActivity.this;
         rootView=new PublicLoadLayout(mContext);
-        rootView.finish();
+//        rootView.finish();
         rootView.setContentView(R.layout.activity_chooseschool);
         setContentView(rootView);
         message= (CompleteInfoActivity.SchoolMessage) getIntent().getSerializableExtra(ChooseLocationActivity.KEY);
