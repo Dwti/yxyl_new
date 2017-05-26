@@ -53,7 +53,9 @@
     <string name="homework_remain_time">剩余时间</string>
     <string name="can_redo">可补做</string>
     <string name="over_deadline">逾期未交</string>
-    <string name="comment">评语：</string>
+    <string name="comment"><![CDATA[
+    <b>%1$s评语：</b>
+    ]]>%2$s</string>
     <string name="homework_done_uncheck">已完成，等待老师批改</string>
     <string name="homework_checked">已批改</string>
     <string name="title_homework">作业</string>
