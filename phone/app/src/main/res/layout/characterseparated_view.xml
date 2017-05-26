@@ -1,24 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
-    android:background="@drawable/shape_common_button_bg_disable">
+    android:layout_height="match_parent"
+    android:minHeight="50dp">
 
     <GridView
         android:id="@+id/gridView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:numColumns="8">
+        android:minHeight="50dp"
+        android:numColumns="8"
+        android:listSelector="@android:color/transparent"
+        android:background="@drawable/shape_common_button_bg_disable">
     </GridView>
 
     <EditText
         android:id="@+id/et_num"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:minHeight="50dp"
+        android:padding="0dp"
         android:inputType="number"
+        android:layout_alignParentBottom="true"
         android:maxLength="8"
-        android:gravity="center"
-        android:cursorVisible="false"
+        android:gravity="bottom"
+        android:background="@android:color/transparent"
         android:textColor="@android:color/transparent"
-        android:background="@android:color/transparent"/>
-</FrameLayout>
+        android:cursorVisible="false"/>
+</RelativeLayout>

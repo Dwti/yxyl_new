@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.homework.classmanage.ClassInfoActivity;
 import com.yanxiu.gphone.student.homework.classmanage.ClassStatus;
 import com.yanxiu.gphone.student.homework.classmanage.SearchClassFragment;
@@ -106,9 +107,9 @@ public class HomeworkFragment extends Fragment implements SearchClassFragment.On
         request.startRequest(SearchClassResponse.class,mSearchClassCallback);
     }
 
-    HttpCallback<SearchClassResponse> mSearchClassCallback = new HttpCallback<SearchClassResponse>() {
+    HttpCallback<SearchClassResponse> mSearchClassCallback = new ExerciseBaseCallback<SearchClassResponse>() {
         @Override
-        public void onSuccess(RequestBase request, SearchClassResponse ret) {
+        public void onResponse(RequestBase request, SearchClassResponse ret) {
             if(ret.getStatus().getCode() == 0 ){
                 ClassBean bean = ret.getData().get(0);
                 Intent intent = new Intent(getActivity(),ClassInfoActivity.class);
@@ -135,8 +136,7 @@ public class HomeworkFragment extends Fragment implements SearchClassFragment.On
     HttpCallback<SubjectResponse> mLoadSubjectCallback = new ExerciseBaseCallback<SubjectResponse>(){
 
         @Override
-        public void onSuccess(RequestBase request, SubjectResponse ret) {
-            super.onSuccess(request,ret);
+        public void onResponse(RequestBase request, SubjectResponse ret) {
             if(ret.getStatus().getCode() == ClassStatus.HAS_CLASS.getCode()){  //已经加入班级
                 mClassId = ret.getProperty().getClassId();
                 if(ret.getData() == null || ret.getData().size() == 0){

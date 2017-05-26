@@ -52,15 +52,15 @@
                 <com.yanxiu.gphone.student.customviews.CharacterSeparatedEditLayout
                     android:id="@+id/input_number_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/common_button_height"
+                    android:layout_height="50dp"
                     android:layout_marginTop="15dp"/>
 
                 <com.yanxiu.gphone.student.customviews.WavesLayout
                     android:id="@+id/wavesLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
                     app:waves_radius="@dimen/wavesRadius"
+                    android:layout_marginTop="15dp"
                     app:waves_canshowwave="false"
                     app:waves_animend_alpha="102">
 
@@ -94,6 +94,10 @@
                     android:layout_marginLeft="5dp"
                     android:background="@android:color/holo_blue_light"/>
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="40dp"/>
 
         </LinearLayout>
     </ScrollView>

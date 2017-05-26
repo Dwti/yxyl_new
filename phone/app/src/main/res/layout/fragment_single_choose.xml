@@ -18,15 +18,7 @@
 
             <TextView
                 android:id="@+id/tv_question"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/question_fragment_q_margin_l_r"
-                android:layout_marginStart="@dimen/question_fragment_q_margin_l_r"
-                android:layout_marginTop="@dimen/question_fragment_a_margin_t"
-                android:textColor="@color/color_333333"
-                android:textStyle="normal"
-                android:text="卡基本vsfhabvf"
-                android:lineSpacingExtra="@dimen/question_fragment_q_line_space"/>
+                style="CommonQuestionFragmentTextView"/>
 
             <com.yanxiu.gphone.student.customviews.ChooseLayout
                 android:id="@+id/cl_answer"

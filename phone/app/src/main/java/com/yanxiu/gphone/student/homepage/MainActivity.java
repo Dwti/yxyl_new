@@ -24,6 +24,7 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
 
     private int mLastSelectIndex = -1;
 
+    private View mBottomNaviLayout;
     private View[] mNavBarViews = new View[3];
     private ImageView[] mNavIconViews = new ImageView[3];
     private TextView[] mNavTextViews = new TextView[3];
@@ -62,6 +63,7 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
 
     private void initView() {
         mContentMain = (FrameLayout) findViewById(R.id.content_main);
+        mBottomNaviLayout = findViewById(R.id.navi_switcher);
         mFragmentManager = getSupportFragmentManager();
         mNaviFragmentFactory = new NaviFragmentFactory();
         initBottomBar();
@@ -188,5 +190,9 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
     public static void invoke(Activity activity) {
         Intent intent = new Intent(activity, MainActivity.class);
         activity.startActivity(intent);
+    }
+
+    public void setBottomNaviBarsVisibility(int visibility) {
+        mBottomNaviLayout.setVisibility(visibility);
     }
 }

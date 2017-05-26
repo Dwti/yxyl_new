@@ -125,8 +125,7 @@ public class JoinClassActivity extends Activity {
 
     HttpCallback<JoinClassResponse> mJoinClassCallback = new ExerciseBaseCallback<JoinClassResponse>() {
         @Override
-        public void onSuccess(RequestBase request, JoinClassResponse ret) {
-            super.onSuccess(request,ret);
+        public void onResponse(RequestBase request, JoinClassResponse ret) {
             if(ret.getStatus().getCode() == 0){
                 updateUserInfo(mName);
                 ToastManager.showMsg(ret.getStatus().getDesc());
@@ -141,8 +140,7 @@ public class JoinClassActivity extends Activity {
 
     HttpCallback<UpdateUserInfoResponse> mUpdateUserInfoCallback = new ExerciseBaseCallback<UpdateUserInfoResponse>() {
         @Override
-        public void onSuccess(RequestBase request, UpdateUserInfoResponse ret) {
-            super.onSuccess(request,ret);
+        public void onResponse(RequestBase request, UpdateUserInfoResponse ret) {
             if(ret.getStatus().getCode() == 0){
                 setResult(RESULT_OK);
                 finish();

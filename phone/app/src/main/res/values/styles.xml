@@ -65,4 +65,16 @@
 
     </style>
 
+    <style name="CommonQuestionFragmentTextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginEnd">@dimen/question_fragment_q_margin_l_r</item>
+        <item name="android:layout_marginStart">@dimen/question_fragment_q_margin_l_r</item>
+        <item name="android:layout_marginTop">@dimen/question_fragment_a_margin_t</item>
+        <item name="android:textColor">@color/color_333333</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:lineSpacingExtra">@dimen/question_fragment_q_line_space</item>
+        <item name="android:lineSpacingMultiplier">1</item>
+    </style>
+
 </resources>

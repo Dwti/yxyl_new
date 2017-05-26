@@ -258,6 +258,7 @@ public class WavesLayout extends RelativeLayout {
                     deliveryTouchDownEvent(event);
                 }
                 break;
+            case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
                 reset();
                 break;

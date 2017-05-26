@@ -13,7 +13,7 @@ import com.yanxiu.gphone.student.homework.questions.model.ReadingComplexQuestion
  */
 
 public class ReadingComplexExerciseFragment extends ComplexExerciseFragmentBase {
-    ReadingComplexQuestion mData;
+    private ReadingComplexQuestion mData;
 
     @Override
     public void setData(BaseQuestion baseQuestion) {
@@ -32,7 +32,7 @@ public class ReadingComplexExerciseFragment extends ComplexExerciseFragmentBase 
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
-            mData = (ReadingComplexQuestion) savedInstanceState.getSerializable(KEY_NODE);
+            setData((ReadingComplexQuestion) savedInstanceState.getSerializable(KEY_NODE));
         }
     }
 

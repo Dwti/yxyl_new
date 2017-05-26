@@ -1,6 +1,5 @@
 package com.yanxiu.gphone.student.homework.questions.fragment;
 
-
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -63,7 +62,7 @@ public class SingleChooseFragment extends SimpleExerciseFragmentBase {
     }
 
     private void initData() {
-
+//        mQuestionView.setText();
     }
 
     /**

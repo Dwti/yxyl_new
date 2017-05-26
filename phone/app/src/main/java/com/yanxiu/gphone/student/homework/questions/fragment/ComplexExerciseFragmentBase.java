@@ -11,12 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.customviews.MyMaxHeightLinearLayout;
 import com.yanxiu.gphone.student.homework.questions.adapter.QAViewPagerAdapter;
-import com.yanxiu.gphone.student.homework.questions.model.BaseQuestion;
 import com.yanxiu.gphone.student.homework.questions.view.QAViewPager;
 
 import java.util.ArrayList;
@@ -45,7 +43,7 @@ public abstract class ComplexExerciseFragmentBase extends ExerciseFragmentBase {
 
 //    private BaseQuestion mBaseQuestion;
 
-    private int minHight;//topfragment的最小高度
+    private int mMinHight;//topfragment的最小高度
     private int mBottom_min_distance;//滑动image距离底边最小距离
 
 //    @Override
@@ -59,6 +57,7 @@ public abstract class ComplexExerciseFragmentBase extends ExerciseFragmentBase {
         mRootView = inflater.inflate(R.layout.fragment_complex_base, container, false);
         initView();
         setQaNumber(mRootView);
+        setQaName(mRootView);
         isFromCardSelect = false;
         return mRootView;
     }
@@ -68,11 +67,11 @@ public abstract class ComplexExerciseFragmentBase extends ExerciseFragmentBase {
 
         FragmentManager fm = getChildFragmentManager();
 
-        TopFragment topFragment = (TopFragment) fm.findFragmentById(R.id.ll_top_container);
+        TopFragment topFragment = (TopFragment) fm.findFragmentById(R.id.top_container);
         if (topFragment == null) {
             topFragment = getTopFragment();
             fm.beginTransaction()
-                    .add(R.id.ll_top_container, topFragment)
+                    .add(R.id.top_container, topFragment)
                     .commit();
         }
         mViewPager = (QAViewPager) mRootView.findViewById(R.id.ll_bottom_container);
@@ -87,8 +86,8 @@ public abstract class ComplexExerciseFragmentBase extends ExerciseFragmentBase {
 
         });
 
-        mTopLayout = (MyMaxHeightLinearLayout) mRootView.findViewById(R.id.ll_top_container);
-        minHight = (int)getResources().getDimension(R.dimen.question_ll_top_container_minheight);
+        mTopLayout = (MyMaxHeightLinearLayout) mRootView.findViewById(R.id.top_container);
+        mMinHight = (int)(getResources().getDimension(R.dimen.question_ll_top_container_minheight) + getResources().getDimension(R.dimen.question_commonnumber_height));
         mBottom_min_distance = (int)getResources().getDimension(R.dimen.question_bottom_layout_height);
 
         mImageViewSplitter.setOnTouchListener(new View.OnTouchListener() {
@@ -107,7 +106,7 @@ public abstract class ComplexExerciseFragmentBase extends ExerciseFragmentBase {
                         break;
                     case MotionEvent.ACTION_MOVE:
                         float top = startTop + (event.getRawY() - startY);
-                        top = Math.max(minHight, Math.min(top, parentView.getHeight() - v.getHeight() - mBottom_min_distance));
+                        top = Math.max(mMinHight, Math.min(top, parentView.getHeight() - v.getHeight() - mBottom_min_distance));
                         ViewGroup.LayoutParams params = v.getLayoutParams();
                         int topHeight = (int)top;
                         int bottomHeight = parentView.getHeight() - topHeight - v.getHeight();

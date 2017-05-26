@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape
+            android:shape="oval"
+            android:useLevel="false">
+            <solid android:color="@color/color_ffffff" />
+            <stroke
+                android:width="@dimen/choose_fragment_round_stroke_w"
+                android:color="@color/color_cccccc" />
+            <size
+                android:width="@dimen/choose_fragment_unselect_round_w_h"
+                android:height="@dimen/choose_fragment_unselect_round_w_h" />
+        </shape>
+    </item>
+
+    <item
+        android:bottom="@dimen/choose_fragment_select_round_margin"
+        android:left="@dimen/choose_fragment_select_round_margin"
+        android:right="@dimen/choose_fragment_select_round_margin"
+        android:top="@dimen/choose_fragment_select_round_margin">
+        <shape
+            android:shape="oval"
+            android:useLevel="false">
+            <solid android:color="@color/color_89e00d" />
+        </shape>
+    </item>
+</layer-list>

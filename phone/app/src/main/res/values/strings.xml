@@ -92,4 +92,19 @@
     <string name="search_school_no">没有搜索到相应学校</string>
     <string name="input_correct_class_number">请输入正确的班级号</string>
     <string name="class_not_allowed_join">此班级不允许学生加入</string>
+
+    <string name="question">问题</string>
+
+
+    <!--temple对应汉字名称-->
+    <string name="SINGLE_CHOICE">单选题</string>
+    <string name="MULTI_CHOICES">多选题</string>
+    <string name="FILL_BLANK">填空</string>
+    <string name="JUDGE">判断</string>
+    <string name="CONNECT">连线</string>
+    <string name="CLASSIFY">归类</string>
+    <string name="ANSWER">问答题</string>
+    <string name="READING">阅读理解</string>
+    <string name="CLOZE">完形填空</string>
+    <string name="LISTEN">听力</string>
 </resources>

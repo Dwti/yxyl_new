@@ -241,12 +241,22 @@
     <dimen name="question_top_layout_rightimage_width">38dp</dimen>
     <dimen name="question_top_layout_rightimage_marginRight">11dp</dimen>
     <dimen name="question_top_layout_height">58dp</dimen>
+    <dimen name="question_top_container_maxheight">150dp</dimen>
     <dimen name="question_bottom_layout_height">45dp</dimen>
     <dimen name="question_ll_top_container_minheight">65dp</dimen>
     <dimen name="question_bottom_layout_marginLeft">12dp</dimen>
     <dimen name="question_bottom_layout_image_width">15dp</dimen>
     <dimen name="question_bottom_layout_image_right">5dp</dimen>
     <dimen name="question_bottom_layout_shape">2dp</dimen>
+    <dimen name="question_splitter_width">69dp</dimen>
+    <dimen name="question_splitter_height">20dp</dimen>
+    <dimen name="question_splitter_bottomview_height">10dp</dimen>
+
+    <dimen name="question_commonnumber_left">15dp</dimen>
+    <dimen name="question_commonnumber_height">39dp</dimen>
+    <dimen name="question_commonnumber_name_textsize">16dp</dimen>
+    <dimen name="question_commonnumber_number_textsize">18dp</dimen>
+    <dimen name="question_commonnumber_line_hight">1dp</dimen>
 
     <dimen name="select_city_view_padding">15dp</dimen>
     <dimen name="input_school_lines_h">14dp</dimen>
@@ -273,5 +283,14 @@
     <dimen name="question_fragment_a_margin_t">25dp</dimen>
     <dimen name="question_fragment_q_text_size">19dp</dimen>
     <dimen name="question_fragment_q_line_space">10dp</dimen>
+
+    <dimen name="choose_fragment_item_text_size">22dp</dimen>
+    <dimen name="choose_fragment_item_margin_t_b">20dp</dimen>
+    <dimen name="choose_fragment_item_content_text_size">17dp</dimen>
+    <dimen name="choose_fragment_item_content_line_space">8dp</dimen>
+
+    <dimen name="choose_fragment_unselect_round_w_h">20dp</dimen>
+    <dimen name="choose_fragment_round_stroke_w">2dp</dimen>
+    <dimen name="choose_fragment_select_round_margin">5dp</dimen>
 </resources>
 

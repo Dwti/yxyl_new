@@ -1,14 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="@dimen/question_commonnumber_height"
+    android:orientation="vertical">
 
     <TextView
-        android:id="@+id/tv_qa_number"
-        android:layout_gravity="right"
-        android:layout_height="wrap_content"
+        android:id="@+id/qa_name"
         android:layout_width="wrap_content"
-        android:text="Good Good Study"/>
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/question_commonnumber_left"
+        android:layout_centerVertical="true"
+        android:gravity="center_vertical"
+        android:textSize="@dimen/question_commonnumber_name_textsize"
+        android:textColor="@color/color_89e00d"
+        tools:text="题型" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/qa_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/question_commonnumber_left"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:gravity="center_vertical"
+        android:textSize="@dimen/question_commonnumber_number_textsize"
+        android:textColor="@color/color_666666"
+        tools:text="1/6" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/question_commonnumber_line_hight"
+        android:layout_alignParentBottom="true"
+        android:background="@color/color_edf0ee"
+        />
+
+</RelativeLayout>
