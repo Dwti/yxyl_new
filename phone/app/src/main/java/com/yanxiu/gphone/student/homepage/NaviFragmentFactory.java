@@ -63,6 +63,7 @@ public class NaviFragmentFactory {
 				if (mHomeWorkFragment == null) {
 					mHomeWorkFragment = new HomeworkFragment();
 					transaction.add(R.id.content_main, mHomeWorkFragment);
+					mHomeWorkFragment.requestData();
 				} else {
 					transaction.show(mHomeWorkFragment);
 //					LogInfo.log("king", "transaction.show");
@@ -73,6 +74,7 @@ public class NaviFragmentFactory {
 				if (mExerciseFragment == null) {
 					mExerciseFragment = new ExerciseFragment();
 					transaction.add(R.id.content_main, mExerciseFragment);
+					mExerciseFragment.requestData();
 				} else {
 					transaction.show(mExerciseFragment);
 				}
@@ -81,6 +83,7 @@ public class NaviFragmentFactory {
 				if (mMyFragment == null) {
 					mMyFragment = new MyFragment();
 					transaction.add(R.id.content_main, mMyFragment);
+					mMyFragment.requestData();
 				} else {
 					transaction.show(mMyFragment);
 				}

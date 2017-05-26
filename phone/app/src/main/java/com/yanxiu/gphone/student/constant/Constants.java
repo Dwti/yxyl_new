@@ -21,4 +21,6 @@ public class Constants {
 
     public static final String EXTRA_PAPER = "extra_Paper";//传递给答题页的paper数据的key
 
+    public static final String MAINAVTIVITY_REFRESH = "mainActivity_refresh";//跳转到首页需要刷新数据
+
 }

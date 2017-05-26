@@ -4,6 +4,7 @@ package com.yanxiu.gphone.student.homework;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.base.HomePageBaseFragment;
 import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.homework.classmanage.ClassInfoActivity;
 import com.yanxiu.gphone.student.homework.classmanage.ClassStatus;
@@ -36,7 +38,7 @@ import java.util.List;
 /**
  * 首页 作业列表Fragment
  */
-public class HomeworkFragment extends Fragment implements SearchClassFragment.OnJoinClassCompleteListener {
+public class HomeworkFragment extends HomePageBaseFragment implements SearchClassFragment.OnJoinClassCompleteListener {
 
     private final static String TAG = HomeworkFragment.class.getSimpleName();
 
@@ -94,6 +96,14 @@ public class HomeworkFragment extends Fragment implements SearchClassFragment.On
         });
         loadSubject();
         return root;
+    }
+
+    /**
+     * 请求数据
+     */
+    @Override
+    public void requestData() {
+        Log.e("dyf",TAG);
     }
 
     private void checkClassInfo() {

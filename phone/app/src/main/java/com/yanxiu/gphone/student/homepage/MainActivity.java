@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -12,10 +13,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.base.HomePageBaseFragment;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.util.DataFetcher;
 
+import static com.yanxiu.gphone.student.constant.Constants.MAINAVTIVITY_REFRESH;
+
 public class MainActivity extends YanxiuBaseActivity implements View.OnClickListener{
+
+    private final String TAG = MainActivity.this.getClass().getSimpleName();
+
+    public boolean misRefresh;//是否需要刷新
 
     private FrameLayout mContentMain;
     private final int INDEX_HOMEWORK = 0;//作业tab
@@ -44,6 +52,22 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
+        misRefresh = getIntent().getBooleanExtra(MAINAVTIVITY_REFRESH,false);
+        refreshFragmentData();
+    }
+
+    /**
+     * 刷新当前fragment的数据（从loginacticity回来）
+     */
+    private void refreshFragmentData(){
+        try{
+            if(misRefresh)
+                ((HomePageBaseFragment)mNaviFragmentFactory.getItem(mNaviFragmentFactory.getCurrentItem())).requestData();
+        }catch(Exception e){
+            e.printStackTrace();
+            Log.e(TAG, "刷新失败" + e.getMessage());
+        }
+
     }
 
     @Override
@@ -58,10 +82,12 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
 
     @Override
     protected void onDestroy() {
+        DataFetcher.getInstance().destory();
         super.onDestroy();
     }
 
     private void initView() {
+        misRefresh = false;
         mContentMain = (FrameLayout) findViewById(R.id.content_main);
         mBottomNaviLayout = findViewById(R.id.navi_switcher);
         mFragmentManager = getSupportFragmentManager();
@@ -170,7 +196,6 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
 
             if (System.currentTimeMillis() - mBackTimestamp <= 2000) {
                 //Todo 退出程序
-                DataFetcher.getInstance().destory();
                 finish();
             } else {
                 mBackTimestamp = System.currentTimeMillis();
@@ -189,6 +214,17 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
      */
     public static void invoke(Activity activity) {
         Intent intent = new Intent(activity, MainActivity.class);
+        activity.startActivity(intent);
+    }
+
+    /**
+     * 跳转MainActivity:LoginActivity跳转
+     *
+     * @param activity
+     */
+    public static void invoke(Activity activity,boolean refresh) {
+        Intent intent = new Intent(activity, MainActivity.class);
+        intent.putExtra(MAINAVTIVITY_REFRESH,refresh);
         activity.startActivity(intent);
     }
 
