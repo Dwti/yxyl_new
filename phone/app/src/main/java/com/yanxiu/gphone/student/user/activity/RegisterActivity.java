@@ -156,7 +156,7 @@ public class RegisterActivity extends YanxiuBaseActivity implements View.OnClick
                     return;
                 }
                 onRegister(mobileCode, verCode, passWord);
-                JoinClassActivity.LaunchActivity(mContext);
+//                JoinClassActivity.LaunchActivity(mContext);
                 break;
         }
     }

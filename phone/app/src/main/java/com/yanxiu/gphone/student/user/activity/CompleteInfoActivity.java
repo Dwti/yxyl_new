@@ -156,7 +156,7 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
                 rootView.hiddenLoadingView();
                 if (ret.status.getCode()==0&&ret.data!=null){
                     LoginInfo.saveCacheData(ret.data.get(0));
-                    MainActivity.invoke(CompleteInfoActivity.this);
+                    MainActivity.invoke(CompleteInfoActivity.this,true);
                     CompleteInfoActivity.this.finish();
                 }else {
                     ToastManager.showMsg(ret.status.getDesc());

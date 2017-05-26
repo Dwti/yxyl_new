@@ -23,7 +23,7 @@ public class ChooseLayout extends LinearLayout implements View.OnClickListener {
 
     public static final int TYPE_SINGLE = 0x000;
     public static final int TYPE_MULTI = 0x001;
-    private static final String[] mEms = new String[]{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N"};
+    private static final String[] mEms = new String[]{"A.", "B.", "C.", "D.", "E.", "F.", "G.", "H.", "I.", "J.", "K.", "L.", "M.", "N."};
 
     private Context mContext;
     private onItemClickListener mOnItemClickListener;

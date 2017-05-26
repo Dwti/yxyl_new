@@ -15,6 +15,9 @@ import android.widget.TextView;
 
 import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
+import com.umeng.socialize.UMAuthListener;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
@@ -26,6 +29,7 @@ import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.ToastManager;
 import com.yanxiu.gphone.student.customviews.WavesLayout;
 
+import java.util.Map;
 import java.util.regex.Pattern;
 @SuppressWarnings("all")
 /**
@@ -60,9 +64,13 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
      */
     private boolean isCipher = true;
 
+    /**
+     * check is number
+     * */
     private Pattern pattern = Pattern.compile("[0-9]*");
     private LoginRequest mLoginRequest;
     private PublicLoadLayout rootView;
+    private UMShareAPI mUMShareAPI;
 
     public static void LaunchActivity(Context context){
         Intent intent=new Intent(context,LoginActivity.class);
@@ -75,8 +83,8 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
         mContext=LoginActivity.this;
         rootView=new PublicLoadLayout(mContext);
         rootView.setContentView(R.layout.activity_login);
-//        rootView.finish();
         setContentView(rootView);
+        mUMShareAPI=UMShareAPI.get(mContext);
         initView();
         listener();
         initData();
@@ -212,7 +220,7 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
                 rootView.hiddenLoadingView();
                 if (ret.status.getCode()==0){
                     LoginInfo.saveCacheData(ret.data.get(0));
-                    MainActivity.invoke(LoginActivity.this);
+                    MainActivity.invoke(LoginActivity.this,true);
                     LoginActivity.this.finish();
                 }else if (ret.status.getCode()==80){
                     JoinClassActivity.LaunchActivity(mContext);
@@ -230,9 +238,42 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
     }
 
     private void LoginByWX() {
+
     }
 
     private void LoginByQQ() {
+        SHARE_MEDIA media=SHARE_MEDIA.QQ;
+        startThridLogin(media);
+    }
+
+    private void startThridLogin(SHARE_MEDIA media){
+        mUMShareAPI.doOauthVerify(LoginActivity.this, media, new UMAuthListener() {
+            @Override
+            public void onStart(SHARE_MEDIA share_media) {
+
+            }
+
+            @Override
+            public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
+
+            }
+
+            @Override
+            public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
+
+            }
+
+            @Override
+            public void onCancel(SHARE_MEDIA share_media, int i) {
+
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        mUMShareAPI.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override

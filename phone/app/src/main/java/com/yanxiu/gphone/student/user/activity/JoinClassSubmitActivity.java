@@ -134,7 +134,7 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
                 rootView.hiddenLoadingView();
                 if (ret.status.getCode()==0){
                     LoginInfo.saveCacheData(ret.data.get(0));
-                    MainActivity.invoke(JoinClassSubmitActivity.this);
+                    MainActivity.invoke(JoinClassSubmitActivity.this,true);
                     JoinClassSubmitActivity.this.finish();
                 }else {
                     ToastManager.showMsg(ret.status.getDesc());
