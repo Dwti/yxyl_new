@@ -6,9 +6,12 @@ import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,6 +19,7 @@ import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.customviews.WavesLayout;
+import com.yanxiu.gphone.student.homepage.MainActivity;
 import com.yanxiu.gphone.student.homework.data.ClassBean;
 import com.yanxiu.gphone.student.homework.data.JoinClassRequest;
 import com.yanxiu.gphone.student.homework.data.JoinClassResponse;
@@ -32,16 +36,30 @@ import com.yanxiu.gphone.student.util.ToastManager;
 public class JoinClassActivity extends Activity {
 
     public static final String EXTRA_CLASS_INFO = "CLASS_INFO";
-    private String mName;
-    private String mClassId;
+
+    private ScrollView mScrollView;
+
+    private String mName,mClassId;
+
     private Button mBtnNext;
+
     private WavesLayout mWavesLayout;
+
+    private View mBack;
+
+    private EditText mEditName;
+
+    private boolean mKeyBoardVisible = false;
+
+    private int mBottom;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join_class);
         ClassBean classInfo = (ClassBean) getIntent().getSerializableExtra(EXTRA_CLASS_INFO);
         initView(classInfo);
+        initListener();
     }
     private void initView(final ClassBean classInfo) {
         TextView title = (TextView) findViewById(R.id.tv_title);
@@ -49,15 +67,16 @@ public class JoinClassActivity extends Activity {
         TextView teacherName = (TextView) findViewById(R.id.tv_teacher_name);
         TextView studentNum = (TextView) findViewById(R.id.tv_student_num);
         TextView schoolName = (TextView) findViewById(R.id.tv_school_name);
-        final EditText name = (EditText) findViewById(R.id.et_name);
+        mScrollView = (ScrollView) findViewById(R.id.scrollView);
+        mEditName = (EditText) findViewById(R.id.et_name);
         mBtnNext = (Button) findViewById(R.id.btn_next);
         mWavesLayout = (WavesLayout)findViewById(R.id.wavesLayout);
-        View back = findViewById(R.id.iv_left);
+        mBack = findViewById(R.id.iv_left);
 
-        back.setVisibility(View.VISIBLE);
+        mBack.setVisibility(View.VISIBLE);
         title.setText(R.string.join_class);
-        name.setText(LoginInfo.getRealName());
-        name.setSelection(LoginInfo.getRealName().length());
+        mEditName.setText(LoginInfo.getRealName());
+        mEditName.setSelection(LoginInfo.getRealName().length());
         if(TextUtils.isEmpty(LoginInfo.getRealName())){
             mWavesLayout.setCanShowWave(false);
             mBtnNext.setEnabled(false);
@@ -70,8 +89,10 @@ public class JoinClassActivity extends Activity {
             studentNum.setText(String.valueOf(classInfo.getStdnum()));
             schoolName.setText(classInfo.getSchoolname());
         }
+    }
 
-        name.addTextChangedListener(new TextWatcher() {
+    private void initListener(){
+        mEditName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -97,18 +118,45 @@ public class JoinClassActivity extends Activity {
             @Override
             public void onClick(View v) {
                 //先申请加入班级,成功后更新用户姓名信息
-                mName = name.getText().toString();
-                requestJoinClass(classInfo.getId(),mName);
+                mName = mEditName.getText().toString();
+                requestJoinClass(mClassId,mName);
             }
         });
 
-        back.setOnClickListener(new View.OnClickListener() {
+        mBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
     }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if(hasFocus){
+            mBottom = mScrollView.getBottom();
+            mScrollView.getViewTreeObserver().addOnGlobalLayoutListener(mOnGlobalLayoutListener);
+        }
+    }
+
+    //监听键盘的弹出收起,并且在键盘弹起时，ScrollView滑动到指定位置
+    ViewTreeObserver.OnGlobalLayoutListener mOnGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+        @Override
+        public void onGlobalLayout() {
+            if(mScrollView.getBottom() < mBottom && !mKeyBoardVisible){
+                mKeyBoardVisible = true;
+                mScrollView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mScrollView.scrollTo(0, (int) mWavesLayout.getY());
+                    }
+                });
+            }else if(mScrollView.getBottom() >= mBottom && mKeyBoardVisible){
+                mKeyBoardVisible = false;
+            }
+        }
+    };
 
     private void updateUserInfo(String name) {
         UpdateUserInfoRequest request = new UpdateUserInfoRequest();
@@ -121,6 +169,12 @@ public class JoinClassActivity extends Activity {
         request.setClassId(classId);
         request.setValidMsg(realName);
         request.startRequest(JoinClassResponse.class,mJoinClassCallback);
+    }
+
+    @Override
+    protected void onDestroy() {
+        mScrollView.getViewTreeObserver().removeOnGlobalLayoutListener(mOnGlobalLayoutListener);
+        super.onDestroy();
     }
 
     HttpCallback<JoinClassResponse> mJoinClassCallback = new ExerciseBaseCallback<JoinClassResponse>() {

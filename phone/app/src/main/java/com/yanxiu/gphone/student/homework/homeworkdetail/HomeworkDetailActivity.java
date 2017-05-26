@@ -1,4 +1,4 @@
-package com.yanxiu.gphone.student.homework;
+package com.yanxiu.gphone.student.homework.homeworkdetail;
 
 import android.app.Activity;
 import android.os.Bundle;

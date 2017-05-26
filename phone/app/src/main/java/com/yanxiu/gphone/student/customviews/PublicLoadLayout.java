@@ -21,7 +21,7 @@ public class PublicLoadLayout extends FrameLayout{
 
     private Context mContext;
     private FrameLayout mContentViewContainer;//加载具体页面的contentView
-    private RelativeLayout mErrorLayoutContainer;//错误页面容器，默认网络错误页面
+    private RelativeLayout mNetErrorLayoutContainer;//错误页面容器，默认网络错误页面
     private View mNetErrorLayout;//错误页面容器，默认网络错误页面
     private Button mRetry_button;//重试按钮
     private ImageView mLoadingView;// loadingView
@@ -47,7 +47,7 @@ public class PublicLoadLayout extends FrameLayout{
         mContext = context;
         inflate(context, R.layout.public_load_layout, this);
         mContentViewContainer = (FrameLayout) findViewById(R.id.contentViewContainer);
-        mErrorLayoutContainer = (RelativeLayout) findViewById(R.id.errorLayoutContainer);
+        mNetErrorLayoutContainer = (RelativeLayout) findViewById(R.id.netErrorLayoutContainer);
         initDefaultLayout();
         initLoadingView();
     }
@@ -56,7 +56,7 @@ public class PublicLoadLayout extends FrameLayout{
      * 加载默认布局（网络错误页面）
      */
     private void initDefaultLayout() {
-        mNetErrorLayout = inflate(mContext, R.layout.net_error_layout, mErrorLayoutContainer);
+        mNetErrorLayout = inflate(mContext, R.layout.net_error_layout, mNetErrorLayoutContainer);
         mRetry_button = (Button) findViewById(R.id.retry_button);
     }
 
@@ -133,19 +133,19 @@ public class PublicLoadLayout extends FrameLayout{
      * 设置要展示的view（如数据为空的view）
      */
     public void setCustomView(int viewId) {
-        int childCound = mErrorLayoutContainer.getChildCount();
+        int childCound = mNetErrorLayoutContainer.getChildCount();
         if (childCound > 0)
-            mErrorLayoutContainer.removeAllViews();//先移除容器内的默认布局
-        inflate(mContext, viewId, mErrorLayoutContainer);//加载其他页面（如数据为空页面）
+            mNetErrorLayoutContainer.removeAllViews();//先移除容器内的默认布局
+        inflate(mContext, viewId, mNetErrorLayoutContainer);//加载其他页面（如数据为空页面）
     }
     /**
      * 设置要展示的view（如数据为空的view）
      */
     public void setCustomView(View view) {
-        int childCound = mErrorLayoutContainer.getChildCount();
+        int childCound = mNetErrorLayoutContainer.getChildCount();
         if (childCound > 0)
-            mErrorLayoutContainer.removeAllViews();//先移除容器内的默认布局
-        mErrorLayoutContainer.addView(view);//加载其他页面（如数据为空页面）
+            mNetErrorLayoutContainer.removeAllViews();//先移除容器内的默认布局
+        mNetErrorLayoutContainer.addView(view);//加载其他页面（如数据为空页面）
     }
 
     /**
@@ -154,9 +154,9 @@ public class PublicLoadLayout extends FrameLayout{
      *
      */
     public void setErrorLayoutFullScreen() {
-        LayoutParams lp = (LayoutParams) mErrorLayoutContainer.getLayoutParams();
+        LayoutParams lp = (LayoutParams) mNetErrorLayoutContainer.getLayoutParams();
         lp.topMargin = 0;
-        mErrorLayoutContainer.setLayoutParams(lp);
+        mNetErrorLayoutContainer.setLayoutParams(lp);
 //      mErrorLayoutContainer.setPadding(0,0,0,0);
     }
 
@@ -165,7 +165,7 @@ public class PublicLoadLayout extends FrameLayout{
      */
     public void finish(){
         hiddenLoadingView();
-        mErrorLayoutContainer.setVisibility(GONE);
+        mNetErrorLayoutContainer.setVisibility(GONE);
     }
 
 }

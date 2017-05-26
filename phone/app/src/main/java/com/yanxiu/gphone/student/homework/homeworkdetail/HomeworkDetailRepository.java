@@ -1,4 +1,4 @@
-package com.yanxiu.gphone.student.homework;
+package com.yanxiu.gphone.student.homework.homeworkdetail;
 
 import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;

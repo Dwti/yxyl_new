@@ -1,10 +1,14 @@
 package com.yanxiu.gphone.student.homework.questions.bean;
 
+import com.yanxiu.gphone.student.base.BaseBean;
+
+import java.io.Serializable;
+
 /**
  * Created by sunpeng on 2017/5/10.
  */
 
-public class PointBean {
+public class PointBean extends BaseBean {
     private String id;
     private String name;
 

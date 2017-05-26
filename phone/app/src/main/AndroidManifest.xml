@@ -22,7 +22,8 @@
         <activity
             android:name=".homepage.WelcomeActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppFullscreen">
+            android:theme="@style/AppFullscreen"
+            android:taskAffinity="com.yanxiu.gphone.student">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -36,13 +37,24 @@
             android:launchMode="singleTask"
             android:configChanges="keyboardHidden|orientation"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
-            android:taskAffinity="com.yanxiu.gphone.student.homepage.MainActivity"/>
+            android:taskAffinity="com.yanxiu.gphone.student">
+        <intent-filter>
+            <action android:name="android.intent.action.VIEW" />
+
+            <category android:name="android.intent.category.DEFAULT" />
+        </intent-filter>
+        </activity>
         <activity
             android:name=".user.activity.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppFullscreen"
             android:configChanges="keyboardHidden|orientation"
-            android:windowSoftInputMode="stateHidden|adjustPan"/>
+            android:windowSoftInputMode="stateHidden|adjustPan">
+            <!--<intent-filter>-->
+                <!--<action android:name="com.yanxiu.gphone.student.LoginActivity" />-->
+                <!--<category android:name="android.intent.category.DEFAULT" />-->
+            <!--</intent-filter>-->
+        </activity>
 
         <activity
             android:name=".user.activity.ForgetPassWordActivity"
@@ -101,8 +113,12 @@
             android:screenOrientation="portrait"
             android:launchMode="singleTop"/>
 
-        <activity android:name=".homework.HomeworkDetailActivity"
+        <activity android:name=".homework.homeworkdetail.HomeworkDetailActivity"
             android:screenOrientation="portrait"
+            android:launchMode="singleTop"/>
+        <activity android:name=".homework.questions.activity.AnswerQuestionActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppFullscreen"
             android:launchMode="singleTop"/>
 
         <activity android:name=".user.activity.JoinClassSubmitActivity"

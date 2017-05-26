@@ -197,8 +197,8 @@ public class WelcomeActivity extends YanxiuBaseActivity implements View.OnClickL
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         mHander.removeCallbacksAndMessages(null);
+        super.onDestroy();
         //TODO 相应操作
     }
 }

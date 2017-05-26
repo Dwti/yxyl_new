@@ -12,7 +12,7 @@ import com.yanxiu.gphone.student.homework.questions.model.ReadingComplexQuestion
  * Created by 戴延枫 on 2017/5/5.
  */
 
-public class ReadingComplexExerciseFragment extends ComplexExerciseFragmentBase {
+public class ReadingComplexFragment extends ComplexExerciseFragmentBase {
     private ReadingComplexQuestion mData;
 
     @Override

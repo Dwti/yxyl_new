@@ -259,6 +259,13 @@
     <dimen name="question_commonnumber_line_hight">1dp</dimen>
 
     <dimen name="select_city_view_padding">15dp</dimen>
+    <dimen name="question_top_content_top_padding">25dp</dimen>
+    <dimen name="question_top_content_left_padding">15dp</dimen>
+    <dimen name="question_top_content_right_padding">15dp</dimen>
+    <dimen name="question_top_content_bottom_padding">25dp</dimen>
+    <dimen name="stem_text_size">17dp</dimen>
+    <dimen name="stem_line_space">5dp</dimen>
+
     <dimen name="input_school_lines_h">14dp</dimen>
     <dimen name="input_school_name_margin_l">18dp</dimen>
     <dimen name="input_school_layout_margin_l_r">15dp</dimen>
@@ -292,5 +299,7 @@
     <dimen name="choose_fragment_unselect_round_w_h">20dp</dimen>
     <dimen name="choose_fragment_round_stroke_w">2dp</dimen>
     <dimen name="choose_fragment_select_round_margin">5dp</dimen>
+    <dimen name="choose_fragment_line_h">1dp</dimen>
+    <dimen name="question_bottom_shadow">2dp</dimen>
 </resources>
 

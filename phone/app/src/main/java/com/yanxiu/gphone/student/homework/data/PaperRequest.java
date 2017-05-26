@@ -1,6 +1,7 @@
 package com.yanxiu.gphone.student.homework.data;
 
 import com.yanxiu.gphone.student.base.ExerciseBaseRequest;
+import com.yanxiu.gphone.student.db.UrlRepository;
 
 /**
  * Created by sunpeng on 2017/5/9.
@@ -17,12 +18,12 @@ public class PaperRequest extends ExerciseBaseRequest {
 
     @Override
     protected String urlServer() {
-        return "http://mobile.hwk.yanxiu.com/app/personalData/";
+        return UrlRepository.getInstance().getServer();
     }
 
     @Override
     protected String urlPath() {
-        return "getQuestionList.do";
+        return "/personalData/getQuestionList.do";
     }
 
     public String getPaperId() {

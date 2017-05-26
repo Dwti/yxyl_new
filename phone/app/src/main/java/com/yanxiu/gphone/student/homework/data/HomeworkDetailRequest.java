@@ -1,6 +1,7 @@
 package com.yanxiu.gphone.student.homework.data;
 
 import com.yanxiu.gphone.student.base.ExerciseBaseRequest;
+import com.yanxiu.gphone.student.db.UrlRepository;
 
 /**
  * Created by sunpeng on 2017/5/8.
@@ -8,7 +9,7 @@ import com.yanxiu.gphone.student.base.ExerciseBaseRequest;
 
 public class HomeworkDetailRequest extends ExerciseBaseRequest {
     protected String page = "1";
-    protected String pageSize = "20";
+    protected String pageSize = "10";
     protected String groupId ;
     @Override
     protected boolean shouldLog() {
@@ -17,12 +18,12 @@ public class HomeworkDetailRequest extends ExerciseBaseRequest {
 
     @Override
     protected String urlServer() {
-        return "http://mobile.hwk.yanxiu.com/app/class/";
+        return UrlRepository.getInstance().getServer();
     }
 
     @Override
     protected String urlPath() {
-        return "listGroupPaper.do";
+        return "/class/listGroupPaper.do";
     }
 
     public String getPage() {

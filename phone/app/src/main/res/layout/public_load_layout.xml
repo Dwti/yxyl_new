@@ -9,7 +9,18 @@
         android:layout_height="match_parent" />
 
     <RelativeLayout
-        android:id="@+id/errorLayoutContainer"
+        android:id="@+id/netErrorLayoutContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/top_layout_height"
+        android:focusableInTouchMode="true"
+        android:focusable="true"
+        android:clickable="true">
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/noDataErrorLayoutContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/top_layout_height"
