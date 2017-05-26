@@ -3,13 +3,17 @@ package com.yanxiu.gphone.student.homework.questions.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.homework.questions.model.BaseQuestion;
 import com.yanxiu.gphone.student.homework.questions.model.ReadingComplexQuestion;
+import com.yanxiu.gphone.student.homework.questions.util.HtmlImageGetter;
 
 /**
  * Created by 戴延枫 on 2017/5/5.
@@ -17,6 +21,7 @@ import com.yanxiu.gphone.student.homework.questions.model.ReadingComplexQuestion
 
 public class ReadingComplexTopFragment extends TopFragment {
     ReadingComplexQuestion mData;
+    TextView mText;
 
     @Override
     void setData(BaseQuestion data) {
@@ -35,8 +40,15 @@ public class ReadingComplexTopFragment extends TopFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_reading_top, container, false);
-//        initView();
+        initView(mRootView);
         return mRootView;
+    }
+
+    private void initView(View root) {
+        mText = (TextView) root.findViewById(R.id.tv_stem);
+        String stem = mData.getStem();
+        Spanned spanned = Html.fromHtml(stem,new HtmlImageGetter(mText),null);
+        mText.setText(spanned);
     }
 
     @Override

@@ -2,19 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingTop="@dimen/question_top_content_top_padding"
+    android:paddingLeft="@dimen/question_top_content_left_padding"
+    android:paddingRight="@dimen/question_top_content_right_padding"
+    android:paddingBottom="@dimen/question_top_content_bottom_padding">
 
     <TextView
-        android:id="@+id/top_text1"
-        android:layout_width="match_parent"
-        android:layout_height="500dp"
-        android:text="听力复合题题干部分"
-        />
-    <TextView
-        android:id="@+id/top_text"
+        android:id="@+id/tv_stem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Top Frament"
-         />
+        android:textSize="@dimen/stem_text_size"
+        android:textColor="#333333"
+        android:lineSpacingExtra="@dimen/stem_line_space"
+        />
 
 </LinearLayout>
