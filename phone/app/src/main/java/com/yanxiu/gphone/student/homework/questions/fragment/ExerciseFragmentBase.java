@@ -182,4 +182,10 @@ public abstract class ExerciseFragmentBase extends Fragment implements IExercise
         }
     }
 
+    /**
+     * 保存答案
+     */
+    public void saveAnswer(){
+
+    }
 }
