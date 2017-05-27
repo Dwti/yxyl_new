@@ -30,6 +30,8 @@ public interface HomeworkDetailContract {
 
         void showLoadMoreDataError(String msg);
 
+        void showGetPaperDataError(String msg);
+
         boolean isActive();
 
         void finishUI();
