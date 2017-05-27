@@ -11,9 +11,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.base.ExerciseBaseCallback;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
 import com.yanxiu.gphone.student.user.adapter.ChooseSchoolAdapter;
@@ -141,12 +141,13 @@ public class ChooseSchoolActivity extends YanxiuBaseActivity implements View.OnC
         mChooseSchoolRequest=new ChooseSchoolRequest();
         mChooseSchoolRequest.school=schoolName;
         mChooseSchoolRequest.regionId=message.areaId;
-        mChooseSchoolRequest.startRequest(ChooseSchoolResponse.class, new HttpCallback<ChooseSchoolResponse>() {
+        mChooseSchoolRequest.startRequest(ChooseSchoolResponse.class, new ExerciseBaseCallback<ChooseSchoolResponse>() {
+
             @Override
-            public void onSuccess(RequestBase request, ChooseSchoolResponse ret) {
+            protected void onResponse(RequestBase request, ChooseSchoolResponse response) {
                 rootView.hiddenLoadingView();
-                if (ret.status.getCode()==0&&ret.data!=null){
-                    adapter.setDatas(ret.data);
+                if (response.getStatus().getCode()==0&&response.data!=null){
+                    adapter.setDatas(response.data);
                 }else {
                     adapter.setDatas(null);
                     ToastManager.showMsg(getText(R.string.search_school_no));

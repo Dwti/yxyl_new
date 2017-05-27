@@ -13,15 +13,16 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.base.ExerciseBaseCallback;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
 import com.yanxiu.gphone.student.homepage.MainActivity;
+import com.yanxiu.gphone.student.user.http.LoginThridRequest;
 import com.yanxiu.gphone.student.user.response.LoginResponse;
 import com.yanxiu.gphone.student.user.http.LoginRequest;
 import com.yanxiu.gphone.student.util.EditTextManger;
@@ -29,6 +30,7 @@ import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.ToastManager;
 import com.yanxiu.gphone.student.customviews.WavesLayout;
 
+import java.io.Serializable;
 import java.util.Map;
 import java.util.regex.Pattern;
 @SuppressWarnings("all")
@@ -39,6 +41,11 @@ import java.util.regex.Pattern;
  */
 
 public class LoginActivity extends YanxiuBaseActivity implements View.OnClickListener, EditTextManger.onTextLengthChangedListener {
+
+    public static final String THRID_LOGIN="thrid";
+    public static final String TYPE="type";
+    public static final String TYPE_DEFAULT="default";
+    public static final String TYPE_THRID="thrid";
 
     private Context mContext;
 
@@ -71,6 +78,8 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
     private LoginRequest mLoginRequest;
     private PublicLoadLayout rootView;
     private UMShareAPI mUMShareAPI;
+    private ThridMessage mThridMessage;
+    private LoginThridRequest mLoginThridRequest;
 
     public static void LaunchActivity(Context context){
         Intent intent=new Intent(context,LoginActivity.class);
@@ -128,6 +137,10 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
         if (mLoginRequest!=null){
             mLoginRequest.cancelRequest();
             mLoginRequest=null;
+        }
+        if (mLoginThridRequest!=null){
+            mLoginThridRequest.cancelRequest();
+            mLoginThridRequest=null;
         }
     }
 
@@ -197,8 +210,8 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
                 ForgetPassWordActivity.LaunchActivity(mContext,userName);
                 break;
             case R.id.tv_fast_registered:
-                RegisterActivity.LaunchActivity(mContext);
-//                ChooseLocationActivity.LaunchActivity(mContext);
+//                RegisterActivity.LaunchActivity(mContext);
+                JoinClassActivity.LaunchActivity(mContext);
                 break;
             case R.id.iv_third_qq:
                 LoginByQQ();
@@ -214,18 +227,19 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
         mLoginRequest = new LoginRequest();
         mLoginRequest.mobile=user_name;
         mLoginRequest.password=pass_word;
-        mLoginRequest.startRequest(LoginResponse.class, new HttpCallback<LoginResponse>() {
+        mLoginRequest.startRequest(LoginResponse.class, new ExerciseBaseCallback<LoginResponse>() {
+
             @Override
-            public void onSuccess(RequestBase request, LoginResponse ret) {
+            protected void onResponse(RequestBase request, LoginResponse response) {
                 rootView.hiddenLoadingView();
-                if (ret.status.getCode()==0){
-                    LoginInfo.saveCacheData(ret.data.get(0));
+                if (response.getStatus().getCode()==0){
+                    LoginInfo.saveCacheData(response.data.get(0));
                     MainActivity.invoke(LoginActivity.this,true);
                     LoginActivity.this.finish();
-                }else if (ret.status.getCode()==80){
+                }else if (response.getStatus().getCode()==80){
                     JoinClassActivity.LaunchActivity(mContext);
                 }else {
-                    ToastManager.showMsg(ret.status.getDesc());
+                    ToastManager.showMsg(response.getStatus().getDesc());
                 }
             }
 
@@ -238,34 +252,105 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
     }
 
     private void LoginByWX() {
-
+        SHARE_MEDIA media=SHARE_MEDIA.WEIXIN;
+        thridLoginStart(media);
     }
 
     private void LoginByQQ() {
         SHARE_MEDIA media=SHARE_MEDIA.QQ;
-        startThridLogin(media);
+        thridLoginStart(media);
     }
 
-    private void startThridLogin(SHARE_MEDIA media){
-        mUMShareAPI.doOauthVerify(LoginActivity.this, media, new UMAuthListener() {
+    /**
+     * get thrid message
+     * */
+    private void thridLoginStart(final SHARE_MEDIA platform){
+        mUMShareAPI.doOauthVerify(LoginActivity.this, platform, new UMAuthListener() {
             @Override
             public void onStart(SHARE_MEDIA share_media) {
-
             }
 
             @Override
             public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
+                mUMShareAPI.getPlatformInfo(LoginActivity.this, platform, new UMAuthListener() {
+                        @Override
+                        public void onStart(SHARE_MEDIA share_media) {
+                        }
 
+                        @Override
+                        public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
+                            mThridMessage=new ThridMessage();
+                            String openid=map.get("openid");
+                            String platform="";
+                            if (share_media.toString().endsWith(SHARE_MEDIA.QQ.toString())){
+                                platform="qq";
+                            }else if (share_media.toString().endsWith(SHARE_MEDIA.WEIXIN.toString())){
+                                platform="weixin";
+                            }
+                            String uniqid="";
+                            mThridMessage.openid=openid;
+                            mThridMessage.platform=platform;
+                            mThridMessage.uniqid=uniqid;
+                            mThridMessage.head=map.get("iconurl");
+                            mThridMessage.sex=map.get("gender").equals(getText(R.string.man).toString())?"1":"0";
+                            thridLoginEnd(openid,platform,uniqid);
+                        }
+
+                        @Override
+                        public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
+                            ToastManager.showMsg(getText(R.string.login_fail));
+                        }
+
+                        @Override
+                        public void onCancel(SHARE_MEDIA share_media, int i) {
+                        }
+                    });
             }
 
             @Override
             public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
-
+                if (share_media.toString().endsWith(SHARE_MEDIA.QQ.toString())){
+                    ToastManager.showMsg(getText(R.string.no_install_qq));
+                }else if (share_media.toString().endsWith(SHARE_MEDIA.WEIXIN.toString())){
+                    ToastManager.showMsg(getText(R.string.no_install_weixin));
+                }
             }
 
             @Override
             public void onCancel(SHARE_MEDIA share_media, int i) {
+            }
+        });
+    }
 
+    /**
+     * thrid login
+     * */
+    private void thridLoginEnd(String openid,String platform,String uniqid){
+        rootView.showLoadingView();
+        mLoginThridRequest=new LoginThridRequest();
+        mLoginThridRequest.openid=openid;
+        mLoginThridRequest.platform=platform;
+        mLoginThridRequest.uniqid=uniqid;
+        mLoginThridRequest.startRequest(LoginResponse.class, new ExerciseBaseCallback<LoginResponse>() {
+
+            @Override
+            protected void onResponse(RequestBase request, LoginResponse response) {
+                rootView.hiddenLoadingView();
+                if (response.getStatus().getCode()==0){
+                    LoginInfo.saveCacheData(response.data.get(0));
+                    MainActivity.invoke(LoginActivity.this,true);
+                    LoginActivity.this.finish();
+                }else if (response.getStatus().getCode()==80){
+                    JoinClassActivity.LaunchActivity(mContext,mThridMessage);
+                }else {
+                    ToastManager.showMsg(response.getStatus().getDesc());
+                }
+            }
+
+            @Override
+            public void onFail(RequestBase request, Error error) {
+                rootView.hiddenLoadingView();
+                ToastManager.showMsg(error.getMessage());
             }
         });
     }
@@ -293,5 +378,13 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
             }
         }
         setButtonFocusChange(isUserNameReady&&isPassWordReady);
+    }
+
+    public class ThridMessage implements Serializable{
+        public String openid;
+        public String platform;
+        public String uniqid;
+        public String sex;
+        public String head;
     }
 }

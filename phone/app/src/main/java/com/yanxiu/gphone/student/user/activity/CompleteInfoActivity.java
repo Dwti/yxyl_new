@@ -8,14 +8,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.base.ExerciseBaseCallback;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
 import com.yanxiu.gphone.student.customviews.WavesLayout;
 import com.yanxiu.gphone.student.homepage.MainActivity;
 import com.yanxiu.gphone.student.user.http.CompleteInfoRequest;
+import com.yanxiu.gphone.student.user.http.CompleteInfoThridRequest;
 import com.yanxiu.gphone.student.user.response.LoginResponse;
 import com.yanxiu.gphone.student.util.EditTextManger;
 import com.yanxiu.gphone.student.util.LoginInfo;
@@ -58,9 +59,19 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
     public String stageId;
     public SchoolMessage message;
     private CompleteInfoRequest mCompleteInfoRequest;
+    private LoginActivity.ThridMessage thridMessage;
+    private CompleteInfoThridRequest mCompleteInfoThridRequest;
 
     public static void LaunchActivity(Context context) {
         Intent intent = new Intent(context, CompleteInfoActivity.class);
+        intent.putExtra(LoginActivity.TYPE,LoginActivity.TYPE_DEFAULT);
+        context.startActivity(intent);
+    }
+
+    public static void LaunchActivity(Context context, LoginActivity.ThridMessage message){
+        Intent intent=new Intent(context,CompleteInfoActivity.class);
+        intent.putExtra(LoginActivity.TYPE,LoginActivity.TYPE_THRID);
+        intent.putExtra(LoginActivity.THRID_LOGIN,message);
         context.startActivity(intent);
     }
 
@@ -71,7 +82,10 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
         EventBus.getDefault().register(mContext);
         rootView=new PublicLoadLayout(mContext);
         rootView.setContentView(R.layout.activity_completeinfo);
-//        rootView.finish();
+        String type=getIntent().getStringExtra(LoginActivity.TYPE);
+        if (type.equals(LoginActivity.TYPE_THRID)) {
+            thridMessage = (LoginActivity.ThridMessage) getIntent().getSerializableExtra(LoginActivity.THRID_LOGIN);
+        }
         setContentView(rootView);
         initView();
         listener();
@@ -85,6 +99,10 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
         if (mCompleteInfoRequest!=null){
             mCompleteInfoRequest.cancelRequest();
             mCompleteInfoRequest=null;
+        }
+        if (mCompleteInfoThridRequest!=null){
+            mCompleteInfoThridRequest.cancelRequest();
+            mCompleteInfoThridRequest=null;
         }
     }
 
@@ -133,7 +151,11 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
                 break;
             case R.id.tv_submit:
                 String userName=mUserNameView.getText().toString().trim();
-                submitInfo(userName);
+                if (thridMessage!=null){
+                    submitInfoThrid(userName);
+                }else {
+                    submitInfo(userName);
+                }
                 break;
         }
     }
@@ -150,16 +172,56 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
         mCompleteInfoRequest.stageid=stageId;
         mCompleteInfoRequest.schoolName=message.schoolName;
         mCompleteInfoRequest.validKey= SysEncryptUtil.getMd5_32(LoginInfo.getMobile() + "&" + "yxylmobile");
-        mCompleteInfoRequest.startRequest(LoginResponse.class, new HttpCallback<LoginResponse>() {
+        mCompleteInfoRequest.startRequest(LoginResponse.class, new ExerciseBaseCallback<LoginResponse>() {
+
             @Override
-            public void onSuccess(RequestBase request, LoginResponse ret) {
+            protected void onResponse(RequestBase request, LoginResponse response) {
                 rootView.hiddenLoadingView();
-                if (ret.status.getCode()==0&&ret.data!=null){
-                    LoginInfo.saveCacheData(ret.data.get(0));
+                if (response.getStatus().getCode()==0&&response.data!=null){
+                    LoginInfo.saveCacheData(response.data.get(0));
                     MainActivity.invoke(CompleteInfoActivity.this,true);
                     CompleteInfoActivity.this.finish();
                 }else {
-                    ToastManager.showMsg(ret.status.getDesc());
+                    ToastManager.showMsg(response.getStatus().getDesc());
+                }
+            }
+
+            @Override
+            public void onFail(RequestBase request, Error error) {
+                rootView.hiddenLoadingView();
+                ToastManager.showMsg(error.getMessage());
+            }
+        });
+    }
+
+    private void submitInfoThrid(String userName){
+        rootView.showLoadingView();
+        mCompleteInfoThridRequest=new CompleteInfoThridRequest();
+        mCompleteInfoThridRequest.headimg=thridMessage.head;
+        mCompleteInfoThridRequest.openid=thridMessage.openid;
+        mCompleteInfoThridRequest.pltform=thridMessage.platform;
+        mCompleteInfoThridRequest.sex=thridMessage.sex;
+        mCompleteInfoThridRequest.uniqid=thridMessage.uniqid;
+        mCompleteInfoThridRequest.mobile= LoginInfo.getMobile();
+        mCompleteInfoThridRequest.realname=userName;
+        mCompleteInfoThridRequest.provinceid=message.provinceId;
+        mCompleteInfoThridRequest.cityid=message.cityId;
+        mCompleteInfoThridRequest.areaid=message.areaId;
+        mCompleteInfoThridRequest.schoolid=message.schoolId;
+        mCompleteInfoThridRequest.stageid=stageId;
+        mCompleteInfoThridRequest.schoolName=message.schoolName;
+        mCompleteInfoThridRequest.validKey= SysEncryptUtil.getMd5_32(LoginInfo.getMobile() + "&" + "yxylmobile");
+        mCompleteInfoThridRequest.startRequest(LoginResponse.class, new ExerciseBaseCallback<LoginResponse>() {
+
+            @Override
+            protected void onResponse(RequestBase request, LoginResponse response) {
+                rootView.hiddenLoadingView();
+                if (response.getStatus().getCode()==0&&response.data!=null){
+                    LoginInfo.saveCacheData(response.data.get(0));
+                    MainActivity.invoke(CompleteInfoActivity.this,true);
+                    CompleteInfoActivity.this.finish();
+                }else {
+                    ToastManager.showMsg(response.getStatus().getDesc());
                 }
             }
 

@@ -11,9 +11,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.base.ExerciseBaseCallback;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
 import com.yanxiu.gphone.student.user.response.RegisterResponse;
@@ -72,7 +72,6 @@ public class RegisterActivity extends YanxiuBaseActivity implements View.OnClick
         mContext = RegisterActivity.this;
         rootView=new PublicLoadLayout(mContext);
         rootView.setContentView(R.layout.activity_register);
-//        rootView.finish();
         setContentView(rootView);
         initView();
         listener();
@@ -166,14 +165,15 @@ public class RegisterActivity extends YanxiuBaseActivity implements View.OnClick
         mSendVerCodeRequest = new SendVerCodeRequest();
         mSendVerCodeRequest.mobile = mobile;
         mSendVerCodeRequest.type = TYPE;
-        mSendVerCodeRequest.startRequest(VerCodeResponse.class, new HttpCallback<VerCodeResponse>() {
+        mSendVerCodeRequest.startRequest(VerCodeResponse.class, new ExerciseBaseCallback<VerCodeResponse>() {
+
             @Override
-            public void onSuccess(RequestBase request, VerCodeResponse ret) {
+            protected void onResponse(RequestBase request, VerCodeResponse response) {
                 rootView.hiddenLoadingView();
-                if (ret.status.getCode() == 0) {
+                if (response.getStatus().getCode() == 0) {
                     startTiming(45000);
                 } else {
-                    ToastManager.showMsg(ret.status.getDesc());
+                    ToastManager.showMsg(response.getStatus().getDesc());
                 }
             }
 
@@ -191,16 +191,17 @@ public class RegisterActivity extends YanxiuBaseActivity implements View.OnClick
         mRegisterRequet.mobile = mobile;
         mRegisterRequet.code = verCode;
         mRegisterRequet.password = passWord;
-        mRegisterRequet.startRequest(RegisterResponse.class, new HttpCallback<RegisterResponse>() {
+        mRegisterRequet.startRequest(RegisterResponse.class, new ExerciseBaseCallback<RegisterResponse>() {
+
             @Override
-            public void onSuccess(RequestBase request, RegisterResponse ret) {
+            protected void onResponse(RequestBase request, RegisterResponse response) {
                 rootView.hiddenLoadingView();
-                if (ret.status.getCode() == 0) {
+                if (response.getStatus().getCode() == 0) {
                     LoginInfo.setMobile(mobile);
                     LoginInfo.setPassWord(passWord);
                     JoinClassActivity.LaunchActivity(mContext);
                 } else {
-                    ToastManager.showMsg(ret.status.getDesc());
+                    ToastManager.showMsg(response.getStatus().getDesc());
                 }
             }
 

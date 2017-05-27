@@ -1,5 +1,6 @@
 package com.yanxiu.gphone.student.user.response;
 
+import com.yanxiu.gphone.student.base.ExerciseBaseResponse;
 import com.yanxiu.gphone.student.base.StatusBean;
 
 import java.util.List;
@@ -9,8 +10,7 @@ import java.util.List;
  * Time : 2017/5/25 11:12.
  * Function :
  */
-public class ChooseSchoolResponse {
-    public StatusBean status;
+public class ChooseSchoolResponse extends ExerciseBaseResponse {
     public List<School> data;
 
     public class School{

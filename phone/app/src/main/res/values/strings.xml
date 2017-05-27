@@ -109,4 +109,12 @@
     <string name="READING">阅读理解</string>
     <string name="CLOZE">完形填空</string>
     <string name="LISTEN">听力</string>
+
+    <string name="login_success">登录成功</string>
+    <string name="login_fail">登录失败</string>
+
+    <string name="no_install_weixin">您还没有安装微信！</string>
+    <string name="no_install_qq">您还没有安装QQ！</string>
+
+    <string name="man">男</string>
 </resources>

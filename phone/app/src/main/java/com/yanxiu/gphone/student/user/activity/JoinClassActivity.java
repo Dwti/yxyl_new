@@ -9,9 +9,9 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.base.ExerciseBaseCallback;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.customviews.CharacterSeparatedEditLayout;
 import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
@@ -38,9 +38,18 @@ public class JoinClassActivity extends YanxiuBaseActivity implements View.OnClic
     private CharacterSeparatedEditLayout mInputClassNumberView;
     private PublicLoadLayout rootView;
     private JoinClassRequest mJoinClassRequest;
+    private LoginActivity.ThridMessage thridMessage;
 
     public static void LaunchActivity(Context context){
         Intent intent=new Intent(context,JoinClassActivity.class);
+        intent.putExtra(LoginActivity.TYPE,LoginActivity.TYPE_DEFAULT);
+        context.startActivity(intent);
+    }
+
+    public static void LaunchActivity(Context context, LoginActivity.ThridMessage message){
+        Intent intent=new Intent(context,JoinClassActivity.class);
+        intent.putExtra(LoginActivity.TYPE,LoginActivity.TYPE_THRID);
+        intent.putExtra(LoginActivity.THRID_LOGIN,message);
         context.startActivity(intent);
     }
 
@@ -50,7 +59,10 @@ public class JoinClassActivity extends YanxiuBaseActivity implements View.OnClic
         mContext=JoinClassActivity.this;
         rootView=new PublicLoadLayout(mContext);
         rootView.setContentView(R.layout.fragment_search_class);
-//        rootView.finish();
+        String type=getIntent().getStringExtra(LoginActivity.TYPE);
+        if (type.equals(LoginActivity.TYPE_THRID)) {
+            thridMessage = (LoginActivity.ThridMessage) getIntent().getSerializableExtra(LoginActivity.THRID_LOGIN);
+        }
         setContentView(rootView);
         initView();
         initData();
@@ -99,7 +111,11 @@ public class JoinClassActivity extends YanxiuBaseActivity implements View.OnClic
                 searchClass(classNumber);
                 break;
             case R.id.ll_complete_info:
-                CompleteInfoActivity.LaunchActivity(mContext);
+                if (thridMessage!=null) {
+                    CompleteInfoActivity.LaunchActivity(mContext, thridMessage);
+                }else {
+                    CompleteInfoActivity.LaunchActivity(mContext);
+                }
                 break;
         }
     }
@@ -108,14 +124,19 @@ public class JoinClassActivity extends YanxiuBaseActivity implements View.OnClic
         rootView.showLoadingView();
         mJoinClassRequest=new JoinClassRequest();
         mJoinClassRequest.classId=classNumber;
-        mJoinClassRequest.startRequest(JoinClassResponse.class, new HttpCallback<JoinClassResponse>() {
+        mJoinClassRequest.startRequest(JoinClassResponse.class, new ExerciseBaseCallback<JoinClassResponse>() {
+
             @Override
-            public void onSuccess(RequestBase request, JoinClassResponse ret) {
+            protected void onResponse(RequestBase request, JoinClassResponse response) {
                 rootView.hiddenLoadingView();
-                if (ret.status.getCode()==0) {
-                    JoinClassSubmitActivity.LaunchActivity(mContext,ret.data.get(0));
+                if (response.getStatus().getCode()==0) {
+                    if (thridMessage!=null) {
+                        JoinClassSubmitActivity.LaunchActivity(mContext, response.data.get(0), thridMessage);
+                    }else {
+                        JoinClassSubmitActivity.LaunchActivity(mContext, response.data.get(0));
+                    }
                 }else {
-                    ToastManager.showMsg(ret.status.getDesc());
+                    ToastManager.showMsg(response.getStatus().getDesc());
                 }
             }
 

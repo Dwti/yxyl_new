@@ -8,14 +8,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.base.ExerciseBaseCallback;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
 import com.yanxiu.gphone.student.customviews.WavesLayout;
 import com.yanxiu.gphone.student.homepage.MainActivity;
 import com.yanxiu.gphone.student.user.http.JoinClassSubmitRequest;
+import com.yanxiu.gphone.student.user.http.JoinClassSubmitThridRequest;
 import com.yanxiu.gphone.student.user.response.JoinClassResponse;
 import com.yanxiu.gphone.student.user.response.LoginResponse;
 import com.yanxiu.gphone.student.util.EditTextManger;
@@ -41,10 +42,22 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
     private WavesLayout mWavesView;
     private TextView mAddClassView;
     private JoinClassResponse.Data mData;
+    private LoginActivity.ThridMessage thridMessage;
+    private JoinClassSubmitRequest mJoinClassSubmitRequest;
+    private JoinClassSubmitThridRequest mJoinClassSubmitThridRequest;
 
     public static void LaunchActivity(Context context, JoinClassResponse.Data response){
         Intent intent=new Intent(context,JoinClassSubmitActivity.class);
+        intent.putExtra(LoginActivity.TYPE,LoginActivity.TYPE_DEFAULT);
         intent.putExtra(JoinClassActivity.KEY,response);
+        context.startActivity(intent);
+    }
+
+    public static void LaunchActivity(Context context, JoinClassResponse.Data response, LoginActivity.ThridMessage message){
+        Intent intent=new Intent(context,JoinClassSubmitActivity.class);
+        intent.putExtra(JoinClassActivity.KEY,response);
+        intent.putExtra(LoginActivity.TYPE,LoginActivity.TYPE_THRID);
+        intent.putExtra(LoginActivity.THRID_LOGIN,message);
         context.startActivity(intent);
     }
 
@@ -54,12 +67,28 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
         mContext=JoinClassSubmitActivity.this;
         rootView=new PublicLoadLayout(mContext);
         rootView.setContentView(R.layout.activity_join_class_submit);
-//        rootView.finish();
-        setContentView(rootView);
+        String type=getIntent().getStringExtra(LoginActivity.TYPE);
+        if (type.equals(LoginActivity.TYPE_THRID)) {
+            thridMessage = (LoginActivity.ThridMessage) getIntent().getSerializableExtra(LoginActivity.THRID_LOGIN);
+        }
         mData= (JoinClassResponse.Data) getIntent().getSerializableExtra(JoinClassActivity.KEY);
+        setContentView(rootView);
         initView();
         listener();
         initData();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mJoinClassSubmitRequest!=null){
+            mJoinClassSubmitRequest.cancelRequest();
+            mJoinClassSubmitRequest=null;
+        }
+        if (mJoinClassSubmitThridRequest!=null){
+            mJoinClassSubmitThridRequest.cancelRequest();
+            mJoinClassSubmitThridRequest=null;
+        }
     }
 
     private void initView() {
@@ -99,7 +128,11 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
                 break;
             case R.id.tv_add_class:
                 String userName=mInputNameView.getText().toString().trim();
-                addClass(userName);
+                if (thridMessage!=null){
+                    addClassThrid(userName);
+                }else {
+                    addClass(userName);
+                }
                 break;
         }
     }
@@ -117,7 +150,7 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
 
     private void addClass(String userName){
         rootView.showLoadingView();
-        JoinClassSubmitRequest mJoinClassSubmitRequest=new JoinClassSubmitRequest();
+        mJoinClassSubmitRequest=new JoinClassSubmitRequest();
         mJoinClassSubmitRequest.realname=userName;
         mJoinClassSubmitRequest.areaid="";
         mJoinClassSubmitRequest.cityid="";
@@ -128,16 +161,57 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
         mJoinClassSubmitRequest.schoolName=mData.schoolname;
         mJoinClassSubmitRequest.provinceid="";
         mJoinClassSubmitRequest.validKey=SysEncryptUtil.getMd5_32(LoginInfo.getMobile() + "&" + "yxylmobile");
-        mJoinClassSubmitRequest.startRequest(LoginResponse.class, new HttpCallback<LoginResponse>() {
+        mJoinClassSubmitRequest.startRequest(LoginResponse.class, new ExerciseBaseCallback<LoginResponse>() {
+
             @Override
-            public void onSuccess(RequestBase request, LoginResponse ret) {
+            protected void onResponse(RequestBase request, LoginResponse response) {
                 rootView.hiddenLoadingView();
-                if (ret.status.getCode()==0){
-                    LoginInfo.saveCacheData(ret.data.get(0));
+                if (response.getStatus().getCode()==0){
+                    LoginInfo.saveCacheData(response.data.get(0));
                     MainActivity.invoke(JoinClassSubmitActivity.this,true);
                     JoinClassSubmitActivity.this.finish();
                 }else {
-                    ToastManager.showMsg(ret.status.getDesc());
+                    ToastManager.showMsg(response.getStatus().getDesc());
+                }
+            }
+
+            @Override
+            public void onFail(RequestBase request, Error error) {
+                rootView.hiddenLoadingView();
+                ToastManager.showMsg(error.getMessage().trim());
+            }
+        });
+    }
+
+    private void addClassThrid(String userName){
+        rootView.showLoadingView();
+        mJoinClassSubmitThridRequest=new JoinClassSubmitThridRequest();
+        mJoinClassSubmitThridRequest.headimg=thridMessage.head;
+        mJoinClassSubmitThridRequest.openid=thridMessage.openid;
+        mJoinClassSubmitThridRequest.pltform=thridMessage.platform;
+        mJoinClassSubmitThridRequest.sex=thridMessage.sex;
+        mJoinClassSubmitThridRequest.uniqid=thridMessage.uniqid;
+        mJoinClassSubmitThridRequest.realname=userName;
+        mJoinClassSubmitThridRequest.areaid="";
+        mJoinClassSubmitThridRequest.cityid="";
+        mJoinClassSubmitThridRequest.classId=mData.id;
+        mJoinClassSubmitThridRequest.stageid=mData.stageid;
+        mJoinClassSubmitThridRequest.mobile= LoginInfo.getMobile();
+        mJoinClassSubmitThridRequest.schoolid=mData.schoolid;
+        mJoinClassSubmitThridRequest.schoolName=mData.schoolname;
+        mJoinClassSubmitThridRequest.provinceid="";
+        mJoinClassSubmitThridRequest.validKey=SysEncryptUtil.getMd5_32(LoginInfo.getMobile() + "&" + "yxylmobile");
+        mJoinClassSubmitThridRequest.startRequest(LoginResponse.class, new ExerciseBaseCallback<LoginResponse>() {
+
+            @Override
+            protected void onResponse(RequestBase request, LoginResponse response) {
+                rootView.hiddenLoadingView();
+                if (response.getStatus().getCode()==0){
+                    LoginInfo.saveCacheData(response.data.get(0));
+                    MainActivity.invoke(JoinClassSubmitActivity.this,true);
+                    JoinClassSubmitActivity.this.finish();
+                }else {
+                    ToastManager.showMsg(response.getStatus().getDesc());
                 }
             }
 
