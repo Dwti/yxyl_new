@@ -12,6 +12,8 @@ import com.yanxiu.gphone.student.customviews.ChooseLayout;
 import com.yanxiu.gphone.student.homework.questions.model.BaseQuestion;
 import com.yanxiu.gphone.student.homework.questions.model.MultiChoiceQuestion;
 
+import java.util.List;
+
 /**
  * Created by Canghaixiao.
  * Time : 2017/5/26 15:32.
@@ -31,7 +33,7 @@ public class MultiChooseFragment extends SimpleExerciseFragmentBase implements C
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState != null && mData ==null) {
+        if (savedInstanceState != null && mData == null) {
             setData((MultiChoiceQuestion) savedInstanceState.getSerializable(KEY_NODE));
         }
     }
@@ -55,8 +57,8 @@ public class MultiChooseFragment extends SimpleExerciseFragmentBase implements C
     }
 
     private void initView(View view) {
-        mQuestionView= (TextView) view.findViewById(R.id.tv_question);
-        mAnswerView= (ChooseLayout) view.findViewById(R.id.cl_answer);
+        mQuestionView = (TextView) view.findViewById(R.id.tv_question);
+        mAnswerView = (ChooseLayout) view.findViewById(R.id.cl_answer);
     }
 
     private void listener() {
@@ -67,6 +69,10 @@ public class MultiChooseFragment extends SimpleExerciseFragmentBase implements C
         mQuestionView.setText(mData.getStem());
         mAnswerView.setData(mData.getChoice());
         mAnswerView.setChooseType(ChooseLayout.TYPE_MULTI);
+        List<String> datas = mData.getAnswerList();
+        for (int i = 0; i < datas.size(); i++) {
+            mAnswerView.setSelect(Integer.getInteger(datas.get(i)));
+        }
     }
 
     /**
@@ -82,6 +88,14 @@ public class MultiChooseFragment extends SimpleExerciseFragmentBase implements C
 
     @Override
     public void onClick(int position, boolean isSelected) {
-
+        if (isSelected) {
+            mData.setAnswer(true);
+            mData.getAnswerList().add(String.valueOf(position));
+        } else {
+            mData.setAnswer(false);
+            mData.getAnswerList().remove(String.valueOf(position));
+        }
+        saveAnswer(mData);
+        updateProgress();
     }
 }

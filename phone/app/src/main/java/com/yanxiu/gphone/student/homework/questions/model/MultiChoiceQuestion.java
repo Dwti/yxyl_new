@@ -14,25 +14,34 @@ import java.util.List;
  * Function :
  */
 public class MultiChoiceQuestion extends BaseQuestion {
-    private List<String> answer=new ArrayList<>();
+    private List<String> multianswer=new ArrayList<>();
     private List<String> choice;
+    private List<String> answerList=new ArrayList<>();
 
     public MultiChoiceQuestion(PaperTestBean bean, QuestionShowType showType) {
         super(bean, showType);
-        answer.clear();
+        multianswer.clear();
         List<Object> data=bean.getQuestions().getAnswer();
         for (Object o:data){
-            answer.add((String) o);
+            multianswer.add((String) o);
         }
         choice= bean.getQuestions().getContent().getChoices();
     }
 
-    public List<String> getAnswer() {
-        return answer;
+    public List<String> getMultianswer() {
+        return multianswer;
     }
 
-    public void setAnswer(List<String> answer) {
-        this.answer = answer;
+    public void setMultianswer(List<String> multianswer) {
+        this.multianswer = multianswer;
+    }
+
+    public List<String> getAnswerList() {
+        return answerList;
+    }
+
+    public void setAnswerList(List<String> answerList) {
+        this.answerList = answerList;
     }
 
     public List<String> getChoice() {
@@ -51,5 +60,10 @@ public class MultiChoiceQuestion extends BaseQuestion {
     @Override
     ExerciseFragmentBase analysisFragment() {
         return null;
+    }
+
+    @Override
+    public Object getAnswer() {
+        return answerList;
     }
 }
