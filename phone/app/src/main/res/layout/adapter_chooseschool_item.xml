@@ -12,7 +12,7 @@
         android:layout_marginEnd="@dimen/search_school_margin_r"
         android:layout_marginTop="@dimen/search_school_margin_t"
         android:textSize="@dimen/login_edit_default_textsize"
-        android:textColor="@color/color_333333"
+        android:textColor="@drawable/select_choose_school_textcolor"
         android:maxLines="1"
         android:ellipsize="end"/>
 </LinearLayout>

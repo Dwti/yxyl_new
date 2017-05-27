@@ -39,14 +39,14 @@ public class ChooseSchoolActivity extends YanxiuBaseActivity implements View.OnC
     private TextView mCityView;
     private TextView mAreaView;
     private RecyclerView mSchoolListView;
-    private TextView mTitleRightView;
-    private ImageView mTitleLeftView;
+    private ImageView mBackView;
     private View mTopView;
 
     private CompleteInfoActivity.SchoolMessage message;
     private PublicLoadLayout rootView;
     private ChooseSchoolRequest mChooseSchoolRequest;
     private ChooseSchoolAdapter adapter;
+    private TextView mTitleView;
 
     public static void LuanchActivity(Context context, CompleteInfoActivity.SchoolMessage message){
         Intent intent=new Intent(context,ChooseSchoolActivity.class);
@@ -59,7 +59,6 @@ public class ChooseSchoolActivity extends YanxiuBaseActivity implements View.OnC
         super.onCreate(savedInstanceState);
         mContext=ChooseSchoolActivity.this;
         rootView=new PublicLoadLayout(mContext);
-//        rootView.finish();
         rootView.setContentView(R.layout.activity_chooseschool);
         setContentView(rootView);
         message= (CompleteInfoActivity.SchoolMessage) getIntent().getSerializableExtra(ChooseLocationActivity.KEY);
@@ -77,7 +76,8 @@ public class ChooseSchoolActivity extends YanxiuBaseActivity implements View.OnC
 
     private void initView() {
         mTopView=findViewById(R.id.include_top);
-        mTitleLeftView= (ImageView) findViewById(R.id.iv_left);
+        mTitleView= (TextView) findViewById(R.id.tv_title);
+        mBackView= (ImageView) findViewById(R.id.iv_left);
         mSchoolNameView= (EditText) findViewById(R.id.et_school_name);
         mSearchView= (ImageView) findViewById(R.id.iv_search);
         mProvinceView= (TextView) findViewById(R.id.tv_province);
@@ -89,15 +89,16 @@ public class ChooseSchoolActivity extends YanxiuBaseActivity implements View.OnC
     }
 
     private void listener() {
-        mTitleLeftView.setOnClickListener(ChooseSchoolActivity.this);
+        mBackView.setOnClickListener(ChooseSchoolActivity.this);
         mSearchView.setOnClickListener(ChooseSchoolActivity.this);
         adapter.setOnItemClickListener(ChooseSchoolActivity.this);
         EditTextManger.getManager(mSchoolNameView).setTextChangedListener(ChooseSchoolActivity.this);
     }
 
     private void initData() {
+        mTitleView.setText(getText(R.string.chooseschool));
         mTopView.setBackgroundColor(Color.WHITE);
-        mTitleLeftView.setVisibility(View.VISIBLE);
+        mBackView.setVisibility(View.VISIBLE);
         mSearchView.setEnabled(false);
         mProvinceView.setText(message.provinceName);
         mCityView.setText(message.cityName);

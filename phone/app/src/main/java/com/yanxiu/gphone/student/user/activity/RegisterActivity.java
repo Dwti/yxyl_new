@@ -60,6 +60,8 @@ public class RegisterActivity extends YanxiuBaseActivity implements View.OnClick
     private SendVerCodeRequest mSendVerCodeRequest;
     private RegisterRequet mRegisterRequet;
     private PublicLoadLayout rootView;
+    private ImageView mBackView;
+    private TextView mTitleView;
 
     public static void LaunchActivity(Context context) {
         Intent intent = new Intent(context, RegisterActivity.class);
@@ -79,6 +81,8 @@ public class RegisterActivity extends YanxiuBaseActivity implements View.OnClick
     }
 
     private void initView() {
+        mBackView= (ImageView) findViewById(R.id.iv_left);
+        mTitleView= (TextView) findViewById(R.id.tv_title);
         mMobileView = (EditText) findViewById(R.id.ed_mobile);
         mClearView = (ImageView) findViewById(R.id.iv_clear);
         mVerCodeView = (EditText) findViewById(R.id.ed_ver_code);
@@ -90,12 +94,15 @@ public class RegisterActivity extends YanxiuBaseActivity implements View.OnClick
     }
 
     private void initData() {
+        mBackView.setVisibility(View.VISIBLE);
+        mTitleView.setText(getText(R.string.iwantregister));
         mClearView.setEnabled(false);
         mSendVerCodeView.setEnabled(false);
         mRegisterView.setEnabled(false);
     }
 
     private void listener() {
+        mBackView.setOnClickListener(RegisterActivity.this);
         mClearView.setOnClickListener(RegisterActivity.this);
         mCipherView.setOnClickListener(RegisterActivity.this);
         mSendVerCodeView.setOnClickListener(RegisterActivity.this);
@@ -124,6 +131,9 @@ public class RegisterActivity extends YanxiuBaseActivity implements View.OnClick
         String verCode;
         String passWord;
         switch (v.getId()) {
+            case R.id.iv_left:
+                RegisterActivity.this.finish();
+                break;
             case R.id.iv_clear:
                 mMobileView.setText("");
                 break;
@@ -200,6 +210,7 @@ public class RegisterActivity extends YanxiuBaseActivity implements View.OnClick
                     LoginInfo.setMobile(mobile);
                     LoginInfo.setPassWord(passWord);
                     JoinClassActivity.LaunchActivity(mContext);
+                    RegisterActivity.this.finish();
                 } else {
                     ToastManager.showMsg(response.getStatus().getDesc());
                 }

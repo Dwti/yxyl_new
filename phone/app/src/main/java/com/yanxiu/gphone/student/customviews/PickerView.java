@@ -214,11 +214,13 @@ public class PickerView extends View {
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setStyle(Style.FILL);
         mPaint.setTextAlign(Align.RIGHT);
+        mPaint.setFakeBoldText(true);
         mPaint.setColor(ContextCompat.getColor(mContext, R.color.color_333333));
 
         //第二个paint
         nPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         nPaint.setStyle(Style.FILL);
+        nPaint.setFakeBoldText(true);
         nPaint.setTextAlign(Align.RIGHT);
         nPaint.setColor(ContextCompat.getColor(mContext, R.color.color_666666));
     }

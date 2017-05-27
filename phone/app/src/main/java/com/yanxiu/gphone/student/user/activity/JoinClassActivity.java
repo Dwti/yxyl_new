@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -39,6 +40,8 @@ public class JoinClassActivity extends YanxiuBaseActivity implements View.OnClic
     private PublicLoadLayout rootView;
     private JoinClassRequest mJoinClassRequest;
     private LoginActivity.ThridMessage thridMessage;
+    private ImageView mBackView;
+    private TextView mTitleView;
 
     public static void LaunchActivity(Context context){
         Intent intent=new Intent(context,JoinClassActivity.class);
@@ -79,6 +82,8 @@ public class JoinClassActivity extends YanxiuBaseActivity implements View.OnClic
     }
 
     private void initView() {
+        mBackView= (ImageView) findViewById(R.id.iv_left);
+        mTitleView= (TextView) findViewById(R.id.tv_title);
         mCompleteInfoView= (LinearLayout) findViewById(R.id.ll_complete_info);
         mJoinClassView= (TextView) findViewById(R.id.tv_join_class);
         TextView mClassNumberView= (TextView) findViewById(R.id.tv_class_number);
@@ -88,12 +93,15 @@ public class JoinClassActivity extends YanxiuBaseActivity implements View.OnClic
     }
 
     private void initData() {
+        mBackView.setVisibility(View.VISIBLE);
+        mTitleView.setText(getText(R.string.addclass));
         mWavasView.setCanShowWave(false);
         mNextView.setEnabled(false);
         mJoinClassView.setVisibility(View.GONE);
     }
 
     private void Listener() {
+        mBackView.setOnClickListener(JoinClassActivity.this);
         mCompleteInfoView.setOnClickListener(JoinClassActivity.this);
         mNextView.setOnClickListener(JoinClassActivity.this);
         mInputClassNumberView.setOnTextChangedListener(JoinClassActivity.this);
@@ -102,6 +110,9 @@ public class JoinClassActivity extends YanxiuBaseActivity implements View.OnClic
     @Override
     public void onClick(View v) {
         switch (v.getId()){
+            case R.id.iv_left:
+                JoinClassActivity.this.finish();
+                break;
             case R.id.btn_next:
                 String classNumber=mInputClassNumberView.getText().trim();
                 if (classNumber.length()<8){
@@ -129,12 +140,14 @@ public class JoinClassActivity extends YanxiuBaseActivity implements View.OnClic
             @Override
             protected void onResponse(RequestBase request, JoinClassResponse response) {
                 rootView.hiddenLoadingView();
-                if (response.getStatus().getCode()==0) {
+                if (response.getStatus().getCode()==0&&!response.data.get(0).status.equals("2")) {
                     if (thridMessage!=null) {
                         JoinClassSubmitActivity.LaunchActivity(mContext, response.data.get(0), thridMessage);
                     }else {
                         JoinClassSubmitActivity.LaunchActivity(mContext, response.data.get(0));
                     }
+                }else if (response.getStatus().getCode()==0&&response.data.get(0).status.equals("2")){
+                    ToastManager.showMsg(getText(R.string.class_cannot_join));
                 }else {
                     ToastManager.showMsg(response.getStatus().getDesc());
                 }

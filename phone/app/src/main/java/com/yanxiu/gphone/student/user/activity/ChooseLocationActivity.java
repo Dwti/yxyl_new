@@ -47,8 +47,8 @@ public class ChooseLocationActivity extends YanxiuBaseActivity implements Picker
     private PickerView mChooseProvinceView;
     private PickerView mChooseCityView;
     private PickerView mChooseAreaView;
-    private TextView mTitleRightView;
-    private ImageView mTitleLeftView;
+    private TextView mConfirmView;
+    private ImageView mBackView;
     private View mTopView;
 
     private List<ProvinceBean> provinceList;
@@ -58,6 +58,7 @@ public class ChooseLocationActivity extends YanxiuBaseActivity implements Picker
     private int mSelectProvince=0;
     private int mSelectCity=0;
     private int mSelectArea=0;
+    private TextView mTitleView;
 
     public static void LaunchActivity(Context context){
         Intent intent=new Intent(context,ChooseLocationActivity.class);
@@ -70,7 +71,6 @@ public class ChooseLocationActivity extends YanxiuBaseActivity implements Picker
         mContext=ChooseLocationActivity.this;
         PublicLoadLayout rootView=new PublicLoadLayout(mContext);
         rootView.setContentView(R.layout.activity_chooselocation);
-//        rootView.finish();
         setContentView(rootView);
         EventBus.getDefault().register(mContext);
         initView();
@@ -86,39 +86,29 @@ public class ChooseLocationActivity extends YanxiuBaseActivity implements Picker
 
     private void initView() {
         mTopView=findViewById(R.id.include_top);
-        mTitleLeftView= (ImageView) findViewById(R.id.iv_left);
-        mTitleRightView= (TextView) findViewById(R.id.tv_right);
+        mBackView= (ImageView) findViewById(R.id.iv_left);
+        mTitleView= (TextView) findViewById(R.id.tv_title);
+        mConfirmView= (TextView) findViewById(R.id.tv_right);
         mChooseProvinceView= (PickerView) findViewById(R.id.pv_province);
         mChooseCityView= (PickerView) findViewById(R.id.pv_city);
         mChooseAreaView= (PickerView) findViewById(R.id.pv_area);
     }
 
-    private List<String> getList(){
-        List<String> list=new ArrayList<>();
-        for (int i=0;i<10;i++){
-            if (i==1||i==3||i==5) {
-                list.add(i + "alfakuuagujgeugiwheifwhjpiwhigfhywugfuwoygfo8uwyg8uf");
-            }else {
-                list.add(""+i);
-            }
-        }
-        return list;
-    }
-
     private void listener() {
-        mTitleLeftView.setOnClickListener(ChooseLocationActivity.this);
-        mTitleRightView.setOnClickListener(ChooseLocationActivity.this);
+        mBackView.setOnClickListener(ChooseLocationActivity.this);
+        mConfirmView.setOnClickListener(ChooseLocationActivity.this);
         mChooseProvinceView.setOnSelectListener(ChooseLocationActivity.this);
         mChooseCityView.setOnSelectListener(ChooseLocationActivity.this);
         mChooseAreaView.setOnSelectListener(ChooseLocationActivity.this);
     }
 
     private void initData() {
+        mTitleView.setText(getText(R.string.chooselocation));
         mTopView.setBackgroundColor(Color.WHITE);
-        mTitleLeftView.setVisibility(View.VISIBLE);
-        mTitleRightView.setVisibility(View.VISIBLE);
-        mTitleRightView.setText(getText(R.string.ok));
-        mTitleRightView.setBackground(ContextCompat.getDrawable(mContext,R.drawable.selector_choose_ensure_bg));
+        mBackView.setVisibility(View.VISIBLE);
+        mConfirmView.setVisibility(View.VISIBLE);
+        mConfirmView.setText(getText(R.string.ok));
+        mConfirmView.setBackground(ContextCompat.getDrawable(mContext,R.drawable.selector_choose_ensure_bg));
 
         mChooseProvinceView.setTextLocation(PickerView.DEFAULT_LEFT);
         mChooseCityView.setTextLocation(PickerView.DEFAULT_CENTER);

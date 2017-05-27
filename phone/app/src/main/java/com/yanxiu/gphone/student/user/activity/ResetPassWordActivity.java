@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.test.yanxiu.network.RequestBase;
@@ -40,6 +41,8 @@ public class ResetPassWordActivity extends YanxiuBaseActivity implements View.On
     private boolean isPassWordAgainReady = false;
     private ResetPassWordRequest mResetPassWordRequest;
     private PublicLoadLayout rootView;
+    private ImageView mBackView;
+    private TextView mTitleView;
 
     public static void LaunchActivity(Context context){
         Intent intent=new Intent(context,ResetPassWordActivity.class);
@@ -52,7 +55,6 @@ public class ResetPassWordActivity extends YanxiuBaseActivity implements View.On
         mContext=ResetPassWordActivity.this;
         rootView=new PublicLoadLayout(mContext);
         rootView.setContentView(R.layout.activity_resetpassword);
-//        rootView.finish();
         setContentView(rootView);
         initView();
         listener();
@@ -69,6 +71,8 @@ public class ResetPassWordActivity extends YanxiuBaseActivity implements View.On
     }
 
     private void initView() {
+        mBackView= (ImageView) findViewById(R.id.iv_left);
+        mTitleView= (TextView) findViewById(R.id.tv_title);
         mPassWordView= (EditText) findViewById(R.id.ed_pass_word);
         mPassWordAgainView= (EditText) findViewById(R.id.ed_pass_word_again);
         mResetPassWordView= (TextView) findViewById(R.id.tv_reset_password);
@@ -76,11 +80,14 @@ public class ResetPassWordActivity extends YanxiuBaseActivity implements View.On
     }
 
     private void initData() {
+        mBackView.setVisibility(View.VISIBLE);
+        mTitleView.setText(getText(R.string.resetpassword));
         mWavesView.setCanShowWave(false);
         mResetPassWordView.setEnabled(false);
     }
 
     private void listener() {
+        mBackView.setOnClickListener(ResetPassWordActivity.this);
         mResetPassWordView.setOnClickListener(ResetPassWordActivity.this);
         EditTextManger.getManager(mPassWordView).setInputAllNotHanzi().setTextChangedListener(ResetPassWordActivity.this);
         EditTextManger.getManager(mPassWordAgainView).setInputAllNotHanzi().setTextChangedListener(ResetPassWordActivity.this);
@@ -91,6 +98,9 @@ public class ResetPassWordActivity extends YanxiuBaseActivity implements View.On
         String passWord;
         String passWordAgain;
         switch (v.getId()){
+            case R.id.iv_left:
+                ResetPassWordActivity.this.finish();
+                break;
             case R.id.tv_reset_password:
                 passWord=mPassWordView.getText().toString().trim();
                 passWordAgain=mPassWordAgainView.getText().toString().trim();

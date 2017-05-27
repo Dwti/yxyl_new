@@ -45,6 +45,8 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
     private LoginActivity.ThridMessage thridMessage;
     private JoinClassSubmitRequest mJoinClassSubmitRequest;
     private JoinClassSubmitThridRequest mJoinClassSubmitThridRequest;
+    private ImageView mBackView;
+    private TextView mTitleView;
 
     public static void LaunchActivity(Context context, JoinClassResponse.Data response){
         Intent intent=new Intent(context,JoinClassSubmitActivity.class);
@@ -92,6 +94,8 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
     }
 
     private void initView() {
+        mBackView= (ImageView) findViewById(R.id.iv_left);
+        mTitleView= (TextView) findViewById(R.id.tv_title);
         mClassIdView= (TextView) findViewById(R.id.tv_class_id);
         mTeacherNameView= (TextView) findViewById(R.id.tv_teacher_name);
         mStudentNumberView= (TextView) findViewById(R.id.tv_student_number);
@@ -103,12 +107,15 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
     }
 
     private void listener() {
+        mBackView.setOnClickListener(JoinClassSubmitActivity.this);
         EditTextManger.getManager(mInputNameView).setTextChangedListener(JoinClassSubmitActivity.this);
         mWriteNameView.setOnClickListener(JoinClassSubmitActivity.this);
         mAddClassView.setOnClickListener(JoinClassSubmitActivity.this);
     }
 
     private void initData() {
+        mBackView.setVisibility(View.VISIBLE);
+        mTitleView.setText(getText(R.string.submitname));
         mInputNameView.setEnabled(false);
         mWavesView.setCanShowWave(false);
         mAddClassView.setEnabled(false);
@@ -123,6 +130,9 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
     @Override
     public void onClick(View v) {
         switch (v.getId()){
+            case R.id.iv_left:
+                JoinClassSubmitActivity.this.finish();
+                break;
             case R.id.iv_write:
                 mInputNameView.setEnabled(true);
                 break;

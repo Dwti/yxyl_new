@@ -16,7 +16,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
         android:background="@color/color_edf0ee"
-        app:choose_max_textsize="@dimen/login_edit_default_textsize"
-        app:choose_min_textsize="@dimen/complete_info_textsize" />
+        app:choose_max_textsize="@dimen/choose_stage_text_max_size"
+        app:choose_min_textsize="@dimen/choose_stage_text_min_size" />
 
 </LinearLayout>

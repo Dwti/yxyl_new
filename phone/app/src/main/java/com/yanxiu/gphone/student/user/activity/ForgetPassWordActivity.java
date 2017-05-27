@@ -48,6 +48,8 @@ public class ForgetPassWordActivity extends YanxiuBaseActivity implements View.O
     private SendVerCodeRequest mSendVerCodeRequest;
     private ForgetPassWordRequest mForgetPassWordRequest;
     private PublicLoadLayout rootView;
+    private ImageView mBackView;
+    private TextView mTitleView;
 
     public static void LaunchActivity(Context context, String mobile) {
         Intent intent = new Intent(context, ForgetPassWordActivity.class);
@@ -61,7 +63,6 @@ public class ForgetPassWordActivity extends YanxiuBaseActivity implements View.O
         mContext = ForgetPassWordActivity.this;
         rootView=new PublicLoadLayout(mContext);
         rootView.setContentView(R.layout.activity_forget_password);
-//        rootView.finish();
         setContentView(rootView);
         String mobile = getIntent().getStringExtra(INTENT_MOBILE);
         initView();
@@ -83,6 +84,8 @@ public class ForgetPassWordActivity extends YanxiuBaseActivity implements View.O
     }
 
     private void initView() {
+        mBackView= (ImageView) findViewById(R.id.iv_left);
+        mTitleView= (TextView) findViewById(R.id.tv_title);
         mMobileView = (EditText) findViewById(R.id.ed_mobile);
         mClearView = (ImageView) findViewById(R.id.iv_clear);
         mVerCodeView = (EditText) findViewById(R.id.ed_ver_code);
@@ -92,9 +95,11 @@ public class ForgetPassWordActivity extends YanxiuBaseActivity implements View.O
     }
 
     private void initData(String mobile) {
+        mBackView.setVisibility(View.VISIBLE);
         mClearView.setEnabled(false);
         mSendVerCodeView.setEnabled(false);
         mNextView.setEnabled(false);
+        mTitleView.setText(getText(R.string.forgetpassword));
         mMobileView.setText(mobile);
         if (mobile.length() > 0) {
             mMobileView.setSelection(mobile.length());
@@ -102,6 +107,7 @@ public class ForgetPassWordActivity extends YanxiuBaseActivity implements View.O
     }
 
     private void listener() {
+        mBackView.setOnClickListener(ForgetPassWordActivity.this);
         mClearView.setOnClickListener(ForgetPassWordActivity.this);
         mSendVerCodeView.setOnClickListener(ForgetPassWordActivity.this);
         mNextView.setOnClickListener(ForgetPassWordActivity.this);
@@ -159,6 +165,9 @@ public class ForgetPassWordActivity extends YanxiuBaseActivity implements View.O
         String mobileCode;
         String verCode;
         switch (v.getId()) {
+            case R.id.iv_left:
+                ForgetPassWordActivity.this.finish();
+                break;
             case R.id.iv_clear:
                 mMobileView.setText("");
                 break;

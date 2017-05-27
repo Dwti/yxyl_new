@@ -301,5 +301,8 @@
     <dimen name="choose_fragment_select_round_margin">5dp</dimen>
     <dimen name="choose_fragment_line_h">1dp</dimen>
     <dimen name="question_bottom_shadow">2dp</dimen>
+
+    <dimen name="choose_stage_text_max_size">25dp</dimen>
+    <dimen name="choose_stage_text_min_size">22dp</dimen>
 </resources>
 

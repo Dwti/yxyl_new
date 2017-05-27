@@ -191,6 +191,7 @@
                         android:hint="@string/input_user_true_name"
                         android:inputType="text"
                         android:maxLines="1"
+                        android:maxLength="16"
                         android:textColor="@android:color/white"
                         android:textColorHint="@color/color_89e00d"
                         android:textSize="@dimen/login_edit_default_textsize" />

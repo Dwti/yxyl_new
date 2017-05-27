@@ -35,9 +35,10 @@ public class ChooseStageActivity extends YanxiuBaseActivity implements PickerVie
 
     private String stageText;
     private String stageId;
-    private TextView mTitleRightView;
-    private ImageView mTitleLeftView;
+    private TextView mConfirmView;
+    private ImageView mBackView;
     private View mTopView;
+    private TextView mTitleView;
 
     public static void LaunchActivity(Context context){
         Intent intent=new Intent(context,ChooseStageActivity.class);
@@ -50,7 +51,6 @@ public class ChooseStageActivity extends YanxiuBaseActivity implements PickerVie
         mContext=ChooseStageActivity.this;
         PublicLoadLayout rootView=new PublicLoadLayout(mContext);
         rootView.setContentView(R.layout.activity_choosestage);
-//        rootView.finish();
         setContentView(rootView);
         initView();
         listener();
@@ -58,24 +58,26 @@ public class ChooseStageActivity extends YanxiuBaseActivity implements PickerVie
     }
 
     private void initView() {
+        mTitleView= (TextView) findViewById(R.id.tv_title);
         mTopView=findViewById(R.id.include_top);
-        mTitleLeftView= (ImageView) findViewById(R.id.iv_left);
-        mTitleRightView= (TextView) findViewById(R.id.tv_right);
+        mBackView= (ImageView) findViewById(R.id.iv_left);
+        mConfirmView= (TextView) findViewById(R.id.tv_right);
         mChooseStageView= (PickerView) findViewById(R.id.pv_stage);
     }
 
     private void listener() {
-        mTitleLeftView.setOnClickListener(ChooseStageActivity.this);
-        mTitleRightView.setOnClickListener(ChooseStageActivity.this);
+        mBackView.setOnClickListener(ChooseStageActivity.this);
+        mConfirmView.setOnClickListener(ChooseStageActivity.this);
         mChooseStageView.setOnSelectListener(ChooseStageActivity.this);
     }
 
     private void initData() {
+        mTitleView.setText(getText(R.string.choosestage));
         mTopView.setBackgroundColor(Color.WHITE);
-        mTitleLeftView.setVisibility(View.VISIBLE);
-        mTitleRightView.setVisibility(View.VISIBLE);
-        mTitleRightView.setText(getText(R.string.ok));
-        mTitleRightView.setBackground(ContextCompat.getDrawable(mContext,R.drawable.selector_choose_ensure_bg));
+        mBackView.setVisibility(View.VISIBLE);
+        mConfirmView.setVisibility(View.VISIBLE);
+        mConfirmView.setText(getText(R.string.ok));
+        mConfirmView.setBackground(ContextCompat.getDrawable(mContext,R.drawable.selector_choose_ensure_bg));
         mChooseStageView.setData(getList());
     }
 
