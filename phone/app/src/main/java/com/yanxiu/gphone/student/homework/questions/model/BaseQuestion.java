@@ -43,7 +43,11 @@ public abstract class BaseQuestion implements Serializable {
     protected ArrayList<BaseQuestion> children;
     protected QuestionShowType showType;
 
+    private Object ansewr;//已回答的问题
+
     protected boolean isAnswer;
+
+    protected boolean isComplexQuestion;//是否是复合题 true : 是
 
     public BaseQuestion(PaperTestBean bean,QuestionShowType showType){
         this.id = bean.getId();
@@ -65,8 +69,13 @@ public abstract class BaseQuestion implements Serializable {
         this.sectionid = bean.getSectionid();
         this.typeid = bean.getTypeid();
         children = QuestionConvertFactory.convertQuestion(bean.getQuestions().getChildren(),showType);
-        if(children == null)
+        if(children == null){
             children = new ArrayList<>();
+            isComplexQuestion = false;
+        }else if(children.size() > 0){
+            isComplexQuestion = true;
+        }
+
         this.showType = showType;
     }
 
@@ -255,6 +264,11 @@ public abstract class BaseQuestion implements Serializable {
     public void setAnswer(boolean answer) {
         isAnswer = answer;
     }
+
+    /**
+     * 获取答案
+     */
+    public abstract Object getAnswer();
 
 
     /**

@@ -2,6 +2,7 @@ package com.yanxiu.gphone.student.homework.questions.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,6 +66,7 @@ public class SingleChooseFragment extends SimpleExerciseFragmentBase implements 
     private void initData() {
         mQuestionView.setText(mData.getStem());
         mAnswerView.setData(mData.getChoice());
+        Log.e("dyf", mData.numberStringForShow());
     }
 
     /**
@@ -75,19 +77,19 @@ public class SingleChooseFragment extends SimpleExerciseFragmentBase implements 
      */
     @Override
     public void onVisibilityChangedToUser(boolean isVisibleToUser, boolean invokeInResumeOrPause) {
-        if(isVisibleToUser){
 
-        }else{
-            saveAnswer(mData);
-        }
     }
 
     @Override
     public void onClick(int position, boolean isSelected) {
-        if (isSelected){
+        if(isSelected){
+            mData.setAnswer(true);
             mData.getAnswerList().add(String.valueOf(position));
-        } else {
+        }else{
+            mData.setAnswer(false);
             mData.getAnswerList().remove(mData.getAnswerList().size()-1);
         }
+        saveAnswer(mData);
+        updateProgress();
     }
 }

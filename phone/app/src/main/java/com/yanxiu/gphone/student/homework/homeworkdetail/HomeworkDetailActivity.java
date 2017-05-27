@@ -146,7 +146,6 @@ public class HomeworkDetailActivity extends Activity implements HomeworkDetailCo
 
     @Override
     public void openAnswerQuestionUI(String key) {
-        ToastManager.showMsg("获取成功，paperId ：" + key);
         AnswerQuestionActivity.invoke(HomeworkDetailActivity.this,key);
     }
 
@@ -158,6 +157,11 @@ public class HomeworkDetailActivity extends Activity implements HomeworkDetailCo
     @Override
     public void showLoadMoreDataError(String msg) {
         //TODO
+    }
+
+    @Override
+    public void showGetPaperDataError(String msg) {
+        ToastManager.showMsg(msg);
     }
 
     @Override

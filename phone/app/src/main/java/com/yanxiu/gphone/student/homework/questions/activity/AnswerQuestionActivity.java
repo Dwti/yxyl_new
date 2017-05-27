@@ -18,7 +18,6 @@ import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.QuestionProgressView;
 import com.yanxiu.gphone.student.customviews.QuestionTimeTextView;
-import com.yanxiu.gphone.student.homepage.MainActivity;
 import com.yanxiu.gphone.student.homework.questions.adapter.QAViewPagerAdapter;
 import com.yanxiu.gphone.student.homework.questions.fragment.AnswerCardFragment;
 import com.yanxiu.gphone.student.homework.questions.fragment.ComplexExerciseFragmentBase;
@@ -26,10 +25,8 @@ import com.yanxiu.gphone.student.homework.questions.fragment.ExerciseFragmentBas
 import com.yanxiu.gphone.student.homework.questions.fragment.SimpleExerciseFragmentBase;
 import com.yanxiu.gphone.student.homework.questions.model.BaseQuestion;
 import com.yanxiu.gphone.student.homework.questions.model.Paper;
-import com.yanxiu.gphone.student.homework.questions.model.SingleChoiceQuestion;
 import com.yanxiu.gphone.student.homework.questions.view.QAViewPager;
 import com.yanxiu.gphone.student.util.DataFetcher;
-import com.yanxiu.gphone.student.util.ToastManager;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -59,20 +56,14 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
     /**
      * 一秒
      */
-    private final int HANDLER_TIME_DELAYED = 100;
-
-    private int mTotalAnsweredQuestion;//已经作答的题目数量
-
+    private final int HANDLER_TIME_DELAYED = 1000;
+    private int mTotalQuestion;//题目总数量
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_answerquestion);
         initData();
-//        if (mQuestions == null) { // 表明是第一级界面
-//            mQuestions = new ArrayList<>();
-//        }
-//        mQuestions = DataClass.getPaper().children;//Todo 获取数据
         initView();
     }
 
@@ -83,19 +74,18 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         mPaper = DataFetcher.getInstance().getPaper(mKey);
         mQuestions = mPaper.getQuestions();
         initProgressViewData();
+        mTotalTime = 0;
     }
 
     private void initView() {
         mTimer = (QuestionTimeTextView) findViewById(R.id.timer);
         mProgressView = (QuestionProgressView) findViewById(R.id.progressBar);
-        mProgressView.setMaxCount(mQuestions.size());
+        mProgressView.setMaxCount(mTotalQuestion);
         mPrevious_question = (LinearLayout) findViewById(R.id.previous_question);
         mNext_question = (LinearLayout) findViewById(R.id.next_question);
         setListener();
         initViewPager();
-
         mHandler = new TimingHandler(this);
-        mTotalTime = 3580;
     }
 
     private void setListener() {
@@ -125,9 +115,20 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
      * 初始化进度条相关数据
      */
     private void initProgressViewData() {
-        for (int i = 0; i < mQuestions.size(); i++) {
-            if (mQuestions.get(i).getIsAnswer())
-                mTotalAnsweredQuestion++;
+        for (int i = 0; i < mQuestions.size(); i++) { //遍历大题
+            ArrayList<BaseQuestion> childrenList = mQuestions.get(i).getChildren();//小题集合
+            if (childrenList == null || childrenList.size() < 1) { //单题型
+                mTotalQuestion++;
+            }else{ //复合题
+                if(childrenList == null || childrenList.size() < 1){
+                    //出错，尽然是复合题，必须有小题
+                    return;
+                }else{ //遍历小题
+                    for(int j = 0;j < childrenList.size(); j++){
+                        mTotalQuestion++;
+                    }
+                }
+            }
         }
     }
 
@@ -308,11 +309,9 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         switch (v.getId()) {
             case R.id.previous_question:
                 previousQuestion();
-                ToastManager.showMsg("上一题");
                 break;
             case R.id.next_question:
                 nextQuestion();
-                ToastManager.showMsg("下一题");
                 break;
         }
     }
@@ -337,8 +336,6 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
             }
         }
     }
-
-    ;
 
     /**
      * 开始计时
@@ -366,7 +363,6 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         mTotalTime++;
         //Todo 显示时间
         mTimer.setTime(mTotalTime);
-//        mProgressView.updateProgress();
     }
 
     @Override
@@ -383,9 +379,10 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         mHandler.removeCallbacksAndMessages(null);
         mHandler = null;
+        super.onDestroy();
+
     }
 
     /**

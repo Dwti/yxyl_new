@@ -13,30 +13,30 @@ import java.util.List;
  */
 
 public class SingleChoiceQuestion extends BaseQuestion {
-    private String answer;
+    private String singleAnswer;
     private List<String> choice;
-    private List<String> AnswerList=new ArrayList<>();
+    private List<String> answerList=new ArrayList<>();
 
     public SingleChoiceQuestion(PaperTestBean bean, QuestionShowType showType) {
         super(bean, showType);
-        answer= (String) bean.getQuestions().getAnswer().get(0);
+        singleAnswer= (String) bean.getQuestions().getAnswer().get(0);
         choice= bean.getQuestions().getContent().getChoices();
     }
 
     public List<String> getAnswerList() {
-        return AnswerList;
+        return answerList;
     }
 
     public void setAnswerList(List<String> answerList) {
-        AnswerList = answerList;
+        this.answerList = answerList;
     }
 
-    public String getAnswer() {
-        return answer;
+    public String getSingleAnswer() {
+        return singleAnswer;
     }
 
-    public void setAnswer(String answer) {
-        this.answer = answer;
+    public void setSingleAnswer(String singleAnswer) {
+        this.singleAnswer = singleAnswer;
     }
 
     public List<String> getChoice() {
@@ -57,4 +57,10 @@ public class SingleChoiceQuestion extends BaseQuestion {
 //        return new SingleChooseAnalysisFragment();
         return null;
     }
+
+    @Override
+    public Object getAnswer() {
+        return answerList;
+    }
+
 }

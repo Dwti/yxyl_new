@@ -121,7 +121,7 @@ public class HomeworkDetailPresenter implements HomeworkDetailContract.Presenter
                 if(!mHomeworkDetailView.isActive()){
                     return;
                 }
-                mHomeworkDetailView.showDataError();
+                mHomeworkDetailView.showGetPaperDataError(msg);
             }
         });
     }

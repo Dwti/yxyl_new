@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.util.TextTypefaceUtil;
 
 /**
  * Created by 戴延枫 on 2017/5/23.
@@ -59,8 +60,12 @@ public class QuestionTimeTextView extends LinearLayout {
         mMinute = (TextView) findViewById(R.id.minute);
         mSecondLeft = (TextView) findViewById(R.id.secondleft);
         mSecond = (TextView) findViewById(R.id.second);
+        setTextViewTypeFace();
     }
 
+    private void setTextViewTypeFace(){
+        TextTypefaceUtil.setViewTypeface(TextTypefaceUtil.TypefaceType.METRO_PLAY,mHourLeft,mHour,mMinuteLeft,mMinute,mSecondLeft,mSecond);
+    }
 
     /**
      * 设置时间
