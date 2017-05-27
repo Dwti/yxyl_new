@@ -71,7 +71,7 @@ public class MultiChooseFragment extends SimpleExerciseFragmentBase implements C
         mAnswerView.setChooseType(ChooseLayout.TYPE_MULTI);
         List<String> datas = mData.getAnswerList();
         for (int i = 0; i < datas.size(); i++) {
-            mAnswerView.setSelect(Integer.getInteger(datas.get(i)));
+            mAnswerView.setSelect(Integer.parseInt(datas.get(i)));
         }
         mData.getAnswerList().clear();
     }

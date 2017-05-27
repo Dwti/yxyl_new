@@ -25,4 +25,9 @@ public class ReadingComplexQuestion extends BaseQuestion {
         //解析
         return null;
     }
+
+    @Override
+    public Object getAnswer() {
+        return null;
+    }
 }

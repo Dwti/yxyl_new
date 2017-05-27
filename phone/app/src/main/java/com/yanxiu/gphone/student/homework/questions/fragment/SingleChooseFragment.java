@@ -70,7 +70,7 @@ public class SingleChooseFragment extends SimpleExerciseFragmentBase implements 
         mAnswerView.setData(mData.getChoice());
         List<String> datas=mData.getAnswerList();
         if (datas.size()>0){
-            mAnswerView.setSelect(Integer.getInteger(datas.get(datas.size()-1)));
+            mAnswerView.setSelect(Integer.parseInt(datas.get(datas.size()-1)));
         }
         mData.getAnswerList().clear();
         Log.e("dyf", mData.numberStringForShow());
@@ -95,7 +95,7 @@ public class SingleChooseFragment extends SimpleExerciseFragmentBase implements 
             mData.getAnswerList().add(String.valueOf(position));
         }else{
             mData.setAnswer(false);
-            mData.getAnswerList().remove(mData.getAnswerList().size()-1);
+            mData.getAnswerList().remove(0);
         }
         saveAnswer(mData);
         updateProgress();
