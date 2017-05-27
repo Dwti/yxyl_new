@@ -13,6 +13,7 @@ import com.yanxiu.gphone.student.customviews.ChooseLayout;
 import com.yanxiu.gphone.student.homework.questions.model.BaseQuestion;
 import com.yanxiu.gphone.student.homework.questions.model.SingleChoiceQuestion;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -68,11 +69,12 @@ public class SingleChooseFragment extends SimpleExerciseFragmentBase implements 
     private void initData() {
         mQuestionView.setText(mData.getStem());
         mAnswerView.setData(mData.getChoice());
-        List<String> datas=mData.getAnswerList();
+        List<String> datas=new ArrayList<>();
+        datas.addAll(mData.getAnswerList());
+        mData.getAnswerList().clear();
         if (datas.size()>0){
             mAnswerView.setSelect(Integer.parseInt(datas.get(datas.size()-1)));
         }
-        mData.getAnswerList().clear();
         Log.e("dyf", mData.numberStringForShow());
     }
 

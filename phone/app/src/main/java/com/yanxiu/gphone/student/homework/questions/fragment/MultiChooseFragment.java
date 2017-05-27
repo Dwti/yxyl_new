@@ -12,6 +12,7 @@ import com.yanxiu.gphone.student.customviews.ChooseLayout;
 import com.yanxiu.gphone.student.homework.questions.model.BaseQuestion;
 import com.yanxiu.gphone.student.homework.questions.model.MultiChoiceQuestion;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -69,11 +70,12 @@ public class MultiChooseFragment extends SimpleExerciseFragmentBase implements C
         mQuestionView.setText(mData.getStem());
         mAnswerView.setData(mData.getChoice());
         mAnswerView.setChooseType(ChooseLayout.TYPE_MULTI);
-        List<String> datas = mData.getAnswerList();
+        List<String> datas = new ArrayList<>();
+        datas.addAll(mData.getAnswerList());
+        mData.getAnswerList().clear();
         for (int i = 0; i < datas.size(); i++) {
             mAnswerView.setSelect(Integer.parseInt(datas.get(i)));
         }
-        mData.getAnswerList().clear();
     }
 
     /**
