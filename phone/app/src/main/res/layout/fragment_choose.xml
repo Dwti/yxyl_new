@@ -41,11 +41,18 @@
                 android:layout_below="@+id/view" />
 
             <View
+                android:id="@+id/shadow"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/question_bottom_shadow"
                 android:layout_below="@+id/cl_answer"
                 android:alpha="0.2"
                 android:background="@color/color_002c0f" />
+            <include
+                layout="@layout/simplequestion_bottom_padding"
+                android:layout_height="@dimen/question_bottom_layout_height"
+                android:layout_width="match_parent"
+                android:layout_below="@+id/shadow"/>
+
         </RelativeLayout>
     </ScrollView>
 

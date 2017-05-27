@@ -14,6 +14,7 @@ import com.yanxiu.gphone.student.homework.questions.model.BaseQuestion;
 import com.yanxiu.gphone.student.homework.questions.model.Paper;
 import com.yanxiu.gphone.student.homework.questions.util.FragmentUserVisibleController;
 import com.yanxiu.gphone.student.util.StringUtil;
+import com.yanxiu.gphone.student.util.TextTypefaceUtil;
 
 import java.util.ArrayList;
 
@@ -61,6 +62,7 @@ public abstract class ExerciseFragmentBase extends Fragment implements IExercise
         Fragment parentFragment = getParentFragment();
         if (parentFragment instanceof ComplexExerciseFragmentBase) {
             mQaNumber.setTextColor(getResources().getColor(R.color.color_999999));
+            TextTypefaceUtil.setViewTypeface(TextTypefaceUtil.TypefaceType.METRO_PLAY,mQaNumber);
         }
         mQaNumber.setText(str);
     }

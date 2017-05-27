@@ -262,7 +262,7 @@
     <dimen name="question_top_content_top_padding">25dp</dimen>
     <dimen name="question_top_content_left_padding">15dp</dimen>
     <dimen name="question_top_content_right_padding">15dp</dimen>
-    <dimen name="question_top_content_bottom_padding">25dp</dimen>
+    <dimen name="question_top_content_bottom_padding">20dp</dimen>
     <dimen name="stem_text_size">17dp</dimen>
     <dimen name="stem_line_space">5dp</dimen>
 
