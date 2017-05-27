@@ -45,6 +45,8 @@ public abstract class ComplexExerciseFragmentBase extends ExerciseFragmentBase {
 
     private int mMinHight;//topfragment的最小高度
     private int mBottom_min_distance;//滑动image距离底边最小距离
+    private int mTitleBarHight;//题型题号layout高度
+    private int mLineHight;//滑块下面的view高度
 
 //    @Override
 //    public void setData(BaseQuestion node) {
@@ -87,9 +89,11 @@ public abstract class ComplexExerciseFragmentBase extends ExerciseFragmentBase {
         });
 
         mTopLayout = (MyMaxHeightLinearLayout) mRootView.findViewById(R.id.top_container);
-        mMinHight = (int)(getResources().getDimension(R.dimen.question_ll_top_container_minheight) + getResources().getDimension(R.dimen.question_commonnumber_height));
-        mBottom_min_distance = (int)getResources().getDimension(R.dimen.question_bottom_layout_height);
-
+//        mMinHight = (int)(getResources().getDimensionPixelSize(R.dimen.question_ll_top_container_minheight) + getResources().getDimensionPixelSize(R.dimen.question_commonnumber_height));
+        mMinHight = (int)(getResources().getDimensionPixelSize(R.dimen.question_ll_top_container_minheight));
+        mBottom_min_distance = (int)getResources().getDimensionPixelSize(R.dimen.question_bottom_layout_height);
+        mTitleBarHight = (int)getResources().getDimensionPixelSize(R.dimen.question_commonnumber_height);
+        mLineHight = (int)getResources().getDimensionPixelSize(R.dimen.question_splitter_bottomview_height);
         mImageViewSplitter.setOnTouchListener(new View.OnTouchListener() {
             private float startY;
             private float startTop;
@@ -105,8 +109,8 @@ public abstract class ComplexExerciseFragmentBase extends ExerciseFragmentBase {
                         mTopLayout.setCanChangeHeight();
                         break;
                     case MotionEvent.ACTION_MOVE:
-                        float top = startTop + (event.getRawY() - startY);
-                        top = Math.max(mMinHight, Math.min(top, parentView.getHeight() - v.getHeight() - mBottom_min_distance));
+                        float top = startTop + (event.getRawY() - startY) - mTitleBarHight;
+                        top = Math.max(mMinHight, Math.min(top, parentView.getHeight() - v.getHeight() - mBottom_min_distance -mTitleBarHight -mLineHight));
                         ViewGroup.LayoutParams params = v.getLayoutParams();
                         int topHeight = (int)top;
                         int bottomHeight = parentView.getHeight() - topHeight - v.getHeight();

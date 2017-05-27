@@ -243,7 +243,7 @@
     <dimen name="question_top_layout_height">58dp</dimen>
     <dimen name="question_top_container_maxheight">150dp</dimen>
     <dimen name="question_bottom_layout_height">45dp</dimen>
-    <dimen name="question_ll_top_container_minheight">65dp</dimen>
+    <dimen name="question_ll_top_container_minheight">45dp</dimen>
     <dimen name="question_bottom_layout_marginLeft">12dp</dimen>
     <dimen name="question_bottom_layout_image_width">15dp</dimen>
     <dimen name="question_bottom_layout_image_right">5dp</dimen>

@@ -12,7 +12,6 @@
         android:id="@+id/top_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:orientation="vertical"
         app:maxHeight="@dimen/question_top_container_maxheight" />
 

@@ -6,7 +6,7 @@
     android:paddingTop="@dimen/question_top_content_top_padding"
     android:paddingLeft="@dimen/question_top_content_left_padding"
     android:paddingRight="@dimen/question_top_content_right_padding"
-    android:paddingBottom="@dimen/question_top_content_bottom_padding">
+    >
 
     <TextView
         android:id="@+id/tv_stem"
@@ -15,6 +15,7 @@
         android:textSize="@dimen/stem_text_size"
         android:textColor="#333333"
         android:lineSpacingExtra="@dimen/stem_line_space"
+
         />
 
 </LinearLayout>
