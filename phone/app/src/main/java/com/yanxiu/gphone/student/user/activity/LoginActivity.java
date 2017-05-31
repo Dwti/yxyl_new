@@ -22,14 +22,13 @@ import com.yanxiu.gphone.student.base.ExerciseBaseCallback;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
 import com.yanxiu.gphone.student.homepage.MainActivity;
-import com.yanxiu.gphone.student.user.http.LoginThridRequest;
+import com.yanxiu.gphone.student.user.request.LoginThridRequest;
 import com.yanxiu.gphone.student.user.response.LoginResponse;
-import com.yanxiu.gphone.student.user.http.LoginRequest;
+import com.yanxiu.gphone.student.user.request.LoginRequest;
 import com.yanxiu.gphone.student.util.EditTextManger;
 import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.ToastManager;
 import com.yanxiu.gphone.student.customviews.WavesLayout;
-import com.yanxiu.gphone.student.util.anim.JumpAnimManager;
 
 import java.io.Serializable;
 import java.util.Map;

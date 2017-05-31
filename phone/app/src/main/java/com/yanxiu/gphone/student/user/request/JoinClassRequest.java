@@ -1,19 +1,13 @@
-package com.yanxiu.gphone.student.user.http;
-
-import com.test.yanxiu.network.RequestBase;
-import com.yanxiu.gphone.student.constant.Constants;
+package com.yanxiu.gphone.student.user.request;
 
 /**
  * Created by Canghaixiao.
  * Time : 2017/5/23 11:12.
  * Function :
  */
-public class JoinClassRequest extends RequestBase {
+public class JoinClassRequest extends BaseLoginRequest {
 
     public String classId;
-    public String pcode= Constants.pcode;
-    public String version =Constants.version;
-    public String osType=Constants.osType;
 
     @Override
     protected boolean shouldLog() {

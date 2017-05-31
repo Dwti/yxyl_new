@@ -1,6 +1,5 @@
-package com.yanxiu.gphone.student.user.http;
+package com.yanxiu.gphone.student.user.request;
 
-import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.constant.Constants;
 
 /**
@@ -9,13 +8,10 @@ import com.yanxiu.gphone.student.constant.Constants;
  * Function :
  */
 
-public class LoginRequest extends RequestBase {
+public class LoginRequest extends BaseLoginRequest {
     public String mobile;
     public String password;
-    public String deviceId= "-";
-    public String pcode=Constants.pcode;
-    public String version=Constants.version;
-    public String osType=Constants.osType;
+    public String deviceId= Constants.deviceId;
 
     @Override
     protected boolean shouldLog() {

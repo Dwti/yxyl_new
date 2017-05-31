@@ -1,21 +1,16 @@
-package com.yanxiu.gphone.student.user.http;
+package com.yanxiu.gphone.student.user.request;
 
-import com.test.yanxiu.network.RequestBase;
-import com.yanxiu.gphone.student.constant.Constants;
 
 /**
  * Created by Canghaixiao.
  * Time : 2017/5/18 15:39.
  * Function :
  */
-public class RegisterRequet extends RequestBase {
+public class RegisterRequet extends BaseLoginRequest {
     public String mobile;
     public String code;
     public String password;
     public String type;
-    public String pcode= Constants.pcode;
-    public String version=Constants.version;
-    public String osType=Constants.osType;
     @Override
     protected boolean shouldLog() {
         return false;

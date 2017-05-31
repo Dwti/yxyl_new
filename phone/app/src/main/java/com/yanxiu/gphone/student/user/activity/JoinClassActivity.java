@@ -17,7 +17,7 @@ import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.customviews.CharacterSeparatedEditLayout;
 import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
 import com.yanxiu.gphone.student.customviews.WavesLayout;
-import com.yanxiu.gphone.student.user.http.JoinClassRequest;
+import com.yanxiu.gphone.student.user.request.JoinClassRequest;
 import com.yanxiu.gphone.student.user.response.JoinClassResponse;
 import com.yanxiu.gphone.student.util.ToastManager;
 

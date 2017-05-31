@@ -17,7 +17,7 @@ import com.yanxiu.gphone.student.base.ExerciseBaseCallback;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
 import com.yanxiu.gphone.student.user.adapter.ChooseSchoolAdapter;
-import com.yanxiu.gphone.student.user.http.ChooseSchoolRequest;
+import com.yanxiu.gphone.student.user.request.ChooseSchoolRequest;
 import com.yanxiu.gphone.student.user.response.ChooseSchoolResponse;
 import com.yanxiu.gphone.student.util.EditTextManger;
 import com.yanxiu.gphone.student.util.ToastManager;

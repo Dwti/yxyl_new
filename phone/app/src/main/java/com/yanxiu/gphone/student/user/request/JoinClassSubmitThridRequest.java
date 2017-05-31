@@ -1,15 +1,19 @@
-package com.yanxiu.gphone.student.user.http;
+package com.yanxiu.gphone.student.user.request;
 
-import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.constant.Constants;
 
 /**
  * Created by Canghaixiao.
- * Time : 2017/5/23 17:13.
+ * Time : 2017/5/27 11:09.
  * Function :
  */
-public class JoinClassSubmitRequest extends RequestBase {
+public class JoinClassSubmitThridRequest extends BaseLoginRequest {
 
+    public String openid;
+    public String sex;
+    public String headimg;
+    public String pltform;
+    public String uniqid;
     public String classId;
     public String stageid;
     public String areaid;
@@ -21,9 +25,6 @@ public class JoinClassSubmitRequest extends RequestBase {
     public String provinceid;
     public String validKey;
     public String deviceId= Constants.deviceId;
-    public String pcode=Constants.pcode;
-    public String version=Constants.version;
-    public String osType=Constants.osType;
 
     @Override
     protected boolean shouldLog() {
@@ -37,6 +38,6 @@ public class JoinClassSubmitRequest extends RequestBase {
 
     @Override
     protected String urlPath() {
-        return "/user/registerByJoinClass.do";
+        return "/user/thirdRegisterByJoinClass.do";
     }
 }

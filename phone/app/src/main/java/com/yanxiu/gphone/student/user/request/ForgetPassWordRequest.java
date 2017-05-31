@@ -1,20 +1,14 @@
-package com.yanxiu.gphone.student.user.http;
-
-import com.test.yanxiu.network.RequestBase;
-import com.yanxiu.gphone.student.constant.Constants;
+package com.yanxiu.gphone.student.user.request;
 
 /**
  * Created by Canghaixiao.
  * Time : 2017/5/18 15:02.
  * Function :
  */
-public class ForgetPassWordRequest extends RequestBase {
+public class ForgetPassWordRequest extends BaseLoginRequest {
     public String mobile;
     public String code;
     public String type;
-    public String pcode= Constants.pcode;
-    public String version=Constants.version;
-    public String osType=Constants.osType;
 
     @Override
     protected boolean shouldLog() {

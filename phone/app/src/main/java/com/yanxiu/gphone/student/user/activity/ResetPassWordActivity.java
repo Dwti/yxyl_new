@@ -14,7 +14,7 @@ import com.yanxiu.gphone.student.base.ExerciseBaseCallback;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
 import com.yanxiu.gphone.student.user.response.ResetPassWordResponse;
-import com.yanxiu.gphone.student.user.http.ResetPassWordRequest;
+import com.yanxiu.gphone.student.user.request.ResetPassWordRequest;
 import com.yanxiu.gphone.student.util.EditTextManger;
 import com.yanxiu.gphone.student.util.ToastManager;
 import com.yanxiu.gphone.student.customviews.WavesLayout;

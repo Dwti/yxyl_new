@@ -1,17 +1,15 @@
-package com.yanxiu.gphone.student.user.http;
+package com.yanxiu.gphone.student.user.request;
 
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.constant.Constants;
 
 /**
  * Created by Canghaixiao.
- * Time : 2017/5/25 11:03.
+ * Time : 2017/5/31 12:22.
  * Function :
  */
-public class ChooseSchoolRequest extends RequestBase {
+public class BaseLoginRequest extends RequestBase {
 
-    public String school;
-    public String regionId;
     public String pcode= Constants.pcode;
     public String version=Constants.version;
     public String osType=Constants.osType;
@@ -23,11 +21,11 @@ public class ChooseSchoolRequest extends RequestBase {
 
     @Override
     protected String urlServer() {
-        return "http://mobile.hwk.yanxiu.com/app";
+        return null;
     }
 
     @Override
     protected String urlPath() {
-        return "/personalData/searchSchool.do";
+        return null;
     }
 }
