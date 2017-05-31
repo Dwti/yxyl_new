@@ -99,6 +99,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         mViewPager.setOffscreenPageLimit(1);
         mAdapter = new QAViewPagerAdapter(mFragmentManager);
 //        mViewPager.setFragmentManager(fm);
+        Paper.generateUsedNumbersForNodes(mQuestions);
         mAdapter.setData(mQuestions);
         mViewPager.setAdapter(mAdapter);
 

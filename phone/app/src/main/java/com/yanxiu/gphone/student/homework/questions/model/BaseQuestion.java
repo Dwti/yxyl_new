@@ -2,14 +2,12 @@ package com.yanxiu.gphone.student.homework.questions.model;
 
 import com.yanxiu.gphone.student.homework.questions.QuestionConvertFactory;
 import com.yanxiu.gphone.student.homework.questions.QuestionShowType;
-import com.yanxiu.gphone.student.homework.questions.QuestionTemplate;
 import com.yanxiu.gphone.student.homework.questions.bean.PadBean;
 import com.yanxiu.gphone.student.homework.questions.bean.PaperTestBean;
 import com.yanxiu.gphone.student.homework.questions.bean.PointBean;
 import com.yanxiu.gphone.student.homework.questions.fragment.ExerciseFragmentBase;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -365,7 +363,8 @@ public abstract class BaseQuestion implements Serializable {
      * @return
      */
     public Boolean isNodeCountForTotal() {
-        if (template.equals(QuestionTemplate.CLOZE)) {
+//        if (template.equals(QuestionTemplate.CLOZE)) {
+        if (isComplexQuestion && !type_id.equals("8") && !type_id.equals("22")) {
             return false;
         }
         return true;
@@ -380,7 +379,8 @@ public abstract class BaseQuestion implements Serializable {
      * @return
      */
     public Boolean isChildNodeCountForTotal() {
-        if (template.equals(QuestionTemplate.CLOZE)) {
+//        if (template.equals(QuestionTemplate.CLOZE)) {
+        if (isComplexQuestion && !type_id.equals("8") && !type_id.equals("22")) {
             return true;
         }
 

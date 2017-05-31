@@ -17,7 +17,7 @@ import java.util.List;
  */
 
 public class QAViewPagerAdapter extends FragmentStatePagerAdapter {
-    private List<BaseQuestion> mDatas = new ArrayList<>();
+    private ArrayList<BaseQuestion> mDatas = new ArrayList<>();
 
     public QAViewPagerAdapter(FragmentManager fragmentManager) {
         super(fragmentManager);
@@ -32,7 +32,7 @@ public class QAViewPagerAdapter extends FragmentStatePagerAdapter {
 
     public void setData(ArrayList<BaseQuestion> datas) {
         this.mDatas = datas;
-        Paper.generateUsedNumbersForNodes(mDatas);
+//        BaseQuestion.generateUsedNumbersForNodes(mDatas);
     }
 
     public List<BaseQuestion> getDatas() {
