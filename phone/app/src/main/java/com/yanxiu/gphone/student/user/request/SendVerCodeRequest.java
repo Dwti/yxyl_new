@@ -1,19 +1,14 @@
-package com.yanxiu.gphone.student.user.http;
+package com.yanxiu.gphone.student.user.request;
 
-import com.test.yanxiu.network.RequestBase;
-import com.yanxiu.gphone.student.constant.Constants;
 
 /**
  * Created by Canghaixiao.
  * Time : 2017/5/18 12:36.
  * Function :
  */
-public class SendVerCodeRequest extends RequestBase {
+public class SendVerCodeRequest extends BaseLoginRequest {
     public String mobile;
     public String type;
-    public String pcode= Constants.pcode;
-    public String version=Constants.version;
-    public String osType=Constants.osType;
 
     @Override
     protected boolean shouldLog() {

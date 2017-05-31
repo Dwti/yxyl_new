@@ -1,5 +1,6 @@
 package com.yanxiu.gphone.student.util;
 
+import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
@@ -25,5 +26,17 @@ public class SystemUtil {
             e.printStackTrace();
         }
         return version;
+    }
+
+    public static boolean checkBrowser(Context context, String packageName) {
+        boolean isInstalled = false;
+        try {
+            PackageManager pm = context.getPackageManager();
+            pm.getApplicationInfo(packageName, PackageManager.GET_ACTIVITIES);
+            isInstalled = true;
+        } catch (PackageManager.NameNotFoundException e) {
+            isInstalled = false;
+        }
+        return isInstalled;
     }
 }

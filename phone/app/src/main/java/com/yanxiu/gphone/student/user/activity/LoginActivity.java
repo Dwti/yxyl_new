@@ -10,6 +10,7 @@ import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -22,14 +23,14 @@ import com.yanxiu.gphone.student.base.ExerciseBaseCallback;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
 import com.yanxiu.gphone.student.homepage.MainActivity;
-import com.yanxiu.gphone.student.user.http.LoginThridRequest;
+import com.yanxiu.gphone.student.user.request.LoginThridRequest;
 import com.yanxiu.gphone.student.user.response.LoginResponse;
-import com.yanxiu.gphone.student.user.http.LoginRequest;
+import com.yanxiu.gphone.student.user.request.LoginRequest;
 import com.yanxiu.gphone.student.util.EditTextManger;
 import com.yanxiu.gphone.student.util.LoginInfo;
+import com.yanxiu.gphone.student.util.SystemUtil;
 import com.yanxiu.gphone.student.util.ToastManager;
 import com.yanxiu.gphone.student.customviews.WavesLayout;
-import com.yanxiu.gphone.student.util.anim.JumpAnimManager;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -81,6 +82,7 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
     private UMShareAPI mUMShareAPI;
     private ThridMessage mThridMessage;
     private LoginThridRequest mLoginThridRequest;
+    private LinearLayout mThridLoginView;
 
     public static void LaunchActivity(Context context){
         Intent intent=new Intent(context,LoginActivity.class);
@@ -112,6 +114,8 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
         mThirdWXView = (ImageView) findViewById(R.id.iv_third_wx);
         mTitleView= (RelativeLayout) findViewById(R.id.include_top);
         mWavesView= (WavesLayout) findViewById(R.id.wl_login_waves);
+        mThridLoginView= (LinearLayout) findViewById(R.id.ll_thrid_login);
+        checkInstallWX();
     }
 
     private void initData() {
@@ -142,6 +146,33 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
         if (mLoginThridRequest!=null){
             mLoginThridRequest.cancelRequest();
             mLoginThridRequest=null;
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkInstallWX();
+    }
+
+    private void checkInstallWX(){
+        boolean isInstanllWx=SystemUtil.checkBrowser(mContext, "com.tencent.mm");
+        boolean isInstallQq=SystemUtil.checkBrowser(mContext,"com.tencent.qqlite");
+
+        if (!isInstallQq&&!isInstanllWx){
+            mThridLoginView.setVisibility(View.GONE);
+        }else {
+            mThridLoginView.setVisibility(View.VISIBLE);
+            if (isInstanllWx){
+                mThirdWXView.setVisibility(View.VISIBLE);
+            }else {
+                mThirdWXView.setVisibility(View.GONE);
+            }
+            if (isInstallQq){
+                mThirdQQView.setVisibility(View.VISIBLE);
+            }else {
+                mThirdQQView.setVisibility(View.GONE);
+            }
         }
     }
 

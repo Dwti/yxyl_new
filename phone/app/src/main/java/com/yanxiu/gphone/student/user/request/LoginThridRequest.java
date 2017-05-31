@@ -1,4 +1,4 @@
-package com.yanxiu.gphone.student.user.http;
+package com.yanxiu.gphone.student.user.request;
 
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.constant.Constants;
