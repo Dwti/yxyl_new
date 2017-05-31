@@ -11,7 +11,7 @@ import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerQuestionActivity;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
-import com.yanxiu.gphone.student.questions.answerframe.interf.IExercise;
+import com.yanxiu.gphone.student.questions.answerframe.listener.IExercise;
 import com.yanxiu.gphone.student.questions.answerframe.util.FragmentUserVisibleController;
 import com.yanxiu.gphone.student.util.StringUtil;
 import com.yanxiu.gphone.student.util.TextTypefaceUtil;
