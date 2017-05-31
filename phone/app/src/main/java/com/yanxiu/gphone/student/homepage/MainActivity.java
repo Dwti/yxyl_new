@@ -16,6 +16,7 @@ import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.HomePageBaseFragment;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.util.DataFetcher;
+import com.yanxiu.gphone.student.util.anim.JumpAnimManager;
 
 import static com.yanxiu.gphone.student.constant.Constants.MAINAVTIVITY_REFRESH;
 
@@ -143,12 +144,61 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
             switch (index) {
                 case INDEX_HOMEWORK:
 //                    mNavIconViews[0].setBackgroundResource(R.drawable.navi_homework_selected);
+                    JumpAnimManager.getInstence(mNavBarViews[0]).setTranslation(0f).setScaleY(1.2f).setScaleX(1.2f).setListaner(new JumpAnimManager.JumpAnimListener(){
+
+                        @Override
+                        public void onAnimStart(JumpAnimManager manager, View view) {
+
+                        }
+
+                        @Override
+                        public void onAnimEnd(JumpAnimManager manager, View view) {
+                            manager.setReset();
+                        }
+
+                        @Override
+                        public void onAnimCancel(JumpAnimManager manager, View view) {
+                            manager.setReset();
+                        }
+                    }).start();
                     break;
                 case INDEX_EXERCISE:
 //                    mNavIconViews[1].setBackgroundResource(R.drawable.navi_exercise_selected);
+                    JumpAnimManager.getInstence(mNavBarViews[1]).setTranslation(0f).setScaleY(1.2f).setScaleX(1.2f).setListaner(new JumpAnimManager.JumpAnimListener(){
+                        @Override
+                        public void onAnimStart(JumpAnimManager manager, View view) {
+
+                        }
+
+                        @Override
+                        public void onAnimEnd(JumpAnimManager manager, View view) {
+                            manager.setReset();
+                        }
+
+                        @Override
+                        public void onAnimCancel(JumpAnimManager manager, View view) {
+                            manager.setReset();
+                        }
+                    }).start();
                     break;
                 case INDEX_MY:
 //                    mNavIconViews[2].setBackgroundResource(R.drawable.navi_my_selected);
+                    JumpAnimManager.getInstence(mNavBarViews[2]).setTranslation(0f).setScaleY(1.2f).setScaleX(1.2f).setListaner(new JumpAnimManager.JumpAnimListener(){
+                        @Override
+                        public void onAnimStart(JumpAnimManager manager, View view) {
+
+                        }
+
+                        @Override
+                        public void onAnimEnd(JumpAnimManager manager, View view) {
+                            manager.setReset();
+                        }
+
+                        @Override
+                        public void onAnimCancel(JumpAnimManager manager, View view) {
+                            manager.setReset();
+                        }
+                    }).start();
                     break;
             }
         }

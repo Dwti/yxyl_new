@@ -7,7 +7,8 @@
 
               android:duplicateParentState="true"
               android:gravity="center"
-              android:orientation="vertical">
+              android:orientation="vertical"
+    android:layout_marginBottom="@dimen/home_bottom_bar_paddingbottom">
     <!--android:layout_margin="@dimen/home_nav_bar_margin"-->
     <!--android:background="@drawable/home_nav_bar_selecter"-->
 

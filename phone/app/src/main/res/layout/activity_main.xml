@@ -12,10 +12,11 @@
         android:background="@color/color_ffffff"
         android:gravity="center_vertical"
         android:paddingTop="@dimen/home_bottom_bar_paddingtop"
-        android:paddingBottom="@dimen/home_bottom_bar_paddingbottom"
+
         android:paddingLeft="@dimen/dimen_3"
         android:paddingRight="@dimen/dimen_3"
         android:orientation="horizontal">
+        <!--android:paddingBottom="@dimen/home_bottom_bar_paddingbottom"-->
         <include
             android:id="@+id/navi_homework"
             layout="@layout/home_nav_bar_item_layout"/>
