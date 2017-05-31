@@ -2,7 +2,7 @@ package com.yanxiu.gphone.student.util;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.YanxiuApplication;
-import com.yanxiu.gphone.student.homework.questions.QuestionTemplate;
+import com.yanxiu.gphone.student.questions.QuestionTemplate;
 
 /**
  * Created by 戴延枫 on 2017/5/25.

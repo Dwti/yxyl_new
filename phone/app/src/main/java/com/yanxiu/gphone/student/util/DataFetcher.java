@@ -1,6 +1,6 @@
 package com.yanxiu.gphone.student.util;
 
-import com.yanxiu.gphone.student.homework.questions.model.Paper;
+import com.yanxiu.gphone.student.questions.model.Paper;
 
 import java.util.ArrayList;
 import java.util.HashMap;

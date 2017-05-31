@@ -9,8 +9,8 @@ import com.yanxiu.gphone.student.homework.data.HomeworkDetailRequest;
 import com.yanxiu.gphone.student.homework.data.HomeworkDetailResponse;
 import com.yanxiu.gphone.student.homework.data.PaperRequest;
 import com.yanxiu.gphone.student.homework.data.PaperResponse;
-import com.yanxiu.gphone.student.homework.questions.QuestionShowType;
-import com.yanxiu.gphone.student.homework.questions.model.Paper;
+import com.yanxiu.gphone.student.questions.QuestionShowType;
+import com.yanxiu.gphone.student.questions.model.Paper;
 import com.yanxiu.gphone.student.util.DESBodyDealer;
 import com.yanxiu.gphone.student.util.DataFetcher;
 
