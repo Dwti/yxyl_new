@@ -29,6 +29,7 @@ import com.yanxiu.gphone.student.util.EditTextManger;
 import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.ToastManager;
 import com.yanxiu.gphone.student.customviews.WavesLayout;
+import com.yanxiu.gphone.student.util.anim.JumpAnimManager;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -200,6 +201,7 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
                     ToastManager.showMsg(getText(R.string.input_true_password));
                     return;
                 }
+//                JumpAnimManager.getInstence(mLoginView).start();
                 LoginByAccount(userName, passWord);
                 break;
             case R.id.tv_forget_password:
