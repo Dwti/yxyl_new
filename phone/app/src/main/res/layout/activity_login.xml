@@ -132,6 +132,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_thrid_login"
             style="@style/LoginLayoutButton"
             android:layout_height="wrap_content"
             android:layout_below="@+id/rl_login"
