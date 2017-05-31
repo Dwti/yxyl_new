@@ -1,4 +1,4 @@
-package com.yanxiu.gphone.student.questions.fragment;
+package com.yanxiu.gphone.student.questions.fragment.base;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -25,7 +25,7 @@ import static android.graphics.Typeface.DEFAULT_BOLD;
  * 习题Frament基类
  */
 
-public abstract class ExerciseFragmentBase extends Fragment implements IExercise, FragmentUserVisibleController.UserVisibleCallback {
+public abstract class ExerciseBaseFragment extends Fragment implements IExercise, FragmentUserVisibleController.UserVisibleCallback {
     public final String TAG = this.getClass().getSimpleName();
 
     public static final String KEY_NODE = "key_question";
@@ -41,7 +41,7 @@ public abstract class ExerciseFragmentBase extends Fragment implements IExercise
     public TextView mQaNumber; //题号
     public TextView mQaName; //题目名称
 
-    public ExerciseFragmentBase() {
+    public ExerciseBaseFragment() {
         userVisibleController = new FragmentUserVisibleController(this, this);
     }
 
@@ -60,7 +60,7 @@ public abstract class ExerciseFragmentBase extends Fragment implements IExercise
         mQaNumber = (TextView) v.findViewById(R.id.qa_number);
         String str = mBaseQuestion.numberStringForShow();
         Fragment parentFragment = getParentFragment();
-        if (parentFragment instanceof ComplexExerciseFragmentBase) {
+        if (parentFragment instanceof ComplexExerciseBaseFragment) {
             mQaNumber.setTextColor(getResources().getColor(R.color.color_999999));
             TextTypefaceUtil.setViewTypeface(TextTypefaceUtil.TypefaceType.METRO_PLAY,mQaNumber);
         }
@@ -78,7 +78,7 @@ public abstract class ExerciseFragmentBase extends Fragment implements IExercise
         mQaName = (TextView) v.findViewById(R.id.qa_name);
         String templateName;
         Fragment parentFragment = getParentFragment();
-        if (parentFragment instanceof ComplexExerciseFragmentBase) {
+        if (parentFragment instanceof ComplexExerciseBaseFragment) {
             templateName = getString(R.string.question);
             TextPaint tp = mQaName.getPaint();
             tp.setTypeface(DEFAULT_BOLD);
@@ -221,7 +221,7 @@ public abstract class ExerciseFragmentBase extends Fragment implements IExercise
             } else { //复合题,需要取到当前小题
                 childrenQusetion = outQuestion.getChildren();
                 if (childrenQusetion == null || childrenQusetion.size() < 1) {
-                    //c出错，尽然是复合题，必须有小题
+                    //出错，既然是复合题，必须有小题
                     return;
                 }
                 innerQuestion = childrenQusetion.get(innerIndex);
@@ -248,7 +248,7 @@ public abstract class ExerciseFragmentBase extends Fragment implements IExercise
                         answeredCount++;
                 }else{ //复合题
                     if(childrenList == null || childrenList.size() < 1){
-                        //出错，尽然是复合题，必须有小题
+                        //出错，既然是复合题，必须有小题
                         return;
                     }else{ //遍历小题
                         for(int j = 0;j < childrenList.size(); j++){

@@ -20,9 +20,9 @@ import com.yanxiu.gphone.student.customviews.QuestionProgressView;
 import com.yanxiu.gphone.student.customviews.QuestionTimeTextView;
 import com.yanxiu.gphone.student.questions.adapter.QAViewPagerAdapter;
 import com.yanxiu.gphone.student.questions.fragment.AnswerCardFragment;
-import com.yanxiu.gphone.student.questions.fragment.ComplexExerciseFragmentBase;
-import com.yanxiu.gphone.student.questions.fragment.ExerciseFragmentBase;
-import com.yanxiu.gphone.student.questions.fragment.SimpleExerciseFragmentBase;
+import com.yanxiu.gphone.student.questions.fragment.base.ComplexExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.fragment.base.ExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.fragment.base.SimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.model.BaseQuestion;
 import com.yanxiu.gphone.student.questions.model.Paper;
 import com.yanxiu.gphone.student.questions.view.QAViewPager;
@@ -159,7 +159,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
 //        // 2, 跳转
 //        int index = item.levelPositions.get(0);// TODO: 2017/5/15  等设置题号逻辑融合进孙鹏的数据里后，再添加
 //        FragmentStatePagerAdapter a1 = (FragmentStatePagerAdapter) mViewPager.getAdapter();
-//        final ExerciseFragmentBase f2 = (ExerciseFragmentBase) a1.getItem(index);
+//        final ExerciseBaseFragment f2 = (ExerciseBaseFragment) a1.getItem(index);
 //        mViewPager.setCurrentItem(index);
 //        f2.setUserVisibleHin2(true);
 //
@@ -168,7 +168,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
 //        remainPositions.remove(0);
 //        if (remainPositions.size() > 0) { // 表明这层依然是 复合题
 //            FragmentStatePagerAdapter a = (FragmentStatePagerAdapter) mViewPager.getAdapter();
-//            ComplexExerciseFragmentBase f = (ComplexExerciseFragmentBase) a.instantiateItem(mViewPager, index);
+//            ComplexExerciseBaseFragment f = (ComplexExerciseBaseFragment) a.instantiateItem(mViewPager, index);
 //            f.setChildrenPositionRecursively(remainPositions);
 //        }
     }
@@ -194,14 +194,14 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
      * 切换下一题目
      */
     public void nextQuestion() {
-        ExerciseFragmentBase currentFramgent = null;//当前的Fragment
+        ExerciseBaseFragment currentFramgent = null;//当前的Fragment
         FragmentStatePagerAdapter adapter;
         int index;//当前Fragment在外层viewPager中的index
         int size;//viewPager的总共的size
         try {
             adapter = (FragmentStatePagerAdapter) mViewPager.getAdapter();
             index = mViewPager.getCurrentItem();
-            currentFramgent = (ExerciseFragmentBase) adapter.instantiateItem(mViewPager, index);
+            currentFramgent = (ExerciseBaseFragment) adapter.instantiateItem(mViewPager, index);
             size = adapter.getCount();
         } catch (Exception e) {
             e.printStackTrace();
@@ -211,8 +211,8 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         if (adapter == null || index < 0 || size < 1 || mViewPager == null || currentFramgent == null)
             return;
 
-        if (currentFramgent instanceof ComplexExerciseFragmentBase) {
-            ComplexExerciseFragmentBase complexExerciseFragment = (ComplexExerciseFragmentBase) currentFramgent;
+        if (currentFramgent instanceof ComplexExerciseBaseFragment) {
+            ComplexExerciseBaseFragment complexExerciseFragment = (ComplexExerciseBaseFragment) currentFramgent;
             ViewPager innerViewPager = complexExerciseFragment.getmViewPager();
             FragmentStatePagerAdapter innerAdapter = (FragmentStatePagerAdapter) innerViewPager.getAdapter();
             int innerIndex = innerViewPager.getCurrentItem();
@@ -237,7 +237,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
                 innerViewPager.setCurrentItem(innerIndex + 1);
             }
 
-        } else if (currentFramgent instanceof SimpleExerciseFragmentBase) {
+        } else if (currentFramgent instanceof SimpleExerciseBaseFragment) {
             if (index == (size - 1)) {
                 //最后一题,展示答题卡
                 showAnswerCardFragment();
@@ -253,14 +253,14 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
      * 切换上一题目
      */
     public void previousQuestion() {
-        ExerciseFragmentBase currentFramgent = null;//当前的Fragment
+        ExerciseBaseFragment currentFramgent = null;//当前的Fragment
         FragmentStatePagerAdapter adapter;
         int index;//当前Fragment在外层viewPager中的index
         int size;//viewPager的总共的size
         try {
             adapter = (FragmentStatePagerAdapter) mViewPager.getAdapter();
             index = mViewPager.getCurrentItem();
-            currentFramgent = (ExerciseFragmentBase) adapter.instantiateItem(mViewPager, index);
+            currentFramgent = (ExerciseBaseFragment) adapter.instantiateItem(mViewPager, index);
             size = adapter.getCount();
         } catch (Exception e) {
             e.printStackTrace();
@@ -270,8 +270,8 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         if (adapter == null || index < 0 || size < 1 || mViewPager == null || currentFramgent == null)
             return;
 
-        if (currentFramgent instanceof ComplexExerciseFragmentBase) {
-            ComplexExerciseFragmentBase complexExerciseFragment = (ComplexExerciseFragmentBase) currentFramgent;
+        if (currentFramgent instanceof ComplexExerciseBaseFragment) {
+            ComplexExerciseBaseFragment complexExerciseFragment = (ComplexExerciseBaseFragment) currentFramgent;
             ViewPager innerViewPager = complexExerciseFragment.getmViewPager();
             FragmentStatePagerAdapter innerAdapter = (FragmentStatePagerAdapter) innerViewPager.getAdapter();
             int innerIndex = innerViewPager.getCurrentItem();
@@ -288,7 +288,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
                 mViewPager.setCurrentItem(index - 1);
             }
 
-        } else if (currentFramgent instanceof SimpleExerciseFragmentBase) {
+        } else if (currentFramgent instanceof SimpleExerciseBaseFragment) {
             if (index >= 1) {
                 //不是第一大题时,有上一题
                 mViewPager.setCurrentItem(index - 1);

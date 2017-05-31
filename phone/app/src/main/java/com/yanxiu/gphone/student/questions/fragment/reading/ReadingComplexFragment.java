@@ -1,9 +1,11 @@
-package com.yanxiu.gphone.student.questions.fragment;
+package com.yanxiu.gphone.student.questions.fragment.reading;
 
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import com.yanxiu.gphone.student.questions.fragment.base.ComplexExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.fragment.base.TopBaseFragment;
 import com.yanxiu.gphone.student.questions.model.BaseQuestion;
 import com.yanxiu.gphone.student.questions.model.ReadingComplexQuestion;
 
@@ -12,7 +14,7 @@ import com.yanxiu.gphone.student.questions.model.ReadingComplexQuestion;
  * Created by 戴延枫 on 2017/5/5.
  */
 
-public class ReadingComplexFragment extends ComplexExerciseFragmentBase {
+public class ReadingComplexFragment extends ComplexExerciseBaseFragment {
     private ReadingComplexQuestion mData;
 
     @Override
@@ -22,7 +24,7 @@ public class ReadingComplexFragment extends ComplexExerciseFragmentBase {
     }
 
     @Override
-    protected TopFragment getTopFragment() {
+    protected TopBaseFragment getTopFragment() {
         ReadingComplexTopFragment topFragment = new ReadingComplexTopFragment();
         topFragment.setData(mData);
         return topFragment;

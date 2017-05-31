@@ -1,4 +1,4 @@
-package com.yanxiu.gphone.student.questions.fragment;
+package com.yanxiu.gphone.student.questions.fragment.reading;
 
 
 import android.os.Bundle;
@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.questions.fragment.base.ExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.fragment.base.TopBaseFragment;
 import com.yanxiu.gphone.student.questions.model.BaseQuestion;
 import com.yanxiu.gphone.student.questions.model.ReadingComplexQuestion;
 import com.yanxiu.gphone.student.questions.util.HtmlImageGetter;
@@ -19,12 +21,12 @@ import com.yanxiu.gphone.student.questions.util.HtmlImageGetter;
  * Created by 戴延枫 on 2017/5/5.
  */
 
-public class ReadingComplexTopFragment extends TopFragment {
+public class ReadingComplexTopFragment extends TopBaseFragment {
     ReadingComplexQuestion mData;
     TextView mText;
 
     @Override
-    void setData(BaseQuestion data) {
+    public void setData(BaseQuestion data) {
         mData = (ReadingComplexQuestion) data;
     }
 
@@ -32,7 +34,7 @@ public class ReadingComplexTopFragment extends TopFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
-            mData = (ReadingComplexQuestion) savedInstanceState.getSerializable(ExerciseFragmentBase.KEY_NODE);
+            mData = (ReadingComplexQuestion) savedInstanceState.getSerializable(ExerciseBaseFragment.KEY_NODE);
         }
     }
 
@@ -54,7 +56,7 @@ public class ReadingComplexTopFragment extends TopFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable(ExerciseFragmentBase.KEY_NODE, mData);
+        outState.putSerializable(ExerciseBaseFragment.KEY_NODE, mData);
     }
 
 }

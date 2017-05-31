@@ -5,7 +5,7 @@ import com.yanxiu.gphone.student.questions.QuestionShowType;
 import com.yanxiu.gphone.student.questions.bean.PadBean;
 import com.yanxiu.gphone.student.questions.bean.PaperTestBean;
 import com.yanxiu.gphone.student.questions.bean.PointBean;
-import com.yanxiu.gphone.student.questions.fragment.ExerciseFragmentBase;
+import com.yanxiu.gphone.student.questions.fragment.base.ExerciseBaseFragment;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -77,8 +77,8 @@ public abstract class BaseQuestion implements Serializable {
         this.showType = showType;
     }
 
-    public ExerciseFragmentBase getFragment() {
-        ExerciseFragmentBase fm = null;
+    public ExerciseBaseFragment getFragment() {
+        ExerciseBaseFragment fm = null;
         if (showType.equals(QuestionShowType.ANSWER)) {
             fm = answerFragment();
         }
@@ -91,9 +91,9 @@ public abstract class BaseQuestion implements Serializable {
         return fm;
     }
 
-    abstract ExerciseFragmentBase answerFragment();
+    abstract ExerciseBaseFragment answerFragment();
 
-    abstract ExerciseFragmentBase analysisFragment();
+    abstract ExerciseBaseFragment analysisFragment();
 
     public String getId() {
         return id;

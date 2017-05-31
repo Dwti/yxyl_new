@@ -9,7 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 
-import com.yanxiu.gphone.student.questions.fragment.ComplexExerciseFragmentBase;
+import com.yanxiu.gphone.student.questions.fragment.base.ComplexExerciseBaseFragment;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -156,9 +156,9 @@ public class FragmentUserVisibleController {
                         Fragment childFragment = childFragmentList.get(i);
                         if (childFragment instanceof UserVisibleCallback) {
                             UserVisibleCallback userVisibleCallback = (UserVisibleCallback) childFragment;
-                            if (fragment instanceof ComplexExerciseFragmentBase) {
-                                ComplexExerciseFragmentBase complexExerciseFragmentBase = (ComplexExerciseFragmentBase) fragment;
-                                ViewPager viewPager = complexExerciseFragmentBase.getmViewPager();
+                            if (fragment instanceof ComplexExerciseBaseFragment) {
+                                ComplexExerciseBaseFragment complexExerciseBaseFragment = (ComplexExerciseBaseFragment) fragment;
+                                ViewPager viewPager = complexExerciseBaseFragment.getmViewPager();
                                 if (null != viewPager) {
                                     int index = viewPager.getCurrentItem();
                                     if (childFragment.getUserVisibleHint() && index == 0) {

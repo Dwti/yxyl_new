@@ -2,8 +2,8 @@ package com.yanxiu.gphone.student.questions.model;
 
 import com.yanxiu.gphone.student.questions.QuestionShowType;
 import com.yanxiu.gphone.student.questions.bean.PaperTestBean;
-import com.yanxiu.gphone.student.questions.fragment.ExerciseFragmentBase;
-import com.yanxiu.gphone.student.questions.fragment.MultiChooseFragment;
+import com.yanxiu.gphone.student.questions.fragment.base.ExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.fragment.choose.MultiChooseFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,12 +53,12 @@ public class MultiChoiceQuestion extends BaseQuestion {
     }
 
     @Override
-    ExerciseFragmentBase answerFragment() {
+    ExerciseBaseFragment answerFragment() {
         return new MultiChooseFragment();
     }
 
     @Override
-    ExerciseFragmentBase analysisFragment() {
+    ExerciseBaseFragment analysisFragment() {
         return null;
     }
 

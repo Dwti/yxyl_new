@@ -2,8 +2,8 @@ package com.yanxiu.gphone.student.questions.model;
 
 import com.yanxiu.gphone.student.questions.QuestionShowType;
 import com.yanxiu.gphone.student.questions.bean.PaperTestBean;
-import com.yanxiu.gphone.student.questions.fragment.ExerciseFragmentBase;
-import com.yanxiu.gphone.student.questions.fragment.SingleChooseFragment;
+import com.yanxiu.gphone.student.questions.fragment.base.ExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.fragment.choose.SingleChooseFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,12 +48,12 @@ public class SingleChoiceQuestion extends BaseQuestion {
     }
 
     @Override
-    ExerciseFragmentBase answerFragment() {
+    ExerciseBaseFragment answerFragment() {
         return new SingleChooseFragment();
     }
 
     @Override
-    ExerciseFragmentBase analysisFragment() {
+    ExerciseBaseFragment analysisFragment() {
 //        return new SingleChooseAnalysisFragment();
         return null;
     }

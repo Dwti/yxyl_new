@@ -1,4 +1,4 @@
-package com.yanxiu.gphone.student.questions.fragment;
+package com.yanxiu.gphone.student.questions.fragment.choose;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.customviews.ChooseLayout;
+import com.yanxiu.gphone.student.questions.fragment.base.SimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.model.BaseQuestion;
 import com.yanxiu.gphone.student.questions.model.MultiChoiceQuestion;
 
@@ -20,7 +21,7 @@ import java.util.List;
  * Time : 2017/5/26 15:32.
  * Function :
  */
-public class MultiChooseFragment extends SimpleExerciseFragmentBase implements ChooseLayout.onItemClickListener {
+public class MultiChooseFragment extends SimpleExerciseBaseFragment implements ChooseLayout.onItemClickListener {
     private MultiChoiceQuestion mData;
     private TextView mQuestionView;
     private ChooseLayout mAnswerView;
