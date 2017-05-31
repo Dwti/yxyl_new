@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.homework.data.HomeworkDetailBean;
-import com.yanxiu.gphone.student.questions.activity.AnswerQuestionActivity;
+import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerQuestionActivity;
 import com.yanxiu.gphone.student.util.ToastManager;
 
 import java.util.ArrayList;
