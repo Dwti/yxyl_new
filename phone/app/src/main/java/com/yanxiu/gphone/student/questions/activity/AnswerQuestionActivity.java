@@ -11,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.yanxiu.gphone.student.R;
@@ -44,8 +45,9 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
     private AnswerCardFragment mCardFragment;
 
     private QuestionTimeTextView mTimer;//计时
-    private QuestionProgressView mProgressView;
+    private QuestionProgressView mProgressView;//答题进度条
     private LinearLayout mPrevious_question, mNext_question;//上一题，下一题
+    private ImageView mBackView;//返回按钮
 
     private Handler mHandler;
     private int mTotalTime;//总计时间
@@ -83,6 +85,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         mProgressView.setMaxCount(mTotalQuestion);
         mPrevious_question = (LinearLayout) findViewById(R.id.previous_question);
         mNext_question = (LinearLayout) findViewById(R.id.next_question);
+        mBackView = (ImageView) findViewById(R.id.iv_left);
         setListener();
         initViewPager();
         mHandler = new TimingHandler(this);
@@ -91,6 +94,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
     private void setListener() {
         mPrevious_question.setOnClickListener(this);
         mNext_question.setOnClickListener(this);
+        mBackView.setOnClickListener(this);
     }
 
     private void initViewPager() {
@@ -313,6 +317,9 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
                 break;
             case R.id.next_question:
                 nextQuestion();
+                break;
+            case R.id.iv_left:
+                finish();
                 break;
         }
     }
