@@ -74,7 +74,7 @@ public class ChooseLayout extends LinearLayout implements View.OnClickListener {
             holder.mQuestionIdView = (TextView) view.findViewById(R.id.tv_question_id);
             holder.mQuestionIdView.setText(getEmsByNum(i));
             holder.mQuestionContentView = (TextView) view.findViewById(R.id.tv_question_content);
-            Spanned string= Html.fromHtml(list.get(i),new HtmlImageGetter(mContext,holder.mQuestionContentView),null);
+            Spanned string= Html.fromHtml(list.get(i),new HtmlImageGetter(holder.mQuestionContentView),null);
             holder.mQuestionContentView.setText(string);
             holder.mQuestionSelectView = view.findViewById(R.id.v_question_select);
             ViewCompat.setBackground(holder.mQuestionSelectView, ContextCompat.getDrawable(mContext, R.drawable.shape_choose_round_unselect));
