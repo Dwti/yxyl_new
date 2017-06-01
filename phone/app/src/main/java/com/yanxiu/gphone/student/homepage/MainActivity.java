@@ -16,6 +16,7 @@ import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.HomePageBaseFragment;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.util.DataFetcher;
+import com.yanxiu.gphone.student.util.anim.JumpAnimManager;
 
 import static com.yanxiu.gphone.student.constant.Constants.MAINAVTIVITY_REFRESH;
 
@@ -97,8 +98,8 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
     }
 
     private void initBottomBar() {
-        mSelNavTxtColor = getResources().getColor(R.color.color_805500);
-        mNormalNavTxtColor = getResources().getColor(R.color.color_006666);
+        mSelNavTxtColor = getResources().getColor(R.color.color_336600);
+        mNormalNavTxtColor = getResources().getColor(R.color.color_999999);
         mNavBarViews[0] = findViewById(R.id.navi_homework);
         mNavBarViews[1] = findViewById(R.id.navi_exercise);
         mNavBarViews[2] = findViewById(R.id.navi_my);
@@ -137,31 +138,80 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
     private void checkBottomBarProcess(int index){
         if(index>=0 && index<3) {
             resetBottomBar();
-            mNavBarViews[index].setBackgroundResource(R.drawable.home_nav_bar_sel);
+//            mNavBarViews[index].setBackgroundResource(R.drawable.home_nav_bar_sel);
             mNavTextViews[index].setTextColor(mSelNavTxtColor);
-            mNavTextViews[index].setShadowLayer(2, 0, 2, getResources().getColor(R.color.color_ffff99));
+//            mNavTextViews[index].setShadowLayer(2, 0, 2, getResources().getColor(R.color.color_ffff99));
             switch (index) {
                 case INDEX_HOMEWORK:
-                    mNavIconViews[0].setBackgroundResource(R.drawable.navi_homework_selected);
+//                    mNavIconViews[0].setBackgroundResource(R.drawable.navi_homework_selected);
+                    JumpAnimManager.getInstence(mNavBarViews[0]).setTranslation(0f).setScaleY(1.2f).setScaleX(1.2f).setListaner(new JumpAnimManager.JumpAnimListener(){
+
+                        @Override
+                        public void onAnimStart(JumpAnimManager manager, View view) {
+
+                        }
+
+                        @Override
+                        public void onAnimEnd(JumpAnimManager manager, View view) {
+                            manager.setReset();
+                        }
+
+                        @Override
+                        public void onAnimCancel(JumpAnimManager manager, View view) {
+                            manager.setReset();
+                        }
+                    }).start();
                     break;
                 case INDEX_EXERCISE:
-                    mNavIconViews[1].setBackgroundResource(R.drawable.navi_exercise_selected);
+//                    mNavIconViews[1].setBackgroundResource(R.drawable.navi_exercise_selected);
+                    JumpAnimManager.getInstence(mNavBarViews[1]).setTranslation(0f).setScaleY(1.2f).setScaleX(1.2f).setListaner(new JumpAnimManager.JumpAnimListener(){
+                        @Override
+                        public void onAnimStart(JumpAnimManager manager, View view) {
+
+                        }
+
+                        @Override
+                        public void onAnimEnd(JumpAnimManager manager, View view) {
+                            manager.setReset();
+                        }
+
+                        @Override
+                        public void onAnimCancel(JumpAnimManager manager, View view) {
+                            manager.setReset();
+                        }
+                    }).start();
                     break;
                 case INDEX_MY:
-                    mNavIconViews[2].setBackgroundResource(R.drawable.navi_my_selected);
+//                    mNavIconViews[2].setBackgroundResource(R.drawable.navi_my_selected);
+                    JumpAnimManager.getInstence(mNavBarViews[2]).setTranslation(0f).setScaleY(1.2f).setScaleX(1.2f).setListaner(new JumpAnimManager.JumpAnimListener(){
+                        @Override
+                        public void onAnimStart(JumpAnimManager manager, View view) {
+
+                        }
+
+                        @Override
+                        public void onAnimEnd(JumpAnimManager manager, View view) {
+                            manager.setReset();
+                        }
+
+                        @Override
+                        public void onAnimCancel(JumpAnimManager manager, View view) {
+                            manager.setReset();
+                        }
+                    }).start();
                     break;
             }
         }
     }
     private void resetBottomBar() {
         for (int i = 0; i < 3; i++) {
-            mNavBarViews[i].setBackgroundResource(R.drawable.home_nav_bar_nor);
+//            mNavBarViews[i].setBackgroundResource(R.drawable.home_nav_bar_nor);
             mNavTextViews[i].setTextColor(mNormalNavTxtColor);
-            mNavTextViews[i].setShadowLayer(2, 0, 2, getResources().getColor(R.color.color_33ffff));
+//            mNavTextViews[i].setShadowLayer(2, 0, 2, getResources().getColor(R.color.color_33ffff));
         }
-        mNavIconViews[0].setBackgroundResource(R.drawable.navi_homework_normal);
-        mNavIconViews[1].setBackgroundResource(R.drawable.navi_exercise_normal);
-        mNavIconViews[2].setBackgroundResource(R.drawable.navi_my_normal);
+//        mNavIconViews[0].setBackgroundResource(R.drawable.navi_homework_normal);
+//        mNavIconViews[1].setBackgroundResource(R.drawable.navi_exercise_normal);
+//        mNavIconViews[2].setBackgroundResource(R.drawable.navi_my_normal);
 
     }
 

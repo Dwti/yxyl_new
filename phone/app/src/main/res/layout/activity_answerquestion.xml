@@ -11,7 +11,7 @@
         android:id="@+id/include_top"
         layout="@layout/activity_answerquestion_top_layout" />
 
-    <com.yanxiu.gphone.student.questions.view.QAViewPager
+    <com.yanxiu.gphone.student.questions.answerframe.view.QAViewPager
         android:id="@+id/vp_viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

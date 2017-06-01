@@ -215,12 +215,15 @@
 
     <dimen name="common_line_height">1dp</dimen>
 
-    <dimen name="home_nav_bar_height">40dp</dimen>
+    <dimen name="home_bottom_bar_height">65dp</dimen>
+    <dimen name="home_bottom_bar_paddingtop">7dp</dimen>
+    <dimen name="home_bottom_bar_paddingbottom">6dp</dimen>
+    <dimen name="home_nav_bar_height">47dp</dimen>
     <dimen name="home_nav_bar_margin">3dp</dimen>
     <dimen name="home_nav_bar_marginleft">1dp</dimen>
     <dimen name="home_nav_bar__style_marginleft">8dp</dimen>
-    <dimen name="nav_icon_width">33dp</dimen>
-    <dimen name="home_nav_bar_textsize">16dp</dimen>
+    <dimen name="nav_icon_width">35dp</dimen>
+    <dimen name="home_nav_bar_textsize">14dp</dimen>
     <dimen name="net_error_layout_height">220dp</dimen>
     <dimen name="net_error_layout_margintop">22dp</dimen>
     <dimen name="net_error_layout_retrybutton_top">55dp</dimen>
