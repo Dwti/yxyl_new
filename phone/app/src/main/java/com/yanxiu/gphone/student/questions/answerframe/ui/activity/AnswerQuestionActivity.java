@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
@@ -47,6 +48,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
     private QuestionTimeTextView mTimer;//计时
     private QuestionProgressView mProgressView;//答题进度条
     private LinearLayout mPrevious_question, mNext_question;//上一题，下一题
+    private TextView mNext_text;//下一题textview
     private ImageView mBackView;//返回按钮
 
     private Handler mHandler;
@@ -85,6 +87,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         mProgressView.setMaxCount(mTotalQuestion);
         mPrevious_question = (LinearLayout) findViewById(R.id.previous_question);
         mNext_question = (LinearLayout) findViewById(R.id.next_question);
+        mNext_text = (TextView) findViewById(R.id.next_text);
         mBackView = (ImageView) findViewById(R.id.iv_left);
         setListener();
         initViewPager();
@@ -335,9 +338,9 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
              * 3.处在最后一个小题，且外部大题也是最后一题，那么判断为是最后一道题，展现答题卡
              */
             if (innerIndex == (innerSize - 1) && index == (size - 1)) { //状态3
-                mNext_question.setVisibility(View.GONE);
+                mNext_text.setText(R.string.complete);
             }else{
-                mNext_question.setVisibility(View.VISIBLE);
+                mNext_text.setText(R.string.next_question);
             }
 
             if (innerIndex == 0 && index == 0) { //第一题
@@ -348,9 +351,9 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
 
         } else if (currentFramgent instanceof SimpleExerciseBaseFragment) {
             if (index == (size - 1)) { //最后一题
-                mNext_question.setVisibility(View.GONE);
+                mNext_text.setText(R.string.complete);
             }else{
-                mNext_question.setVisibility(View.VISIBLE);
+                mNext_text.setText(R.string.next_question);
             }
 
             if (index == 0) { //第一题
