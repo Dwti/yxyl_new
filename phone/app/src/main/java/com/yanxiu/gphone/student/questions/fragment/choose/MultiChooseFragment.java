@@ -2,6 +2,8 @@ package com.yanxiu.gphone.student.questions.fragment.choose;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import com.yanxiu.gphone.student.customviews.ChooseLayout;
 import com.yanxiu.gphone.student.questions.fragment.base.SimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.model.BaseQuestion;
 import com.yanxiu.gphone.student.questions.model.MultiChoiceQuestion;
+import com.yanxiu.gphone.student.util.HtmlImageGetter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,12 +71,11 @@ public class MultiChooseFragment extends SimpleExerciseBaseFragment implements C
     }
 
     private void initData() {
-        mQuestionView.setText(mData.getStem());
+        Spanned string= Html.fromHtml(mData.getStem(),new HtmlImageGetter(getActivity(),mQuestionView),null);
+        mQuestionView.setText(string);
         mAnswerView.setData(mData.getChoice());
         mAnswerView.setChooseType(ChooseLayout.TYPE_MULTI);
-        List<String> datas = new ArrayList<>();
-        datas.addAll(mData.getAnswerList());
-        mData.getAnswerList().clear();
+        List<String> datas = mData.getAnswerList();
         for (int i = 0; i < datas.size(); i++) {
             mAnswerView.setSelect(Integer.parseInt(datas.get(i)));
         }
