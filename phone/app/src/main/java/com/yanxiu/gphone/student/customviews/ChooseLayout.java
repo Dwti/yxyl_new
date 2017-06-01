@@ -4,6 +4,10 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.util.HtmlImageGetter;
 
 import java.util.List;
 
@@ -69,7 +74,8 @@ public class ChooseLayout extends LinearLayout implements View.OnClickListener {
             holder.mQuestionIdView = (TextView) view.findViewById(R.id.tv_question_id);
             holder.mQuestionIdView.setText(getEmsByNum(i));
             holder.mQuestionContentView = (TextView) view.findViewById(R.id.tv_question_content);
-            holder.mQuestionContentView.setText(list.get(i));
+            Spanned string= Html.fromHtml(list.get(i),new HtmlImageGetter(holder.mQuestionContentView),null);
+            holder.mQuestionContentView.setText(string);
             holder.mQuestionSelectView = view.findViewById(R.id.v_question_select);
             ViewCompat.setBackground(holder.mQuestionSelectView, ContextCompat.getDrawable(mContext, R.drawable.shape_choose_round_unselect));
             view.setOnClickListener(ChooseLayout.this);
@@ -110,7 +116,11 @@ public class ChooseLayout extends LinearLayout implements View.OnClickListener {
         this.mOnItemClickListener = mOnItemClickListener;
     }
 
-    public void setSelect(int position) {
+    public void setSelect(int position){
+        setSelect(position,false);
+    }
+
+    private void setSelect(int position,boolean isCallBack) {
         int count = this.getChildCount();
         if (position>=count){
             return;
@@ -121,10 +131,14 @@ public class ChooseLayout extends LinearLayout implements View.OnClickListener {
             if (i == position) {
                 if (holder.mSelect) {
                     setItemUnSelect(holder);
-                    onClick(i,false);
+                    if (isCallBack) {
+                        onClick(i, false);
+                    }
                 } else {
                     setItemSelect(holder);
-                    onClick(i,true);
+                    if (isCallBack) {
+                        onClick(i, true);
+                    }
                 }
             } else {
                 if (mChooseType == TYPE_SINGLE) {
@@ -153,6 +167,6 @@ public class ChooseLayout extends LinearLayout implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         ViewHolder holder = (ViewHolder) v.getTag();
-        setSelect(holder.position);
+        setSelect(holder.position,true);
     }
 }

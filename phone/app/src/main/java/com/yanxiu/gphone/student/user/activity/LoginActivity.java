@@ -115,7 +115,7 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
         mTitleView= (RelativeLayout) findViewById(R.id.include_top);
         mWavesView= (WavesLayout) findViewById(R.id.wl_login_waves);
         mThridLoginView= (LinearLayout) findViewById(R.id.ll_thrid_login);
-        checkInstallWX();
+        checkInstallThridSystem();
     }
 
     private void initData() {
@@ -152,10 +152,10 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
     @Override
     protected void onResume() {
         super.onResume();
-        checkInstallWX();
+        checkInstallThridSystem();
     }
 
-    private void checkInstallWX(){
+    private void checkInstallThridSystem(){
         boolean isInstanllWx=SystemUtil.checkBrowser(mContext, "com.tencent.mm");
         boolean isInstallQq=SystemUtil.checkBrowser(mContext,"com.tencent.qqlite");
 
