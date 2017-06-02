@@ -11,7 +11,7 @@ public class UpdateUserInfoRequest extends ExerciseBaseRequest {
     protected String realname;
     @Override
     protected String urlServer() {
-        return UrlRepository.getInstance().getServer();;
+        return UrlRepository.getInstance().getServer();
     }
 
     @Override
