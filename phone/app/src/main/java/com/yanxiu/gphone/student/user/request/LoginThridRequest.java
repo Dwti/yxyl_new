@@ -2,6 +2,7 @@ package com.yanxiu.gphone.student.user.request;
 
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.constant.Constants;
+import com.yanxiu.gphone.student.db.UrlRepository;
 
 /**
  * Created by Canghaixiao.
@@ -22,7 +23,7 @@ public class LoginThridRequest extends RequestBase {
 
     @Override
     protected String urlServer() {
-        return "http://mobile.hwk.yanxiu.com/app";
+        return UrlRepository.getInstance().getServer();
     }
 
     @Override
