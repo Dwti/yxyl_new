@@ -7,6 +7,8 @@ import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,7 +18,6 @@ import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.HomePageBaseFragment;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.util.DataFetcher;
-import com.yanxiu.gphone.student.util.anim.JumpAnimManager;
 
 import static com.yanxiu.gphone.student.constant.Constants.MAINAVTIVITY_REFRESH;
 
@@ -131,6 +132,7 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
             default:
                 break;
         }
+        startTabAnimation(mNavBarViews[curItem]);
         if (mNaviFragmentFactory.getCurrentItem() != curItem) {
             showCurrentFragment(curItem);
         }
@@ -144,61 +146,12 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
             switch (index) {
                 case INDEX_HOMEWORK:
 //                    mNavIconViews[0].setBackgroundResource(R.drawable.navi_homework_selected);
-                    JumpAnimManager.getInstence(mNavBarViews[0]).setTranslation(0f).setScaleY(1.2f).setScaleX(1.2f).setListaner(new JumpAnimManager.JumpAnimListener(){
-
-                        @Override
-                        public void onAnimStart(JumpAnimManager manager, View view) {
-
-                        }
-
-                        @Override
-                        public void onAnimEnd(JumpAnimManager manager, View view) {
-                            manager.setReset();
-                        }
-
-                        @Override
-                        public void onAnimCancel(JumpAnimManager manager, View view) {
-                            manager.setReset();
-                        }
-                    }).start();
                     break;
                 case INDEX_EXERCISE:
 //                    mNavIconViews[1].setBackgroundResource(R.drawable.navi_exercise_selected);
-                    JumpAnimManager.getInstence(mNavBarViews[1]).setTranslation(0f).setScaleY(1.2f).setScaleX(1.2f).setListaner(new JumpAnimManager.JumpAnimListener(){
-                        @Override
-                        public void onAnimStart(JumpAnimManager manager, View view) {
-
-                        }
-
-                        @Override
-                        public void onAnimEnd(JumpAnimManager manager, View view) {
-                            manager.setReset();
-                        }
-
-                        @Override
-                        public void onAnimCancel(JumpAnimManager manager, View view) {
-                            manager.setReset();
-                        }
-                    }).start();
                     break;
                 case INDEX_MY:
 //                    mNavIconViews[2].setBackgroundResource(R.drawable.navi_my_selected);
-                    JumpAnimManager.getInstence(mNavBarViews[2]).setTranslation(0f).setScaleY(1.2f).setScaleX(1.2f).setListaner(new JumpAnimManager.JumpAnimListener(){
-                        @Override
-                        public void onAnimStart(JumpAnimManager manager, View view) {
-
-                        }
-
-                        @Override
-                        public void onAnimEnd(JumpAnimManager manager, View view) {
-                            manager.setReset();
-                        }
-
-                        @Override
-                        public void onAnimCancel(JumpAnimManager manager, View view) {
-                            manager.setReset();
-                        }
-                    }).start();
                     break;
             }
         }
@@ -280,5 +233,45 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
 
     public void setBottomNaviBarsVisibility(int visibility) {
         mBottomNaviLayout.setVisibility(visibility);
+    }
+
+    /**
+     * 点击tab时的弹跳动画
+     * @param view
+     */
+    private void startTabAnimation(final View view){
+        view.setVisibility(View.VISIBLE);
+        Animation anim_step1 = AnimationUtils.loadAnimation(this, R.anim.anim_maintab_scale_1);
+        final Animation anim_step2 = AnimationUtils.loadAnimation(this, R.anim.anim_maintab_scale_2);
+        final Animation anim_step3 = AnimationUtils.loadAnimation(this, R.anim.anim_maintab_scale_3);
+        final Animation anim_step4 = AnimationUtils.loadAnimation(this, R.anim.anim_maintab_scale_4);
+        view.startAnimation(anim_step1);
+        anim_step1.setAnimationListener(new Animation.AnimationListener() {
+            public void onAnimationStart(Animation animation) {}
+
+            public void onAnimationEnd(Animation animation) {
+                view.startAnimation(anim_step2);
+            }
+
+            public void onAnimationRepeat(Animation animation) {}
+        });
+        anim_step2.setAnimationListener(new Animation.AnimationListener() {
+            public void onAnimationStart(Animation animation) {}
+
+            public void onAnimationEnd(Animation animation) {
+                view.startAnimation(anim_step3);
+            }
+
+            public void onAnimationRepeat(Animation animation) {}
+        });
+        anim_step3.setAnimationListener(new Animation.AnimationListener() {
+            public void onAnimationStart(Animation animation) {}
+
+            public void onAnimationEnd(Animation animation) {
+                view.startAnimation(anim_step4);
+            }
+
+            public void onAnimationRepeat(Animation animation) {}
+        });
     }
 }

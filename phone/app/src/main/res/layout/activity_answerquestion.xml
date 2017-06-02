@@ -58,6 +58,7 @@
             android:paddingRight="@dimen/question_bottom_layout_marginLeft">
 
             <TextView
+                android:id="@+id/next_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/question_bottom_layout_image_right"

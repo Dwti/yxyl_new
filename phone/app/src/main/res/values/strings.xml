@@ -127,4 +127,6 @@
     <string name="chooseschool">选择学校</string>
     <string name="choosestage">选择学段</string>
     <string name="class_cannot_join">此班级不允许加入</string>
+
+    <string name="complete">完成</string>
 </resources>

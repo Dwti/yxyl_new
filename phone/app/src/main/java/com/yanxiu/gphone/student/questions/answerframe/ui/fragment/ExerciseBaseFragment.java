@@ -142,6 +142,7 @@ public abstract class ExerciseBaseFragment extends Fragment implements IExercise
         if (isVisibleToUser) {
             //用户可见，计时开始
             mStartTime = System.currentTimeMillis();
+            hiddenSwitchQuestionView();
             if (!invokeInResumeOrPause) {
                 //是左右滑动
                 updateProgress();//进入屏幕，更新进度条
@@ -190,6 +191,17 @@ public abstract class ExerciseBaseFragment extends Fragment implements IExercise
             AnswerQuestionActivity acticity = (AnswerQuestionActivity) getActivity();
             acticity.previousQuestion();
         }
+    }
+
+    /**
+     * 当处在第一题和最后一题时，隐藏相应切换题目按钮
+     */
+    public void hiddenSwitchQuestionView() {
+        if (getActivity() instanceof AnswerQuestionActivity) {
+            AnswerQuestionActivity acticity = (AnswerQuestionActivity) getActivity();
+            acticity.hiddenSwitchQuestionView();
+        }
+
     }
 
     /**

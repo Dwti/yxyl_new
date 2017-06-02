@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
@@ -47,6 +48,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
     private QuestionTimeTextView mTimer;//计时
     private QuestionProgressView mProgressView;//答题进度条
     private LinearLayout mPrevious_question, mNext_question;//上一题，下一题
+    private TextView mNext_text;//下一题textview
     private ImageView mBackView;//返回按钮
 
     private Handler mHandler;
@@ -85,6 +87,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         mProgressView.setMaxCount(mTotalQuestion);
         mPrevious_question = (LinearLayout) findViewById(R.id.previous_question);
         mNext_question = (LinearLayout) findViewById(R.id.next_question);
+        mNext_text = (TextView) findViewById(R.id.next_text);
         mBackView = (ImageView) findViewById(R.id.iv_left);
         setListener();
         initViewPager();
@@ -296,6 +299,67 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
             if (index >= 1) {
                 //不是第一大题时,有上一题
                 mViewPager.setCurrentItem(index - 1);
+            }
+        }
+    }
+
+    /**
+     * 当处在第一题和最后一题时，隐藏相应切换题目按钮
+     */
+    public void hiddenSwitchQuestionView() {
+        ExerciseBaseFragment currentFramgent = null;//当前的Fragment
+        FragmentStatePagerAdapter adapter;
+        int index;//当前Fragment在外层viewPager中的index
+        int size;//viewPager的总共的size
+        try {
+            adapter = (FragmentStatePagerAdapter) mViewPager.getAdapter();
+            index = mViewPager.getCurrentItem();
+            currentFramgent = (ExerciseBaseFragment) adapter.instantiateItem(mViewPager, index);
+            size = adapter.getCount();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+
+        if (adapter == null || index < 0 || size < 1 || mViewPager == null || currentFramgent == null)
+            return;
+
+        if (currentFramgent instanceof ComplexExerciseBaseFragment) {
+            ComplexExerciseBaseFragment complexExerciseFragment = (ComplexExerciseBaseFragment) currentFramgent;
+            ViewPager innerViewPager = complexExerciseFragment.getmViewPager();
+            FragmentStatePagerAdapter innerAdapter = (FragmentStatePagerAdapter) innerViewPager.getAdapter();
+            int innerIndex = innerViewPager.getCurrentItem();
+            int innerSize = innerViewPager.getAdapter().getCount();
+
+            if (complexExerciseFragment == null || innerViewPager == null || innerAdapter == null || innerIndex < 0 || innerSize < 1)
+                return;
+            /**
+             * 复合题型，切换下一题，共有三种状态：
+             * 3.处在最后一个小题，且外部大题也是最后一题，那么判断为是最后一道题，展现答题卡
+             */
+            if (innerIndex == (innerSize - 1) && index == (size - 1)) { //状态3
+                mNext_text.setText(R.string.complete);
+            }else{
+                mNext_text.setText(R.string.next_question);
+            }
+
+            if (innerIndex == 0 && index == 0) { //第一题
+                mPrevious_question.setVisibility(View.GONE);
+            }else{
+                mPrevious_question.setVisibility(View.VISIBLE);
+            }
+
+        } else if (currentFramgent instanceof SimpleExerciseBaseFragment) {
+            if (index == (size - 1)) { //最后一题
+                mNext_text.setText(R.string.complete);
+            }else{
+                mNext_text.setText(R.string.next_question);
+            }
+
+            if (index == 0) { //第一题
+                mPrevious_question.setVisibility(View.GONE);
+            }else{
+                mPrevious_question.setVisibility(View.VISIBLE);
             }
         }
     }
