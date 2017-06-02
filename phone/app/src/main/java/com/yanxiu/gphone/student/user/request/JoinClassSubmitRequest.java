@@ -27,11 +27,6 @@ public class JoinClassSubmitRequest extends BaseLoginRequest {
     }
 
     @Override
-    protected String urlServer() {
-        return "http://mobile.hwk.yanxiu.com/app";
-    }
-
-    @Override
     protected String urlPath() {
         return "/user/registerByJoinClass.do";
     }

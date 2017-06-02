@@ -31,11 +31,6 @@ public class CompleteInfoThridRequest extends BaseLoginRequest {
     }
 
     @Override
-    protected String urlServer() {
-        return "http://mobile.hwk.yanxiu.com/app";
-    }
-
-    @Override
     protected String urlPath() {
         return "/user/thirdRegister.do";
     }

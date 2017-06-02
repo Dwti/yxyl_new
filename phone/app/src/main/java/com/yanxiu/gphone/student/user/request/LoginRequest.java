@@ -19,13 +19,8 @@ public class LoginRequest extends BaseLoginRequest {
     }
 
     @Override
-    protected String urlServer() {
-        return "http://mobile.hwk.yanxiu.com/app/user/";
-    }
-
-    @Override
     protected String urlPath() {
-        return "login.do";
+        return "/user/login.do";
     }
 
     @Override

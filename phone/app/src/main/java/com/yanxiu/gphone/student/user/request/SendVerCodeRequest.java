@@ -16,11 +16,6 @@ public class SendVerCodeRequest extends BaseLoginRequest {
     }
 
     @Override
-    protected String urlServer() {
-        return "http://mobile.hwk.yanxiu.com/app";
-    }
-
-    @Override
     protected String urlPath() {
         return "/user/produceCode.do";
     }

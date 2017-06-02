@@ -46,7 +46,7 @@
         <item name="android:layout_marginLeft">@dimen/login_edit_margin_parent_l</item>
         <item name="android:layout_marginStart">@dimen/login_edit_margin_parent_l</item>
         <item name="android:textColorHint">@color/color_89e00d</item>
-        <item name="android:textColor">@color/color_89e00d</item>
+        <item name="android:textColor">@color/color_ffffff</item>
         <item name="android:background">@null</item>
         <item name="android:textSize">@dimen/login_edit_default_textsize</item>
     </style>

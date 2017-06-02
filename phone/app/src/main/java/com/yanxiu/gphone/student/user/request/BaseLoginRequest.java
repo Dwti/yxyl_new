@@ -2,6 +2,7 @@ package com.yanxiu.gphone.student.user.request;
 
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.constant.Constants;
+import com.yanxiu.gphone.student.db.UrlRepository;
 
 /**
  * Created by Canghaixiao.
@@ -21,7 +22,7 @@ public class BaseLoginRequest extends RequestBase {
 
     @Override
     protected String urlServer() {
-        return null;
+        return UrlRepository.getInstance().getServer();
     }
 
     @Override

@@ -247,13 +247,14 @@ public class RegisterActivity extends YanxiuBaseActivity implements View.OnClick
         CountDownManager.getManager().setTotalTime(totalTime).setScheduleListener(new CountDownManager.ScheduleListener() {
             @Override
             public void onProgress(long progress) {
-                mSendVerCodeView.setEnabled(false);
+                mSendVerCodeView.setClickable(false);
                 mSendVerCodeView.setText(String.format(getText(R.string.verCode_progress).toString(), (int) progress / 1000));
+
             }
 
             @Override
             public void onFinish() {
-                mSendVerCodeView.setEnabled(true);
+                mSendVerCodeView.setClickable(true);
                 mSendVerCodeView.setText(getText(R.string.send_verCode_more));
             }
         }).start();

@@ -26,11 +26,6 @@ public class CompleteInfoRequest extends BaseLoginRequest {
     }
 
     @Override
-    protected String urlServer() {
-        return "http://mobile.hwk.yanxiu.com/app";
-    }
-
-    @Override
     protected String urlPath() {
         return "/user/registerV2.do";
     }

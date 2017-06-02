@@ -17,11 +17,6 @@ public class RegisterRequet extends BaseLoginRequest {
     }
 
     @Override
-    protected String urlServer() {
-        return "http://mobile.hwk.yanxiu.com/app";
-    }
-
-    @Override
     protected HttpType httpType() {
         return HttpType.POST;
     }
