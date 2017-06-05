@@ -1,4 +1,4 @@
-package com.yanxiu.gphone.student.homework.data;
+package com.yanxiu.gphone.student.homework.response;
 
 import com.yanxiu.gphone.student.base.ExerciseBaseResponse;
 import com.yanxiu.gphone.student.questions.bean.PaperBean;

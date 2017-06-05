@@ -1,13 +1,14 @@
-package com.yanxiu.gphone.student.homework.data;
+package com.yanxiu.gphone.student.homework.request;
 
 import com.yanxiu.gphone.student.base.ExerciseBaseRequest;
 import com.yanxiu.gphone.student.db.UrlRepository;
 
 /**
- * Created by sp on 17-5-19.
+ * Created by sp on 17-5-20.
  */
 
-public class SearchClassRequest extends ExerciseBaseRequest {
+public class JoinClassRequest extends ExerciseBaseRequest {
+    protected String validMsg;
     protected String classId;
     @Override
     protected String urlServer() {
@@ -16,7 +17,15 @@ public class SearchClassRequest extends ExerciseBaseRequest {
 
     @Override
     protected String urlPath() {
-        return "/class/searchClass.do";
+        return "class/joinClass.do";
+    }
+
+    public String getValidMsg() {
+        return validMsg;
+    }
+
+    public void setValidMsg(String validMsg) {
+        this.validMsg = validMsg;
     }
 
     public String getClassId() {

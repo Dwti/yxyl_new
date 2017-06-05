@@ -1,4 +1,4 @@
-package com.yanxiu.gphone.student.homework.data;
+package com.yanxiu.gphone.student.homework.request;
 
 import com.yanxiu.gphone.student.base.ExerciseBaseRequest;
 import com.yanxiu.gphone.student.db.UrlRepository;
@@ -7,7 +7,7 @@ import com.yanxiu.gphone.student.db.UrlRepository;
  * Created by sp on 17-5-20.
  */
 
-public class CancelApplyClassRequest extends ExerciseBaseRequest {
+public class ExitClassRequest extends ExerciseBaseRequest {
     protected String classId;
     @Override
     protected String urlServer() {
@@ -16,7 +16,7 @@ public class CancelApplyClassRequest extends ExerciseBaseRequest {
 
     @Override
     protected String urlPath() {
-        return "/class/cancelReply.do";
+        return "/class/exitClass.do";
     }
 
     public String getClassId() {

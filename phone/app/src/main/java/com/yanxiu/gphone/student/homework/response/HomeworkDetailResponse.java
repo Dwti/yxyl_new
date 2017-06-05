@@ -1,7 +1,6 @@
-package com.yanxiu.gphone.student.homework.data;
+package com.yanxiu.gphone.student.homework.response;
 
 import com.yanxiu.gphone.student.base.ExerciseBaseResponse;
-import com.yanxiu.gphone.student.base.StatusBean;
 
 import java.util.ArrayList;
 import java.util.List;

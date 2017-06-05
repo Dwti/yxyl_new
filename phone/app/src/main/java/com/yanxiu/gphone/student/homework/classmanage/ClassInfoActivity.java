@@ -12,11 +12,11 @@ import android.widget.Toast;
 import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
-import com.yanxiu.gphone.student.homework.data.CancelApplyClassResponse;
-import com.yanxiu.gphone.student.homework.data.CancelApplyClassRequest;
-import com.yanxiu.gphone.student.homework.data.ClassBean;
-import com.yanxiu.gphone.student.homework.data.ExitClassRequest;
-import com.yanxiu.gphone.student.homework.data.ExitClassResponse;
+import com.yanxiu.gphone.student.homework.response.CancelApplyClassResponse;
+import com.yanxiu.gphone.student.homework.request.CancelApplyClassRequest;
+import com.yanxiu.gphone.student.homework.response.ClassBean;
+import com.yanxiu.gphone.student.homework.request.ExitClassRequest;
+import com.yanxiu.gphone.student.homework.response.ExitClassResponse;
 import com.yanxiu.gphone.student.base.ExerciseBaseCallback;
 
 /**
