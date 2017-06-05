@@ -157,7 +157,7 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
 
     private void checkInstallThridSystem(){
         boolean isInstanllWx=SystemUtil.checkBrowser(mContext, "com.tencent.mm");
-        boolean isInstallQq=SystemUtil.checkBrowser(mContext,"com.tencent.qqlite")||SystemUtil.checkBrowser(mContext,"com.tencent.mobileqq");
+        boolean isInstallQq=SystemUtil.checkBrowser(mContext,"com.tencent.mobileqq");
 
         if (!isInstallQq&&!isInstanllWx){
             mThridLoginView.setVisibility(View.GONE);
