@@ -76,6 +76,7 @@ public class HomeworkDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 if(TextUtils.isEmpty(bean.getPaperStatus().getTeachercomments()) || TextUtils.isEmpty(bean.getPaperStatus().getTeacherName())){
                     viewHolder.mCommentLayout.setVisibility(View.GONE);
                     viewHolder.mState1.setText(R.string.homework_done_uncheck);
+                    viewHolder.mState2.setText("");
                 }else {
                     viewHolder.mCommentLayout.setVisibility(View.VISIBLE);
                     viewHolder.mState1.setText(R.string.homework_checked);
