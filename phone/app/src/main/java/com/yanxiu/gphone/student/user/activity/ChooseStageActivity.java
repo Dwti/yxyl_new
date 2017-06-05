@@ -74,7 +74,7 @@ public class ChooseStageActivity extends YanxiuBaseActivity implements PickerVie
 
     private void initData() {
         mTitleView.setText(getText(R.string.choosestage));
-        mTitleView.setTextColor(getColor(R.color.color_666666));
+        mTitleView.setTextColor(ContextCompat.getColor(mContext,R.color.color_666666));
         mTopView.setBackgroundColor(Color.WHITE);
         mBackView.setVisibility(View.VISIBLE);
         mConfirmView.setVisibility(View.VISIBLE);

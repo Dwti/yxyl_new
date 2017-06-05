@@ -18,6 +18,7 @@ import com.yanxiu.gphone.student.user.response.VerCodeResponse;
 import com.yanxiu.gphone.student.user.request.ForgetPassWordRequest;
 import com.yanxiu.gphone.student.user.request.SendVerCodeRequest;
 import com.yanxiu.gphone.student.util.EditTextManger;
+import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.ToastManager;
 import com.yanxiu.gphone.student.util.time.CountDownManager;
 import com.yanxiu.gphone.student.customviews.WavesLayout;
@@ -221,7 +222,7 @@ public class ForgetPassWordActivity extends YanxiuBaseActivity implements View.O
         });
     }
 
-    private void onNext(String mobile, String verCode) {
+    private void onNext(final String mobile, String verCode) {
         rootView.showLoadingView();
         mForgetPassWordRequest = new ForgetPassWordRequest();
         mForgetPassWordRequest.mobile = mobile;
@@ -233,7 +234,9 @@ public class ForgetPassWordActivity extends YanxiuBaseActivity implements View.O
             protected void onResponse(RequestBase request, ForgerPassWordResponse response) {
                 rootView.hiddenLoadingView();
                 if (response.getStatus().getCode() == 0) {
+                    LoginInfo.setMobile(mobile);
                     ResetPassWordActivity.LaunchActivity(mContext);
+                    ForgetPassWordActivity.this.finish();
                 } else {
                     ToastManager.showMsg(response.getStatus().getDesc());
                 }

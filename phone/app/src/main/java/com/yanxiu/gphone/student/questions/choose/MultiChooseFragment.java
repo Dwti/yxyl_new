@@ -93,11 +93,14 @@ public class MultiChooseFragment extends SimpleExerciseBaseFragment implements C
     @Override
     public void onClick(int position, boolean isSelected) {
         if (isSelected) {
-            mData.setAnswer(true);
             mData.getAnswerList().add(String.valueOf(position));
         } else {
-            mData.setAnswer(false);
             mData.getAnswerList().remove(String.valueOf(position));
+        }
+        if (mData.getAnswerList().size()>0){
+            mData.setAnswer(true);
+        }else {
+            mData.setAnswer(false);
         }
         saveAnswer(mData);
         updateProgress();

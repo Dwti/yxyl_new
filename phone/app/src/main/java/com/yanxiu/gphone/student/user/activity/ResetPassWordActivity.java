@@ -16,6 +16,7 @@ import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
 import com.yanxiu.gphone.student.user.response.ResetPassWordResponse;
 import com.yanxiu.gphone.student.user.request.ResetPassWordRequest;
 import com.yanxiu.gphone.student.util.EditTextManger;
+import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.ToastManager;
 import com.yanxiu.gphone.student.customviews.WavesLayout;
 @SuppressWarnings("all")
@@ -32,7 +33,6 @@ public class ResetPassWordActivity extends YanxiuBaseActivity implements View.On
     private EditText mPassWordView;
     private EditText mPassWordAgainView;
     private WavesLayout mWavesView;
-    private String mobile;
     private String verCode;
     /**
      * default passwords are empty
@@ -113,15 +113,15 @@ public class ResetPassWordActivity extends YanxiuBaseActivity implements View.On
                     ToastManager.showMsg(getText(R.string.input_password_error));
                     return;
                 }
-                onResetPassWord(mobile,passWord);
+                onResetPassWord(passWord);
                 break;
         }
     }
 
-    private void onResetPassWord(String mobile, String passWord) {
+    private void onResetPassWord(String passWord) {
         rootView.showLoadingView();
         mResetPassWordRequest=new ResetPassWordRequest();
-        mResetPassWordRequest.mobile=mobile;
+        mResetPassWordRequest.mobile= LoginInfo.getMobile();
         mResetPassWordRequest.password=passWord;
         mResetPassWordRequest.startRequest(ResetPassWordResponse.class, new ExerciseBaseCallback<ResetPassWordResponse>() {
 
@@ -131,6 +131,7 @@ public class ResetPassWordActivity extends YanxiuBaseActivity implements View.On
                 if (response.getStatus().getCode()==0){
                     ToastManager.showMsg(getText(R.string.reset_password_success));
                     LoginActivity.LaunchActivity(mContext);
+                    ResetPassWordActivity.this.finish();
                 }else {
                     ToastManager.showMsg(response.getStatus().getDesc());
                 }
