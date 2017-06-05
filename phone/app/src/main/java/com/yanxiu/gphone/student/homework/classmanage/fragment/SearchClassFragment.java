@@ -1,4 +1,4 @@
-package com.yanxiu.gphone.student.homework.classmanage;
+package com.yanxiu.gphone.student.homework.classmanage.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +18,8 @@ import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.customviews.CharacterSeparatedEditLayout;
 import com.yanxiu.gphone.student.customviews.WavesLayout;
 import com.yanxiu.gphone.student.homepage.MainActivity;
+import com.yanxiu.gphone.student.homework.classmanage.activity.HowToJoinClassActivity;
+import com.yanxiu.gphone.student.homework.classmanage.activity.JoinClassActivity;
 import com.yanxiu.gphone.student.homework.response.ClassBean;
 import com.yanxiu.gphone.student.homework.request.SearchClassRequest;
 import com.yanxiu.gphone.student.homework.response.SearchClassResponse;

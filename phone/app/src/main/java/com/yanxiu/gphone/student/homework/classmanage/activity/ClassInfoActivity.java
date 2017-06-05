@@ -1,4 +1,4 @@
-package com.yanxiu.gphone.student.homework.classmanage;
+package com.yanxiu.gphone.student.homework.classmanage.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.homework.classmanage.ClassStatus;
 import com.yanxiu.gphone.student.homework.response.CancelApplyClassResponse;
 import com.yanxiu.gphone.student.homework.request.CancelApplyClassRequest;
 import com.yanxiu.gphone.student.homework.response.ClassBean;
