@@ -63,6 +63,7 @@ public class JoinClassActivity extends Activity {
     }
     private void initView(final ClassBean classInfo) {
         TextView title = (TextView) findViewById(R.id.tv_title);
+        TextView className = (TextView) findViewById(R.id.tv_class_name);
         TextView classNum = (TextView) findViewById(R.id.tv_class_num);
         TextView teacherName = (TextView) findViewById(R.id.tv_teacher_name);
         TextView studentNum = (TextView) findViewById(R.id.tv_student_num);
@@ -74,7 +75,7 @@ public class JoinClassActivity extends Activity {
         mBack = findViewById(R.id.iv_left);
 
         mBack.setVisibility(View.VISIBLE);
-        title.setText(R.string.join_class);
+        title.setText(R.string.class_info);
         mEditName.setText(LoginInfo.getRealName());
         mEditName.setSelection(LoginInfo.getRealName().length());
         if(TextUtils.isEmpty(LoginInfo.getRealName())){
@@ -84,6 +85,7 @@ public class JoinClassActivity extends Activity {
 
         if(classInfo != null){
             mClassId = classInfo.getId();
+            className.setText(classInfo.getGradename()+classInfo.getName());
             classNum.setText(classInfo.getId());
             teacherName.setText(classInfo.getAdminName());
             studentNum.setText(String.valueOf(classInfo.getStdnum()));
