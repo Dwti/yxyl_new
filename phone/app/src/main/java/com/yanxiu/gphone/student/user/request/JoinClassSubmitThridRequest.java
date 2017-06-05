@@ -18,7 +18,6 @@ public class JoinClassSubmitThridRequest extends BaseLoginRequest {
     public String stageid;
     public String areaid;
     public String cityid;
-    public String mobile;
     public String realname;
     public String schoolid;
     public String schoolName;

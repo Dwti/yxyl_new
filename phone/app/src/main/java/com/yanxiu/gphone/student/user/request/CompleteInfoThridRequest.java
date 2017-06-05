@@ -14,7 +14,6 @@ public class CompleteInfoThridRequest extends BaseLoginRequest {
     public String headimg;
     public String pltform;
     public String uniqid;
-    public String mobile;
     public String realname;
     public String provinceid;
     public String cityid;

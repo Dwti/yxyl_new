@@ -34,6 +34,7 @@
                 android:layout_weight="1"
                 android:background="@color/color_ffffff"
                 android:hint="@string/input_school_name"
+                android:singleLine="true"
                 android:textColor="@color/color_333333"
                 android:textColorHint="@color/color_999999"
                 android:textSize="@dimen/login_edit_default_textsize" />

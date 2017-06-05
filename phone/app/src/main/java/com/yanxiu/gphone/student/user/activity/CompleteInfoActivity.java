@@ -213,7 +213,6 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
         mCompleteInfoThridRequest.pltform=thridMessage.platform;
         mCompleteInfoThridRequest.sex=thridMessage.sex;
         mCompleteInfoThridRequest.uniqid=thridMessage.uniqid;
-        mCompleteInfoThridRequest.mobile= LoginInfo.getMobile();
         mCompleteInfoThridRequest.realname=userName;
         mCompleteInfoThridRequest.provinceid=message.provinceId;
         mCompleteInfoThridRequest.cityid=message.cityId;

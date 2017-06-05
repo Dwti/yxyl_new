@@ -242,8 +242,8 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
                 ForgetPassWordActivity.LaunchActivity(mContext,userName);
                 break;
             case R.id.tv_fast_registered:
-//                RegisterActivity.LaunchActivity(mContext);
-                JoinClassActivity.LaunchActivity(mContext);
+                RegisterActivity.LaunchActivity(mContext);
+//                JoinClassActivity.LaunchActivity(mContext);
                 break;
             case R.id.iv_third_qq:
                 LoginByQQ();
@@ -254,7 +254,7 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
         }
     }
 
-    private void LoginByAccount(String user_name, String pass_word) {
+    private void LoginByAccount(final String user_name, final String pass_word) {
         rootView.showLoadingView();
         mLoginRequest = new LoginRequest();
         mLoginRequest.mobile=user_name;
@@ -269,6 +269,8 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
                     MainActivity.invoke(LoginActivity.this,true);
                     LoginActivity.this.finish();
                 }else if (response.getStatus().getCode()==80){
+                    LoginInfo.setMobile(user_name);
+                    LoginInfo.setPassWord(pass_word);
                     JoinClassActivity.LaunchActivity(mContext);
                 }else {
                     ToastManager.showMsg(response.getStatus().getDesc());
