@@ -194,7 +194,7 @@ public class JoinClassActivity extends Activity {
     HttpCallback<UpdateUserInfoResponse> mUpdateUserInfoCallback = new ExerciseBaseCallback<UpdateUserInfoResponse>() {
         @Override
         public void onResponse(RequestBase request, UpdateUserInfoResponse ret) {
-            if(ret.getStatus().getCode() == 0){
+            if(ret.getStatus().getCode() == 0 || ret.getStatus().getCode() ==2){
                 setResult(RESULT_OK);
                 finish();
             }
