@@ -153,8 +153,8 @@ public class HomeworkFragment extends HomePageBaseFragment implements SearchClas
                     showDataEmptyView();
                 }else {
                     showSubjects(ret.getData());
-                    mTitle.setText(ret.getProperty().getClassName());
                 }
+                mTitle.setText(ret.getProperty().getClassName());
             }else if(ret.getStatus().getCode() == ClassStatus.APPLYING_CLASS.getCode()){ //班级正在审核
                 mClassId = ret.getProperty().getClassId();
                 showClassApplyView();
