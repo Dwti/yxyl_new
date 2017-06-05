@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -97,7 +98,7 @@ public class ChooseSchoolActivity extends YanxiuBaseActivity implements View.OnC
 
     private void initData() {
         mTitleView.setText(getText(R.string.chooseschool));
-        mTitleView.setTextColor(getColor(R.color.color_666666));
+        mTitleView.setTextColor(ContextCompat.getColor(mContext,R.color.color_666666));
         mTopView.setBackgroundColor(Color.WHITE);
         mBackView.setVisibility(View.VISIBLE);
         mSearchView.setEnabled(false);
