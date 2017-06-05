@@ -156,6 +156,7 @@ public class HomeworkFragment extends HomePageBaseFragment implements SearchClas
                 mTitle.setText(ret.getProperty().getClassName());
             }else if(ret.getStatus().getCode() == ClassStatus.APPLYING_CLASS.getCode()){ //班级正在审核
                 mClassId = ret.getProperty().getClassId();
+                mTitle.setText(ret.getProperty().getClassName());
                 showClassApplyView();
             }else if(ret.getStatus().getCode() == ClassStatus.NO_CLASS.getCode()){   //未加入班级
                 openJoinClassUI();
