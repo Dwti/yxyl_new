@@ -97,6 +97,7 @@ public class ChooseSchoolActivity extends YanxiuBaseActivity implements View.OnC
 
     private void initData() {
         mTitleView.setText(getText(R.string.chooseschool));
+        mTitleView.setTextColor(getColor(R.color.color_666666));
         mTopView.setBackgroundColor(Color.WHITE);
         mBackView.setVisibility(View.VISIBLE);
         mSearchView.setEnabled(false);
@@ -115,6 +116,7 @@ public class ChooseSchoolActivity extends YanxiuBaseActivity implements View.OnC
                 break;
             case R.id.iv_left:
                 ChooseSchoolActivity.this.finish();
+                EditTextManger.getManager(mTitleView).hideSoftInput(mContext);
                 break;
         }
     }

@@ -214,7 +214,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
-                    app:waves_animend_alpha="102"
+                    app:waves_color="@color/color_E3F8C5"
                     app:waves_canshowwave="false"
                     app:waves_radius="@dimen/wavesRadius">
 

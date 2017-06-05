@@ -133,6 +133,7 @@ public class RegisterActivity extends YanxiuBaseActivity implements View.OnClick
         switch (v.getId()) {
             case R.id.iv_left:
                 RegisterActivity.this.finish();
+                EditTextManger.getManager(mTitleView).hideSoftInput(mContext);
                 break;
             case R.id.iv_clear:
                 mMobileView.setText("");

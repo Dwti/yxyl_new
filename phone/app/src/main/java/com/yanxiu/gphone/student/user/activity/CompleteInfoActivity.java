@@ -61,6 +61,8 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
     private CompleteInfoRequest mCompleteInfoRequest;
     private LoginActivity.ThridMessage thridMessage;
     private CompleteInfoThridRequest mCompleteInfoThridRequest;
+    private ImageView mBackView;
+    private TextView mTitleView;
 
     public static void LaunchActivity(Context context) {
         Intent intent = new Intent(context, CompleteInfoActivity.class);
@@ -107,6 +109,8 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
     }
 
     private void initView() {
+        mBackView= (ImageView) findViewById(R.id.iv_left);
+        mTitleView= (TextView) findViewById(R.id.tv_title);
         mUserNameView = (EditText) findViewById(R.id.ed_user_name);
         mSchoolView = (TextView) findViewById(R.id.tv_school);
         mStageView = (TextView) findViewById(R.id.tv_stage);
@@ -119,9 +123,12 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
     private void initData() {
         mWavesView.setCanShowWave(false);
         mSubmitView.setEnabled(false);
+        mTitleView.setText(R.string.complete_message);
+        mBackView.setVisibility(View.VISIBLE);
     }
 
     private void listener() {
+        mBackView.setOnClickListener(CompleteInfoActivity.this);
         mSubmitView.setOnClickListener(CompleteInfoActivity.this);
         mChooseSchoolView.setOnClickListener(CompleteInfoActivity.this);
         mChooseStageView.setOnClickListener(CompleteInfoActivity.this);
@@ -143,6 +150,10 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.iv_left:
+                CompleteInfoActivity.this.finish();
+                EditTextManger.getManager(mTitleView).hideSoftInput(mContext);
+                break;
             case R.id.iv_choose_stage:
                 ChooseStageActivity.LaunchActivity(mContext);
                 break;

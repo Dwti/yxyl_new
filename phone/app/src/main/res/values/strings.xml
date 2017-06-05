@@ -1,5 +1,5 @@
 <resources>
-    <string name="input_account">请输入账号</string>
+    <string name="input_account">请输入账号或手机号</string>
     <string name="input_password">请输入密码</string>
     <string name="bt_login">登录</string>
     <string name="tv_forget_pass">忘记密码?</string>
@@ -68,7 +68,7 @@
     <string name="input_school_name">请输入学校名字</string>
     <string name="input_school_text_location">范围：</string>
 
-    <string name="class_number_error">班级号位数不对</string>
+    <string name="class_number_error">请输入正确的班级号</string>
     <string name="class_id">班级号码</string>
     <string name="teacher_name">老师姓名</string>
     <string name="student_number">班级成员</string>
@@ -126,7 +126,9 @@
     <string name="chooselocation">选择地区</string>
     <string name="chooseschool">选择学校</string>
     <string name="choosestage">选择学段</string>
-    <string name="class_cannot_join">此班级不允许加入</string>
+    <string name="class_cannot_join">此班级不允许学生加入</string>
 
     <string name="complete">完成</string>
+    <string name="complete_message">完善资料</string>
+    <string name="skip_join_class">没有班级可加,跳过此步</string>
 </resources>

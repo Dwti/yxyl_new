@@ -232,7 +232,6 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
                     ToastManager.showMsg(getText(R.string.input_true_password));
                     return;
                 }
-//                JumpAnimManager.getInstence(mLoginView).start();
                 LoginByAccount(userName, passWord);
                 break;
             case R.id.tv_forget_password:
@@ -243,8 +242,8 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
                 ForgetPassWordActivity.LaunchActivity(mContext,userName);
                 break;
             case R.id.tv_fast_registered:
-                RegisterActivity.LaunchActivity(mContext);
-//                JoinClassActivity.LaunchActivity(mContext);
+//                RegisterActivity.LaunchActivity(mContext);
+                JoinClassActivity.LaunchActivity(mContext);
                 break;
             case R.id.iv_third_qq:
                 LoginByQQ();

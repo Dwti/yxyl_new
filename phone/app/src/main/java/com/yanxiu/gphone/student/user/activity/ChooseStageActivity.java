@@ -14,6 +14,7 @@ import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.PickerView;
 import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
+import com.yanxiu.gphone.student.util.EditTextManger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,6 +74,7 @@ public class ChooseStageActivity extends YanxiuBaseActivity implements PickerVie
 
     private void initData() {
         mTitleView.setText(getText(R.string.choosestage));
+        mTitleView.setTextColor(getColor(R.color.color_666666));
         mTopView.setBackgroundColor(Color.WHITE);
         mBackView.setVisibility(View.VISIBLE);
         mConfirmView.setVisibility(View.VISIBLE);
@@ -112,6 +114,7 @@ public class ChooseStageActivity extends YanxiuBaseActivity implements PickerVie
                 EventBus.getDefault().post(message);
             case R.id.iv_left:
                 ChooseStageActivity.this.finish();
+                EditTextManger.getManager(mTitleView).hideSoftInput(mContext);
                 break;
         }
     }

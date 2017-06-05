@@ -122,10 +122,10 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
         mWavesView.setCanShowWave(false);
         mAddClassView.setEnabled(false);
         if (mData!=null){
-            mClassNameView.setText(mData.name);
+            mClassNameView.setText(mData.gradename+mData.name);
             mClassIdView.setText(mData.id);
             mTeacherNameView.setText(mData.adminName);
-            mStudentNumberView.setText(mData.teachernum);
+            mStudentNumberView.setText(mData.stdnum);
             mSchoolNameView.setText(mData.schoolname);
         }
     }
@@ -135,6 +135,7 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
         switch (v.getId()){
             case R.id.iv_left:
                 JoinClassSubmitActivity.this.finish();
+                EditTextManger.getManager(mTitleView).hideSoftInput(mContext);
                 break;
             case R.id.iv_write:
                 mInputNameView.setEnabled(true);

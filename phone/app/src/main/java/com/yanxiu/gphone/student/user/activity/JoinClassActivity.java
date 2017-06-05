@@ -19,6 +19,7 @@ import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
 import com.yanxiu.gphone.student.customviews.WavesLayout;
 import com.yanxiu.gphone.student.user.request.JoinClassRequest;
 import com.yanxiu.gphone.student.user.response.JoinClassResponse;
+import com.yanxiu.gphone.student.util.EditTextManger;
 import com.yanxiu.gphone.student.util.ToastManager;
 
 @SuppressWarnings("all")
@@ -42,6 +43,7 @@ public class JoinClassActivity extends YanxiuBaseActivity implements View.OnClic
     private LoginActivity.ThridMessage thridMessage;
     private ImageView mBackView;
     private TextView mTitleView;
+    private TextView mSkipView;
 
     public static void LaunchActivity(Context context){
         Intent intent=new Intent(context,JoinClassActivity.class);
@@ -82,6 +84,7 @@ public class JoinClassActivity extends YanxiuBaseActivity implements View.OnClic
     }
 
     private void initView() {
+        mSkipView= (TextView) findViewById(R.id.how_to_join_class);
         mBackView= (ImageView) findViewById(R.id.iv_left);
         mTitleView= (TextView) findViewById(R.id.tv_title);
         mCompleteInfoView= (LinearLayout) findViewById(R.id.ll_complete_info);
@@ -93,11 +96,12 @@ public class JoinClassActivity extends YanxiuBaseActivity implements View.OnClic
     }
 
     private void initData() {
-        mBackView.setVisibility(View.VISIBLE);
+//        mBackView.setVisibility(View.VISIBLE);
         mTitleView.setText(getText(R.string.addclass));
         mWavasView.setCanShowWave(false);
         mNextView.setEnabled(false);
         mJoinClassView.setVisibility(View.GONE);
+        mSkipView.setText(R.string.skip_join_class);
     }
 
     private void Listener() {
@@ -112,6 +116,7 @@ public class JoinClassActivity extends YanxiuBaseActivity implements View.OnClic
         switch (v.getId()){
             case R.id.iv_left:
                 JoinClassActivity.this.finish();
+                EditTextManger.getManager(mTitleView).hideSoftInput(mContext);
                 break;
             case R.id.btn_next:
                 String classNumber=mInputClassNumberView.getText().trim();

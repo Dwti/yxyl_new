@@ -17,6 +17,7 @@ import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
 import com.yanxiu.gphone.student.user.response.CityBean;
 import com.yanxiu.gphone.student.user.response.AreaBean;
 import com.yanxiu.gphone.student.user.response.ProvinceBean;
+import com.yanxiu.gphone.student.util.EditTextManger;
 import com.yanxiu.gphone.student.util.XmlParserHandler;
 
 import org.xml.sax.SAXException;
@@ -104,6 +105,7 @@ public class ChooseLocationActivity extends YanxiuBaseActivity implements Picker
 
     private void initData() {
         mTitleView.setText(getText(R.string.chooselocation));
+        mTitleView.setTextColor(getColor(R.color.color_666666));
         mTopView.setBackgroundColor(Color.WHITE);
         mBackView.setVisibility(View.VISIBLE);
         mConfirmView.setVisibility(View.VISIBLE);
@@ -239,6 +241,7 @@ public class ChooseLocationActivity extends YanxiuBaseActivity implements Picker
                 break;
             case R.id.iv_left:
                 ChooseLocationActivity.this.finish();
+                EditTextManger.getManager(mTitleView).hideSoftInput(mContext);
                 break;
         }
     }

@@ -1,10 +1,14 @@
 package com.yanxiu.gphone.student.util;
 
+import android.app.Activity;
+import android.content.Context;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.text.method.NumberKeyListener;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -24,7 +28,7 @@ public class EditTextManger implements TextWatcher {
     private static final String INPUT_NUMBER = "0123456789";
     private static final String INPUT_LETTER_LOWERCASE = "abcdefghijklmnopqrstuvwxyz";
     private static final String INPUT_LETTER_UPPERCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    private static final String INPUT_SYMBOL="`~!@#$%^&*()_+-=[]{}|;':";
+    private static final String INPUT_SYMBOL="`~!@#$%^&*()_+-=[]{}|;':,./\\，。、；’【】、";
 
     private onTextLengthChangedListener mTextLengthChangedListener;
     private View view;
@@ -154,5 +158,10 @@ public class EditTextManger implements TextWatcher {
                 mTextLengthChangedListener.onChanged(view, value, isEmpty);
             }
         }
+    }
+
+    public void hideSoftInput(Context context){
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }
