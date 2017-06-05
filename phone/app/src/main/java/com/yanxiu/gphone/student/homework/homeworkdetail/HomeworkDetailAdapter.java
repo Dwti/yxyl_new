@@ -12,7 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
-import com.yanxiu.gphone.student.homework.data.HomeworkDetailBean;
+import com.yanxiu.gphone.student.homework.response.HomeworkDetailBean;
 
 import java.util.List;
 

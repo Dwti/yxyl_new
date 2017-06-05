@@ -12,11 +12,11 @@ import android.widget.Toast;
 import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
-import com.yanxiu.gphone.student.homework.data.CancelApplyClassResponse;
-import com.yanxiu.gphone.student.homework.data.CancelApplyClassRequest;
-import com.yanxiu.gphone.student.homework.data.ClassBean;
-import com.yanxiu.gphone.student.homework.data.ExitClassRequest;
-import com.yanxiu.gphone.student.homework.data.ExitClassResponse;
+import com.yanxiu.gphone.student.homework.response.CancelApplyClassResponse;
+import com.yanxiu.gphone.student.homework.request.CancelApplyClassRequest;
+import com.yanxiu.gphone.student.homework.response.ClassBean;
+import com.yanxiu.gphone.student.homework.request.ExitClassRequest;
+import com.yanxiu.gphone.student.homework.response.ExitClassResponse;
 import com.yanxiu.gphone.student.base.ExerciseBaseCallback;
 
 /**
@@ -39,6 +39,7 @@ public class ClassInfoActivity extends Activity {
 
     private void initView(final ClassBean classInfo, final int status) {
         TextView title = (TextView) findViewById(R.id.tv_title);
+        TextView className = (TextView) findViewById(R.id.tv_class_name);
         TextView classNum = (TextView) findViewById(R.id.tv_class_num);
         TextView teacherName = (TextView) findViewById(R.id.tv_teacher_name);
         TextView studentNum = (TextView) findViewById(R.id.tv_student_num);
@@ -51,6 +52,7 @@ public class ClassInfoActivity extends Activity {
 
         if(classInfo != null){
             mClassId = classInfo.getId();
+            className.setText(classInfo.getGradename()+classInfo.getName());
             classNum.setText(classInfo.getId());
             teacherName.setText(classInfo.getAdminName());
             studentNum.setText(String.valueOf(classInfo.getStdnum()));

@@ -2,7 +2,7 @@ package com.yanxiu.gphone.student.homework.homeworkdetail;
 
 import com.yanxiu.gphone.student.base.BasePresenter;
 import com.yanxiu.gphone.student.base.BaseView;
-import com.yanxiu.gphone.student.homework.data.HomeworkDetailBean;
+import com.yanxiu.gphone.student.homework.response.HomeworkDetailBean;
 
 import java.util.List;
 

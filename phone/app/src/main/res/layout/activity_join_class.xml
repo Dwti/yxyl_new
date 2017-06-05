@@ -36,12 +36,12 @@
                     android:background="@drawable/shape_small_point"/>
 
                 <TextView
+                    android:id="@+id/tv_class_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@android:color/white"
                     android:layout_marginLeft="8dp"
                     android:textSize="20sp"
-                    android:text="七年级20班"
                     android:textStyle="bold"
                     />
 

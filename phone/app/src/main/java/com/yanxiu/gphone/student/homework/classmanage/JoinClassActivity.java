@@ -6,25 +6,22 @@ import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.customviews.WavesLayout;
-import com.yanxiu.gphone.student.homepage.MainActivity;
-import com.yanxiu.gphone.student.homework.data.ClassBean;
-import com.yanxiu.gphone.student.homework.data.JoinClassRequest;
-import com.yanxiu.gphone.student.homework.data.JoinClassResponse;
-import com.yanxiu.gphone.student.homework.data.UpdateUserInfoRequest;
-import com.yanxiu.gphone.student.homework.data.UpdateUserInfoResponse;
+import com.yanxiu.gphone.student.homework.response.ClassBean;
+import com.yanxiu.gphone.student.homework.request.JoinClassRequest;
+import com.yanxiu.gphone.student.homework.response.JoinClassResponse;
+import com.yanxiu.gphone.student.homework.request.UpdateUserInfoRequest;
+import com.yanxiu.gphone.student.homework.response.UpdateUserInfoResponse;
 import com.yanxiu.gphone.student.base.ExerciseBaseCallback;
 import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.ToastManager;
@@ -63,6 +60,7 @@ public class JoinClassActivity extends Activity {
     }
     private void initView(final ClassBean classInfo) {
         TextView title = (TextView) findViewById(R.id.tv_title);
+        TextView className = (TextView) findViewById(R.id.tv_class_name);
         TextView classNum = (TextView) findViewById(R.id.tv_class_num);
         TextView teacherName = (TextView) findViewById(R.id.tv_teacher_name);
         TextView studentNum = (TextView) findViewById(R.id.tv_student_num);
@@ -74,7 +72,7 @@ public class JoinClassActivity extends Activity {
         mBack = findViewById(R.id.iv_left);
 
         mBack.setVisibility(View.VISIBLE);
-        title.setText(R.string.join_class);
+        title.setText(R.string.class_info);
         mEditName.setText(LoginInfo.getRealName());
         mEditName.setSelection(LoginInfo.getRealName().length());
         if(TextUtils.isEmpty(LoginInfo.getRealName())){
@@ -84,6 +82,7 @@ public class JoinClassActivity extends Activity {
 
         if(classInfo != null){
             mClassId = classInfo.getId();
+            className.setText(classInfo.getGradename()+classInfo.getName());
             classNum.setText(classInfo.getId());
             teacherName.setText(classInfo.getAdminName());
             studentNum.setText(String.valueOf(classInfo.getStdnum()));

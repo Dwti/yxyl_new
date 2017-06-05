@@ -1,4 +1,4 @@
-package com.yanxiu.gphone.student.homework.data;
+package com.yanxiu.gphone.student.homework.request;
 
 import com.yanxiu.gphone.student.base.ExerciseBaseRequest;
 import com.yanxiu.gphone.student.db.UrlRepository;
