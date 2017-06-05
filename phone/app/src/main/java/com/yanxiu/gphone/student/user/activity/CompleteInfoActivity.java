@@ -220,7 +220,6 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
         mCompleteInfoThridRequest.schoolid=message.schoolId;
         mCompleteInfoThridRequest.stageid=stageId;
         mCompleteInfoThridRequest.schoolName=message.schoolName;
-        mCompleteInfoThridRequest.validKey= SysEncryptUtil.getMd5_32(LoginInfo.getMobile() + "&" + "yxylmobile");
         mCompleteInfoThridRequest.startRequest(LoginResponse.class, new ExerciseBaseCallback<LoginResponse>() {
 
             @Override

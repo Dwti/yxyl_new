@@ -213,7 +213,6 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
         mJoinClassSubmitThridRequest.schoolid=mData.schoolid;
         mJoinClassSubmitThridRequest.schoolName=mData.schoolname;
         mJoinClassSubmitThridRequest.provinceid="";
-        mJoinClassSubmitThridRequest.validKey=SysEncryptUtil.getMd5_32(LoginInfo.getMobile() + "&" + "yxylmobile");
         mJoinClassSubmitThridRequest.startRequest(LoginResponse.class, new ExerciseBaseCallback<LoginResponse>() {
 
             @Override

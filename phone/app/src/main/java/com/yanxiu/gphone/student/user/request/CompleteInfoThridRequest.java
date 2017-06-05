@@ -21,7 +21,6 @@ public class CompleteInfoThridRequest extends BaseLoginRequest {
     public String schoolid;
     public String stageid;
     public String schoolName;
-    public String validKey;
     public String deviceId= Constants.deviceId;
 
     @Override

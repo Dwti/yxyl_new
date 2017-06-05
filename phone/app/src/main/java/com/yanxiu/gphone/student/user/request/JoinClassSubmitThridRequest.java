@@ -22,7 +22,6 @@ public class JoinClassSubmitThridRequest extends BaseLoginRequest {
     public String schoolid;
     public String schoolName;
     public String provinceid;
-    public String validKey;
     public String deviceId= Constants.deviceId;
 
     @Override
