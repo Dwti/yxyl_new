@@ -128,8 +128,6 @@ public class HomeworkDetailPresenter implements HomeworkDetailContract.Presenter
 
     @Override
     public void finishUI() {
-        if(!mHomeworkDetailView.isActive()){
-            mHomeworkDetailView.finishUI();
-        }
+        mHomeworkDetailView.finishUI();
     }
 }
