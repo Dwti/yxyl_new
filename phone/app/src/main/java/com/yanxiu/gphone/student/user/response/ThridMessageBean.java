@@ -7,7 +7,7 @@ import java.io.Serializable;
  * Time : 2017/6/6 10:32.
  * Function :
  */
-public class ThridMessage implements Serializable {
+public class ThridMessageBean implements Serializable {
     public String openid;
     public String platform;
     public String uniqid;

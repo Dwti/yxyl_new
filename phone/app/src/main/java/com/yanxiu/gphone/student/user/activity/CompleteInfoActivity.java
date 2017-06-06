@@ -18,7 +18,7 @@ import com.yanxiu.gphone.student.homepage.MainActivity;
 import com.yanxiu.gphone.student.user.request.CompleteInfoRequest;
 import com.yanxiu.gphone.student.user.request.CompleteInfoThridRequest;
 import com.yanxiu.gphone.student.user.response.LoginResponse;
-import com.yanxiu.gphone.student.user.response.ThridMessage;
+import com.yanxiu.gphone.student.user.response.ThridMessageBean;
 import com.yanxiu.gphone.student.util.EditTextManger;
 import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.SysEncryptUtil;
@@ -60,7 +60,7 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
     public String stageId;
     public SchoolMessage message;
     private CompleteInfoRequest mCompleteInfoRequest;
-    private ThridMessage thridMessage;
+    private ThridMessageBean thridMessageBean;
     private CompleteInfoThridRequest mCompleteInfoThridRequest;
     private ImageView mBackView;
     private TextView mTitleView;
@@ -71,7 +71,7 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
         context.startActivity(intent);
     }
 
-    public static void LaunchActivity(Context context, ThridMessage message){
+    public static void LaunchActivity(Context context, ThridMessageBean message){
         Intent intent=new Intent(context,CompleteInfoActivity.class);
         intent.putExtra(LoginActivity.TYPE,LoginActivity.TYPE_THRID);
         intent.putExtra(LoginActivity.THRID_LOGIN,message);
@@ -87,7 +87,7 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
         rootView.setContentView(R.layout.activity_completeinfo);
         String type=getIntent().getStringExtra(LoginActivity.TYPE);
         if (type.equals(LoginActivity.TYPE_THRID)) {
-            thridMessage = (ThridMessage) getIntent().getSerializableExtra(LoginActivity.THRID_LOGIN);
+            thridMessageBean = (ThridMessageBean) getIntent().getSerializableExtra(LoginActivity.THRID_LOGIN);
         }
         setContentView(rootView);
         initView();
@@ -163,7 +163,7 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
                 break;
             case R.id.tv_submit:
                 String userName=mUserNameView.getText().toString().trim();
-                if (thridMessage!=null){
+                if (thridMessageBean !=null){
                     submitInfoThrid(userName);
                 }else {
                     submitInfo(userName);
@@ -209,11 +209,11 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
     private void submitInfoThrid(String userName){
         rootView.showLoadingView();
         mCompleteInfoThridRequest=new CompleteInfoThridRequest();
-        mCompleteInfoThridRequest.headimg=thridMessage.head;
-        mCompleteInfoThridRequest.openid=thridMessage.openid;
-        mCompleteInfoThridRequest.pltform=thridMessage.platform;
-        mCompleteInfoThridRequest.sex=thridMessage.sex;
-        mCompleteInfoThridRequest.uniqid=thridMessage.uniqid;
+        mCompleteInfoThridRequest.headimg= thridMessageBean.head;
+        mCompleteInfoThridRequest.openid= thridMessageBean.openid;
+        mCompleteInfoThridRequest.pltform= thridMessageBean.platform;
+        mCompleteInfoThridRequest.sex= thridMessageBean.sex;
+        mCompleteInfoThridRequest.uniqid= thridMessageBean.uniqid;
         mCompleteInfoThridRequest.realname=userName;
         mCompleteInfoThridRequest.provinceid=message.provinceId;
         mCompleteInfoThridRequest.cityid=message.cityId;

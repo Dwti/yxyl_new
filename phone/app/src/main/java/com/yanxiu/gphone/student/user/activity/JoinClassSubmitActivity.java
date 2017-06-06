@@ -19,7 +19,7 @@ import com.yanxiu.gphone.student.user.request.JoinClassSubmitRequest;
 import com.yanxiu.gphone.student.user.request.JoinClassSubmitThridRequest;
 import com.yanxiu.gphone.student.user.response.JoinClassResponse;
 import com.yanxiu.gphone.student.user.response.LoginResponse;
-import com.yanxiu.gphone.student.user.response.ThridMessage;
+import com.yanxiu.gphone.student.user.response.ThridMessageBean;
 import com.yanxiu.gphone.student.util.EditTextManger;
 import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.SysEncryptUtil;
@@ -43,7 +43,7 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
     private WavesLayout mWavesView;
     private TextView mAddClassView;
     private JoinClassResponse.Data mData;
-    private ThridMessage thridMessage;
+    private ThridMessageBean thridMessageBean;
     private JoinClassSubmitRequest mJoinClassSubmitRequest;
     private JoinClassSubmitThridRequest mJoinClassSubmitThridRequest;
     private ImageView mBackView;
@@ -57,7 +57,7 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
         context.startActivity(intent);
     }
 
-    public static void LaunchActivity(Context context, JoinClassResponse.Data response, ThridMessage message){
+    public static void LaunchActivity(Context context, JoinClassResponse.Data response, ThridMessageBean message){
         Intent intent=new Intent(context,JoinClassSubmitActivity.class);
         intent.putExtra(JoinClassActivity.KEY,response);
         intent.putExtra(LoginActivity.TYPE,LoginActivity.TYPE_THRID);
@@ -73,7 +73,7 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
         rootView.setContentView(R.layout.activity_join_class_submit);
         String type=getIntent().getStringExtra(LoginActivity.TYPE);
         if (type.equals(LoginActivity.TYPE_THRID)) {
-            thridMessage = (ThridMessage) getIntent().getSerializableExtra(LoginActivity.THRID_LOGIN);
+            thridMessageBean = (ThridMessageBean) getIntent().getSerializableExtra(LoginActivity.THRID_LOGIN);
         }
         mData= (JoinClassResponse.Data) getIntent().getSerializableExtra(JoinClassActivity.KEY);
         setContentView(rootView);
@@ -143,7 +143,7 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
                 break;
             case R.id.tv_add_class:
                 String userName=mInputNameView.getText().toString().trim();
-                if (thridMessage!=null){
+                if (thridMessageBean !=null){
                     addClassThrid(userName);
                 }else {
                     addClass(userName);
@@ -201,11 +201,11 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
     private void addClassThrid(String userName){
         rootView.showLoadingView();
         mJoinClassSubmitThridRequest=new JoinClassSubmitThridRequest();
-        mJoinClassSubmitThridRequest.headimg=thridMessage.head;
-        mJoinClassSubmitThridRequest.openid=thridMessage.openid;
-        mJoinClassSubmitThridRequest.pltform=thridMessage.platform;
-        mJoinClassSubmitThridRequest.sex=thridMessage.sex;
-        mJoinClassSubmitThridRequest.uniqid=thridMessage.uniqid;
+        mJoinClassSubmitThridRequest.headimg= thridMessageBean.head;
+        mJoinClassSubmitThridRequest.openid= thridMessageBean.openid;
+        mJoinClassSubmitThridRequest.pltform= thridMessageBean.platform;
+        mJoinClassSubmitThridRequest.sex= thridMessageBean.sex;
+        mJoinClassSubmitThridRequest.uniqid= thridMessageBean.uniqid;
         mJoinClassSubmitThridRequest.realname=userName;
         mJoinClassSubmitThridRequest.areaid="";
         mJoinClassSubmitThridRequest.cityid="";
