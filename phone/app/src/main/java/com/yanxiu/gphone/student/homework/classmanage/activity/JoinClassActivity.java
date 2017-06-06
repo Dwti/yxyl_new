@@ -85,7 +85,7 @@ public class JoinClassActivity extends Activity {
             className.setText(classInfo.getGradename()+classInfo.getName());
             classNum.setText(classInfo.getId());
             teacherName.setText(classInfo.getAdminName());
-            studentNum.setText(String.valueOf(classInfo.getStdnum()));
+            studentNum.setText(String.format(getString(R.string.student_count),classInfo.getStdnum()));
             schoolName.setText(classInfo.getSchoolname());
         }
     }
