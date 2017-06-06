@@ -4,7 +4,6 @@ package com.yanxiu.gphone.student.homework;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,17 +18,17 @@ import android.widget.Toast;
 import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
-import com.yanxiu.gphone.student.base.ExerciseBaseCallback;
+import com.yanxiu.gphone.student.base.YxylBaseCallback;
 import com.yanxiu.gphone.student.base.HomePageBaseFragment;
-import com.yanxiu.gphone.student.homework.classmanage.ClassInfoActivity;
+import com.yanxiu.gphone.student.homework.classmanage.activity.ClassInfoActivity;
 import com.yanxiu.gphone.student.homework.classmanage.ClassStatus;
-import com.yanxiu.gphone.student.homework.classmanage.SearchClassFragment;
-import com.yanxiu.gphone.student.homework.data.ClassBean;
-import com.yanxiu.gphone.student.homework.data.SearchClassRequest;
-import com.yanxiu.gphone.student.homework.data.SearchClassResponse;
-import com.yanxiu.gphone.student.homework.data.SubjectBean;
-import com.yanxiu.gphone.student.homework.data.SubjectRequest;
-import com.yanxiu.gphone.student.homework.data.SubjectResponse;
+import com.yanxiu.gphone.student.homework.classmanage.fragment.SearchClassFragment;
+import com.yanxiu.gphone.student.homework.response.ClassBean;
+import com.yanxiu.gphone.student.homework.request.SearchClassRequest;
+import com.yanxiu.gphone.student.homework.response.SearchClassResponse;
+import com.yanxiu.gphone.student.homework.response.SubjectBean;
+import com.yanxiu.gphone.student.homework.request.SubjectRequest;
+import com.yanxiu.gphone.student.homework.response.SubjectResponse;
 import com.yanxiu.gphone.student.homework.homeworkdetail.HomeworkDetailActivity;
 
 import java.util.ArrayList;
@@ -94,7 +93,7 @@ public class HomeworkFragment extends HomePageBaseFragment implements SearchClas
                 loadSubject();
             }
         });
-        loadSubject();
+        requestData();
         return root;
     }
 
@@ -103,7 +102,7 @@ public class HomeworkFragment extends HomePageBaseFragment implements SearchClas
      */
     @Override
     public void requestData() {
-        Log.e("dyf",TAG);
+        loadSubject();
     }
 
     private void checkClassInfo() {
@@ -117,7 +116,7 @@ public class HomeworkFragment extends HomePageBaseFragment implements SearchClas
         request.startRequest(SearchClassResponse.class,mSearchClassCallback);
     }
 
-    HttpCallback<SearchClassResponse> mSearchClassCallback = new ExerciseBaseCallback<SearchClassResponse>() {
+    HttpCallback<SearchClassResponse> mSearchClassCallback = new YxylBaseCallback<SearchClassResponse>() {
         @Override
         public void onResponse(RequestBase request, SearchClassResponse ret) {
             if(ret.getStatus().getCode() == 0 ){
@@ -143,7 +142,7 @@ public class HomeworkFragment extends HomePageBaseFragment implements SearchClas
     }
 
 
-    HttpCallback<SubjectResponse> mLoadSubjectCallback = new ExerciseBaseCallback<SubjectResponse>(){
+    HttpCallback<SubjectResponse> mLoadSubjectCallback = new YxylBaseCallback<SubjectResponse>(){
 
         @Override
         public void onResponse(RequestBase request, SubjectResponse ret) {
@@ -153,10 +152,11 @@ public class HomeworkFragment extends HomePageBaseFragment implements SearchClas
                     showDataEmptyView();
                 }else {
                     showSubjects(ret.getData());
-                    mTitle.setText(ret.getProperty().getClassName());
                 }
+                mTitle.setText(ret.getProperty().getClassName());
             }else if(ret.getStatus().getCode() == ClassStatus.APPLYING_CLASS.getCode()){ //班级正在审核
                 mClassId = ret.getProperty().getClassId();
+                mTitle.setText(ret.getProperty().getClassName());
                 showClassApplyView();
             }else if(ret.getStatus().getCode() == ClassStatus.NO_CLASS.getCode()){   //未加入班级
                 openJoinClassUI();

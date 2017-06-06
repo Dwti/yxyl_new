@@ -7,6 +7,8 @@ import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -97,8 +99,8 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
     }
 
     private void initBottomBar() {
-        mSelNavTxtColor = getResources().getColor(R.color.color_805500);
-        mNormalNavTxtColor = getResources().getColor(R.color.color_006666);
+        mSelNavTxtColor = getResources().getColor(R.color.color_336600);
+        mNormalNavTxtColor = getResources().getColor(R.color.color_999999);
         mNavBarViews[0] = findViewById(R.id.navi_homework);
         mNavBarViews[1] = findViewById(R.id.navi_exercise);
         mNavBarViews[2] = findViewById(R.id.navi_my);
@@ -130,6 +132,7 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
             default:
                 break;
         }
+        startTabAnimation(mNavBarViews[curItem]);
         if (mNaviFragmentFactory.getCurrentItem() != curItem) {
             showCurrentFragment(curItem);
         }
@@ -137,31 +140,31 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
     private void checkBottomBarProcess(int index){
         if(index>=0 && index<3) {
             resetBottomBar();
-            mNavBarViews[index].setBackgroundResource(R.drawable.home_nav_bar_sel);
+//            mNavBarViews[index].setBackgroundResource(R.drawable.home_nav_bar_sel);
             mNavTextViews[index].setTextColor(mSelNavTxtColor);
-            mNavTextViews[index].setShadowLayer(2, 0, 2, getResources().getColor(R.color.color_ffff99));
+//            mNavTextViews[index].setShadowLayer(2, 0, 2, getResources().getColor(R.color.color_ffff99));
             switch (index) {
                 case INDEX_HOMEWORK:
-                    mNavIconViews[0].setBackgroundResource(R.drawable.navi_homework_selected);
+//                    mNavIconViews[0].setBackgroundResource(R.drawable.navi_homework_selected);
                     break;
                 case INDEX_EXERCISE:
-                    mNavIconViews[1].setBackgroundResource(R.drawable.navi_exercise_selected);
+//                    mNavIconViews[1].setBackgroundResource(R.drawable.navi_exercise_selected);
                     break;
                 case INDEX_MY:
-                    mNavIconViews[2].setBackgroundResource(R.drawable.navi_my_selected);
+//                    mNavIconViews[2].setBackgroundResource(R.drawable.navi_my_selected);
                     break;
             }
         }
     }
     private void resetBottomBar() {
         for (int i = 0; i < 3; i++) {
-            mNavBarViews[i].setBackgroundResource(R.drawable.home_nav_bar_nor);
+//            mNavBarViews[i].setBackgroundResource(R.drawable.home_nav_bar_nor);
             mNavTextViews[i].setTextColor(mNormalNavTxtColor);
-            mNavTextViews[i].setShadowLayer(2, 0, 2, getResources().getColor(R.color.color_33ffff));
+//            mNavTextViews[i].setShadowLayer(2, 0, 2, getResources().getColor(R.color.color_33ffff));
         }
-        mNavIconViews[0].setBackgroundResource(R.drawable.navi_homework_normal);
-        mNavIconViews[1].setBackgroundResource(R.drawable.navi_exercise_normal);
-        mNavIconViews[2].setBackgroundResource(R.drawable.navi_my_normal);
+//        mNavIconViews[0].setBackgroundResource(R.drawable.navi_homework_normal);
+//        mNavIconViews[1].setBackgroundResource(R.drawable.navi_exercise_normal);
+//        mNavIconViews[2].setBackgroundResource(R.drawable.navi_my_normal);
 
     }
 
@@ -230,5 +233,45 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
 
     public void setBottomNaviBarsVisibility(int visibility) {
         mBottomNaviLayout.setVisibility(visibility);
+    }
+
+    /**
+     * 点击tab时的弹跳动画
+     * @param view
+     */
+    private void startTabAnimation(final View view){
+        view.setVisibility(View.VISIBLE);
+        Animation anim_step1 = AnimationUtils.loadAnimation(this, R.anim.anim_maintab_scale_1);
+        final Animation anim_step2 = AnimationUtils.loadAnimation(this, R.anim.anim_maintab_scale_2);
+        final Animation anim_step3 = AnimationUtils.loadAnimation(this, R.anim.anim_maintab_scale_3);
+        final Animation anim_step4 = AnimationUtils.loadAnimation(this, R.anim.anim_maintab_scale_4);
+        view.startAnimation(anim_step1);
+        anim_step1.setAnimationListener(new Animation.AnimationListener() {
+            public void onAnimationStart(Animation animation) {}
+
+            public void onAnimationEnd(Animation animation) {
+                view.startAnimation(anim_step2);
+            }
+
+            public void onAnimationRepeat(Animation animation) {}
+        });
+        anim_step2.setAnimationListener(new Animation.AnimationListener() {
+            public void onAnimationStart(Animation animation) {}
+
+            public void onAnimationEnd(Animation animation) {
+                view.startAnimation(anim_step3);
+            }
+
+            public void onAnimationRepeat(Animation animation) {}
+        });
+        anim_step3.setAnimationListener(new Animation.AnimationListener() {
+            public void onAnimationStart(Animation animation) {}
+
+            public void onAnimationEnd(Animation animation) {
+                view.startAnimation(anim_step4);
+            }
+
+            public void onAnimationRepeat(Animation animation) {}
+        });
     }
 }

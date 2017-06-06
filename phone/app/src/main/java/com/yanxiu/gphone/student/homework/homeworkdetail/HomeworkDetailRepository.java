@@ -2,15 +2,15 @@ package com.yanxiu.gphone.student.homework.homeworkdetail;
 
 import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
-import com.yanxiu.gphone.student.base.ExerciseBaseCallback;
+import com.yanxiu.gphone.student.base.YxylBaseCallback;
 import com.yanxiu.gphone.student.constant.Constants;
-import com.yanxiu.gphone.student.homework.data.HomeworkDetailBean;
-import com.yanxiu.gphone.student.homework.data.HomeworkDetailRequest;
-import com.yanxiu.gphone.student.homework.data.HomeworkDetailResponse;
-import com.yanxiu.gphone.student.homework.data.PaperRequest;
-import com.yanxiu.gphone.student.homework.data.PaperResponse;
-import com.yanxiu.gphone.student.homework.questions.QuestionShowType;
-import com.yanxiu.gphone.student.homework.questions.model.Paper;
+import com.yanxiu.gphone.student.homework.response.HomeworkDetailBean;
+import com.yanxiu.gphone.student.homework.request.HomeworkDetailRequest;
+import com.yanxiu.gphone.student.homework.response.HomeworkDetailResponse;
+import com.yanxiu.gphone.student.homework.request.PaperRequest;
+import com.yanxiu.gphone.student.homework.response.PaperResponse;
+import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
+import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.util.DESBodyDealer;
 import com.yanxiu.gphone.student.util.DataFetcher;
 
@@ -41,7 +41,7 @@ public class HomeworkDetailRepository implements HomeworkDetailDataSource {
         HomeworkDetailRequest request = new HomeworkDetailRequest();
         request.setGroupId(homeworkId);
         request.setPage("1");
-        request.startRequest(HomeworkDetailResponse.class, new ExerciseBaseCallback<HomeworkDetailResponse>() {
+        request.startRequest(HomeworkDetailResponse.class, new YxylBaseCallback<HomeworkDetailResponse>() {
 
             @Override
             public void onResponse(RequestBase request, HomeworkDetailResponse ret) {
@@ -72,7 +72,7 @@ public class HomeworkDetailRepository implements HomeworkDetailDataSource {
         HomeworkDetailRequest request = new HomeworkDetailRequest();
         request.setGroupId(homeworkId);
         request.setPage(mPageIndex+"");
-        request.startRequest(HomeworkDetailResponse.class, new ExerciseBaseCallback<HomeworkDetailResponse>() {
+        request.startRequest(HomeworkDetailResponse.class, new YxylBaseCallback<HomeworkDetailResponse>() {
 
             @Override
             public void onResponse(RequestBase request, HomeworkDetailResponse ret) {

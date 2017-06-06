@@ -62,7 +62,7 @@
                     app:waves_radius="@dimen/wavesRadius"
                     android:layout_marginTop="15dp"
                     app:waves_canshowwave="false"
-                    app:waves_animend_alpha="102">
+                    app:waves_color="@color/color_E3F8C5">
 
                     <Button
                         android:id="@+id/btn_next"
@@ -87,7 +87,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/guid_join_class"
                     android:textSize="16sp"
-                    android:textColor="@android:color/white"/>
+                    android:textColor="@drawable/select_joinclass_text_color"/>
                 <ImageView
                     android:layout_width="15dp"
                     android:layout_height="15dp"

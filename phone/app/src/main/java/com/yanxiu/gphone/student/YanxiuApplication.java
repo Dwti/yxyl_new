@@ -2,6 +2,8 @@ package com.yanxiu.gphone.student;
 
 import com.facebook.stetho.Stetho;
 import com.google.gson.Gson;
+import com.umeng.socialize.PlatformConfig;
+import com.umeng.socialize.UMShareAPI;
 import com.yanxiu.gphone.student.base.UrlBean;
 import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.db.UrlRepository;
@@ -18,10 +20,16 @@ public class YanxiuApplication extends LitePalApplication {
 
     @Override
     public void onCreate() {
-        super.onCreate();
+            super.onCreate();
         instance = this;
+        initUm();
         initUrlServer();
         Stetho.initializeWithDefaults(this);
+    }
+
+    private void initUm() {
+        PlatformConfig.setWeixin("wxb6704ac52abcfe4c","943d690bd5020ae629c20281e53bc334");
+        PlatformConfig.setQQZone("1104826608","PsLMILpDwU6QDNOk");
     }
 
     @Override

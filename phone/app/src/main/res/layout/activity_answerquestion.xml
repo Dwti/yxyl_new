@@ -11,7 +11,7 @@
         android:id="@+id/include_top"
         layout="@layout/activity_answerquestion_top_layout" />
 
-    <com.yanxiu.gphone.student.homework.questions.view.QAViewPager
+    <com.yanxiu.gphone.student.questions.answerframe.view.QAViewPager
         android:id="@+id/vp_viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -58,6 +58,7 @@
             android:paddingRight="@dimen/question_bottom_layout_marginLeft">
 
             <TextView
+                android:id="@+id/next_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/question_bottom_layout_image_right"

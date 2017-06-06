@@ -96,7 +96,7 @@ public class LoginInfo {
     }
 
     public static String getMobile() {
-        if (!isLogIn()) {
+        if (bean==null||bean.getMobile()==null) {
             return "";
         }
         return bean.getMobile();

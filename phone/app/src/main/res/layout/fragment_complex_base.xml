@@ -12,7 +12,6 @@
         android:id="@+id/top_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:orientation="vertical"
         app:maxHeight="@dimen/question_top_container_maxheight" />
 
@@ -30,7 +29,7 @@
         android:layout_height="@dimen/question_splitter_bottomview_height"
         android:background="@color/color_edf0ee"/>
 
-    <com.yanxiu.gphone.student.homework.questions.view.QAViewPager
+    <com.yanxiu.gphone.student.questions.answerframe.view.QAViewPager
         android:id="@+id/ll_bottom_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

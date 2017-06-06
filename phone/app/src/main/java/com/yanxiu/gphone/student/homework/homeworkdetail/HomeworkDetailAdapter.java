@@ -2,6 +2,7 @@ package com.yanxiu.gphone.student.homework.homeworkdetail;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
-import com.yanxiu.gphone.student.homework.data.HomeworkDetailBean;
+import com.yanxiu.gphone.student.homework.response.HomeworkDetailBean;
 
 import java.util.List;
 
@@ -75,13 +76,13 @@ public class HomeworkDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 if(TextUtils.isEmpty(bean.getPaperStatus().getTeachercomments()) || TextUtils.isEmpty(bean.getPaperStatus().getTeacherName())){
                     viewHolder.mCommentLayout.setVisibility(View.GONE);
                     viewHolder.mState1.setText(R.string.homework_done_uncheck);
+                    viewHolder.mState2.setText("");
                 }else {
                     viewHolder.mCommentLayout.setVisibility(View.VISIBLE);
                     viewHolder.mState1.setText(R.string.homework_checked);
                     viewHolder.mState2.setText(mContext.getString(R.string.score_rate) + bean.getPaperStatus().getScoreRate());
-                    //TODO 前面几个字儿需要加粗
-                    String text = bean.getPaperStatus().getTeacherName() + mContext.getString(R.string.comment) + bean.getPaperStatus().getTeachercomments();
-                    viewHolder.mComment.setText(text);
+                    String text = String.format(mContext.getString(R.string.comment),bean.getPaperStatus().getTeacherName(),bean.getPaperStatus().getTeachercomments());
+                    viewHolder.mComment.setText(Html.fromHtml(text));
                 }
             }
         }else if(holder instanceof FooterViewHolder){

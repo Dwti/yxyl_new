@@ -2,11 +2,8 @@ package com.yanxiu.gphone.student.customviews;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Canvas;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.widget.LinearLayout;
 
 import com.yanxiu.gphone.student.R;
@@ -20,8 +17,6 @@ import com.yanxiu.gphone.student.R;
 
 public class MyMaxHeightLinearLayout extends LinearLayout {
 
-    private int mDownY;
-    private int mTouchSlop;
     private int mMaxheight = -1;
 
     private boolean mCanChangeHeight;
@@ -41,7 +36,6 @@ public class MyMaxHeightLinearLayout extends LinearLayout {
     }
 
     private void init(Context context, AttributeSet attrs) {
-        mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.MyMaxHeightLinearLayout);
         mMaxheight = array.getDimensionPixelSize(R.styleable.MyMaxHeightLinearLayout_maxHeight, -1);
         array.recycle();
@@ -59,7 +53,7 @@ public class MyMaxHeightLinearLayout extends LinearLayout {
     }
 
     /**
-     * 调用此方法后，maxHeight无效，时的该view可以改变高度--在复合题使用
+     * 调用此方法后，maxHeight无效，使得该view可以改变高度--在复合题使用
      */
     public void setCanChangeHeight() {
         mCanChangeHeight = true;
@@ -93,39 +87,5 @@ public class MyMaxHeightLinearLayout extends LinearLayout {
             heightMeasureSpec = MeasureSpec.makeMeasureSpec(height_size, height_mode);
         }
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    }
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-    }
-
-    @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
-        return super.onInterceptTouchEvent(ev);
-    }
-
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (!mCanChangeHeight) {
-            int action = ev.getAction();
-            switch (action) {
-                case MotionEvent.ACTION_DOWN:
-                    mDownY = (int) ev.getRawY();
-                    break;
-                case MotionEvent.ACTION_MOVE:
-                    int moveY = (int) ev.getRawY();
-                    if (Math.abs(moveY - mDownY) > mTouchSlop) {
-                        return true;
-                    }
-            }
-        }
-
-        return super.dispatchTouchEvent(ev);
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent ev) {
-        return super.onTouchEvent(ev);
     }
 }

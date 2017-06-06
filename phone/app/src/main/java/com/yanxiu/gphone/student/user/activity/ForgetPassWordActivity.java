@@ -8,16 +8,17 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.base.YxylBaseCallback;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
 import com.yanxiu.gphone.student.user.response.ForgerPassWordResponse;
 import com.yanxiu.gphone.student.user.response.VerCodeResponse;
-import com.yanxiu.gphone.student.user.http.ForgetPassWordRequest;
-import com.yanxiu.gphone.student.user.http.SendVerCodeRequest;
+import com.yanxiu.gphone.student.user.request.ForgetPassWordRequest;
+import com.yanxiu.gphone.student.user.request.SendVerCodeRequest;
 import com.yanxiu.gphone.student.util.EditTextManger;
+import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.ToastManager;
 import com.yanxiu.gphone.student.util.time.CountDownManager;
 import com.yanxiu.gphone.student.customviews.WavesLayout;
@@ -48,6 +49,8 @@ public class ForgetPassWordActivity extends YanxiuBaseActivity implements View.O
     private SendVerCodeRequest mSendVerCodeRequest;
     private ForgetPassWordRequest mForgetPassWordRequest;
     private PublicLoadLayout rootView;
+    private ImageView mBackView;
+    private TextView mTitleView;
 
     public static void LaunchActivity(Context context, String mobile) {
         Intent intent = new Intent(context, ForgetPassWordActivity.class);
@@ -61,7 +64,6 @@ public class ForgetPassWordActivity extends YanxiuBaseActivity implements View.O
         mContext = ForgetPassWordActivity.this;
         rootView=new PublicLoadLayout(mContext);
         rootView.setContentView(R.layout.activity_forget_password);
-        rootView.finish();
         setContentView(rootView);
         String mobile = getIntent().getStringExtra(INTENT_MOBILE);
         initView();
@@ -83,6 +85,8 @@ public class ForgetPassWordActivity extends YanxiuBaseActivity implements View.O
     }
 
     private void initView() {
+        mBackView= (ImageView) findViewById(R.id.iv_left);
+        mTitleView= (TextView) findViewById(R.id.tv_title);
         mMobileView = (EditText) findViewById(R.id.ed_mobile);
         mClearView = (ImageView) findViewById(R.id.iv_clear);
         mVerCodeView = (EditText) findViewById(R.id.ed_ver_code);
@@ -92,9 +96,11 @@ public class ForgetPassWordActivity extends YanxiuBaseActivity implements View.O
     }
 
     private void initData(String mobile) {
+        mBackView.setVisibility(View.VISIBLE);
         mClearView.setEnabled(false);
         mSendVerCodeView.setEnabled(false);
         mNextView.setEnabled(false);
+        mTitleView.setText(getText(R.string.forgetpassword));
         mMobileView.setText(mobile);
         if (mobile.length() > 0) {
             mMobileView.setSelection(mobile.length());
@@ -102,6 +108,7 @@ public class ForgetPassWordActivity extends YanxiuBaseActivity implements View.O
     }
 
     private void listener() {
+        mBackView.setOnClickListener(ForgetPassWordActivity.this);
         mClearView.setOnClickListener(ForgetPassWordActivity.this);
         mSendVerCodeView.setOnClickListener(ForgetPassWordActivity.this);
         mNextView.setOnClickListener(ForgetPassWordActivity.this);
@@ -132,13 +139,13 @@ public class ForgetPassWordActivity extends YanxiuBaseActivity implements View.O
         CountDownManager.getManager().setTotalTime(totalTime).setScheduleListener(new CountDownManager.ScheduleListener() {
             @Override
             public void onProgress(long progress) {
-                mSendVerCodeView.setEnabled(false);
+                mSendVerCodeView.setClickable(false);
                 mSendVerCodeView.setText(String.format(getText(R.string.verCode_progress).toString(), (int) progress / 1000));
             }
 
             @Override
             public void onFinish() {
-                mSendVerCodeView.setEnabled(true);
+                mSendVerCodeView.setClickable(true);
                 mSendVerCodeView.setText(getText(R.string.send_verCode_more));
             }
         }).start();
@@ -159,6 +166,10 @@ public class ForgetPassWordActivity extends YanxiuBaseActivity implements View.O
         String mobileCode;
         String verCode;
         switch (v.getId()) {
+            case R.id.iv_left:
+                ForgetPassWordActivity.this.finish();
+                EditTextManger.getManager(mTitleView).hideSoftInput(mContext);
+                break;
             case R.id.iv_clear:
                 mMobileView.setText("");
                 break;
@@ -191,14 +202,15 @@ public class ForgetPassWordActivity extends YanxiuBaseActivity implements View.O
         mSendVerCodeRequest = new SendVerCodeRequest();
         mSendVerCodeRequest.mobile = mobile;
         mSendVerCodeRequest.type = TYPE;
-        mSendVerCodeRequest.startRequest(VerCodeResponse.class, new HttpCallback<VerCodeResponse>() {
+        mSendVerCodeRequest.startRequest(VerCodeResponse.class, new YxylBaseCallback<VerCodeResponse>() {
+
             @Override
-            public void onSuccess(RequestBase request, VerCodeResponse ret) {
+            protected void onResponse(RequestBase request, VerCodeResponse response) {
                 rootView.hiddenLoadingView();
-                if (ret.status.getCode() == 0) {
+                if (response.getStatus().getCode() == 0) {
                     startTiming(45000);
                 } else {
-                    ToastManager.showMsg(ret.status.getDesc());
+                    ToastManager.showMsg(response.getStatus().getDesc());
                 }
             }
 
@@ -210,20 +222,23 @@ public class ForgetPassWordActivity extends YanxiuBaseActivity implements View.O
         });
     }
 
-    private void onNext(String mobile, String verCode) {
+    private void onNext(final String mobile, String verCode) {
         rootView.showLoadingView();
         mForgetPassWordRequest = new ForgetPassWordRequest();
         mForgetPassWordRequest.mobile = mobile;
         mForgetPassWordRequest.code = verCode;
         mForgetPassWordRequest.type = TYPE;
-        mForgetPassWordRequest.startRequest(ForgerPassWordResponse.class, new HttpCallback<ForgerPassWordResponse>() {
+        mForgetPassWordRequest.startRequest(ForgerPassWordResponse.class, new YxylBaseCallback<ForgerPassWordResponse>() {
+
             @Override
-            public void onSuccess(RequestBase request, ForgerPassWordResponse ret) {
+            protected void onResponse(RequestBase request, ForgerPassWordResponse response) {
                 rootView.hiddenLoadingView();
-                if (ret.status.getCode() == 0) {
+                if (response.getStatus().getCode() == 0) {
+                    LoginInfo.setMobile(mobile);
                     ResetPassWordActivity.LaunchActivity(mContext);
+                    ForgetPassWordActivity.this.finish();
                 } else {
-                    ToastManager.showMsg(ret.status.getDesc());
+                    ToastManager.showMsg(response.getStatus().getDesc());
                 }
             }
 

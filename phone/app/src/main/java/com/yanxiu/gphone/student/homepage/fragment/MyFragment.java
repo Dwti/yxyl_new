@@ -6,21 +6,26 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.HomePageBaseFragment;
+import com.yanxiu.gphone.student.user.activity.LoginActivity;
+import com.yanxiu.gphone.student.util.LoginInfo;
 
 
 /**
  * 首页"我的"Fragment
  */
 public class MyFragment extends HomePageBaseFragment implements View.OnClickListener {
-    private static final String TAG=MyFragment.class.getSimpleName();
-
+    private static final String TAG = MyFragment.class.getSimpleName();
+    private TextView mLogOut;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_my, container, false);
+        mLogOut = (TextView) view.findViewById(R.id.logout);
+        mLogOut.setOnClickListener(this);
         return view;
     }
 
@@ -38,7 +43,13 @@ public class MyFragment extends HomePageBaseFragment implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-
+        switch (v.getId()){
+            case R.id.logout:
+                LoginInfo.LogOut();
+                LoginActivity.LaunchActivity(getActivity());
+                getActivity().finish();
+                break;
+        }
     }
 
     /**

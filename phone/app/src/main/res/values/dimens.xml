@@ -215,12 +215,15 @@
 
     <dimen name="common_line_height">1dp</dimen>
 
-    <dimen name="home_nav_bar_height">40dp</dimen>
+    <dimen name="home_bottom_bar_height">65dp</dimen>
+    <dimen name="home_bottom_bar_paddingtop">7dp</dimen>
+    <dimen name="home_bottom_bar_paddingbottom">6dp</dimen>
+    <dimen name="home_nav_bar_height">47dp</dimen>
     <dimen name="home_nav_bar_margin">3dp</dimen>
     <dimen name="home_nav_bar_marginleft">1dp</dimen>
     <dimen name="home_nav_bar__style_marginleft">8dp</dimen>
-    <dimen name="nav_icon_width">33dp</dimen>
-    <dimen name="home_nav_bar_textsize">16dp</dimen>
+    <dimen name="nav_icon_width">35dp</dimen>
+    <dimen name="home_nav_bar_textsize">14dp</dimen>
     <dimen name="net_error_layout_height">220dp</dimen>
     <dimen name="net_error_layout_margintop">22dp</dimen>
     <dimen name="net_error_layout_retrybutton_top">55dp</dimen>
@@ -243,7 +246,7 @@
     <dimen name="question_top_layout_height">58dp</dimen>
     <dimen name="question_top_container_maxheight">150dp</dimen>
     <dimen name="question_bottom_layout_height">45dp</dimen>
-    <dimen name="question_ll_top_container_minheight">65dp</dimen>
+    <dimen name="question_ll_top_container_minheight">45dp</dimen>
     <dimen name="question_bottom_layout_marginLeft">12dp</dimen>
     <dimen name="question_bottom_layout_image_width">15dp</dimen>
     <dimen name="question_bottom_layout_image_right">5dp</dimen>
@@ -262,7 +265,7 @@
     <dimen name="question_top_content_top_padding">25dp</dimen>
     <dimen name="question_top_content_left_padding">15dp</dimen>
     <dimen name="question_top_content_right_padding">15dp</dimen>
-    <dimen name="question_top_content_bottom_padding">25dp</dimen>
+    <dimen name="question_top_content_bottom_padding">20dp</dimen>
     <dimen name="stem_text_size">17dp</dimen>
     <dimen name="stem_line_space">5dp</dimen>
 
@@ -280,5 +283,29 @@
     <dimen name="join_class_submit_text_size">21dp</dimen>
     <dimen name="join_class_submit_edit_margin_t">25dp</dimen>
     <dimen name="join_class_submit_edit_margin_l">20dp</dimen>
+
+    <dimen name="title_padding">5dp</dimen>
+    <dimen name="search_school_margin_l">35dp</dimen>
+    <dimen name="search_school_margin_r">25dp</dimen>
+    <dimen name="search_school_margin_t">35dp</dimen>
+
+    <dimen name="question_fragment_q_margin_l_r">15dp</dimen>
+    <dimen name="question_fragment_a_margin_t">25dp</dimen>
+    <dimen name="question_fragment_q_text_size">19dp</dimen>
+    <dimen name="question_fragment_q_line_space">10dp</dimen>
+
+    <dimen name="choose_fragment_item_text_size">22dp</dimen>
+    <dimen name="choose_fragment_item_margin_t_b">20dp</dimen>
+    <dimen name="choose_fragment_item_content_text_size">17dp</dimen>
+    <dimen name="choose_fragment_item_content_line_space">8dp</dimen>
+
+    <dimen name="choose_fragment_unselect_round_w_h">20dp</dimen>
+    <dimen name="choose_fragment_round_stroke_w">2dp</dimen>
+    <dimen name="choose_fragment_select_round_margin">5dp</dimen>
+    <dimen name="choose_fragment_line_h">1dp</dimen>
+    <dimen name="question_bottom_shadow">2dp</dimen>
+
+    <dimen name="choose_stage_text_max_size">25dp</dimen>
+    <dimen name="choose_stage_text_min_size">22dp</dimen>
 </resources>
 

@@ -56,15 +56,17 @@ public class QuestionProgressView extends View {
      */
     public void setMaxCount(float maxCount) {
         this.maxCount = maxCount;
-        mPercent = mScreenWidth / maxCount;//每一道题的进度比例
+        mPercent = mScreenWidth / maxCount;//每一道题的进度值
     }
 
     /***
      * 更新当前的进度值
+     * @ currentProgress 当前答题的数量
      */
-    public void updateProgress() {
+    public void updateProgress(int currentAnswerNumber) {
         if (mCurrentProgress >= 0 && mCurrentProgress <= mScreenWidth) {
-            mCurrentProgress += mPercent;
+            mCurrentProgress = currentAnswerNumber * mPercent;
+//            mCurrentProgress += mPercent;
             if (mCurrentProgress <= mScreenWidth) {
                 getLayoutParams().width = (int) mCurrentProgress;
                 requestLayout();

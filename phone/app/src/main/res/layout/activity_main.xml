@@ -2,20 +2,22 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_fff6f6f6">
+    android:background="@color/color_ffffff">
 
     <LinearLayout
         android:id="@+id/navi_switcher"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_55"
+        android:layout_height="@dimen/home_bottom_bar_height"
         android:layout_alignParentBottom="true"
-        android:background="@color/color_008080"
+        android:background="@color/color_ffffff"
         android:gravity="center_vertical"
-        android:paddingTop="@dimen/dimen_5"
-        android:paddingBottom="@dimen/dimen_5"
+
+
         android:paddingLeft="@dimen/dimen_3"
         android:paddingRight="@dimen/dimen_3"
         android:orientation="horizontal">
+        <!--android:paddingBottom="@dimen/home_bottom_bar_paddingbottom"-->
+        <!--android:paddingTop="@dimen/home_bottom_bar_paddingtop"-->
         <include
             android:id="@+id/navi_homework"
             layout="@layout/home_nav_bar_item_layout"/>

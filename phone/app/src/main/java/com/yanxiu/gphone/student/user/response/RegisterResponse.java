@@ -1,7 +1,7 @@
 package com.yanxiu.gphone.student.user.response;
 
 
-import com.yanxiu.gphone.student.base.StatusBean;
+import com.yanxiu.gphone.student.base.YxylBaseResponse;
 
 /**
  * Created by Canghaixiao.
@@ -9,6 +9,5 @@ import com.yanxiu.gphone.student.base.StatusBean;
  * Function :
  */
 
-public class RegisterResponse {
-    public StatusBean status;
+public class RegisterResponse extends YxylBaseResponse {
 }
