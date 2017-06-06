@@ -26,6 +26,7 @@ import com.yanxiu.gphone.student.homepage.MainActivity;
 import com.yanxiu.gphone.student.user.request.LoginThridRequest;
 import com.yanxiu.gphone.student.user.response.LoginResponse;
 import com.yanxiu.gphone.student.user.request.LoginRequest;
+import com.yanxiu.gphone.student.user.response.ThridMessage;
 import com.yanxiu.gphone.student.util.EditTextManger;
 import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.SystemUtil;
@@ -412,13 +413,5 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
             }
         }
         setButtonFocusChange(isUserNameReady&&isPassWordReady);
-    }
-
-    public class ThridMessage implements Serializable{
-        public String openid;
-        public String platform;
-        public String uniqid;
-        public String sex;
-        public String head;
     }
 }

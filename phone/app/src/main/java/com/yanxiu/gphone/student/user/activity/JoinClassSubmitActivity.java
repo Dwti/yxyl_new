@@ -19,6 +19,7 @@ import com.yanxiu.gphone.student.user.request.JoinClassSubmitRequest;
 import com.yanxiu.gphone.student.user.request.JoinClassSubmitThridRequest;
 import com.yanxiu.gphone.student.user.response.JoinClassResponse;
 import com.yanxiu.gphone.student.user.response.LoginResponse;
+import com.yanxiu.gphone.student.user.response.ThridMessage;
 import com.yanxiu.gphone.student.util.EditTextManger;
 import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.SysEncryptUtil;
@@ -42,7 +43,7 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
     private WavesLayout mWavesView;
     private TextView mAddClassView;
     private JoinClassResponse.Data mData;
-    private LoginActivity.ThridMessage thridMessage;
+    private ThridMessage thridMessage;
     private JoinClassSubmitRequest mJoinClassSubmitRequest;
     private JoinClassSubmitThridRequest mJoinClassSubmitThridRequest;
     private ImageView mBackView;
@@ -56,7 +57,7 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
         context.startActivity(intent);
     }
 
-    public static void LaunchActivity(Context context, JoinClassResponse.Data response, LoginActivity.ThridMessage message){
+    public static void LaunchActivity(Context context, JoinClassResponse.Data response, ThridMessage message){
         Intent intent=new Intent(context,JoinClassSubmitActivity.class);
         intent.putExtra(JoinClassActivity.KEY,response);
         intent.putExtra(LoginActivity.TYPE,LoginActivity.TYPE_THRID);
@@ -72,7 +73,7 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
         rootView.setContentView(R.layout.activity_join_class_submit);
         String type=getIntent().getStringExtra(LoginActivity.TYPE);
         if (type.equals(LoginActivity.TYPE_THRID)) {
-            thridMessage = (LoginActivity.ThridMessage) getIntent().getSerializableExtra(LoginActivity.THRID_LOGIN);
+            thridMessage = (ThridMessage) getIntent().getSerializableExtra(LoginActivity.THRID_LOGIN);
         }
         mData= (JoinClassResponse.Data) getIntent().getSerializableExtra(JoinClassActivity.KEY);
         setContentView(rootView);

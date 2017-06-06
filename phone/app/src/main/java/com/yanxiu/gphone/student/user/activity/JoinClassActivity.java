@@ -19,6 +19,7 @@ import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
 import com.yanxiu.gphone.student.customviews.WavesLayout;
 import com.yanxiu.gphone.student.user.request.JoinClassRequest;
 import com.yanxiu.gphone.student.user.response.JoinClassResponse;
+import com.yanxiu.gphone.student.user.response.ThridMessage;
 import com.yanxiu.gphone.student.util.EditTextManger;
 import com.yanxiu.gphone.student.util.ToastManager;
 
@@ -40,7 +41,7 @@ public class JoinClassActivity extends YanxiuBaseActivity implements View.OnClic
     private CharacterSeparatedEditLayout mInputClassNumberView;
     private PublicLoadLayout rootView;
     private JoinClassRequest mJoinClassRequest;
-    private LoginActivity.ThridMessage thridMessage;
+    private ThridMessage thridMessage;
     private ImageView mBackView;
     private TextView mTitleView;
     private TextView mSkipView;
@@ -51,7 +52,7 @@ public class JoinClassActivity extends YanxiuBaseActivity implements View.OnClic
         context.startActivity(intent);
     }
 
-    public static void LaunchActivity(Context context, LoginActivity.ThridMessage message){
+    public static void LaunchActivity(Context context, ThridMessage message){
         Intent intent=new Intent(context,JoinClassActivity.class);
         intent.putExtra(LoginActivity.TYPE,LoginActivity.TYPE_THRID);
         intent.putExtra(LoginActivity.THRID_LOGIN,message);
@@ -66,7 +67,7 @@ public class JoinClassActivity extends YanxiuBaseActivity implements View.OnClic
         rootView.setContentView(R.layout.fragment_search_class);
         String type=getIntent().getStringExtra(LoginActivity.TYPE);
         if (type.equals(LoginActivity.TYPE_THRID)) {
-            thridMessage = (LoginActivity.ThridMessage) getIntent().getSerializableExtra(LoginActivity.THRID_LOGIN);
+            thridMessage = (ThridMessage) getIntent().getSerializableExtra(LoginActivity.THRID_LOGIN);
         }
         setContentView(rootView);
         initView();
