@@ -1,13 +1,13 @@
 package com.yanxiu.gphone.student.homework.request;
 
-import com.yanxiu.gphone.student.base.ExerciseBaseRequest;
+import com.yanxiu.gphone.student.base.YxylBaseRequest;
 import com.yanxiu.gphone.student.db.UrlRepository;
 
 /**
  * Created by sp on 17-5-20.
  */
 
-public class JoinClassRequest extends ExerciseBaseRequest {
+public class JoinClassRequest extends YxylBaseRequest {
     protected String validMsg;
     protected String classId;
     @Override

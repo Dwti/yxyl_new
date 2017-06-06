@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
-import com.yanxiu.gphone.student.base.ExerciseBaseCallback;
+import com.yanxiu.gphone.student.base.YxylBaseCallback;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
 import com.yanxiu.gphone.student.user.adapter.ChooseSchoolAdapter;
@@ -145,7 +145,7 @@ public class ChooseSchoolActivity extends YanxiuBaseActivity implements View.OnC
         mChooseSchoolRequest=new ChooseSchoolRequest();
         mChooseSchoolRequest.school=schoolName;
         mChooseSchoolRequest.regionId=message.areaId;
-        mChooseSchoolRequest.startRequest(ChooseSchoolResponse.class, new ExerciseBaseCallback<ChooseSchoolResponse>() {
+        mChooseSchoolRequest.startRequest(ChooseSchoolResponse.class, new YxylBaseCallback<ChooseSchoolResponse>() {
 
             @Override
             protected void onResponse(RequestBase request, ChooseSchoolResponse response) {

@@ -18,7 +18,7 @@ import com.yanxiu.gphone.student.homework.request.CancelApplyClassRequest;
 import com.yanxiu.gphone.student.homework.response.ClassBean;
 import com.yanxiu.gphone.student.homework.request.ExitClassRequest;
 import com.yanxiu.gphone.student.homework.response.ExitClassResponse;
-import com.yanxiu.gphone.student.base.ExerciseBaseCallback;
+import com.yanxiu.gphone.student.base.YxylBaseCallback;
 
 /**
  * Created by sp on 17-5-18.
@@ -97,7 +97,7 @@ public class ClassInfoActivity extends Activity {
         request.startRequest(CancelApplyClassResponse.class,mCancelApplyClassCallback);
     }
 
-    HttpCallback<ExitClassResponse> mExitClassCallback = new ExerciseBaseCallback<ExitClassResponse>() {
+    HttpCallback<ExitClassResponse> mExitClassCallback = new YxylBaseCallback<ExitClassResponse>() {
         @Override
         public void onResponse(RequestBase request, ExitClassResponse ret) {
             if(ret.getStatus().getCode() == 0 ){
@@ -113,7 +113,7 @@ public class ClassInfoActivity extends Activity {
         }
     };
 
-    HttpCallback<CancelApplyClassResponse> mCancelApplyClassCallback = new ExerciseBaseCallback<CancelApplyClassResponse>() {
+    HttpCallback<CancelApplyClassResponse> mCancelApplyClassCallback = new YxylBaseCallback<CancelApplyClassResponse>() {
         @Override
         public void onResponse(RequestBase request, CancelApplyClassResponse ret) {
             if(ret.getStatus().getCode() == 0 ){

@@ -22,7 +22,7 @@ import com.yanxiu.gphone.student.homework.request.JoinClassRequest;
 import com.yanxiu.gphone.student.homework.response.JoinClassResponse;
 import com.yanxiu.gphone.student.homework.request.UpdateUserInfoRequest;
 import com.yanxiu.gphone.student.homework.response.UpdateUserInfoResponse;
-import com.yanxiu.gphone.student.base.ExerciseBaseCallback;
+import com.yanxiu.gphone.student.base.YxylBaseCallback;
 import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.ToastManager;
 
@@ -176,7 +176,7 @@ public class JoinClassActivity extends Activity {
         super.onDestroy();
     }
 
-    HttpCallback<JoinClassResponse> mJoinClassCallback = new ExerciseBaseCallback<JoinClassResponse>() {
+    HttpCallback<JoinClassResponse> mJoinClassCallback = new YxylBaseCallback<JoinClassResponse>() {
         @Override
         public void onResponse(RequestBase request, JoinClassResponse ret) {
             if(ret.getStatus().getCode() == 0){
@@ -191,7 +191,7 @@ public class JoinClassActivity extends Activity {
         }
     };
 
-    HttpCallback<UpdateUserInfoResponse> mUpdateUserInfoCallback = new ExerciseBaseCallback<UpdateUserInfoResponse>() {
+    HttpCallback<UpdateUserInfoResponse> mUpdateUserInfoCallback = new YxylBaseCallback<UpdateUserInfoResponse>() {
         @Override
         public void onResponse(RequestBase request, UpdateUserInfoResponse ret) {
             if(ret.getStatus().getCode() == 0){

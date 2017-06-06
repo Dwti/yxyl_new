@@ -1,6 +1,6 @@
 package com.yanxiu.gphone.student.homework.response;
 
-import com.yanxiu.gphone.student.base.ExerciseBaseResponse;
+import com.yanxiu.gphone.student.base.YxylBaseResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.List;
  * Created by sunpeng on 2017/5/8.
  */
 
-public class HomeworkDetailResponse extends ExerciseBaseResponse{
+public class HomeworkDetailResponse extends YxylBaseResponse {
     private PageBean page;
     private List<HomeworkDetailBean> data = new ArrayList<>();
 

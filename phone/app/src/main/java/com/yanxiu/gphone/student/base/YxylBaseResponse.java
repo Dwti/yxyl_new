@@ -4,7 +4,7 @@ package com.yanxiu.gphone.student.base;
  * Created by sp on 17-5-22.
  */
 
-public class ExerciseBaseResponse {
+public class YxylBaseResponse {
     protected StatusBean status;
 
     public StatusBean getStatus() {

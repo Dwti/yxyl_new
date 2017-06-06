@@ -1,6 +1,6 @@
 package com.yanxiu.gphone.student.homework.response;
 
-import com.yanxiu.gphone.student.base.ExerciseBaseResponse;
+import com.yanxiu.gphone.student.base.YxylBaseResponse;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import java.util.List;
  * Created by sp on 17-5-18.
  */
 
-public class SubjectResponse extends ExerciseBaseResponse {
+public class SubjectResponse extends YxylBaseResponse {
     private PropertyBean property;
     private List<SubjectBean> data;
 

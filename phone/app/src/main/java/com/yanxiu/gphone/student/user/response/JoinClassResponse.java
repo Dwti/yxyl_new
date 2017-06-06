@@ -1,7 +1,6 @@
 package com.yanxiu.gphone.student.user.response;
 
-import com.yanxiu.gphone.student.base.ExerciseBaseResponse;
-import com.yanxiu.gphone.student.base.StatusBean;
+import com.yanxiu.gphone.student.base.YxylBaseResponse;
 
 import java.io.Serializable;
 import java.util.List;
@@ -11,7 +10,7 @@ import java.util.List;
  * Time : 2017/5/23 11:21.
  * Function :
  */
-public class JoinClassResponse extends ExerciseBaseResponse implements Serializable{
+public class JoinClassResponse extends YxylBaseResponse implements Serializable{
     public List<Data> data;
 
     public class Data implements Serializable{

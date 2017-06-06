@@ -1,7 +1,6 @@
 package com.yanxiu.gphone.student.user.response;
 
-import com.yanxiu.gphone.student.base.ExerciseBaseResponse;
-import com.yanxiu.gphone.student.base.StatusBean;
+import com.yanxiu.gphone.student.base.YxylBaseResponse;
 
 import java.util.List;
 
@@ -11,7 +10,7 @@ import java.util.List;
  * Function :
  */
 
-public class LoginResponse extends ExerciseBaseResponse {
+public class LoginResponse extends YxylBaseResponse {
     public List<UserMessageBean> data;
 
 }

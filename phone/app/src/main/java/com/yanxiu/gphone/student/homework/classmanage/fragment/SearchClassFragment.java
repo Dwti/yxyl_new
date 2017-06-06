@@ -23,7 +23,7 @@ import com.yanxiu.gphone.student.homework.classmanage.activity.JoinClassActivity
 import com.yanxiu.gphone.student.homework.response.ClassBean;
 import com.yanxiu.gphone.student.homework.request.SearchClassRequest;
 import com.yanxiu.gphone.student.homework.response.SearchClassResponse;
-import com.yanxiu.gphone.student.base.ExerciseBaseCallback;
+import com.yanxiu.gphone.student.base.YxylBaseCallback;
 import com.yanxiu.gphone.student.util.ToastManager;
 
 /**
@@ -140,7 +140,7 @@ public class SearchClassFragment extends Fragment {
         mOnJoinClassCompleteListener = listener;
     }
 
-    HttpCallback<SearchClassResponse> mSearchClassCallback = new ExerciseBaseCallback<SearchClassResponse>() {
+    HttpCallback<SearchClassResponse> mSearchClassCallback = new YxylBaseCallback<SearchClassResponse>() {
         @Override
         public void onResponse(RequestBase request, SearchClassResponse ret) {
             if (ret.getStatus().getCode() == 0 && (ret.getData().get(0).getStatus() == 0 || ret.getData().get(0).getStatus() == 1)) {

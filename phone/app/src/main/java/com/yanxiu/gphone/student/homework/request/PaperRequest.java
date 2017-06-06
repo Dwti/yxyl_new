@@ -1,13 +1,13 @@
 package com.yanxiu.gphone.student.homework.request;
 
-import com.yanxiu.gphone.student.base.ExerciseBaseRequest;
+import com.yanxiu.gphone.student.base.YxylBaseRequest;
 import com.yanxiu.gphone.student.db.UrlRepository;
 
 /**
  * Created by sunpeng on 2017/5/9.
  */
 
-public class PaperRequest extends ExerciseBaseRequest {
+public class PaperRequest extends YxylBaseRequest {
 
     private String paperId;
 

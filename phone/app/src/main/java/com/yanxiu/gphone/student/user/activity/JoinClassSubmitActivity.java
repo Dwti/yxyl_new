@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
-import com.yanxiu.gphone.student.base.ExerciseBaseCallback;
+import com.yanxiu.gphone.student.base.YxylBaseCallback;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
 import com.yanxiu.gphone.student.customviews.WavesLayout;
@@ -175,7 +175,7 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
         mJoinClassSubmitRequest.schoolName=mData.schoolname;
         mJoinClassSubmitRequest.provinceid="";
         mJoinClassSubmitRequest.validKey=SysEncryptUtil.getMd5_32(LoginInfo.getMobile() + "&" + "yxylmobile");
-        mJoinClassSubmitRequest.startRequest(LoginResponse.class, new ExerciseBaseCallback<LoginResponse>() {
+        mJoinClassSubmitRequest.startRequest(LoginResponse.class, new YxylBaseCallback<LoginResponse>() {
 
             @Override
             protected void onResponse(RequestBase request, LoginResponse response) {
@@ -213,7 +213,7 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
         mJoinClassSubmitThridRequest.schoolid=mData.schoolid;
         mJoinClassSubmitThridRequest.schoolName=mData.schoolname;
         mJoinClassSubmitThridRequest.provinceid="";
-        mJoinClassSubmitThridRequest.startRequest(LoginResponse.class, new ExerciseBaseCallback<LoginResponse>() {
+        mJoinClassSubmitThridRequest.startRequest(LoginResponse.class, new YxylBaseCallback<LoginResponse>() {
 
             @Override
             protected void onResponse(RequestBase request, LoginResponse response) {

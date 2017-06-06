@@ -6,7 +6,6 @@ import android.content.Intent;
 import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.YanxiuApplication;
-import com.yanxiu.gphone.student.base.ExerciseBaseResponse;
 import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.user.activity.LoginActivity;
 import com.yanxiu.gphone.student.util.LoginInfo;
@@ -16,7 +15,7 @@ import com.yanxiu.gphone.student.util.LoginInfo;
  * Created by sp on 17-5-22.
  */
 
-public abstract class ExerciseBaseCallback<T extends ExerciseBaseResponse> implements HttpCallback<T> {
+public abstract class YxylBaseCallback<T extends YxylBaseResponse> implements HttpCallback<T> {
     @Override
     public void onSuccess(RequestBase request, T ret) {
         //code =99 表示token失效
