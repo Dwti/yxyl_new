@@ -1,7 +1,6 @@
 package com.yanxiu.gphone.student.user.request;
 
 import com.yanxiu.gphone.student.base.EXueELianBaseRequest;
-import com.yanxiu.gphone.student.db.UrlRepository;
 
 /**
  * Created by Canghaixiao.
