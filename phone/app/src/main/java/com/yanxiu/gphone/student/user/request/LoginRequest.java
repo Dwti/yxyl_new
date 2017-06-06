@@ -1,5 +1,6 @@
 package com.yanxiu.gphone.student.user.request;
 
+import com.yanxiu.gphone.student.base.EXueELianBaseRequest;
 import com.yanxiu.gphone.student.constant.Constants;
 
 /**
@@ -8,7 +9,7 @@ import com.yanxiu.gphone.student.constant.Constants;
  * Function :
  */
 
-public class LoginRequest extends BaseLoginRequest {
+public class LoginRequest extends EXueELianBaseRequest {
     public String mobile;
     public String password;
     public String deviceId= Constants.deviceId;

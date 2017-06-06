@@ -1,5 +1,6 @@
 package com.yanxiu.gphone.student.user.request;
 
+import com.yanxiu.gphone.student.base.EXueELianBaseRequest;
 import com.yanxiu.gphone.student.constant.Constants;
 
 /**
@@ -7,7 +8,7 @@ import com.yanxiu.gphone.student.constant.Constants;
  * Time : 2017/5/27 11:09.
  * Function :
  */
-public class JoinClassSubmitThridRequest extends BaseLoginRequest {
+public class JoinClassSubmitThridRequest extends EXueELianBaseRequest {
 
     public String openid;
     public String sex;

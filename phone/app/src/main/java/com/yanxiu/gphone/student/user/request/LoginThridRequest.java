@@ -1,6 +1,7 @@
 package com.yanxiu.gphone.student.user.request;
 
 import com.test.yanxiu.network.RequestBase;
+import com.yanxiu.gphone.student.base.EXueELianBaseRequest;
 import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.db.UrlRepository;
 
@@ -9,7 +10,7 @@ import com.yanxiu.gphone.student.db.UrlRepository;
  * Time : 2017/5/26 17:13.
  * Function :
  */
-public class LoginThridRequest extends RequestBase {
+public class LoginThridRequest extends EXueELianBaseRequest {
 
     public String openid;
     public String uniqid;

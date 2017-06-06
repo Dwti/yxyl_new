@@ -1,5 +1,6 @@
 package com.yanxiu.gphone.student.user.request;
 
+import com.yanxiu.gphone.student.base.EXueELianBaseRequest;
 import com.yanxiu.gphone.student.constant.Constants;
 
 /**
@@ -7,7 +8,7 @@ import com.yanxiu.gphone.student.constant.Constants;
  * Time : 2017/5/25 12:16.
  * Function :
  */
-public class CompleteInfoRequest extends BaseLoginRequest {
+public class CompleteInfoRequest extends EXueELianBaseRequest {
 
     public String mobile;
     public String realname;
