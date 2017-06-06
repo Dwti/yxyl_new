@@ -113,7 +113,7 @@ public class SearchClassFragment extends Fragment {
             }
         });
 
-        mRootView.getViewTreeObserver().addOnGlobalLayoutListener(mOnGlobalLayoutListener);
+        getActivity().getWindow().getDecorView().getViewTreeObserver().addOnGlobalLayoutListener(mOnGlobalLayoutListener);
     }
 
     //根据键盘的弹出收起，去隐藏显示下面的导航栏
@@ -121,16 +121,12 @@ public class SearchClassFragment extends Fragment {
         @Override
         public void onGlobalLayout() {
             if(mRootView.getBottom() < mBottom && !mKeyBoardVisible){
-                mRootView.getViewTreeObserver().removeOnGlobalLayoutListener(mOnGlobalLayoutListener);
-                mKeyBoardVisible = true;
                 ((MainActivity)getActivity()).setBottomNaviBarsVisibility(View.GONE);
                 mRootView.requestLayout();
-                mRootView.getViewTreeObserver().addOnGlobalLayoutListener(mOnGlobalLayoutListener);
+                mKeyBoardVisible = true;
             }else if(mRootView.getBottom() >= mBottom && mKeyBoardVisible){
-                mRootView.getViewTreeObserver().removeOnGlobalLayoutListener(mOnGlobalLayoutListener);
-                mKeyBoardVisible = false;
                 ((MainActivity)getActivity()).setBottomNaviBarsVisibility(View.VISIBLE);
-                mRootView.getViewTreeObserver().addOnGlobalLayoutListener(mOnGlobalLayoutListener);
+                mKeyBoardVisible = false;
             }
         }
     };
