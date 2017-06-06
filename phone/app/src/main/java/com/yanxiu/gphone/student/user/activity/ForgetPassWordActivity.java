@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
-import com.yanxiu.gphone.student.base.ExerciseBaseCallback;
+import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
 import com.yanxiu.gphone.student.user.response.ForgerPassWordResponse;
@@ -202,7 +202,7 @@ public class ForgetPassWordActivity extends YanxiuBaseActivity implements View.O
         mSendVerCodeRequest = new SendVerCodeRequest();
         mSendVerCodeRequest.mobile = mobile;
         mSendVerCodeRequest.type = TYPE;
-        mSendVerCodeRequest.startRequest(VerCodeResponse.class, new ExerciseBaseCallback<VerCodeResponse>() {
+        mSendVerCodeRequest.startRequest(VerCodeResponse.class, new EXueELianBaseCallback<VerCodeResponse>() {
 
             @Override
             protected void onResponse(RequestBase request, VerCodeResponse response) {
@@ -228,7 +228,7 @@ public class ForgetPassWordActivity extends YanxiuBaseActivity implements View.O
         mForgetPassWordRequest.mobile = mobile;
         mForgetPassWordRequest.code = verCode;
         mForgetPassWordRequest.type = TYPE;
-        mForgetPassWordRequest.startRequest(ForgerPassWordResponse.class, new ExerciseBaseCallback<ForgerPassWordResponse>() {
+        mForgetPassWordRequest.startRequest(ForgerPassWordResponse.class, new EXueELianBaseCallback<ForgerPassWordResponse>() {
 
             @Override
             protected void onResponse(RequestBase request, ForgerPassWordResponse response) {

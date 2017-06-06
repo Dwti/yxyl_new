@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
-import com.yanxiu.gphone.student.base.ExerciseBaseCallback;
+import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
 import com.yanxiu.gphone.student.user.response.ResetPassWordResponse;
@@ -123,7 +123,7 @@ public class ResetPassWordActivity extends YanxiuBaseActivity implements View.On
         mResetPassWordRequest=new ResetPassWordRequest();
         mResetPassWordRequest.mobile= LoginInfo.getMobile();
         mResetPassWordRequest.password=passWord;
-        mResetPassWordRequest.startRequest(ResetPassWordResponse.class, new ExerciseBaseCallback<ResetPassWordResponse>() {
+        mResetPassWordRequest.startRequest(ResetPassWordResponse.class, new EXueELianBaseCallback<ResetPassWordResponse>() {
 
             @Override
             protected void onResponse(RequestBase request, ResetPassWordResponse response) {
