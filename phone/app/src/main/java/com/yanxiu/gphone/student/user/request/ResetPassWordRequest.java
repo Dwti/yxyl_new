@@ -1,6 +1,6 @@
 package com.yanxiu.gphone.student.user.request;
 
-import com.yanxiu.gphone.student.base.ExerciseBaseRequest;
+import com.yanxiu.gphone.student.base.EXueELianBaseRequest;
 import com.yanxiu.gphone.student.db.UrlRepository;
 
 /**
@@ -8,25 +8,15 @@ import com.yanxiu.gphone.student.db.UrlRepository;
  * Time : 2017/5/18 15:16.
  * Function :
  */
-public class ResetPassWordRequest extends ExerciseBaseRequest {
+public class ResetPassWordRequest extends EXueELianBaseRequest {
     public String mobile;
     public String password;
-
-    @Override
-    protected boolean shouldLog() {
-        return false;
-    }
 
     @Override
     protected HttpType httpType() {
         return HttpType.POST;
     }
 
-
-    @Override
-    protected String urlServer() {
-        return UrlRepository.getInstance().getServer();
-    }
     @Override
     protected String urlPath() {
         return "/user/resetPassword.do";
