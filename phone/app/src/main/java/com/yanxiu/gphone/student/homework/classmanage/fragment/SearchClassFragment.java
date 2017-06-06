@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -120,12 +121,16 @@ public class SearchClassFragment extends Fragment {
         @Override
         public void onGlobalLayout() {
             if(mRootView.getBottom() < mBottom && !mKeyBoardVisible){
+                mRootView.getViewTreeObserver().removeOnGlobalLayoutListener(mOnGlobalLayoutListener);
                 mKeyBoardVisible = true;
                 ((MainActivity)getActivity()).setBottomNaviBarsVisibility(View.GONE);
                 mRootView.requestLayout();
+                mRootView.getViewTreeObserver().addOnGlobalLayoutListener(mOnGlobalLayoutListener);
             }else if(mRootView.getBottom() >= mBottom && mKeyBoardVisible){
+                mRootView.getViewTreeObserver().removeOnGlobalLayoutListener(mOnGlobalLayoutListener);
                 mKeyBoardVisible = false;
                 ((MainActivity)getActivity()).setBottomNaviBarsVisibility(View.VISIBLE);
+                mRootView.getViewTreeObserver().addOnGlobalLayoutListener(mOnGlobalLayoutListener);
             }
         }
     };
