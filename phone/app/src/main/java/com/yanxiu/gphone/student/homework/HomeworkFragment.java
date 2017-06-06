@@ -18,7 +18,7 @@ import android.widget.Toast;
 import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
-import com.yanxiu.gphone.student.base.YxylBaseCallback;
+import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.base.HomePageBaseFragment;
 import com.yanxiu.gphone.student.homework.classmanage.activity.ClassInfoActivity;
 import com.yanxiu.gphone.student.homework.classmanage.ClassStatus;
@@ -116,7 +116,7 @@ public class HomeworkFragment extends HomePageBaseFragment implements SearchClas
         request.startRequest(SearchClassResponse.class,mSearchClassCallback);
     }
 
-    HttpCallback<SearchClassResponse> mSearchClassCallback = new YxylBaseCallback<SearchClassResponse>() {
+    HttpCallback<SearchClassResponse> mSearchClassCallback = new EXueELianBaseCallback<SearchClassResponse>() {
         @Override
         public void onResponse(RequestBase request, SearchClassResponse ret) {
             if(ret.getStatus().getCode() == 0 ){
@@ -142,7 +142,7 @@ public class HomeworkFragment extends HomePageBaseFragment implements SearchClas
     }
 
 
-    HttpCallback<SubjectResponse> mLoadSubjectCallback = new YxylBaseCallback<SubjectResponse>(){
+    HttpCallback<SubjectResponse> mLoadSubjectCallback = new EXueELianBaseCallback<SubjectResponse>(){
 
         @Override
         public void onResponse(RequestBase request, SubjectResponse ret) {

@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
-import com.yanxiu.gphone.student.base.YxylBaseCallback;
+import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
 import com.yanxiu.gphone.student.customviews.WavesLayout;
@@ -183,7 +183,7 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
         mCompleteInfoRequest.stageid=stageId;
         mCompleteInfoRequest.schoolName=message.schoolName;
         mCompleteInfoRequest.validKey= SysEncryptUtil.getMd5_32(LoginInfo.getMobile() + "&" + "yxylmobile");
-        mCompleteInfoRequest.startRequest(LoginResponse.class, new YxylBaseCallback<LoginResponse>() {
+        mCompleteInfoRequest.startRequest(LoginResponse.class, new EXueELianBaseCallback<LoginResponse>() {
 
             @Override
             protected void onResponse(RequestBase request, LoginResponse response) {
@@ -220,7 +220,7 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
         mCompleteInfoThridRequest.schoolid=message.schoolId;
         mCompleteInfoThridRequest.stageid=stageId;
         mCompleteInfoThridRequest.schoolName=message.schoolName;
-        mCompleteInfoThridRequest.startRequest(LoginResponse.class, new YxylBaseCallback<LoginResponse>() {
+        mCompleteInfoThridRequest.startRequest(LoginResponse.class, new EXueELianBaseCallback<LoginResponse>() {
 
             @Override
             protected void onResponse(RequestBase request, LoginResponse response) {

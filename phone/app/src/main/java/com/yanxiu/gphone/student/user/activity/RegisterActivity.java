@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
-import com.yanxiu.gphone.student.base.YxylBaseCallback;
+import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
 import com.yanxiu.gphone.student.user.response.RegisterResponse;
@@ -176,7 +176,7 @@ public class RegisterActivity extends YanxiuBaseActivity implements View.OnClick
         mSendVerCodeRequest = new SendVerCodeRequest();
         mSendVerCodeRequest.mobile = mobile;
         mSendVerCodeRequest.type = TYPE;
-        mSendVerCodeRequest.startRequest(VerCodeResponse.class, new YxylBaseCallback<VerCodeResponse>() {
+        mSendVerCodeRequest.startRequest(VerCodeResponse.class, new EXueELianBaseCallback<VerCodeResponse>() {
 
             @Override
             protected void onResponse(RequestBase request, VerCodeResponse response) {
@@ -202,7 +202,7 @@ public class RegisterActivity extends YanxiuBaseActivity implements View.OnClick
         mRegisterRequet.mobile = mobile;
         mRegisterRequet.code = verCode;
         mRegisterRequet.password = passWord;
-        mRegisterRequet.startRequest(RegisterResponse.class, new YxylBaseCallback<RegisterResponse>() {
+        mRegisterRequet.startRequest(RegisterResponse.class, new EXueELianBaseCallback<RegisterResponse>() {
 
             @Override
             protected void onResponse(RequestBase request, RegisterResponse response) {

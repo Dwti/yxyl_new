@@ -19,7 +19,7 @@ import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.yanxiu.gphone.student.R;
-import com.yanxiu.gphone.student.base.YxylBaseCallback;
+import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
 import com.yanxiu.gphone.student.homepage.MainActivity;
@@ -259,7 +259,7 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
         mLoginRequest = new LoginRequest();
         mLoginRequest.mobile=user_name;
         mLoginRequest.password=pass_word;
-        mLoginRequest.startRequest(LoginResponse.class, new YxylBaseCallback<LoginResponse>() {
+        mLoginRequest.startRequest(LoginResponse.class, new EXueELianBaseCallback<LoginResponse>() {
 
             @Override
             protected void onResponse(RequestBase request, LoginResponse response) {
@@ -365,7 +365,7 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
         mLoginThridRequest.openid=openid;
         mLoginThridRequest.platform=platform;
         mLoginThridRequest.uniqid=uniqid;
-        mLoginThridRequest.startRequest(LoginResponse.class, new YxylBaseCallback<LoginResponse>() {
+        mLoginThridRequest.startRequest(LoginResponse.class, new EXueELianBaseCallback<LoginResponse>() {
 
             @Override
             protected void onResponse(RequestBase request, LoginResponse response) {

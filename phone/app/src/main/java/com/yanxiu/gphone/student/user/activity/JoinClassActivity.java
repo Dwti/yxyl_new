@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
-import com.yanxiu.gphone.student.base.YxylBaseCallback;
+import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.customviews.CharacterSeparatedEditLayout;
 import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
@@ -140,7 +140,7 @@ public class JoinClassActivity extends YanxiuBaseActivity implements View.OnClic
         rootView.showLoadingView();
         mJoinClassRequest=new JoinClassRequest();
         mJoinClassRequest.classId=classNumber;
-        mJoinClassRequest.startRequest(JoinClassResponse.class, new YxylBaseCallback<JoinClassResponse>() {
+        mJoinClassRequest.startRequest(JoinClassResponse.class, new EXueELianBaseCallback<JoinClassResponse>() {
 
             @Override
             protected void onResponse(RequestBase request, JoinClassResponse response) {
