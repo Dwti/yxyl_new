@@ -2,7 +2,7 @@ package com.yanxiu.gphone.student.util.time;
 
 import android.os.CountDownTimer;
 
-import java.lang.ref.WeakReference;
+import java.lang.ref.SoftReference;
 
 /**
  * Created by Canghaixiao.
@@ -29,15 +29,10 @@ public class CountDownManager {
      * the countdown interval time
      * */
     private long intervalTime = DEFAULT_INTERVATIME;
-    private WeakReference<ScheduleListener> reference;
-
-    private static CountDownManager manager;
+    private ScheduleListener listener;
 
     public static CountDownManager getManager() {
-        if (manager == null) {
-            manager = new CountDownManager();
-        }
-        return manager;
+        return new CountDownManager();
     }
 
     /**
@@ -57,27 +52,23 @@ public class CountDownManager {
     }
 
     public CountDownManager setScheduleListener(ScheduleListener listener) {
-        reference = new WeakReference<>(listener);
+        this.listener=listener;
         return this;
     }
 
     public void start() {
-        ScheduleListener listener = null;
-        if (reference != null) {
-            listener = reference.get();
-        }
         countDownTimer timer = new countDownTimer(totalTime, intervalTime, listener);
         timer.start();
     }
 
     private class countDownTimer extends CountDownTimer {
 
-        private WeakReference<ScheduleListener> reference;
+        private SoftReference<ScheduleListener> reference;
 
         countDownTimer(long millisInFuture, long countDownInterval, ScheduleListener listener) {
             super(millisInFuture, countDownInterval);
             if (listener != null) {
-                reference = new WeakReference<>(listener);
+                reference = new SoftReference<>(listener);
             }
         }
 
