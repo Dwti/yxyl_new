@@ -240,6 +240,7 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
                     userName="";
                 }
                 ForgetPassWordActivity.LaunchActivity(mContext,userName);
+//                ResetPassWordActivity.LaunchActivity(mContext);
                 break;
             case R.id.tv_fast_registered:
                 RegisterActivity.LaunchActivity(mContext);

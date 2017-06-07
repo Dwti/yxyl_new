@@ -82,6 +82,7 @@ public class ForgetPassWordActivity extends YanxiuBaseActivity implements View.O
             mForgetPassWordRequest.cancelRequest();
             mForgetPassWordRequest = null;
         }
+        CountDownManager.getManager().setFinished();
     }
 
     private void initView() {

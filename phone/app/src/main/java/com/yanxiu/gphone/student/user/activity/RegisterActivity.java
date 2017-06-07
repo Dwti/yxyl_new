@@ -123,6 +123,7 @@ public class RegisterActivity extends YanxiuBaseActivity implements View.OnClick
             mRegisterRequet.cancelRequest();
             mRegisterRequet = null;
         }
+        CountDownManager.getManager().setFinished();
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.yanxiu.gphone.student.util.time;
 import android.os.CountDownTimer;
 
 import java.lang.ref.SoftReference;
+import java.lang.ref.WeakReference;
 
 /**
  * Created by Canghaixiao.
@@ -15,6 +16,7 @@ public class CountDownManager {
 
     private static final long DEFAULT_TOTALTIME=60000;
     private static final long DEFAULT_INTERVATIME=1000;
+    private countDownTimer timer;
 
     public interface ScheduleListener {
         void onProgress(long progress);
@@ -30,9 +32,23 @@ public class CountDownManager {
      * */
     private long intervalTime = DEFAULT_INTERVATIME;
     private ScheduleListener listener;
+    private static CountDownManager manager;
 
     public static CountDownManager getManager() {
-        return new CountDownManager();
+        if (manager==null){
+            manager=new CountDownManager();
+        }
+        return manager;
+    }
+
+    /**
+     * finished callback
+     * */
+    public void setFinished(){
+        this.listener=null;
+        if (timer!=null) {
+            this.timer.cancel();
+        }
     }
 
     /**
@@ -57,18 +73,18 @@ public class CountDownManager {
     }
 
     public void start() {
-        countDownTimer timer = new countDownTimer(totalTime, intervalTime, listener);
+        timer = new countDownTimer(totalTime, intervalTime, listener);
         timer.start();
     }
 
     private class countDownTimer extends CountDownTimer {
 
-        private SoftReference<ScheduleListener> reference;
+        private WeakReference<ScheduleListener> reference;
 
         countDownTimer(long millisInFuture, long countDownInterval, ScheduleListener listener) {
             super(millisInFuture, countDownInterval);
             if (listener != null) {
-                reference = new SoftReference<>(listener);
+                reference = new WeakReference<>(listener);
             }
         }
 

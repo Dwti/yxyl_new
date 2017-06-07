@@ -80,7 +80,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/ll_period"
+                    android:id="@+id/ll_stage"
                     style="@style/LoginLayoutButton"
                     android:layout_below="@+id/ll_school"
                     android:layout_marginTop="@dimen/login_edit_margin_top"
@@ -112,7 +112,7 @@
                 <com.yanxiu.gphone.student.customviews.WavesLayout
                     android:id="@+id/wl_waves"
                     style="@style/LoginLayoutButton"
-                    android:layout_below="@+id/ll_period"
+                    android:layout_below="@+id/ll_stage"
                     android:layout_marginTop="@dimen/login_button_margin_top"
                     app:waves_color="@color/color_E3F8C5"
                     app:waves_canshowwave="false"

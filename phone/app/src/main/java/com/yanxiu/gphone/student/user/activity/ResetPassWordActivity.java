@@ -3,6 +3,9 @@ package com.yanxiu.gphone.student.user.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -43,6 +46,14 @@ public class ResetPassWordActivity extends YanxiuBaseActivity implements View.On
     private PublicLoadLayout rootView;
     private ImageView mBackView;
     private TextView mTitleView;
+    private ImageView mCipherView;
+    private ImageView mCipherAgainView;
+
+    /**
+     * default they are cipher
+     * */
+    private boolean isPassWordCipher=true;
+    private boolean isPassWordAgainCipher=true;
 
     public static void LaunchActivity(Context context){
         Intent intent=new Intent(context,ResetPassWordActivity.class);
@@ -77,6 +88,8 @@ public class ResetPassWordActivity extends YanxiuBaseActivity implements View.On
         mPassWordAgainView= (EditText) findViewById(R.id.ed_pass_word_again);
         mResetPassWordView= (TextView) findViewById(R.id.tv_reset_password);
         mWavesView= (WavesLayout) findViewById(R.id.wl_reset_waves);
+        mCipherView= (ImageView) findViewById(R.id.iv_cipher);
+        mCipherAgainView= (ImageView) findViewById(R.id.iv_cipher_again);
     }
 
     private void initData() {
@@ -89,6 +102,8 @@ public class ResetPassWordActivity extends YanxiuBaseActivity implements View.On
     private void listener() {
         mBackView.setOnClickListener(ResetPassWordActivity.this);
         mResetPassWordView.setOnClickListener(ResetPassWordActivity.this);
+        mCipherView.setOnClickListener(ResetPassWordActivity.this);
+        mCipherAgainView.setOnClickListener(ResetPassWordActivity.this);
         EditTextManger.getManager(mPassWordView).setInputAllNotHanzi().setTextChangedListener(ResetPassWordActivity.this);
         EditTextManger.getManager(mPassWordAgainView).setInputAllNotHanzi().setTextChangedListener(ResetPassWordActivity.this);
     }
@@ -115,6 +130,27 @@ public class ResetPassWordActivity extends YanxiuBaseActivity implements View.On
                 }
                 onResetPassWord(passWord);
                 break;
+            case R.id.iv_cipher:
+                this.isPassWordCipher=!isPassWordCipher;
+                setEditPassWordChange(mPassWordView,mCipherView,isPassWordCipher);
+                break;
+            case R.id.iv_cipher_again:
+                this.isPassWordAgainCipher=!isPassWordAgainCipher;
+                setEditPassWordChange(mPassWordAgainView,mCipherAgainView,isPassWordAgainCipher);
+                break;
+        }
+    }
+
+    private void setEditPassWordChange(EditText editText,ImageView imageView,boolean isCipher) {
+        if (isCipher) {
+//            imageView.setBackgroundResource();
+            editText.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        } else {
+            editText.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+        }
+        String text = editText.getText().toString();
+        if (!TextUtils.isEmpty(text)) {
+            editText.setSelection(text.length());
         }
     }
 

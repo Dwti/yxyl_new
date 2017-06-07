@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.test.yanxiu.network.RequestBase;
@@ -42,8 +43,8 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
     private TextView mStageView;
     private TextView mSubmitView;
     private WavesLayout mWavesView;
-    private ImageView mChooseStageView;
-    private ImageView mChooseSchoolView;
+    private LinearLayout mChooseStageView;
+    private LinearLayout mChooseSchoolView;
 
     /**
      * the default they are empty
@@ -117,8 +118,8 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
         mStageView = (TextView) findViewById(R.id.tv_stage);
         mSubmitView = (TextView) findViewById(R.id.tv_submit);
         mWavesView = (WavesLayout) findViewById(R.id.wl_waves);
-        mChooseSchoolView = (ImageView) findViewById(R.id.iv_choose_school);
-        mChooseStageView = (ImageView) findViewById(R.id.iv_choose_stage);
+        mChooseSchoolView = (LinearLayout) findViewById(R.id.ll_school);
+        mChooseStageView = (LinearLayout) findViewById(R.id.ll_stage);
     }
 
     private void initData() {
@@ -155,10 +156,10 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
                 CompleteInfoActivity.this.finish();
                 EditTextManger.getManager(mTitleView).hideSoftInput(mContext);
                 break;
-            case R.id.iv_choose_stage:
+            case R.id.ll_stage:
                 ChooseStageActivity.LaunchActivity(mContext);
                 break;
-            case R.id.iv_choose_school:
+            case R.id.ll_school:
                 ChooseLocationActivity.LaunchActivity(mContext);
                 break;
             case R.id.tv_submit:
