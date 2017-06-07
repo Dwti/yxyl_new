@@ -21,6 +21,7 @@ import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.QuestionProgressView;
 import com.yanxiu.gphone.student.customviews.QuestionTimeTextView;
 import com.yanxiu.gphone.student.questions.answerframe.adapter.QAViewPagerAdapter;
+import com.yanxiu.gphone.student.questions.answerframe.listener.OnAnswerCardItemSelectListener;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.AnswerCardFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.ComplexExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.ExerciseBaseFragment;
@@ -36,20 +37,21 @@ import java.util.ArrayList;
 /**
  * 答题页面
  */
-public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.OnClickListener, AnswerCardFragment.OnCardItemSelectListener {
+public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.OnClickListener, OnAnswerCardItemSelectListener {
     private FragmentManager mFragmentManager;
     private QAViewPager mViewPager;
     private QAViewPagerAdapter mAdapter;
     private String mKey;//获取数据的key
     private Paper mPaper;//试卷数据
     private ArrayList<BaseQuestion> mQuestions;//题目数据
-    private AnswerCardFragment mCardFragment;
+    private AnswerCardFragment mAnswerCardFragment;
 
     private QuestionTimeTextView mTimer;//计时
     private QuestionProgressView mProgressView;//答题进度条
     private LinearLayout mPrevious_question, mNext_question;//上一题，下一题
     private TextView mNext_text;//下一题textview
     private ImageView mBackView;//返回按钮
+    private ImageView mShowAnswerCardView;//显示答题卡
 
     private Handler mHandler;
     private int mTotalTime;//总计时间
@@ -88,7 +90,8 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         mPrevious_question = (LinearLayout) findViewById(R.id.previous_question);
         mNext_question = (LinearLayout) findViewById(R.id.next_question);
         mNext_text = (TextView) findViewById(R.id.next_text);
-        mBackView = (ImageView) findViewById(R.id.iv_left);
+        mBackView = (ImageView) findViewById(R.id.backview);
+        mShowAnswerCardView = (ImageView) findViewById(R.id.answercardview);
         setListener();
         initViewPager();
         mHandler = new TimingHandler(this);
@@ -98,6 +101,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         mPrevious_question.setOnClickListener(this);
         mNext_question.setOnClickListener(this);
         mBackView.setOnClickListener(this);
+        mShowAnswerCardView.setOnClickListener(this);
     }
 
     private void initViewPager() {
@@ -140,44 +144,43 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         }
     }
 
-    /**
-     * 给答题卡设置题号
-     *
-     * @return
-     */
-    private ArrayList<BaseQuestion> allNodesThatHasNumber() {
-        ArrayList<BaseQuestion> retNodes = new ArrayList<>();
-        for (BaseQuestion node : mQuestions) {
-//            retNodes.addAll(node.allNodesThatHasNumber()); // TODO: 2017/5/15  等设置题号逻辑融合进孙鹏的数据里后，再添加
-        }
-        return retNodes;
-    }
+//    /**
+//     * 给答题卡设置题号
+//     *
+//     * @return
+//     */
+//    private ArrayList<BaseQuestion> allNodesThatHasNumber() {
+//        ArrayList<BaseQuestion> retNodes = new ArrayList<>();
+//        for (BaseQuestion node : mQuestions) {
+//            retNodes.addAll(node.allNodesThatHasNumber());
+//        }
+//        return retNodes;
+//    }
 
     @Override
     public void onItemSelect(BaseQuestion item) {
-        // TODO: 2017/5/15  等设置题号逻辑融合进孙鹏的数据里后，再添加
-//        //答题卡跳转逻辑
-//        // 1, 移除 card getFragment
+        //答题卡跳转逻辑
+        // 1, 移除 card getFragment
 //        final FragmentManager fm = getSupportFragmentManager();
-//        if (mCardFragment != null) {
-//            fm.beginTransaction().remove(mCardFragment).commit();
-//        }
-//
-//        // 2, 跳转
-//        int index = item.levelPositions.get(0);// TODO: 2017/5/15  等设置题号逻辑融合进孙鹏的数据里后，再添加
-//        FragmentStatePagerAdapter a1 = (FragmentStatePagerAdapter) mViewPager.getAdapter();
-//        final ExerciseBaseFragment f2 = (ExerciseBaseFragment) a1.getItem(index);
-//        mViewPager.setCurrentItem(index);
-//        f2.setUserVisibleHin2(true);
-//
-//
-//        ArrayList<Integer> remainPositions = new ArrayList<>(item.levelPositions);
-//        remainPositions.remove(0);
-//        if (remainPositions.size() > 0) { // 表明这层依然是 复合题
-//            FragmentStatePagerAdapter a = (FragmentStatePagerAdapter) mViewPager.getAdapter();
-//            ComplexExerciseBaseFragment f = (ComplexExerciseBaseFragment) a.instantiateItem(mViewPager, index);
-//            f.setChildrenPositionRecursively(remainPositions);
-//        }
+        if (mAnswerCardFragment != null) {
+            mFragmentManager.beginTransaction().remove(mAnswerCardFragment).commit();
+        }
+
+        // 2, 跳转
+        int index = item.getLevelPositions().get(0);
+        FragmentStatePagerAdapter a1 = (FragmentStatePagerAdapter) mViewPager.getAdapter();
+        final ExerciseBaseFragment f2 = (ExerciseBaseFragment) a1.getItem(index);
+        mViewPager.setCurrentItem(index);
+        f2.setUserVisibleHin2(true);
+
+
+        ArrayList<Integer> remainPositions = new ArrayList<>(item.getLevelPositions());
+        remainPositions.remove(0);
+        if (remainPositions.size() > 0) { // 表明这层依然是 复合题
+            FragmentStatePagerAdapter a = (FragmentStatePagerAdapter) mViewPager.getAdapter();
+            ComplexExerciseBaseFragment f = (ComplexExerciseBaseFragment) a.instantiateItem(mViewPager, index);
+            f.setChildrenPositionRecursively(remainPositions);
+        }
     }
 
     /**
@@ -186,15 +189,14 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
      */
     private void showAnswerCardFragment() {
         // 可以在这里打个断点，所有Fill Blank的答案均已存入nodes里
-//        if (mCardFragment == null) {
-//            mCardFragment = new AnswerCardFragment();
-//            mCardFragment.nodes = allNodesThatHasNumber();
-//            mCardFragment.setOnCardItemSelectListener(AnswerQuestionActivity.this);
-//        }
-//        if (mFragmentManager.findFragmentById(R.id.fragment_card) == null) {
-//            // 有一个滑动event的问题，导致card fragment上能滑动下面的viewpager，可能导致重复加载card getFragment
-//            mFragmentManager.beginTransaction().add(R.id.fragment_card, mCardFragment).commit();
-//        }
+        if (mAnswerCardFragment == null) {
+            mAnswerCardFragment = new AnswerCardFragment();
+            mAnswerCardFragment.setData(mQuestions);
+            mAnswerCardFragment.setOnCardItemSelectListener(AnswerQuestionActivity.this);
+        }
+        if (mFragmentManager.findFragmentById(R.id.fragment_answercard) == null) {
+            mFragmentManager.beginTransaction().add(R.id.fragment_answercard, mAnswerCardFragment).commit();
+        }
     }
 
     /**
@@ -382,8 +384,11 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
             case R.id.next_question:
                 nextQuestion();
                 break;
-            case R.id.iv_left:
+            case R.id.backview:
                 finish();
+                break;
+            case R.id.answercardview:
+                showAnswerCardFragment();
                 break;
         }
     }
@@ -433,7 +438,6 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
      */
     private void updateTime() {
         mTotalTime++;
-        //Todo 显示时间
         mTimer.setTime(mTotalTime);
     }
 
@@ -442,6 +446,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         super.onResume();
         startTiming();
     }
+
 
     @Override
     protected void onPause() {

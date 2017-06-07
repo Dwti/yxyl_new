@@ -5,7 +5,7 @@
     android:layout_height="@dimen/question_top_layout_height">
 
     <ImageView
-        android:id="@+id/iv_left"
+        android:id="@+id/backview"
         android:layout_width="@dimen/common_top_layout_leftimage_wdith"
         android:layout_height="@dimen/common_top_layout_leftimage_wdith"
         android:background="@drawable/answerquestion_top_backview_selecter"
@@ -19,7 +19,7 @@
         android:layout_centerInParent="true"/>
 
     <ImageView
-        android:id="@+id/iv_right"
+        android:id="@+id/answercardview"
         android:layout_width="@dimen/question_top_layout_rightimage_width"
         android:layout_height="@dimen/question_top_layout_rightimage_width"
         android:background="@android:color/holo_blue_light"
