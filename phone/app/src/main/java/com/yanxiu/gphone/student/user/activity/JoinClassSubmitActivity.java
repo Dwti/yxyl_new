@@ -126,7 +126,7 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
             mClassNameView.setText(mData.gradename+mData.name);
             mClassIdView.setText(mData.id);
             mTeacherNameView.setText(mData.adminName);
-            mStudentNumberView.setText(mData.stdnum);
+            mStudentNumberView.setText(mData.stdnum+getText(R.string.person));
             mSchoolNameView.setText(mData.schoolname);
         }
     }
