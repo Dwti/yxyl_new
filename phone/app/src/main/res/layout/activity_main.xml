@@ -13,8 +13,8 @@
         android:gravity="center_vertical"
 
 
-        android:paddingLeft="@dimen/dimen_3"
-        android:paddingRight="@dimen/dimen_3"
+        android:paddingLeft="@dimen/home_bottom_bar_paddingleft"
+        android:paddingRight="@dimen/home_bottom_bar_paddingright"
         android:orientation="horizontal">
         <!--android:paddingBottom="@dimen/home_bottom_bar_paddingbottom"-->
         <!--android:paddingTop="@dimen/home_bottom_bar_paddingtop"-->

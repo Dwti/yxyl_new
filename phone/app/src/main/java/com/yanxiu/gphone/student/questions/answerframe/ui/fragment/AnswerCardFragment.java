@@ -1,6 +1,5 @@
 package com.yanxiu.gphone.student.questions.answerframe.ui.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,10 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.questions.answerframe.adapter.AnswerCardAdapter;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
+import com.yanxiu.gphone.student.questions.answerframe.listener.OnAnswerCardItemSelectListener;
 
 import java.util.ArrayList;
 
@@ -23,23 +23,17 @@ import java.util.ArrayList;
  */
 
 public class AnswerCardFragment extends Fragment {
-    public interface OnCardItemSelectListener {
-        void onItemSelect(BaseQuestion item);
-    }
-    private OnCardItemSelectListener mListener;
-    public void setOnCardItemSelectListener(OnCardItemSelectListener listener) {
-        mListener = listener;
-    }
-
-    public ArrayList<BaseQuestion> nodes;
+    private ArrayList<BaseQuestion> mQuestions;
     private Button goButton;
     private RecyclerView recyclerView;
+    private AnswerCardAdapter mAnswerCardAdapter;
+    private OnAnswerCardItemSelectListener mListener;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_card, container, false);
-        goButton = (Button) v.findViewById(R.id.button_go);
+        View view = inflater.inflate(R.layout.fragment_answer_card, container, false);
+        goButton = (Button) view.findViewById(R.id.button_go);
         goButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -48,51 +42,31 @@ public class AnswerCardFragment extends Fragment {
             }
         });
 
-        recyclerView = (RecyclerView) v.findViewById(R.id.rv_recyclerView);
+        recyclerView = (RecyclerView) view.findViewById(R.id.rv_recyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 4));
-        recyclerView.setAdapter(new CardAdapter(getActivity()));
-        return v;
+        mAnswerCardAdapter = new AnswerCardAdapter(getActivity(), mListener);
+        mAnswerCardAdapter.setData(mQuestions);
+        recyclerView.setAdapter(mAnswerCardAdapter);
+        return view;
     }
 
-    private class CardViewHolder extends RecyclerView.ViewHolder {
-        private TextView mTitleTextView;
-        public CardViewHolder(View itemView) {
-            super(itemView);
-            mTitleTextView = (TextView) itemView;
+    public void setData(ArrayList<BaseQuestion> questions){
+        mQuestions = allNodesThatHasNumber(questions);
+
+    }
+    /**
+     * 给答题卡设置题号
+     * @return
+     */
+    private ArrayList<BaseQuestion> allNodesThatHasNumber(ArrayList<BaseQuestion> questions) {
+        ArrayList<BaseQuestion> retNodes = new ArrayList<>();
+        for (BaseQuestion node : questions) {
+            retNodes.addAll(node.allNodesThatHasNumber());
         }
+        return retNodes;
     }
 
-    private class CardAdapter extends RecyclerView.Adapter<CardViewHolder> {
-        private Context mContext;
-        public CardAdapter(Context context) {
-            mContext = context;
-        }
-
-        @Override
-        public CardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            LayoutInflater inflater = LayoutInflater.from(mContext);
-            View view = inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
-            return new CardViewHolder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(CardViewHolder holder, int position) {
-            final BaseQuestion node = nodes.get(position);
-//            holder.mTitleTextView.setText(node.numberStringForShow());//TODO: 2017/5/15  等设置题号逻辑融合进孙鹏的数据里后，再添加
-
-            holder.mTitleTextView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mListener != null) {
-                        mListener.onItemSelect(node);
-                    }
-                }
-            });
-        }
-
-        @Override
-        public int getItemCount() {
-            return nodes.size();
-        }
+    public void setOnCardItemSelectListener(OnAnswerCardItemSelectListener listener) {
+        mListener = listener;
     }
 }
