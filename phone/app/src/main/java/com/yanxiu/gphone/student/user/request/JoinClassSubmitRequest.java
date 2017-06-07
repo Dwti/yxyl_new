@@ -1,5 +1,6 @@
 package com.yanxiu.gphone.student.user.request;
 
+import com.yanxiu.gphone.student.base.EXueELianBaseRequest;
 import com.yanxiu.gphone.student.constant.Constants;
 
 /**
@@ -7,7 +8,7 @@ import com.yanxiu.gphone.student.constant.Constants;
  * Time : 2017/5/23 17:13.
  * Function :
  */
-public class JoinClassSubmitRequest extends BaseLoginRequest {
+public class JoinClassSubmitRequest extends EXueELianBaseRequest {
 
     public String classId;
     public String stageid;
@@ -20,11 +21,6 @@ public class JoinClassSubmitRequest extends BaseLoginRequest {
     public String provinceid;
     public String validKey;
     public String deviceId= Constants.deviceId;
-
-    @Override
-    protected boolean shouldLog() {
-        return false;
-    }
 
     @Override
     protected String urlPath() {

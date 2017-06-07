@@ -2,7 +2,7 @@ package com.yanxiu.gphone.student.homework.homeworkdetail;
 
 import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
-import com.yanxiu.gphone.student.base.YxylBaseCallback;
+import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.homework.response.HomeworkDetailBean;
 import com.yanxiu.gphone.student.homework.request.HomeworkDetailRequest;
@@ -41,7 +41,7 @@ public class HomeworkDetailRepository implements HomeworkDetailDataSource {
         HomeworkDetailRequest request = new HomeworkDetailRequest();
         request.setGroupId(homeworkId);
         request.setPage("1");
-        request.startRequest(HomeworkDetailResponse.class, new YxylBaseCallback<HomeworkDetailResponse>() {
+        request.startRequest(HomeworkDetailResponse.class, new EXueELianBaseCallback<HomeworkDetailResponse>() {
 
             @Override
             public void onResponse(RequestBase request, HomeworkDetailResponse ret) {
@@ -72,7 +72,7 @@ public class HomeworkDetailRepository implements HomeworkDetailDataSource {
         HomeworkDetailRequest request = new HomeworkDetailRequest();
         request.setGroupId(homeworkId);
         request.setPage(mPageIndex+"");
-        request.startRequest(HomeworkDetailResponse.class, new YxylBaseCallback<HomeworkDetailResponse>() {
+        request.startRequest(HomeworkDetailResponse.class, new EXueELianBaseCallback<HomeworkDetailResponse>() {
 
             @Override
             public void onResponse(RequestBase request, HomeworkDetailResponse ret) {

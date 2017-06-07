@@ -19,20 +19,20 @@ import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.yanxiu.gphone.student.R;
-import com.yanxiu.gphone.student.base.YxylBaseCallback;
+import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
 import com.yanxiu.gphone.student.homepage.MainActivity;
 import com.yanxiu.gphone.student.user.request.LoginThridRequest;
 import com.yanxiu.gphone.student.user.response.LoginResponse;
 import com.yanxiu.gphone.student.user.request.LoginRequest;
+import com.yanxiu.gphone.student.user.response.ThridMessageBean;
 import com.yanxiu.gphone.student.util.EditTextManger;
 import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.SystemUtil;
 import com.yanxiu.gphone.student.util.ToastManager;
 import com.yanxiu.gphone.student.customviews.WavesLayout;
 
-import java.io.Serializable;
 import java.util.Map;
 import java.util.regex.Pattern;
 @SuppressWarnings("all")
@@ -80,7 +80,7 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
     private LoginRequest mLoginRequest;
     private PublicLoadLayout rootView;
     private UMShareAPI mUMShareAPI;
-    private ThridMessage mThridMessage;
+    private ThridMessageBean mThridMessageBean;
     private LoginThridRequest mLoginThridRequest;
     private LinearLayout mThridLoginView;
 
@@ -259,7 +259,7 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
         mLoginRequest = new LoginRequest();
         mLoginRequest.mobile=user_name;
         mLoginRequest.password=pass_word;
-        mLoginRequest.startRequest(LoginResponse.class, new YxylBaseCallback<LoginResponse>() {
+        mLoginRequest.startRequest(LoginResponse.class, new EXueELianBaseCallback<LoginResponse>() {
 
             @Override
             protected void onResponse(RequestBase request, LoginResponse response) {
@@ -313,7 +313,7 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
 
                         @Override
                         public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
-                            mThridMessage=new ThridMessage();
+                            mThridMessageBean =new ThridMessageBean();
                             String openid=map.get("openid");
                             String platform="";
                             if (share_media.toString().endsWith(SHARE_MEDIA.QQ.toString())){
@@ -322,11 +322,11 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
                                 platform="weixin";
                             }
                             String uniqid="";
-                            mThridMessage.openid=openid;
-                            mThridMessage.platform=platform;
-                            mThridMessage.uniqid=uniqid;
-                            mThridMessage.head=map.get("iconurl");
-                            mThridMessage.sex=map.get("gender").equals(getText(R.string.man).toString())?"1":"0";
+                            mThridMessageBean.openid=openid;
+                            mThridMessageBean.platform=platform;
+                            mThridMessageBean.uniqid=uniqid;
+                            mThridMessageBean.head=map.get("iconurl");
+                            mThridMessageBean.sex=map.get("gender").equals(getText(R.string.man).toString())?"1":"0";
                             thridLoginEnd(openid,platform,uniqid);
                         }
 
@@ -365,7 +365,7 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
         mLoginThridRequest.openid=openid;
         mLoginThridRequest.platform=platform;
         mLoginThridRequest.uniqid=uniqid;
-        mLoginThridRequest.startRequest(LoginResponse.class, new YxylBaseCallback<LoginResponse>() {
+        mLoginThridRequest.startRequest(LoginResponse.class, new EXueELianBaseCallback<LoginResponse>() {
 
             @Override
             protected void onResponse(RequestBase request, LoginResponse response) {
@@ -375,7 +375,7 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
                     MainActivity.invoke(LoginActivity.this,true);
                     LoginActivity.this.finish();
                 }else if (response.getStatus().getCode()==80){
-                    JoinClassActivity.LaunchActivity(mContext,mThridMessage);
+                    JoinClassActivity.LaunchActivity(mContext, mThridMessageBean);
                 }else {
                     ToastManager.showMsg(response.getStatus().getDesc());
                 }
@@ -412,13 +412,5 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
             }
         }
         setButtonFocusChange(isUserNameReady&&isPassWordReady);
-    }
-
-    public class ThridMessage implements Serializable{
-        public String openid;
-        public String platform;
-        public String uniqid;
-        public String sex;
-        public String head;
     }
 }

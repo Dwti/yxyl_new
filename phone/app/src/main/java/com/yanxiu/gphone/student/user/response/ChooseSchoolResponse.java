@@ -1,6 +1,6 @@
 package com.yanxiu.gphone.student.user.response;
 
-import com.yanxiu.gphone.student.base.YxylBaseResponse;
+import com.yanxiu.gphone.student.base.EXueELianBaseResponse;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import java.util.List;
  * Time : 2017/5/25 11:12.
  * Function :
  */
-public class ChooseSchoolResponse extends YxylBaseResponse {
+public class ChooseSchoolResponse extends EXueELianBaseResponse {
     public List<School> data;
 
     public class School{

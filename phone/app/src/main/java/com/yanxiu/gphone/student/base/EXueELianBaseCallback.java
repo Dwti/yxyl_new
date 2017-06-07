@@ -15,7 +15,7 @@ import com.yanxiu.gphone.student.util.LoginInfo;
  * Created by sp on 17-5-22.
  */
 
-public abstract class YxylBaseCallback<T extends YxylBaseResponse> implements HttpCallback<T> {
+public abstract class EXueELianBaseCallback<T extends EXueELianBaseResponse> implements HttpCallback<T> {
     @Override
     public void onSuccess(RequestBase request, T ret) {
         //code =99 表示token失效

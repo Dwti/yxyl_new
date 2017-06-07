@@ -1,7 +1,7 @@
 package com.yanxiu.gphone.student.user.response;
 
 
-import com.yanxiu.gphone.student.base.YxylBaseResponse;
+import com.yanxiu.gphone.student.base.EXueELianBaseResponse;
 
 /**
  * Created by Canghaixiao.
@@ -9,5 +9,5 @@ import com.yanxiu.gphone.student.base.YxylBaseResponse;
  * Function :
  */
 
-public class VerCodeResponse extends YxylBaseResponse {
+public class VerCodeResponse extends EXueELianBaseResponse {
 }

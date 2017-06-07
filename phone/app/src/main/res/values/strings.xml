@@ -4,7 +4,7 @@
     <string name="bt_login">登录</string>
     <string name="tv_forget_pass">忘记密码?</string>
     <string name="tv_fast_registered">快速注册!</string>
-    <string name="third_login">其他账号登陆</string>
+    <string name="third_login">其他账号登录</string>
     <string name="app_name">易学易练</string>
 
     <string name="app_exit_tip">再按一次退出客户端</string>
@@ -131,4 +131,6 @@
     <string name="complete">完成</string>
     <string name="complete_message">完善资料</string>
     <string name="skip_join_class">没有班级可加,跳过此步</string>
+
+    <string name="person">人</string>
 </resources>

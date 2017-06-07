@@ -50,7 +50,7 @@ public class LoginInfo {
         Save();
     }
 
-    public static void Save(){
+    private static void Save(){
         bean.getPassport().save();
         bean.save();
     }
@@ -90,11 +90,6 @@ public class LoginInfo {
         bean.getPassport().setPassword(passWord);
     }
 
-    public static void setToken(String token){
-        init();
-        bean.getPassport().setToken(token);
-    }
-
     public static String getMobile() {
         if (bean==null||bean.getMobile()==null) {
             return "";
@@ -128,6 +123,6 @@ public class LoginInfo {
             return;
         }
         bean.setRealname(name);
-        bean.save();
+        Save();
     }
 }

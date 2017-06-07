@@ -2,18 +2,24 @@ package com.yanxiu.gphone.student.base;
 
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.constant.Constants;
+import com.yanxiu.gphone.student.db.UrlRepository;
 import com.yanxiu.gphone.student.util.LoginInfo;
 
 /**
  * Created by sunpeng on 2017/5/8.
  */
 
-public abstract class YxylBaseRequest extends RequestBase {
+public abstract class EXueELianBaseRequest extends RequestBase {
     protected String osType = Constants.osType;
     protected String pcode = Constants.pcode;
     protected String token = LoginInfo.getToken();
     protected String trace_uid = LoginInfo.getUID();
     protected String version = Constants.version;
+
+    @Override
+    protected String urlServer() {
+        return UrlRepository.getInstance().getServer();
+    }
 
     @Override
     protected boolean shouldLog() {

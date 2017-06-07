@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
-import com.yanxiu.gphone.student.base.YxylBaseCallback;
+import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
 import com.yanxiu.gphone.student.customviews.WavesLayout;
@@ -19,6 +19,7 @@ import com.yanxiu.gphone.student.user.request.JoinClassSubmitRequest;
 import com.yanxiu.gphone.student.user.request.JoinClassSubmitThridRequest;
 import com.yanxiu.gphone.student.user.response.JoinClassResponse;
 import com.yanxiu.gphone.student.user.response.LoginResponse;
+import com.yanxiu.gphone.student.user.response.ThridMessageBean;
 import com.yanxiu.gphone.student.util.EditTextManger;
 import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.SysEncryptUtil;
@@ -42,7 +43,7 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
     private WavesLayout mWavesView;
     private TextView mAddClassView;
     private JoinClassResponse.Data mData;
-    private LoginActivity.ThridMessage thridMessage;
+    private ThridMessageBean thridMessageBean;
     private JoinClassSubmitRequest mJoinClassSubmitRequest;
     private JoinClassSubmitThridRequest mJoinClassSubmitThridRequest;
     private ImageView mBackView;
@@ -56,7 +57,7 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
         context.startActivity(intent);
     }
 
-    public static void LaunchActivity(Context context, JoinClassResponse.Data response, LoginActivity.ThridMessage message){
+    public static void LaunchActivity(Context context, JoinClassResponse.Data response, ThridMessageBean message){
         Intent intent=new Intent(context,JoinClassSubmitActivity.class);
         intent.putExtra(JoinClassActivity.KEY,response);
         intent.putExtra(LoginActivity.TYPE,LoginActivity.TYPE_THRID);
@@ -72,7 +73,7 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
         rootView.setContentView(R.layout.activity_join_class_submit);
         String type=getIntent().getStringExtra(LoginActivity.TYPE);
         if (type.equals(LoginActivity.TYPE_THRID)) {
-            thridMessage = (LoginActivity.ThridMessage) getIntent().getSerializableExtra(LoginActivity.THRID_LOGIN);
+            thridMessageBean = (ThridMessageBean) getIntent().getSerializableExtra(LoginActivity.THRID_LOGIN);
         }
         mData= (JoinClassResponse.Data) getIntent().getSerializableExtra(JoinClassActivity.KEY);
         setContentView(rootView);
@@ -125,7 +126,7 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
             mClassNameView.setText(mData.gradename+mData.name);
             mClassIdView.setText(mData.id);
             mTeacherNameView.setText(mData.adminName);
-            mStudentNumberView.setText(mData.stdnum);
+            mStudentNumberView.setText(mData.stdnum+getText(R.string.person));
             mSchoolNameView.setText(mData.schoolname);
         }
     }
@@ -142,7 +143,7 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
                 break;
             case R.id.tv_add_class:
                 String userName=mInputNameView.getText().toString().trim();
-                if (thridMessage!=null){
+                if (thridMessageBean !=null){
                     addClassThrid(userName);
                 }else {
                     addClass(userName);
@@ -175,7 +176,7 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
         mJoinClassSubmitRequest.schoolName=mData.schoolname;
         mJoinClassSubmitRequest.provinceid="";
         mJoinClassSubmitRequest.validKey=SysEncryptUtil.getMd5_32(LoginInfo.getMobile() + "&" + "yxylmobile");
-        mJoinClassSubmitRequest.startRequest(LoginResponse.class, new YxylBaseCallback<LoginResponse>() {
+        mJoinClassSubmitRequest.startRequest(LoginResponse.class, new EXueELianBaseCallback<LoginResponse>() {
 
             @Override
             protected void onResponse(RequestBase request, LoginResponse response) {
@@ -200,11 +201,11 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
     private void addClassThrid(String userName){
         rootView.showLoadingView();
         mJoinClassSubmitThridRequest=new JoinClassSubmitThridRequest();
-        mJoinClassSubmitThridRequest.headimg=thridMessage.head;
-        mJoinClassSubmitThridRequest.openid=thridMessage.openid;
-        mJoinClassSubmitThridRequest.pltform=thridMessage.platform;
-        mJoinClassSubmitThridRequest.sex=thridMessage.sex;
-        mJoinClassSubmitThridRequest.uniqid=thridMessage.uniqid;
+        mJoinClassSubmitThridRequest.headimg= thridMessageBean.head;
+        mJoinClassSubmitThridRequest.openid= thridMessageBean.openid;
+        mJoinClassSubmitThridRequest.pltform= thridMessageBean.platform;
+        mJoinClassSubmitThridRequest.sex= thridMessageBean.sex;
+        mJoinClassSubmitThridRequest.uniqid= thridMessageBean.uniqid;
         mJoinClassSubmitThridRequest.realname=userName;
         mJoinClassSubmitThridRequest.areaid="";
         mJoinClassSubmitThridRequest.cityid="";
@@ -213,7 +214,7 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
         mJoinClassSubmitThridRequest.schoolid=mData.schoolid;
         mJoinClassSubmitThridRequest.schoolName=mData.schoolname;
         mJoinClassSubmitThridRequest.provinceid="";
-        mJoinClassSubmitThridRequest.startRequest(LoginResponse.class, new YxylBaseCallback<LoginResponse>() {
+        mJoinClassSubmitThridRequest.startRequest(LoginResponse.class, new EXueELianBaseCallback<LoginResponse>() {
 
             @Override
             protected void onResponse(RequestBase request, LoginResponse response) {
