@@ -7,8 +7,8 @@ package com.yanxiu.gphone.student.questions.answerframe.util;
 public class QuestionTemplate{
     public static final String SINGLE_CHOICE = "choice";//单选
     public static final String MULTI_CHOICES = "multi-choice";//多选
-    public static final String FILL_BLANK = "fill";//填空
-    public static final String JUDGE = "alter";//判断
+    public static final String FILL = "fill";//填空
+    public static final String ALTER = "alter";//判断
     public static final String CONNECT = "connect";//连线
     public static final String CLASSIFY = "classify";//归类
     public static final String ANSWER = "answer";//主观(问答题)

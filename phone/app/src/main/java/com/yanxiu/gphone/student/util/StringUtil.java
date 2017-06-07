@@ -23,10 +23,10 @@ public class StringUtil {
             case QuestionTemplate.MULTI_CHOICES:
                 templateString = YanxiuApplication.getInstance().getString(R.string.MULTI_CHOICES);
                 break;
-            case QuestionTemplate.FILL_BLANK:
+            case QuestionTemplate.FILL:
                 templateString = YanxiuApplication.getInstance().getString(R.string.FILL_BLANK);
                 break;
-            case QuestionTemplate.JUDGE:
+            case QuestionTemplate.ALTER:
                 templateString = YanxiuApplication.getInstance().getString(R.string.JUDGE);
                 break;
             case QuestionTemplate.CONNECT:

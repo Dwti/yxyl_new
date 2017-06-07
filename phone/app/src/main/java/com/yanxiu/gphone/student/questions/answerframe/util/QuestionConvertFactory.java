@@ -65,9 +65,9 @@ public class QuestionConvertFactory {
                     MultiChoiceQuestion multiChoiceQuestion=new MultiChoiceQuestion(paperTestBean,showType);
                     questions.add(multiChoiceQuestion);
                     break;
-                case QuestionTemplate.FILL_BLANK:
+                case QuestionTemplate.FILL:
                     break;
-                case QuestionTemplate.JUDGE:
+                case QuestionTemplate.ALTER:
                     break;
                 case QuestionTemplate.CONNECT:
                     break;
