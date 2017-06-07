@@ -113,23 +113,23 @@ public class SearchClassFragment extends Fragment {
             }
         });
 
-        getActivity().getWindow().getDecorView().getViewTreeObserver().addOnGlobalLayoutListener(mOnGlobalLayoutListener);
+//        getActivity().getWindow().getDecorView().getViewTreeObserver().addOnGlobalLayoutListener(mOnGlobalLayoutListener);
     }
 
     //根据键盘的弹出收起，去隐藏显示下面的导航栏
-    ViewTreeObserver.OnGlobalLayoutListener mOnGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
-        @Override
-        public void onGlobalLayout() {
-            if(mRootView.getBottom() < mBottom && !mKeyBoardVisible){
-                ((MainActivity)getActivity()).setBottomNaviBarsVisibility(View.GONE);
-                mRootView.requestLayout();
-                mKeyBoardVisible = true;
-            }else if(mRootView.getBottom() >= mBottom && mKeyBoardVisible){
-                ((MainActivity)getActivity()).setBottomNaviBarsVisibility(View.VISIBLE);
-                mKeyBoardVisible = false;
-            }
-        }
-    };
+//    ViewTreeObserver.OnGlobalLayoutListener mOnGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+//        @Override
+//        public void onGlobalLayout() {
+//            if(mRootView.getBottom() < mBottom && !mKeyBoardVisible){
+//                ((MainActivity)getActivity()).setBottomNaviBarsVisibility(View.GONE);
+//                mRootView.requestLayout();
+//                mKeyBoardVisible = true;
+//            }else if(mRootView.getBottom() >= mBottom && mKeyBoardVisible){
+//                ((MainActivity)getActivity()).setBottomNaviBarsVisibility(View.VISIBLE);
+//                mKeyBoardVisible = false;
+//            }
+//        }
+//    };
 
     private void searchClass(String id) {
         SearchClassRequest request = new SearchClassRequest();
@@ -180,7 +180,7 @@ public class SearchClassFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-        mRootView.getViewTreeObserver().removeOnGlobalLayoutListener(mOnGlobalLayoutListener);
+//        mRootView.getViewTreeObserver().removeOnGlobalLayoutListener(mOnGlobalLayoutListener);
         super.onDestroy();
     }
 

@@ -130,32 +130,32 @@ public class JoinClassActivity extends Activity {
         });
     }
 
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        if(hasFocus){
-            mBottom = mScrollView.getBottom();
-            mScrollView.getViewTreeObserver().addOnGlobalLayoutListener(mOnGlobalLayoutListener);
-        }
-    }
+//    @Override
+//    public void onWindowFocusChanged(boolean hasFocus) {
+//        super.onWindowFocusChanged(hasFocus);
+//        if(hasFocus){
+//            mBottom = mScrollView.getBottom();
+//            mScrollView.getViewTreeObserver().addOnGlobalLayoutListener(mOnGlobalLayoutListener);
+//        }
+//    }
 
     //监听键盘的弹出收起,并且在键盘弹起时，ScrollView滑动到指定位置
-    ViewTreeObserver.OnGlobalLayoutListener mOnGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
-        @Override
-        public void onGlobalLayout() {
-            if(mScrollView.getBottom() < mBottom && !mKeyBoardVisible){
-                mKeyBoardVisible = true;
-                mScrollView.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mScrollView.scrollTo(0, (int) mWavesLayout.getY());
-                    }
-                });
-            }else if(mScrollView.getBottom() >= mBottom && mKeyBoardVisible){
-                mKeyBoardVisible = false;
-            }
-        }
-    };
+//    ViewTreeObserver.OnGlobalLayoutListener mOnGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+//        @Override
+//        public void onGlobalLayout() {
+//            if(mScrollView.getBottom() < mBottom && !mKeyBoardVisible){
+//                mKeyBoardVisible = true;
+//                mScrollView.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        mScrollView.scrollTo(0, (int) mWavesLayout.getY());
+//                    }
+//                });
+//            }else if(mScrollView.getBottom() >= mBottom && mKeyBoardVisible){
+//                mKeyBoardVisible = false;
+//            }
+//        }
+//    };
 
     private void updateUserInfo(String name) {
         UpdateUserInfoRequest request = new UpdateUserInfoRequest();
@@ -172,7 +172,7 @@ public class JoinClassActivity extends Activity {
 
     @Override
     protected void onDestroy() {
-        mScrollView.getViewTreeObserver().removeOnGlobalLayoutListener(mOnGlobalLayoutListener);
+//        mScrollView.getViewTreeObserver().removeOnGlobalLayoutListener(mOnGlobalLayoutListener);
         super.onDestroy();
     }
 
