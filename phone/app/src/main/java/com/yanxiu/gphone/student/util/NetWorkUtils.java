@@ -36,4 +36,20 @@ public class NetWorkUtils {
             return null;
         }
     }
+
+    public static String getNetWorkType() {
+
+        String netWorkType = "2";
+        NetworkInfo netWorkInfo = getAvailableNetWorkInfo();
+
+        if (netWorkInfo != null) {
+            if (netWorkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+                netWorkType = "1";
+            } else if (netWorkInfo.getType() == ConnectivityManager.TYPE_MOBILE) {
+                netWorkType = "0";
+            }
+        }
+        return netWorkType;
+    }
+
 }

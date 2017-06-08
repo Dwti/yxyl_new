@@ -3,6 +3,7 @@ package com.yanxiu.gphone.student.util;
 import android.content.Context;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.telephony.TelephonyManager;
 
 import com.yanxiu.gphone.student.YanxiuApplication;
@@ -30,5 +31,38 @@ public class DeviceUtil {
         }
 
         return SysEncryptUtil.getMD5(deviceId);
+    }
+
+    /**
+     * 获取厂商品牌
+     */
+    public static String getBrandName() {
+        String brand = Build.BRAND;
+        if (brand == null || brand.length() <= 0) {
+            return "";
+        } else {
+            return getData(brand);
+        }
+    }
+    /**
+     * 获取modelname
+     *
+     * @return
+     */
+    public static String getModelName() {
+        String model = Build.MODEL;
+        if (model == null || model.length() <= 0) {
+            return "";
+        } else {
+            return getData(model);
+        }
+    }
+
+    private static String getData(String data) {
+        if (data == null || data.length() <= 0) {
+            return "-";
+        } else {
+            return data.replace(" ", "_");
+        }
     }
 }

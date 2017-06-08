@@ -1,6 +1,7 @@
 package com.yanxiu.gphone.student.constant;
 
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.util.DeviceUtil;
 import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.SystemUtil;
 
@@ -15,11 +16,16 @@ public class Constants {
     public static final String OS = "android";
     public static final String osType = "0";
     public static final String pcode = "010110000";
+    public static final String BRAND= DeviceUtil.getBrandName();
+    public static final String OPERTYPE = "app.upload.log";
+    public static final String PRODUCTLINE = "1";
     public static String token = LoginInfo.getToken();
     public static String trace_uid = LoginInfo.getUID();
     //    public static String deviceId= DeviceUtil.getAppDeviceId();
     public static String deviceId = "-";
     public static String version = String.valueOf(SystemUtil.getVersionCode());
+
+
 
     public static int[] StageTxtId = {R.string.primary_txt, R.string.juinor_txt, R.string.high_txt};
     public static String[] StageId = {"1202", "1203", "1204"};

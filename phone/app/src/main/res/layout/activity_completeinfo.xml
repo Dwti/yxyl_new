@@ -44,9 +44,19 @@
                         style="@style/LoginEdit"
                         android:hint="@string/input_true_name"
                         android:inputType="text"
+                        android:ellipsize="end"
                         android:maxLength="16"
                         android:singleLine="true"
                         android:textColor="@color/color_ffffff" />
+                    <ImageView
+                        android:id="@+id/iv_clear"
+                        android:layout_width="@dimen/login_edit_icon_w_h"
+                        android:layout_height="@dimen/login_edit_icon_w_h"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="@dimen/login_edit_icon_w_h"
+                        android:background="@color/color_00cccc"
+                        android:contentDescription="@null" />
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -67,6 +77,7 @@
                         style="@style/LoginEdit"
                         android:maxLines="1"
                         android:ellipsize="end"
+                        android:singleLine="true"
                         android:textColor="@color/color_ffffff" />
 
                     <ImageView
@@ -80,7 +91,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/ll_period"
+                    android:id="@+id/ll_stage"
                     style="@style/LoginLayoutButton"
                     android:layout_below="@+id/ll_school"
                     android:layout_marginTop="@dimen/login_edit_margin_top"
@@ -96,6 +107,7 @@
                         android:id="@+id/tv_stage"
                         style="@style/LoginEdit"
                         android:maxLines="1"
+                        android:singleLine="true"
                         android:ellipsize="end"
                         android:textColor="@color/color_ffffff" />
 
@@ -112,7 +124,7 @@
                 <com.yanxiu.gphone.student.customviews.WavesLayout
                     android:id="@+id/wl_waves"
                     style="@style/LoginLayoutButton"
-                    android:layout_below="@+id/ll_period"
+                    android:layout_below="@+id/ll_stage"
                     android:layout_marginTop="@dimen/login_button_margin_top"
                     app:waves_color="@color/color_E3F8C5"
                     app:waves_canshowwave="false"

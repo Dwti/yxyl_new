@@ -1,6 +1,8 @@
 package com.yanxiu.gphone.student.util;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
@@ -39,4 +41,23 @@ public class SystemUtil {
         }
         return isInstalled;
     }
+
+    public static String getChannelName() {
+        String channelName = "other";
+        try {
+            PackageManager packageManager = YanxiuApplication.getInstance().getPackageManager();
+            if (packageManager != null) {
+                ApplicationInfo applicationInfo = packageManager.getApplicationInfo(YanxiuApplication.getInstance().getPackageName(), PackageManager.GET_META_DATA);
+                if (applicationInfo != null) {
+                    if (applicationInfo.metaData != null) {
+                        channelName = applicationInfo.metaData.getString("InstallChannel");
+                    }
+                }
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return channelName;
+    }
+
 }
