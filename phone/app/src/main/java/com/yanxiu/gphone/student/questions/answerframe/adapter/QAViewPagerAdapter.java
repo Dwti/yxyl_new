@@ -1,5 +1,6 @@
 package com.yanxiu.gphone.student.questions.answerframe.adapter;
 
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -60,6 +61,10 @@ public class QAViewPagerAdapter extends FragmentStatePagerAdapter {
     }
 
 
+//    @Override
+//    public Parcelable saveState() {
+//        return null;
+//    }
 }
 
 

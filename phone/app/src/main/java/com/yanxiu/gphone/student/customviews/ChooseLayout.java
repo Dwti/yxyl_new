@@ -84,12 +84,12 @@ public class ChooseLayout extends LinearLayout implements View.OnClickListener {
         }
     }
 
-    private class ViewHolder {
-        int position;
-        boolean mSelect = false;
-        TextView mQuestionIdView;
-        TextView mQuestionContentView;
-        View mQuestionSelectView;
+    public class ViewHolder {
+        public int position;
+        public boolean mSelect = false;
+        public TextView mQuestionIdView;
+        public TextView mQuestionContentView;
+        public View mQuestionSelectView;
     }
 
     private String getEmsByNum(int num) {
