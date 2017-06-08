@@ -51,6 +51,14 @@ public class UrlRepository {
         }
     }
 
+    public String getMode(){
+        if (mUrlBean!=null){
+            return mUrlBean.getMode();
+        }else {
+            return null;
+        }
+    }
+
     public void setUrlBean(UrlBean urlBean) {
         this.mUrlBean = urlBean;
     }

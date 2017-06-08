@@ -65,6 +65,7 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
     private CompleteInfoThridRequest mCompleteInfoThridRequest;
     private ImageView mBackView;
     private TextView mTitleView;
+    private ImageView mClearView;
 
     public static void LaunchActivity(Context context) {
         Intent intent = new Intent(context, CompleteInfoActivity.class);
@@ -120,6 +121,7 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
         mWavesView = (WavesLayout) findViewById(R.id.wl_waves);
         mChooseSchoolView = (LinearLayout) findViewById(R.id.ll_school);
         mChooseStageView = (LinearLayout) findViewById(R.id.ll_stage);
+        mClearView= (ImageView) findViewById(R.id.iv_clear);
     }
 
     private void initData() {
@@ -130,6 +132,7 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
     }
 
     private void listener() {
+        mClearView.setOnClickListener(CompleteInfoActivity.this);
         mBackView.setOnClickListener(CompleteInfoActivity.this);
         mSubmitView.setOnClickListener(CompleteInfoActivity.this);
         mChooseSchoolView.setOnClickListener(CompleteInfoActivity.this);
@@ -155,6 +158,9 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
             case R.id.iv_left:
                 CompleteInfoActivity.this.finish();
                 EditTextManger.getManager(mTitleView).hideSoftInput(mContext);
+                break;
+            case R.id.iv_clear:
+                mUserNameView.setText("");
                 break;
             case R.id.ll_stage:
                 ChooseStageActivity.LaunchActivity(mContext);
@@ -244,6 +250,16 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
         });
     }
 
+    private void setEditUserNameIsEmpty(boolean isEmpty) {
+        if (isEmpty) {
+            mClearView.setEnabled(false);
+            mClearView.setVisibility(View.INVISIBLE);
+        } else {
+            mClearView.setEnabled(true);
+            mClearView.setVisibility(View.VISIBLE);
+        }
+    }
+
     @Override
     public void onChanged(View view, String value, boolean isEmpty) {
         if (view==mUserNameView){
@@ -252,6 +268,7 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
             } else {
                 isUserNameReady = true;
             }
+            setEditUserNameIsEmpty(isEmpty);
         }else if (view==mSchoolView){
             if (isEmpty) {
                 isSchoolReady = false;
