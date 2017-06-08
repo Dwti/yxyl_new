@@ -169,9 +169,9 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         // 2, 跳转
         int index = item.getLevelPositions().get(0);
         FragmentStatePagerAdapter a1 = (FragmentStatePagerAdapter) mViewPager.getAdapter();
-        final ExerciseBaseFragment f2 = (ExerciseBaseFragment) a1.getItem(index);
         mViewPager.setCurrentItem(index);
-        f2.setUserVisibleHin2(true);
+        ExerciseBaseFragment currentFragment = (ExerciseBaseFragment) a1.instantiateItem(mViewPager, index);
+        currentFragment.setUserVisibleHin2(true);
 
 
         ArrayList<Integer> remainPositions = new ArrayList<>(item.getLevelPositions());

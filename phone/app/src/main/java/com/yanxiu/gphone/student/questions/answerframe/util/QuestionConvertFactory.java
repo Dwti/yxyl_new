@@ -5,6 +5,7 @@ import com.yanxiu.gphone.student.questions.choose.MultiChoiceQuestion;
 import com.yanxiu.gphone.student.questions.readingcomplex.ReadingComplexQuestion;
 import com.yanxiu.gphone.student.questions.choose.SingleChoiceQuestion;
 import com.yanxiu.gphone.student.questions.bean.PaperTestBean;
+import com.yanxiu.gphone.student.questions.yesno.YesNoQuestion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +69,8 @@ public class QuestionConvertFactory {
                 case QuestionTemplate.FILL:
                     break;
                 case QuestionTemplate.ALTER:
+                    YesNoQuestion yesNoQuestion = new YesNoQuestion(paperTestBean,showType);
+                    questions.add(yesNoQuestion);
                     break;
                 case QuestionTemplate.CONNECT:
                     break;

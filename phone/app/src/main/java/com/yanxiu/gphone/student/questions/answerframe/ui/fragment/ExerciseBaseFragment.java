@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextPaint;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -139,6 +140,7 @@ public abstract class ExerciseBaseFragment extends Fragment implements IExercise
 
     @Override
     public void onVisibleToUserChanged(boolean isVisibleToUser, boolean invokeInResumeOrPause) {
+        Log.w(TAG, "onVisibilityChangedToUser: " + "_______" + this.getClass().getSimpleName() + " == " + isVisibleToUser);
         if (isVisibleToUser) {
             //用户可见，计时开始
             mStartTime = System.currentTimeMillis();
