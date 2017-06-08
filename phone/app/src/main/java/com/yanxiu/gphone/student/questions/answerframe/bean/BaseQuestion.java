@@ -259,7 +259,7 @@ public abstract class BaseQuestion implements Serializable {
         return isAnswer;
     }
 
-    public void setAnswer(boolean answer) {
+    public void setIsAnswer(boolean answer) {
         isAnswer = answer;
     }
 

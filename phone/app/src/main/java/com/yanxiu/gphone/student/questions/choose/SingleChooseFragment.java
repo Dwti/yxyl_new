@@ -92,11 +92,11 @@ public class SingleChooseFragment extends SimpleExerciseBaseFragment implements 
     @Override
     public void onClick(int position, boolean isSelected) {
         if(isSelected){
-            mData.setAnswer(true);
+            mData.setIsAnswer(true);
             mData.getAnswerList().clear();
             mData.getAnswerList().add(String.valueOf(position));
         }else{
-            mData.setAnswer(false);
+            mData.setIsAnswer(false);
             mData.getAnswerList().remove(0);
         }
         saveAnswer(mData);
