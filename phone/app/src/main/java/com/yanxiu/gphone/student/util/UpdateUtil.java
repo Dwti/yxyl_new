@@ -24,6 +24,7 @@ import static com.yanxiu.gphone.student.constant.Constants.NOTIFICATION_ID;
 import static com.yanxiu.gphone.student.constant.Constants.STUDENT_UPLOAD;
 
 /**
+ * 升级工具类
  * Created by Canghaixiao.
  * Time : 2017/6/7 16:36.
  * Function :
