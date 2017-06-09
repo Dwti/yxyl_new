@@ -124,5 +124,14 @@
 
     <dimen name="choose_stage_text_max_size">25dp</dimen>
     <dimen name="choose_stage_text_min_size">22dp</dimen>
+
+    <dimen name="update_margin">10dp</dimen>
+    <dimen name="update_text_height">40dp</dimen>
+    <dimen name="update_textsize">15dp</dimen>
+    <dimen name="update_textsize2">17dp</dimen>
+    <dimen name="update_progress_height">20dp</dimen>
+    <dimen name="update_line_spacing">3dp</dimen>
+    <dimen name="update_line_height">40dp</dimen>
+    <dimen name="update_popup_width">300dp</dimen>
 </resources>
 

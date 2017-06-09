@@ -54,4 +54,13 @@ public class StringUtil {
         return templateString;
     }
 
+    public static boolean isEmpty(String str) {
+        if (null != str) {
+            if (str.length() > 4) {
+                return false;
+            }
+        }
+        return null == str || "".equals(str) || "NULL"
+                .equals(str.toUpperCase());
+    }
 }

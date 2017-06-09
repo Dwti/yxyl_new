@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.text.TextUtils;
 
 import com.yanxiu.gphone.student.YanxiuApplication;
 
@@ -57,7 +58,12 @@ public class SystemUtil {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        return channelName;
+
+        if (TextUtils.isEmpty(channelName)){
+            return "other";
+        }else {
+            return channelName;
+        }
     }
 
 }

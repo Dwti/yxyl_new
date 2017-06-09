@@ -1,0 +1,85 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/update_popup_width"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/forget_pwd_sel"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/update_title"
+        style="@style/ShadowTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:paddingBottom="@dimen/update_margin"
+        android:paddingLeft="@dimen/update_margin"
+        android:paddingTop="@dimen/update_margin"
+        android:shadowColor="@color/color_ffff99"
+        android:text="@string/app_update"
+        android:textColor="@color/color_805500"
+        android:textSize="@dimen/update_textsize" />
+
+    <ProgressBar
+        android:id="@+id/pb_loadapk"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/update_progress_height"
+        android:layout_marginLeft="@dimen/update_margin"
+        android:layout_marginRight="@dimen/update_margin"
+        android:max="100"
+        android:progress="0"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/update_content"
+        style="@style/ShadowTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:lineSpacingExtra="@dimen/update_line_spacing"
+        android:paddingBottom="@dimen/update_margin"
+        android:paddingLeft="@dimen/update_margin"
+        android:shadowColor="@color/color_ffff99"
+        android:textColor="@color/color_805500"
+        android:textSize="@dimen/update_textsize"/>
+
+    <LinearLayout
+        android:id="@+id/update_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/update_margin"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/update_layout_sure"
+            style="@style/ShadowTextStyle"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/update_text_height"
+            android:layout_weight="1"
+            android:background="@drawable/register_code_selector"
+            android:gravity="center"
+            android:shadowColor="@color/color_ffff99"
+            android:text="@string/app_update_sure"
+            android:textColor="@color/color_805500"
+            android:textSize="@dimen/update_textsize2"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="@dimen/common_line_height"
+            android:layout_height="@dimen/update_line_height"
+            android:background="@color/color_ffc8c7cc" />
+
+        <TextView
+            android:id="@+id/update_layout_cel"
+            style="@style/ShadowTextStyle"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/update_line_height"
+            android:layout_weight="1"
+            android:background="@drawable/register_code_selector"
+            android:gravity="center"
+            android:shadowColor="@color/color_ffff99"
+            android:text="@string/app_update_cancle"
+            android:textColor="@color/color_805500"
+            android:textSize="@dimen/update_textsize" />
+    </LinearLayout>
+</LinearLayout>

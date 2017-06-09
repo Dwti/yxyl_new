@@ -32,7 +32,7 @@ import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.SystemUtil;
 import com.yanxiu.gphone.student.util.ToastManager;
 import com.yanxiu.gphone.student.customviews.WavesLayout;
-import com.yanxiu.gphone.student.util.UpdataUtil;
+import com.yanxiu.gphone.student.util.UpdateUtil;
 
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -97,7 +97,7 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
         rootView=new PublicLoadLayout(mContext);
         rootView.setContentView(R.layout.activity_login);
         setContentView(rootView);
-
+        UpdateUtil.Initialize(mContext,false);
         mUMShareAPI=UMShareAPI.get(mContext);
         initView();
         listener();
@@ -247,7 +247,6 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
             case R.id.tv_fast_registered:
                 RegisterActivity.LaunchActivity(mContext);
 //                JoinClassActivity.LaunchActivity(mContext);
-//                UpdataUtil.Initialize();
                 break;
             case R.id.iv_third_qq:
                 LoginByQQ();
@@ -271,7 +270,8 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
                 if (response.getStatus().getCode()==0){
                     LoginInfo.saveCacheData(response.data.get(0));
                     MainActivity.invoke(LoginActivity.this,true);
-                    LoginActivity.this.finish();
+                    //there can't finish
+//                    LoginActivity.this.finish();
                 }else if (response.getStatus().getCode()==80){
                     LoginInfo.setMobile(user_name);
                     LoginInfo.setPassWord(pass_word);
