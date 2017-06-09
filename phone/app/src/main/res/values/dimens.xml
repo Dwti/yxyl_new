@@ -133,5 +133,7 @@
     <dimen name="update_line_spacing">3dp</dimen>
     <dimen name="update_line_height">40dp</dimen>
     <dimen name="update_popup_width">300dp</dimen>
+
+    <dimen name="edit_margin_text">2dp</dimen>
 </resources>
 

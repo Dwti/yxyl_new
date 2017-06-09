@@ -26,4 +26,8 @@
         <attr name="minHeight" format="dimension"></attr>
     </declare-styleable>
 
+    <declare-styleable name="SinglineEditText">
+        <attr name="hint" format="string"/>
+    </declare-styleable>
+
 </resources>
