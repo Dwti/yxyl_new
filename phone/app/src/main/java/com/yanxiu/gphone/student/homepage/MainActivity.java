@@ -18,6 +18,7 @@ import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.HomePageBaseFragment;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.util.DataFetcher;
+import com.yanxiu.gphone.student.util.UpdateUtil;
 
 import static com.yanxiu.gphone.student.constant.Constants.MAINAVTIVITY_REFRESH;
 
@@ -48,6 +49,7 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
+        UpdateUtil.Initialize(this,false);
     }
 
     @Override
