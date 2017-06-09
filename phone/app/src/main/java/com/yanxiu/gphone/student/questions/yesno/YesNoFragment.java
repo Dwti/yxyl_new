@@ -2,7 +2,6 @@ package com.yanxiu.gphone.student.questions.yesno;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.LayoutInflater;
@@ -15,7 +14,6 @@ import com.yanxiu.gphone.student.customviews.ChooseLayout;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.SimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
-import com.yanxiu.gphone.student.util.ScreenUtils;
 
 import java.util.List;
 
@@ -101,11 +99,19 @@ public class YesNoFragment extends SimpleExerciseBaseFragment implements ChooseL
     @Override
     public void onClick(int position, boolean isSelected) {
         if (isSelected) {
-            mData.setAnswer(true);
+            mData.setIsAnswer(true);
             mData.getAnswerList().clear();
-            mData.getAnswerList().add(String.valueOf(position));
+            switch (position){
+                case 0:
+                    mData.getAnswerList().add(String.valueOf(1));//正确为1
+                    break;
+                case 1:
+                    mData.getAnswerList().add(String.valueOf(0));//错误为0
+                    break;
+            }
+
         } else {
-            mData.setAnswer(false);
+            mData.setIsAnswer(false);
             mData.getAnswerList().remove(0);
         }
         saveAnswer(mData);

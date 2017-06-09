@@ -98,9 +98,9 @@ public class MultiChooseFragment extends SimpleExerciseBaseFragment implements C
             mData.getAnswerList().remove(String.valueOf(position));
         }
         if (mData.getAnswerList().size()>0){
-            mData.setAnswer(true);
+            mData.setIsAnswer(true);
         }else {
-            mData.setAnswer(false);
+            mData.setIsAnswer(false);
         }
         saveAnswer(mData);
         updateProgress();
