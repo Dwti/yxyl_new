@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.HomePageBaseFragment;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
+import com.yanxiu.gphone.student.util.ActivityManger;
 import com.yanxiu.gphone.student.util.DataFetcher;
 import com.yanxiu.gphone.student.util.UpdateUtil;
 
@@ -87,6 +88,7 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
     @Override
     protected void onDestroy() {
         DataFetcher.getInstance().destory();
+        ActivityManger.destoryAll();
         super.onDestroy();
     }
 
