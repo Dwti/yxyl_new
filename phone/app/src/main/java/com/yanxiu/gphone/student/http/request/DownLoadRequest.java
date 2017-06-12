@@ -1,10 +1,5 @@
 package com.yanxiu.gphone.student.http.request;
 
-import android.os.Environment;
-import android.support.annotation.NonNull;
-
-import com.yanxiu.gphone.student.util.FileUtil;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -54,7 +49,7 @@ public class DownLoadRequest {
             public void onResponse(Call call, Response response) throws IOException {
                 InputStream is = null;
                 byte[] buf = new byte[2048];
-                int len = 0;
+                int len;
                 FileOutputStream fos = null;
                 try {
                     is = response.body().byteStream();

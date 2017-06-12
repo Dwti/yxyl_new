@@ -181,7 +181,7 @@
                         android:textColor="@color/color_336600"
                         android:textSize="@dimen/complete_info_textsize" />
 
-                    <EditText
+                    <com.yanxiu.gphone.student.customviews.SinglineEditText
                         android:id="@+id/et_name"
                         android:layout_width="@dimen/login_default_width"
                         android:layout_height="wrap_content"
@@ -189,7 +189,7 @@
                         android:layout_weight="1"
                         android:background="@null"
                         android:ellipsize="end"
-                        android:hint="@string/input_user_true_name"
+                        app:hint="@string/input_user_true_name"
                         android:inputType="text"
                         android:maxLines="1"
                         android:maxLength="16"
