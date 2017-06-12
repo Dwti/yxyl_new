@@ -39,15 +39,18 @@
                         style="@style/LoginInfoText"
                         android:text="@string/user_name" />
 
-                    <EditText
+                    <com.yanxiu.gphone.student.customviews.SinglineEditText
                         android:id="@+id/ed_user_name"
                         style="@style/LoginEdit"
-                        android:hint="@string/input_true_name"
+                        app:hint="@string/input_true_name"
                         android:inputType="text"
                         android:ellipsize="end"
                         android:maxLength="16"
                         android:singleLine="true"
                         android:textColor="@color/color_ffffff" />
+                        <View
+                            android:layout_width="@dimen/edit_margin_text"
+                            android:layout_height="wrap_content"/>
                     <ImageView
                         android:id="@+id/iv_clear"
                         android:layout_width="@dimen/login_edit_icon_w_h"
@@ -72,13 +75,14 @@
                         style="@style/LoginInfoText"
                         android:text="@string/school" />
 
-                    <TextView
+                    <com.yanxiu.gphone.student.customviews.SinglineTextView
                         android:id="@+id/tv_school"
                         style="@style/LoginEdit"
-                        android:maxLines="1"
-                        android:ellipsize="end"
-                        android:singleLine="true"
                         android:textColor="@color/color_ffffff" />
+
+                    <View
+                        android:layout_width="@dimen/edit_margin_text"
+                        android:layout_height="wrap_content"/>
 
                     <ImageView
                         android:id="@+id/iv_choose_school"
@@ -109,6 +113,7 @@
                         android:maxLines="1"
                         android:singleLine="true"
                         android:ellipsize="end"
+                        android:paddingRight="@dimen/edit_margin_text"
                         android:textColor="@color/color_ffffff" />
 
                     <ImageView

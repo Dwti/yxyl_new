@@ -14,6 +14,7 @@ import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
+import com.yanxiu.gphone.student.customviews.SinglineTextView;
 import com.yanxiu.gphone.student.customviews.WavesLayout;
 import com.yanxiu.gphone.student.homepage.MainActivity;
 import com.yanxiu.gphone.student.user.request.CompleteInfoRequest;
@@ -39,7 +40,7 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
 
     private Context mContext;
     private EditText mUserNameView;
-    private TextView mSchoolView;
+    private SinglineTextView mSchoolView;
     private TextView mStageView;
     private TextView mSubmitView;
     private WavesLayout mWavesView;
@@ -115,7 +116,7 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
         mBackView= (ImageView) findViewById(R.id.iv_left);
         mTitleView= (TextView) findViewById(R.id.tv_title);
         mUserNameView = (EditText) findViewById(R.id.ed_user_name);
-        mSchoolView = (TextView) findViewById(R.id.tv_school);
+        mSchoolView = (SinglineTextView) findViewById(R.id.tv_school);
         mStageView = (TextView) findViewById(R.id.tv_stage);
         mSubmitView = (TextView) findViewById(R.id.tv_submit);
         mWavesView = (WavesLayout) findViewById(R.id.wl_waves);
@@ -301,7 +302,7 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
     public void onEventMainThread(SchoolMessage message) {
         if (message!=null) {
             this.message=message;
-            mSchoolView.setText(message.schoolName);
+            mSchoolView.setData(message.schoolName);
         }
     }
 
