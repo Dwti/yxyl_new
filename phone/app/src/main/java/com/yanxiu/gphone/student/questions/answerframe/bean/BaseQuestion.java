@@ -43,6 +43,9 @@ public abstract class BaseQuestion implements Serializable {
 
     private Object ansewr;//已回答的问题
 
+    private String stem_complexToSimple;//只有一个子题的复合题的主题干(复合题转成单题显示)
+    private String template_complexToSimple;//只有一个子题的复合题的大题的template(复合题转成单题显示)
+
     protected boolean isAnswer;
 
     protected boolean isComplexQuestion;//是否是复合题 true : 是
@@ -267,6 +270,21 @@ public abstract class BaseQuestion implements Serializable {
      * 获取答案
      */
     public abstract Object getAnswer();
+
+    public String getStem_complexToSimple() {
+        return stem_complexToSimple;
+    }
+
+    public void setStem_complexToSimple(String stem_complexToSimple) {
+        this.stem_complexToSimple = stem_complexToSimple;
+    }
+    public String getTemplate_complexToSimple() {
+        return template_complexToSimple;
+    }
+
+    public void setTemplate_complexToSimple(String template_complexToSimple) {
+        this.template_complexToSimple = template_complexToSimple;
+    }
 
 
     /**

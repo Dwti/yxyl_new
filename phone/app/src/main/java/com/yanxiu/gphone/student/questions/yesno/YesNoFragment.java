@@ -4,9 +4,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Html;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
@@ -27,6 +29,8 @@ public class YesNoFragment extends SimpleExerciseBaseFragment implements ChooseL
     private YesNoQuestion mData;
     private TextView mQuestionView;
     private ChooseLayout mAnswerView;
+    private LinearLayout mComplex_stem_layout;
+    private TextView mComplex_stem;
 
     @Override
     public void setData(BaseQuestion data) {
@@ -63,6 +67,8 @@ public class YesNoFragment extends SimpleExerciseBaseFragment implements ChooseL
     private void initView(View view) {
         mQuestionView = (TextView) view.findViewById(R.id.tv_question);
         mAnswerView = (ChooseLayout) view.findViewById(R.id.cl_answer);
+        mComplex_stem_layout = (LinearLayout) view.findViewById(R.id.complex_stem_layout);
+        mComplex_stem = (TextView) view.findViewById(R.id.complex_stem);
     }
 
     private void listener() {
@@ -70,6 +76,7 @@ public class YesNoFragment extends SimpleExerciseBaseFragment implements ChooseL
     }
 
     private void initData() {
+        initComplexStem();
         Spanned string = Html.fromHtml(mData.getStem(), new HtmlImageGetter(mQuestionView), null);
         mQuestionView.setText(string);
         mAnswerView.setData(mData.getChoice());
@@ -83,6 +90,15 @@ public class YesNoFragment extends SimpleExerciseBaseFragment implements ChooseL
             ChooseLayout.ViewHolder viewHolder = (ChooseLayout.ViewHolder) choleView.getTag();
             viewHolder.mQuestionIdView.setVisibility(GONE);
 
+        }
+    }
+
+    private void initComplexStem(){
+        String complexStem = mData.getStem_complexToSimple();
+        if(!TextUtils.isEmpty(complexStem)){
+            Spanned spanned = Html.fromHtml(complexStem,new HtmlImageGetter(mComplex_stem),null);
+            mComplex_stem.setText(spanned);
+            mComplex_stem_layout.setVisibility(View.VISIBLE);
         }
     }
 
