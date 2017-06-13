@@ -45,7 +45,7 @@
             android:screenOrientation="portrait"
             android:launchMode="singleTask"
             android:configChanges="keyboardHidden|orientation"
-            android:windowSoftInputMode="stateAlwaysHidden"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"
             android:taskAffinity="com.yanxiu.gphone.student">
         <intent-filter>
             <action android:name="android.intent.action.VIEW" />
