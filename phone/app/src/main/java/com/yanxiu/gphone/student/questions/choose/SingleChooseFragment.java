@@ -53,6 +53,7 @@ public class SingleChooseFragment extends SimpleExerciseBaseFragment implements 
         setQaNumber(view);
         setQaName(view);
         initView(view);
+        initComplexStem(view,mData);
         listener();
         initData();
         return view;
