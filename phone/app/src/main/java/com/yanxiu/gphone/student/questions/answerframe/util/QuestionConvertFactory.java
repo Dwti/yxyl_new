@@ -122,6 +122,7 @@ public class QuestionConvertFactory {
 
         String template = paperTestBean.getQuestions().getTemplate();//复合题的template
         String stem_complex = paperTestBean.getQuestions().getStem();//复合题的题干
+        String url_complex_listen = paperTestBean.getQuestions().getUrl();//听力复合题的url
         int childCount = ChildQuestion.size();
 
         if (childCount == 1) { //只有一个子题，转成单题
@@ -132,12 +133,14 @@ public class QuestionConvertFactory {
                     SingleChoiceQuestion singleChoiceQuestion = new SingleChoiceQuestion(childQuestion, showType);
                     singleChoiceQuestion.setStem_complexToSimple(stem_complex);
                     singleChoiceQuestion.setTemplate_complexToSimple(template);
+                    singleChoiceQuestion.setUrl_listenComplexToSimple(url_complex_listen);
                     questions.add(singleChoiceQuestion);
                     break;
                 case QuestionTemplate.MULTI_CHOICES:
                     MultiChoiceQuestion multiChoiceQuestion = new MultiChoiceQuestion(childQuestion, showType);
                     multiChoiceQuestion.setStem_complexToSimple(stem_complex);
                     multiChoiceQuestion.setTemplate_complexToSimple(template);
+                    multiChoiceQuestion.setUrl_listenComplexToSimple(url_complex_listen);
                     questions.add(multiChoiceQuestion);
                     break;
                 case QuestionTemplate.FILL:
@@ -146,6 +149,7 @@ public class QuestionConvertFactory {
                     YesNoQuestion yesNoQuestion = new YesNoQuestion(childQuestion, showType);
                     yesNoQuestion.setStem_complexToSimple(stem_complex);
                     yesNoQuestion.setTemplate_complexToSimple(template);
+                    yesNoQuestion.setUrl_listenComplexToSimple(url_complex_listen);
                     questions.add(yesNoQuestion);
                     break;
                 case QuestionTemplate.CONNECT:

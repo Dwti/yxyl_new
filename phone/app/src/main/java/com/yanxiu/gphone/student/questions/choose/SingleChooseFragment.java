@@ -107,7 +107,7 @@ public class SingleChooseFragment extends SimpleExerciseBaseFragment implements 
      */
     @Override
     public void onVisibilityChangedToUser(boolean isVisibleToUser, boolean invokeInResumeOrPause) {
-
+        super.onVisibilityChangedToUser(isVisibleToUser,invokeInResumeOrPause);
     }
 
     @Override

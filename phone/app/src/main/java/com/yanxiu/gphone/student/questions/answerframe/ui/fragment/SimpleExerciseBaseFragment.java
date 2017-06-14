@@ -8,7 +8,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.customviews.ListenerSeekBarLayout;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
+import com.yanxiu.gphone.student.questions.answerframe.util.QuestionTemplate;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
 
 /**
@@ -18,12 +20,16 @@ import com.yanxiu.gphone.student.util.HtmlImageGetter;
 
 public abstract class SimpleExerciseBaseFragment extends ExerciseBaseFragment {
 
+    private ListenerSeekBarLayout mListenView;//听力复合题只有一个子题时，题干的听力控件
+
     /**
      * 如果是只有一个子题的复合题，显示大题的题干
-     *(所有单题型都需要支持该方法)
+     * (所有单题型都需要支持该方法)
+     *
      * @param view
      */
     public void initComplexStem(View view, BaseQuestion data) {
+        //通用题干
         LinearLayout complex_stem_layout = (LinearLayout) view.findViewById(R.id.complex_stem_layout);
         TextView complex_stem = (TextView) view.findViewById(R.id.complex_stem);
         String complexStem = data.getStem_complexToSimple();
@@ -32,5 +38,30 @@ public abstract class SimpleExerciseBaseFragment extends ExerciseBaseFragment {
             complex_stem.setText(spanned);
             complex_stem_layout.setVisibility(View.VISIBLE);
         }
+        //听力题干的听力控件
+        String template = data.getTemplate_complexToSimple();
+        String url = data.getUrl_listenComplexToSimple();//听力url
+        if (!TextUtils.isEmpty(template) && template.equals(QuestionTemplate.LISTEN)) {
+            mListenView = (ListenerSeekBarLayout) view.findViewById(R.id.complex_stem_listen);
+            mListenView.setUrl(url);
+        }
+    }
+
+    @Override
+    public void onVisibilityChangedToUser(boolean isVisibleToUser, boolean invokeInResumeOrPause) {
+        if (isVisibleToUser) {
+            if (null != mListenView)
+                mListenView.setResume();
+        } else {
+            if (null != mListenView)
+                mListenView.setPause();
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (null != mListenView)
+            mListenView.setDestory();
     }
 }

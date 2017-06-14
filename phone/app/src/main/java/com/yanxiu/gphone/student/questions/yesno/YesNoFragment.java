@@ -97,6 +97,7 @@ public class YesNoFragment extends SimpleExerciseBaseFragment implements ChooseL
      */
     @Override
     public void onVisibilityChangedToUser(boolean isVisibleToUser, boolean invokeInResumeOrPause) {
+        super.onVisibilityChangedToUser(isVisibleToUser,invokeInResumeOrPause);
     }
 
     @Override

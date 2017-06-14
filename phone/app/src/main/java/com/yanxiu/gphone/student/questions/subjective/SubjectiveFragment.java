@@ -65,6 +65,6 @@ public class SubjectiveFragment extends SimpleExerciseBaseFragment {
 
     @Override
     public void onVisibilityChangedToUser(boolean isVisibleToUser, boolean invokeInResumeOrPause) {
-
+        super.onVisibilityChangedToUser(isVisibleToUser,invokeInResumeOrPause);
     }
 }

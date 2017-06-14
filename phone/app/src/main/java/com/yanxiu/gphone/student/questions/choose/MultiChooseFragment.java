@@ -88,7 +88,7 @@ public class MultiChooseFragment extends SimpleExerciseBaseFragment implements C
      */
     @Override
     public void onVisibilityChangedToUser(boolean isVisibleToUser, boolean invokeInResumeOrPause) {
-
+        super.onVisibilityChangedToUser(isVisibleToUser,invokeInResumeOrPause);
     }
 
     @Override
