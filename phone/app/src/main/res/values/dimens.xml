@@ -24,6 +24,7 @@
     <dimen name="login_other_login">12dp</dimen>
     <dimen name="login_thrid_margin_top">75dp</dimen>
     <dimen name="login_thrid_icon_margin_top">23dp</dimen>
+    <dimen name="login_thrid_margin_bottom">50dp</dimen>
 
     <dimen name="login_thrid_icon_w_h">42dp</dimen>
     <dimen name="login_thrid_icon_margin">33dp</dimen>
@@ -135,5 +136,11 @@
     <dimen name="update_popup_width">300dp</dimen>
 
     <dimen name="edit_margin_text">2dp</dimen>
+
+    <dimen name="listen_url_margin_t_b">35dp</dimen>
+    <dimen name="listen_seek_margin">50dp</dimen>
+    <dimen name="listen_seek_height">10dp</dimen>
+    <dimen name="listen_time_textsize">16dp</dimen>
+    <dimen name="listen_time_margin_l">13dp</dimen>
 </resources>
 

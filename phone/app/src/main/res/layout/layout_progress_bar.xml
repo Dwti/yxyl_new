@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <RelativeLayout
+        android:layout_width="@dimen/login_default_width"
+        android:layout_weight="1"
+        android:layout_height="wrap_content">
+
+        <View
+            android:id="@+id/v_left"
+            android:layout_width="@dimen/listen_seek_margin"
+            android:layout_height="@dimen/listen_seek_height"
+            android:background="@drawable/shape_corners"
+            android:layout_centerVertical="true"/>
+
+        <View
+            android:id="@+id/v_right"
+            android:layout_width="@dimen/listen_seek_margin"
+            android:layout_height="@dimen/listen_seek_height"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/shape_corners2"
+            android:layout_centerVertical="true"/>
+
+        <SeekBar
+            android:id="@+id/sb_progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="100"
+            android:paddingLeft="@dimen/login_default_width"
+            android:paddingRight="@dimen/login_default_width"
+            android:maxHeight="@dimen/listen_seek_height"
+            android:minHeight="@dimen/listen_seek_height"
+            android:progressDrawable="@drawable/seek_bar_stytle" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_now_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/listen_time_margin_l"
+        android:textColor="@color/color_89e00d"
+        android:textSize="@dimen/listen_time_textsize" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/listen_time"
+        android:textColor="@color/color_999999"
+        android:textSize="@dimen/listen_time_textsize" />
+
+    <TextView
+        android:id="@+id/tv_total_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/color_999999"
+        android:textSize="@dimen/listen_time_textsize" />
+
+</LinearLayout>

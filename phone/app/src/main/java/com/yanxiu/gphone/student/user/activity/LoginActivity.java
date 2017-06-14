@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -92,6 +93,7 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+//        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         super.onCreate(savedInstanceState);
         mContext=LoginActivity.this;
         rootView=new PublicLoadLayout(mContext);
