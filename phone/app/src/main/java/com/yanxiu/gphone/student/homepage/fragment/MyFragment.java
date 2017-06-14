@@ -47,7 +47,7 @@ public class MyFragment extends HomePageBaseFragment implements View.OnClickList
             case R.id.logout:
                 LoginInfo.LogOut();
                 LoginActivity.LaunchActivity(getActivity());
-                getActivity().finish();
+//                getActivity().finish();
                 break;
         }
     }
