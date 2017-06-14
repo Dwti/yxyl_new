@@ -4,9 +4,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Html;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
@@ -55,6 +57,7 @@ public class YesNoFragment extends SimpleExerciseBaseFragment implements ChooseL
         setQaNumber(view);
         setQaName(view);
         initView(view);
+        initComplexStem(view,mData);
         listener();
         initData();
         return view;

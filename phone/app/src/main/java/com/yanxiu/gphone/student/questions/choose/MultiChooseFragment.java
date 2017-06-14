@@ -54,6 +54,7 @@ public class MultiChooseFragment extends SimpleExerciseBaseFragment implements C
         setQaNumber(view);
         setQaName(view);
         initView(view);
+        initComplexStem(view,mData);
         listener();
         initData();
         return view;

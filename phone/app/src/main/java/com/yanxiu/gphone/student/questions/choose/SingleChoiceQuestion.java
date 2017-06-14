@@ -19,7 +19,7 @@ public class SingleChoiceQuestion extends BaseQuestion {
 
     public SingleChoiceQuestion(PaperTestBean bean, QuestionShowType showType) {
         super(bean, showType);
-        singleAnswer= (String) bean.getQuestions().getAnswer().get(0);
+        singleAnswer= String.valueOf(bean.getQuestions().getAnswer().get(0));
         choice= bean.getQuestions().getContent().getChoices();
     }
 

@@ -27,26 +27,28 @@ import java.util.List;
 
 public abstract class ComplexExerciseBaseFragment extends ExerciseBaseFragment {
 
-    private QAViewPager mViewPager;
+    protected QAViewPager mViewPager;
 
     public QAViewPager getmViewPager() {
         return mViewPager;
     }
 
-    private QAViewPagerAdapter mAdapter;
-    private List<String> datas = new ArrayList<>();
-    private boolean isFromCardSelect;
+    protected QAViewPagerAdapter mAdapter;
+    protected List<String> datas = new ArrayList<>();
+    protected boolean isFromCardSelect;
 
-    private MyMaxHeightLinearLayout mTopLayout;
-    private ImageView mImageViewSplitter;
-    private View mRootView;
+    protected MyMaxHeightLinearLayout mTopLayout;
+    protected ImageView mImageViewSplitter;
+    protected View mRootView;
+    protected View mSplitter_line;
 
 //    private BaseQuestion mBaseQuestion;
 
-    private int mMinHight;//topfragment的最小高度
-    private int mBottom_min_distance;//滑动image距离底边最小距离
-    private int mTitleBarHight;//题型题号layout高度
-    private int mLineHight;//滑块下面的view高度
+    protected int mMinHight;//topfragment的最小高度
+    protected int mBottom_min_distance;//滑动image距离底边最小距离
+    protected int mTitleBarHight;//题型题号layout高度
+    protected int mLineHight;//滑块下面的view高度
+    protected int mLineHight_chooseLine;//完形填空里，单选子题的line高度
 
 //    @Override
 //    public void setData(BaseQuestion node) {
@@ -63,9 +65,16 @@ public abstract class ComplexExerciseBaseFragment extends ExerciseBaseFragment {
         isFromCardSelect = false;
         return mRootView;
     }
-
     private void initView() {
         mImageViewSplitter = (ImageView) mRootView.findViewById(R.id.iv_splitter);
+        mSplitter_line = mRootView.findViewById(R.id.splitter_line);
+
+        mTopLayout = (MyMaxHeightLinearLayout) mRootView.findViewById(R.id.top_container);
+        mMinHight = (int)(getResources().getDimensionPixelSize(R.dimen.question_ll_top_container_minheight));
+        mBottom_min_distance = (int)getResources().getDimensionPixelSize(R.dimen.question_bottom_layout_height);
+        mTitleBarHight = (int)getResources().getDimensionPixelSize(R.dimen.question_commonnumber_height);
+        mLineHight = (int)getResources().getDimensionPixelSize(R.dimen.question_splitter_bottomview_height);
+        mLineHight_chooseLine = (int)getResources().getDimensionPixelSize(R.dimen.question_bottom_shadow);
 
         FragmentManager fm = getChildFragmentManager();
 
@@ -88,12 +97,12 @@ public abstract class ComplexExerciseBaseFragment extends ExerciseBaseFragment {
 
         });
 
-        mTopLayout = (MyMaxHeightLinearLayout) mRootView.findViewById(R.id.top_container);
+//        mTopLayout = (MyMaxHeightLinearLayout) mRootView.findViewById(R.id.top_container);
 //        mMinHight = (int)(getResources().getDimensionPixelSize(R.dimen.question_ll_top_container_minheight) + getResources().getDimensionPixelSize(R.dimen.question_commonnumber_height));
-        mMinHight = (int)(getResources().getDimensionPixelSize(R.dimen.question_ll_top_container_minheight));
-        mBottom_min_distance = (int)getResources().getDimensionPixelSize(R.dimen.question_bottom_layout_height);
-        mTitleBarHight = (int)getResources().getDimensionPixelSize(R.dimen.question_commonnumber_height);
-        mLineHight = (int)getResources().getDimensionPixelSize(R.dimen.question_splitter_bottomview_height);
+//        mMinHight = (int)(getResources().getDimensionPixelSize(R.dimen.question_ll_top_container_minheight));
+//        mBottom_min_distance = (int)getResources().getDimensionPixelSize(R.dimen.question_bottom_layout_height);
+//        mTitleBarHight = (int)getResources().getDimensionPixelSize(R.dimen.question_commonnumber_height);
+//        mLineHight = (int)getResources().getDimensionPixelSize(R.dimen.question_splitter_bottomview_height);
         mImageViewSplitter.setOnTouchListener(new View.OnTouchListener() {
             private float startY;
             private float startTop;

@@ -5,7 +5,9 @@
     android:background="@color/color_edf0ee"
     android:orientation="vertical">
 
-    <include layout="@layout/answerquestion_common_number" />
+    <include
+        android:id="@+id/number_bar"
+        layout="@layout/answerquestion_common_number" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -16,11 +18,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <include
+                android:id="@+id/complex_stem_layout"
+                layout="@layout/common_stem"
+                android:visibility="gone"/>
+
             <LinearLayout
                 android:id="@+id/ll_question"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/color_ffffff">
+                android:background="@color/color_ffffff"
+                android:layout_below="@+id/complex_stem_layout">
 
                 <TextView
                     android:id="@+id/tv_question"

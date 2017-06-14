@@ -2,6 +2,7 @@ package com.yanxiu.gphone.student.questions.choose;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.customviews.ChooseLayout;
+import com.yanxiu.gphone.student.questions.cloze.ClozeComplexFragment;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.SimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
@@ -53,6 +55,7 @@ public class SingleChooseFragment extends SimpleExerciseBaseFragment implements 
         setQaNumber(view);
         setQaName(view);
         initView(view);
+        initComplexStem(view,mData);
         listener();
         initData();
         return view;
@@ -61,6 +64,24 @@ public class SingleChooseFragment extends SimpleExerciseBaseFragment implements 
     private void initView(View view) {
         mQuestionView= (TextView) view.findViewById(R.id.tv_question);
         mAnswerView= (ChooseLayout) view.findViewById(R.id.cl_answer);
+        hiddenNumberBar(view);
+    }
+
+    /**
+     * 在完形填空里，单选子题需要隐藏部分view
+     * @param view
+     */
+    private void hiddenNumberBar(View view){
+        Fragment parentFragment = getParentFragment();
+        if(null != parentFragment && parentFragment instanceof ClozeComplexFragment){
+            View number_bar = view.findViewById(R.id.number_bar);
+            View ll_question = view.findViewById(R.id.ll_question);
+            View line = view.findViewById(R.id.view);
+
+            number_bar.setVisibility(View.GONE);
+            ll_question.setVisibility(View.GONE);
+            line.setVisibility(View.GONE);
+        }
     }
 
     private void listener() {
