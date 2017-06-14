@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.util.Logger;
 import com.yanxiu.gphone.student.util.MediaPlayerUtil;
+import com.yanxiu.gphone.student.util.TextTypefaceUtil;
 
 /**
  * Created by Canghaixiao.
@@ -97,6 +98,8 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
         String defaultTime = transferFormat(0);
         mNowTimeView.setText(defaultTime);
         mTotalTimeView.setText(defaultTime);
+        TextTypefaceUtil.setViewTypeface(TextTypefaceUtil.TypefaceType.METRO_PLAY,mNowTimeView);
+        TextTypefaceUtil.setViewTypeface(TextTypefaceUtil.TypefaceType.METRO_PLAY,mTotalTimeView);
     }
 
     private void listener() {

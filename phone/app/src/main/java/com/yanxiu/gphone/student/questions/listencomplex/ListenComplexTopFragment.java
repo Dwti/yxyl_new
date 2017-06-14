@@ -42,7 +42,7 @@ public class ListenComplexTopFragment extends TopBaseFragment {
     }
 
     private void initView(View root) {
-        mQuestionView= (TextView) root.findViewById(R.id.tv_stem);
+        mQuestionView= (TextView) root.findViewById(R.id.tv_question);
         mListenView= (ListenerSeekBarLayout) root.findViewById(R.id.lsb_listen);
     }
 

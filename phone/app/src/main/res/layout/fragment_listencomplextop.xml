@@ -11,7 +11,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tv_stem"
+            android:id="@+id/tv_question"
             android:layout_width="match_parent"
             android:layout_marginTop="@dimen/question_fragment_a_margin_t"
             android:layout_height="wrap_content" />
