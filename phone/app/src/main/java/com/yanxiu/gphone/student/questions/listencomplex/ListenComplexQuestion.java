@@ -1,11 +1,10 @@
-package com.yanxiu.gphone.student.questions.listen;
+package com.yanxiu.gphone.student.questions.listencomplex;
 
 
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.ExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.questions.bean.PaperTestBean;
-import com.yanxiu.gphone.student.questions.readingcomplex.ReadingComplexFragment;
 
 /**
  * Created by Canghaixiao.

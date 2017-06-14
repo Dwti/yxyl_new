@@ -2,7 +2,7 @@ package com.yanxiu.gphone.student.questions.answerframe.util;
 
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.choose.MultiChoiceQuestion;
-import com.yanxiu.gphone.student.questions.listen.ListenComplexQuestion;
+import com.yanxiu.gphone.student.questions.listencomplex.ListenComplexQuestion;
 import com.yanxiu.gphone.student.questions.readingcomplex.ReadingComplexQuestion;
 import com.yanxiu.gphone.student.questions.choose.SingleChoiceQuestion;
 import com.yanxiu.gphone.student.questions.bean.PaperTestBean;
