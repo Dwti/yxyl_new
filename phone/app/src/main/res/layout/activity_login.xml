@@ -138,6 +138,7 @@
             android:layout_below="@+id/rl_login"
             android:layout_marginTop="@dimen/login_thrid_margin_top"
             android:background="@null"
+            android:layout_marginBottom="@dimen/login_thrid_margin_bottom"
             android:orientation="vertical">
 
             <LinearLayout

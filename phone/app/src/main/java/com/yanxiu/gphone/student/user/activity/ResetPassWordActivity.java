@@ -120,7 +120,7 @@ public class ResetPassWordActivity extends YanxiuBaseActivity implements View.On
             case R.id.tv_reset_password:
                 passWord=mPassWordView.getText().toString().trim();
                 passWordAgain=mPassWordAgainView.getText().toString().trim();
-                if (!passWord.endsWith(passWordAgain)){
+                if (!passWord.equals(passWordAgain)){
                     ToastManager.showMsg(getText(R.string.input_password_not_same));
                     return;
                 }
