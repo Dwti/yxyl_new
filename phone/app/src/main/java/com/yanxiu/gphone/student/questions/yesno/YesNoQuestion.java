@@ -20,7 +20,7 @@ public class YesNoQuestion extends BaseQuestion {
 
     public YesNoQuestion(PaperTestBean bean, QuestionShowType showType) {
         super(bean, showType);
-        yesNoAnswer = (String) bean.getQuestions().getAnswer().get(0);
+        yesNoAnswer = String.valueOf(bean.getQuestions().getAnswer().get(0)) ;
 //        choice= bean.getQuestions().getContent().getChoices();
         choice = new ArrayList<>(2);
         choice.add("正确");
@@ -58,8 +58,7 @@ public class YesNoQuestion extends BaseQuestion {
 
     @Override
     public ExerciseBaseFragment analysisFragment() {
-//        return new SingleChooseAnalysisFragment();
-        return null;
+        return new YesNoAnalysisFragment();
     }
 
     @Override

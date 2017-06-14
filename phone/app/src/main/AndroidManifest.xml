@@ -156,6 +156,8 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:configChanges="orientation|keyboardHidden|screenSize"/>
+        <activity android:name="com.yanxiu.gphone.student.questions.answerframe.ui.activity.NotesActicity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

@@ -34,6 +34,7 @@ import com.yanxiu.gphone.student.util.DataFetcher;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
+
 /**
  * 答题页面
  */
@@ -459,7 +460,6 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         mHandler.removeCallbacksAndMessages(null);
         mHandler = null;
         super.onDestroy();
-
     }
 
     /**
@@ -472,4 +472,5 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         intent.putExtra(Constants.EXTRA_PAPER, key);
         activity.startActivity(intent);
     }
+
 }

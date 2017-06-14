@@ -119,9 +119,9 @@ public abstract class ComplexExerciseBaseFragment extends ExerciseBaseFragment {
                         LinearLayout.LayoutParams bottomParams = (LinearLayout.LayoutParams) mViewPager.getLayoutParams();
 
                         topParams.height = topHeight;
-                        bottomParams.height = bottomHeight;
+//                        bottomParams.height = bottomHeight;
                         mTopLayout.setLayoutParams(topParams);
-                        mViewPager.setLayoutParams(bottomParams);
+//                        mViewPager.setLayoutParams(bottomParams);
                         break;
                     case MotionEvent.ACTION_UP:
                         break;

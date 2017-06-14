@@ -41,4 +41,6 @@ public class Constants {
      * default it is 0,when the loginactivity checks for updata,it is 1,at this time the mainactivity does't to check for updata
      * */
     public static int UPDATA_TYPE=0;
+
+    public static final String NOTES_KEY = "notes_key";//跳转笔记页key
 }
