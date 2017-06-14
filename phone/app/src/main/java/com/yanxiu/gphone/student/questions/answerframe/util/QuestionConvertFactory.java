@@ -2,6 +2,7 @@ package com.yanxiu.gphone.student.questions.answerframe.util;
 
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.choose.MultiChoiceQuestion;
+import com.yanxiu.gphone.student.questions.cloze.ClozeComplexQuestion;
 import com.yanxiu.gphone.student.questions.readingcomplex.ReadingComplexQuestion;
 import com.yanxiu.gphone.student.questions.choose.SingleChoiceQuestion;
 import com.yanxiu.gphone.student.questions.bean.PaperTestBean;
@@ -82,8 +83,11 @@ public class QuestionConvertFactory {
 //                    ReadingComplexQuestion readingComplexQuestion = new ReadingComplexQuestion(paperTestBean, showType);
 //                    questions.add(readingComplexQuestion);
 //                    break;
-                case QuestionTemplate.READING:
                 case QuestionTemplate.CLOZE:
+                    ClozeComplexQuestion clozeComplexQuestion = new ClozeComplexQuestion(paperTestBean,showType);
+                    questions.add(clozeComplexQuestion);
+                    break;
+                case QuestionTemplate.READING:
                 case QuestionTemplate.LISTEN:
                     //复合题需要判断子题数量
                     convertQuestionComplesToSimple(questions,paperTestBean,showType);
@@ -154,8 +158,6 @@ public class QuestionConvertFactory {
                 case QuestionTemplate.READING:
                     ReadingComplexQuestion readingComplexQuestion = new ReadingComplexQuestion(paperTestBean, showType);
                     questions.add(readingComplexQuestion);
-                    break;
-                case QuestionTemplate.CLOZE:
                     break;
                 case QuestionTemplate.LISTEN:
                     break;

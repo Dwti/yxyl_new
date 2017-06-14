@@ -25,6 +25,7 @@
     <!--android:layout_height="@dimen/question_splitter_height"-->
 
     <View
+        android:id="@+id/splitter_line"
         android:layout_width="match_parent"
         android:layout_height="@dimen/question_splitter_bottomview_height"
         android:background="@color/color_edf0ee"/>
