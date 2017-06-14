@@ -17,4 +17,11 @@
         android:textColor="#333333"
         android:textSize="@dimen/stem_text_size" />
 
+    <com.yanxiu.gphone.student.customviews.ListenerSeekBarLayout
+        android:id="@+id/lsb_listen"
+        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/listen_url_margin_t_b"
+        android:layout_marginBottom="@dimen/listen_url_margin_t_b"
+        android:layout_height="wrap_content" />
+
 </LinearLayout>
