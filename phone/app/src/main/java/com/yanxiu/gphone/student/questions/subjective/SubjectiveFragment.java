@@ -2,13 +2,17 @@ package com.yanxiu.gphone.student.questions.subjective;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.SimpleExerciseBaseFragment;
+import com.yanxiu.gphone.student.util.HtmlImageGetter;
 
 /**
  * Created by Canghaixiao.
@@ -18,6 +22,7 @@ import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.SimpleExercis
 public class SubjectiveFragment extends SimpleExerciseBaseFragment {
 
     private SubjectiveQuestion mData;
+    private TextView mQuestionView;
 
     @Override
     public void setData(BaseQuestion node) {
@@ -53,10 +58,12 @@ public class SubjectiveFragment extends SimpleExerciseBaseFragment {
     }
 
     private void initView(View view) {
-
+        mQuestionView= (TextView) view.findViewById(R.id.tv_question);
     }
 
     private void initData() {
+        Spanned string= Html.fromHtml(mData.getStem(),new HtmlImageGetter(mQuestionView),null);
+        mQuestionView.setText(string);
 
     }
 
