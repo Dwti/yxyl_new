@@ -187,8 +187,10 @@ public class MediaPlayerUtil {
                 e.printStackTrace();
             }
         }
-        mHandle.setClear();
-        mHandle = null;
+        if (mHandle!=null) {
+            mHandle.setClear();
+            mHandle = null;
+        }
     }
 
     /**
