@@ -30,17 +30,16 @@ public class MediaPlayerUtil {
     private static final String TAG = "media_player";
     private static final long delayMillis = 1000;
 
-    private static MediaPlayerUtil mPlayerUtil;
-    private static MediaPlayer mPlayer;
-    private static MyHandle mHandle;
+    private MediaPlayer mPlayer;
+    private MyHandle mHandle;
     private int mBufferProgress;
-    private static boolean isPlaying = false;
+    private boolean isPlaying = false;
     private boolean isPause = false;
-    private static MediaPlayerCallBack mCallBack;
+    private MediaPlayerCallBack mCallBack;
     private MediaPlayerBufferUpdateCallBack mUpdateCallBack;
 
     public static MediaPlayerUtil create() {
-        return mPlayerUtil = new MediaPlayerUtil();
+        return new MediaPlayerUtil();
     }
 
     public void start(String url) {
@@ -49,7 +48,7 @@ public class MediaPlayerUtil {
         }
         Logger.d(TAG, "start");
         mPlayer = new MediaPlayer();
-        mHandle = new MyHandle();
+        mHandle = new MyHandle(MediaPlayerUtil.this);
         try {
             mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             mPlayer.setDataSource(url);
@@ -65,20 +64,43 @@ public class MediaPlayerUtil {
     }
 
     private static class MyHandle extends Handler {
+
+        private MediaPlayerUtil playerUtil;
+
+        MyHandle(MediaPlayerUtil playerUtil){
+            this.playerUtil=playerUtil;
+        }
+
+        public void setClear(){
+            playerUtil=null;
+        }
+
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             Logger.d(TAG, "media  handle");
-            if (isPlaying) {
-                if (mCallBack != null) {
-                    int currentPosition = mPlayer.getCurrentPosition();
-                    mCallBack.onProgress(mPlayerUtil, currentPosition);
+            if (playerUtil!=null&&playerUtil.isPlaying()) {
+                if (playerUtil!=null&&playerUtil.getCallBack() != null) {
+                    int currentPosition = playerUtil.getPlayer().getCurrentPosition();
+                    playerUtil.getCallBack().onProgress(playerUtil, currentPosition);
                 }
             }
-            if (mHandle != null) {
-                mHandle.sendEmptyMessageDelayed(0, delayMillis);
+            if (playerUtil!=null&&playerUtil.getHandle() != null) {
+                playerUtil.getHandle().sendEmptyMessageDelayed(0, delayMillis);
             }
         }
+    }
+
+    private MyHandle getHandle(){
+        return mHandle;
+    }
+
+    private MediaPlayer getPlayer(){
+        return mPlayer;
+    }
+
+    private MediaPlayerCallBack getCallBack(){
+        return mCallBack;
     }
 
     public boolean isPlaying() {
@@ -150,7 +172,7 @@ public class MediaPlayerUtil {
     private void restore() {
         if (mCallBack != null && mPlayer != null) {
             int currentPosition = mPlayer.getCurrentPosition();
-            mCallBack.onProgress(mPlayerUtil, currentPosition);
+            mCallBack.onProgress(MediaPlayerUtil.this, currentPosition);
         }
     }
 
@@ -165,6 +187,7 @@ public class MediaPlayerUtil {
                 e.printStackTrace();
             }
         }
+        mHandle.setClear();
         mHandle = null;
     }
 
@@ -189,15 +212,15 @@ public class MediaPlayerUtil {
         public void onPrepared(MediaPlayer mp) {
             Logger.d(TAG, "media  prepared");
             if (mp != null) {
-                mp.start();
                 isPlaying = true;
                 int duration = mp.getDuration();
                 if (mCallBack != null) {
-                    mCallBack.onStart(mPlayerUtil, duration);
+                    mCallBack.onStart(MediaPlayerUtil.this, duration);
                 }
                 if (mHandle != null) {
                     mHandle.sendEmptyMessageDelayed(0, delayMillis);
                 }
+                mp.start();
             }
         }
     };
@@ -232,7 +255,7 @@ public class MediaPlayerUtil {
             Logger.d(TAG, "media  completion");
             if (mCallBack != null && isPlaying) {
                 isPlaying = false;
-                mCallBack.onCompletion(mPlayerUtil);
+                mCallBack.onCompletion(MediaPlayerUtil.this);
             }
             finish();
             mBufferProgress = 0;
@@ -245,7 +268,7 @@ public class MediaPlayerUtil {
             Logger.d(TAG, "media  error");
             if (mCallBack != null && isPlaying) {
                 isPlaying = false;
-                mCallBack.onError(mPlayerUtil);
+                mCallBack.onError(MediaPlayerUtil.this);
             }
             finish();
             mBufferProgress = 0;
