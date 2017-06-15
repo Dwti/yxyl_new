@@ -43,6 +43,7 @@ public abstract class SimpleExerciseBaseFragment extends ExerciseBaseFragment {
         String url = data.getUrl_listenComplexToSimple();//听力url
         if (!TextUtils.isEmpty(template) && template.equals(QuestionTemplate.LISTEN)) {
             mListenView = (ListenerSeekBarLayout) view.findViewById(R.id.complex_stem_listen);
+            mListenView.setVisibility(View.VISIBLE);
             mListenView.setUrl(url);
         }
     }

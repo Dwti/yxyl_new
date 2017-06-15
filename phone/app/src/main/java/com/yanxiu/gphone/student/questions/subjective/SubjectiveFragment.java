@@ -46,6 +46,7 @@ public class SubjectiveFragment extends SimpleExerciseBaseFragment {
         setQaNumber(view);
         setQaName(view);
         initView(view);
+        initComplexStem(view,mData);
         initData();
         listener();
         return view;

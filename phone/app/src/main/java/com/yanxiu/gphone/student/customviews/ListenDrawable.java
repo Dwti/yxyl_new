@@ -2,6 +2,7 @@ package com.yanxiu.gphone.student.customviews;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
@@ -37,7 +38,7 @@ class ListenDrawable extends Drawable {
         super.setBounds(left, top, right, bottom);
         mRectF=new RectF(left,top,right,bottom);
         if (!isZoom) {
-            zoomBitmap(right - left, bottom - top);
+            zoomBitmap(mRectF.width(), mRectF.height());
             isZoom=true;
         }
     }
@@ -46,6 +47,8 @@ class ListenDrawable extends Drawable {
     public void draw(@NonNull Canvas canvas) {
         Rect rect=getBounds();
         canvas.drawBitmap(mBitmap,rect.left,rect.top,mPaint);
+//        mPaint.setColor(Color.parseColor("#00000000"));
+//        canvas.drawRect(mRectF,mPaint);
     }
 
     @Override
@@ -73,13 +76,14 @@ class ListenDrawable extends Drawable {
         return PixelFormat.TRANSLUCENT;
     }
 
-    private void zoomBitmap(int width, int height) {
-        int w = mBitmap.getWidth();
-        int h = mBitmap.getHeight();
-        Matrix matrix = new Matrix();
-        float scaleWidth = ((float) width / w);
-        float scaleHeight = ((float) height / h);
-        matrix.postScale(scaleWidth, scaleHeight);
-        this.mBitmap=Bitmap.createBitmap(mBitmap, 0, 0, w, h, matrix, true);
+    private void zoomBitmap(float width, float height) {
+//        int w = mBitmap.getWidth();
+//        int h = mBitmap.getHeight();
+//        Matrix matrix = new Matrix();
+//        float scaleWidth = ((float) width / w);
+//        float scaleHeight = ((float) height / h);
+//        matrix.postScale(scaleWidth, scaleHeight);
+        this.mBitmap=Bitmap.createScaledBitmap(mBitmap,(int) width,(int) height,false);
+//        this.mBitmap=Bitmap.createBitmap(mBitmap, 0, 0, w, h, matrix, true);
     }
 }

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
@@ -18,8 +20,10 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.YanxiuApplication;
 import com.yanxiu.gphone.student.util.Logger;
 import com.yanxiu.gphone.student.util.MediaPlayerUtil;
+import com.yanxiu.gphone.student.util.ScreenUtils;
 import com.yanxiu.gphone.student.util.TextTypefaceUtil;
 
 /**
@@ -30,8 +34,8 @@ import com.yanxiu.gphone.student.util.TextTypefaceUtil;
 public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSeekBarChangeListener, MediaPlayerUtil.MediaPlayerCallBack {
 
     private static final String TAG = "listener_layout";
-    private static final int THUMB_WIDTH = 90;
-    private static final int THUMB_HEIGHT = 90;
+    private static final int THUMB_WIDTH=ScreenUtils.dpToPxInt(YanxiuApplication.getInstance(),30);
+    private static final int THUMB_HEIGHT=ScreenUtils.dpToPxInt(YanxiuApplication.getInstance(),30);
 
     private Context mContext;
     private int mTouchSlop;
@@ -46,7 +50,7 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
     private View mRightView;
 
     private String mUrl;
-    //    private String mUrl="http://data.5sing.kgimg.com/G034/M05/16/17/ApQEAFXsgeqIXl7gAAVVd-n31lcAABOogKzlD4ABVWP363.mp3";
+//        private String mUrl="http://data.5sing.kgimg.com/G034/M05/16/17/ApQEAFXsgeqIXl7gAAVVd-n31lcAABOogKzlD4ABVWP363.mp3";
     private long mMoveDown;
 
     public ListenerSeekBarLayout(Context context) {
@@ -66,6 +70,7 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
 
     private void initView(Context context) {
         this.mContext = context;
+        Logger.d("view_ID",this.hashCode()+"");
         mMediaPlayerUtil = MediaPlayerUtil.create();
         LayoutInflater.from(context).inflate(R.layout.layout_progress_bar, this);
         mSeekBarView = (SeekBar) findViewById(R.id.sb_progress);
@@ -82,7 +87,7 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
         ListenDrawable listenDrawable = new ListenDrawable(bitmapDrawable.getBitmap());
         listenDrawable.setBounds(0, 0, THUMB_WIDTH, THUMB_HEIGHT);
         mSeekBarView.setThumb(listenDrawable);
-        mSeekBarView.setThumbOffset(THUMB_WIDTH / 2);
+        mSeekBarView.setThumbOffset(mSeekBarView.getPaddingLeft());
         mSeekBarView.post(new Runnable() {
             @Override
             public void run() {
@@ -90,10 +95,10 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
             }
         });
         RelativeLayout.LayoutParams params_left = (RelativeLayout.LayoutParams) mLeftView.getLayoutParams();
-        params_left.width = THUMB_WIDTH / 2;
+        params_left.width = mSeekBarView.getPaddingLeft();
         mLeftView.setLayoutParams(params_left);
         RelativeLayout.LayoutParams params_right = (RelativeLayout.LayoutParams) mRightView.getLayoutParams();
-        params_right.width = THUMB_WIDTH / 2;
+        params_right.width = mSeekBarView.getPaddingLeft();
         mRightView.setLayoutParams(params_right);
         String defaultTime = transferFormat(0);
         mNowTimeView.setText(defaultTime);
@@ -112,6 +117,7 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
         if (!isPlaying) {
             switch (ev.getAction()) {
                 case MotionEvent.ACTION_UP:
+                    Logger.d("view_ID",ListenerSeekBarLayout.this.hashCode()+"");
                     if (checkIsInternal(ev)) {
                         mMediaPlayerUtil.start(mUrl);
                     }
@@ -228,6 +234,7 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
 
     @Override
     public void onStart(MediaPlayerUtil mpu, int duration) {
+        Logger.d("view_ID",ListenerSeekBarLayout.this.hashCode()+"");
         this.isPlaying = true;
         mSeekBarView.setMax(duration);
         String totalTime = transferFormat(duration);
