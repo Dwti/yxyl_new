@@ -1,10 +1,12 @@
 package com.yanxiu.gphone.student.questions.bean;
 
+import com.yanxiu.gphone.student.base.BaseBean;
+
 /**
  * Created by sunpeng on 2017/5/10.
  */
 
-public class PaperTestBean {
+public class PaperTestBean extends BaseBean {
     private String correctRate;
     private String difficulty;
     private String id;

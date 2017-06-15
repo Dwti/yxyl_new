@@ -44,6 +44,7 @@ public abstract class SimpleExerciseBaseFragment extends ExerciseBaseFragment {
         if (!TextUtils.isEmpty(template) && template.equals(QuestionTemplate.LISTEN)) {
             mListenView = (ListenerSeekBarLayout) view.findViewById(R.id.complex_stem_listen);
             mListenView.setUrl(url);
+            mListenView.setVisibility(View.VISIBLE);
         }
     }
 

@@ -1,12 +1,14 @@
 package com.yanxiu.gphone.student.questions.bean;
 
+import com.yanxiu.gphone.student.base.BaseBean;
+
 import java.util.List;
 
 /**
  * Created by sunpeng on 2017/5/10.
  */
 
-public class PaperBean {
+public class PaperBean extends BaseBean {
     private String authorid;
     private String bedition;
     private String begintime;

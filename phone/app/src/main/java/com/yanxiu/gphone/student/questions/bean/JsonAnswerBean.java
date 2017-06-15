@@ -1,12 +1,14 @@
 package com.yanxiu.gphone.student.questions.bean;
 
+import com.yanxiu.gphone.student.base.BaseBean;
+
 import java.util.List;
 
 /**
  * Created by sunpeng on 2017/5/10.
  */
 
-public class JsonAnswerBean {
+public class JsonAnswerBean extends BaseBean {
     private List<String> answer;
     private String qid;
 

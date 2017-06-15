@@ -1,10 +1,12 @@
 package com.yanxiu.gphone.student.questions.bean;
 
+import com.yanxiu.gphone.student.base.BaseBean;
+
 /**
  * Created by sunpeng on 2017/5/10.
  */
 
-public class PaperStatusBean {
+public class PaperStatusBean extends BaseBean {
     private String begintime;
     private String checkStatus;
     private String costtime;
