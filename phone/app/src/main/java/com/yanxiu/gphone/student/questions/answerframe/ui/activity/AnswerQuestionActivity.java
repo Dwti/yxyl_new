@@ -43,6 +43,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
     private QAViewPager mViewPager;
     private QAViewPagerAdapter mAdapter;
     private String mKey;//获取数据的key
+    private String mTitleString;//试卷的title-答题卡需要
     private Paper mPaper;//试卷数据
     private ArrayList<BaseQuestion> mQuestions;//题目数据
     private AnswerCardFragment mAnswerCardFragment;
@@ -76,6 +77,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
 
     private void initData() {
         mKey = getIntent().getStringExtra(Constants.EXTRA_PAPER);
+        mTitleString = getIntent().getStringExtra(Constants.EXTRA_TITLE);
         if (TextUtils.isEmpty(mKey))
             finish();
         mPaper = DataFetcher.getInstance().getPaper(mKey);
@@ -192,7 +194,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         // 可以在这里打个断点，所有Fill Blank的答案均已存入nodes里
         if (mAnswerCardFragment == null) {
             mAnswerCardFragment = new AnswerCardFragment();
-            mAnswerCardFragment.setData(mQuestions);
+            mAnswerCardFragment.setData(mQuestions,mTitleString);
             mAnswerCardFragment.setOnCardItemSelectListener(AnswerQuestionActivity.this);
         }
         if (mFragmentManager.findFragmentById(R.id.fragment_answercard) == null) {
@@ -470,6 +472,18 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
     public static void invoke(Activity activity, String key) {
         Intent intent = new Intent(activity, AnswerQuestionActivity.class);
         intent.putExtra(Constants.EXTRA_PAPER, key);
+        activity.startActivity(intent);
+    }
+
+    /**
+     * 跳转AnswerQuestionActivity
+     *
+     * @param activity
+     */
+    public static void invoke(Activity activity, String key,String title) {
+        Intent intent = new Intent(activity, AnswerQuestionActivity.class);
+        intent.putExtra(Constants.EXTRA_PAPER, key);
+        intent.putExtra(Constants.EXTRA_TITLE, title);
         activity.startActivity(intent);
     }
 
