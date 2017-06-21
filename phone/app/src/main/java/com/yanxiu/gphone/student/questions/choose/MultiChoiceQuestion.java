@@ -5,6 +5,9 @@ import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.questions.bean.PaperTestBean;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.ExerciseBaseFragment;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +29,16 @@ public class MultiChoiceQuestion extends BaseQuestion {
             multianswer.add((String) o);
         }
         choice= bean.getQuestions().getContent().getChoices();
+        String jsonArray=bean.getQuestions().getPad().getAnswer();
+        JSONArray array;
+        try {
+            array=new JSONArray(jsonArray);
+            for (int i=0;i<array.length();i++){
+                answerList.add(array.getString(i));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public List<String> getMultianswer() {

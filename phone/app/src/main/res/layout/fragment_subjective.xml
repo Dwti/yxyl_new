@@ -26,6 +26,12 @@
                     style="@style/CommonQuestionFragmentTextView" />
             </LinearLayout>
 
+            <com.yanxiu.gphone.student.customviews.AlbumGridView
+                android:id="@+id/ag_image"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:background="#fafafa"/>
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
