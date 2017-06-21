@@ -68,4 +68,14 @@
             android:background="@drawable/selector_answercard_submit_button_bg"/>
     </com.yanxiu.gphone.student.customviews.WavesLayout>
 
+    <Button
+        android:id="@+id/yy"
+        android:layout_width="@dimen/answer_card_submitbutton_width"
+        android:layout_height="@dimen/answer_card_submitbutton_height"
+        android:layout_centerHorizontal="true"
+        android:text="@string/submit_homework_button"
+        android:textColor="@color/color_ffffff"
+        android:textSize="@dimen/answer_card_submitbutton_textsize"
+        android:background="@drawable/selector_answercard_submit_button_bg"/>
+
 </RelativeLayout>
