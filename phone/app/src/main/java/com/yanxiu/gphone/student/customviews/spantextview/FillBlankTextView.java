@@ -67,6 +67,7 @@ public class FillBlankTextView extends FrameLayout {
     }
 
     public void setText(final String text) {
+        //用post是为了防止mTextView的宽高没初始化出来，HttpImageGetter里面处理图片时，图片的高度计算为0，显示不出来
         post(new Runnable() {
             @Override
             public void run() {
@@ -139,7 +140,7 @@ public class FillBlankTextView extends FrameLayout {
         return list;
     }
     protected void replaceSpanWithViews(final Spanned spanned) {
-        if (spanned == null) {
+        if (spanned == null || mSpans.length == 0) {
             return;
         }
         mOverLayViewContainer.removeAllViews();

@@ -90,7 +90,7 @@ public abstract class ReplacementSpanTextView<T extends View> extends FrameLayou
     }
 
     protected void replaceSpanWithViews(final Spanned spanned) {
-        if (spanned == null) {
+        if (spanned == null || mSpans.length == 0) {
             return;
         }
         mOverLayViewContainer.removeAllViews();
