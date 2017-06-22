@@ -1,28 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center_horizontal"
-    android:background="@android:color/transparent"
-    android:orientation="vertical"
-    android:clickable="true">
+    android:background="@color/color_edf0ee"
+    android:orientation="vertical">
 
-    <TextView
+    <RelativeLayout
+        android:id="@+id/title_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:text="答题卡" />
+        android:layout_height="@dimen/question_top_layout_height"
+        android:background="@android:color/white">
 
-    <Button
-        android:id="@+id/button_go"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="go" />
+        <ImageView
+            android:id="@+id/backview"
+            android:layout_width="@dimen/common_top_layout_leftimage_wdith"
+            android:layout_height="@dimen/common_top_layout_leftimage_wdith"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/common_top_layout_marginLeft"
+            android:background="@drawable/answerquestion_top_backview_selecter" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="100dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/color_666666"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            tools:text="放假客服开始开发司法考试打飞机快圣诞节疯狂的减肥可视对讲发射点发" />
+    </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:layout_below="@id/title_bar"
+        android:clipToPadding="false"
+        android:paddingBottom="@dimen/answer_card_recyleview_marginbottom" />
+    <!--android:layout_above="@id/submit_homework"-->
 
-</LinearLayout>
+    <com.yanxiu.gphone.student.customviews.WavesLayout
+        android:id="@+id/wavesLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/answer_card_bottomview_marginbottom"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="19dp"
+        android:background="@color/color_edf0ee"
+        android:clickable="true"
+        app:waves_animend_alpha="102"
+        app:waves_radius="@dimen/wavesRadius">
+
+        <Button
+            android:id="@+id/submit_homework"
+            android:layout_width="@dimen/answer_card_submitbutton_width"
+            android:layout_height="@dimen/answer_card_submitbutton_height"
+            android:layout_centerHorizontal="true"
+            android:text="@string/submit_homework_button"
+            android:textColor="@color/color_ffffff"
+            android:textSize="@dimen/answer_card_submitbutton_textsize"
+            android:background="@drawable/selector_answercard_submit_button_bg"/>
+    </com.yanxiu.gphone.student.customviews.WavesLayout>
+
+</RelativeLayout>

@@ -147,4 +147,5 @@
     <string name="app_update_exit">退出</string>
 
     <string name="listen_time">/</string>
+    <string name="submit_homework_button">提交作业</string>
 </resources>

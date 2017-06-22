@@ -51,6 +51,8 @@ public abstract class BaseQuestion implements Serializable {
 
     protected boolean isComplexQuestion;//是否是复合题 true : 是
 
+    protected int parentNumber = -1;//答题卡父题记题号的子题，需要；
+
     public BaseQuestion(PaperTestBean bean,QuestionShowType showType){
         this.id = bean.getId();
         this.correctRate = bean.getCorrectRate();
@@ -294,6 +296,10 @@ public abstract class BaseQuestion implements Serializable {
         this.url_listenComplexToSimple = url_listenComplexToSimple;
     }
 
+    public int getParentNumber() {
+        return parentNumber;
+    }
+
 
     /**
      * 题号逻辑开始
@@ -420,17 +426,53 @@ public abstract class BaseQuestion implements Serializable {
      */
     public ArrayList<BaseQuestion> allNodesThatHasNumber() {
         ArrayList<BaseQuestion> retNodes = new ArrayList<>();
+        boolean parentIsNodeCountForTotal = false;
         if (isNodeCountForTotal()) {
-            retNodes.add(this);
+            if(!isComplexQuestion)
+                retNodes.add(this);
+            parentIsNodeCountForTotal = true;
         }
 
         if (children.size() > 0) {
             for (BaseQuestion node : children) {
+                if(parentIsNodeCountForTotal)
+                    node.parentNumber = prefixNumber;
                 retNodes.addAll(node.allNodesThatHasNumber());
             }
         }
 
         return retNodes;
+    }
+
+    /**
+     * 答题卡复合题获取分子数字
+     * @return
+     */
+    public int getAnswerCardPrefixNumber(){
+        if(parentNumber != -1){
+            return parentNumber;
+        }
+        return -1;
+    }
+
+    /**
+     * 答题卡复合题获取分母数字
+     * @return
+     */
+    public int getAnswerCardPostfixNumber(){
+        if(parentNumber != -1){
+            return prefixNumber;
+        }
+        return -1;
+    }
+
+    /**
+     * 答题卡单题题号显示
+     * @return
+     */
+    public String getAnswerCardSimpleNumber() {
+
+        return prefixNumber +"";
     }
 
     protected void clearAllNumberData() {

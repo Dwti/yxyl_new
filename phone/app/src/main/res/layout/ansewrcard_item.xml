@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/question_number"
+        android:layout_width="@dimen/answer_card_item_width"
+        android:layout_height="@dimen/answer_card_item_width"
+        android:layout_gravity="center"
+        android:background="@drawable/selector_answer_card_item">
+
+        <ImageView
+            android:id="@+id/line"
+            android:layout_width="30dp"
+            android:layout_height="1dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/selector_answercard_item_line_color_unanswer"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/prefixNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/line"
+            android:layout_centerInParent="true"
+            android:enabled="true"
+            android:gravity="center"
+            android:textSize="23dp"
+            tools:text="6" />
+
+        <TextView
+            android:id="@+id/postfixNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/line"
+            android:layout_centerHorizontal="true"
+            android:enabled="true"
+            android:gravity="center"
+            android:textSize="18dp"
+            android:visibility="visible"
+            tools:text="8" />
+
+    </RelativeLayout>
+
+    <com.yanxiu.gphone.student.customviews.WavesLayout
+        android:id="@+id/wavesLayout"
+        android:layout_width="@dimen/answer_card_item_width"
+        android:layout_height="@dimen/answer_card_item_width"
+        android:background="@android:color/transparent"
+        app:waves_animend_alpha="102"
+        app:waves_radius="30dp">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent" />
+    </com.yanxiu.gphone.student.customviews.WavesLayout>
+</RelativeLayout>

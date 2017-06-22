@@ -142,5 +142,14 @@
     <dimen name="listen_seek_height">10dp</dimen>
     <dimen name="listen_time_textsize">16dp</dimen>
     <dimen name="listen_time_margin_l">13dp</dimen>
+
+    <dimen name="answer_card_item_width">60dp</dimen>
+    <dimen name="answer_card_item_space">15dp</dimen>
+    <dimen name="answer_card_submitbutton_textsize">20dp</dimen>
+    <dimen name="answer_card_submitbutton_marginbottom">25dp</dimen>
+    <dimen name="answer_card_submitbutton_width">250dp</dimen>
+    <dimen name="answer_card_submitbutton_height">50dp</dimen>
+    <dimen name="answer_card_recyleview_marginbottom">55dp</dimen>
+    <dimen name="answer_card_bottomview_marginbottom">75dp</dimen>
 </resources>
 
