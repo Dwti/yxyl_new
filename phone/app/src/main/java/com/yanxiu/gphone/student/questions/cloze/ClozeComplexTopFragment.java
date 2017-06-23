@@ -135,6 +135,36 @@ public class ClozeComplexTopFragment extends TopBaseFragment {
         }
     }
 
+    /**
+     * viewpager滑动回调
+     */
+    private void onPageChange() {
+        Fragment fragment = getParentFragment();
+        if (null != fragment && fragment instanceof ClozeComplexFragment) {
+            ClozeComplexFragment parentFragment = (ClozeComplexFragment) fragment;
+            ViewPager viewPager = parentFragment.getmViewPager();
+            if (viewPager != null) {
+                viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+                    @Override
+                    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                    }
+
+                    @Override
+                    public void onPageSelected(int position) {
+                        //TODO @sunpeng  在这里会有viewpager选中page回调
+                    }
+
+                    @Override
+                    public void onPageScrollStateChanged(int state) {
+
+                    }
+                });
+            }
+        }
+    }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
