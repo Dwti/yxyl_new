@@ -1,5 +1,9 @@
 package com.yanxiu.gphone.student.questions.answerframe.bean;
 
+import android.text.TextUtils;
+import android.util.Log;
+
+import com.yanxiu.gphone.student.db.SaveAnswerDBHelper;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.ExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionConvertFactory;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
@@ -64,7 +68,7 @@ public abstract class BaseQuestion implements Serializable {
         this.qid = bean.getQid();
         this.qtype = bean.getQtype();
         this.analysis = bean.getQuestions().getAnalysis();
-        this.pad = bean.getQuestions().getPad();
+//        this.pad = bean.getQuestions().getPad();
         this.point = bean.getQuestions().getPoint();
         this.stem = bean.getQuestions().getStem();
         this.submit_way = bean.getQuestions().getSubmit_way();
@@ -81,6 +85,13 @@ public abstract class BaseQuestion implements Serializable {
         }
 
         this.showType = showType;
+
+        if(showType.equals(QuestionShowType.ANSWER)){ //答题，加载本地数据库答案
+            String answerJson = SaveAnswerDBHelper.getAnswerJson(SaveAnswerDBHelper.makeId(this));
+            if(!TextUtils.isEmpty(answerJson))
+                bean.getQuestions().getPad().setAnswer(answerJson);
+        }
+        this.pad = bean.getQuestions().getPad();
     }
 
     public ExerciseBaseFragment getFragment() {
@@ -100,6 +111,11 @@ public abstract class BaseQuestion implements Serializable {
     public abstract ExerciseBaseFragment answerFragment();
 
     public abstract ExerciseBaseFragment analysisFragment();
+
+    /**
+     * 获取答案
+     */
+    public abstract Object getAnswer();
 
     public String getId() {
         return id;
@@ -268,11 +284,6 @@ public abstract class BaseQuestion implements Serializable {
     public void setIsAnswer(boolean answer) {
         isAnswer = answer;
     }
-
-    /**
-     * 获取答案
-     */
-    public abstract Object getAnswer();
 
     public String getStem_complexToSimple() {
         return stem_complexToSimple;

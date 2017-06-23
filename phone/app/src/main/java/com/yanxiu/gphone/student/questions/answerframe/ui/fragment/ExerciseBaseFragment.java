@@ -8,7 +8,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.db.SaveAnswerDBHelper;
+import com.yanxiu.gphone.student.questions.answerframe.bean.AnswerBean;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerQuestionActivity;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
@@ -16,6 +20,8 @@ import com.yanxiu.gphone.student.questions.answerframe.listener.IExercise;
 import com.yanxiu.gphone.student.questions.answerframe.util.FragmentUserVisibleController;
 import com.yanxiu.gphone.student.util.StringUtil;
 import com.yanxiu.gphone.student.util.TextTypefaceUtil;
+
+import org.json.JSONArray;
 
 import java.util.ArrayList;
 
@@ -242,6 +248,26 @@ public abstract class ExerciseBaseFragment extends Fragment implements IExercise
                 innerQuestion = question;
             }
             //TODO 后续保存逻辑
+            Gson gson = new Gson();
+            Object ansewr = question.getAnswer();
+            if(null != ansewr){
+                String json = gson.toJson(ansewr);//转化成json，保存该json
+                AnswerBean bean = new AnswerBean();
+                bean.setAid(SaveAnswerDBHelper.makeId(question));
+                bean.setAnswerJson(json);
+                Log.e("dyf", "json = " +json);
+                boolean is = SaveAnswerDBHelper.save(bean);
+                Log.e("dyf", "is = " +is);
+                try{
+                    JSONArray js = new JSONArray(json);
+                    Log.e("dyf", "json = " +js.length());
+                }catch (Exception e){
+
+                }
+
+//                String result = SaveAnswerDBHelper.getAnswerJson(SaveAnswerDBHelper.makeId(question));
+//                Log.e("dyf", "result = " +result);
+            }
 
         }
     }
