@@ -56,6 +56,8 @@ public class ClozeView extends FrameLayout {
     }
 
     public void performTranslateAnimation(TextPosition toPosition){
+        if(mPosition == toPosition)
+            return;
         TranslateAnimation translateAnimation;
         if(toPosition == TextPosition.LEFT){
             translateAnimation = new TranslateAnimation(0,-mNumber.getX(),0,0);

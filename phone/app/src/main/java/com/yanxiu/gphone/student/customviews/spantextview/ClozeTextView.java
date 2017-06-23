@@ -10,8 +10,7 @@ import android.support.annotation.StyleRes;
 import android.util.AttributeSet;
 import android.view.View;
 
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.List;
 
 /**
  * Created by sunpeng on 2017/6/15.
@@ -21,7 +20,7 @@ public class ClozeTextView extends ReplacementSpanTextView<ClozeView> implements
 
     private OnClozeClickListener mOnClozeClickListener;
 
-    private ClozeView mLastClickClozeView ;
+    private ClozeView mSelectedClozeView;
 
     public ClozeTextView(@NonNull Context context) {
         super(context);
@@ -53,16 +52,16 @@ public class ClozeTextView extends ReplacementSpanTextView<ClozeView> implements
             @Override
             public void onClick(View v) {
                 ClozeView cv = (ClozeView) v;
-                if(mLastClickClozeView == cv){
+                if(mSelectedClozeView == cv){
                     return;
                 }
                 if(cv.getTextPosition() == ClozeView.TextPosition.CENTER){
                     cv.performTranslateAnimation(ClozeView.TextPosition.LEFT);
                 }
-                if(mLastClickClozeView != null){
-                    mLastClickClozeView.performTranslateAnimation(ClozeView.TextPosition.CENTER);
+                if(mSelectedClozeView != null){
+                    mSelectedClozeView.performTranslateAnimation(ClozeView.TextPosition.CENTER);
                 }
-                mLastClickClozeView = cv;
+                mSelectedClozeView = cv;
                 if(mOnClozeClickListener != null){
                     mOnClozeClickListener.onClozeClick(cv,cv.getTextNumber() - 1);
                 }
@@ -71,10 +70,10 @@ public class ClozeTextView extends ReplacementSpanTextView<ClozeView> implements
         return clozeView;
     }
 
-    public void resetAnimation(){
-        if(mLastClickClozeView != null && mLastClickClozeView.getTextPosition() == ClozeView.TextPosition.LEFT){
-            mLastClickClozeView.performTranslateAnimation(ClozeView.TextPosition.CENTER);
-            mLastClickClozeView = null;
+    public void resetSelected(){
+        if(mSelectedClozeView != null && mSelectedClozeView.getTextPosition() == ClozeView.TextPosition.LEFT){
+            mSelectedClozeView.performTranslateAnimation(ClozeView.TextPosition.CENTER);
+            mSelectedClozeView = null;
         }
     }
 
@@ -82,28 +81,31 @@ public class ClozeTextView extends ReplacementSpanTextView<ClozeView> implements
         mOnClozeClickListener = listener;
     }
 
+    public void performTranslateAnimation(ClozeView.TextPosition position,int index){
+        ClozeView clozeView = getReplaceView(index);
+        clozeView.performTranslateAnimation(position);
+        mSelectedClozeView = clozeView;
+    }
     @Override
     public void onReplaceComplete() {
-        ClozeView clozeView = null ;
-        int i = 1;
-        for(Map.Entry<EmptyReplacementSpan,ClozeView> entry:mTreeMap.entrySet()){
-            if(i == 1){
-                clozeView = entry.getValue();
-            }
-            entry.getValue().setTextNumber(i);
-            i++;
+        List<ClozeView> views = getReplaceViews();
+        if(views == null || views.size() ==0){
+            return;
         }
-        mLastClickClozeView = clozeView;
+        for(int i =0; i< views.size(); i++){
+            views.get(i).setTextNumber(i+1);
+        }
+        mSelectedClozeView = views.get(0);
         post(new Runnable() {
             @Override
             public void run() {
-                mLastClickClozeView.performTranslateAnimation(ClozeView.TextPosition.LEFT);
+                mSelectedClozeView.performTranslateAnimation(ClozeView.TextPosition.LEFT);
             }
         });
     }
 
-    public ClozeView getLastClickClozeView(){
-        return mLastClickClozeView;
+    public ClozeView getSelectedClozeView(){
+        return mSelectedClozeView;
     }
     public interface OnClozeClickListener{
         void onClozeClick(ClozeView view, int position);

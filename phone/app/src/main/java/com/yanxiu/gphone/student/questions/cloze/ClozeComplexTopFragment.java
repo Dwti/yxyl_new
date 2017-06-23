@@ -4,26 +4,19 @@ package com.yanxiu.gphone.student.questions.cloze;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.ScrollView;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.customviews.spantextview.ClozeTextView;
 import com.yanxiu.gphone.student.customviews.spantextview.ClozeView;
-import com.yanxiu.gphone.student.customviews.spantextview.EmptyReplacementSpan;
-import com.yanxiu.gphone.student.customviews.spantextview.OnReplaceCompleteListener;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.ExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.TopBaseFragment;
 import com.yanxiu.gphone.student.util.StemUtil;
-
-import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * Created by 戴延枫 on 2017/6/14.
@@ -31,7 +24,7 @@ import java.util.TreeMap;
 
 public class ClozeComplexTopFragment extends TopBaseFragment {
     private ClozeComplexQuestion mQuestion;
-    private ClozeTextView mText;
+    private ClozeTextView mClozeTextView;
     private ScrollView mScrollView;
     private View mViewWrapper;
 
@@ -60,23 +53,25 @@ public class ClozeComplexTopFragment extends TopBaseFragment {
 
     private void initListener() {
 
-//        mRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-//            @Override
-//            public void onGlobalLayout() {
-//                if(mText.getLastClickClozeView() == null)
-//                    return;
-//                mScrollView.post(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        if(mText.getLastClickClozeView().getBottom() > mScrollView.getHeight()){
-//                            mScrollView.scrollTo(0,mText.getLastClickClozeView().getBottom() - mScrollView.getHeight() + mViewWrapper.getPaddingTop());
-//                        }
-//                    }
-//                });
-//            }
-//        });
+        setOnPageChangeListener();
 
-        mText.setOnClozeClickListener(new ClozeTextView.OnClozeClickListener() {
+        mRootView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                if(mClozeTextView.getSelectedClozeView() == null)
+                    return;
+                mScrollView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(mClozeTextView.getSelectedClozeView().getBottom() > mScrollView.getHeight()){
+                            mScrollView.scrollTo(0, mClozeTextView.getSelectedClozeView().getBottom() - mScrollView.getHeight() + mViewWrapper.getPaddingTop());
+                        }
+                    }
+                });
+            }
+        });
+
+        mClozeTextView.setOnClozeClickListener(new ClozeTextView.OnClozeClickListener() {
             @Override
             public void onClozeClick(final ClozeView view, int position) {
                 showChildQuestion(false);
@@ -84,22 +79,22 @@ public class ClozeComplexTopFragment extends TopBaseFragment {
             }
         });
 
-        mText.setOnClickListener(new View.OnClickListener() {
+        mClozeTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showChildQuestion(true);
-                mText.resetAnimation();
+                mClozeTextView.resetSelected();
             }
         });
     }
 
     private void initData() {
         String text = StemUtil.initClozeStem(mQuestion.getStem());
-        mText.setText(text);
+        mClozeTextView.setText(text);
     }
 
     private void initView() {
-        mText = (ClozeTextView) mRootView.findViewById(R.id.cloze_text_view);
+        mClozeTextView = (ClozeTextView) mRootView.findViewById(R.id.cloze_text_view);
         mScrollView = (ScrollView) mRootView.findViewById(R.id.scrollView);
         mViewWrapper = mRootView.findViewById(R.id.ll_wrapper);
     }
@@ -138,7 +133,7 @@ public class ClozeComplexTopFragment extends TopBaseFragment {
     /**
      * viewpager滑动回调
      */
-    private void onPageChange() {
+    private void setOnPageChangeListener() {
         Fragment fragment = getParentFragment();
         if (null != fragment && fragment instanceof ClozeComplexFragment) {
             ClozeComplexFragment parentFragment = (ClozeComplexFragment) fragment;
@@ -153,7 +148,11 @@ public class ClozeComplexTopFragment extends TopBaseFragment {
 
                     @Override
                     public void onPageSelected(int position) {
-                        //TODO @sunpeng  在这里会有viewpager选中page回调
+                        mClozeTextView.resetSelected();
+                        mClozeTextView.performTranslateAnimation(ClozeView.TextPosition.LEFT,position);
+//                        if(mClozeTextView.getSelectedClozeView().getBottom() + mViewWrapper.getPaddingTop() > mScrollView.getHeight()){
+//                        }
+                        mScrollView.scrollTo(0, mClozeTextView.getSelectedClozeView().getBottom() - mScrollView.getHeight() + mViewWrapper.getPaddingTop());
                     }
 
                     @Override
