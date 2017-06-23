@@ -25,7 +25,7 @@ public class ClozeComplexFragment extends ComplexExerciseBaseFragment {
     private int mChildQuestionHeight = 580;//子题固定高度是四个单选的高度;
     private Integer mDuration = 200;//展开/关闭布局执行的时间
     private ValueAnimator mOpenAnimator, mCloseAnimator;
-    private boolean isExpand = true;//题干是否已经完全展开了
+    private boolean isExpand = false;//题干是否已经完全展开了
 
     @Override
     public void setData(BaseQuestion baseQuestion) {
