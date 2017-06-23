@@ -1,5 +1,9 @@
 package com.yanxiu.gphone.student.questions.answerframe.bean;
 
+import android.text.TextUtils;
+import android.util.Log;
+
+import com.yanxiu.gphone.student.db.SaveAnswerDBHelper;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.ExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionConvertFactory;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
@@ -51,6 +55,8 @@ public abstract class BaseQuestion implements Serializable {
 
     protected boolean isComplexQuestion;//是否是复合题 true : 是
 
+    protected int parentNumber = -1;//答题卡父题记题号的子题，需要；
+
     public BaseQuestion(PaperTestBean bean,QuestionShowType showType){
         this.id = bean.getId();
         this.correctRate = bean.getCorrectRate();
@@ -62,7 +68,7 @@ public abstract class BaseQuestion implements Serializable {
         this.qid = bean.getQid();
         this.qtype = bean.getQtype();
         this.analysis = bean.getQuestions().getAnalysis();
-        this.pad = bean.getQuestions().getPad();
+//        this.pad = bean.getQuestions().getPad();
         this.point = bean.getQuestions().getPoint();
         this.stem = bean.getQuestions().getStem();
         this.submit_way = bean.getQuestions().getSubmit_way();
@@ -79,6 +85,13 @@ public abstract class BaseQuestion implements Serializable {
         }
 
         this.showType = showType;
+
+        if(showType.equals(QuestionShowType.ANSWER)){ //答题，加载本地数据库答案
+            String answerJson = SaveAnswerDBHelper.getAnswerJson(SaveAnswerDBHelper.makeId(this));
+            if(!TextUtils.isEmpty(answerJson))
+                bean.getQuestions().getPad().setAnswer(answerJson);
+        }
+        this.pad = bean.getQuestions().getPad();
     }
 
     public ExerciseBaseFragment getFragment() {
@@ -98,6 +111,11 @@ public abstract class BaseQuestion implements Serializable {
     public abstract ExerciseBaseFragment answerFragment();
 
     public abstract ExerciseBaseFragment analysisFragment();
+
+    /**
+     * 获取答案
+     */
+    public abstract Object getAnswer();
 
     public String getId() {
         return id;
@@ -267,11 +285,6 @@ public abstract class BaseQuestion implements Serializable {
         isAnswer = answer;
     }
 
-    /**
-     * 获取答案
-     */
-    public abstract Object getAnswer();
-
     public String getStem_complexToSimple() {
         return stem_complexToSimple;
     }
@@ -292,6 +305,10 @@ public abstract class BaseQuestion implements Serializable {
 
     public void setUrl_listenComplexToSimple(String url_listenComplexToSimple) {
         this.url_listenComplexToSimple = url_listenComplexToSimple;
+    }
+
+    public int getParentNumber() {
+        return parentNumber;
     }
 
 
@@ -420,17 +437,53 @@ public abstract class BaseQuestion implements Serializable {
      */
     public ArrayList<BaseQuestion> allNodesThatHasNumber() {
         ArrayList<BaseQuestion> retNodes = new ArrayList<>();
+        boolean parentIsNodeCountForTotal = false;
         if (isNodeCountForTotal()) {
-            retNodes.add(this);
+            if(!isComplexQuestion)
+                retNodes.add(this);
+            parentIsNodeCountForTotal = true;
         }
 
         if (children.size() > 0) {
             for (BaseQuestion node : children) {
+                if(parentIsNodeCountForTotal)
+                    node.parentNumber = prefixNumber;
                 retNodes.addAll(node.allNodesThatHasNumber());
             }
         }
 
         return retNodes;
+    }
+
+    /**
+     * 答题卡复合题获取分子数字
+     * @return
+     */
+    public int getAnswerCardPrefixNumber(){
+        if(parentNumber != -1){
+            return parentNumber;
+        }
+        return -1;
+    }
+
+    /**
+     * 答题卡复合题获取分母数字
+     * @return
+     */
+    public int getAnswerCardPostfixNumber(){
+        if(parentNumber != -1){
+            return prefixNumber;
+        }
+        return -1;
+    }
+
+    /**
+     * 答题卡单题题号显示
+     * @return
+     */
+    public String getAnswerCardSimpleNumber() {
+
+        return prefixNumber +"";
     }
 
     protected void clearAllNumberData() {

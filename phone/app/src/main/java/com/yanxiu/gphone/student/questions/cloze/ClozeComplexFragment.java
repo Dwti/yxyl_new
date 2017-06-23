@@ -25,6 +25,7 @@ public class ClozeComplexFragment extends ComplexExerciseBaseFragment {
     private int mChildQuestionHeight = 580;//子题固定高度是四个单选的高度;
     private Integer mDuration = 200;//展开/关闭布局执行的时间
     private ValueAnimator mOpenAnimator, mCloseAnimator;
+    private boolean isExpand = false;//题干是否已经完全展开了
 
     @Override
     public void setData(BaseQuestion baseQuestion) {
@@ -93,14 +94,16 @@ public class ClozeComplexFragment extends ComplexExerciseBaseFragment {
      * 执行展开布局操作
      */
     public void expand() {
-        getOpenValueAnimator(mTopLayout).setDuration(mDuration).start();
+        if(!isExpand)
+            getOpenValueAnimator(mTopLayout).setDuration(mDuration).start();
     }
 
     /**
      * 执行关闭布局操作
      */
     public void collapse() {
-        getCloseValueAnimator(mTopLayout).setDuration(mDuration).start();
+        if(isExpand)
+            getCloseValueAnimator(mTopLayout).setDuration(mDuration).start();
     }
 
     /**
@@ -118,6 +121,8 @@ public class ClozeComplexFragment extends ComplexExerciseBaseFragment {
                 float interpolatedTime = animation.getAnimatedFraction();
                 v.getLayoutParams().height = mTopHeight + (int) (targetHeight * interpolatedTime);
                 v.requestLayout();
+                if(interpolatedTime == 1)
+                    isExpand = true;
             }
         });
         return mOpenAnimator;
@@ -138,6 +143,8 @@ public class ClozeComplexFragment extends ComplexExerciseBaseFragment {
                 float interpolatedTime = animation.getAnimatedFraction();
                 v.getLayoutParams().height = mTopHeight + initialHeight - (int) (initialHeight * interpolatedTime);
                 v.requestLayout();
+                if(interpolatedTime == 1)
+                    isExpand = false;
             }
         });
         return mCloseAnimator;

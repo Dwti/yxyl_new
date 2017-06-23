@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.RectF;
+import android.support.annotation.ColorInt;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -31,7 +32,7 @@ public class WavesLayout extends RelativeLayout {
     private static final int DEFAULT_END_ALPHA=100;
     private static final int DEFAULT_ALPHA_STEP = 5;
     private static final int DEFAULT_RADIUS = 10;
-    private static final int DEFAULT_COLOR = Color.LTGRAY;
+    public static final int DEFAULT_COLOR = Color.LTGRAY;
     private static final int DEFAULT_SHAPE_RADIUS = 0;
     private static final boolean DEFAULT_ENABLE = true;
     /**
@@ -103,6 +104,8 @@ public class WavesLayout extends RelativeLayout {
      */
     private boolean mCanShowWave = true;
 
+    private View mOtherView;//dyf添加
+
     private float[] floats = new float[8];
 
     public WavesLayout(Context context) {
@@ -167,6 +170,14 @@ public class WavesLayout extends RelativeLayout {
         mPaint.setColor(mCirclelColor);
         mPaint.setAlpha(mColorAlpha);
         mBackupAlpha = mColorAlpha;
+    }
+
+    public void setWaveColor(@ColorInt int color){
+        this.mCirclelColor=color;
+        mPaint.setColor(mCirclelColor);
+    }
+    public void setOtherView(View view){
+        mOtherView = view;
     }
 
     public void setCanShowWave(boolean isShowWave) {
@@ -252,18 +263,33 @@ public class WavesLayout extends RelativeLayout {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
-        switch (event.getAction()) {
+
+        return super.onInterceptTouchEvent(event);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 if (mCanShowWave) {
-                    deliveryTouchDownEvent(event);
+                    deliveryTouchDownEvent(ev);
                 }
+                if(mOtherView != null)
+                    mOtherView.setPressed(true);
                 break;
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
+                if(mOtherView != null)
+                    mOtherView.setPressed(false);
                 reset();
                 break;
         }
-        return super.onInterceptTouchEvent(event);
+        return super.dispatchTouchEvent(ev);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return super.onTouchEvent(event);
     }
 
     @Override

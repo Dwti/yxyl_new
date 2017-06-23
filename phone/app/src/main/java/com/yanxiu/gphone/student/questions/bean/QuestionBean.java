@@ -16,7 +16,7 @@ public class QuestionBean extends BaseBean {
     private String difficulty;
     private String id;
     private String memo;
-    private PadBean pad;
+    private PadBean pad = new PadBean();
     private List<PointBean> point;
     private String stem;
     private String submit_way;

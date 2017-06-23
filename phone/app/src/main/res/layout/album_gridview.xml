@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <GridView
+        android:id="@+id/gv_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="7dp"
+        android:columnWidth="78dp"
+        android:horizontalSpacing="15dp"
+        android:listSelector="#00000000"
+        android:numColumns="4"
+        android:stretchMode="none" />
+
+    <com.yanxiu.gphone.student.customviews.WavesLayout
+        android:id="@+id/wl_conver"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_centerInParent="true"
+        app:waves_radius="5dp">
+
+        <TextView
+            android:id="@+id/tv_login"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/shape_subject_button_bg"
+            android:gravity="center"
+            android:text="开始作答"
+            android:textColor="#ffffff"
+            android:textSize="18dp" />
+    </com.yanxiu.gphone.student.customviews.WavesLayout>
+
+</RelativeLayout>

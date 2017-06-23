@@ -5,6 +5,12 @@ import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.ExerciseBaseF
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.questions.bean.PaperTestBean;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Canghaixiao.
  * Time : 2017/6/14 11:06.
@@ -12,8 +18,20 @@ import com.yanxiu.gphone.student.questions.bean.PaperTestBean;
  */
 public class SubjectiveQuestion extends BaseQuestion {
 
+    public List<String> answerList=new ArrayList<>();
+
     public SubjectiveQuestion(PaperTestBean bean, QuestionShowType showType) {
         super(bean, showType);
+        String jsonArray=bean.getQuestions().getPad().getAnswer();
+        JSONArray array;
+        try {
+            array=new JSONArray(jsonArray);
+            for (int i=0;i<array.length();i++){
+                answerList.add(array.getString(i));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -28,6 +46,6 @@ public class SubjectiveQuestion extends BaseQuestion {
 
     @Override
     public Object getAnswer() {
-        return null;
+        return answerList;
     }
 }

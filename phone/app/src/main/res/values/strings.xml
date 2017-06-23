@@ -148,4 +148,6 @@
 
     <string name="listen_time">/</string>
     <string name="begin_answer">开始作答...</string>
+    <string name="submit_homework_button">提交作业</string>
+>>>>>>> upstream/master
 </resources>

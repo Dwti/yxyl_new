@@ -159,6 +159,9 @@
             android:configChanges="orientation|keyboardHidden|screenSize"/>
         <activity android:name="com.yanxiu.gphone.student.questions.answerframe.ui.activity.NotesActicity"
             android:screenOrientation="portrait" />
+
+        <activity android:name=".questions.subjective.TestActivity"/>
+
     </application>
 
 </manifest>
