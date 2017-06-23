@@ -8,7 +8,7 @@
         android:id="@+id/bottom_line"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="#89e00d"
+        android:background="#4c4c4c"
         android:layout_alignParentBottom="true"/>
 
     <TextView
@@ -22,7 +22,7 @@
         android:layout_centerHorizontal="true"
         android:text="1"
         android:textSize="12dp"
-        android:background="@drawable/shape_green_ring"
+        android:background="@drawable/shape_black_ring"
         android:gravity="center"
         />
 
