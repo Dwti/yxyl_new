@@ -36,7 +36,7 @@ public abstract class ReplacementSpanTextView<T extends View> extends FrameLayou
     protected Context mContext;
     private Spanned mSpannedStr;
     private EmptyReplacementSpan[] mSpans;
-    private TreeMap<EmptyReplacementSpan, T> mTreeMap;
+    protected TreeMap<EmptyReplacementSpan, T> mTreeMap;
     protected boolean mIsReplaceCompleted = false;
     private OnReplaceCompleteListener mOnReplaceCompleteListener;
 
@@ -70,15 +70,20 @@ public abstract class ReplacementSpanTextView<T extends View> extends FrameLayou
         mTextView.setOnDrawFinishedListener(this);
     }
 
-    public void setText(String text) {
-        mIsReplaceCompleted = false;
-        mOverLayViewContainer.removeAllViews();
-        mTreeMap.clear();
-        text = StemUtil.initClozeStem(text);
-        mSpannedStr = Html.fromHtml(text, getImageGetter(), getTagHandler());
-        mSpans = mSpannedStr.getSpans(0,mSpannedStr.length(),EmptyReplacementSpan.class);
-        setSpanWidthAndHeight();
-        mTextView.setText(mSpannedStr, TextView.BufferType.SPANNABLE);
+    public void setText(final String text) {
+        post(new Runnable() {
+            @Override
+            public void run() {
+                mIsReplaceCompleted = false;
+                mOverLayViewContainer.removeAllViews();
+                mTreeMap.clear();
+                mSpannedStr = Html.fromHtml(text, getImageGetter(), getTagHandler());
+                mSpans = mSpannedStr.getSpans(0,mSpannedStr.length(),EmptyReplacementSpan.class);
+                setSpanWidthAndHeight();
+                mTextView.setText(mSpannedStr, TextView.BufferType.SPANNABLE);
+            }
+        });
+
     }
 
     private void setSpanWidthAndHeight() {

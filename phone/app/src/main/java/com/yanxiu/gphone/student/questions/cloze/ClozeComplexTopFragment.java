@@ -4,38 +4,47 @@ package com.yanxiu.gphone.student.questions.cloze;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.Html;
-import android.text.Spanned;
+import android.support.v4.view.ViewCompat;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.view.ViewTreeObserver;
+import android.widget.ScrollView;
 
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.customviews.spantextview.ClozeTextView;
+import com.yanxiu.gphone.student.customviews.spantextview.ClozeView;
+import com.yanxiu.gphone.student.customviews.spantextview.EmptyReplacementSpan;
+import com.yanxiu.gphone.student.customviews.spantextview.OnReplaceCompleteListener;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.ExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.TopBaseFragment;
-import com.yanxiu.gphone.student.util.HtmlImageGetter;
+import com.yanxiu.gphone.student.util.StemUtil;
+
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Created by 戴延枫 on 2017/6/14.
  */
 
 public class ClozeComplexTopFragment extends TopBaseFragment {
-    private ClozeComplexQuestion mData;
-    private TextView mText;
-    private boolean is = false;//Todo  demo展示，孙鹏需要删除这些示例代码
+    private ClozeComplexQuestion mQuestion;
+    private ClozeTextView mText;
+    private ScrollView mScrollView;
+    private View mViewWrapper;
 
     @Override
     public void setData(BaseQuestion data) {
-        mData = (ClozeComplexQuestion) data;
+        mQuestion = (ClozeComplexQuestion) data;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
-            mData = (ClozeComplexQuestion) savedInstanceState.getSerializable(ExerciseBaseFragment.KEY_NODE);
+            mQuestion = (ClozeComplexQuestion) savedInstanceState.getSerializable(ExerciseBaseFragment.KEY_NODE);
         }
     }
 
@@ -43,28 +52,56 @@ public class ClozeComplexTopFragment extends TopBaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_cloze_top, container, false);
-        initView(mRootView);
+        initView();
+        initData();
+        initListener();
         return mRootView;
     }
 
-    private void initView(View root) {
-        mText = (TextView) root.findViewById(R.id.tv_stem);
-        String stem = mData.getStem();
-        Spanned spanned = Html.fromHtml(stem, new HtmlImageGetter(mText), null);
-        mText.setText(spanned);
+    private void initListener() {
 
-        //Todo  demo展示，孙鹏需要删除这些示例代码
+//        mRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+//            @Override
+//            public void onGlobalLayout() {
+//                if(mText.getLastClickClozeView() == null)
+//                    return;
+//                mScrollView.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        if(mText.getLastClickClozeView().getBottom() > mScrollView.getHeight()){
+//                            mScrollView.scrollTo(0,mText.getLastClickClozeView().getBottom() - mScrollView.getHeight() + mViewWrapper.getPaddingTop());
+//                        }
+//                    }
+//                });
+//            }
+//        });
+
+        mText.setOnClozeClickListener(new ClozeTextView.OnClozeClickListener() {
+            @Override
+            public void onClozeClick(final ClozeView view, int position) {
+                showChildQuestion(false);
+                setCurrentItem(position);
+            }
+        });
+
         mText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (is) {
-                    is = false;
-                } else {
-                    is = true;
-                }
-                showChildQuestion(is);
+                showChildQuestion(true);
+                mText.resetAnimation();
             }
         });
+    }
+
+    private void initData() {
+        String text = StemUtil.initClozeStem(mQuestion.getStem());
+        mText.setText(text);
+    }
+
+    private void initView() {
+        mText = (ClozeTextView) mRootView.findViewById(R.id.cloze_text_view);
+        mScrollView = (ScrollView) mRootView.findViewById(R.id.scrollView);
+        mViewWrapper = mRootView.findViewById(R.id.ll_wrapper);
     }
 
     /**
@@ -83,10 +120,25 @@ public class ClozeComplexTopFragment extends TopBaseFragment {
         }
     }
 
+    /**
+     * 切换子题
+     * @param index
+     */
+    private void setCurrentItem(int index) {
+        Fragment fragment = getParentFragment();
+        if (null != fragment && fragment instanceof ClozeComplexFragment) {
+            ClozeComplexFragment parentFragment = (ClozeComplexFragment) fragment;
+            ViewPager viewPager = parentFragment.getmViewPager();
+            if(viewPager != null){
+                viewPager.setCurrentItem(index);
+            }
+        }
+    }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable(ExerciseBaseFragment.KEY_NODE, mData);
+        outState.putSerializable(ExerciseBaseFragment.KEY_NODE, mQuestion);
     }
 
 }

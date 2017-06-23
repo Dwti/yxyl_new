@@ -10,11 +10,14 @@ import android.support.annotation.StyleRes;
 import android.util.AttributeSet;
 import android.view.View;
 
+import java.util.Map;
+import java.util.TreeMap;
+
 /**
  * Created by sunpeng on 2017/6/15.
  */
 
-public class ClozeTextView extends ReplacementSpanTextView<ClozeView> {
+public class ClozeTextView extends ReplacementSpanTextView<ClozeView> implements OnReplaceCompleteListener {
 
     private OnClozeClickListener mOnClozeClickListener;
 
@@ -26,17 +29,23 @@ public class ClozeTextView extends ReplacementSpanTextView<ClozeView> {
 
     public ClozeTextView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        init();
     }
 
     public ClozeTextView(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        init();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public ClozeTextView(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr, @StyleRes int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+        init();
     }
 
+    private void init(){
+        setOnReplaceCompleteListener(this);
+    }
     @Override
     protected ClozeView getView() {
         ClozeView clozeView = new ClozeView(getContext());
@@ -62,10 +71,40 @@ public class ClozeTextView extends ReplacementSpanTextView<ClozeView> {
         return clozeView;
     }
 
+    public void resetAnimation(){
+        if(mLastClickClozeView != null && mLastClickClozeView.getTextPosition() == ClozeView.TextPosition.LEFT){
+            mLastClickClozeView.performTranslateAnimation(ClozeView.TextPosition.CENTER);
+            mLastClickClozeView = null;
+        }
+    }
+
     public void setOnClozeClickListener(OnClozeClickListener listener){
         mOnClozeClickListener = listener;
     }
 
+    @Override
+    public void onReplaceComplete() {
+        ClozeView clozeView = null ;
+        int i = 1;
+        for(Map.Entry<EmptyReplacementSpan,ClozeView> entry:mTreeMap.entrySet()){
+            if(i == 1){
+                clozeView = entry.getValue();
+            }
+            entry.getValue().setTextNumber(i);
+            i++;
+        }
+        mLastClickClozeView = clozeView;
+        post(new Runnable() {
+            @Override
+            public void run() {
+                mLastClickClozeView.performTranslateAnimation(ClozeView.TextPosition.LEFT);
+            }
+        });
+    }
+
+    public ClozeView getLastClickClozeView(){
+        return mLastClickClozeView;
+    }
     public interface OnClozeClickListener{
         void onClozeClick(ClozeView view, int position);
     }
