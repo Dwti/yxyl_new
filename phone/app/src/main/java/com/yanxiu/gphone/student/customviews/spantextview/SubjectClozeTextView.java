@@ -49,7 +49,7 @@ public class SubjectClozeTextView extends ReplacementSpanTextView<SubjectClozeVi
             return;
         }
         if(views.size() == 1){
-            views.get(0).setNumberVisible(View.GONE);
+            views.get(0).setNumberVisible(View.INVISIBLE);
             return;
         }
         for(int i =0; i< views.size(); i++){
