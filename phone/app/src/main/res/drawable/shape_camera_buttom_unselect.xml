@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape
+            android:shape="oval"
+            android:useLevel="false">
+            <solid android:color="@color/color_ffffff" />
+            <stroke
+                android:width="@dimen/choose_fragment_round_stroke_w"
+                android:color="@color/color_89e00d" />
+            <size
+                android:width="@dimen/camera_icon_w_h"
+                android:height="@dimen/camera_icon_w_h" />
+        </shape>
+    </item>
+
+    <item
+        android:bottom="@dimen/camera_select_round_margin"
+        android:left="@dimen/camera_select_round_margin"
+        android:right="@dimen/camera_select_round_margin"
+        android:top="@dimen/camera_select_round_margin">
+        <shape
+            android:shape="oval"
+            android:useLevel="false">
+            <solid android:color="@color/color_89e00d" />
+        </shape>
+    </item>
+</layer-list>

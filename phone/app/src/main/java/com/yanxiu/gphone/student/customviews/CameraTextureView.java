@@ -121,11 +121,11 @@ public class CameraTextureView extends TextureView implements TextureView.Surfac
     private CameraCaptureSession.CaptureCallback captureCallback = new CameraCaptureSession.CaptureCallback() {
         @Override
         public void onCaptureCompleted(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, @NonNull TotalCaptureResult result) {
-            mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER, CameraMetadata.CONTROL_AF_TRIGGER_CANCEL);
-            mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH);
             try {
+                mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER, CameraMetadata.CONTROL_AF_TRIGGER_CANCEL);
+                mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH);
                 mPreviewSession.setRepeatingRequest(mCaptureRequest, null, null);
-            } catch (CameraAccessException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -243,7 +243,7 @@ public class CameraTextureView extends TextureView implements TextureView.Surfac
                         mCaptureRequest = captureRequestBuilder.build();
                         mPreviewSession = session;
                         mPreviewSession.setRepeatingRequest(mCaptureRequest, null, null);
-                    } catch (CameraAccessException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
@@ -273,8 +273,7 @@ public class CameraTextureView extends TextureView implements TextureView.Surfac
 
         @Override
         public void onError(@NonNull CameraDevice cameraDevice, int error) {
-            CameraTextureView.this.cameraDevice.close();
-            CameraTextureView.this.cameraDevice = null;
+            cameraDevice.close();
         }
     };
 

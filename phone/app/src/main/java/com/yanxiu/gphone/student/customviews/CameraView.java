@@ -15,17 +15,16 @@ import android.widget.FrameLayout;
  */
 public class CameraView extends FrameLayout {
 
-    private static final String TYPE_DEFAULT="2";
-    private static final String TYPE_LOLLIPOP="21";
+    private static final String TYPE_DEFAULT="api_2";
+    private static final String TYPE_LOLLIPOP="api_21";
 
-    private Context mContext;
     private CameraSurfaceView mSurfaceView;
     private CameraTextureView mTextureView;
     private onTakePictureListener mTakePictureListener;
 
     private String TYPE=TYPE_DEFAULT;
 
-    interface onTakePictureListener {
+    public interface onTakePictureListener {
         void onComplete(boolean isSuccess, String path);
     }
 
@@ -47,14 +46,13 @@ public class CameraView extends FrameLayout {
     }
 
     private void initView(Context context) {
-        this.mContext = context;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             TYPE=TYPE_LOLLIPOP;
-            mTextureView=new CameraTextureView(mContext);
+            mTextureView=new CameraTextureView(context);
             this.addView(mTextureView);
         }else {
             TYPE=TYPE_DEFAULT;
-            mSurfaceView = new CameraSurfaceView(mContext);
+            mSurfaceView = new CameraSurfaceView(context);
             this.addView(mSurfaceView);
         }
     }

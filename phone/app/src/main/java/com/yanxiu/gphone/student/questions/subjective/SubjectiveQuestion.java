@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class SubjectiveQuestion extends BaseQuestion {
 
-    public List<String> answerList=new ArrayList<>();
+    public ArrayList<String> answerList=new ArrayList<>();
 
     public SubjectiveQuestion(PaperTestBean bean, QuestionShowType showType) {
         super(bean, showType);
@@ -29,7 +29,7 @@ public class SubjectiveQuestion extends BaseQuestion {
             for (int i=0;i<array.length();i++){
                 answerList.add(array.getString(i));
             }
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

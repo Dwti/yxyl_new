@@ -1,6 +1,5 @@
 package com.yanxiu.gphone.student.questions.subjective;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Html;
@@ -11,12 +10,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.common.Bean.PhotoDeleteBean;
+import com.yanxiu.gphone.student.common.activity.CameraActivity;
+import com.yanxiu.gphone.student.common.activity.PhotoActivity;
 import com.yanxiu.gphone.student.customviews.AlbumGridView;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.SimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
@@ -28,7 +31,6 @@ import de.greenrobot.event.EventBus;
  */
 public class SubjectiveFragment extends SimpleExerciseBaseFragment implements AlbumGridView.onClickListener, AlbumGridView.onItemChangedListener {
 
-    public static final String RESULTCODE="code";
 
     private SubjectiveQuestion mData;
     private TextView mQuestionView;
@@ -91,40 +93,45 @@ public class SubjectiveFragment extends SimpleExerciseBaseFragment implements Al
     }
 
     @Override
-    public void onClick(int Type) {
+    public void onClick(int Type,int position) {
         switch (Type){
             case AlbumGridView.TYPE_CAMERA:
-                SubJectiveMessage message=new SubJectiveMessage();
-                message.hashCode=SubjectiveFragment.this.hashCode();
-                Intent intent=new Intent(getActivity(),TestActivity.class);
-                intent.putExtra(RESULTCODE,message);
-                startActivity(intent);
+                CameraActivity.LaunchActivity(getContext(),SubjectiveFragment.this.hashCode());
                 break;
             case AlbumGridView.TYPE_IMAGE:
+                PhotoActivity.LaunchActivity(getContext(),mData.answerList,position,SubjectiveFragment.this.hashCode());
                 break;
         }
     }
 
     @Override
-    public void onChanged(List<String> paths) {
+    public void onChanged(ArrayList<String> paths) {
         mData.answerList.clear();
         if (paths!=null){
             mData.answerList.addAll(paths);
         }
+        if (mData.answerList.size()>0){
+            mData.setIsAnswer(true);
+        }else {
+            mData.setIsAnswer(false);
+        }
+        saveAnswer(mData);
+        updateProgress();
     }
 
-    public static class SubJectiveMessage implements Serializable {
-        int hashCode;
-        List<String> paths;
-    }
-
-    public void onEventMainThread(SubJectiveMessage message){
-        if (message!=null&&message.hashCode==SubjectiveFragment.this.hashCode()){
+    public void onEventMainThread(CameraActivity.CameraCallbackMessage message){
+        if (message!=null&&message.fromId==SubjectiveFragment.this.hashCode()){
             if (message.paths!=null){
                 for (String path:message.paths){
                     mAnswerView.addData(path);
                 }
             }
+        }
+    }
+
+    public void onEventMainThread(PhotoDeleteBean deleteBean){
+        if (deleteBean!=null&&deleteBean.formId==SubjectiveFragment.this.hashCode()){
+            mAnswerView.remove(deleteBean.deleteId);
         }
     }
 

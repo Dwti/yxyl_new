@@ -148,4 +148,7 @@
 
     <string name="listen_time">/</string>
     <string name="submit_homework_button">提交作业</string>
+
+    <string name="subject_submit">开始作答</string>
+    <string name="camera_film">相机胶卷</string>
 </resources>

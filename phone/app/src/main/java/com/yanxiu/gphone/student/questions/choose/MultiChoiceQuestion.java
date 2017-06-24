@@ -36,7 +36,7 @@ public class MultiChoiceQuestion extends BaseQuestion {
             for (int i=0;i<array.length();i++){
                 answerList.add(array.getString(i));
             }
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
