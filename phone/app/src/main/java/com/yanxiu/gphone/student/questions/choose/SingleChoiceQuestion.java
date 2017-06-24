@@ -1,5 +1,8 @@
 package com.yanxiu.gphone.student.questions.choose;
 
+import android.util.Log;
+
+import com.yanxiu.gphone.student.db.SaveAnswerDBHelper;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.questions.bean.PaperTestBean;
@@ -24,9 +27,9 @@ public class SingleChoiceQuestion extends BaseQuestion {
         super(bean, showType);
         singleAnswer= String.valueOf(bean.getQuestions().getAnswer().get(0));
         choice= bean.getQuestions().getContent().getChoices();
-        String jsonArray=bean.getQuestions().getPad().getAnswer();
-        JSONArray array;
         try {
+            String jsonArray=bean.getQuestions().getPad().getAnswer();
+            JSONArray array;
             array=new JSONArray(jsonArray);
             for (int i=0;i<array.length();i++){
                 answerList.add(array.getString(i));

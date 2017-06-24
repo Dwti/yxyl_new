@@ -3,6 +3,7 @@ package com.yanxiu.gphone.student.questions.answerframe.util;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.choose.MultiChoiceQuestion;
 import com.yanxiu.gphone.student.questions.cloze.ClozeComplexQuestion;
+import com.yanxiu.gphone.student.questions.fillblank.FillBlankQuestion;
 import com.yanxiu.gphone.student.questions.listencomplex.ListenComplexQuestion;
 import com.yanxiu.gphone.student.questions.readingcomplex.ReadingComplexQuestion;
 import com.yanxiu.gphone.student.questions.choose.SingleChoiceQuestion;
@@ -70,6 +71,8 @@ public class QuestionConvertFactory {
                     questions.add(multiChoiceQuestion);
                     break;
                 case QuestionTemplate.FILL:
+                    FillBlankQuestion fillBlankQuestion = new FillBlankQuestion(paperTestBean,showType);
+                    questions.add(fillBlankQuestion);
                     break;
                 case QuestionTemplate.ALTER:
                     YesNoQuestion yesNoQuestion = new YesNoQuestion(paperTestBean, showType);

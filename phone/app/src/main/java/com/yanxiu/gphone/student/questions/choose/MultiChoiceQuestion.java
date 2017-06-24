@@ -29,9 +29,9 @@ public class MultiChoiceQuestion extends BaseQuestion {
             multianswer.add((String) o);
         }
         choice= bean.getQuestions().getContent().getChoices();
-        String jsonArray=bean.getQuestions().getPad().getAnswer();
-        JSONArray array;
         try {
+            String jsonArray=bean.getQuestions().getPad().getAnswer();
+            JSONArray array;
             array=new JSONArray(jsonArray);
             for (int i=0;i<array.length();i++){
                 answerList.add(array.getString(i));

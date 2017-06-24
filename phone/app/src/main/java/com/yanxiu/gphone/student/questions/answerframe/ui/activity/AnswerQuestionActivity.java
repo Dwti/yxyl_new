@@ -54,6 +54,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
     private TextView mNext_text;//下一题textview
     private ImageView mBackView;//返回按钮
     private ImageView mShowAnswerCardView;//显示答题卡
+    private View mRootView;
 
     private Handler mHandler;
     private int mTotalTime;//总计时间
@@ -87,6 +88,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
     }
 
     private void initView() {
+        mRootView = findViewById(R.id.fl_qa);
         mTimer = (QuestionTimeTextView) findViewById(R.id.timer);
         mProgressView = (QuestionProgressView) findViewById(R.id.progressBar);
         mProgressView.setMaxCount(mTotalQuestion);
@@ -186,6 +188,9 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         }
     }
 
+    public View getRootView(){
+        return mRootView;
+    }
     /**
      * 显示答题卡
      * 第一版本不显示答题卡

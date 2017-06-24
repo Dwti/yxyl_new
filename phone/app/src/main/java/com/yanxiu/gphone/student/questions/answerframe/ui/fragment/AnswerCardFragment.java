@@ -1,6 +1,8 @@
 package com.yanxiu.gphone.student.questions.answerframe.ui.fragment;
 
+import android.app.Dialog;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -15,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.customviews.AnswerCardSubmitDialog;
 import com.yanxiu.gphone.student.questions.answerframe.adapter.AnswerCardAdapter;
 import com.yanxiu.gphone.student.questions.answerframe.adapter.GridSpacingItemDecoration;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
@@ -52,7 +55,7 @@ public class AnswerCardFragment extends Fragment implements View.OnClickListener
         return mRootView;
     }
 
-    public void setData(ArrayList<BaseQuestion> questions,String title) {
+    public void setData(ArrayList<BaseQuestion> questions, String title) {
         mQuestions = allNodesThatHasNumber(questions);
         mTitleString = title;
     }
@@ -61,7 +64,7 @@ public class AnswerCardFragment extends Fragment implements View.OnClickListener
         mSubmiButton = (Button) mRootView.findViewById(R.id.submit_homework);
         mBackView = (ImageView) mRootView.findViewById(R.id.backview);
         mTitle = (TextView) mRootView.findViewById(R.id.title);
-        if(!TextUtils.isEmpty(mTitleString))
+        if (!TextUtils.isEmpty(mTitleString))
             mTitle.setText(mTitleString);
         mBackView.setVisibility(View.VISIBLE);
         mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.rv_recyclerView);
@@ -73,7 +76,6 @@ public class AnswerCardFragment extends Fragment implements View.OnClickListener
         mRecyclerView.setAdapter(mAnswerCardAdapter);
 
         initListener();
-
     }
 
     public void initListener() {
@@ -123,7 +125,11 @@ public class AnswerCardFragment extends Fragment implements View.OnClickListener
         switch (v.getId()) {
             case R.id.submit_homework:
 //            QALevelSingleton.bus.post("save answer event");
-                ToastManager.showMsg("提交");
+                AnswerCardSubmitDialog dialog = new AnswerCardSubmitDialog(getActivity());
+//        dialog.setCancelable(false);
+                dialog.show();
+                dialog.showView(1);
+//                dialog.setrrr();
                 break;
             case R.id.backview:
                 getActivity().getSupportFragmentManager().beginTransaction().remove(AnswerCardFragment.this).commit();

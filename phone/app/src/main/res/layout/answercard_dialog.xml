@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/submiting_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="202dp"
+        android:background="@drawable/answercard_submit_progress_bg"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/submiting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:gravity="center_vertical"
+            android:text="作业图片提交中"
+            android:textColor="@color/color_336600"
+            android:textSize="18dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/submiting"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp">
+
+            <TextView
+                android:id="@+id/progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="16"
+                android:textColor="@color/color_336600"
+                android:textSize="26dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="/"
+                android:textColor="@color/color_336600"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="20"
+                android:textColor="@color/color_336600"
+                android:textSize="26dp" />
+        </LinearLayout>
+
+
+        <com.yanxiu.gphone.student.customviews.AnswercardSubmitProgressView
+            android:id="@+id/progressbar"
+            android:layout_width="@dimen/answer_card_progress_width"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="30dp" />
+
+        <ImageView
+            android:id="@+id/pincil"
+            android:layout_width="@dimen/answer_card_progress_pincil_width"
+            android:layout_height="@dimen/answer_card_progress_pincil_height"
+            android:layout_above="@id/progressbar"
+            android:layout_alignLeft="@id/progressbar"
+            android:layout_marginLeft="-8dp"
+            android:layout_marginBottom="2dp"
+            android:background="@drawable/pencil_icon" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/state_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:visibility="gone">
+
+        <RelativeLayout
+            android:layout_width="315dp"
+            android:layout_height="210dp"
+            android:layout_marginTop="77dp"
+            android:background="@drawable/answercard_submit_state_bg">
+
+            <TextView
+                android:id="@+id/state_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="65dp"
+                android:text="当前网络异常"
+                android:textColor="@color/color_336600"
+                android:textSize="23dp" />
+
+            <TextView
+                android:id="@+id/state_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/state_title"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text="退出答题进度将无法保存"
+                android:textColor="@color/color_69ad0a"
+                android:textSize="16dp" />
+
+            <com.yanxiu.gphone.student.customviews.WavesLayout
+                android:id="@+id/wave_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="15dp"
+                android:layout_marginLeft="15dp"
+                app:waves_animend_alpha="102"
+                app:waves_radius="@dimen/wavesRadius">
+
+                <Button
+                    android:id="@+id/button_no"
+                    android:layout_width="135dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:background="@drawable/selector_answercard_no_button_bg"
+                    android:text="取消"
+                    android:textColor="@drawable/selector_answercard_no_text_color"
+                    android:textSize="@dimen/answer_card_submitbutton_textsize" />
+            </com.yanxiu.gphone.student.customviews.WavesLayout>
+
+            <com.yanxiu.gphone.student.customviews.WavesLayout
+                android:id="@+id/wave_yes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="15dp"
+                android:layout_marginRight="15dp"
+                app:waves_animend_alpha="102"
+                app:waves_radius="@dimen/wavesRadius">
+
+                <Button
+                    android:id="@+id/button_yes"
+                    android:layout_width="135dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/selector_answercard_yes_button_bg"
+                    android:text="确定"
+                    android:textColor="@drawable/selector_answercard_yes_text_color"
+                    android:textSize="@dimen/answer_card_submitbutton_textsize" />
+            </com.yanxiu.gphone.student.customviews.WavesLayout>
+
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="250dp"
+            android:layout_height="130dp"
+            android:layout_centerHorizontal="true"
+            android:background="@color/color_33ffff" />
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/yy"
+        android:layout_width="135dp"
+        android:layout_height="50dp"
+        android:background="@drawable/selector_answercard_yes_button_bg"
+        android:text="确定"
+        android:textColor="@drawable/selector_answercard_yes_text_color"
+        android:textSize="@dimen/answer_card_submitbutton_textsize" />
+</RelativeLayout>

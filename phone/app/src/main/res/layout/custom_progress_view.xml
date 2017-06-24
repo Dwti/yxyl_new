@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/background"
+        android:layout_width="@dimen/answer_card_progress_width"
+        android:layout_height="6dp"
+        android:background="@drawable/answercard_progressbar_background" />
+
+    <ImageView
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="6dp"
+        android:background="@drawable/answercard_progressbar" />
+
+</RelativeLayout>
