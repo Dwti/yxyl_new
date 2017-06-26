@@ -57,7 +57,7 @@ public class YesNoQuestion extends BaseQuestion {
 
     @Override
     public ExerciseBaseFragment analysisFragment() {
-        return new YesNoAnalysisExerciseFragment();
+        return new YesNoAnalysisFragment();
     }
 
     @Override

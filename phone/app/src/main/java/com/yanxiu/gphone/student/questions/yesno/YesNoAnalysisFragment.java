@@ -21,7 +21,7 @@ import com.yanxiu.gphone.student.util.HtmlImageGetter;
  * Created by 戴延枫 on 2017/6/7.
  */
 
-public class YesNoAnalysisExerciseFragment extends AnalysisSimpleExerciseBaseFragment {
+public class YesNoAnalysisFragment extends AnalysisSimpleExerciseBaseFragment {
     private YesNoQuestion mData;
     private View mAnswerView;
     private TextView mQuestionView;
