@@ -25,6 +25,7 @@ import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerQuestio
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.ComplexExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.ExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.SimpleExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.choose.SingleChoiceQuestion;
 import com.yanxiu.gphone.student.questions.cloze.ClozeComplexQuestion;
 import com.yanxiu.gphone.student.util.KeyboardObserver;
 import com.yanxiu.gphone.student.util.StemUtil;
@@ -66,7 +67,7 @@ public class FillBlankFragment extends SimpleExerciseBaseFragment implements Key
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
-            mQuestion = (FillBlankQuestion) savedInstanceState.getSerializable(ExerciseBaseFragment.KEY_NODE);
+            setData((FillBlankQuestion) savedInstanceState.getSerializable(KEY_NODE));
         }
     }
 
