@@ -23,6 +23,9 @@ public class FillBlankQuestion extends BaseQuestion {
     }
 
     private void initAnswer(PaperTestBean bean){
+        if(bean.getQuestions().getPad() == null || bean.getQuestions().getPad().getJsonAnswer() == null){
+            return;
+        }
         for (Object o: bean.getQuestions().getPad().getJsonAnswer()){
             mAnswers.add(String.valueOf(o));
         }
