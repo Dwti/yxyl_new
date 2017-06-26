@@ -3,6 +3,7 @@ package com.yanxiu.gphone.student.questions.fillblank;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -21,6 +22,7 @@ import com.yanxiu.gphone.student.customviews.spantextview.FillBlankTextView;
 import com.yanxiu.gphone.student.customviews.spantextview.OnReplaceCompleteListener;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerQuestionActivity;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.ComplexExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.ExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.SimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.cloze.ClozeComplexQuestion;
@@ -204,6 +206,7 @@ public class FillBlankFragment extends SimpleExerciseBaseFragment implements Key
         Log.i("state", "onKeyboardVisibleChange() called with: " + "isShow = [" + isShow + "], keyboardHeight = [" + keyboardHeight + "]");
         mIsKeyboardShowing = isShow;
         if(isShow){
+            setTopLayoutMinHeight();
             mBottom.setVisibility(View.GONE);
             mEditLayout.setVisibility(View.VISIBLE);
             mEditText.requestFocus();
@@ -225,6 +228,17 @@ public class FillBlankFragment extends SimpleExerciseBaseFragment implements Key
         }
         mQuestion.setIsAnswer(hasAnswer);
         super.saveAnswer(question);
+    }
+
+    /**
+     * top设置为最小高度
+     */
+    private void setTopLayoutMinHeight() {
+        Fragment fragment = getParentFragment();
+        if (null != fragment && fragment instanceof ComplexExerciseBaseFragment) {
+            ComplexExerciseBaseFragment parentFragment = (ComplexExerciseBaseFragment) fragment;
+            parentFragment.setTopLayoutMinHeight();
+        }
     }
 
     @Override
