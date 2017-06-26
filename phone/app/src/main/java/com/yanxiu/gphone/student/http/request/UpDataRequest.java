@@ -8,7 +8,6 @@ import com.yanxiu.gphone.student.util.LoginInfo;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 import okhttp3.Call;
@@ -26,23 +25,41 @@ import okhttp3.Response;
  * Function :
  */
 public class UpDataRequest {
-    private static final String TYPE_IMG="img";
-    private static final String TYPE_IMGS="imgs";
-    private static final String IMGKEY="img";
+
+    public interface findConstantParams {
+        @NonNull
+        String findUpdataUrl();
+
+        @NonNull
+        int findFileNumber();
+
+        @Nullable
+        Map<String, String> findParams();
+    }
+
+    public interface findImgPath {
+        @NonNull
+        String findImgPath(int position);
+    }
+
+    public interface findImgTag {
+        @Nullable
+        Object findImgTag(int position);
+    }
+
+    private static final String IMGKEY = "img";
     private static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
 
     private static UpDataRequest mUpDataRequest;
     private final OkHttpClient mOkHttpClient;
 
-    private String mUrl;
-    private String mImg_Path;
-    private List<String> mImg_Paths;
-    private String mType=TYPE_IMG;
-    private Map<String, String> mParams;
+    private findConstantParams mFindConstantParams;
+    private findImgPath mFindImgPath;
+    private findImgTag mFindImgTag;
 
     public static UpDataRequest getInstense() {
-        if (mUpDataRequest==null){
-            mUpDataRequest=new UpDataRequest();
+        if (mUpDataRequest == null) {
+            mUpDataRequest = new UpDataRequest();
         }
         return mUpDataRequest;
     }
@@ -51,92 +68,113 @@ public class UpDataRequest {
         mOkHttpClient = new OkHttpClient();
     }
 
-    public UpDataRequest setUpDataUrl(@NonNull String url){
-        this.mUrl=url;
+    public UpDataRequest setConstantParams(findConstantParams findConstantParams) {
+        this.mFindConstantParams = findConstantParams;
         return mUpDataRequest;
     }
 
-    public UpDataRequest setImg(@NonNull String img_path){
-        this.mType=TYPE_IMG;
-        this.mImg_Path=img_path;
+    public UpDataRequest setImgPath(@NonNull findImgPath findImgPath) {
+        this.mFindImgPath = findImgPath;
         return mUpDataRequest;
     }
 
-    public UpDataRequest setImgs(@NonNull List<String> img_paths){
-        this.mType=TYPE_IMGS;
-        this.mImg_Paths=img_paths;
+    public UpDataRequest setTag(@Nullable findImgTag findImgTag) {
+        this.mFindImgTag = findImgTag;
         return mUpDataRequest;
     }
 
-    public UpDataRequest setParams(@Nullable Map<String, String> params){
-        this.mParams=params;
-        return mUpDataRequest;
-    }
-
-    public void setListener(@Nullable onUpDatalistener upDatalistener){
-        if (mType.equals(TYPE_IMG)) {
-            upData(mUrl, 0, IMGKEY, mImg_Path, mParams, upDatalistener);
-        }else if (mType.equals(TYPE_IMGS)){
-            for (int i=0;i<mImg_Paths.size();i++){
-                upData(mUrl, i, IMGKEY, mImg_Paths.get(i), mParams, upDatalistener);
+    public void setListener(@Nullable onUpDatalistener upDatalistener) {
+        int fileNumber;
+        String url;
+        Map<String, String> params;
+        if (mFindConstantParams != null) {
+            fileNumber = mFindConstantParams.findFileNumber();
+            url = mFindConstantParams.findUpdataUrl();
+            params = mFindConstantParams.findParams();
+        } else {
+            if (upDatalistener != null) {
+                upDatalistener.onError("con not find constant params");
             }
+            return;
+        }
+        for (int i = 0; i < fileNumber; i++) {
+            upData(url, i, params, upDatalistener);
         }
     }
 
-    private void upData(final String url,final int position, final String img_key, final String img_path, final Map<String, String> params, final onUpDatalistener upDatalistener) {
+    private void upData(final String url, final int position, final Map<String, String> params, final onUpDatalistener upDatalistener) {
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
 
-        if (TextUtils.isEmpty(img_path)){
-            if (upDatalistener!=null){
-                upDatalistener.onError("The ImgPath can not be NULL");
+        final String imgPath;
+        if (mFindImgPath != null) {
+            imgPath = mFindImgPath.findImgPath(position);
+        } else {
+            if (upDatalistener != null) {
+                upDatalistener.onError("Con not find img path ");
             }
+            return;
         }
-        File f = new File(img_path);
-        builder.addFormDataPart(img_key, f.getName(), RequestBody.create(MEDIA_TYPE_PNG, f));
+
+        if (TextUtils.isEmpty(imgPath)) {
+            if (upDatalistener != null) {
+                upDatalistener.onError("The imgPath can not be NULL");
+            }
+            return;
+        }
+        File f = new File(imgPath);
+        builder.addFormDataPart(IMGKEY, f.getName(), RequestBody.create(MEDIA_TYPE_PNG, f));
 
         builder.addFormDataPart("token", LoginInfo.getToken());
 
-        if (params!=null) {
+        if (params != null) {
             for (String key : params.keySet()) {
                 builder.addFormDataPart(key, params.get(key));
             }
         }
 
-        if (TextUtils.isEmpty(url)){
-            if (upDatalistener!=null){
+        if (TextUtils.isEmpty(url)) {
+            if (upDatalistener != null) {
                 upDatalistener.onError("The url can not be NULL");
             }
         }
         MultipartBody requestBody = builder.build();
         Request request = new Request.Builder().url(url).post(requestBody).build();
-        if (upDatalistener!=null) {
-            upDatalistener.onUpDataStart(position, img_path);
+        if (upDatalistener != null) {
+            upDatalistener.onUpDataStart(position, imgPath);
         }
         mOkHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                if (upDatalistener!=null) {
-                    String message=e.getMessage();
-                    upDatalistener.onUpDataFailed(position, img_path,message);
+                if (upDatalistener != null) {
+                    String message = e.getMessage();
+                    Object tag = null;
+                    if (mFindImgTag != null) {
+                        tag = mFindImgTag.findImgTag(position);
+                    }
+                    upDatalistener.onUpDataFailed(position, tag, message);
                 }
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                if (upDatalistener!=null) {
-                    String message=response.body().string();
-                    upDatalistener.onUpDataSuccess(position, img_path,message);
+                if (upDatalistener != null) {
+                    String jsonString = response.body().string();
+                    Object tag = null;
+                    if (mFindImgTag != null) {
+                        tag = mFindImgTag.findImgTag(position);
+                    }
+                    upDatalistener.onUpDataSuccess(position, tag, jsonString);
                 }
             }
         });
     }
 
     public interface onUpDatalistener {
-        void onUpDataStart(int position, String localPath);
+        void onUpDataStart(int position, Object tag);
 
-        void onUpDataSuccess(int position, String localPath,String successMsg);
+        void onUpDataSuccess(int position, Object tag, String jsonString);
 
-        void onUpDataFailed(int position, String localPath,String failMsg);
+        void onUpDataFailed(int position, Object tag, String failMsg);
 
         void onError(String errorMsg);
     }
