@@ -42,6 +42,7 @@ public class FillBlankFragment extends SimpleExerciseBaseFragment implements Key
     private View mRootView,mActivityRootView, mEditLayout, mBottom;
     private ScrollView mScrollView;
     private EditText mEditText;
+    private View mViewWrapper;
 
     private KeyboardObserver mKeyboardObserver;
 
@@ -73,6 +74,7 @@ public class FillBlankFragment extends SimpleExerciseBaseFragment implements Key
         mEditLayout = mRootView.findViewById(R.id.ll_edit);
         mSend = (Button) mRootView.findViewById(R.id.btnSend);
         mScrollView = (ScrollView) mRootView.findViewById(R.id.scrollView);
+        mViewWrapper = mRootView.findViewById(R.id.viewWrapper);
         mActivityRootView = ((AnswerQuestionActivity)getActivity()).getRootView();
         mBottom = mActivityRootView.findViewById(R.id.bottom);
         mEditText = (EditText) mRootView.findViewById(R.id.editText);
@@ -170,9 +172,8 @@ public class FillBlankFragment extends SimpleExerciseBaseFragment implements Key
                             List<BlankView> viewList = mFillBlank.getBlankViews(mFillBlank.getCurrClickSpanStart());
                             if(viewList.size() > 0){
                                 final BlankView blankView = viewList.get(viewList.size() -1);
-                                //不应该判断bottom 应该判断是不是在可视范围内
-                                if(blankView.getBottom() > mScrollView.getHeight()){
-                                    mScrollView.scrollTo(0,blankView.getBottom() - mScrollView.getHeight());
+                                if(blankView.getBottom() + mViewWrapper.getPaddingTop() > mScrollView.getHeight()){
+                                    mScrollView.scrollTo(0,blankView.getBottom() - mScrollView.getHeight() + mViewWrapper.getPaddingTop());
                                 }
                             }
                         }
