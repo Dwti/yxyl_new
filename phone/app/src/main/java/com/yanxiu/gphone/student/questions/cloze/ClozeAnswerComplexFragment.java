@@ -10,8 +10,8 @@ import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
-import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.ComplexExerciseBaseFragment;
-import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.TopBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerComplexExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.TopBaseFragment;
 import com.yanxiu.gphone.student.questions.readingcomplex.ReadingComplexQuestion;
 
 
@@ -19,7 +19,7 @@ import com.yanxiu.gphone.student.questions.readingcomplex.ReadingComplexQuestion
  * Created by 戴延枫 on 2017/6/14.
  */
 
-public class ClozeComplexFragment extends ComplexExerciseBaseFragment {
+public class ClozeAnswerComplexFragment extends AnswerComplexExerciseBaseFragment {
     private ClozeComplexQuestion mData;
     private int mTopHeight;
     private int mChildQuestionHeight = 580;//子题固定高度是四个单选的高度;

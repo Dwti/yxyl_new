@@ -4,6 +4,7 @@ package com.yanxiu.gphone.student.questions.cloze;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.LayoutInflater;
@@ -13,8 +14,8 @@ import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
-import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.ExerciseBaseFragment;
-import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.TopBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.TopBaseFragment;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
 
 /**
@@ -69,12 +70,13 @@ public class ClozeComplexTopFragment extends TopBaseFragment {
 
     /**
      * 是否显示子题
+     *
      * @param isShow
      */
     private void showChildQuestion(boolean isShow) {
         Fragment fragment = getParentFragment();
-        if (null != fragment && fragment instanceof ClozeComplexFragment) {
-            ClozeComplexFragment parentFragment = (ClozeComplexFragment) fragment;
+        if (null != fragment && fragment instanceof ClozeAnswerComplexFragment) {
+            ClozeAnswerComplexFragment parentFragment = (ClozeAnswerComplexFragment) fragment;
             if (isShow) {
                 parentFragment.expand();
             } else {

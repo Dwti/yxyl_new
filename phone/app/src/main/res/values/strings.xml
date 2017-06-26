@@ -148,4 +148,8 @@
 
     <string name="listen_time">/</string>
     <string name="submit_homework_button">提交作业</string>
+
+    <string name="submit__button_retry">再试一次</string>
+    <string name="analysis_text">题目解析</string>
+    <string name="baocuo_text">报错</string>
 </resources>

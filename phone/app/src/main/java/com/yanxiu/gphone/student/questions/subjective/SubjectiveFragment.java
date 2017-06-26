@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.customviews.AlbumGridView;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
-import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.SimpleExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
 
 import java.io.Serializable;
@@ -26,7 +26,7 @@ import de.greenrobot.event.EventBus;
  * Time : 2017/6/14 11:02.
  * Function :
  */
-public class SubjectiveFragment extends SimpleExerciseBaseFragment implements AlbumGridView.onClickListener, AlbumGridView.onItemChangedListener {
+public class SubjectiveFragment extends AnswerSimpleExerciseBaseFragment implements AlbumGridView.onClickListener, AlbumGridView.onItemChangedListener {
 
     public static final String RESULTCODE="code";
 

@@ -1,4 +1,4 @@
-package com.yanxiu.gphone.student.questions.answerframe.ui.fragment;
+package com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,19 +9,19 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.db.SaveAnswerDBHelper;
 import com.yanxiu.gphone.student.questions.answerframe.bean.AnswerBean;
+import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnalysisQuestionActivity;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerQuestionActivity;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
 import com.yanxiu.gphone.student.questions.answerframe.listener.IExercise;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.analysisbase.AnalysisComplexExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerComplexExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.util.FragmentUserVisibleController;
 import com.yanxiu.gphone.student.util.StringUtil;
 import com.yanxiu.gphone.student.util.TextTypefaceUtil;
-
-import org.json.JSONArray;
 
 import java.util.ArrayList;
 
@@ -67,7 +67,7 @@ public abstract class ExerciseBaseFragment extends Fragment implements IExercise
         mQaNumber = (TextView) v.findViewById(R.id.qa_number);
         String str = mBaseQuestion.numberStringForShow();
         Fragment parentFragment = getParentFragment();
-        if (parentFragment instanceof ComplexExerciseBaseFragment) {
+        if (parentFragment instanceof AnswerComplexExerciseBaseFragment || parentFragment instanceof AnalysisComplexExerciseBaseFragment) {
             mQaNumber.setTextColor(getResources().getColor(R.color.color_999999));
             TextTypefaceUtil.setViewTypeface(TextTypefaceUtil.TypefaceType.METRO_PLAY,mQaNumber);
         }
@@ -85,7 +85,7 @@ public abstract class ExerciseBaseFragment extends Fragment implements IExercise
         mQaName = (TextView) v.findViewById(R.id.qa_name);
         String templateName;
         Fragment parentFragment = getParentFragment();
-        if (parentFragment instanceof ComplexExerciseBaseFragment) {
+        if (parentFragment instanceof AnswerComplexExerciseBaseFragment || parentFragment instanceof AnalysisComplexExerciseBaseFragment) {
             templateName = getString(R.string.question);
             TextPaint tp = mQaName.getPaint();
             tp.setTypeface(DEFAULT_BOLD);
@@ -147,19 +147,19 @@ public abstract class ExerciseBaseFragment extends Fragment implements IExercise
     @Override
     public void onVisibleToUserChanged(boolean isVisibleToUser, boolean invokeInResumeOrPause) {
         Log.w(TAG, "onVisibilityChangedToUser: " + "_______" + this.getClass().getSimpleName() + " == " + isVisibleToUser);
-        if (isVisibleToUser) {
-            //用户可见，计时开始
-            mStartTime = System.currentTimeMillis();
-            hiddenSwitchQuestionView();
-            if (!invokeInResumeOrPause) {
-                //是左右滑动
-                updateProgress();//进入屏幕，更新进度条
-            }
-        } else {
-            //不可见，计时结束
-            mEndTime = System.currentTimeMillis();
-            calculateExerciseTime();
-        }
+//        if (isVisibleToUser) {
+//            //用户可见，计时开始
+//            mStartTime = System.currentTimeMillis();
+//            hiddenSwitchQuestionView();
+//            if (!invokeInResumeOrPause) {
+//                //是左右滑动
+//                updateProgress();//进入屏幕，更新进度条
+//            }
+//        } else {
+//            //不可见，计时结束
+//            mEndTime = System.currentTimeMillis();
+//            calculateExerciseTime();
+//        }
         onVisibilityChangedToUser(isVisibleToUser, invokeInResumeOrPause);
     }
 
@@ -178,6 +178,8 @@ public abstract class ExerciseBaseFragment extends Fragment implements IExercise
         long exerciseTime = mEndTime - mStartTime;
         //Todo 计算时间及保存
         mTotalTime += exerciseTime;
+        mBaseQuestion.setCosttime(mTotalTime);
+
     }
 
     /**
@@ -207,6 +209,9 @@ public abstract class ExerciseBaseFragment extends Fragment implements IExercise
     public void hiddenSwitchQuestionView() {
         if (getActivity() instanceof AnswerQuestionActivity) {
             AnswerQuestionActivity acticity = (AnswerQuestionActivity) getActivity();
+            acticity.hiddenSwitchQuestionView();
+        }else if(getActivity() instanceof AnalysisQuestionActivity) {
+            AnalysisQuestionActivity acticity = (AnalysisQuestionActivity) getActivity();
             acticity.hiddenSwitchQuestionView();
         }
 
@@ -247,7 +252,7 @@ public abstract class ExerciseBaseFragment extends Fragment implements IExercise
                 innerQuestion = childrenQusetion.get(innerIndex);
                 innerQuestion = question;
             }
-            //TODO 后续保存逻辑
+            //保存逻辑
             Gson gson = new Gson();
             Object ansewr = question.getAnswer();
             if(null != ansewr){
@@ -258,15 +263,7 @@ public abstract class ExerciseBaseFragment extends Fragment implements IExercise
                 Log.e("dyf", "json = " +json);
                 boolean is = SaveAnswerDBHelper.save(bean);
                 Log.e("dyf", "is = " +is);
-                try{
-                    JSONArray js = new JSONArray(json);
-                    Log.e("dyf", "json = " +js.length());
-                }catch (Exception e){
 
-                }
-
-//                String result = SaveAnswerDBHelper.getAnswerJson(SaveAnswerDBHelper.makeId(question));
-//                Log.e("dyf", "result = " +result);
             }
 
         }

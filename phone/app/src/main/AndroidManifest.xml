@@ -120,6 +120,9 @@
         <activity android:name=".questions.answerframe.ui.activity.AnswerQuestionActivity"
             android:screenOrientation="portrait"
             android:launchMode="singleTop"/>
+        <activity android:name=".questions.answerframe.ui.activity.AnalysisQuestionActivity"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop"/>
 
         <activity android:name=".user.activity.JoinClassSubmitActivity"
             android:screenOrientation="portrait"

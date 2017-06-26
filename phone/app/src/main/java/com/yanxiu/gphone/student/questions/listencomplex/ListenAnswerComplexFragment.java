@@ -4,15 +4,15 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
-import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.ComplexExerciseBaseFragment;
-import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.TopBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerComplexExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.TopBaseFragment;
 
 /**
  * Created by Canghaixiao.
  * Time : 2017/6/9 14:47.
  * Function :
  */
-public class ListenComplexFragment extends ComplexExerciseBaseFragment {
+public class ListenAnswerComplexFragment extends AnswerComplexExerciseBaseFragment {
 
     private ListenComplexQuestion mData;
     private ListenComplexTopFragment topFragment;
