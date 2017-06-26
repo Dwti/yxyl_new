@@ -45,7 +45,7 @@ public class ClozeAnswerComplexFragment extends AnswerComplexExerciseBaseFragmen
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
-            setData((ReadingComplexQuestion) savedInstanceState.getSerializable(KEY_NODE));
+            setData((ClozeComplexQuestion) savedInstanceState.getSerializable(KEY_NODE));
         }
     }
 

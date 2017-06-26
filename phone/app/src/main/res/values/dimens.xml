@@ -151,6 +151,26 @@
     <dimen name="answer_card_submitbutton_height">50dp</dimen>
     <dimen name="answer_card_recyleview_marginbottom">55dp</dimen>
     <dimen name="answer_card_bottomview_marginbottom">75dp</dimen>
+
+    <dimen name="camera_bottom_h">123dp</dimen>
+    <dimen name="camera_album_icon_w_h">60dp</dimen>
+    <dimen name="camera_album_margin_l">30dp</dimen>
+    <dimen name="camera_icon_w_h">66dp</dimen>
+    <dimen name="camera_delete_icon_w_h">26dp</dimen>
+    <dimen name="camera_delete_icon_margin_r">53dp</dimen>
+    <dimen name="camera_select_round_margin">3dp</dimen>
+
+    <dimen name="subject_grid_item_w_h">78dp</dimen>
+    <dimen name="subject_grid_item_icon_w_h">70dp</dimen>
+    <dimen name="subject_grid_item_add_icon_w_h">40dp</dimen>
+    <dimen name="subject_grid_item_delete_icon_w_h">16dp</dimen>
+    <dimen name="subject_grid_margin_l_r">15dp</dimen>
+    <dimen name="subject_grid_margin_t">7dp</dimen>
+    <dimen name="subject_grid_horizontalSpacing">15dp</dimen>
+    <dimen name="subject_grid_button_w">250dp</dimen>
+    <dimen name="subject_grid_button_h">50dp</dimen>
+    <dimen name="subject_grid_button_textsize">18dp</dimen>
+    <dimen name="album_padding">1.5dp</dimen>
     <dimen name="answer_card_progress_width">255dp</dimen>
     <dimen name="answer_card_progress_layout_width">285dp</dimen>
     <dimen name="answer_card_progress_pincil_width">30dp</dimen>

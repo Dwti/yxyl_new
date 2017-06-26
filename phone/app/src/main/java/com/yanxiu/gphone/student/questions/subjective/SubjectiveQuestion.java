@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class SubjectiveQuestion extends BaseQuestion {
 
-    public List<String> answerList=new ArrayList<>();
+    public ArrayList<String> answerList=new ArrayList<>();
 
     public SubjectiveQuestion(PaperTestBean bean, QuestionShowType showType) {
         super(bean, showType);

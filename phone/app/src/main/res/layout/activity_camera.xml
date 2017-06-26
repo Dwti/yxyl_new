@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.yanxiu.gphone.student.customviews.CameraView
+        android:id="@+id/cv_camera"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/camera_bottom_h"
+        android:background="@color/color_7fcccccc"
+        android:layout_gravity="bottom">
+        <ImageView
+            android:id="@+id/iv_album"
+            android:layout_width="@dimen/camera_album_icon_w_h"
+            android:layout_height="@dimen/camera_album_icon_w_h"
+            android:layout_marginLeft="@dimen/camera_album_margin_l"
+            android:layout_centerVertical="true"
+            android:background="#ff0000"/>
+
+        <ImageView
+            android:id="@+id/iv_takepicture"
+            android:layout_width="@dimen/camera_icon_w_h"
+            android:layout_height="@dimen/camera_icon_w_h"
+            android:layout_centerInParent="true"
+            android:background="@drawable/selector_camera_botton_bg"/>
+
+        <ImageView
+            android:id="@+id/iv_delete"
+            android:layout_width="@dimen/camera_delete_icon_w_h"
+            android:layout_height="@dimen/camera_delete_icon_w_h"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/camera_delete_icon_margin_r"
+            android:background="@color/color_00cccc"/>
+    </RelativeLayout>
+
+</FrameLayout>
