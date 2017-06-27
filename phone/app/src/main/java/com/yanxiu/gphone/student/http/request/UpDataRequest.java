@@ -93,7 +93,7 @@ public class UpDataRequest {
             params = mFindConstantParams.findParams();
         } else {
             if (upDatalistener != null) {
-                upDatalistener.onError("con not find constant params");
+                upDatalistener.onError("can not find constant params");
             }
             return;
         }
@@ -110,7 +110,7 @@ public class UpDataRequest {
             imgPath = mFindImgPath.findImgPath(position);
         } else {
             if (upDatalistener != null) {
-                upDatalistener.onError("Con not find img path ");
+                upDatalistener.onError("Can not find img path ");
             }
             return;
         }

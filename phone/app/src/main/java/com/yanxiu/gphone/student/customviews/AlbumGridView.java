@@ -39,13 +39,13 @@ public class AlbumGridView extends RelativeLayout {
     private interface onItemChangeListener {
         void onItemNumChange(int num, ArrayList<String> paths);
 
-        void onItemClick(int viewType,int position);
+        void onItemClick(int viewType, int position);
 
         void onDeleteClick(GridAdapter adapter, int position);
     }
 
     public interface onClickListener {
-        void onClick(int Type,int position);
+        void onClick(int Type, int position);
     }
 
     public interface onItemChangedListener {
@@ -89,6 +89,13 @@ public class AlbumGridView extends RelativeLayout {
         if (mAdapter != null) {
             mAdapter.setData(list);
         }
+        if (list.size() == 0) {
+            mContentView.setVisibility(GONE);
+            mConverLayout.setVisibility(VISIBLE);
+        } else {
+            mContentView.setVisibility(VISIBLE);
+            mConverLayout.setVisibility(GONE);
+        }
     }
 
     public void addData(String... paths) {
@@ -102,7 +109,7 @@ public class AlbumGridView extends RelativeLayout {
         }
     }
 
-    public void remove(int position){
+    public void remove(int position) {
         mAdapter.remove(position);
     }
 
@@ -130,10 +137,10 @@ public class AlbumGridView extends RelativeLayout {
         }
 
         @Override
-        public void onItemClick(int viewType,int position) {
+        public void onItemClick(int viewType, int position) {
             if (viewType == GridAdapter.TYPE_ONE) {
                 if (mClickListener != null) {
-                    mClickListener.onClick(TYPE_IMAGE,position);
+                    mClickListener.onClick(TYPE_IMAGE, position);
                 }
             } else {
                 clickListener.onClick(mButtonView);
@@ -152,7 +159,7 @@ public class AlbumGridView extends RelativeLayout {
         @Override
         public void onClick(View v) {
             if (mClickListener != null) {
-                mClickListener.onClick(TYPE_CAMERA,-1);
+                mClickListener.onClick(TYPE_CAMERA, -1);
             }
         }
     };
@@ -211,12 +218,26 @@ public class AlbumGridView extends RelativeLayout {
                 this.mDatas.add(DEFAULT_PATH);
             }
             this.notifyDataSetChanged();
+            if (mItemChangeListener != null) {
+                if (getCount() == 0) {
+                    mItemChangeListener.onItemNumChange(getCount(), getData());
+                } else {
+                    mItemChangeListener.onItemNumChange(getCount() - 1, getData());
+                }
+            }
         }
 
         private void remove(int position) {
-            if (position>-1&&position<mDatas.size()) {
+            if (position > -1 && position < mDatas.size()) {
                 this.mDatas.remove(position);
                 this.notifyDataSetChanged();
+            }
+            if (mItemChangeListener != null) {
+                if (getCount() == 0) {
+                    mItemChangeListener.onItemNumChange(getCount(), getData());
+                } else {
+                    mItemChangeListener.onItemNumChange(getCount() - 1, getData());
+                }
             }
         }
 
@@ -241,13 +262,6 @@ public class AlbumGridView extends RelativeLayout {
         @Override
         public int getCount() {
             int count = mDatas != null ? mDatas.size() : 0;
-            if (mItemChangeListener != null) {
-                if (count == 0) {
-                    mItemChangeListener.onItemNumChange(count, getData());
-                } else {
-                    mItemChangeListener.onItemNumChange(count - 1, getData());
-                }
-            }
             count = count > MAXNUMBER ? MAXNUMBER : count;
             return count;
         }
@@ -302,7 +316,7 @@ public class AlbumGridView extends RelativeLayout {
                 public void onClick(View v) {
                     if (path.equals(DEFAULT_PATH)) {
                         if (mItemChangeListener != null) {
-                            mItemChangeListener.onItemClick(TYPE_TWO,position);
+                            mItemChangeListener.onItemClick(TYPE_TWO, position);
                         }
                     } else {
                         if (model.equals(MODEL_LONGPRESS) && model_position == position) {
@@ -310,7 +324,7 @@ public class AlbumGridView extends RelativeLayout {
                             notifyDataSetChanged();
                         } else {
                             if (mItemChangeListener != null) {
-                                mItemChangeListener.onItemClick(TYPE_ONE,position);
+                                mItemChangeListener.onItemClick(TYPE_ONE, position);
                             }
                         }
                     }
