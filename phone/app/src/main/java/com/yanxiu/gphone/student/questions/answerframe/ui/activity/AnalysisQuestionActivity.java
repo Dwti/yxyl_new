@@ -21,95 +21,70 @@ import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.QuestionProgressView;
 import com.yanxiu.gphone.student.customviews.QuestionTimeTextView;
 import com.yanxiu.gphone.student.questions.answerframe.adapter.QAViewPagerAdapter;
-import com.yanxiu.gphone.student.questions.answerframe.listener.OnAnswerCardItemSelectListener;
-import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.AnswerCardFragment;
-import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerComplexExerciseBaseFragment;
-import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
-import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
+import com.yanxiu.gphone.student.questions.answerframe.listener.OnAnswerCardItemSelectListener;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.AnswerCardFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.analysisbase.AnalysisComplexExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.analysisbase.AnalysisSimpleExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerComplexExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.view.QAViewPager;
 import com.yanxiu.gphone.student.util.DataFetcher;
+import com.yanxiu.gphone.student.util.ToastManager;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 
 /**
- * 答题页面
+ * 解析页面
  */
-public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.OnClickListener, OnAnswerCardItemSelectListener {
+public class AnalysisQuestionActivity extends YanxiuBaseActivity implements View.OnClickListener {
     private FragmentManager mFragmentManager;
     private QAViewPager mViewPager;
     private QAViewPagerAdapter mAdapter;
     private String mKey;//获取数据的key
-    private String mTitleString;//试卷的title-答题卡需要
     private Paper mPaper;//试卷数据
     private ArrayList<BaseQuestion> mQuestions;//题目数据
-    private AnswerCardFragment mAnswerCardFragment;
 
-    private QuestionTimeTextView mTimer;//计时
-    private QuestionProgressView mProgressView;//答题进度条
     private LinearLayout mPrevious_question, mNext_question;//上一题，下一题
     private TextView mNext_text;//下一题textview
     private ImageView mBackView;//返回按钮
-    private ImageView mShowAnswerCardView;//显示答题卡
-    private View mRootView;
+    private TextView mRightview;//报错
 
-    private Handler mHandler;
-    private int mTotalTime;//总计时间
-    private long mStartTime;//开始答题时间
-    /**
-     * 刷新计时
-     */
-    private static final int HANDLER_TIME = 0x100;
-    /**
-     * 一秒
-     */
-    private final int HANDLER_TIME_DELAYED = 1000;
-    private int mTotalQuestion;//题目总数量
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_answerquestion);
+        setContentView(R.layout.activity_analysisquestion);
         initData();
         initView();
     }
 
     private void initData() {
         mKey = getIntent().getStringExtra(Constants.EXTRA_PAPER);
-        mTitleString = getIntent().getStringExtra(Constants.EXTRA_TITLE);
         if (TextUtils.isEmpty(mKey))
             finish();
         mPaper = DataFetcher.getInstance().getPaper(mKey);
         mQuestions = mPaper.getQuestions();
-        initProgressViewData();
-        mTotalTime = 0;
-        mStartTime = System.currentTimeMillis();
-        mPaper.getPaperStatus().setBegintime(mStartTime+"");
     }
 
     private void initView() {
-        mRootView = findViewById(R.id.fl_qa);
-        mTimer = (QuestionTimeTextView) findViewById(R.id.timer);
-        mProgressView = (QuestionProgressView) findViewById(R.id.progressBar);
-        mProgressView.setMaxCount(mTotalQuestion);
         mPrevious_question = (LinearLayout) findViewById(R.id.previous_question);
         mNext_question = (LinearLayout) findViewById(R.id.next_question);
         mNext_text = (TextView) findViewById(R.id.next_text);
         mBackView = (ImageView) findViewById(R.id.backview);
-        mShowAnswerCardView = (ImageView) findViewById(R.id.answercardview);
+        mRightview = (TextView) findViewById(R.id.rightview);
         setListener();
         initViewPager();
-        mHandler = new TimingHandler(this);
     }
 
     private void setListener() {
         mPrevious_question.setOnClickListener(this);
         mNext_question.setOnClickListener(this);
         mBackView.setOnClickListener(this);
-        mShowAnswerCardView.setOnClickListener(this);
+        mRightview.setOnClickListener(this);
     }
 
     private void initViewPager() {
@@ -126,87 +101,8 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
             @Override
             public void onSwipeOutAtEnd() {
                 Log.e("TAG", "Outter swipe out at end");
-                showAnswerCardFragment();
             }
         });
-    }
-
-    /**
-     * 初始化进度条相关数据
-     */
-    private void initProgressViewData() {
-        for (int i = 0; i < mQuestions.size(); i++) { //遍历大题
-            ArrayList<BaseQuestion> childrenList = mQuestions.get(i).getChildren();//小题集合
-            if (childrenList == null || childrenList.size() < 1) { //单题型
-                mTotalQuestion++;
-            }else{ //复合题
-                if(childrenList == null || childrenList.size() < 1){
-                    //出错，尽然是复合题，必须有小题
-                    return;
-                }else{ //遍历小题
-                    for(int j = 0;j < childrenList.size(); j++){
-                        mTotalQuestion++;
-                    }
-                }
-            }
-        }
-    }
-
-//    /**
-//     * 给答题卡设置题号
-//     *
-//     * @return
-//     */
-//    private ArrayList<BaseQuestion> allNodesThatHasNumber() {
-//        ArrayList<BaseQuestion> retNodes = new ArrayList<>();
-//        for (BaseQuestion node : mQuestions) {
-//            retNodes.addAll(node.allNodesThatHasNumber());
-//        }
-//        return retNodes;
-//    }
-
-    @Override
-    public void onItemSelect(BaseQuestion item) {
-        //答题卡跳转逻辑
-        // 1, 移除 card getFragment
-//        final FragmentManager fm = getSupportFragmentManager();
-        if (mAnswerCardFragment != null) {
-            mFragmentManager.beginTransaction().remove(mAnswerCardFragment).commit();
-        }
-
-        // 2, 跳转
-        int index = item.getLevelPositions().get(0);
-        FragmentStatePagerAdapter a1 = (FragmentStatePagerAdapter) mViewPager.getAdapter();
-        mViewPager.setCurrentItem(index);
-        ExerciseBaseFragment currentFragment = (ExerciseBaseFragment) a1.instantiateItem(mViewPager, index);
-        currentFragment.setUserVisibleHin2(true);
-
-
-        ArrayList<Integer> remainPositions = new ArrayList<>(item.getLevelPositions());
-        remainPositions.remove(0);
-        if (remainPositions.size() > 0) { // 表明这层依然是 复合题
-            FragmentStatePagerAdapter a = (FragmentStatePagerAdapter) mViewPager.getAdapter();
-            AnswerComplexExerciseBaseFragment f = (AnswerComplexExerciseBaseFragment) a.instantiateItem(mViewPager, index);
-            f.setChildrenPositionRecursively(remainPositions);
-        }
-    }
-
-    public View getRootView(){
-        return mRootView;
-    }
-    /**
-     * 显示答题卡
-     */
-    private void showAnswerCardFragment() {
-        // 可以在这里打个断点，所有Fill Blank的答案均已存入nodes里
-        if (mAnswerCardFragment == null) {
-            mAnswerCardFragment = new AnswerCardFragment();
-            mAnswerCardFragment.setData(mPaper,mTitleString);
-            mAnswerCardFragment.setOnCardItemSelectListener(AnswerQuestionActivity.this);
-        }
-        if (mFragmentManager.findFragmentById(R.id.fragment_answercard) == null) {
-            mFragmentManager.beginTransaction().add(R.id.fragment_answercard, mAnswerCardFragment).commit();
-        }
     }
 
     /**
@@ -230,8 +126,8 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         if (adapter == null || index < 0 || size < 1 || mViewPager == null || currentFramgent == null)
             return;
 
-        if (currentFramgent instanceof AnswerComplexExerciseBaseFragment) {
-            AnswerComplexExerciseBaseFragment complexExerciseFragment = (AnswerComplexExerciseBaseFragment) currentFramgent;
+        if (currentFramgent instanceof AnalysisComplexExerciseBaseFragment) {
+            AnalysisComplexExerciseBaseFragment complexExerciseFragment = (AnalysisComplexExerciseBaseFragment) currentFramgent;
             ViewPager innerViewPager = complexExerciseFragment.getmViewPager();
             FragmentStatePagerAdapter innerAdapter = (FragmentStatePagerAdapter) innerViewPager.getAdapter();
             int innerIndex = innerViewPager.getCurrentItem();
@@ -247,7 +143,6 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
              */
             if (innerIndex == (innerSize - 1) && index == (size - 1)) {
                 //状态3
-                showAnswerCardFragment();
             } else if (innerIndex == (innerSize - 1)) {
                 //状态2
                 mViewPager.setCurrentItem(index + 1);
@@ -256,10 +151,9 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
                 innerViewPager.setCurrentItem(innerIndex + 1);
             }
 
-        } else if (currentFramgent instanceof AnswerSimpleExerciseBaseFragment) {
+        } else if (currentFramgent instanceof AnalysisSimpleExerciseBaseFragment) {
             if (index == (size - 1)) {
                 //最后一题,展示答题卡
-                showAnswerCardFragment();
             } else {
                 //下一题
                 mViewPager.setCurrentItem(index + 1);
@@ -289,8 +183,8 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         if (adapter == null || index < 0 || size < 1 || mViewPager == null || currentFramgent == null)
             return;
 
-        if (currentFramgent instanceof AnswerComplexExerciseBaseFragment) {
-            AnswerComplexExerciseBaseFragment complexExerciseFragment = (AnswerComplexExerciseBaseFragment) currentFramgent;
+        if (currentFramgent instanceof AnalysisComplexExerciseBaseFragment) {
+            AnalysisComplexExerciseBaseFragment complexExerciseFragment = (AnalysisComplexExerciseBaseFragment) currentFramgent;
             ViewPager innerViewPager = complexExerciseFragment.getmViewPager();
             FragmentStatePagerAdapter innerAdapter = (FragmentStatePagerAdapter) innerViewPager.getAdapter();
             int innerIndex = innerViewPager.getCurrentItem();
@@ -307,7 +201,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
                 mViewPager.setCurrentItem(index - 1);
             }
 
-        } else if (currentFramgent instanceof AnswerSimpleExerciseBaseFragment) {
+        } else if (currentFramgent instanceof AnalysisSimpleExerciseBaseFragment) {
             if (index >= 1) {
                 //不是第一大题时,有上一题
                 mViewPager.setCurrentItem(index - 1);
@@ -336,8 +230,8 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         if (adapter == null || index < 0 || size < 1 || mViewPager == null || currentFramgent == null)
             return;
 
-        if (currentFramgent instanceof AnswerComplexExerciseBaseFragment) {
-            AnswerComplexExerciseBaseFragment complexExerciseFragment = (AnswerComplexExerciseBaseFragment) currentFramgent;
+        if (currentFramgent instanceof AnalysisComplexExerciseBaseFragment) {
+            AnalysisComplexExerciseBaseFragment complexExerciseFragment = (AnalysisComplexExerciseBaseFragment) currentFramgent;
             ViewPager innerViewPager = complexExerciseFragment.getmViewPager();
             FragmentStatePagerAdapter innerAdapter = (FragmentStatePagerAdapter) innerViewPager.getAdapter();
             int innerIndex = innerViewPager.getCurrentItem();
@@ -361,7 +255,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
                 mPrevious_question.setVisibility(View.VISIBLE);
             }
 
-        } else if (currentFramgent instanceof AnswerSimpleExerciseBaseFragment) {
+        } else if (currentFramgent instanceof AnalysisSimpleExerciseBaseFragment) {
             if (index == (size - 1)) { //最后一题
                 mNext_text.setText(R.string.complete);
             }else{
@@ -380,10 +274,6 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         return mPaper;
     }
 
-    public QuestionProgressView getProgressView() {
-        return mProgressView;
-    }
-
     @Override
     public void onClick(View v) {
 
@@ -397,83 +287,12 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
             case R.id.backview:
                 finish();
                 break;
-            case R.id.answercardview:
-                showAnswerCardFragment();
+            case R.id.rightview:
+                ToastManager.showMsg("摆错");
                 break;
         }
     }
 
-    /**
-     * 计时用Handler
-     */
-    private static class TimingHandler extends Handler {
-        private WeakReference<AnswerQuestionActivity> mActivity;
-
-        public TimingHandler(AnswerQuestionActivity activity) {
-            mActivity = new WeakReference<>(activity);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            AnswerQuestionActivity activity = mActivity.get();
-
-            if (msg.what == activity.HANDLER_TIME) {
-                activity.mHandler.sendEmptyMessageDelayed(activity.HANDLER_TIME, activity.HANDLER_TIME_DELAYED);
-                activity.updateTime();
-            }
-        }
-    }
-
-    /**
-     * 开始计时
-     */
-    private void startTiming() {
-        if (mHandler != null) {
-            mHandler.removeMessages(HANDLER_TIME);
-            mHandler.sendEmptyMessageDelayed(HANDLER_TIME, HANDLER_TIME_DELAYED);
-        }
-    }
-
-    /**
-     * 结束计时
-     */
-    private void endTiming() {
-        if (mHandler != null) {
-            mHandler.removeMessages(HANDLER_TIME);
-        }
-    }
-
-    /**
-     * 更新计时
-     */
-    private void updateTime() {
-        mTotalTime++;
-        mTimer.setTime(mTotalTime);
-    }
-
-    public int getmTotalTime() {
-        return mTotalTime;
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        startTiming();
-    }
-
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        endTiming();
-    }
-
-    @Override
-    protected void onDestroy() {
-        mHandler.removeCallbacksAndMessages(null);
-        mHandler = null;
-        super.onDestroy();
-    }
 
     /**
      * 跳转AnswerQuestionActivity
@@ -481,7 +300,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
      * @param activity
      */
     public static void invoke(Activity activity, String key) {
-        Intent intent = new Intent(activity, AnswerQuestionActivity.class);
+        Intent intent = new Intent(activity, AnalysisQuestionActivity.class);
         intent.putExtra(Constants.EXTRA_PAPER, key);
         activity.startActivity(intent);
     }
@@ -492,7 +311,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
      * @param activity
      */
     public static void invoke(Activity activity, String key,String title) {
-        Intent intent = new Intent(activity, AnswerQuestionActivity.class);
+        Intent intent = new Intent(activity, AnalysisQuestionActivity.class);
         intent.putExtra(Constants.EXTRA_PAPER, key);
         intent.putExtra(Constants.EXTRA_TITLE, title);
         activity.startActivity(intent);

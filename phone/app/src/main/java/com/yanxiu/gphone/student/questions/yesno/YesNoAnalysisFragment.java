@@ -8,28 +8,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.customviews.ChooseLayout;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
-import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.SimpleExerciseAnalysisBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.analysisbase.AnalysisSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
-import com.yanxiu.gphone.student.util.ToastManager;
-
-import java.util.List;
-
-import de.greenrobot.event.EventBus;
-
-import static android.view.View.GONE;
 
 
 /**
  * Created by 戴延枫 on 2017/6/7.
  */
 
-public class YesNoAnalysisFragment extends SimpleExerciseAnalysisBaseFragment {
+public class YesNoAnalysisFragment extends AnalysisSimpleExerciseBaseFragment {
     private YesNoQuestion mData;
     private View mAnswerView;
     private TextView mQuestionView;
@@ -109,5 +101,6 @@ public class YesNoAnalysisFragment extends SimpleExerciseAnalysisBaseFragment {
      */
     @Override
     public void onVisibilityChangedToUser(boolean isVisibleToUser, boolean invokeInResumeOrPause) {
+        super.onVisibilityChangedToUser(isVisibleToUser,invokeInResumeOrPause);
     }
 }

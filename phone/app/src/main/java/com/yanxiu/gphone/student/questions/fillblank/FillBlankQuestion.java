@@ -1,9 +1,8 @@
 package com.yanxiu.gphone.student.questions.fillblank;
 
-import android.util.Log;
 
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
-import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.ExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.questions.bean.PaperTestBean;
 

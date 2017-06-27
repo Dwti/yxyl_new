@@ -4,17 +4,15 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Html;
 import android.text.Spanned;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.customviews.ChooseLayout;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
-import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.SimpleExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
 
 import java.util.List;
@@ -25,7 +23,7 @@ import static android.view.View.GONE;
  * Created by 戴延枫 on 2017/6/7.
  */
 
-public class YesNoFragment extends SimpleExerciseBaseFragment implements ChooseLayout.onItemClickListener {
+public class YesNoFragment extends AnswerSimpleExerciseBaseFragment implements ChooseLayout.onItemClickListener {
     private YesNoQuestion mData;
     private TextView mQuestionView;
     private ChooseLayout mAnswerView;

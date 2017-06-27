@@ -1,7 +1,10 @@
-package com.yanxiu.gphone.student.questions.answerframe.ui.fragment;
+package com.yanxiu.gphone.student.questions.answerframe.ui.fragment.analysisbase;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Html;
+import android.text.Spanned;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,10 +13,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.customviews.ListenerSeekBarLayout;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.NotesActicity;
-import com.yanxiu.gphone.student.questions.yesno.YesNoQuestion;
-import com.yanxiu.gphone.student.util.ToastManager;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.analysisbase.AnalysisExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.util.QuestionTemplate;
+import com.yanxiu.gphone.student.util.HtmlImageGetter;
 
 import de.greenrobot.event.EventBus;
 
@@ -22,13 +27,15 @@ import de.greenrobot.event.EventBus;
  * 单题型解析Frament基类
  */
 
-public abstract class SimpleExerciseAnalysisBaseFragment extends ExerciseAnalysisBaseFragment implements View.OnClickListener {
+public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExerciseBaseFragment implements View.OnClickListener {
     private BaseQuestion mData;
     private TextView mQuestionView;
 
     public View mRootView;
     public LinearLayout mAnsewr_container, mAnalysis_container;
     public TextView v1, v2, v3, edit, mNotesTextView;
+
+    private ListenerSeekBarLayout mListenView;//听力复合题只有一个子题时，题干的听力控件
 
     @Override
     public void setData(BaseQuestion data) {
@@ -63,6 +70,33 @@ public abstract class SimpleExerciseAnalysisBaseFragment extends ExerciseAnalysi
         initAnswerView();
         initAnalysisView();
         initListener();
+    }
+
+    /**
+     * 如果是只有一个子题的复合题，显示大题的题干
+     * (所有单题型都需要支持该方法)
+     *
+     * @param view
+     */
+    public void initComplexStem(View view, BaseQuestion data) {
+        //通用题干
+        LinearLayout complex_stem_layout = (LinearLayout) view.findViewById(R.id.complex_stem_layout);
+        TextView complex_stem = (TextView) view.findViewById(R.id.complex_stem);
+        String complexStem = data.getStem_complexToSimple();
+        if (!TextUtils.isEmpty(complexStem)) {
+            Spanned spanned = Html.fromHtml(complexStem, new HtmlImageGetter(complex_stem), null);
+            complex_stem.setText(spanned);
+            complex_stem_layout.setVisibility(View.VISIBLE);
+        }
+        //听力题干的听力控件
+        String template = data.getTemplate_complexToSimple();
+        String url = data.getUrl_listenComplexToSimple();//听力url
+        if (!TextUtils.isEmpty(template) && template.equals(QuestionTemplate.LISTEN)) {
+            mListenView = (ListenerSeekBarLayout) view.findViewById(R.id.complex_stem_listen);
+            mListenView.setVisibility(View.VISIBLE);
+            mListenView.setUrl(url);
+            mListenView.setVisibility(View.VISIBLE);
+        }
     }
 
 
@@ -113,8 +147,27 @@ public abstract class SimpleExerciseAnalysisBaseFragment extends ExerciseAnalysi
     }
 
     @Override
+    public void onVisibilityChangedToUser(boolean isVisibleToUser, boolean invokeInResumeOrPause) {
+        super.onVisibilityChangedToUser(isVisibleToUser,invokeInResumeOrPause);
+        if (isVisibleToUser) {
+            if (null != mListenView)
+                mListenView.setResume();
+        } else {
+            if (null != mListenView)
+                mListenView.setPause();
+        }
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (null != mListenView)
+            mListenView.setDestory();
     }
 }

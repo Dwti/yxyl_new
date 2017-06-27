@@ -14,9 +14,10 @@ import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.customviews.spantextview.ClozeTextView;
 import com.yanxiu.gphone.student.customviews.spantextview.ClozeView;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
-import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.ExerciseBaseFragment;
-import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.TopBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.TopBaseFragment;
 import com.yanxiu.gphone.student.util.StemUtil;
+
 
 /**
  * Created by 戴延枫 on 2017/6/14.
@@ -101,12 +102,13 @@ public class ClozeComplexTopFragment extends TopBaseFragment {
 
     /**
      * 是否显示子题
+     *
      * @param isShow
      */
     private void showChildQuestion(boolean isShow) {
         Fragment fragment = getParentFragment();
-        if (null != fragment && fragment instanceof ClozeComplexFragment) {
-            ClozeComplexFragment parentFragment = (ClozeComplexFragment) fragment;
+        if (null != fragment && fragment instanceof ClozeAnswerComplexFragment) {
+            ClozeAnswerComplexFragment parentFragment = (ClozeAnswerComplexFragment) fragment;
             if (isShow) {
                 parentFragment.expand();
             } else {
@@ -121,8 +123,8 @@ public class ClozeComplexTopFragment extends TopBaseFragment {
      */
     private void setCurrentItem(int index) {
         Fragment fragment = getParentFragment();
-        if (null != fragment && fragment instanceof ClozeComplexFragment) {
-            ClozeComplexFragment parentFragment = (ClozeComplexFragment) fragment;
+        if (null != fragment && fragment instanceof ClozeAnswerComplexFragment) {
+            ClozeAnswerComplexFragment parentFragment = (ClozeAnswerComplexFragment) fragment;
             ViewPager viewPager = parentFragment.getmViewPager();
             if(viewPager != null){
                 viewPager.setCurrentItem(index);
@@ -135,8 +137,8 @@ public class ClozeComplexTopFragment extends TopBaseFragment {
      */
     private void setOnPageChangeListener() {
         Fragment fragment = getParentFragment();
-        if (null != fragment && fragment instanceof ClozeComplexFragment) {
-            ClozeComplexFragment parentFragment = (ClozeComplexFragment) fragment;
+        if (null != fragment && fragment instanceof ClozeAnswerComplexFragment) {
+            ClozeAnswerComplexFragment parentFragment = (ClozeAnswerComplexFragment) fragment;
             ViewPager viewPager = parentFragment.getmViewPager();
             if (viewPager != null) {
                 viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
