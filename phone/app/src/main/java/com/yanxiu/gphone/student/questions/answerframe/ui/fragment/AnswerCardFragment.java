@@ -36,6 +36,7 @@ import com.yanxiu.gphone.student.util.ToastManager;
 import java.util.ArrayList;
 
 import static com.yanxiu.gphone.student.customviews.AnswerCardSubmitDialog.SubmitState.STATE_PROGRESS;
+import static com.yanxiu.gphone.student.customviews.AnswerCardSubmitDialog.SubmitState.STATE_RETRY;
 
 /**
  * Created by 戴延枫 on 2017/5/7.
@@ -182,7 +183,7 @@ public class AnswerCardFragment extends Fragment implements View.OnClickListener
                 return state;
             }
         }
-        return null;
+        return state = STATE_RETRY;
     }
 
     private void requestSubmmit() {
@@ -209,12 +210,12 @@ public class AnswerCardFragment extends Fragment implements View.OnClickListener
                         ToastManager.showMsg("提交成功");
                         mDialog.showSuccessView(groupEndtime);
                     } else {
-                        AnswerReportActicity.invoke(getActivity(), 0);
+                        AnswerReportActicity.invoke(getActivity(), mPaper.getId());
                         getActivity().finish();
                     }
 
                 } else if (Constants.HAS_FINISH_CHECK_REPORT.equals(showna)) {
-                    AnswerReportActicity.invoke(getActivity(), 0);
+                    AnswerReportActicity.invoke(getActivity(), mPaper.getId());
                     getActivity().finish();
                 } else {
                     ToastManager.showMsg("提交成功");

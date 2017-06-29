@@ -45,6 +45,7 @@ public class Constants {
     public static int UPDATA_TYPE=0;
 
     public static final String NOTES_KEY = "notes_key";//跳转笔记页key
+    public static final String PPID_KEY = "ppid";//跳转答题报告
 
     public static final String HAS_FINISH_STATUS = "2"; //已z完成
     public static final String NOT_FINISH_STATUS = "1";//未完成 不可补做  查看解析报告
