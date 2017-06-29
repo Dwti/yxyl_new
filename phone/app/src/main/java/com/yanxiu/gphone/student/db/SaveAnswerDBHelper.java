@@ -28,12 +28,22 @@ public class SaveAnswerDBHelper {
 
     public static String getAnswerJson(String id) {
         String json = null;
-        List<AnswerBean> mAnswerBeanList = DataSupport.where("aid = ?", id).find(AnswerBean.class);
+        List<AnswerBean> mAnswerBeanList = DataSupport.select("answerJson").where("aid = ?", id).find(AnswerBean.class);
         if (null != mAnswerBeanList && mAnswerBeanList.size() > 0) {
             AnswerBean ab = mAnswerBeanList.get(0);
             json = ab.getAnswerJson();
         }
         return json;
+    }
+
+    public static boolean getIsAnswered(String id) {
+        boolean isAnswered = false;
+        List<AnswerBean> mAnswerBeanList = DataSupport.select("isAnswerd").where("aid = ?", id).find(AnswerBean.class);
+        if (null != mAnswerBeanList && mAnswerBeanList.size() > 0) {
+            AnswerBean ab = mAnswerBeanList.get(0);
+            isAnswered = ab.isAnswerd();
+        }
+        return isAnswered;
     }
 
     public static void deleteAllAnswer() {

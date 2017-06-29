@@ -4,8 +4,8 @@ package com.yanxiu.gphone.student.questions.readingcomplex;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.ComplexExerciseBaseFragment;
-import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.TopBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerComplexExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.TopBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 
 
@@ -13,7 +13,7 @@ import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
  * Created by 戴延枫 on 2017/5/5.
  */
 
-public class ReadingComplexFragment extends ComplexExerciseBaseFragment {
+public class ReadingAnswerComplexFragment extends AnswerComplexExerciseBaseFragment {
     private ReadingComplexQuestion mData;
 
     @Override

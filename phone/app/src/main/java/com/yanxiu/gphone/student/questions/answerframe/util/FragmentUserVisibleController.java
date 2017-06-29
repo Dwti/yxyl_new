@@ -9,7 +9,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 
-import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.ComplexExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.analysisbase.AnalysisComplexExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerComplexExerciseBaseFragment;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -156,9 +157,22 @@ public class FragmentUserVisibleController {
                         Fragment childFragment = childFragmentList.get(i);
                         if (childFragment instanceof UserVisibleCallback) {
                             UserVisibleCallback userVisibleCallback = (UserVisibleCallback) childFragment;
-                            if (fragment instanceof ComplexExerciseBaseFragment) {
-                                ComplexExerciseBaseFragment complexExerciseBaseFragment = (ComplexExerciseBaseFragment) fragment;
-                                ViewPager viewPager = complexExerciseBaseFragment.getmViewPager();
+                            if (fragment instanceof AnswerComplexExerciseBaseFragment) {
+                                AnswerComplexExerciseBaseFragment answerComplexExerciseBaseFragment = (AnswerComplexExerciseBaseFragment) fragment;
+                                ViewPager viewPager = answerComplexExerciseBaseFragment.getmViewPager();
+                                if (null != viewPager) {
+                                    int index = viewPager.getCurrentItem();
+                                    if (childFragment.getUserVisibleHint() && index == 0) {
+                                        if (DEBUG) {
+                                            Log.d(TAG, fragmentName + ": setUserVisibleHint, hidden child " + childFragment.getClass().getSimpleName());
+                                        }
+                                        userVisibleCallback.setWaitingShowToUser(true);
+                                        childFragment.setUserVisibleHint(false);
+                                    }
+                                }
+                            }else if (fragment instanceof AnalysisComplexExerciseBaseFragment) {
+                                AnalysisComplexExerciseBaseFragment analysisComplexExerciseBaseFragment = (AnalysisComplexExerciseBaseFragment) fragment;
+                                ViewPager viewPager = analysisComplexExerciseBaseFragment.getmViewPager();
                                 if (null != viewPager) {
                                     int index = viewPager.getCurrentItem();
                                     if (childFragment.getUserVisibleHint() && index == 0) {

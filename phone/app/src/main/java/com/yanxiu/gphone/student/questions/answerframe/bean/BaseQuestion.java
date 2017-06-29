@@ -1,10 +1,9 @@
 package com.yanxiu.gphone.student.questions.answerframe.bean;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.yanxiu.gphone.student.db.SaveAnswerDBHelper;
-import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.ExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionConvertFactory;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.questions.bean.PadBean;
@@ -52,6 +51,9 @@ public abstract class BaseQuestion implements Serializable {
     private String url_listenComplexToSimple;//只有一个子题的听力复合题的大题的url(复合题转成单题显示)
 
     protected boolean isAnswer;
+    protected long costtime;//答题时间
+
+    protected int status = 3;// 题目状态 0 回答正确， 1 回答错误，  2 半对   3 未作答案  4 标示主观题 已作答
 
     protected boolean isComplexQuestion;//是否是复合题 true : 是
 
@@ -90,6 +92,8 @@ public abstract class BaseQuestion implements Serializable {
             String answerJson = SaveAnswerDBHelper.getAnswerJson(SaveAnswerDBHelper.makeId(this));
             if(!TextUtils.isEmpty(answerJson))
                 bean.getQuestions().getPad().setAnswer(answerJson);
+            boolean isAnswered = SaveAnswerDBHelper.getIsAnswered(SaveAnswerDBHelper.makeId(this));
+            isAnswer = isAnswered;
         }
         this.pad = bean.getQuestions().getPad();
     }
@@ -309,6 +313,22 @@ public abstract class BaseQuestion implements Serializable {
 
     public int getParentNumber() {
         return parentNumber;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public long getCosttime() {
+        return costtime;
+    }
+
+    public void setCosttime(long costtime) {
+        this.costtime = costtime;
     }
 
 
