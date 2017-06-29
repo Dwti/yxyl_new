@@ -21,14 +21,13 @@ public class StemUtil {
      * @return  新的题干
      */
     public static String initFillBlankStem(@NonNull String stem, @NonNull List<String> answers){
-        if(stem == null || answers == null){
-            return null;
-        }
         //<fill>标签 表示空中有答案，需要展示  <empty>标签表示空中没有内容，需要显示为空白
         int i = 0;
         while (stem.contains("(_)")){
             stem = replaceFirstChar(stem);
-            if(TextUtils.isEmpty(answers.get(i))){
+            if(i > answers.size() -1 || TextUtils.isEmpty(answers.get(i))){
+                if(i > answers.size() - 1)
+                    answers.add("");
                 stem = stem.replaceFirst("\\(_\\)", "<empty>oooooooooooo</empty>");
             }else {
                 stem = stem.replaceFirst("\\(_\\)", "<fill>"+answers.get(i)+"</fill>");

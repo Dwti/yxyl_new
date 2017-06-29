@@ -182,6 +182,17 @@ public abstract class AnswerComplexExerciseBaseFragment extends AnswerExerciseBa
     }
 
     /**
+     * top设置为最小高度
+     * 当子题时填空题时，会调用
+     */
+    public void setTopLayoutMinHeight(){
+        mTopLayout.setCanChangeHeight();
+        LinearLayout.LayoutParams topParams = (LinearLayout.LayoutParams) mTopLayout.getLayoutParams();
+        topParams.height = mMinHight;
+        mTopLayout.setLayoutParams(topParams);
+    }
+
+    /**
      * 当Fragment对用户的可见性发生了改变的时候就会回调此方法
      *
      * @param isVisibleToUser       true：用户能看见当前Fragment；false：用户看不见当前Fragment

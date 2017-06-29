@@ -3,6 +3,7 @@ package com.yanxiu.gphone.student.questions.fillblank;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -21,7 +22,9 @@ import com.yanxiu.gphone.student.customviews.spantextview.FillBlankTextView;
 import com.yanxiu.gphone.student.customviews.spantextview.OnReplaceCompleteListener;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerQuestionActivity;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerComplexExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerSimpleExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
 import com.yanxiu.gphone.student.util.KeyboardObserver;
 import com.yanxiu.gphone.student.util.StemUtil;
 
@@ -41,6 +44,7 @@ public class FillBlankFragment extends AnswerSimpleExerciseBaseFragment implemen
     private View mRootView,mActivityRootView, mEditLayout, mBottom;
     private ScrollView mScrollView;
     private EditText mEditText;
+    private View mViewWrapper;
 
     private KeyboardObserver mKeyboardObserver;
 
@@ -54,6 +58,20 @@ public class FillBlankFragment extends AnswerSimpleExerciseBaseFragment implemen
     public void setData(BaseQuestion node) {
         super.setData(node);
         mQuestion = (FillBlankQuestion) node;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            setData((FillBlankQuestion) savedInstanceState.getSerializable(KEY_NODE));
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(ExerciseBaseFragment.KEY_NODE, mQuestion);
     }
 
     @Override
@@ -72,6 +90,7 @@ public class FillBlankFragment extends AnswerSimpleExerciseBaseFragment implemen
         mEditLayout = mRootView.findViewById(R.id.ll_edit);
         mSend = (Button) mRootView.findViewById(R.id.btnSend);
         mScrollView = (ScrollView) mRootView.findViewById(R.id.scrollView);
+        mViewWrapper = mRootView.findViewById(R.id.viewWrapper);
         mActivityRootView = ((AnswerQuestionActivity)getActivity()).getRootView();
         mBottom = mActivityRootView.findViewById(R.id.bottom);
         mEditText = (EditText) mRootView.findViewById(R.id.editText);
@@ -169,9 +188,8 @@ public class FillBlankFragment extends AnswerSimpleExerciseBaseFragment implemen
                             List<BlankView> viewList = mFillBlank.getBlankViews(mFillBlank.getCurrClickSpanStart());
                             if(viewList.size() > 0){
                                 final BlankView blankView = viewList.get(viewList.size() -1);
-                                //不应该判断bottom 应该判断是不是在可视范围内
-                                if(blankView.getBottom() > mScrollView.getHeight()){
-                                    mScrollView.scrollTo(0,blankView.getBottom() - mScrollView.getHeight());
+                                if(blankView.getBottom() + mViewWrapper.getPaddingTop() > mScrollView.getHeight()){
+                                    mScrollView.scrollTo(0,blankView.getBottom() - mScrollView.getHeight() + mViewWrapper.getPaddingTop());
                                 }
                             }
                         }
@@ -186,6 +204,7 @@ public class FillBlankFragment extends AnswerSimpleExerciseBaseFragment implemen
         Log.i("state", "onKeyboardVisibleChange() called with: " + "isShow = [" + isShow + "], keyboardHeight = [" + keyboardHeight + "]");
         mIsKeyboardShowing = isShow;
         if(isShow){
+            setTopLayoutMinHeight();
             mBottom.setVisibility(View.GONE);
             mEditLayout.setVisibility(View.VISIBLE);
             mEditText.requestFocus();
@@ -207,6 +226,17 @@ public class FillBlankFragment extends AnswerSimpleExerciseBaseFragment implemen
         }
         mQuestion.setIsAnswer(hasAnswer);
         super.saveAnswer(question);
+    }
+
+    /**
+     * top设置为最小高度
+     */
+    private void setTopLayoutMinHeight() {
+        Fragment fragment = getParentFragment();
+        if (null != fragment && fragment instanceof AnswerComplexExerciseBaseFragment) {
+            AnswerComplexExerciseBaseFragment parentFragment = (AnswerComplexExerciseBaseFragment) fragment;
+            parentFragment.setTopLayoutMinHeight();
+        }
     }
 
     @Override

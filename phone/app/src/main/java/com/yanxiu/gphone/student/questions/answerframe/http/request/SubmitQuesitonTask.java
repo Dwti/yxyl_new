@@ -174,13 +174,6 @@ public class SubmitQuesitonTask extends AsyncTask {
             public void onSuccess(RequestBase request, final PaperResponse ret) {
                 if (ret.getStatus().getCode() == 0) {
                     Log.e(TAG, "提交成功");
-//                    if(ret.getData().size() > 0){
-//                        Paper paper = new Paper(ret.getData().get(0), QuestionShowType.ANSWER);
-//                        DataFetcher.getInstance().save(paper.getId(),paper);
-////                        loadPaperCallback.onPaperLoaded(paper);
-//                    }else {
-////                        loadPaperCallback.onDataEmpty();
-//                    }
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {
@@ -191,8 +184,7 @@ public class SubmitQuesitonTask extends AsyncTask {
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {
-                            mCallBack.onSuccess();
-//                            mCallBack.onDataError(ret.getStatus().getDesc());
+                            mCallBack.onDataError(ret.getStatus().getDesc());
                         }
                     });
                 }

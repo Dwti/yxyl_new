@@ -11,6 +11,7 @@ import com.yanxiu.gphone.student.db.UrlRepository;
 public class AnswerReportRequest extends EXueELianBaseRequest {
 
     protected String ppid;
+    protected String flag = "1";
 
     public AnswerReportRequest(String ppid) {
         this.ppid = ppid;
@@ -34,6 +35,14 @@ public class AnswerReportRequest extends EXueELianBaseRequest {
     @Override
     protected HttpType httpType() {
         return HttpType.GET;
+    }
+
+    public String getFlag() {
+        return flag;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag;
     }
 
 }
