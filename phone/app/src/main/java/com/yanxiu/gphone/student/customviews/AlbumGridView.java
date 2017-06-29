@@ -82,6 +82,10 @@ public class AlbumGridView extends RelativeLayout {
         mContentView.setAdapter(mAdapter);
     }
 
+    public void setCanAddItem(boolean isCanAddItem){
+        mAdapter.setCanAddItem(isCanAddItem);
+    }
+
     public void setData(List<String> list) {
         if (list == null) {
             return;
@@ -143,7 +147,9 @@ public class AlbumGridView extends RelativeLayout {
                     mClickListener.onClick(TYPE_IMAGE, position);
                 }
             } else {
-                clickListener.onClick(mButtonView);
+                if (clickListener!=null) {
+                    clickListener.onClick(mButtonView);
+                }
             }
         }
 
@@ -182,6 +188,7 @@ public class AlbumGridView extends RelativeLayout {
         private List<String> mDatas = new ArrayList<>();
         private String model = MODEL_DEFAULT;
         private int model_position = MODEL_POSITION_DEFAULT;
+        private boolean isCanAddItem=true;
         private onItemChangeListener mItemChangeListener;
 
         GridAdapter(Context context) {
@@ -198,6 +205,11 @@ public class AlbumGridView extends RelativeLayout {
         private void setModelDefault() {
             model_position = MODEL_POSITION_DEFAULT;
             model = MODEL_DEFAULT;
+        }
+
+        private void setCanAddItem(boolean isCanAddItem){
+            this.isCanAddItem=isCanAddItem;
+            this.notifyDataSetChanged();
         }
 
         private ArrayList<String> getData() {
@@ -252,7 +264,7 @@ public class AlbumGridView extends RelativeLayout {
 
         @Override
         public int getItemViewType(int position) {
-            if (position == mDatas.size() - 1) {
+            if (position == mDatas.size() - 1&&isCanAddItem) {
                 return TYPE_TWO;
             } else {
                 return TYPE_ONE;
@@ -263,6 +275,9 @@ public class AlbumGridView extends RelativeLayout {
         public int getCount() {
             int count = mDatas != null ? mDatas.size() : 0;
             count = count > MAXNUMBER ? MAXNUMBER : count;
+            if (count>0&&!isCanAddItem){
+                count-=1;
+            }
             return count;
         }
 

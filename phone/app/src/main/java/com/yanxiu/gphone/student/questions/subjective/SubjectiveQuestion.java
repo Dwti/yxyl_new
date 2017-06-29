@@ -40,7 +40,7 @@ public class SubjectiveQuestion extends BaseQuestion {
 
     @Override
     public ExerciseBaseFragment analysisFragment() {
-        return null;
+        return new SubjectiveAnalysisFragment();
     }
 
     @Override

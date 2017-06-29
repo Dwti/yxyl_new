@@ -71,7 +71,7 @@ public class MultiChoiceQuestion extends BaseQuestion {
 
     @Override
     public ExerciseBaseFragment analysisFragment() {
-        return null;
+        return new MultiChooseAnalysisFragment();
     }
 
     @Override
