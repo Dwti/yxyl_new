@@ -23,7 +23,7 @@ public class ReadingComplexQuestion extends BaseQuestion {
     @Override
     public ExerciseBaseFragment analysisFragment() {
         //解析
-        return new ReadingAnswerComplexFragment();
+        return new ReadingAnalysisComplexFragment();
     }
 
     @Override

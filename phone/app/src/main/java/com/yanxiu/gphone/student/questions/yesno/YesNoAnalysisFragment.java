@@ -46,19 +46,10 @@ public class YesNoAnalysisFragment extends AnalysisSimpleExerciseBaseFragment {
         super.onSaveInstanceState(outState);
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.e("dyf", "onCreateView:" + hashCode());
-        mAnswerView = inflater.inflate(R.layout.fragment_yesno_analysis, container, false);
-        initView();
-        return super.onCreateView(inflater,container,savedInstanceState);
-    }
-
     private void initView() {
         mQuestionView = (TextView) mAnswerView.findViewById(R.id.tv_question);
         mChooseView = (ChooseLayout) mAnswerView.findViewById(R.id.cl_answer);
-        initData();
+
     }
 
     private void initData() {
@@ -78,13 +69,34 @@ public class YesNoAnalysisFragment extends AnalysisSimpleExerciseBaseFragment {
 //        }
     }
 
+    /**
+     * 添加答题view
+     *
+     * @param inflater
+     * @param container
+     * @return
+     */
     @Override
-    public void initAnswerView() {
-        mAnsewr_container.addView(mAnswerView);
-        setQaNumber(mRootView);
-        setQaName(mRootView);
+    public View addAnswerView(LayoutInflater inflater, @Nullable ViewGroup container) {
+        mAnswerView = inflater.inflate(R.layout.fragment_yesno_analysis, container, false);
+        return mAnswerView;
     }
 
+    /**
+     * 初始化答题view
+     *
+     * @param inflater
+     * @param container
+     */
+    @Override
+    public void initAnswerView(LayoutInflater inflater, @Nullable ViewGroup container) {
+        initView();
+        initData();
+    }
+
+    /**
+     * 显示解析view
+     */
     @Override
     public void initAnalysisView() {
         showView1();

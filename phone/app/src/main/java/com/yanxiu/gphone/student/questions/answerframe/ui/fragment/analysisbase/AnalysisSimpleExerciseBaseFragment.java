@@ -53,11 +53,11 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.e("dyf", "onCreateView:ppp");
         mRootView = inflater.inflate(R.layout.fragment_analysis_base, container, false);
-        initView();
+        initView(inflater,container);
         return mRootView;
     }
 
-    private void initView() {
+    private void initView(LayoutInflater inflater,@Nullable ViewGroup container) {
         mAnsewr_container = (LinearLayout) mRootView.findViewById(R.id.ansewr_container);
         mAnalysis_container = (LinearLayout) mRootView.findViewById(R.id.analysis_container);
         v1 = (TextView) mRootView.findViewById(R.id.v1);
@@ -65,10 +65,13 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
         v3 = (TextView) mRootView.findViewById(R.id.v3);
         edit = (TextView) mRootView.findViewById(R.id.edit);
         mNotesTextView = (TextView) mRootView.findViewById(R.id.notesContent);
-
-        initAnswerView();
+        View answerView = addAnswerView(inflater,container);
+        mAnsewr_container.addView(answerView);
+        initAnswerView(inflater,container);
         initAnalysisView();
         initListener();
+        setQaNumber(mRootView);
+        setQaName(mRootView);
     }
 
     /**
@@ -107,8 +110,24 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
         edit.setOnClickListener(this);
     }
 
-    public abstract void initAnswerView();
+    /**
+     * 添加答题view
+     * @param inflater
+     * @param container
+     * @return
+     */
+    public abstract View addAnswerView(LayoutInflater inflater,@Nullable ViewGroup container);
 
+    /**
+     * 初始化答题view
+     * @param inflater
+     * @param container
+     */
+    public abstract void initAnswerView(LayoutInflater inflater,@Nullable ViewGroup container);
+
+    /**
+     * 显示解析view
+     */
     public abstract void initAnalysisView();
 
     public void showView1() {
@@ -169,4 +188,7 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
         if (null != mListenView)
             mListenView.setDestory();
     }
+
+
+
 }
