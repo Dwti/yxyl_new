@@ -1,11 +1,13 @@
 package com.yanxiu.gphone.student.customviews;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
 import android.media.ExifInterface;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.AttributeSet;
@@ -14,7 +16,10 @@ import android.view.SurfaceView;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.util.FileUtil;
 import com.yanxiu.gphone.student.util.ScreenUtils;
+import com.yanxiu.gphone.student.util.ToastManager;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -101,9 +106,9 @@ public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Call
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
         if (mCamera != null) {
             mCamera.stopPreview();
+            setCameraParams();
+            startPreview();
         }
-        setCameraParams();
-        startPreview();
     }
 
     @Override
@@ -207,7 +212,7 @@ public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Call
                 SavePictureTask savePictureTask = new SavePictureTask(mContext, saveFinishedListener);
                 savePictureTask.execute(data);
             } else {
-                Toast.makeText(mContext, "没有检测到内存卡", Toast.LENGTH_SHORT).show();
+                ToastManager.showMsg(R.string.SD_cannot_use);
             }
         }
     };
@@ -253,11 +258,8 @@ public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Call
                     bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
                 }
 
-                filePath = "/sdcard/" + System.currentTimeMillis() + ".jpg";
+                filePath = FileUtil.getSavePicturePath(System.currentTimeMillis() + ".jpg");
                 File file = new File(filePath);
-                if (!file.exists()) {
-                    file.createNewFile();
-                }
                 bos = new BufferedOutputStream(new FileOutputStream(file));
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
             } catch (Exception e) {
@@ -282,8 +284,12 @@ public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Call
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            setPictureDegreeZero(s);
-
+            if (s!=null) {
+                setPictureDegreeZero(s);
+                Uri localUri = Uri.fromFile(new File(s));
+                Intent localIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, localUri);
+                mContext.sendBroadcast(localIntent);
+            }
             if (mSaveFinishedListener != null) {
                 mSaveFinishedListener.onFinished(s);
             }
@@ -291,9 +297,6 @@ public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Call
     }
 
     private void setPictureDegreeZero(String path) {
-        if (path == null) {
-            return;
-        }
         try {
             ExifInterface exifInterface = new ExifInterface(path);
             exifInterface.setAttribute(ExifInterface.TAG_ORIENTATION, "no");

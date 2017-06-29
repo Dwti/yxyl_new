@@ -19,6 +19,7 @@
             android:layout_height="@dimen/camera_album_icon_w_h"
             android:layout_marginLeft="@dimen/camera_album_margin_l"
             android:layout_centerVertical="true"
+            android:scaleType="centerCrop"
             android:background="#ff0000"/>
 
         <ImageView

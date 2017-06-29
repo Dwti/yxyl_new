@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/color_ffffff">
 
-                <TextView
+                <com.yanxiu.gphone.student.customviews.spantextview.SubjectClozeTextView
                     android:id="@+id/tv_question"
                     style="@style/CommonQuestionFragmentTextView" />
             </LinearLayout>

@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 
 import static com.yanxiu.gphone.student.constant.Constants.CHARACTER_SLASH;
 import static com.yanxiu.gphone.student.constant.Constants.DOMYBOXDIR;
+import static com.yanxiu.gphone.student.constant.Constants.PICTUREDIR;
 
 /**
  * Created by sunpeng on 2017/5/25.
@@ -31,6 +32,14 @@ public class FileUtil {
             return "";
         }
 
+    }
+
+    public static String getSavePicturePath(String name){
+        String dir = Environment.getExternalStorageDirectory().getAbsolutePath()+PICTUREDIR;
+        File file1 = new File(dir);
+        if (!file1.exists())
+            file1.mkdirs();
+        return dir+name;
     }
 
     public static String getExternalStorageAbsolutePath(String urlStr) {
