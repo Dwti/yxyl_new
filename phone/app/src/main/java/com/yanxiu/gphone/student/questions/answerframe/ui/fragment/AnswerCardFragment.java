@@ -240,7 +240,8 @@ public class AnswerCardFragment extends Fragment implements View.OnClickListener
             @Override
             public void onDataError(String msg) {
                 ToastManager.showMsg(msg);
-                mDialog.dismiss();
+                if(null != mDialog)
+                    mDialog.dismiss();
             }
         });
         mSubmitQuesitonTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "");
