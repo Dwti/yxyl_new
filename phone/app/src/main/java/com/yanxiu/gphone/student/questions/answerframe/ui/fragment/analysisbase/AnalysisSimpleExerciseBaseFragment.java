@@ -16,7 +16,6 @@ import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.customviews.ListenerSeekBarLayout;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.NotesActicity;
-import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.analysisbase.AnalysisExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionTemplate;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
 

@@ -1,8 +1,7 @@
 package com.yanxiu.gphone.student.questions.answerframe.ui.fragment;
 
-import android.app.Dialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -17,24 +16,36 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.YanxiuApplication;
+import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.AnswerCardSubmitDialog;
+import com.yanxiu.gphone.student.db.SaveAnswerDBHelper;
+import com.yanxiu.gphone.student.questions.answerframe.http.request.SubmitQuesitonTask;
 import com.yanxiu.gphone.student.questions.answerframe.adapter.AnswerCardAdapter;
 import com.yanxiu.gphone.student.questions.answerframe.adapter.GridSpacingItemDecoration;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
+import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
 import com.yanxiu.gphone.student.questions.answerframe.listener.OnAnswerCardItemSelectListener;
+import com.yanxiu.gphone.student.questions.answerframe.listener.SubmitAnswerCallback;
+import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerQuestionActivity;
+import com.yanxiu.gphone.student.questions.answerframe.util.QuestionTemplate;
+import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerReportActicity;
 import com.yanxiu.gphone.student.util.ScreenUtils;
 import com.yanxiu.gphone.student.util.ToastManager;
 
 import java.util.ArrayList;
+
+import static com.yanxiu.gphone.student.customviews.AnswerCardSubmitDialog.SubmitState.STATE_PROGRESS;
 
 /**
  * Created by 戴延枫 on 2017/5/7.
  * 答题卡
  */
 
-public class AnswerCardFragment extends Fragment implements View.OnClickListener {
+public class AnswerCardFragment extends Fragment implements View.OnClickListener, AnswerCardSubmitDialog.AnswerCardSubmitDialogClickListener {
     private final String TAG = AnswerCardFragment.class.getSimpleName();
     private View mRootView;
+    private Paper mPaper;
     private ArrayList<BaseQuestion> mQuestions;
     private String mTitleString;
     private ImageView mBackView;
@@ -47,6 +58,9 @@ public class AnswerCardFragment extends Fragment implements View.OnClickListener
     private int mSpanCount;
     private int mSpacing;
 
+    private AnswerQuestionActivity mActivity;
+    private SubmitQuesitonTask mSubmitQuesitonTask;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -55,12 +69,16 @@ public class AnswerCardFragment extends Fragment implements View.OnClickListener
         return mRootView;
     }
 
-    public void setData(ArrayList<BaseQuestion> questions, String title) {
-        mQuestions = allNodesThatHasNumber(questions);
+    public void setData(Paper paper, String title) {
+        mPaper = paper;
+        mQuestions = allNodesThatHasNumber(paper.getQuestions());
         mTitleString = title;
     }
 
     public void initView() {
+        if (isAdded() && getActivity() instanceof AnswerQuestionActivity) {
+            mActivity = (AnswerQuestionActivity) getActivity();
+        }
         mSubmiButton = (Button) mRootView.findViewById(R.id.submit_homework);
         mBackView = (ImageView) mRootView.findViewById(R.id.backview);
         mTitle = (TextView) mRootView.findViewById(R.id.title);
@@ -117,23 +135,149 @@ public class AnswerCardFragment extends Fragment implements View.OnClickListener
         Log.d(TAG, "mSpanCount: " + mSpanCount);
         mSpacing = (screenWidth - item_width * mSpanCount) / (mSpanCount + 1);
         Log.d(TAG, "other: " + mSpacing);
-
     }
+
+    private AnswerCardSubmitDialog mDialog;
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.submit_homework:
-//            QALevelSingleton.bus.post("save answer event");
-                AnswerCardSubmitDialog dialog = new AnswerCardSubmitDialog(getActivity());
-//        dialog.setCancelable(false);
-                dialog.show();
-                dialog.showView(1);
-//                dialog.setrrr();
+                mDialog = new AnswerCardSubmitDialog(getActivity());
+                mDialog.setCancelable(true);
+                mDialog.setData(mQuestions);
+                mDialog.setAnswerCardSubmitDialogClickListener(AnswerCardFragment.this);
+                switch (checkAnswerState()) {
+                    case STATE_HAS_NO_ANSWERED:
+                        mDialog.showConfirmView();
+                        mDialog.show();
+                        break;
+                    case STATE_PROGRESS:
+                        mDialog.showProgressView();
+                        mDialog.show();
+                        break;
+                    default:
+                        mDialog = null;
+                        requestSubmmit();
+                        break;
+                }
                 break;
             case R.id.backview:
                 getActivity().getSupportFragmentManager().beginTransaction().remove(AnswerCardFragment.this).commit();
                 break;
+        }
+    }
+
+    private AnswerCardSubmitDialog.SubmitState checkAnswerState() {
+        AnswerCardSubmitDialog.SubmitState state;
+        for (int i = 0; i < mQuestions.size(); i++) {
+            if (!mQuestions.get(i).getIsAnswer()) { //有未作答的
+                state = AnswerCardSubmitDialog.SubmitState.STATE_HAS_NO_ANSWERED;
+                return state;
+            }
+        }
+        for (int i = 0; i < mQuestions.size(); i++) {
+            if (QuestionTemplate.ANSWER.equals(mQuestions.get(i).getTemplate()) && mQuestions.get(i).getIsAnswer()) { //主观题且回答了，有图片
+                state = STATE_PROGRESS;
+                return state;
+            }
+        }
+        return null;
+    }
+
+    private void requestSubmmit() {
+        if (getActivity() == null) {
+            return;
+        }
+        if (mSubmitQuesitonTask != null && !mSubmitQuesitonTask.isCancelled()) {
+            mSubmitQuesitonTask.cancel(true);
+        }
+        String endtime = String.valueOf(System.currentTimeMillis());
+        mPaper.getPaperStatus().setEndtime(endtime);
+        mPaper.getPaperStatus().setCosttime(mActivity.getmTotalTime() + "");
+        mSubmitQuesitonTask = new SubmitQuesitonTask(YanxiuApplication.getContext(), mPaper, mSubmitQuesitonTask.SUBMIT_CODE, new SubmitAnswerCallback() {
+
+            @Override
+            public void onSuccess() {
+                SaveAnswerDBHelper.deleteAllAnswer();
+                String showna = mPaper.getShowana();
+                if (Constants.NOT_FINISH_STATUS.equals(showna)) {
+                    long groupStartTime = Long.parseLong(mPaper.getBegintime());
+                    long groupEndtime = Long.parseLong(mPaper.getEndtime());//作业练习截止时间
+
+                    if (groupEndtime > groupStartTime && ((groupEndtime - System.currentTimeMillis()) >= 3 * 60 * 1000)) { //作业截止时间判断，还未到截止时间不产生作业报告
+                        ToastManager.showMsg("提交成功");
+                        mDialog.showSuccessView(groupEndtime);
+                    } else {
+                        AnswerReportActicity.invoke(getActivity(), 0);
+                        getActivity().finish();
+                    }
+
+                } else if (Constants.HAS_FINISH_CHECK_REPORT.equals(showna)) {
+                    AnswerReportActicity.invoke(getActivity(), 0);
+                    getActivity().finish();
+                } else {
+                    ToastManager.showMsg("提交成功");
+                    getActivity().finish();
+                }
+            }
+
+            @Override
+            public void onFail() {
+                initDialog();
+                mDialog.showRetryView();
+            }
+
+            @Override
+            public void onUpdate(int count, int index) {
+                if (mDialog != null && mDialog.isShowing() && mDialog.getState() == STATE_PROGRESS) {
+                    mDialog.setProgressbarMaxCount(count);
+                    mDialog.updateProgress(index + 1);
+                }
+            }
+
+            @Override
+            public void onDataError(String msg) {
+                ToastManager.showMsg(msg);
+                mDialog.dismiss();
+            }
+        });
+        mSubmitQuesitonTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "");
+    }
+
+    @Override
+    public void onDialogButtonClick(View v, AnswerCardSubmitDialog.SubmitState state) {
+        switch (v.getId()) {
+            case R.id.button_yes:
+                initDialog();
+                switch (state) {
+                    case STATE_HAS_NO_ANSWERED:
+                        mDialog.showProgressView();
+                        mDialog.show();
+                        requestSubmmit();
+                        break;
+                    case STATE_RETRY:
+                        if (mDialog.isHasSubjectiveImg()) {
+//                            mDialog.resetProgress();
+                            mDialog.showProgressView();
+                        }
+                        requestSubmmit();
+                        break;
+                    case STATE_PROGRESS:
+                        break;
+                    default:
+                        break;
+                }
+                break;
+        }
+    }
+
+    private void initDialog() {
+        if (mDialog == null) {
+            mDialog = new AnswerCardSubmitDialog(getActivity());
+            mDialog.setCancelable(true);
+            mDialog.setData(mQuestions);
+            mDialog.setAnswerCardSubmitDialogClickListener(AnswerCardFragment.this);
         }
     }
 }

@@ -11,6 +11,51 @@ public class AnswerBean extends DataSupport {
 
     private String aid;//key -- id+pid+qid
     private String answerJson;//答案json
+    private boolean isAnswerd;//是否作答了
+    private long startTime;//答题开始时间
+    private long EndTime;//答题结束时间
+    private long costTime;//题目累计答题时间
+    private int answeredCount;//作答次数
+
+    public long getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(long startTime) {
+        this.startTime = startTime;
+    }
+
+    public long getEndTime() {
+        return EndTime;
+    }
+
+    public void setEndTime(long endTime) {
+        EndTime = endTime;
+    }
+
+    public long getCostTime() {
+        return costTime;
+    }
+
+    public void setCostTime(long costTime) {
+        this.costTime = costTime;
+    }
+
+    public int getAnsweredCount() {
+        return answeredCount;
+    }
+
+    public void setAnsweredCount(int answeredCount) {
+        this.answeredCount = answeredCount;
+    }
+
+    public boolean isAnswerd() {
+        return isAnswerd;
+    }
+
+    public void setAnswerd(boolean answerd) {
+        isAnswerd = answerd;
+    }
 
     public String getAid() {
         return aid;

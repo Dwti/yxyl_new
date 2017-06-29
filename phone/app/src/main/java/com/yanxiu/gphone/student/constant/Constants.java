@@ -44,4 +44,9 @@ public class Constants {
     public static int UPDATA_TYPE=0;
 
     public static final String NOTES_KEY = "notes_key";//跳转笔记页key
+
+    public static final String HAS_FINISH_STATUS = "2"; //已z完成
+    public static final String NOT_FINISH_STATUS = "1";//未完成 不可补做  查看解析报告
+    public static final String WAIT_FINISH_STATUS = "0";//待完成  可以做题
+    public static final String HAS_FINISH_CHECK_REPORT = "0";   //已完成  可以查看答题报告
 }

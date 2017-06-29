@@ -260,6 +260,10 @@ public abstract class ExerciseBaseFragment extends Fragment implements IExercise
                 AnswerBean bean = new AnswerBean();
                 bean.setAid(SaveAnswerDBHelper.makeId(question));
                 bean.setAnswerJson(json);
+                bean.setAnswerd(question.getIsAnswer());
+                bean.setCostTime(question.getCosttime());
+//                bean.setStartTime(question.get);
+//                bean.setEndTime();
                 Log.e("dyf", "json = " +json);
                 boolean is = SaveAnswerDBHelper.save(bean);
                 Log.e("dyf", "is = " +is);
