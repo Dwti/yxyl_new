@@ -82,7 +82,7 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
         mTouchSlop = ViewConfiguration.get(mContext).getScaledTouchSlop();
         Drawable drawable = ContextCompat.getDrawable(mContext, R.mipmap.ic_launcher);
         BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
-        ListenDrawable listenDrawable = new ListenDrawable(bitmapDrawable.getBitmap());
+        ListenDrawable listenDrawable = new ListenDrawable(bitmapDrawable.getBitmap(),0);
         listenDrawable.setBounds(0, 0, THUMB_WIDTH, THUMB_HEIGHT);
         mSeekBarView.setThumb(listenDrawable);
         mSeekBarView.setThumbOffset(mSeekBarView.getPaddingLeft());

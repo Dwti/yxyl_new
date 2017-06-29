@@ -2,9 +2,7 @@ package com.yanxiu.gphone.student.customviews;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.ColorFilter;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
@@ -26,9 +24,11 @@ class ListenDrawable extends Drawable {
     private Paint mPaint;
     private Bitmap mBitmap;
     private RectF mRectF;
+    private int mPadding;
 
-    ListenDrawable(Bitmap bitmap){
+    ListenDrawable(Bitmap bitmap, int padding){
         this.mBitmap=bitmap;
+        this.mPadding=padding;
         mPaint=new Paint();
         mPaint.setAntiAlias(true);
     }
@@ -38,7 +38,7 @@ class ListenDrawable extends Drawable {
         super.setBounds(left, top, right, bottom);
         mRectF=new RectF(left,top,right,bottom);
         if (!isZoom) {
-            zoomBitmap(mRectF.width(), mRectF.height());
+            zoomBitmap(mRectF.width()-mPadding*2, mRectF.height()-mPadding*2);
             isZoom=true;
         }
     }
@@ -46,19 +46,17 @@ class ListenDrawable extends Drawable {
     @Override
     public void draw(@NonNull Canvas canvas) {
         Rect rect=getBounds();
-        canvas.drawBitmap(mBitmap,rect.left,rect.top,mPaint);
-//        mPaint.setColor(Color.parseColor("#00000000"));
-//        canvas.drawRect(mRectF,mPaint);
+        canvas.drawBitmap(mBitmap,rect.left+mPadding,rect.top+mPadding,mPaint);
     }
 
     @Override
     public int getIntrinsicWidth() {
-        return (int) mRectF.width();
+        return mRectF!=null?(int) mRectF.width():mBitmap.getWidth();
     }
 
     @Override
     public int getIntrinsicHeight() {
-        return (int) mRectF.height();
+        return mRectF!=null?(int) mRectF.height():mBitmap.getHeight();
     }
 
     @Override
@@ -77,13 +75,10 @@ class ListenDrawable extends Drawable {
     }
 
     private void zoomBitmap(float width, float height) {
-//        int w = mBitmap.getWidth();
-//        int h = mBitmap.getHeight();
-//        Matrix matrix = new Matrix();
-//        float scaleWidth = ((float) width / w);
-//        float scaleHeight = ((float) height / h);
-//        matrix.postScale(scaleWidth, scaleHeight);
         this.mBitmap=Bitmap.createScaledBitmap(mBitmap,(int) width,(int) height,false);
-//        this.mBitmap=Bitmap.createBitmap(mBitmap, 0, 0, w, h, matrix, true);
+    }
+
+    Bitmap getBitmap(){
+        return mBitmap;
     }
 }

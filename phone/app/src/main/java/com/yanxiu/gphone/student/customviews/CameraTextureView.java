@@ -3,6 +3,7 @@ package com.yanxiu.gphone.student.customviews;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
@@ -18,6 +19,7 @@ import android.hardware.camera2.TotalCaptureResult;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.Image;
 import android.media.ImageReader;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
@@ -30,6 +32,10 @@ import android.util.SparseIntArray;
 import android.view.Surface;
 import android.view.TextureView;
 import android.widget.Toast;
+
+import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.util.FileUtil;
+import com.yanxiu.gphone.student.util.ToastManager;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -261,19 +267,21 @@ public class CameraTextureView extends TextureView implements TextureView.Surfac
     private CameraDevice.StateCallback stateCallback = new CameraDevice.StateCallback() {
         @Override
         public void onOpened(@NonNull CameraDevice cameraDevice) {
-            CameraTextureView.this.cameraDevice = cameraDevice;
-            takePreview();
+                CameraTextureView.this.cameraDevice = cameraDevice;
+                takePreview();
         }
 
         @Override
         public void onDisconnected(@NonNull CameraDevice cameraDevice) {
-            CameraTextureView.this.cameraDevice.close();
-            CameraTextureView.this.cameraDevice = null;
+            if (CameraTextureView.this.cameraDevice!=null) {
+                CameraTextureView.this.cameraDevice.close();
+                CameraTextureView.this.cameraDevice = null;
+            }
         }
 
         @Override
         public void onError(@NonNull CameraDevice cameraDevice, int error) {
-            cameraDevice.close();
+                cameraDevice.close();
         }
     };
 
@@ -281,19 +289,21 @@ public class CameraTextureView extends TextureView implements TextureView.Surfac
         @Override
         public void onImageAvailable(ImageReader reader) {
             if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-                SavePictureTask task=new SavePictureTask(mTakePictureFinishedListener);
+                SavePictureTask task=new SavePictureTask(mContext,mTakePictureFinishedListener);
                 task.execute(reader);
             }else {
-                Toast.makeText(mContext, "你的sd卡不可用。", Toast.LENGTH_SHORT).show();
+                ToastManager.showMsg(R.string.SD_cannot_use);
             }
         }
     };
 
     private class SavePictureTask extends AsyncTask<ImageReader, Integer, String>{
 
+        private Context mContext;
         private CameraView.onTakePictureFinishedListener mTakePictureFinishedListener;
 
-        SavePictureTask(CameraView.onTakePictureFinishedListener mTakePictureFinishedListener){
+        SavePictureTask(Context context,CameraView.onTakePictureFinishedListener mTakePictureFinishedListener){
+            this.mContext=context;
             this.mTakePictureFinishedListener=mTakePictureFinishedListener;
         }
 
@@ -305,7 +315,7 @@ public class CameraTextureView extends TextureView implements TextureView.Surfac
             byte[] data = new byte[buffer.remaining()];
             buffer.get(data);
 
-            String filePath = "/sdcard/"+System.currentTimeMillis() + ".jpg";
+            String filePath = FileUtil.getSavePicturePath(System.currentTimeMillis() + ".jpg");
             File file = new File(filePath);
             try {
                 FileOutputStream fileOutputStream = new FileOutputStream(file);
@@ -323,6 +333,11 @@ public class CameraTextureView extends TextureView implements TextureView.Surfac
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            if (s!=null) {
+                Uri localUri = Uri.fromFile(new File(s));
+                Intent localIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, localUri);
+                mContext.sendBroadcast(localIntent);
+            }
             if (mTakePictureFinishedListener!=null){
                 mTakePictureFinishedListener.onFinish(s);
             }

@@ -23,6 +23,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.yanxiu.gphone.student.common.activity.CameraActivity.RESULTCODE;
+
 /**
  * Created by Canghaixiao.
  * Time : 2017/6/22 11:49.
@@ -44,8 +46,11 @@ public class AlbumActivity extends YanxiuBaseActivity implements View.OnClickLis
     private RecyclerView mAlbumParentNameView;
     private AlbumParentNameAdapter mParentNameAdapter;
 
-    public static void LaunchActivity(Context context){
+    private int mFromId;
+
+    public static void LaunchActivity(Context context,int fromId){
         Intent intent=new Intent(context,AlbumActivity.class);
+        intent.putExtra(RESULTCODE,fromId);
         context.startActivity(intent);
     }
 
@@ -54,6 +59,7 @@ public class AlbumActivity extends YanxiuBaseActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_album);
         mContext=AlbumActivity.this;
+        mFromId=getIntent().getIntExtra(RESULTCODE,-1);
         initView();
         listener();
         initData();
@@ -110,7 +116,6 @@ public class AlbumActivity extends YanxiuBaseActivity implements View.OnClickLis
 
     @Override
     public void onFinished(List<AlbumUtils.PictureMessage> list) {
-        Toast.makeText(mContext,list.size()+"",Toast.LENGTH_SHORT).show();
         mImageAdapter.setData(list);
         mAlbumUtils.findAllPictureToGroup(AlbumActivity.this);
     }
@@ -148,6 +153,7 @@ public class AlbumActivity extends YanxiuBaseActivity implements View.OnClickLis
 
     @Override
     public void onItemClick(View view, AlbumUtils.PictureMessage message, int position) {
-        Toast.makeText(mContext,message.path,Toast.LENGTH_SHORT).show();
+        CropImageActivity.LaunchActivity(mContext,message.path,mFromId);
+        AlbumActivity.this.finish();
     }
 }

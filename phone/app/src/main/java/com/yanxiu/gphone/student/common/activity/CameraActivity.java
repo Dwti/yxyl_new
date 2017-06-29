@@ -2,13 +2,19 @@ package com.yanxiu.gphone.student.common.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.customviews.CameraView;
+import com.yanxiu.gphone.student.util.AlbumUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -21,7 +27,7 @@ import de.greenrobot.event.EventBus;
  * Time : 2017/6/20 10:17.
  * Function :
  */
-public class CameraActivity extends YanxiuBaseActivity implements View.OnClickListener, CameraView.onTakePictureListener {
+public class CameraActivity extends YanxiuBaseActivity implements View.OnClickListener, CameraView.onTakePictureListener, AlbumUtils.onFindFinishedListener {
 
     public static final String RESULTCODE="code";
 
@@ -70,7 +76,7 @@ public class CameraActivity extends YanxiuBaseActivity implements View.OnClickLi
     }
 
     private void initData() {
-
+        AlbumUtils.getInstence().findFirstPicture(CameraActivity.this);
     }
 
     @Override
@@ -89,7 +95,7 @@ public class CameraActivity extends YanxiuBaseActivity implements View.OnClickLi
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.iv_album:
-                AlbumActivity.LaunchActivity(mContext);
+                AlbumActivity.LaunchActivity(mContext,mFromId);
                 break;
             case R.id.iv_takepicture:
                 mCameraView.takePicture(CameraActivity.this);
@@ -103,22 +109,34 @@ public class CameraActivity extends YanxiuBaseActivity implements View.OnClickLi
     @Override
     public void onComplete(boolean isSuccess, String path) {
         if (isSuccess){
-            List<String> list=new ArrayList<>();
-            list.add(path);
-            CameraCallbackMessage message=new CameraCallbackMessage();
-            message.fromId=mFromId;
-            message.paths=list;
-            EventBus.getDefault().post(message);
+            CropImageActivity.LaunchActivity(mContext,path,mFromId);
+        }
+    }
+
+    public void onEventMainThread(CropImageActivity.CropCallbackMessage message){
+        if (mFromId==message.fromId){
             CameraActivity.this.finish();
         }
     }
 
-    public void onEventMainThread(CameraCallbackMessage message){
-
+    @Override
+    public void onFinished(List<AlbumUtils.PictureMessage> list) {
+        if (list.size()>0) {
+            Glide.with(mContext).load(list.get(0).path).asBitmap().into(new CircleImageTarget(mAlbumView));
+        }
     }
 
-    public static class CameraCallbackMessage implements Serializable {
-        public int fromId;
-        public List<String> paths;
+    private class CircleImageTarget extends BitmapImageViewTarget {
+
+        CircleImageTarget(ImageView view) {
+            super(view);
+        }
+
+        @Override
+        protected void setResource(Bitmap resource) {
+            RoundedBitmapDrawable circularBitmapDrawable = RoundedBitmapDrawableFactory.create(view.getContext().getResources(), resource);
+            circularBitmapDrawable.setCircular(true);
+            view.setImageDrawable(circularBitmapDrawable);
+        }
     }
 }

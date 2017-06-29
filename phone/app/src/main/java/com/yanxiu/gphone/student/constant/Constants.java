@@ -35,8 +35,9 @@ public class Constants {
 
     public static final String MAINAVTIVITY_REFRESH = "mainActivity_refresh";//跳转到首页需要刷新数据
     public static final String STUDENT_UPLOAD = "student/yanxiustudent.apk";
-    public static char CHARACTER_SLASH = '/';
-    public static String DOMYBOXDIR = "YanXiu/app/student";
+    public static final char CHARACTER_SLASH = '/';
+    public static final String DOMYBOXDIR = "YanXiu/app/student";
+    public static final String PICTUREDIR="/YanXiu/app/image/";
     public static final int NOTIFICATION_ID = 0x11;
     /**
      * default it is 0,when the loginactivity checks for updata,it is 1,at this time the mainactivity does't to check for updata
