@@ -13,9 +13,9 @@ import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.customviews.ChooseLayout;
-import com.yanxiu.gphone.student.questions.cloze.ClozeComplexFragment;
+import com.yanxiu.gphone.student.questions.cloze.ClozeAnswerComplexFragment;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
-import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.SimpleExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import java.util.List;
 
@@ -23,7 +23,7 @@ import java.util.List;
  * Created by 戴延枫 on 2017/5/5.
  */
 
-public class SingleChooseFragment extends SimpleExerciseBaseFragment implements ChooseLayout.onItemClickListener {
+public class SingleChooseFragment extends AnswerSimpleExerciseBaseFragment implements ChooseLayout.onItemClickListener {
     private SingleChoiceQuestion mData;
     private TextView mQuestionView;
     private ChooseLayout mAnswerView;
@@ -73,7 +73,7 @@ public class SingleChooseFragment extends SimpleExerciseBaseFragment implements 
      */
     private void hiddenNumberBar(View view){
         Fragment parentFragment = getParentFragment();
-        if(null != parentFragment && parentFragment instanceof ClozeComplexFragment){
+        if(null != parentFragment && parentFragment instanceof ClozeAnswerComplexFragment){
             View number_bar = view.findViewById(R.id.number_bar);
             View ll_question = view.findViewById(R.id.ll_question);
             View line = view.findViewById(R.id.view);

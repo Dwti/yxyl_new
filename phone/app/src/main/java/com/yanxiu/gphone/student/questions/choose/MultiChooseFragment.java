@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.customviews.ChooseLayout;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
-import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.SimpleExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 
 import java.util.List;
@@ -22,7 +22,7 @@ import java.util.List;
  * Time : 2017/5/26 15:32.
  * Function :
  */
-public class MultiChooseFragment extends SimpleExerciseBaseFragment implements ChooseLayout.onItemClickListener {
+public class MultiChooseFragment extends AnswerSimpleExerciseBaseFragment implements ChooseLayout.onItemClickListener {
     private MultiChoiceQuestion mData;
     private TextView mQuestionView;
     private ChooseLayout mAnswerView;

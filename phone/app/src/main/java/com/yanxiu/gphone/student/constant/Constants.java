@@ -35,8 +35,9 @@ public class Constants {
 
     public static final String MAINAVTIVITY_REFRESH = "mainActivity_refresh";//跳转到首页需要刷新数据
     public static final String STUDENT_UPLOAD = "student/yanxiustudent.apk";
-    public static char CHARACTER_SLASH = '/';
-    public static String DOMYBOXDIR = "YanXiu/app/student";
+    public static final char CHARACTER_SLASH = '/';
+    public static final String DOMYBOXDIR = "YanXiu/app/student";
+    public static final String PICTUREDIR="/YanXiu/app/image/";
     public static final int NOTIFICATION_ID = 0x11;
     /**
      * default it is 0,when the loginactivity checks for updata,it is 1,at this time the mainactivity does't to check for updata
@@ -44,4 +45,9 @@ public class Constants {
     public static int UPDATA_TYPE=0;
 
     public static final String NOTES_KEY = "notes_key";//跳转笔记页key
+
+    public static final String HAS_FINISH_STATUS = "2"; //已z完成
+    public static final String NOT_FINISH_STATUS = "1";//未完成 不可补做  查看解析报告
+    public static final String WAIT_FINISH_STATUS = "0";//待完成  可以做题
+    public static final String HAS_FINISH_CHECK_REPORT = "0";   //已完成  可以查看答题报告
 }

@@ -1,12 +1,11 @@
 package com.yanxiu.gphone.student.questions.subjective;
 
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
-import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.ExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.questions.bean.PaperTestBean;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +17,7 @@ import java.util.List;
  */
 public class SubjectiveQuestion extends BaseQuestion {
 
-    public List<String> answerList=new ArrayList<>();
+    public ArrayList<String> answerList=new ArrayList<>();
 
     public SubjectiveQuestion(PaperTestBean bean, QuestionShowType showType) {
         super(bean, showType);

@@ -8,28 +8,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.customviews.ChooseLayout;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
-import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.SimpleExerciseAnalysisBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.analysisbase.AnalysisSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
-import com.yanxiu.gphone.student.util.ToastManager;
-
-import java.util.List;
-
-import de.greenrobot.event.EventBus;
-
-import static android.view.View.GONE;
 
 
 /**
  * Created by 戴延枫 on 2017/6/7.
  */
 
-public class YesNoAnalysisFragment extends SimpleExerciseAnalysisBaseFragment {
+public class YesNoAnalysisFragment extends AnalysisSimpleExerciseBaseFragment {
     private YesNoQuestion mData;
     private View mAnswerView;
     private TextView mQuestionView;
@@ -54,19 +46,10 @@ public class YesNoAnalysisFragment extends SimpleExerciseAnalysisBaseFragment {
         super.onSaveInstanceState(outState);
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.e("dyf", "onCreateView:" + hashCode());
-        mAnswerView = inflater.inflate(R.layout.fragment_yesno_analysis, container, false);
-        initView();
-        return super.onCreateView(inflater,container,savedInstanceState);
-    }
-
     private void initView() {
         mQuestionView = (TextView) mAnswerView.findViewById(R.id.tv_question);
         mChooseView = (ChooseLayout) mAnswerView.findViewById(R.id.cl_answer);
-        initData();
+
     }
 
     private void initData() {
@@ -86,13 +69,34 @@ public class YesNoAnalysisFragment extends SimpleExerciseAnalysisBaseFragment {
 //        }
     }
 
+    /**
+     * 添加答题view
+     *
+     * @param inflater
+     * @param container
+     * @return
+     */
     @Override
-    public void initAnswerView() {
-        mAnsewr_container.addView(mAnswerView);
-        setQaNumber(mRootView);
-        setQaName(mRootView);
+    public View addAnswerView(LayoutInflater inflater, @Nullable ViewGroup container) {
+        mAnswerView = inflater.inflate(R.layout.fragment_yesno_analysis, container, false);
+        return mAnswerView;
     }
 
+    /**
+     * 初始化答题view
+     *
+     * @param inflater
+     * @param container
+     */
+    @Override
+    public void initAnswerView(LayoutInflater inflater, @Nullable ViewGroup container) {
+        initView();
+        initData();
+    }
+
+    /**
+     * 显示解析view
+     */
     @Override
     public void initAnalysisView() {
         showView1();
@@ -109,5 +113,6 @@ public class YesNoAnalysisFragment extends SimpleExerciseAnalysisBaseFragment {
      */
     @Override
     public void onVisibilityChangedToUser(boolean isVisibleToUser, boolean invokeInResumeOrPause) {
+        super.onVisibilityChangedToUser(isVisibleToUser,invokeInResumeOrPause);
     }
 }

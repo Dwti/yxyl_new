@@ -1,23 +1,23 @@
 package com.yanxiu.gphone.student.questions.subjective;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.Html;
-import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.common.Bean.PhotoDeleteBean;
+import com.yanxiu.gphone.student.common.activity.CameraActivity;
+import com.yanxiu.gphone.student.common.activity.CropImageActivity;
+import com.yanxiu.gphone.student.common.activity.PhotoActivity;
 import com.yanxiu.gphone.student.customviews.AlbumGridView;
+import com.yanxiu.gphone.student.customviews.spantextview.SubjectClozeTextView;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
-import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.SimpleExerciseBaseFragment;
-import com.yanxiu.gphone.student.util.HtmlImageGetter;
+import com.yanxiu.gphone.student.util.StemUtil;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerSimpleExerciseBaseFragment;
 
-import java.io.Serializable;
-import java.util.List;
+import java.util.ArrayList;
 
 import de.greenrobot.event.EventBus;
 
@@ -26,24 +26,23 @@ import de.greenrobot.event.EventBus;
  * Time : 2017/6/14 11:02.
  * Function :
  */
-public class SubjectiveFragment extends SimpleExerciseBaseFragment implements AlbumGridView.onClickListener, AlbumGridView.onItemChangedListener {
+public class SubjectiveFragment extends AnswerSimpleExerciseBaseFragment implements AlbumGridView.onClickListener, AlbumGridView.onItemChangedListener {
 
-    public static final String RESULTCODE="code";
 
     private SubjectiveQuestion mData;
-    private TextView mQuestionView;
+    private SubjectClozeTextView mQuestionView;
     private AlbumGridView mAnswerView;
 
     @Override
     public void setData(BaseQuestion node) {
         super.setData(node);
-        mData= (SubjectiveQuestion) node;
+        mData = (SubjectiveQuestion) node;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState != null && mData ==null) {
+        if (savedInstanceState != null && mData == null) {
             setData((SubjectiveQuestion) savedInstanceState.getSerializable(KEY_NODE));
         }
     }
@@ -58,11 +57,11 @@ public class SubjectiveFragment extends SimpleExerciseBaseFragment implements Al
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         EventBus.getDefault().register(SubjectiveFragment.this);
-        View view=inflater.inflate(R.layout.fragment_subjective,container,false);
+        View view = inflater.inflate(R.layout.fragment_subjective, container, false);
         setQaNumber(view);
         setQaName(view);
         initView(view);
-        initComplexStem(view,mData);
+        initComplexStem(view, mData);
         initData();
         listener();
         return view;
@@ -75,12 +74,12 @@ public class SubjectiveFragment extends SimpleExerciseBaseFragment implements Al
     }
 
     private void initView(View view) {
-        mQuestionView= (TextView) view.findViewById(R.id.tv_question);
-        mAnswerView= (AlbumGridView) view.findViewById(R.id.ag_image);
+        mQuestionView = (SubjectClozeTextView) view.findViewById(R.id.tv_question);
+        mAnswerView = (AlbumGridView) view.findViewById(R.id.ag_image);
     }
 
     private void initData() {
-        Spanned string= Html.fromHtml(mData.getStem(),new HtmlImageGetter(mQuestionView),null);
+        String string= StemUtil.initClozeStem(mData.getStem());
         mQuestionView.setText(string);
         mAnswerView.setData(mData.answerList);
     }
@@ -91,40 +90,43 @@ public class SubjectiveFragment extends SimpleExerciseBaseFragment implements Al
     }
 
     @Override
-    public void onClick(int Type) {
-        switch (Type){
+    public void onClick(int Type, int position) {
+        switch (Type) {
             case AlbumGridView.TYPE_CAMERA:
-                SubJectiveMessage message=new SubJectiveMessage();
-                message.hashCode=SubjectiveFragment.this.hashCode();
-                Intent intent=new Intent(getActivity(),TestActivity.class);
-                intent.putExtra(RESULTCODE,message);
-                startActivity(intent);
+                CameraActivity.LaunchActivity(getContext(), SubjectiveFragment.this.hashCode());
                 break;
             case AlbumGridView.TYPE_IMAGE:
+                PhotoActivity.LaunchActivity(getContext(), mData.answerList, position, SubjectiveFragment.this.hashCode());
                 break;
         }
     }
 
     @Override
-    public void onChanged(List<String> paths) {
+    public void onChanged(ArrayList<String> paths) {
         mData.answerList.clear();
-        if (paths!=null){
+        if (paths != null) {
             mData.answerList.addAll(paths);
+        }
+        if (mData.answerList.size() > 0) {
+            mData.setIsAnswer(true);
+        } else {
+            mData.setIsAnswer(false);
+        }
+        saveAnswer(mData);
+        updateProgress();
+    }
+
+    public void onEventMainThread(CropImageActivity.CropCallbackMessage message) {
+        if (message != null && message.fromId == SubjectiveFragment.this.hashCode()) {
+            if (message.path != null) {
+                mAnswerView.addData(message.path);
+            }
         }
     }
 
-    public static class SubJectiveMessage implements Serializable {
-        int hashCode;
-        List<String> paths;
-    }
-
-    public void onEventMainThread(SubJectiveMessage message){
-        if (message!=null&&message.hashCode==SubjectiveFragment.this.hashCode()){
-            if (message.paths!=null){
-                for (String path:message.paths){
-                    mAnswerView.addData(path);
-                }
-            }
+    public void onEventMainThread(PhotoDeleteBean deleteBean) {
+        if (deleteBean != null && deleteBean.formId == SubjectiveFragment.this.hashCode()) {
+            mAnswerView.remove(deleteBean.deleteId);
         }
     }
 

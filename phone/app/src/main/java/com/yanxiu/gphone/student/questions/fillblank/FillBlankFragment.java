@@ -22,22 +22,19 @@ import com.yanxiu.gphone.student.customviews.spantextview.FillBlankTextView;
 import com.yanxiu.gphone.student.customviews.spantextview.OnReplaceCompleteListener;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerQuestionActivity;
-import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.ComplexExerciseBaseFragment;
-import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.ExerciseBaseFragment;
-import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.SimpleExerciseBaseFragment;
-import com.yanxiu.gphone.student.questions.choose.SingleChoiceQuestion;
-import com.yanxiu.gphone.student.questions.cloze.ClozeComplexQuestion;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerComplexExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerSimpleExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
 import com.yanxiu.gphone.student.util.KeyboardObserver;
 import com.yanxiu.gphone.student.util.StemUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by sunpeng on 2017/6/21.
  */
 
-public class FillBlankFragment extends SimpleExerciseBaseFragment implements KeyboardObserver.KeyBoardVisibleChangeListener {
+public class FillBlankFragment extends AnswerSimpleExerciseBaseFragment implements KeyboardObserver.KeyBoardVisibleChangeListener {
 
     private FillBlankQuestion mQuestion;
 
@@ -236,8 +233,8 @@ public class FillBlankFragment extends SimpleExerciseBaseFragment implements Key
      */
     private void setTopLayoutMinHeight() {
         Fragment fragment = getParentFragment();
-        if (null != fragment && fragment instanceof ComplexExerciseBaseFragment) {
-            ComplexExerciseBaseFragment parentFragment = (ComplexExerciseBaseFragment) fragment;
+        if (null != fragment && fragment instanceof AnswerComplexExerciseBaseFragment) {
+            AnswerComplexExerciseBaseFragment parentFragment = (AnswerComplexExerciseBaseFragment) fragment;
             parentFragment.setTopLayoutMinHeight();
         }
     }

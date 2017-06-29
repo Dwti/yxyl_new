@@ -1,4 +1,4 @@
-package com.yanxiu.gphone.student.questions.answerframe.ui.fragment;
+package com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,6 +15,8 @@ import android.widget.LinearLayout;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.customviews.MyMaxHeightLinearLayout;
 import com.yanxiu.gphone.student.questions.answerframe.adapter.QAViewPagerAdapter;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.TopBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.view.QAViewPager;
 
 import java.util.ArrayList;
@@ -25,7 +27,7 @@ import java.util.List;
  * 复合题基类
  */
 
-public abstract class ComplexExerciseBaseFragment extends ExerciseBaseFragment {
+public abstract class AnswerComplexExerciseBaseFragment extends AnswerExerciseBaseFragment {
 
     protected QAViewPager mViewPager;
 
@@ -161,7 +163,7 @@ public abstract class ComplexExerciseBaseFragment extends ExerciseBaseFragment {
         remainPositions.remove(0);
         if (remainPositions.size() > 0) { // 表明这层依然是 复合题
             FragmentStatePagerAdapter a = (FragmentStatePagerAdapter) mViewPager.getAdapter();
-            ComplexExerciseBaseFragment f = (ComplexExerciseBaseFragment) a.instantiateItem(mViewPager, index);
+            AnswerComplexExerciseBaseFragment f = (AnswerComplexExerciseBaseFragment) a.instantiateItem(mViewPager, index);
             f.setChildrenPositionRecursively(remainPositions);
         }
     }
@@ -198,6 +200,6 @@ public abstract class ComplexExerciseBaseFragment extends ExerciseBaseFragment {
      */
     @Override
     public void onVisibilityChangedToUser(boolean isVisibleToUser, boolean invokeInResumeOrPause) {
-
+        super.onVisibilityChangedToUser(isVisibleToUser,invokeInResumeOrPause);
     }
 }

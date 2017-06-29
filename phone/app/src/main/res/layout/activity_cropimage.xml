@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/login_default_width"
+        android:background="@color/color_edf0ee"
+        android:layout_weight="1">
+
+        <com.yanxiu.gphone.student.customviews.CropImageView
+            android:id="@+id/civ_crop"
+            android:layout_width="wrap_content"
+            android:layout_margin="@dimen/crop_view_margin"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/crop_botom_h">
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="@dimen/crop_button_w_h"
+            android:layout_height="@dimen/crop_button_w_h"
+            android:layout_marginLeft="@dimen/crop_button_margin_l_r"
+            android:layout_centerVertical="true"
+            android:background="@color/color_00cccc"/>
+        <TextView
+            android:id="@+id/tv_reset"
+            android:layout_width="@dimen/crop_reset_text_w"
+            android:layout_height="@dimen/crop_reset_text_h"
+            android:layout_centerInParent="true"
+            android:background="@drawable/selector_crop_reset"
+            android:text="@string/crop_reset"
+            android:textColor="@drawable/selector_crop_reset_text_color"
+            android:gravity="center"
+            android:textSize="@dimen/crop_text_size"/>
+
+        <ImageView
+            android:id="@+id/iv_ok"
+            android:layout_width="@dimen/crop_button_w_h"
+            android:layout_height="@dimen/crop_button_w_h"
+            android:background="@color/color_00cccc"
+            android:layout_marginRight="@dimen/crop_button_margin_l_r"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"/>
+    </RelativeLayout>
+</LinearLayout>

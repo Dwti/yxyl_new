@@ -15,13 +15,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <include
+                android:id="@+id/complex_stem_layout"
+                layout="@layout/common_stem"
+                android:visibility="gone"/>
+
             <LinearLayout
                 android:id="@+id/ll_question"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/color_ffffff">
 
-                <TextView
+                <com.yanxiu.gphone.student.customviews.spantextview.SubjectClozeTextView
                     android:id="@+id/tv_question"
                     style="@style/CommonQuestionFragmentTextView" />
             </LinearLayout>

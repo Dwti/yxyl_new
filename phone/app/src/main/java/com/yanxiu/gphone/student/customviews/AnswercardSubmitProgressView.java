@@ -87,6 +87,13 @@ public class AnswercardSubmitProgressView extends RelativeLayout {
         }
     }
 
+    public void reset(){
+        mCurrentProgress = 0;
+        mPercent = 0;
+        maxCount =0;
+        mProgress.getLayoutParams().width = 0;
+    }
+
 
     public interface DisplacementListener {
         void xPositionChange(int x);

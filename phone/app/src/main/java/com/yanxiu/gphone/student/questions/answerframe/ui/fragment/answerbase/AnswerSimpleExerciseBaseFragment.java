@@ -1,4 +1,4 @@
-package com.yanxiu.gphone.student.questions.answerframe.ui.fragment;
+package com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase;
 
 import android.text.Html;
 import android.text.Spanned;
@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.customviews.ListenerSeekBarLayout;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionTemplate;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
 
@@ -18,7 +19,7 @@ import com.yanxiu.gphone.student.util.HtmlImageGetter;
  * 单题型Frament基类
  */
 
-public abstract class SimpleExerciseBaseFragment extends ExerciseBaseFragment {
+public abstract class AnswerSimpleExerciseBaseFragment extends AnswerExerciseBaseFragment {
 
     private ListenerSeekBarLayout mListenView;//听力复合题只有一个子题时，题干的听力控件
 
@@ -51,6 +52,7 @@ public abstract class SimpleExerciseBaseFragment extends ExerciseBaseFragment {
 
     @Override
     public void onVisibilityChangedToUser(boolean isVisibleToUser, boolean invokeInResumeOrPause) {
+        super.onVisibilityChangedToUser(isVisibleToUser,invokeInResumeOrPause);
         if (isVisibleToUser) {
             if (null != mListenView)
                 mListenView.setResume();

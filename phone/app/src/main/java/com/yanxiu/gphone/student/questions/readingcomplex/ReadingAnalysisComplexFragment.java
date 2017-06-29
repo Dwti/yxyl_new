@@ -1,31 +1,30 @@
-package com.yanxiu.gphone.student.questions.listencomplex;
+package com.yanxiu.gphone.student.questions.readingcomplex;
+
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
-import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.ComplexExerciseBaseFragment;
-import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.TopBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.analysisbase.AnalysisComplexExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.TopBaseFragment;
+
 
 /**
- * Created by Canghaixiao.
- * Time : 2017/6/9 14:47.
- * Function :
+ * Created by 戴延枫 on 2017/6/29.
  */
-public class ListenComplexFragment extends ComplexExerciseBaseFragment {
 
-    private ListenComplexQuestion mData;
-    private ListenComplexTopFragment topFragment;
+public class ReadingAnalysisComplexFragment extends AnalysisComplexExerciseBaseFragment {
+    private ReadingComplexQuestion mData;
 
     @Override
     public void setData(BaseQuestion baseQuestion) {
         super.setData(baseQuestion);
-        mData = (ListenComplexQuestion) baseQuestion;
+        mData = (ReadingComplexQuestion) baseQuestion;
     }
 
     @Override
     protected TopBaseFragment getTopFragment() {
-        topFragment=new ListenComplexTopFragment();
+        ReadingAnalysisComplexTopFragment topFragment = new ReadingAnalysisComplexTopFragment();
         topFragment.setData(mData);
         return topFragment;
     }
@@ -34,11 +33,9 @@ public class ListenComplexFragment extends ComplexExerciseBaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
-            setData((ListenComplexQuestion) savedInstanceState.getSerializable(KEY_NODE));
+            setData((ReadingComplexQuestion) savedInstanceState.getSerializable(KEY_NODE));
         }
     }
-
-
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -55,9 +52,5 @@ public class ListenComplexFragment extends ComplexExerciseBaseFragment {
     @Override
     public void onVisibilityChangedToUser(boolean isVisibleToUser, boolean invokeInResumeOrPause) {
         super.onVisibilityChangedToUser(isVisibleToUser,invokeInResumeOrPause);
-        if (topFragment!=null) {
-            topFragment.setVisibleToUser(isVisibleToUser);
-        }
     }
-
 }

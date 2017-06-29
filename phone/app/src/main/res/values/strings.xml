@@ -149,5 +149,13 @@
     <string name="listen_time">/</string>
     <string name="begin_answer">开始作答...</string>
     <string name="submit_homework_button">提交作业</string>
->>>>>>> upstream/master
+
+    <string name="submit__button_retry">再试一次</string>
+    <string name="analysis_text">题目解析</string>
+    <string name="baocuo_text">报错</string>
+    <string name="subject_submit">开始作答</string>
+    <string name="camera_film">相机胶卷</string>
+
+    <string name="crop_reset">还原</string>
+    <string name="SD_cannot_use">没有检测到内存卡</string>
 </resources>
