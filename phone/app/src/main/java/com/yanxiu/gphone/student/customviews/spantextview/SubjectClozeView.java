@@ -25,19 +25,23 @@ public class SubjectClozeView extends FrameLayout {
 
     public SubjectClozeView(@NonNull Context context) {
         super(context);
+        initView(context);
     }
 
     public SubjectClozeView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        initView(context);
     }
 
     public SubjectClozeView(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        initView(context);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public SubjectClozeView(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr, @StyleRes int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+        initView(context);
     }
 
     private void initView(Context context){

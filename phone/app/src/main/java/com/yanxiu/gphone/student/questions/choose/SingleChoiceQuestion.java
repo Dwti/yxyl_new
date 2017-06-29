@@ -66,8 +66,7 @@ public class SingleChoiceQuestion extends BaseQuestion {
 
     @Override
     public ExerciseBaseFragment analysisFragment() {
-//        return new SingleChooseAnalysisFragment();
-        return null;
+        return new SingleChooseAnalysisFragment();
     }
 
     @Override
