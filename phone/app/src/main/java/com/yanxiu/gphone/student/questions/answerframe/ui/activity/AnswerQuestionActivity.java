@@ -30,6 +30,7 @@ import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
 import com.yanxiu.gphone.student.questions.answerframe.view.QAViewPager;
 import com.yanxiu.gphone.student.util.DataFetcher;
+import com.yanxiu.gphone.student.util.KeyboardObserver;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -48,6 +49,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
     private ArrayList<BaseQuestion> mQuestions;//题目数据
     private AnswerCardFragment mAnswerCardFragment;
 
+    private KeyboardObserver mKeyboardObserver;
     private QuestionTimeTextView mTimer;//计时
     private QuestionProgressView mProgressView;//答题进度条
     private LinearLayout mPrevious_question, mNext_question;//上一题，下一题
@@ -107,11 +109,19 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
 
     private void setListener() {
         mPrevious_question.setOnClickListener(this);
+        mKeyboardObserver = new KeyboardObserver(mRootView);
         mNext_question.setOnClickListener(this);
         mBackView.setOnClickListener(this);
         mShowAnswerCardView.setOnClickListener(this);
     }
 
+    public void addKeyboardVisibleChangeListener(KeyboardObserver.KeyBoardVisibleChangeListener listener){
+        mKeyboardObserver.addKeyBoardVisibleChangeListener(listener);
+    }
+
+    public void removeKeyBoardVisibleChangeListener(KeyboardObserver.KeyBoardVisibleChangeListener listener){
+        mKeyboardObserver.removeKeyBoardVisibleChangeListener(listener);
+    }
     private void initViewPager() {
         mFragmentManager = getSupportFragmentManager();
         mViewPager = (QAViewPager) findViewById(R.id.vp_viewPager);
@@ -472,6 +482,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
     protected void onDestroy() {
         mHandler.removeCallbacksAndMessages(null);
         mHandler = null;
+        mKeyboardObserver.destroy();
         super.onDestroy();
     }
 

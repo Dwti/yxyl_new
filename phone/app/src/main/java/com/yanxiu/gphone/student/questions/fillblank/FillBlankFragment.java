@@ -117,8 +117,7 @@ public class FillBlankFragment extends AnswerSimpleExerciseBaseFragment implemen
 
     private void initListener() {
 
-        mKeyboardObserver = new KeyboardObserver(mActivityRootView);
-        mKeyboardObserver.setKeyBoardVisibleChangeListener(this);
+        ((AnswerQuestionActivity)getActivity()).addKeyboardVisibleChangeListener(this);
 
         mEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -241,7 +240,7 @@ public class FillBlankFragment extends AnswerSimpleExerciseBaseFragment implemen
 
     @Override
     public void onDestroy() {
-        mKeyboardObserver.destroy();
         super.onDestroy();
+        ((AnswerQuestionActivity)getActivity()).removeKeyBoardVisibleChangeListener(this);
     }
 }
