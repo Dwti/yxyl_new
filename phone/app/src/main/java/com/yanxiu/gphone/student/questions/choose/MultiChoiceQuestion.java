@@ -23,7 +23,7 @@ public class MultiChoiceQuestion extends BaseQuestion {
     public MultiChoiceQuestion(PaperTestBean bean, QuestionShowType showType) {
         super(bean, showType);
         multianswer.clear();
-        List<Object> data=bean.getQuestions().getAnswer();
+        List<String> data=bean.getQuestions().getAnswer();
         for (Object o:data){
             multianswer.add((String) o);
         }

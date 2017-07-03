@@ -76,14 +76,19 @@ public class YesNoFragment extends AnswerSimpleExerciseBaseFragment implements C
         mAnswerView.setData(mData.getChoice());
         List<String> datas = mData.getAnswerList();
         if (datas.size() > 0) {
-            mAnswerView.setSelect(Integer.parseInt(datas.get(datas.size() - 1)));
+            int result = Integer.parseInt(datas.get(0));
+            if(result == 1){ //正确
+                mAnswerView.setSelect(0);
+            }else{ //错误
+                mAnswerView.setSelect(1);
+            }
+
         }
         int count = mAnswerView.getChildCount();
         for (int i = 0; i < count; i++) {
             View choleView = mAnswerView.getChildAt(i);
             ChooseLayout.ViewHolder viewHolder = (ChooseLayout.ViewHolder) choleView.getTag();
             viewHolder.mQuestionIdView.setVisibility(GONE);
-
         }
     }
 

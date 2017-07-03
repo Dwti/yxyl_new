@@ -4,6 +4,9 @@ import android.os.Build;
 import android.view.View;
 import android.view.ViewTreeObserver;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by sp 2017/6/7.
  */
@@ -11,7 +14,7 @@ public class KeyboardObserver implements ViewTreeObserver.OnGlobalLayoutListener
     private View mRootView;
     private int mOriginHeight;
     private int mPreHeight;
-    private KeyBoardVisibleChangeListener mKeyBoardVisibleChangeListener;
+    private List<KeyBoardVisibleChangeListener> mKeyBoardVisibleChangeListener = new ArrayList<>();
 
     public interface KeyBoardVisibleChangeListener {
         /**
@@ -22,8 +25,12 @@ public class KeyboardObserver implements ViewTreeObserver.OnGlobalLayoutListener
         void onKeyboardVisibleChange(boolean isShow, int keyboardHeight);
     }
 
-    public void setKeyBoardVisibleChangeListener(KeyBoardVisibleChangeListener keyBoardListen) {
-        this.mKeyBoardVisibleChangeListener = keyBoardListen;
+    public void addKeyBoardVisibleChangeListener(KeyBoardVisibleChangeListener keyBoardListen) {
+        mKeyBoardVisibleChangeListener.add(keyBoardListen);
+    }
+
+    public void removeKeyBoardVisibleChangeListener(KeyBoardVisibleChangeListener listener){
+        mKeyBoardVisibleChangeListener.remove(listener);
     }
 
     public KeyboardObserver(View rootView) {
@@ -43,21 +50,23 @@ public class KeyboardObserver implements ViewTreeObserver.OnGlobalLayoutListener
     @Override
     public void onGlobalLayout() {
         int currHeight = mRootView.getHeight();
+
         if (currHeight == 0) {
             return;
         }
-        boolean hasChange = false;
-        if (mPreHeight == 0) {
-            mPreHeight = currHeight;
+
+        if(mOriginHeight == 0){
             mOriginHeight = currHeight;
-        } else {
-            if (mPreHeight != currHeight) {
-                hasChange = true;
-                mPreHeight = currHeight;
-            } else {
-                hasChange = false;
-            }
         }
+
+        boolean hasChange;
+        if (mPreHeight != currHeight) {
+            hasChange = true;
+            mPreHeight = currHeight;
+        } else {
+            hasChange = false;
+        }
+
         if (hasChange) {
             boolean isShow;
             int keyboardHeight = 0;
@@ -70,8 +79,8 @@ public class KeyboardObserver implements ViewTreeObserver.OnGlobalLayoutListener
                 isShow = true;
             }
 
-            if (mKeyBoardVisibleChangeListener != null) {
-                mKeyBoardVisibleChangeListener.onKeyboardVisibleChange(isShow, keyboardHeight);
+            for(KeyBoardVisibleChangeListener listener : mKeyBoardVisibleChangeListener){
+                listener.onKeyboardVisibleChange(isShow, keyboardHeight);
             }
         }
     }
@@ -83,4 +92,6 @@ public class KeyboardObserver implements ViewTreeObserver.OnGlobalLayoutListener
             }
         }
     }
+
+
 }

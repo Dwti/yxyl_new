@@ -45,5 +45,28 @@ public class TimeUtils {
         return ymd;
     }
 
+    /**
+     * 时间转换分：秒
+     */
+    public static String formatTime(int timeMs) {
+
+        StringBuilder formatBuilder = new StringBuilder();
+        Formatter formatter = new Formatter(formatBuilder, Locale.getDefault());
+
+        try {
+//            int totalSeconds = timeMs;
+            int sec = timeMs % 60;
+            timeMs = timeMs / 60;
+            int min = timeMs % 60;
+            timeMs = timeMs / 60;
+
+            formatBuilder.setLength(0);
+
+            return formatter.format("%02d:%02d:%02d", timeMs, min, sec).toString();
+        } finally {
+            formatter.close();
+        }
+    }
+
 
 }

@@ -1,7 +1,7 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="top_layout_height">55dp</dimen>
 
     <dimen name="content_left_right_margin">35dp</dimen>
@@ -185,5 +185,12 @@
     <dimen name="crop_reset_text_w">50dp</dimen>
     <dimen name="crop_reset_text_h">35dp</dimen>
     <dimen name="crop_text_size">16dp</dimen>
+
+    <dimen name="report_top_pigailayout_height">370dp</dimen>
+    <dimen name="report_top_nopigailayout_height">270dp</dimen>
+    <dimen name="report_top_nopigailayout_line_paddingbottom">23dp</dimen>
+    <dimen name="report_grid_title_paddingtop">30dp</dimen>
+    <dimen name="report_grid_title_paddingbottom">20dp</dimen>
+    <dimen name="report_grid_paddingbottom">75dp</dimen>
 </resources>
 

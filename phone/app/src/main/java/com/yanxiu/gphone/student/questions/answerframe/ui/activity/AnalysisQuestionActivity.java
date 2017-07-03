@@ -11,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -44,6 +45,7 @@ public class AnalysisQuestionActivity extends YanxiuBaseActivity implements View
     private FragmentManager mFragmentManager;
     private QAViewPager mViewPager;
     private QAViewPagerAdapter mAdapter;
+    private String mComeFrom;//获取数据的来源--从哪个页面跳转过来的
     private String mKey;//获取数据的key
     private Paper mPaper;//试卷数据
     private ArrayList<BaseQuestion> mQuestions;//题目数据
@@ -60,14 +62,49 @@ public class AnalysisQuestionActivity extends YanxiuBaseActivity implements View
         setContentView(R.layout.activity_analysisquestion);
         initData();
         initView();
+        initReportData();
     }
 
     private void initData() {
         mKey = getIntent().getStringExtra(Constants.EXTRA_PAPER);
         if (TextUtils.isEmpty(mKey))
             finish();
+        mComeFrom = getIntent().getStringExtra(Constants.EXTRA_COME);
         mPaper = DataFetcher.getInstance().getPaper(mKey);
         mQuestions = mPaper.getQuestions();
+    }
+
+    /**
+     * 从答题报告页过来
+     */
+    private void initReportData() {
+        if (Constants.COME_REPORT.equals(mComeFrom)) {
+            mViewPager.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    //答题报告过来的
+                    ArrayList<Integer> levelPositions = getIntent().getIntegerArrayListExtra(Constants.EXTRA_ANALYSIS_LEVELPOSITION);
+                    if (null != levelPositions && !levelPositions.isEmpty()) {
+                        // 2, 跳转
+                        int index = levelPositions.get(0);
+                        FragmentStatePagerAdapter a1 = (FragmentStatePagerAdapter) mViewPager.getAdapter();
+                        mViewPager.setCurrentItem(index);
+                        ExerciseBaseFragment currentFragment = (ExerciseBaseFragment) a1.instantiateItem(mViewPager, index);
+                        currentFragment.setUserVisibleHin2(true);
+
+
+                        ArrayList<Integer> remainPositions = new ArrayList<>(levelPositions);
+                        remainPositions.remove(0);
+                        if (remainPositions.size() > 0) { // 表明这层依然是 复合题
+                            FragmentStatePagerAdapter a = (FragmentStatePagerAdapter) mViewPager.getAdapter();
+                            AnalysisComplexExerciseBaseFragment f = (AnalysisComplexExerciseBaseFragment) a.instantiateItem(mViewPager, index);
+                            f.setChildrenPositionRecursively(remainPositions);
+                        }
+                    }
+                    mViewPager.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                }
+            });
+        }
     }
 
     private void initView() {
@@ -245,26 +282,26 @@ public class AnalysisQuestionActivity extends YanxiuBaseActivity implements View
              */
             if (innerIndex == (innerSize - 1) && index == (size - 1)) { //状态3
                 mNext_text.setText(R.string.complete);
-            }else{
+            } else {
                 mNext_text.setText(R.string.next_question);
             }
 
             if (innerIndex == 0 && index == 0) { //第一题
                 mPrevious_question.setVisibility(View.GONE);
-            }else{
+            } else {
                 mPrevious_question.setVisibility(View.VISIBLE);
             }
 
         } else if (currentFramgent instanceof AnalysisSimpleExerciseBaseFragment) {
             if (index == (size - 1)) { //最后一题
                 mNext_text.setText(R.string.complete);
-            }else{
+            } else {
                 mNext_text.setText(R.string.next_question);
             }
 
             if (index == 0) { //第一题
                 mPrevious_question.setVisibility(View.GONE);
-            }else{
+            } else {
                 mPrevious_question.setVisibility(View.VISIBLE);
             }
         }
@@ -295,7 +332,7 @@ public class AnalysisQuestionActivity extends YanxiuBaseActivity implements View
 
 
     /**
-     * 跳转AnswerQuestionActivity
+     * 跳转AnalysisQuestionActivity
      *
      * @param activity
      */
@@ -306,14 +343,27 @@ public class AnalysisQuestionActivity extends YanxiuBaseActivity implements View
     }
 
     /**
-     * 跳转AnswerQuestionActivity
+     * 跳转AnalysisQuestionActivity
      *
      * @param activity
      */
-    public static void invoke(Activity activity, String key,String title) {
+    public static void invoke(Activity activity, String key, String title) {
         Intent intent = new Intent(activity, AnalysisQuestionActivity.class);
         intent.putExtra(Constants.EXTRA_PAPER, key);
         intent.putExtra(Constants.EXTRA_TITLE, title);
+        activity.startActivity(intent);
+    }
+
+    /**
+     * 答题报告跳转AnalysisQuestionActivity
+     *
+     * @param activity
+     */
+    public static void invoke(Activity activity, String key, ArrayList<Integer> levelPositions) {
+        Intent intent = new Intent(activity, AnalysisQuestionActivity.class);
+        intent.putExtra(Constants.EXTRA_COME, Constants.COME_REPORT);
+        intent.putExtra(Constants.EXTRA_PAPER, key);
+        intent.putIntegerArrayListExtra(Constants.EXTRA_ANALYSIS_LEVELPOSITION, levelPositions);
         activity.startActivity(intent);
     }
 

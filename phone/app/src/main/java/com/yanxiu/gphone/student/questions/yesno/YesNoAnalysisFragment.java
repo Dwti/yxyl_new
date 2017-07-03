@@ -16,6 +16,10 @@ import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.analysisbase.AnalysisSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
 
+import java.util.List;
+
+import static android.view.View.GONE;
+
 
 /**
  * Created by 戴延枫 on 2017/6/7.
@@ -56,17 +60,21 @@ public class YesNoAnalysisFragment extends AnalysisSimpleExerciseBaseFragment {
         Spanned string = Html.fromHtml(mData.getStem(), new HtmlImageGetter(mQuestionView), null);
         mQuestionView.setText(string);
         mChooseView.setData(mData.getChoice());
-//        List<String> datas = mData.getAnswerList();
-//        if (datas.size() > 0) {
-//            mChooseView.setSelect(Integer.parseInt(datas.get(datas.size() - 1)));
-//        }
-//        int count = mChooseView.getChildCount();
-//        for (int i = 0; i < count; i++) {
-//            View choleView = mChooseView.getChildAt(i);
-//            ChooseLayout.ViewHolder viewHolder = (ChooseLayout.ViewHolder) choleView.getTag();
-//            viewHolder.mQuestionIdView.setVisibility(GONE);
-//            viewHolder.mQuestionSelectView.setEnabled(false);
-//        }
+        List<String> datas = mData.getAnswerList();
+        if (datas.size() > 0) {
+            int result = Integer.parseInt(datas.get(0));
+            if(result == 1){ //正确
+                mChooseView.setSelect(0);
+            }else{ //错误
+                mChooseView.setSelect(1);
+            }
+        }
+        int count = mChooseView.getChildCount();
+        for (int i = 0; i < count; i++) {
+            View choleView = mChooseView.getChildAt(i);
+            ChooseLayout.ViewHolder viewHolder = (ChooseLayout.ViewHolder) choleView.getTag();
+            viewHolder.mQuestionIdView.setVisibility(GONE);
+        }
     }
 
     /**

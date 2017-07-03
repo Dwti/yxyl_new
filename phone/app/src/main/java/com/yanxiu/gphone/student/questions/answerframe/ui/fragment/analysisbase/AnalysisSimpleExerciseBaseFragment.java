@@ -72,6 +72,7 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
         initListener();
         setQaNumber(mRootView);
         setQaName(mRootView);
+        initComplexStem(mRootView,mData);
     }
 
     /**

@@ -26,11 +26,17 @@ public interface HomeworkDetailContract {
 
         void openAnswerQuestionUI(String key);
 
+        void openAnswerReportUI(String key);
+
+        void openAnalysisQuestionUI(String key);
+
         void showNoMoreData();
 
         void showLoadMoreDataError(String msg);
 
         void showGetPaperDataError(String msg);
+
+        void showGetAnalysisDataError(String msg);
 
         boolean isActive();
 
@@ -44,6 +50,8 @@ public interface HomeworkDetailContract {
         void loadMoreHomework();
 
         void getPaper(String paperId);
+
+        void getReport(String paperId);
 
         void finishUI();
     }
