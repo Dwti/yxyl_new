@@ -126,7 +126,7 @@ public class HomeworkDetailRepository implements HomeworkDetailDataSource {
     }
 
     @Override
-    public void getAnalysis(String paperId, final LoadAnalysisCallback loadAnalysisCallback) {
+    public void getReport(String paperId, final LoadReportCallback loadReportCallback) {
         HomeworkReportRequest request = new HomeworkReportRequest();
         request.setPpid(paperId);
         request.bodyDealer = new DESBodyDealer();
@@ -137,18 +137,18 @@ public class HomeworkDetailRepository implements HomeworkDetailDataSource {
                     if(ret.getData().size() > 0){
                         Paper paper = new Paper(ret.getData().get(0), QuestionShowType.ANALYSIS);
                         DataFetcher.getInstance().save(paper.getId(),paper);
-                        loadAnalysisCallback.onAnalysisLoaded(paper);
+                        loadReportCallback.onAnalysisLoaded(paper);
                     }else {
-                        loadAnalysisCallback.onDataEmpty();
+                        loadReportCallback.onDataEmpty();
                     }
                 }else {
-                    loadAnalysisCallback.onDataError(ret.getStatus().getCode(),ret.getStatus().getDesc());
+                    loadReportCallback.onDataError(ret.getStatus().getCode(),ret.getStatus().getDesc());
                 }
             }
 
             @Override
             public void onFail(RequestBase request, Error error) {
-                loadAnalysisCallback.onDataError(Constants.NET_ERROR,error.getLocalizedMessage());
+                loadReportCallback.onDataError(Constants.NET_ERROR,error.getLocalizedMessage());
             }
         });
     }

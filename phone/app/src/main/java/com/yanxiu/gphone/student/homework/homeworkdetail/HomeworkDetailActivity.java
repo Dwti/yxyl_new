@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.homework.response.HomeworkDetailBean;
-import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnalysisQuestionActivity;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerQuestionActivity;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerReportActicity;
 import com.yanxiu.gphone.student.util.ToastManager;
@@ -215,7 +214,7 @@ public class HomeworkDetailActivity extends Activity implements HomeworkDetailCo
         @Override
         public void onHomeworkClick(HomeworkDetailBean homework) {
             if(homework.getPaperStatus().getStatus() == STATUS_FINISHED){
-                mPresenter.getAnalysis(homework.getId());
+                mPresenter.getReport(homework.getId());
             }else {
                 mPresenter.getPaper(homework.getId());
             }

@@ -127,8 +127,8 @@ public class HomeworkDetailPresenter implements HomeworkDetailContract.Presenter
     }
 
     @Override
-    public void getAnalysis(String paperId) {
-        mHomeworkRepository.getAnalysis(paperId, new HomeworkDetailDataSource.LoadAnalysisCallback() {
+    public void getReport(String paperId) {
+        mHomeworkRepository.getReport(paperId, new HomeworkDetailDataSource.LoadReportCallback() {
             @Override
             public void onAnalysisLoaded(Paper paper) {
                 if(!mHomeworkDetailView.isActive()){

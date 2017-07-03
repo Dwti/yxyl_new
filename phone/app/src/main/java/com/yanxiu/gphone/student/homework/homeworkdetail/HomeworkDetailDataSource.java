@@ -28,7 +28,7 @@ public interface HomeworkDetailDataSource {
         void onDataError(int code, String msg);
     }
 
-    interface LoadAnalysisCallback{
+    interface LoadReportCallback {
 
         void onAnalysisLoaded(Paper paper);
 
@@ -43,5 +43,5 @@ public interface HomeworkDetailDataSource {
 
     void getPaper(String paperId, LoadPaperCallback loadPaperCallback);
 
-    void getAnalysis(String paperId, LoadAnalysisCallback loadAnalysisCallback);
+    void getReport(String paperId, LoadReportCallback loadReportCallback);
 }
