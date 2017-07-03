@@ -49,7 +49,7 @@ public interface HomeworkDetailContract {
 
         void loadMoreHomework();
 
-        void getPaper(String paperId);
+        void getPaper(String paperId,int status);
 
         void getReport(String paperId);
 

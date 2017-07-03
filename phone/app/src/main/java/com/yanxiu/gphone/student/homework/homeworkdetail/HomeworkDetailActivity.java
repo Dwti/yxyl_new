@@ -222,7 +222,7 @@ public class HomeworkDetailActivity extends Activity implements HomeworkDetailCo
             if(homework.getPaperStatus().getStatus() == STATUS_FINISHED){
                 mPresenter.getReport(homework.getId());
             }else {
-                mPresenter.getPaper(homework.getId());
+                mPresenter.getPaper(homework.getId(),homework.getPaperStatus().getStatus());
             }
         }
 
