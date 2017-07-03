@@ -14,6 +14,8 @@ public class HomeworkDetailPresenter implements HomeworkDetailContract.Presenter
 
     private final HomeworkDetailContract.View mHomeworkDetailView;
 
+    private static final String UNSUBMMIT = "1";
+
     private String mHomeworkId;
 
     public HomeworkDetailPresenter(String homeworkId, HomeworkDetailRepository mHomeworkRepository, HomeworkDetailContract.View mHomeworkDetailView) {
@@ -105,7 +107,11 @@ public class HomeworkDetailPresenter implements HomeworkDetailContract.Presenter
                 if(!mHomeworkDetailView.isActive()){
                     return;
                 }
-                mHomeworkDetailView.openAnswerQuestionUI(paper.getId());
+                if(paper.getPaperStatus().getStatus().equals(UNSUBMMIT)){
+                    mHomeworkDetailView.openAnalysisQuestionUI(paper.getId());
+                }else {
+                    mHomeworkDetailView.openAnswerQuestionUI(paper.getId());
+                }
             }
 
             @Override
@@ -122,6 +128,35 @@ public class HomeworkDetailPresenter implements HomeworkDetailContract.Presenter
                     return;
                 }
                 mHomeworkDetailView.showGetPaperDataError(msg);
+            }
+        });
+    }
+
+    @Override
+    public void getReport(String paperId) {
+        mHomeworkRepository.getReport(paperId, new HomeworkDetailDataSource.LoadReportCallback() {
+            @Override
+            public void onAnalysisLoaded(Paper paper) {
+                if(!mHomeworkDetailView.isActive()){
+                    return;
+                }
+                mHomeworkDetailView.openAnswerReportUI(paper.getId());
+            }
+
+            @Override
+            public void onDataEmpty() {
+                if(!mHomeworkDetailView.isActive()){
+                    return;
+                }
+                mHomeworkDetailView.showDataEmpty();
+            }
+
+            @Override
+            public void onDataError(int code, String msg) {
+                if(!mHomeworkDetailView.isActive()){
+                    return;
+                }
+                mHomeworkDetailView.showGetAnalysisDataError(msg);
             }
         });
     }

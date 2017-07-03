@@ -28,9 +28,20 @@ public interface HomeworkDetailDataSource {
         void onDataError(int code, String msg);
     }
 
+    interface LoadReportCallback {
+
+        void onAnalysisLoaded(Paper paper);
+
+        void onDataEmpty();
+
+        void onDataError(int code, String msg);
+    }
+
     void getHomeworkDetails(String homeworkId, LoadHomeworkDetailCallback loadHomeworkDetailCallback);
 
     void getMoreHomeworkDetails(String homeworkId, LoadHomeworkDetailCallback loadHomeworkDetailCallback);
 
     void getPaper(String paperId, LoadPaperCallback loadPaperCallback);
+
+    void getReport(String paperId, LoadReportCallback loadReportCallback);
 }

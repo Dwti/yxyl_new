@@ -12,7 +12,9 @@ import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.homework.response.HomeworkDetailBean;
+import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnalysisQuestionActivity;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerQuestionActivity;
+import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerReportActicity;
 import com.yanxiu.gphone.student.util.ToastManager;
 
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ import java.util.List;
 public class HomeworkDetailActivity extends Activity implements HomeworkDetailContract.View{
     public static final String EXTRA_SUBJECT_ID = "SUBJECT_ID";
     public static final String EXTRA_SUBJECT_NAME = "SUBJECT_NAME";
+    private static final int STATUS_FINISHED = 2;
 
     private List<HomeworkDetailBean> mHomeworkList = new ArrayList<>();
 
@@ -150,6 +153,16 @@ public class HomeworkDetailActivity extends Activity implements HomeworkDetailCo
     }
 
     @Override
+    public void openAnswerReportUI(String key) {
+        AnswerReportActicity.invoke(HomeworkDetailActivity.this,key);
+    }
+
+    @Override
+    public void openAnalysisQuestionUI(String key) {
+        AnalysisQuestionActivity.invoke(HomeworkDetailActivity.this,key);
+    }
+
+    @Override
     public void showNoMoreData() {
         //TODO
     }
@@ -161,6 +174,11 @@ public class HomeworkDetailActivity extends Activity implements HomeworkDetailCo
 
     @Override
     public void showGetPaperDataError(String msg) {
+        ToastManager.showMsg(msg);
+    }
+
+    @Override
+    public void showGetAnalysisDataError(String msg) {
         ToastManager.showMsg(msg);
     }
 
@@ -201,7 +219,11 @@ public class HomeworkDetailActivity extends Activity implements HomeworkDetailCo
     HomeworkDetailAdapter.HomeworkItemClickListener mItemClickListener = new HomeworkDetailAdapter.HomeworkItemClickListener() {
         @Override
         public void onHomeworkClick(HomeworkDetailBean homework) {
-            mPresenter.getPaper(homework.getId());
+            if(homework.getPaperStatus().getStatus() == STATUS_FINISHED){
+                mPresenter.getReport(homework.getId());
+            }else {
+                mPresenter.getPaper(homework.getId());
+            }
         }
 
         @Override
