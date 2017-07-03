@@ -5,8 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.text.Html;
-import android.text.Spannable;
-import android.text.SpannableString;
 import android.text.Spanned;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -77,7 +75,11 @@ public class ChooseLayout extends LinearLayout implements View.OnClickListener {
             Spanned string= Html.fromHtml(list.get(i),new HtmlImageGetter(holder.mQuestionContentView),null);
             holder.mQuestionContentView.setText(string);
             holder.mQuestionSelectView = view.findViewById(R.id.v_question_select);
-            ViewCompat.setBackground(holder.mQuestionSelectView, ContextCompat.getDrawable(mContext, R.drawable.shape_choose_round_unselect));
+            if (mChooseType==TYPE_MULTI){
+                ViewCompat.setBackground(holder.mQuestionSelectView, ContextCompat.getDrawable(mContext, R.drawable.multi_unselect));
+            }else {
+                ViewCompat.setBackground(holder.mQuestionSelectView, ContextCompat.getDrawable(mContext, R.drawable.single_unselect));
+            }
             view.setOnClickListener(ChooseLayout.this);
             view.setTag(holder);
             this.addView(view);
@@ -110,6 +112,18 @@ public class ChooseLayout extends LinearLayout implements View.OnClickListener {
 
     public void setChooseType(int type) {
         this.mChooseType = type;
+
+        if (mChooseType==TYPE_MULTI){
+            setMultiSelectBg();
+        }
+    }
+
+    private void setMultiSelectBg(){
+        int count=getChildCount();
+        for (int i=0;i<count;i++){
+            ViewHolder holder= (ViewHolder) getChildAt(i).getTag();
+            ViewCompat.setBackground(holder.mQuestionSelectView, ContextCompat.getDrawable(mContext, R.drawable.multi_unselect));
+        }
     }
 
     public void setSelectItemListener(onItemClickListener mOnItemClickListener) {
@@ -150,12 +164,20 @@ public class ChooseLayout extends LinearLayout implements View.OnClickListener {
 
     private void setItemUnSelect(ViewHolder holder) {
         holder.mSelect = false;
-        ViewCompat.setBackground(holder.mQuestionSelectView, ContextCompat.getDrawable(mContext, R.drawable.shape_choose_round_unselect));
+        if (mChooseType==TYPE_MULTI){
+            ViewCompat.setBackground(holder.mQuestionSelectView, ContextCompat.getDrawable(mContext, R.drawable.multi_unselect));
+        }else {
+            ViewCompat.setBackground(holder.mQuestionSelectView, ContextCompat.getDrawable(mContext, R.drawable.single_unselect));
+        }
     }
 
     private void setItemSelect(ViewHolder holder) {
         holder.mSelect = true;
-        ViewCompat.setBackground(holder.mQuestionSelectView, ContextCompat.getDrawable(mContext, R.drawable.shape_choose_round_select));
+        if (mChooseType==TYPE_MULTI){
+            ViewCompat.setBackground(holder.mQuestionSelectView, ContextCompat.getDrawable(mContext, R.drawable.multi_select));
+        }else {
+            ViewCompat.setBackground(holder.mQuestionSelectView, ContextCompat.getDrawable(mContext, R.drawable.single_select));
+        }
     }
 
     private void onClick(int position, boolean isSelected) {

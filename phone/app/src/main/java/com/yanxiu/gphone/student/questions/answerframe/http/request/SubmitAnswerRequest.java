@@ -35,7 +35,7 @@ public class SubmitAnswerRequest extends EXueELianBaseRequest {
 
     @Override
     protected HttpType httpType() {
-        return HttpType.GET;
+        return HttpType.POST;
     }
 
 }

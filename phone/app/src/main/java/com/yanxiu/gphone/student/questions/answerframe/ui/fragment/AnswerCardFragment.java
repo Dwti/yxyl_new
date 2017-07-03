@@ -158,7 +158,7 @@ public class AnswerCardFragment extends Fragment implements View.OnClickListener
                         mDialog.show();
                         break;
                     default:
-                        mDialog = null;
+//                        mDialog = null;
                         requestSubmmit();
                         break;
                 }

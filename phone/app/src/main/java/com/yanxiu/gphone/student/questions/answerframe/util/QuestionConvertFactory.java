@@ -8,6 +8,7 @@ import com.yanxiu.gphone.student.questions.listencomplex.ListenComplexQuestion;
 import com.yanxiu.gphone.student.questions.readingcomplex.ReadingComplexQuestion;
 import com.yanxiu.gphone.student.questions.choose.SingleChoiceQuestion;
 import com.yanxiu.gphone.student.questions.bean.PaperTestBean;
+import com.yanxiu.gphone.student.questions.subjective.SubjectiveFragment;
 import com.yanxiu.gphone.student.questions.subjective.SubjectiveQuestion;
 import com.yanxiu.gphone.student.questions.yesno.YesNoQuestion;
 
@@ -160,6 +161,11 @@ public class QuestionConvertFactory {
                 case QuestionTemplate.CLASSIFY:
                     break;
                 case QuestionTemplate.ANSWER:
+                    SubjectiveQuestion subjectiveQuestion = new SubjectiveQuestion(childQuestion, showType);
+                    subjectiveQuestion.setStem_complexToSimple(stem_complex);
+                    subjectiveQuestion.setTemplate_complexToSimple(template);
+                    subjectiveQuestion.setUrl_listenComplexToSimple(url_complex_listen);
+                    questions.add(subjectiveQuestion);
                     break;
                 default:
                     break;
