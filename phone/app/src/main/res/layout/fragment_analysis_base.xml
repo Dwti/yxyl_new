@@ -5,8 +5,6 @@
     android:background="@color/color_edf0ee"
     android:orientation="vertical">
 
-    <include layout="@layout/answerquestion_common_number" />
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

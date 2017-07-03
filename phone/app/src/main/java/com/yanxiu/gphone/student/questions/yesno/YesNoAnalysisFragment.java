@@ -86,7 +86,7 @@ public class YesNoAnalysisFragment extends AnalysisSimpleExerciseBaseFragment {
      */
     @Override
     public View addAnswerView(LayoutInflater inflater, @Nullable ViewGroup container) {
-        mAnswerView = inflater.inflate(R.layout.fragment_yesno_analysis, container, false);
+        mAnswerView = inflater.inflate(R.layout.fragment_yesno, container, false);
         return mAnswerView;
     }
 

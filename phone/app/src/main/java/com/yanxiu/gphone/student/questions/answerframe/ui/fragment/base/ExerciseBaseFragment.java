@@ -64,14 +64,18 @@ public abstract class ExerciseBaseFragment extends Fragment implements IExercise
     }
 
     public void setQaNumber(View v) {
-        mQaNumber = (TextView) v.findViewById(R.id.qa_number);
-        String str = mBaseQuestion.numberStringForShow();
-        Fragment parentFragment = getParentFragment();
-        if (parentFragment instanceof AnswerComplexExerciseBaseFragment || parentFragment instanceof AnalysisComplexExerciseBaseFragment) {
-            mQaNumber.setTextColor(getResources().getColor(R.color.color_999999));
-            TextTypefaceUtil.setViewTypeface(TextTypefaceUtil.TypefaceType.METRO_PLAY,mQaNumber);
+        try{
+            mQaNumber = (TextView) v.findViewById(R.id.qa_number);
+            String str = mBaseQuestion.numberStringForShow();
+            Fragment parentFragment = getParentFragment();
+            if (parentFragment instanceof AnswerComplexExerciseBaseFragment || parentFragment instanceof AnalysisComplexExerciseBaseFragment) {
+                mQaNumber.setTextColor(getResources().getColor(R.color.color_999999));
+                TextTypefaceUtil.setViewTypeface(TextTypefaceUtil.TypefaceType.METRO_PLAY,mQaNumber);
+            }
+            mQaNumber.setText(str);
+        }catch(Exception e){
+            e.printStackTrace();
         }
-        mQaNumber.setText(str);
     }
 
     /**
@@ -82,18 +86,22 @@ public abstract class ExerciseBaseFragment extends Fragment implements IExercise
      * @param v
      */
     public void setQaName(View v) {
-        mQaName = (TextView) v.findViewById(R.id.qa_name);
-        String templateName;
-        Fragment parentFragment = getParentFragment();
-        if (parentFragment instanceof AnswerComplexExerciseBaseFragment || parentFragment instanceof AnalysisComplexExerciseBaseFragment) {
-            templateName = getString(R.string.question);
-            TextPaint tp = mQaName.getPaint();
-            tp.setTypeface(DEFAULT_BOLD);
-            mQaName.setTextColor(getResources().getColor(R.color.color_333333));
-        } else {
-            templateName = StringUtil.getTemplateName(mBaseQuestion.getTemplate());
+        try{
+            mQaName = (TextView) v.findViewById(R.id.qa_name);
+            String templateName;
+            Fragment parentFragment = getParentFragment();
+            if (parentFragment instanceof AnswerComplexExerciseBaseFragment || parentFragment instanceof AnalysisComplexExerciseBaseFragment) {
+                templateName = getString(R.string.question);
+                TextPaint tp = mQaName.getPaint();
+                tp.setTypeface(DEFAULT_BOLD);
+                mQaName.setTextColor(getResources().getColor(R.color.color_333333));
+            } else {
+                templateName = StringUtil.getTemplateName(mBaseQuestion.getTemplate());
+            }
+            mQaName.setText(templateName);
+        }catch(Exception e){
+            e.printStackTrace();
         }
-        mQaName.setText(templateName);
     }
 
     @Override
