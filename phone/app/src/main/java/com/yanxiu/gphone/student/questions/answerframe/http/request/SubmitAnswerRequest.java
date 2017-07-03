@@ -9,8 +9,8 @@ import com.yanxiu.gphone.student.db.UrlRepository;
 
 public class SubmitAnswerRequest extends EXueELianBaseRequest {
 
-    protected String ppid;
-    protected String answers;
+    public String ppid;
+    public String answers;
 
 
     public SubmitAnswerRequest(String answers,String ppid) {

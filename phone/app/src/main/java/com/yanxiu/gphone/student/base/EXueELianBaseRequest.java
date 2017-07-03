@@ -10,11 +10,11 @@ import com.yanxiu.gphone.student.util.LoginInfo;
  */
 
 public abstract class EXueELianBaseRequest extends RequestBase {
-    protected String osType = Constants.osType;
-    protected String pcode = Constants.pcode;
-    protected String token = LoginInfo.getToken();
-    protected String trace_uid = LoginInfo.getUID();
-    protected String version = Constants.version;
+    public String osType = Constants.osType;
+    public String pcode = Constants.pcode;
+    public String token = LoginInfo.getToken();
+    public String trace_uid = LoginInfo.getUID();
+    public String version = Constants.version;
 
     @Override
     protected String urlServer() {

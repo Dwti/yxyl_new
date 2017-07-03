@@ -15,11 +15,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.YanxiuApplication;
+import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.AnswerCardSubmitDialog;
 import com.yanxiu.gphone.student.db.SaveAnswerDBHelper;
+import com.yanxiu.gphone.student.homework.response.PaperResponse;
+import com.yanxiu.gphone.student.questions.answerframe.http.request.AnswerReportRequest;
 import com.yanxiu.gphone.student.questions.answerframe.http.request.SubmitQuesitonTask;
 import com.yanxiu.gphone.student.questions.answerframe.adapter.AnswerCardAdapter;
 import com.yanxiu.gphone.student.questions.answerframe.adapter.GridSpacingItemDecoration;
@@ -28,9 +32,12 @@ import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
 import com.yanxiu.gphone.student.questions.answerframe.listener.OnAnswerCardItemSelectListener;
 import com.yanxiu.gphone.student.questions.answerframe.listener.SubmitAnswerCallback;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerQuestionActivity;
+import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionTemplate;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerReportActicity;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionUtil;
+import com.yanxiu.gphone.student.util.DESBodyDealer;
+import com.yanxiu.gphone.student.util.DataFetcher;
 import com.yanxiu.gphone.student.util.ScreenUtils;
 import com.yanxiu.gphone.student.util.ToastManager;
 
@@ -62,6 +69,8 @@ public class AnswerCardFragment extends Fragment implements View.OnClickListener
 
     private AnswerQuestionActivity mActivity;
     private SubmitQuesitonTask mSubmitQuesitonTask;
+
+    private AnswerReportRequest mRequest;//答题报告请求
 
     @Nullable
     @Override
@@ -198,13 +207,15 @@ public class AnswerCardFragment extends Fragment implements View.OnClickListener
                         mDialog.showSuccessView(groupEndtime);
                         mDialog.show();
                     } else {
-                        AnswerReportActicity.invoke(getActivity(), mPaper.getId());
-                        getActivity().finish();
+                        questReportData();
+//                        AnswerReportActicity.invoke(getActivity(), mPaper.getId());
+//                        getActivity().finish();
                     }
 
                 } else if (Constants.HAS_FINISH_CHECK_REPORT.equals(showna)) {
-                    AnswerReportActicity.invoke(getActivity(), mPaper.getId());
-                    getActivity().finish();
+                    questReportData();
+//                    AnswerReportActicity.invoke(getActivity(), mPaper.getId());
+//                    getActivity().finish();
                 } else {
                     ToastManager.showMsg("提交成功");
                     getActivity().finish();
@@ -269,5 +280,42 @@ public class AnswerCardFragment extends Fragment implements View.OnClickListener
             mDialog.setData(mQuestions);
             mDialog.setAnswerCardSubmitDialogClickListener(AnswerCardFragment.this);
         }
+    }
+    //请求答题报告
+    private void questReportData() {
+        if (TextUtils.isEmpty(mPaper.getId())) {
+            return;
+        }
+        if (mRequest != null) {
+            mRequest.cancelRequest();
+            mRequest = null;
+        }
+        mRequest = new AnswerReportRequest(mPaper.getId());
+        mRequest.bodyDealer = new DESBodyDealer();
+        mRequest.startRequest(PaperResponse.class, new EXueELianBaseCallback<PaperResponse>() {
+
+            @Override
+            protected void onResponse(RequestBase request, PaperResponse response) {
+                if (response.getStatus().getCode() == 0) {
+                    if (response.getData().size() > 0) {
+                        mPaper = new Paper(response.getData().get(0), QuestionShowType.ANALYSIS);
+                        if (mPaper != null && mPaper.getQuestions() != null && mPaper.getQuestions().size() > 0) {
+                            String key = this.hashCode()+mPaper.getId();
+                            DataFetcher.getInstance().save(key,mPaper);
+                            AnswerReportActicity.invoke(getActivity(), key);
+                            getActivity().finish();
+                        }
+                    } else {
+//                        ToastManager.showMsg("ffffff");
+                    }
+                } else {
+//                    ToastManager.showMsg("666");
+                }
+            }
+
+            @Override
+            public void onFail(RequestBase request, Error error) {
+            }
+        });
     }
 }

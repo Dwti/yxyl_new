@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.AnswerReportTitleView;
@@ -56,11 +57,13 @@ import static com.yanxiu.gphone.student.constant.Constants.PPID_KEY;
 
 public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswerCardItemSelectListener {
 
-    private Paper mPaper;
+
+    private String mKey;//获取数据的key
+    private Paper mPaper;//试卷数据
     private ArrayList<BaseQuestion> mQuestions;
     private String mPPid;
     private String mTitleString;
-    private AnswerReportRequest mRequest;
+//    private AnswerReportRequest mRequest;
 
     private RelativeLayout mNopigai_layout, mPigai_layout;
     //批改view
@@ -83,19 +86,39 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_answer_report);
-        questData();
+        initData();
+        initView();
     }
 
+    private void initData() {
+        mKey = getIntent().getStringExtra(Constants.EXTRA_PAPER);
+        if (TextUtils.isEmpty(mKey))
+            finish();
+        mPaper = DataFetcher.getInstance().getPaper(mKey);
+        QuestionUtil.initDataWithAnswer(mPaper);
+        mQuestions = new ArrayList<>();
+        mQuestions.addAll(mPaper.getQuestions());//为了不修改paper里的题目数据Questions
+        Paper.generateUsedNumbersForNodes(mQuestions);
+        mQuestions = QuestionUtil.allNodesThatHasNumber(mQuestions);
+        mPPid = mPaper.getId();
+        mStatus = mPaper.getStatus();
+        mSccuracy = (int) QuestionUtil.calculateRightRate(mQuestions) * 100;
+        mRightCount = QuestionUtil.calculateRightCount(mQuestions);
+        mCostTime = mPaper.getPaperStatus().getCosttime();
+        try {
+            mCostTime = TimeUtils.formatTime(Integer.valueOf(mCostTime));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-    private void questData() {
-        mPPid = getIntent().getStringExtra(PPID_KEY);
-//        mTitle = getIntent().getStringExtra(EXTRA_TITLE);
+        if (mQuestions.size() > 0) {
+            mTotalCount = mQuestions.size();
+        }
+        mTitleString = mPaper.getName();
         calculationSpanCount();
-        requestData();
     }
 
     private void initView() {
-        initData();
         mNopigai_layout = (RelativeLayout) findViewById(R.id.nopigai_layout);
         mPigai_layout = (RelativeLayout) findViewById(R.id.pigai_layout);
         mTextview_correct = (TextView) findViewById(R.id.textview_correct);
@@ -118,66 +141,52 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
             mNopigai_layout.setVisibility(View.VISIBLE);
             mPigai_layout.setVisibility(View.GONE);
         }
+        addGridView(QuestionUtil.classifyQuestionByType(mQuestions));
     }
 
-    private void initData() {
-        mStatus = mPaper.getStatus();
-        mSccuracy = (int) QuestionUtil.calculateRightRate(mQuestions) * 100;
-        mRightCount = QuestionUtil.calculateRightCount(mQuestions);
-        mCostTime = mPaper.getPaperStatus().getCosttime();
-        try {
-            mCostTime = TimeUtils.formatTime(Integer.valueOf(mCostTime));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
-        if (mQuestions.size() > 0) {
-            mTotalCount = mQuestions.size();
-        }
-        mTitleString = mPaper.getName();
-    }
-
-    private void requestData() {
-        if (TextUtils.isEmpty(mPPid)) {
-            return;
-        }
-        if (mRequest != null) {
-            mRequest.cancelRequest();
-            mRequest = null;
-        }
-        mRequest = new AnswerReportRequest(mPPid);
-        mRequest.bodyDealer = new DESBodyDealer();
-        mRequest.startRequest(PaperResponse.class, new HttpCallback<PaperResponse>() {
-            @Override
-            public void onSuccess(RequestBase request, PaperResponse ret) {
-                if (ret.getStatus().getCode() == 0) {
-                    if (ret.getData().size() > 0) {
-                        mPaper = new Paper(ret.getData().get(0), QuestionShowType.ANALYSIS);
-                        if (mPaper != null && mPaper.getQuestions() != null && mPaper.getQuestions().size() > 0) {
-                            QuestionUtil.initDataWithAnswer(mPaper);
-                            mQuestions = new ArrayList<>();
-                            mQuestions.addAll(mPaper.getQuestions());//为了不修改paper里的题目数据Questions
-                            Paper.generateUsedNumbersForNodes(mQuestions);
-                            mQuestions = QuestionUtil.allNodesThatHasNumber(mQuestions);
-
-                            initView();
-
-                            addGridView(QuestionUtil.classifyQuestionByType(mQuestions));
-
-                        }
-                    } else {
-                        ToastManager.showMsg("ffffff");
-                    }
-                } else {
-                    ToastManager.showMsg("666");
-                }
-            }
-
-            @Override
-            public void onFail(RequestBase request, Error error) {
-            }
-        });
-    }
+//    private void requestData() {
+//        if (TextUtils.isEmpty(mPPid)) {
+//            return;
+//        }
+//        if (mRequest != null) {
+//            mRequest.cancelRequest();
+//            mRequest = null;
+//        }
+//        mRequest = new AnswerReportRequest(mPPid);
+//        mRequest.bodyDealer = new DESBodyDealer();
+//        mRequest.startRequest(PaperResponse.class, new EXueELianBaseCallback<PaperResponse>() {
+//
+//            @Override
+//            protected void onResponse(RequestBase request, PaperResponse response) {
+//                if (response.getStatus().getCode() == 0) {
+//                    if (response.getData().size() > 0) {
+//                        mPaper = new Paper(response.getData().get(0), QuestionShowType.ANALYSIS);
+//                        if (mPaper != null && mPaper.getQuestions() != null && mPaper.getQuestions().size() > 0) {
+//                            QuestionUtil.initDataWithAnswer(mPaper);
+//                            mQuestions = new ArrayList<>();
+//                            mQuestions.addAll(mPaper.getQuestions());//为了不修改paper里的题目数据Questions
+//                            Paper.generateUsedNumbersForNodes(mQuestions);
+//                            mQuestions = QuestionUtil.allNodesThatHasNumber(mQuestions);
+//
+//                            initView();
+//
+//                            addGridView(QuestionUtil.classifyQuestionByType(mQuestions));
+//
+//                        }
+//                    } else {
+////                        ToastManager.showMsg("ffffff");
+//                    }
+//                } else {
+////                    ToastManager.showMsg("666");
+//                }
+//            }
+//
+//            @Override
+//            public void onFail(RequestBase request, Error error) {
+//            }
+//        });
+//    }
 
     private void addGridView(Map<String, List<BaseQuestion>> map) {
         if (map == null || map.size() == 0)
@@ -207,13 +216,6 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
             mCardGrid.addView(titleView);
             mCardGrid.addView(gridView);
 
-//            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                @Override
-//                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                    BaseQuestion questionEntity = (BaseQuestion) parent.getAdapter().getItem(position);
-////                    jumpType(questionEntity, dataList);
-//                }
-//            });
         }
     }
 
@@ -224,32 +226,28 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
         int screenWidth = ScreenUtils.getScreenWidth(this);
         int item_width = getResources().getDimensionPixelSize(R.dimen.answer_card_item_width);
         int item_space = getResources().getDimensionPixelSize(R.dimen.answer_card_item_space);
-//        Log.d(TAG, "screenWidth: " + screenWidth);
-//        Log.d(TAG, "item_width: " + item_width);
-//        Log.d(TAG, "item_space: " + item_space);
         //计算公式： item_width * X + （X+1）* item_space = screenWidth
 //        mSpanCount = (screenWidth -30) / 150;
         mSpanCount = (screenWidth - item_space) / (item_width + item_space);
-//        Log.d(TAG, "mSpanCount: " + mSpanCount);
         mSpacing = (screenWidth - item_width * mSpanCount) / (mSpanCount + 1);
-//        Log.d(TAG, "other: " + mSpacing);
     }
 
+
     /**
-     * 跳转AnswerReportActicity
+     * 跳转AnswerQuestionActivity
      *
      * @param activity
      */
-    public static void invoke(Activity activity, String ppid) {
-        Intent intent = new Intent(activity, AnswerReportActicity.class);
-        intent.putExtra(PPID_KEY, ppid);
+    public static void invoke(Activity activity, String key) {
+        Intent intent = new Intent(activity, AnswerQuestionActivity.class);
+        intent.putExtra(Constants.EXTRA_PAPER, key);
         activity.startActivity(intent);
     }
 
     @Override
     public void onItemSelect(BaseQuestion question) {
-        String key = this.hashCode()+mPPid;
-        DataFetcher.getInstance().save(key,mPaper);
-        AnalysisQuestionActivity.invoke(this,key,question.getLevelPositions());
+        String key = this.hashCode() + mPPid;
+        DataFetcher.getInstance().save(key, mPaper);
+        AnalysisQuestionActivity.invoke(this, key, question.getLevelPositions());
     }
 }
