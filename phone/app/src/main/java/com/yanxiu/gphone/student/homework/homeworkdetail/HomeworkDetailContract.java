@@ -28,6 +28,8 @@ public interface HomeworkDetailContract {
 
         void openAnswerReportUI(String key);
 
+        void openAnalysisQuestionUI(String key);
+
         void showNoMoreData();
 
         void showLoadMoreDataError(String msg);

@@ -14,6 +14,8 @@ public class HomeworkDetailPresenter implements HomeworkDetailContract.Presenter
 
     private final HomeworkDetailContract.View mHomeworkDetailView;
 
+    private static final String UNSUBMMIT = "1";
+
     private String mHomeworkId;
 
     public HomeworkDetailPresenter(String homeworkId, HomeworkDetailRepository mHomeworkRepository, HomeworkDetailContract.View mHomeworkDetailView) {
@@ -105,7 +107,11 @@ public class HomeworkDetailPresenter implements HomeworkDetailContract.Presenter
                 if(!mHomeworkDetailView.isActive()){
                     return;
                 }
-                mHomeworkDetailView.openAnswerQuestionUI(paper.getId());
+                if(paper.getPaperStatus().getStatus().equals(UNSUBMMIT)){
+                    mHomeworkDetailView.openAnalysisQuestionUI(paper.getId());
+                }else {
+                    mHomeworkDetailView.openAnswerQuestionUI(paper.getId());
+                }
             }
 
             @Override
