@@ -127,6 +127,35 @@ public class HomeworkDetailPresenter implements HomeworkDetailContract.Presenter
     }
 
     @Override
+    public void getAnalysis(String paperId) {
+        mHomeworkRepository.getAnalysis(paperId, new HomeworkDetailDataSource.LoadAnalysisCallback() {
+            @Override
+            public void onAnalysisLoaded(Paper paper) {
+                if(!mHomeworkDetailView.isActive()){
+                    return;
+                }
+                mHomeworkDetailView.openAnswerReportUI(paper.getId());
+            }
+
+            @Override
+            public void onDataEmpty() {
+                if(!mHomeworkDetailView.isActive()){
+                    return;
+                }
+                mHomeworkDetailView.showDataEmpty();
+            }
+
+            @Override
+            public void onDataError(int code, String msg) {
+                if(!mHomeworkDetailView.isActive()){
+                    return;
+                }
+                mHomeworkDetailView.showGetAnalysisDataError(msg);
+            }
+        });
+    }
+
+    @Override
     public void finishUI() {
         mHomeworkDetailView.finishUI();
     }

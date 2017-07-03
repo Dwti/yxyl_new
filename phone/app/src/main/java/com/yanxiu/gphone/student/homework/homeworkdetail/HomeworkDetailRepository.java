@@ -4,6 +4,7 @@ import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.constant.Constants;
+import com.yanxiu.gphone.student.homework.request.HomeworkReportRequest;
 import com.yanxiu.gphone.student.homework.response.HomeworkDetailBean;
 import com.yanxiu.gphone.student.homework.request.HomeworkDetailRequest;
 import com.yanxiu.gphone.student.homework.response.HomeworkDetailResponse;
@@ -120,6 +121,34 @@ public class HomeworkDetailRepository implements HomeworkDetailDataSource {
             @Override
             public void onFail(RequestBase request, Error error) {
                 loadPaperCallback.onDataError(Constants.NET_ERROR,error.getLocalizedMessage());
+            }
+        });
+    }
+
+    @Override
+    public void getAnalysis(String paperId, final LoadAnalysisCallback loadAnalysisCallback) {
+        HomeworkReportRequest request = new HomeworkReportRequest();
+        request.setPpid(paperId);
+        request.bodyDealer = new DESBodyDealer();
+        request.startRequest(PaperResponse.class, new HttpCallback<PaperResponse>() {
+            @Override
+            public void onSuccess(RequestBase request, PaperResponse ret) {
+                if(ret.getStatus().getCode() == 0){
+                    if(ret.getData().size() > 0){
+                        Paper paper = new Paper(ret.getData().get(0), QuestionShowType.ANALYSIS);
+                        DataFetcher.getInstance().save(paper.getId(),paper);
+                        loadAnalysisCallback.onAnalysisLoaded(paper);
+                    }else {
+                        loadAnalysisCallback.onDataEmpty();
+                    }
+                }else {
+                    loadAnalysisCallback.onDataError(ret.getStatus().getCode(),ret.getStatus().getDesc());
+                }
+            }
+
+            @Override
+            public void onFail(RequestBase request, Error error) {
+                loadAnalysisCallback.onDataError(Constants.NET_ERROR,error.getLocalizedMessage());
             }
         });
     }
