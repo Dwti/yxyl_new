@@ -123,9 +123,6 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
 
     @Override
     public void onClick(View view) {
-        if(view.getId() == R.id.ddddd)
-            AnswerReportActicity.invoke(this,"298148");
-
         int curItem = INDEX_HOMEWORK;
         switch (view.getId()) {
             case R.id.navi_homework:
