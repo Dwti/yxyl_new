@@ -36,4 +36,12 @@
         android:layout_alignParentTop="true">
     </FrameLayout>
 
+    <View
+        android:id="@+id/ddddd"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@color/color_E3F8C5"
+        android:onClick="onClick"
+        />
+
 </RelativeLayout>

@@ -5,6 +5,8 @@ import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.Exercise
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.questions.bean.PaperTestBean;
 
+import org.json.JSONArray;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,11 +21,19 @@ public class YesNoQuestion extends BaseQuestion {
 
     public YesNoQuestion(PaperTestBean bean, QuestionShowType showType) {
         super(bean, showType);
-        yesNoAnswer = String.valueOf(bean.getQuestions().getAnswer().get(0)) ;
+        yesNoAnswer = String.valueOf(bean.getQuestions().getAnswer().get(0));
 //        choice= bean.getQuestions().getContent().getChoices();
         choice = new ArrayList<>(2);
         choice.add("正确");
         choice.add("错误");
+        try {
+            String jsonArray = bean.getQuestions().getPad().getAnswer();
+            JSONArray array;
+            array = new JSONArray(jsonArray);
+            answerList.add(array.getString(0));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public List<String> getAnswerList() {

@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.HomePageBaseFragment;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
+import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerReportActicity;
 import com.yanxiu.gphone.student.util.ActivityManger;
 import com.yanxiu.gphone.student.util.DataFetcher;
 import com.yanxiu.gphone.student.util.UpdateUtil;
@@ -122,6 +123,9 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
 
     @Override
     public void onClick(View view) {
+        if(view.getId() == R.id.ddddd)
+            AnswerReportActicity.invoke(this,"298148");
+
         int curItem = INDEX_HOMEWORK;
         switch (view.getId()) {
             case R.id.navi_homework:

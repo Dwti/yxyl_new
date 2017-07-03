@@ -81,7 +81,6 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
 
     private void initData() {
         mKey = getIntent().getStringExtra(Constants.EXTRA_PAPER);
-        mTitleString = getIntent().getStringExtra(Constants.EXTRA_TITLE);
         if (TextUtils.isEmpty(mKey))
             finish();
         mPaper = DataFetcher.getInstance().getPaper(mKey);
@@ -90,6 +89,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         mTotalTime = 0;
         mStartTime = System.currentTimeMillis();
         mPaper.getPaperStatus().setBegintime(mStartTime+"");
+        mTitleString = mPaper.getName();
     }
 
     private void initView() {

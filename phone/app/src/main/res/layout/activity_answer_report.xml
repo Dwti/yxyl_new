@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fl_qa"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/top_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/color_89e00d">
+
+                <RelativeLayout
+                    android:id="@+id/nopigai_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/report_top_nopigailayout_height"
+                    android:background="@drawable/report_header_no_score"
+                    android:visibility="gone"/>
+
+                <RelativeLayout
+                    android:id="@+id/pigai_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/report_top_pigailayout_height"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="28dp"
+                    android:background="@drawable/report_header_score"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        tools:text="" />
+
+                    <TextView
+                        android:id="@+id/textview_correct"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_above="@id/center"
+                        android:layout_centerInParent="true"
+                        android:layout_marginBottom="-20dp"
+                        android:shadowColor="#ffffffff"
+                        android:shadowDx="0"
+                        android:shadowDy="0"
+                        android:shadowRadius="10"
+                        tools:text="89"
+                        android:textColor="@color/color_336600"
+                        android:textSize="57dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_above="@id/center"
+                        android:layout_alignBottom="@id/textview_correct"
+                        android:layout_centerInParent="true"
+                        android:layout_marginBottom="7dp"
+                        android:layout_toRightOf="@id/textview_correct"
+                        android:shadowColor="#ffffffff"
+                        android:shadowDx="0"
+                        android:shadowDy="0"
+                        android:shadowRadius="10"
+                        android:text="%"
+                        android:textColor="@color/color_336600"
+                        android:textSize="28dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_above="@id/center"
+                        android:layout_centerInParent="true"
+                        android:layout_marginBottom="-35dp"
+                        android:text="正确率"
+                        android:textColor="@color/color_336600"
+                        android:textSize="14dp" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="@dimen/report_top_nopigailayout_line_paddingbottom">
+
+                        <View
+                            android:id="@+id/line"
+                            android:layout_width="3dp"
+                            android:layout_height="match_parent"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="20dp"
+                            android:background="@color/color_69ad0a" />
+
+                        <TextView
+                            android:id="@+id/totalnumber"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="-2dp"
+                            android:layout_toLeftOf="@id/line"
+                            tools:text="共25题"
+                            android:textColor="@color/color_69ad0a"
+                            android:textSize="16dp" />
+
+                        <TextView
+                            android:id="@+id/yesnumber"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/totalnumber"
+                            android:layout_marginTop="-2dp"
+                            android:layout_toLeftOf="@id/line"
+                            tools:text="答对12题"
+                            android:textColor="@color/color_336600"
+                            android:textSize="19dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="-3dp"
+                            android:layout_toRightOf="@id/line"
+                            android:text="用时"
+                            android:textColor="@color/color_69ad0a"
+                            android:textSize="16dp" />
+
+                        <TextView
+                            android:id="@+id/time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/totalnumber"
+                            android:layout_marginTop="-3dp"
+                            android:layout_toRightOf="@id/line"
+                            tools:text="12:30:00"
+                            android:textColor="@color/color_336600"
+                            android:textSize="19dp" />
+                    </RelativeLayout>
+
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/text"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_below="@+id/top_layout"
+                android:layout_centerHorizontal="true"
+                android:textSize="19dp"
+                android:textColor="@color/color_666666"
+                android:background="@color/color_fefefe"
+                android:gravity="center"
+                android:text="@string/answer" />
+
+            <LinearLayout
+                android:id="@+id/card_grid"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/text"
+                android:background="@color/color_edf0ee"
+                android:gravity="center_horizontal"
+                android:paddingBottom="@dimen/report_grid_paddingbottom"
+                android:orientation="vertical"></LinearLayout>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/question_top_layout_height">
+
+        <ImageView
+            android:id="@+id/backview"
+            android:layout_width="@dimen/common_top_layout_leftimage_wdith"
+            android:layout_height="@dimen/common_top_layout_leftimage_wdith"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/common_top_layout_marginLeft"
+            android:background="@drawable/answerquestion_top_backview_selecter" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="100dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/color_ffffff"
+            android:textSize="21dp"
+            tools:text="放假客服开始开发司法考试打飞机快圣诞节疯狂的减肥可视对讲发射点发" />
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -30,6 +30,7 @@ import com.yanxiu.gphone.student.questions.answerframe.listener.SubmitAnswerCall
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerQuestionActivity;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionTemplate;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerReportActicity;
+import com.yanxiu.gphone.student.questions.answerframe.util.QuestionUtil;
 import com.yanxiu.gphone.student.util.ScreenUtils;
 import com.yanxiu.gphone.student.util.ToastManager;
 
@@ -72,7 +73,7 @@ public class AnswerCardFragment extends Fragment implements View.OnClickListener
 
     public void setData(Paper paper, String title) {
         mPaper = paper;
-        mQuestions = allNodesThatHasNumber(paper.getQuestions());
+        mQuestions = QuestionUtil.allNodesThatHasNumber(paper.getQuestions());
         mTitleString = title;
     }
 
@@ -100,20 +101,6 @@ public class AnswerCardFragment extends Fragment implements View.OnClickListener
     public void initListener() {
         mSubmiButton.setOnClickListener(this);
         mBackView.setOnClickListener(this);
-    }
-
-    /**
-     * 给答题卡设置题号
-     *
-     * @return
-     */
-    private ArrayList<BaseQuestion> allNodesThatHasNumber(ArrayList<BaseQuestion> questions) {
-        ArrayList<BaseQuestion> retNodes = new ArrayList<>();
-        for (BaseQuestion node : questions) {
-            retNodes.addAll(node.allNodesThatHasNumber());
-        }
-
-        return retNodes;
     }
 
     public void setOnCardItemSelectListener(OnAnswerCardItemSelectListener listener) {
@@ -145,7 +132,7 @@ public class AnswerCardFragment extends Fragment implements View.OnClickListener
         switch (v.getId()) {
             case R.id.submit_homework:
                 mDialog = new AnswerCardSubmitDialog(getActivity());
-                mDialog.setCancelable(true);
+                mDialog.setCancelable(false);
                 mDialog.setData(mQuestions);
                 mDialog.setAnswerCardSubmitDialogClickListener(AnswerCardFragment.this);
                 switch (checkAnswerState()) {
@@ -156,9 +143,9 @@ public class AnswerCardFragment extends Fragment implements View.OnClickListener
                     case STATE_PROGRESS:
                         mDialog.showProgressView();
                         mDialog.show();
+                        requestSubmmit();
                         break;
                     default:
-                        mDialog = null;
                         requestSubmmit();
                         break;
                 }
@@ -207,8 +194,9 @@ public class AnswerCardFragment extends Fragment implements View.OnClickListener
                     long groupEndtime = Long.parseLong(mPaper.getEndtime());//作业练习截止时间
 
                     if (groupEndtime > groupStartTime && ((groupEndtime - System.currentTimeMillis()) >= 3 * 60 * 1000)) { //作业截止时间判断，还未到截止时间不产生作业报告
-                        ToastManager.showMsg("提交成功");
+                        ToastManager.showMsg("提交成功11");
                         mDialog.showSuccessView(groupEndtime);
+                        mDialog.show();
                     } else {
                         AnswerReportActicity.invoke(getActivity(), mPaper.getId());
                         getActivity().finish();

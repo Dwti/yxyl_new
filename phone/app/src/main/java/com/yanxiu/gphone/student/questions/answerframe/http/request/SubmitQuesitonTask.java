@@ -306,9 +306,10 @@ public class SubmitQuesitonTask extends AsyncTask {
                         if (null != childAnsewr) {
                             answerJson = gson.toJson(childAnsewr);//转化成json
                         }
-                        childObject.put("answer", answerJson);
+                        JSONArray answers = new JSONArray(answerJson);
+                        childObject.put("answer", answers);
 
-                        if (childQuestionBean.getPad() != null) {
+                        if (childQuestionBean.getPad() != null && !TextUtils.isEmpty(childQuestionBean.getPad().getId())) {
                             childId = String.valueOf(childQuestionBean.getPad().getId());
                         }
                         childObject.put("id", childId);
@@ -332,7 +333,8 @@ public class SubmitQuesitonTask extends AsyncTask {
                     if (null != ansewr) {
                         answerJson = gson.toJson(ansewr);//转化成json
                     }
-                    outQuestionObject.put("answer", answerJson);
+                    JSONArray answers = new JSONArray(answerJson);
+                    outQuestionObject.put("answer", answers);
                     outQuestionObject.put("children", "");
                 }
 
@@ -342,7 +344,7 @@ public class SubmitQuesitonTask extends AsyncTask {
                 if (outerQuestionBean.getPad() != null) {
                     outQuestionObject.put("id", id);
                 }
-                outQuestionObject.put("answer", "");
+//                outQuestionObject.put("answer", "");
                 outQuestionObject.put("status", outerQuestionBean.getStatus());
                 outQuestionObject.put("uid", LoginInfo.getUID());
 

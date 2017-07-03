@@ -30,7 +30,7 @@ public abstract class BaseQuestion implements Serializable {
     protected String qtype;
     protected String analysis;
     //下面这些字段需要需要具体的题型去设置，并不是每个题型都有的（到时候字段的设置需要再检查一遍）
-//    protected List<Object> answer;
+    protected List<String> server_answer;//就是answer字段，因为已经定义了保存答案的answer字段，避免重名
 //    protected ContentBean content;
 //    protected String memo;
     protected PadBean pad;
@@ -59,6 +59,8 @@ public abstract class BaseQuestion implements Serializable {
 
     protected int parentNumber = -1;//答题卡父题记题号的子题，需要；
 
+    private ReportAnswerBean reportAnswerBean;
+
     public BaseQuestion(PaperTestBean bean,QuestionShowType showType){
         this.id = bean.getId();
         this.correctRate = bean.getCorrectRate();
@@ -69,6 +71,7 @@ public abstract class BaseQuestion implements Serializable {
         this.pid = bean.getPid();
         this.qid = bean.getQid();
         this.qtype = bean.getQtype();
+        server_answer = bean.getQuestions().getAnswer();
         this.analysis = bean.getQuestions().getAnalysis();
 //        this.pad = bean.getQuestions().getPad();
         this.point = bean.getQuestions().getPoint();
@@ -329,6 +332,29 @@ public abstract class BaseQuestion implements Serializable {
 
     public void setCosttime(long costtime) {
         this.costtime = costtime;
+    }
+
+    public boolean isComplexQuestion() {
+        return isComplexQuestion;
+    }
+
+    public ReportAnswerBean getReportAnswerBean() {
+        if(reportAnswerBean == null){
+            reportAnswerBean = new ReportAnswerBean();
+        }
+        return reportAnswerBean;
+    }
+
+    public void setReportAnswerBean(ReportAnswerBean reportAnswerBean) {
+        this.reportAnswerBean = reportAnswerBean;
+    }
+
+    public List<String> getServer_answer() {
+        return server_answer;
+    }
+
+    public void setServer_answer(List<String> server_answer) {
+        this.server_answer = server_answer;
     }
 
 

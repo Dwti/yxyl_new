@@ -14,8 +14,9 @@ public class PadBean extends BaseBean {
     private String id;
     private List<Object> jsonAnswer;
     private String ptid;
-    private String status;
+    private int status;
     private String uid;
+    private TeacherCheckBean teachercheck;
 
     public String getAnswer() {
         return answer;
@@ -57,11 +58,11 @@ public class PadBean extends BaseBean {
         this.ptid = ptid;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -71,5 +72,13 @@ public class PadBean extends BaseBean {
 
     public void setUid(String uid) {
         this.uid = uid;
+    }
+
+    public TeacherCheckBean getTeachercheck() {
+        return teachercheck;
+    }
+
+    public void setTeachercheck(TeacherCheckBean teachercheck) {
+        this.teachercheck = teachercheck;
     }
 }
