@@ -22,6 +22,8 @@ public class ClozeTextView extends ReplacementSpanTextView<ClozeView> implements
 
     private ClozeView mSelectedClozeView;
 
+    private boolean mClozeClickable = true;
+
     public ClozeTextView(@NonNull Context context) {
         super(context);
     }
@@ -45,12 +47,23 @@ public class ClozeTextView extends ReplacementSpanTextView<ClozeView> implements
     private void init(){
         setOnReplaceCompleteListener(this);
     }
+
+    public boolean isClozeClickable() {
+        return mClozeClickable;
+    }
+
+    public void setClozeClickable(boolean clickable) {
+        this.mClozeClickable = clickable;
+    }
+
     @Override
     protected ClozeView getView() {
         ClozeView clozeView = new ClozeView(getContext());
         clozeView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!mClozeClickable)
+                    return;
                 ClozeView cv = (ClozeView) v;
                 if(mSelectedClozeView == cv){
                     return;
@@ -107,6 +120,7 @@ public class ClozeTextView extends ReplacementSpanTextView<ClozeView> implements
     public ClozeView getSelectedClozeView(){
         return mSelectedClozeView;
     }
+
     public interface OnClozeClickListener{
         void onClozeClick(ClozeView view, int position);
     }

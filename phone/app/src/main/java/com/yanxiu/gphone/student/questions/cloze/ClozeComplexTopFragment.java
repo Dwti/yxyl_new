@@ -16,6 +16,7 @@ import com.yanxiu.gphone.student.customviews.spantextview.ClozeView;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.TopBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.util.StemUtil;
 
 
@@ -90,6 +91,9 @@ public class ClozeComplexTopFragment extends TopBaseFragment {
     }
 
     private void initData() {
+        if(mQuestion.getShowType() == QuestionShowType.ANALYSIS){
+            mClozeTextView.setClozeClickable(false);
+        }
         String text = StemUtil.initClozeStem(mQuestion.getStem());
         mClozeTextView.setText(text);
     }
