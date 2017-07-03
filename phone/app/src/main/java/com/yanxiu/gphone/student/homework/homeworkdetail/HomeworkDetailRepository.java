@@ -98,7 +98,7 @@ public class HomeworkDetailRepository implements HomeworkDetailDataSource {
     }
 
     @Override
-    public void getPaper(String paperId, final LoadPaperCallback loadPaperCallback) {
+    public void getPaper(String paperId, final int status,final LoadPaperCallback loadPaperCallback) {
         PaperRequest request = new PaperRequest();
         request.setPaperId(paperId);
         request.bodyDealer = new DESBodyDealer();
@@ -107,7 +107,8 @@ public class HomeworkDetailRepository implements HomeworkDetailDataSource {
             public void onSuccess(RequestBase request, PaperResponse ret) {
                 if(ret.getStatus().getCode() == 0){
                     if(ret.getData().size() > 0){
-                        Paper paper = new Paper(ret.getData().get(0), QuestionShowType.ANSWER);
+                        QuestionShowType type = status == HomeworkDetailPresenter.STATUS_TODO ? QuestionShowType.ANSWER:QuestionShowType.ANALYSIS;
+                        Paper paper = new Paper(ret.getData().get(0), type);
                         DataFetcher.getInstance().save(paper.getId(),paper);
                         loadPaperCallback.onPaperLoaded(paper);
                     }else {

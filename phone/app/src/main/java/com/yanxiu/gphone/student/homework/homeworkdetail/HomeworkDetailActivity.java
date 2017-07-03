@@ -27,7 +27,6 @@ import java.util.List;
 public class HomeworkDetailActivity extends Activity implements HomeworkDetailContract.View{
     public static final String EXTRA_SUBJECT_ID = "SUBJECT_ID";
     public static final String EXTRA_SUBJECT_NAME = "SUBJECT_NAME";
-    private static final int STATUS_FINISHED = 2;
 
     private List<HomeworkDetailBean> mHomeworkList = new ArrayList<>();
 
@@ -219,7 +218,7 @@ public class HomeworkDetailActivity extends Activity implements HomeworkDetailCo
     HomeworkDetailAdapter.HomeworkItemClickListener mItemClickListener = new HomeworkDetailAdapter.HomeworkItemClickListener() {
         @Override
         public void onHomeworkClick(HomeworkDetailBean homework) {
-            if(homework.getPaperStatus().getStatus() == STATUS_FINISHED){
+            if(homework.getPaperStatus().getStatus() == HomeworkDetailPresenter.STATUS_FINISHED){
                 mPresenter.getReport(homework.getId());
             }else {
                 mPresenter.getPaper(homework.getId(),homework.getPaperStatus().getStatus());
