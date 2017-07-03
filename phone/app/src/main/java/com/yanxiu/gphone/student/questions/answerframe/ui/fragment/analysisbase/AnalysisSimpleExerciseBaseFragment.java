@@ -70,9 +70,9 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
         initAnswerView(inflater,container);
         initAnalysisView();
         initListener();
-        setQaNumber(mRootView);
-        setQaName(mRootView);
-        initComplexStem(mRootView,mData);
+        setQaNumber(mAnsewr_container);
+        setQaName(mAnsewr_container);
+        initComplexStem(mAnsewr_container,mData);
     }
 
     /**
