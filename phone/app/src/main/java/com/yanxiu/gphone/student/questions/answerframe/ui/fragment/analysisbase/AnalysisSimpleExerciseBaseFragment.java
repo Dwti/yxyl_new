@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.customviews.ListenerSeekBarLayout;
+import com.yanxiu.gphone.student.customviews.analysis.AnalysisAnsewrAnslysisView;
 import com.yanxiu.gphone.student.customviews.analysis.AnalysisDifficultyView;
 import com.yanxiu.gphone.student.customviews.analysis.AnalysisQuestionResultView;
 import com.yanxiu.gphone.student.customviews.analysis.AnalysisScoreView;
@@ -41,6 +42,7 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
     public ImageView mYeno_img;//答题结果对应的对错img，一定要和mAnswerResultView成对出现或隐藏
     public AnalysisScoreView mScoreView;//评分view
     public AnalysisDifficultyView mDifficultyview;//难度view
+    public AnalysisAnsewrAnslysisView mAnalysisview;//解析view
 
     private ListenerSeekBarLayout mListenView;//听力复合题只有一个子题时，题干的听力控件
 
@@ -73,6 +75,7 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
         mYeno_img = (ImageView) mRootView.findViewById(R.id.yesno_img);
         mScoreView = (AnalysisScoreView) mRootView.findViewById(R.id.scoreview);
         mDifficultyview = (AnalysisDifficultyView) mRootView.findViewById(R.id.difficultyview);
+        mAnalysisview = (AnalysisAnsewrAnslysisView) mRootView.findViewById(R.id.analysisview);
 
 
 //        edit = (TextView) mRootView.findViewById(R.id.edit);
@@ -177,11 +180,21 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
      * 难度view
      * @param score 评分
      */
-    public void showmDifficultyview(int score) {
+    public void showDifficultyview(int score) {
         if(mDifficultyview != null && score >= 0 && score <= 5){
             mDifficultyview.setScore(score);
             mDifficultyview.setVisibility(View.VISIBLE);
 
+        }
+    }
+    /**
+     * 解析view
+     * @param analysis 解析
+     */
+    public void showAnalysisview(String analysis) {
+        if(mAnalysisview != null){
+            mAnalysisview.setText(analysis);
+            mAnalysisview.setVisibility(View.VISIBLE);
         }
     }
 

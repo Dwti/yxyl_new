@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        style="@style/AnalysisViewLeftTitle"
+        android:text="@string/answer_analysis_title" />
+
+    <TextView
+        android:id="@+id/analysis_answer_analysis"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="-10dp"
+        android:layout_marginLeft="@dimen/analysis_view_paddingbottom"
+        android:layout_marginRight="@dimen/analysis_view_paddingbottom"
+        android:gravity="center"
+        android:lineSpacingExtra="@dimen/analysis_answer_analysis_SpacingExtra"
+        android:textColor="@color/color_336600"
+        android:textSize="@dimen/analysis_answer_analysis_textsize"
+        tools:text="正确答案为A，聂答案为B" />
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/analysis_line_height"
+        android:layout_alignParentBottom="true"
+        android:background="@color/color_81d40d" />
+</LinearLayout>
