@@ -4,6 +4,7 @@ import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.questions.bean.PaperTestBean;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.bean.PointBean;
 
 import org.json.JSONArray;
 
@@ -18,11 +19,13 @@ public class SingleChoiceQuestion extends BaseQuestion {
     private String singleAnswer;
     private List<String> choice;
     private List<String> answerList=new ArrayList<>();
+    private List<PointBean> pointList=new ArrayList<>();
 
     public SingleChoiceQuestion(PaperTestBean bean, QuestionShowType showType) {
         super(bean, showType);
         singleAnswer= String.valueOf(bean.getQuestions().getAnswer().get(0));
         choice= bean.getQuestions().getContent().getChoices();
+        pointList=bean.getQuestions().getPoint();
         try {
             String jsonArray=bean.getQuestions().getPad().getAnswer();
             JSONArray array;
@@ -57,6 +60,14 @@ public class SingleChoiceQuestion extends BaseQuestion {
 
     public void setChoice(List<String> choice) {
         this.choice = choice;
+    }
+
+    public List<PointBean> getPointList() {
+        return pointList;
+    }
+
+    public void setPointList(List<PointBean> pointList) {
+        this.pointList = pointList;
     }
 
     @Override

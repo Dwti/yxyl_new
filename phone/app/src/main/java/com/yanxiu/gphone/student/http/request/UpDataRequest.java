@@ -136,6 +136,7 @@ public class UpDataRequest {
             if (upDatalistener != null) {
                 upDatalistener.onError("The url can not be NULL");
             }
+            return;
         }
         MultipartBody requestBody = builder.build();
         Request request = new Request.Builder().url(url).post(requestBody).build();

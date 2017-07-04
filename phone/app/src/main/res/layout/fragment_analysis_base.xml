@@ -28,8 +28,8 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/color_89e00d"
-                android:layout_marginTop="@dimen/analysis_toppadding">
+                android:layout_marginTop="@dimen/analysis_toppadding"
+                android:background="@color/color_89e00d">
 
                 <ImageView
                     android:id="@+id/yesno_img"
@@ -62,8 +62,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:visibility="gone" />
+
                     <com.yanxiu.gphone.student.customviews.analysis.AnalysisAnsewrAnslysisView
                         android:id="@+id/analysisview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"/>
+
+                    <com.yanxiu.gphone.student.customviews.PointLayoutView
+                        android:id="@+id/pointview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:visibility="gone" />

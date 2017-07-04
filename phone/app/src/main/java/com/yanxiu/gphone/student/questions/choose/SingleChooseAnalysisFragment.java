@@ -3,9 +3,9 @@ package com.yanxiu.gphone.student.questions.choose;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.text.Spanned;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +15,7 @@ import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.customviews.ChooseLayout;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.analysisbase.AnalysisSimpleExerciseBaseFragment;
-import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.cloze.ClozeAnswerComplexFragment;
-import com.yanxiu.gphone.student.questions.yesno.YesNoQuestion;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
 
 import java.util.List;
@@ -88,13 +86,49 @@ public class SingleChooseAnalysisFragment extends AnalysisSimpleExerciseBaseFrag
         mChooseView.setIsClick(false);
         mChooseView.setData(mData.getChoice());
         List<String> datas=mData.getAnswerList();
+        String answer=mData.getSingleAnswer();
+        int answer_position=Integer.parseInt(answer);
+
+        int count=mChooseView.getChildCount();
+
         if (datas.size()>0){
-            mChooseView.setSelect(Integer.parseInt(datas.get(datas.size()-1)));
+            String select=datas.get(datas.size()-1);
+            int select_position=Integer.parseInt(select);
+            if (count>select_position) {
+                ChooseLayout.ViewHolder selectViewHolder = (ChooseLayout.ViewHolder) mChooseView.getChildAt(select_position).getTag();
+                if (answer.equals(select)){
+                    mChooseView.setSelect(select_position);
+                    selectViewHolder.mQuestionContentView.setTextColor(ContextCompat.getColor(getContext(),R.color.color_89e00d));
+                    selectViewHolder.mQuestionIdView.setBackground(ContextCompat.getDrawable(getContext(),R.drawable.choose_right));
+                    selectViewHolder.mQuestionIdView.setTextColor(ContextCompat.getColor(getContext(),R.color.color_ffffff));
+                }else {
+                    if (count>answer_position) {
+                        ChooseLayout.ViewHolder answerViewHolder = (ChooseLayout.ViewHolder) mChooseView.getChildAt(answer_position).getTag();
+
+                        selectViewHolder.mQuestionContentView.setTextColor(ContextCompat.getColor(getContext(), R.color.color_ff7a05));
+                        selectViewHolder.mQuestionIdView.setBackground(ContextCompat.getDrawable(getContext(),R.drawable.choose_wrong));
+                        selectViewHolder.mQuestionIdView.setTextColor(ContextCompat.getColor(getContext(),R.color.color_ffffff));
+                        selectViewHolder.mQuestionSelectView.setBackground(ContextCompat.getDrawable(getContext(),R.mipmap.ic_launcher));
+
+                        answerViewHolder.mQuestionContentView.setTextColor(ContextCompat.getColor(getContext(), R.color.color_89e00d));
+                        answerViewHolder.mQuestionIdView.setBackground(ContextCompat.getDrawable(getContext(),R.drawable.choose_right));
+                        answerViewHolder.mQuestionIdView.setTextColor(ContextCompat.getColor(getContext(),R.color.color_ffffff));
+                    }
+                }
+            }
+        }else {
+            if (count>answer_position) {
+                ChooseLayout.ViewHolder answerViewHolder = (ChooseLayout.ViewHolder) mChooseView.getChildAt(answer_position).getTag();
+                answerViewHolder.mQuestionContentView.setTextColor(ContextCompat.getColor(getContext(), R.color.color_89e00d));
+                answerViewHolder.mQuestionIdView.setBackground(ContextCompat.getDrawable(getContext(),R.drawable.choose_right));
+                answerViewHolder.mQuestionIdView.setTextColor(ContextCompat.getColor(getContext(),R.color.color_ffffff));
+            }
         }
     }
 
     @Override
     public void initAnalysisView() {
         showAnswerResultView(false,"你的打哪是阿达，啊啥京东卡啥京东卡");
+        showPointView(mData.getPointList());
     }
 }

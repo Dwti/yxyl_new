@@ -16,13 +16,17 @@ import android.widget.TextView;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.customviews.ListenerSeekBarLayout;
 import com.yanxiu.gphone.student.customviews.analysis.AnalysisAnsewrAnslysisView;
+import com.yanxiu.gphone.student.customviews.PointLayoutView;
 import com.yanxiu.gphone.student.customviews.analysis.AnalysisDifficultyView;
 import com.yanxiu.gphone.student.customviews.analysis.AnalysisQuestionResultView;
 import com.yanxiu.gphone.student.customviews.analysis.AnalysisScoreView;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.NotesActicity;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionTemplate;
+import com.yanxiu.gphone.student.questions.bean.PointBean;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
+
+import java.util.List;
 
 import de.greenrobot.event.EventBus;
 
@@ -42,6 +46,7 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
     public AnalysisScoreView mScoreView;//评分view
     public AnalysisDifficultyView mDifficultyview;//难度view
     public AnalysisAnsewrAnslysisView mAnalysisview;//解析view
+    private PointLayoutView mPointView;//知识的view
 
     private ListenerSeekBarLayout mListenView;//听力复合题只有一个子题时，题干的听力控件
 
@@ -75,7 +80,7 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
         mScoreView = (AnalysisScoreView) mRootView.findViewById(R.id.scoreview);
         mDifficultyview = (AnalysisDifficultyView) mRootView.findViewById(R.id.difficultyview);
         mAnalysisview = (AnalysisAnsewrAnslysisView) mRootView.findViewById(R.id.analysisview);
-
+        mPointView= (PointLayoutView) mRootView.findViewById(R.id.pointview);
         View answerView = addAnswerView(inflater,container);
         mAnsewr_container.addView(answerView);
         initAnswerView(inflater,container);
@@ -187,6 +192,16 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
             mAnalysisview.setText(analysis);
             mAnalysisview.setVisibility(View.VISIBLE);
         }
+    }
+
+    public void showPointView(List<PointBean> data){
+        if (data==null){
+            return;
+        }
+        for (PointBean pointBean:data) {
+            mPointView.setData(pointBean.getName());
+        }
+        mPointView.setVisibility(View.VISIBLE);
     }
 
     @Override
