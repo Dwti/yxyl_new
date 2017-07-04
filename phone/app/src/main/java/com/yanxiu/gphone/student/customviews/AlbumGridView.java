@@ -1,6 +1,11 @@
 package com.yanxiu.gphone.student.customviews;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.yanxiu.gphone.student.R;
 
 import java.util.ArrayList;
@@ -302,6 +308,7 @@ public class AlbumGridView extends RelativeLayout {
                 } else {
                     convertView = mInflater.inflate(R.layout.adapter_gridview, parent, false);
                     holder.mDeleteView = (ImageView) convertView.findViewById(R.id.iv_delete);
+                    holder.mStrokeLayout= (RelativeLayout) convertView.findViewById(R.id.rl_bg);
                 }
                 holder.mPictureView = (ImageView) convertView.findViewById(R.id.iv_picture);
                 convertView.setTag(holder);
@@ -310,7 +317,7 @@ public class AlbumGridView extends RelativeLayout {
             }
 
             if (!path.equals(DEFAULT_PATH)) {
-                Glide.with(mInflater.getContext()).load(path).into(holder.mPictureView);
+                Glide.with(mInflater.getContext()).load(path).asBitmap().into(new RoundCornerImageTarget(holder.mPictureView));
                 if (model.equals(MODEL_LONGPRESS) && model_position == position) {
                     holder.mDeleteView.setVisibility(VISIBLE);
                 } else {
@@ -324,6 +331,13 @@ public class AlbumGridView extends RelativeLayout {
                         }
                     }
                 });
+            }
+
+            if (!isCanAddItem){
+                Bitmap bitmap= ((BitmapDrawable)ContextCompat.getDrawable(mInflater.getContext(),R.drawable.shape_rectangle_color_89e00d)).getBitmap();
+                RoundedBitmapDrawable circularBitmapDrawable = RoundedBitmapDrawableFactory.create(mInflater.getContext().getResources(), bitmap);
+                circularBitmapDrawable.setCornerRadius(12);
+                holder.mStrokeLayout.setBackground(circularBitmapDrawable);
             }
 
             convertView.setOnClickListener(new OnClickListener() {
@@ -359,7 +373,22 @@ public class AlbumGridView extends RelativeLayout {
             return convertView;
         }
 
+        private class RoundCornerImageTarget extends BitmapImageViewTarget {
+
+            RoundCornerImageTarget(ImageView view) {
+                super(view);
+            }
+
+            @Override
+            protected void setResource(Bitmap resource) {
+                RoundedBitmapDrawable circularBitmapDrawable = RoundedBitmapDrawableFactory.create(view.getContext().getResources(), resource);
+                circularBitmapDrawable.setCornerRadius(12);
+                view.setImageDrawable(circularBitmapDrawable);
+            }
+        }
+
         private class ViewHolder {
+            RelativeLayout mStrokeLayout;
             ImageView mPictureView;
             ImageView mDeleteView;
         }

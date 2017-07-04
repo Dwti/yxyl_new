@@ -26,11 +26,12 @@ public class ChooseLayout extends LinearLayout implements View.OnClickListener {
 
     public static final int TYPE_SINGLE = 0x000;
     public static final int TYPE_MULTI = 0x001;
-    private static final String[] mEms = new String[]{"A.", "B.", "C.", "D.", "E.", "F.", "G.", "H.", "I.", "J.", "K.", "L.", "M.", "N."};
+    private static final String[] mEms = new String[]{" A.", " B.", " C.", " D.", " E.", " F.", " G.", " H.", " I.", " J.", " K.", " L.", " M.", " N."};
 
     private Context mContext;
     private onItemClickListener mOnItemClickListener;
     private int mChooseType = TYPE_SINGLE;
+    private boolean mIsClick=true;
 
     public interface onItemClickListener {
         void onClick(int position, boolean isSelected);
@@ -99,6 +100,7 @@ public class ChooseLayout extends LinearLayout implements View.OnClickListener {
     }
 
     public void setIsClick(boolean isClick) {
+        this.mIsClick=isClick;
         int count = this.getChildCount();
         for (int i = 0; i < count; i++) {
             View view = this.getChildAt(i);
@@ -188,7 +190,9 @@ public class ChooseLayout extends LinearLayout implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        ViewHolder holder = (ViewHolder) v.getTag();
-        setSelect(holder.position,true);
+        if (mIsClick) {
+            ViewHolder holder = (ViewHolder) v.getTag();
+            setSelect(holder.position, true);
+        }
     }
 }
