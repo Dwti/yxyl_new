@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/analysis_score_height">
+
+    <TextView
+        style="@style/AnalysisViewLeftTitle"
+        android:text="@string/answer_sscore_title" />
+
+    <TextView
+        android:id="@+id/analysis_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:textColor="@color/color_336600"
+        android:textSize="@dimen/analysis_score_textsize"
+        tools:text="5" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/analysis_score"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="@dimen/analysis_view_paddingbottom"
+        android:layout_toRightOf="@id/analysis_score"
+        android:gravity="center"
+        android:text="@string/answer_sscore_string"
+        android:textColor="@color/color_336600"
+        android:textSize="@dimen/analysis_score_textsize2" />
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/analysis_line_height"
+        android:layout_alignParentBottom="true"
+        android:background="@color/color_81d40d" />
+</RelativeLayout>

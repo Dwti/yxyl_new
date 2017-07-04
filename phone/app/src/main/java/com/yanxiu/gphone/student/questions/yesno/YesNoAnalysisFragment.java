@@ -107,10 +107,7 @@ public class YesNoAnalysisFragment extends AnalysisSimpleExerciseBaseFragment {
      */
     @Override
     public void initAnalysisView() {
-        showView1();
-        showView2();
-        showView3();
-        v3.setText("hahahahah");
+        showAnswerResultView(true,"你的打哪是阿达，啊啥京东卡啥京东卡");
     }
 
     /**

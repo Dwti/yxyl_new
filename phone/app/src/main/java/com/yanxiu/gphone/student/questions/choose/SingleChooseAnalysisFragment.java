@@ -95,8 +95,6 @@ public class SingleChooseAnalysisFragment extends AnalysisSimpleExerciseBaseFrag
 
     @Override
     public void initAnalysisView() {
-        showView1();
-        showView2();
-        showView3();
+        showAnswerResultView(false,"你的打哪是阿达，啊啥京东卡啥京东卡");
     }
 }

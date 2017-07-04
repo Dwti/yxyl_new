@@ -75,8 +75,6 @@ public class MultiChooseAnalysisFragment extends AnalysisSimpleExerciseBaseFragm
 
     @Override
     public void initAnalysisView() {
-        showView1();
-        showView2();
-        showView3();
+
     }
 }
