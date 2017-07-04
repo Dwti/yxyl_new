@@ -1,11 +1,7 @@
 package com.yanxiu.gphone.student.customviews;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +13,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.yanxiu.gphone.student.R;
 
 import java.util.ArrayList;
@@ -38,6 +33,7 @@ public class AlbumGridView extends RelativeLayout {
     private WavesLayout mConverLayout;
     private TextView mButtonView;
     private GridAdapter mAdapter;
+    private boolean mIsCanAddItem=true;
 
     private onClickListener mClickListener;
     private onItemChangedListener mItemChangedListener;
@@ -88,7 +84,11 @@ public class AlbumGridView extends RelativeLayout {
         mContentView.setAdapter(mAdapter);
     }
 
-    public void setCanAddItem(boolean isCanAddItem){
+    public void setCanAddItem(boolean isCanAddItem) {
+        this.mIsCanAddItem=isCanAddItem;
+        if (!mIsCanAddItem){
+            mConverLayout.setVisibility(GONE);
+        }
         mAdapter.setCanAddItem(isCanAddItem);
     }
 
@@ -101,7 +101,11 @@ public class AlbumGridView extends RelativeLayout {
         }
         if (list.size() == 0) {
             mContentView.setVisibility(GONE);
-            mConverLayout.setVisibility(VISIBLE);
+            if (mIsCanAddItem) {
+                mConverLayout.setVisibility(VISIBLE);
+            }else {
+                mConverLayout.setVisibility(GONE);
+            }
         } else {
             mContentView.setVisibility(VISIBLE);
             mConverLayout.setVisibility(GONE);
@@ -136,7 +140,11 @@ public class AlbumGridView extends RelativeLayout {
         public void onItemNumChange(int num, ArrayList<String> paths) {
             if (num == 0) {
                 mContentView.setVisibility(GONE);
-                mConverLayout.setVisibility(VISIBLE);
+                if (mIsCanAddItem) {
+                    mConverLayout.setVisibility(VISIBLE);
+                }else {
+                    mConverLayout.setVisibility(GONE);
+                }
             } else {
                 mContentView.setVisibility(VISIBLE);
                 mConverLayout.setVisibility(GONE);
@@ -153,7 +161,7 @@ public class AlbumGridView extends RelativeLayout {
                     mClickListener.onClick(TYPE_IMAGE, position);
                 }
             } else {
-                if (clickListener!=null) {
+                if (clickListener != null) {
                     clickListener.onClick(mButtonView);
                 }
             }
@@ -194,7 +202,7 @@ public class AlbumGridView extends RelativeLayout {
         private List<String> mDatas = new ArrayList<>();
         private String model = MODEL_DEFAULT;
         private int model_position = MODEL_POSITION_DEFAULT;
-        private boolean isCanAddItem=true;
+        private boolean isCanAddItem = true;
         private onItemChangeListener mItemChangeListener;
 
         GridAdapter(Context context) {
@@ -213,8 +221,8 @@ public class AlbumGridView extends RelativeLayout {
             model = MODEL_DEFAULT;
         }
 
-        private void setCanAddItem(boolean isCanAddItem){
-            this.isCanAddItem=isCanAddItem;
+        private void setCanAddItem(boolean isCanAddItem) {
+            this.isCanAddItem = isCanAddItem;
             this.notifyDataSetChanged();
         }
 
@@ -270,7 +278,7 @@ public class AlbumGridView extends RelativeLayout {
 
         @Override
         public int getItemViewType(int position) {
-            if (position == mDatas.size() - 1&&isCanAddItem) {
+            if (position == mDatas.size() - 1 && isCanAddItem) {
                 return TYPE_TWO;
             } else {
                 return TYPE_ONE;
@@ -281,8 +289,8 @@ public class AlbumGridView extends RelativeLayout {
         public int getCount() {
             int count = mDatas != null ? mDatas.size() : 0;
             count = count > MAXNUMBER ? MAXNUMBER : count;
-            if (count>0&&!isCanAddItem){
-                count-=1;
+            if (count > 0 && !isCanAddItem) {
+                count -= 1;
             }
             return count;
         }
@@ -308,7 +316,7 @@ public class AlbumGridView extends RelativeLayout {
                 } else {
                     convertView = mInflater.inflate(R.layout.adapter_gridview, parent, false);
                     holder.mDeleteView = (ImageView) convertView.findViewById(R.id.iv_delete);
-                    holder.mStrokeLayout= (RelativeLayout) convertView.findViewById(R.id.rl_bg);
+                    holder.mStrokeView = (ImageView) convertView.findViewById(R.id.iv_bg);
                 }
                 holder.mPictureView = (ImageView) convertView.findViewById(R.id.iv_picture);
                 convertView.setTag(holder);
@@ -317,7 +325,7 @@ public class AlbumGridView extends RelativeLayout {
             }
 
             if (!path.equals(DEFAULT_PATH)) {
-                Glide.with(mInflater.getContext()).load(path).asBitmap().into(new RoundCornerImageTarget(holder.mPictureView));
+                Glide.with(mInflater.getContext()).load(path).into(holder.mPictureView);
                 if (model.equals(MODEL_LONGPRESS) && model_position == position) {
                     holder.mDeleteView.setVisibility(VISIBLE);
                 } else {
@@ -331,13 +339,12 @@ public class AlbumGridView extends RelativeLayout {
                         }
                     }
                 });
-            }
 
-            if (!isCanAddItem){
-                Bitmap bitmap= ((BitmapDrawable)ContextCompat.getDrawable(mInflater.getContext(),R.drawable.shape_rectangle_color_89e00d)).getBitmap();
-                RoundedBitmapDrawable circularBitmapDrawable = RoundedBitmapDrawableFactory.create(mInflater.getContext().getResources(), bitmap);
-                circularBitmapDrawable.setCornerRadius(12);
-                holder.mStrokeLayout.setBackground(circularBitmapDrawable);
+                if (!isCanAddItem) {
+                    holder.mStrokeView.setBackground(ContextCompat.getDrawable(mInflater.getContext(), R.drawable.shape_rectangle_color_89e00d));
+                }else {
+                    holder.mStrokeView.setBackground(ContextCompat.getDrawable(mInflater.getContext(), R.drawable.shape_rectangle_color_fafafa));
+                }
             }
 
             convertView.setOnClickListener(new OnClickListener() {
@@ -373,22 +380,8 @@ public class AlbumGridView extends RelativeLayout {
             return convertView;
         }
 
-        private class RoundCornerImageTarget extends BitmapImageViewTarget {
-
-            RoundCornerImageTarget(ImageView view) {
-                super(view);
-            }
-
-            @Override
-            protected void setResource(Bitmap resource) {
-                RoundedBitmapDrawable circularBitmapDrawable = RoundedBitmapDrawableFactory.create(view.getContext().getResources(), resource);
-                circularBitmapDrawable.setCornerRadius(12);
-                view.setImageDrawable(circularBitmapDrawable);
-            }
-        }
-
         private class ViewHolder {
-            RelativeLayout mStrokeLayout;
+            ImageView mStrokeView;
             ImageView mPictureView;
             ImageView mDeleteView;
         }

@@ -28,7 +28,6 @@ import de.greenrobot.event.EventBus;
  */
 public class SubjectiveFragment extends AnswerSimpleExerciseBaseFragment implements AlbumGridView.onClickListener, AlbumGridView.onItemChangedListener {
 
-
     private SubjectiveQuestion mData;
     private SubjectClozeTextView mQuestionView;
     private AlbumGridView mAnswerView;
