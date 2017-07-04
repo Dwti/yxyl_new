@@ -9,15 +9,24 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.customviews.ListenerSeekBarLayout;
+import com.yanxiu.gphone.student.customviews.analysis.AnalysisAnsewrAnslysisView;
+import com.yanxiu.gphone.student.customviews.PointLayoutView;
+import com.yanxiu.gphone.student.customviews.analysis.AnalysisDifficultyView;
+import com.yanxiu.gphone.student.customviews.analysis.AnalysisQuestionResultView;
+import com.yanxiu.gphone.student.customviews.analysis.AnalysisScoreView;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.NotesActicity;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionTemplate;
+import com.yanxiu.gphone.student.questions.bean.PointBean;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
+
+import java.util.List;
 
 import de.greenrobot.event.EventBus;
 
@@ -32,7 +41,12 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
 
     public View mRootView;
     public LinearLayout mAnsewr_container, mAnalysis_container;
-    public TextView v1, v2, v3, edit, mNotesTextView;
+    public AnalysisQuestionResultView mAnswerResultView;//答题结果view
+    public ImageView mYeno_img;//答题结果对应的对错img，一定要和mAnswerResultView成对出现或隐藏
+    public AnalysisScoreView mScoreView;//评分view
+    public AnalysisDifficultyView mDifficultyview;//难度view
+    public AnalysisAnsewrAnslysisView mAnalysisview;//解析view
+    private PointLayoutView mPointView;//知识的view
 
     private ListenerSeekBarLayout mListenView;//听力复合题只有一个子题时，题干的听力控件
 
@@ -60,16 +74,17 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
     private void initView(LayoutInflater inflater,@Nullable ViewGroup container) {
         mAnsewr_container = (LinearLayout) mRootView.findViewById(R.id.ansewr_container);
         mAnalysis_container = (LinearLayout) mRootView.findViewById(R.id.analysis_container);
-        v1 = (TextView) mRootView.findViewById(R.id.v1);
-        v2 = (TextView) mRootView.findViewById(R.id.v2);
-        v3 = (TextView) mRootView.findViewById(R.id.v3);
-        edit = (TextView) mRootView.findViewById(R.id.edit);
-        mNotesTextView = (TextView) mRootView.findViewById(R.id.notesContent);
+
+        mAnswerResultView = (AnalysisQuestionResultView) mRootView.findViewById(R.id.answerResult);
+        mYeno_img = (ImageView) mRootView.findViewById(R.id.yesno_img);
+        mScoreView = (AnalysisScoreView) mRootView.findViewById(R.id.scoreview);
+        mDifficultyview = (AnalysisDifficultyView) mRootView.findViewById(R.id.difficultyview);
+        mAnalysisview = (AnalysisAnsewrAnslysisView) mRootView.findViewById(R.id.analysisview);
+        mPointView= (PointLayoutView) mRootView.findViewById(R.id.pointview);
         View answerView = addAnswerView(inflater,container);
         mAnsewr_container.addView(answerView);
         initAnswerView(inflater,container);
         initAnalysisView();
-        initListener();
         setQaNumber(mAnsewr_container);
         setQaName(mAnsewr_container);
         initComplexStem(mAnsewr_container,mData);
@@ -107,10 +122,6 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
 
     }
 
-    private void initListener() {
-        edit.setOnClickListener(this);
-    }
-
     /**
      * 添加答题view
      * @param inflater
@@ -131,32 +142,82 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
      */
     public abstract void initAnalysisView();
 
-    public void showView1() {
-        v1.setVisibility(View.VISIBLE);
+    /**
+     * 答题结果view
+     * @param isRight 是否正确
+     * @param result server返回的（没有该数据请传空）
+     */
+    public void showAnswerResultView(boolean isRight,String result) {
+        if(mAnswerResultView != null && mYeno_img != null){
+            if(isRight){
+                mAnswerResultView.setText(getResources().getString(R.string.answer_yes),result);
+                mYeno_img.setBackgroundResource(R.drawable.analysis_yes_img);
+            }else{
+                mAnswerResultView.setText(getResources().getString(R.string.answer_no),result);
+                mYeno_img.setBackgroundResource(R.drawable.analysis_wrong_img);
+            }
+            mAnswerResultView.setVisibility(View.VISIBLE);
+            mYeno_img.setVisibility(View.VISIBLE);
+
+        }
+    }
+    /**
+     * 评分view
+     * @param score 评分
+     */
+    public void showScoreView(String score) {
+        if(mScoreView != null){
+            mScoreView.setText(score);
+            mScoreView.setVisibility(View.VISIBLE);
+
+        }
+    }
+    /**
+     * 难度view
+     * @param score 评分
+     */
+    public void showDifficultyview(int score) {
+        if(mDifficultyview != null && score >= 0 && score <= 5){
+            mDifficultyview.setScore(score);
+            mDifficultyview.setVisibility(View.VISIBLE);
+
+        }
+    }
+    /**
+     * 解析view
+     * @param analysis 解析
+     */
+    public void showAnalysisview(String analysis) {
+        if(mAnalysisview != null){
+            mAnalysisview.setText(analysis);
+            mAnalysisview.setVisibility(View.VISIBLE);
+        }
     }
 
-    public void showView2() {
-        v2.setVisibility(View.VISIBLE);
-    }
-
-    public void showView3() {
-        v3.setVisibility(View.VISIBLE);
+    public void showPointView(List<PointBean> data){
+        if (data==null){
+            return;
+        }
+        for (PointBean pointBean:data) {
+            mPointView.setData(pointBean.getName());
+        }
+        mPointView.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.edit:
-                NotesActicity.invoke(getActivity(), edit.hashCode());
-                break;
+//            case R.id.edit:
+//                NotesActicity.invoke(getActivity(), edit.hashCode());
+//                break;
         }
     }
 
     public void onEventMainThread(NotesActicity.NotesMessage notesMessage) {
-        int viewHashCode = notesMessage.mViewHashCode;
-        String notesContent = notesMessage.mNotesContent;
-        if (viewHashCode == edit.hashCode())
-            mNotesTextView.setText(notesContent);
+//        int viewHashCode = notesMessage.mViewHashCode;
+//        String notesContent = notesMessage.mNotesContent;
+//        if (viewHashCode == edit.hashCode())
+//            mNotesTextView.setText(notesContent);
     }
 
     @Override
@@ -189,7 +250,5 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
         if (null != mListenView)
             mListenView.setDestory();
     }
-
-
 
 }

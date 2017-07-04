@@ -29,7 +29,7 @@ public class ListenComplexQuestion extends BaseQuestion {
     @Override
     public ExerciseBaseFragment analysisFragment() {
         //解析
-        return null;
+        return new ListenAnalysisAnswerComplexFragment();
     }
 
     @Override

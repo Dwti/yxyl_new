@@ -36,7 +36,7 @@
                 android:id="@+id/ag_image"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:background="#fafafa"/>
+                android:background="@color/color_fafafa"/>
 
         </LinearLayout>
     </ScrollView>

@@ -132,10 +132,14 @@ public class SysEncryptUtil {
     }
 
     public static String decryptDES(String deCipMsg, String decryptType) {
-        if(!TextUtils.isEmpty(deCipMsg)) {
-            String textDeCipher = deCipMsg;   //从服务器返回的加密字符串，需要解密的字符串
-            byte[] byteStr = Base64.decode(textDeCipher, Base64.NO_WRAP);//先用Base64解码
-            return decrypt(byteStr, EN_DE_CODE_PWD, decryptType);
+        try{
+            if(!TextUtils.isEmpty(deCipMsg)) {
+                String textDeCipher = deCipMsg;   //从服务器返回的加密字符串，需要解密的字符串
+                byte[] byteStr = Base64.decode(textDeCipher, Base64.NO_WRAP);//先用Base64解码
+                return decrypt(byteStr, EN_DE_CODE_PWD, decryptType);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
         }
         return null;
     }

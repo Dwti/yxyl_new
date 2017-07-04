@@ -10,8 +10,8 @@ import android.support.annotation.StyleRes;
 import android.text.Html;
 import android.text.Layout;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -22,12 +22,14 @@ import android.widget.TextView;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.questions.cloze.ClozeTagHandler;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
-import com.yanxiu.gphone.student.util.StemUtil;
+import com.yanxiu.gphone.student.util.ScreenUtils;
+import com.yanxiu.gphone.student.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 /**
  * Created by sunpeng on 2017/6/15.
@@ -39,9 +41,14 @@ public abstract class ReplacementSpanTextView<T extends View> extends FrameLayou
     protected Context mContext;
     private Spanned mSpannedStr;
     private EmptyReplacementSpan[] mSpans;
+    protected String mText;
+    protected List<String> mAnswers;
     protected TreeMap<EmptyReplacementSpan, T> mTreeMap;
+    protected TreeSet<EmptyReplacementSpan> mSpanSet;
     protected boolean mIsReplaceCompleted = false;
     private OnReplaceCompleteListener mOnReplaceCompleteListener;
+    private static final int MIN_WIDTH = 200;
+    private int mSpacing;
 
     public ReplacementSpanTextView(@NonNull Context context) {
         super(context);
@@ -64,7 +71,9 @@ public abstract class ReplacementSpanTextView<T extends View> extends FrameLayou
     }
 
     private void initView(Context context) {
+        mSpacing = ScreenUtils.dpToPxInt(context,5);
         mContext = context;
+        mSpanSet = new TreeSet<>();
         mTreeMap = new TreeMap<>();
         View view = LayoutInflater.from(context).inflate(R.layout.replaceable_text_view, this, true);
         mTextView = (XTextView) view.findViewById(R.id.textView);
@@ -73,27 +82,66 @@ public abstract class ReplacementSpanTextView<T extends View> extends FrameLayou
         mTextView.setOnDrawFinishedListener(this);
     }
 
-    public void setText(final String text) {
+    public void setText(String text) {
+        setText(text,null);
+    }
+
+    public void setText(String text,List<String> answers){
+        mText = text;
+        mAnswers = answers;
+        initText(text,answers);
+    }
+
+    private void initText(final String text, final List<String> answers){
         post(new Runnable() {
             @Override
             public void run() {
                 mIsReplaceCompleted = false;
                 mOverLayViewContainer.removeAllViews();
+                mSpanSet.clear();
                 mTreeMap.clear();
                 mSpannedStr = Html.fromHtml(text, getImageGetter(), getTagHandler());
                 mSpans = mSpannedStr.getSpans(0,mSpannedStr.length(),EmptyReplacementSpan.class);
-                setSpanWidthAndHeight();
+                sortSpans();
+                setSpanWidthAndHeight(answers);
                 mTextView.setText(mSpannedStr, TextView.BufferType.SPANNABLE);
             }
         });
-
     }
 
-    private void setSpanWidthAndHeight() {
-        for(EmptyReplacementSpan emptyReplacementSpan : mSpans){
-            emptyReplacementSpan.width = 200;
-            emptyReplacementSpan.height = mTextView.getLineHeight();
-            emptyReplacementSpan.standardLineHeight = mTextView.getLineHeight();
+    private void sortSpans(){
+        for(EmptyReplacementSpan span : mSpans){
+            int start = mSpannedStr.getSpanStart(span);
+            span.setSpanStart(start);
+            mSpanSet.add(span);
+        }
+    }
+
+    private void setSpanWidthAndHeight(List<String> answers) {
+
+        if(answers == null || answers.size() == 0){
+            for(EmptyReplacementSpan emptyReplacementSpan : mSpans){
+                emptyReplacementSpan.width = MIN_WIDTH;
+                emptyReplacementSpan.height = mTextView.getLineHeight();
+                emptyReplacementSpan.standardLineHeight = mTextView.getLineHeight();
+            }
+        }else {
+            String answer;
+            int width;
+            int i = 0;
+            for(EmptyReplacementSpan span : mSpanSet){
+                answer = i < answers.size() ? answers.get(i) : null;
+                if(TextUtils.isEmpty(answer)){
+                    width = MIN_WIDTH;
+                }else {
+                    width = (int) Math.max(MIN_WIDTH, StringUtil.computeStringWidth(answer,mTextView.getPaint()) + mSpacing + mTextView.getTextSize());
+                }
+                span.width = width;
+                span.height = mTextView.getLineHeight();
+                span.standardLineHeight = mTextView.getLineHeight();
+                span.answer = answer;
+                i++;
+            }
         }
     }
 
@@ -139,6 +187,9 @@ public abstract class ReplacementSpanTextView<T extends View> extends FrameLayou
         }
     }
 
+    public void notifyAnswerChanged(){
+        initText(mText,mAnswers);
+    }
     public void setOnReplaceCompleteListener(OnReplaceCompleteListener onReplaceCompleteListener){
         mOnReplaceCompleteListener = onReplaceCompleteListener;
     }

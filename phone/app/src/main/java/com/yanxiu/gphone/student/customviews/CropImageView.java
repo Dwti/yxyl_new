@@ -39,6 +39,7 @@ public class CropImageView extends android.support.v7.widget.AppCompatImageView 
     private static final int DEFAULT_PADDING = DEFAULT_LINE_STROKEWIDTH + DEFAULT_SHARP_STROKEWIDTH;
 
     private static final String DEFAULT_BACKGROUNDCOLOR="#4d000000";
+    private static final int DEFAULT_LINECOLOR=Color.parseColor("#89e00d");
 
     private static final String TYPE_DEFAULT = "default";
     private static final String TYPE_SCALE = "scale";
@@ -57,6 +58,7 @@ public class CropImageView extends android.support.v7.widget.AppCompatImageView 
     private int mWidth;
     private int mHeight;
 
+    private boolean isShowCropBox=false;
     private Paint mCropPaint;
     private Paint mConverPaint;
     private PorterDuffXfermode mXfermode;
@@ -95,12 +97,14 @@ public class CropImageView extends android.support.v7.widget.AppCompatImageView 
     }
 
     private void initPaint() {
+        isShowCropBox=false;
+
         mCropPaint = new Paint();
         mCropPaint.setAntiAlias(true);
         mCropPaint.setDither(true);
         mCropPaint.setStrokeWidth(DEFAULT_LINE_STROKEWIDTH);
         mCropPaint.setStyle(Paint.Style.FILL);
-        mCropPaint.setColor(Color.BLUE);
+        mCropPaint.setColor(DEFAULT_LINECOLOR);
 
         mConverPaint=new Paint();
         mConverPaint.setStyle(Paint.Style.FILL);
@@ -109,6 +113,7 @@ public class CropImageView extends android.support.v7.widget.AppCompatImageView 
 
     @Override
     public void setImageBitmap(Bitmap bm) {
+        isShowCropBox=true;
         drawable = new ListenDrawable(bm, DEFAULT_PADDING);
         setBackgroundDrawable(drawable);
     }
@@ -138,16 +143,18 @@ public class CropImageView extends android.support.v7.widget.AppCompatImageView 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        int layerId = canvas.saveLayer(0, 0, canvas.getWidth(), canvas.getHeight(), null, Canvas.ALL_SAVE_FLAG);
-        mConverPaint.setColor(Color.parseColor(DEFAULT_BACKGROUNDCOLOR));
-        canvas.drawRect(DEFAULT_PADDING,DEFAULT_PADDING,mWidth-DEFAULT_PADDING,mHeight-DEFAULT_PADDING,mConverPaint);
-        mConverPaint.setXfermode(mXfermode);
-        mConverPaint.setColor(Color.TRANSPARENT);
-        canvas.drawRect(mCropRect,mConverPaint);
-        mConverPaint.setXfermode(null);
-        canvas.restoreToCount(layerId);
-        drawLines(canvas, mCropRect);
-        drawSharp(canvas, mCropRect);
+        if (isShowCropBox) {
+            int layerId = canvas.saveLayer(0, 0, canvas.getWidth(), canvas.getHeight(), null, Canvas.ALL_SAVE_FLAG);
+            mConverPaint.setColor(Color.parseColor(DEFAULT_BACKGROUNDCOLOR));
+            canvas.drawRect(DEFAULT_PADDING, DEFAULT_PADDING, mWidth - DEFAULT_PADDING, mHeight - DEFAULT_PADDING, mConverPaint);
+            mConverPaint.setXfermode(mXfermode);
+            mConverPaint.setColor(Color.TRANSPARENT);
+            canvas.drawRect(mCropRect, mConverPaint);
+            mConverPaint.setXfermode(null);
+            canvas.restoreToCount(layerId);
+            drawLines(canvas, mCropRect);
+            drawSharp(canvas, mCropRect);
+        }
     }
 
     private void drawLines(Canvas canvas, final Rect rect) {
@@ -273,6 +280,10 @@ public class CropImageView extends android.support.v7.widget.AppCompatImageView 
 
         switch (pressSite) {
             case PRESS_DEFAULT:
+                end_top=start_top;
+                end_bottom=start_bottom;
+                end_left=start_left;
+                end_right=start_right;
                 break;
             case PRESS_LINE_LEFT:
                 end_top = start_top;

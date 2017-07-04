@@ -17,6 +17,7 @@ public class EmptyReplacementSpan extends DynamicDrawableSpan implements Compara
     public int standardLineHeight;
     public int width;
     public int height;
+    public String answer;
     private int mSpanStart = -1;
 
     @Override

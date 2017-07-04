@@ -1,5 +1,7 @@
 package com.yanxiu.gphone.student.util;
 
+import android.text.TextPaint;
+
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.YanxiuApplication;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionTemplate;
@@ -62,5 +64,10 @@ public class StringUtil {
         }
         return null == str || "".equals(str) || "NULL"
                 .equals(str.toUpperCase());
+    }
+
+
+    public static float computeStringWidth(String str, TextPaint textPaint){
+        return textPaint.measureText(str);
     }
 }
