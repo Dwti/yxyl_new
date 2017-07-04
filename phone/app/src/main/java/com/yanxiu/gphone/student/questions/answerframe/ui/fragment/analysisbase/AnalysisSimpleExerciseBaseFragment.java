@@ -37,7 +37,6 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
 
     public View mRootView;
     public LinearLayout mAnsewr_container, mAnalysis_container;
-//    public TextView  edit, mNotesTextView;
     public AnalysisQuestionResultView mAnswerResultView;//答题结果view
     public ImageView mYeno_img;//答题结果对应的对错img，一定要和mAnswerResultView成对出现或隐藏
     public AnalysisScoreView mScoreView;//评分view
@@ -77,14 +76,10 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
         mDifficultyview = (AnalysisDifficultyView) mRootView.findViewById(R.id.difficultyview);
         mAnalysisview = (AnalysisAnsewrAnslysisView) mRootView.findViewById(R.id.analysisview);
 
-
-//        edit = (TextView) mRootView.findViewById(R.id.edit);
-//        mNotesTextView = (TextView) mRootView.findViewById(R.id.notesContent);
         View answerView = addAnswerView(inflater,container);
         mAnsewr_container.addView(answerView);
         initAnswerView(inflater,container);
         initAnalysisView();
-//        initListener();
         setQaNumber(mAnsewr_container);
         setQaName(mAnsewr_container);
         initComplexStem(mAnsewr_container,mData);
@@ -121,10 +116,6 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
     private void initData() {
 
     }
-
-//    private void initListener() {
-//        edit.setOnClickListener(this);
-//    }
 
     /**
      * 添加答题view
@@ -244,7 +235,5 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
         if (null != mListenView)
             mListenView.setDestory();
     }
-
-
 
 }
