@@ -25,6 +25,7 @@ import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerQuestio
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerComplexExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.util.KeyboardObserver;
 import com.yanxiu.gphone.student.util.StemUtil;
 
@@ -111,6 +112,9 @@ public class FillBlankFragment extends AnswerSimpleExerciseBaseFragment implemen
     }
 
     private void setStem(String text){
+        if(mQuestion.getShowType() == QuestionShowType.ANALYSIS){
+            mFillBlank.setBlankEditable(false);
+        }
         String stem = StemUtil.initFillBlankStem(text,mAnswers);
         mFillBlank.setText(stem);
     }

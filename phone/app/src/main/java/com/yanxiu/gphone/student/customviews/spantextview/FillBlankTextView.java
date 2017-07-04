@@ -39,6 +39,7 @@ public class FillBlankTextView extends FrameLayout {
     private OnReplaceCompleteListener mOnReplaceCompleteListener;
     private int mLastClickSpanStart = NONE;     //为了记录点击的是哪一个span，这样的话，弹起或者收起键盘重绘的时候，就能根据这个span的起始位置，去设置覆盖span的view的选中或者非选中状态
     private int mCurrClickSpanStart = NONE;
+    private boolean mBlankEditable = true;
     public static final int NONE = -1; //点击的位置为空，既没有点击的span(比如键盘收起的时候，需要清除所有的span的选中状态)
 
     public FillBlankTextView(Context context) {
@@ -81,6 +82,14 @@ public class FillBlankTextView extends FrameLayout {
                 mTextView.setText(mSpannedStr, TextView.BufferType.SPANNABLE);
             }
         });
+    }
+
+    public boolean isBlankEditable() {
+        return mBlankEditable;
+    }
+
+    public void setBlankEditable(boolean editable) {
+        this.mBlankEditable = editable;
     }
 
     public int getLastClickSpanStart(){
@@ -205,6 +214,8 @@ public class FillBlankTextView extends FrameLayout {
                     view.setOnClickListener(new OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            if(!mBlankEditable)
+                                return;
                             mCurrClickSpanStart = start;
                             if(mOnBlankClickListener != null){
                                 mOnBlankClickListener.onBlankClick(view,content,start);

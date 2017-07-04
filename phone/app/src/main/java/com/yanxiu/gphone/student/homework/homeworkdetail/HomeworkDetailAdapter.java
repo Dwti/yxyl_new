@@ -60,7 +60,7 @@ public class HomeworkDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             HomeworkDetailViewHolder viewHolder = (HomeworkDetailViewHolder)holder;
             viewHolder.mName.setText(bean.getName());
             //TODO 根据状态设置icon
-            if(bean.getPaperStatus().getStatus() == 0){   //待完成
+            if(bean.getPaperStatus().getStatus() == HomeworkDetailPresenter.STATUS_TODO){   //待完成
                 viewHolder.mState1.setText(mContext.getString(R.string.homework_done_num) + bean.getAnswernum()  + "/" + bean.getQuesnum());
                 if(bean.getIsEnd() == 0){  //未截止
                     viewHolder.mState2.setText(mContext.getString(R.string.homework_remain_time)+ bean.getRemaindertimeStr());
@@ -68,11 +68,11 @@ public class HomeworkDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     viewHolder.mState2.setText(R.string.can_redo);
                 }
                 viewHolder.mCommentLayout.setVisibility(View.GONE);
-            }else if(bean.getPaperStatus().getStatus() ==1){ // 未完成
+            }else if(bean.getPaperStatus().getStatus() ==HomeworkDetailPresenter.STATUS_UNSUBMMIT){ // 未完成
                 viewHolder.mState1.setText(R.string.over_deadline);
                 viewHolder.mState2.setText("");
                 viewHolder.mCommentLayout.setVisibility(View.GONE);
-            }else if(bean.getPaperStatus().getStatus() == 2){//已完成
+            }else if(bean.getPaperStatus().getStatus() == HomeworkDetailPresenter.STATUS_FINISHED){//已完成
                 if(TextUtils.isEmpty(bean.getPaperStatus().getTeachercomments()) || TextUtils.isEmpty(bean.getPaperStatus().getTeacherName())){
                     viewHolder.mCommentLayout.setVisibility(View.GONE);
                     viewHolder.mState1.setText(R.string.homework_done_uncheck);

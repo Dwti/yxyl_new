@@ -41,7 +41,7 @@ public interface HomeworkDetailDataSource {
 
     void getMoreHomeworkDetails(String homeworkId, LoadHomeworkDetailCallback loadHomeworkDetailCallback);
 
-    void getPaper(String paperId, LoadPaperCallback loadPaperCallback);
+    void getPaper(String paperId, int status, LoadPaperCallback loadPaperCallback);
 
     void getReport(String paperId, LoadReportCallback loadReportCallback);
 }

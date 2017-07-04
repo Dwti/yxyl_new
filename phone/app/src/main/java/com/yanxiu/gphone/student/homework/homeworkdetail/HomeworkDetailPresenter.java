@@ -14,7 +14,9 @@ public class HomeworkDetailPresenter implements HomeworkDetailContract.Presenter
 
     private final HomeworkDetailContract.View mHomeworkDetailView;
 
-    private static final String UNSUBMMIT = "1";
+    public static final int STATUS_TODO = 0;   //待完成
+    public static final int STATUS_UNSUBMMIT = 1;  //逾期未交
+    public static final int STATUS_FINISHED = 2;  //已完成
 
     private String mHomeworkId;
 
@@ -100,16 +102,16 @@ public class HomeworkDetailPresenter implements HomeworkDetailContract.Presenter
     }
 
     @Override
-    public void getPaper(final String paperId) {
-        mHomeworkRepository.getPaper(paperId, new HomeworkDetailDataSource.LoadPaperCallback() {
+    public void getPaper(final String paperId, final int status) {
+        mHomeworkRepository.getPaper(paperId, status, new HomeworkDetailDataSource.LoadPaperCallback() {
             @Override
             public void onPaperLoaded(Paper paper) {
                 if(!mHomeworkDetailView.isActive()){
                     return;
                 }
-                if(paper.getPaperStatus().getStatus().equals(UNSUBMMIT)){
+                if(status == STATUS_UNSUBMMIT){
                     mHomeworkDetailView.openAnalysisQuestionUI(paper.getId());
-                }else {
+                }else if (status == STATUS_TODO){
                     mHomeworkDetailView.openAnswerQuestionUI(paper.getId());
                 }
             }

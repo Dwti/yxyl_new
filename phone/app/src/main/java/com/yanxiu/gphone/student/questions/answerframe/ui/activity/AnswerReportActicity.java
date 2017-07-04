@@ -239,7 +239,7 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
      * @param activity
      */
     public static void invoke(Activity activity, String key) {
-        Intent intent = new Intent(activity, AnswerQuestionActivity.class);
+        Intent intent = new Intent(activity, AnswerReportActicity.class);
         intent.putExtra(Constants.EXTRA_PAPER, key);
         activity.startActivity(intent);
     }
