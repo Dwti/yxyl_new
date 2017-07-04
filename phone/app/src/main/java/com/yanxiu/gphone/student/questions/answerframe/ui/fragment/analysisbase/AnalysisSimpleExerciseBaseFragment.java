@@ -162,6 +162,28 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
 
         }
     }
+    /**
+     * 评分view
+     * @param score 评分
+     */
+    public void showScoreView(String score) {
+        if(mScoreView != null){
+            mScoreView.setText(score);
+            mScoreView.setVisibility(View.VISIBLE);
+
+        }
+    }
+    /**
+     * 难度view
+     * @param score 评分
+     */
+    public void showmDifficultyview(int score) {
+        if(mDifficultyview != null && score >= 0 && score <= 5){
+            mDifficultyview.setScore(score);
+            mDifficultyview.setVisibility(View.VISIBLE);
+
+        }
+    }
 
     @Override
     public void onClick(View v) {
@@ -172,12 +194,12 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
         }
     }
 
-//    public void onEventMainThread(NotesActicity.NotesMessage notesMessage) {
+    public void onEventMainThread(NotesActicity.NotesMessage notesMessage) {
 //        int viewHashCode = notesMessage.mViewHashCode;
 //        String notesContent = notesMessage.mNotesContent;
 //        if (viewHashCode == edit.hashCode())
 //            mNotesTextView.setText(notesContent);
-//    }
+    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {

@@ -108,6 +108,8 @@ public class YesNoAnalysisFragment extends AnalysisSimpleExerciseBaseFragment {
     @Override
     public void initAnalysisView() {
         showAnswerResultView(true,"你的打哪是阿达，啊啥京东卡啥京东卡");
+        showScoreView("3");
+        showmDifficultyview(3);
     }
 
     /**
