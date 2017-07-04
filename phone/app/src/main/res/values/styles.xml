@@ -100,4 +100,15 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowIsFloating">true</item>
     </style>
+
+    <style name="AnalysisViewLeftTitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/analysis_view_paddingbottom</item>
+        <item name="android:layout_marginBottom">@dimen/analysis_view_paddingbottom</item>
+        <item name="android:layout_marginLeft">@dimen/analysis_view_paddingbottom</item>
+        <item name="android:textColor">@color/color_69ad0a</item>
+        <item name="android:textSize">@dimen/analysis_titleview_textsize</item>
+        <item name="android:gravity">center</item>
+    </style>
 </resources>

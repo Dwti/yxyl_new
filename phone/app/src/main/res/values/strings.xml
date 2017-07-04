@@ -160,4 +160,10 @@
     <string name="SD_cannot_use">没有检测到内存卡</string>
 
     <string name="answer">作答详情</string>
+    <string name="answer_result">作答结果</string>
+    <string name="answer_difficulty">难度</string>
+    <string name="answer_sscore_title">得分</string>
+    <string name="answer_sscore_string">分</string>
+    <string name="answer_no">回答错误</string>
+    <string name="answer_yes">回答正确</string>
 </resources>

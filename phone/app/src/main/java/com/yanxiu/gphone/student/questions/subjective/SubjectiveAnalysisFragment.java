@@ -63,9 +63,6 @@ public class SubjectiveAnalysisFragment extends AnalysisSimpleExerciseBaseFragme
 
     @Override
     public void initAnalysisView() {
-        showView1();
-        showView2();
-        showView3();
     }
 
     private void initView() {

@@ -1,6 +1,7 @@
 package com.yanxiu.gphone.student.customviews.analysis;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,12 +11,15 @@ import android.widget.TextView;
 import com.yanxiu.gphone.student.R;
 
 /**
+ * 作答结果view
  * Created by 戴延枫 on 2017/7/3.
  */
 
 public class AnalysisQuestionResultView extends LinearLayout {
 
-    private TextView mTitle;
+    private TextView mYesNo;
+    private TextView mResult;
+
 
     public AnalysisQuestionResultView(Context context) {
         super(context);
@@ -33,13 +37,25 @@ public class AnalysisQuestionResultView extends LinearLayout {
     }
 
     private void initView(Context context) {
-        View view = LayoutInflater.from(context).inflate(R.layout.answer_report_title_layout, this, true);
-        mTitle = (TextView) view.findViewById(R.id.titleview);
+        View view = LayoutInflater.from(context).inflate(R.layout.analysis_question_result_layout, this, false);
+        addView(view);
+        mYesNo = (TextView) view.findViewById(R.id.analysis_yes_no);
+        mResult = (TextView) view.findViewById(R.id.analysis_answer_result);
     }
 
-    public void setTitleText(CharSequence text) {
-        if (mTitle != null) {
-            mTitle.setText(text);
+    /**
+     * 作答结果设置text
+     *
+     * @param yesno      "回答错误" or "回答正确"
+     * @param yourAnswer 正确答案（没有该数据请传空）
+     */
+    public void setText(String yesno, String yourAnswer) {
+        if (mYesNo != null) {
+            mYesNo.setText(yesno);
+        }
+        if (mResult != null && !TextUtils.isEmpty(yourAnswer)) {
+            mResult.setText(yourAnswer);
+            mResult.setVisibility(VISIBLE);
         }
     }
 }

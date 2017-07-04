@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        style="@style/AnalysisViewLeftTitle"
+        android:text="@string/answer_result" />
+
+    <TextView
+        android:id="@+id/analysis_yes_no"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/analysis_view_paddingbottom"
+        android:layout_marginLeft="@dimen/analysis_view_paddingbottom"
+        android:gravity="center"
+        android:textColor="@color/color_ffffff"
+        android:textSize="@dimen/analysis_yseno_textsize"
+        tools:text="回答正确" />
+    <!--android:layout_marginBottom="-6dp"  为了解决添加行间距后bottom = bottom + lineSpacingExtr的问题-->
+    <TextView
+        android:id="@+id/analysis_answer_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="-6dp"
+        android:layout_marginLeft="@dimen/analysis_view_paddingbottom"
+        android:layout_marginRight="@dimen/analysis_view_paddingbottom"
+        android:gravity="center"
+        android:lineSpacingExtra="@dimen/analysis_answer_result_SpacingExtra"
+        android:textColor="@color/color_336600"
+        android:textSize="@dimen/analysis_answer_result_textsize"
+        android:visibility="visible"
+        tools:text="正确答案为A，聂答案为B" />
+
+    <include layout="@layout/analysis_line_layout" />
+</LinearLayout>
