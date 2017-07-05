@@ -19,7 +19,7 @@ public abstract class EXueELianBaseCallback<T extends EXueELianBaseResponse> imp
     @Override
     public void onSuccess(RequestBase request, T ret) {
         //code =99 表示token失效
-        if(ret.getStatus().getCode() == Constants.NOT_LOGGED_IN){
+        if(ret != null && ret.getStatus().getCode() == Constants.NOT_LOGGED_IN){
             LoginInfo.LogOut();
             Context context = YanxiuApplication.getContext();
             Intent intent=new Intent(context,LoginActivity.class);

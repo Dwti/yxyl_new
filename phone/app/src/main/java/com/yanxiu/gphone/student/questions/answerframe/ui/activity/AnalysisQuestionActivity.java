@@ -53,7 +53,7 @@ public class AnalysisQuestionActivity extends YanxiuBaseActivity implements View
     private LinearLayout mPrevious_question, mNext_question;//上一题，下一题
     private TextView mNext_text;//下一题textview
     private ImageView mBackView;//返回按钮
-    private TextView mRightview;//报错
+    private TextView mErrorview;//报错
 
 
     @Override
@@ -112,7 +112,7 @@ public class AnalysisQuestionActivity extends YanxiuBaseActivity implements View
         mNext_question = (LinearLayout) findViewById(R.id.next_question);
         mNext_text = (TextView) findViewById(R.id.next_text);
         mBackView = (ImageView) findViewById(R.id.backview);
-        mRightview = (TextView) findViewById(R.id.rightview);
+        mErrorview = (TextView) findViewById(R.id.errorview);
         setListener();
         initViewPager();
     }
@@ -121,7 +121,7 @@ public class AnalysisQuestionActivity extends YanxiuBaseActivity implements View
         mPrevious_question.setOnClickListener(this);
         mNext_question.setOnClickListener(this);
         mBackView.setOnClickListener(this);
-        mRightview.setOnClickListener(this);
+        mErrorview.setOnClickListener(this);
     }
 
     private void initViewPager() {
@@ -324,10 +324,54 @@ public class AnalysisQuestionActivity extends YanxiuBaseActivity implements View
             case R.id.backview:
                 finish();
                 break;
-            case R.id.rightview:
-                ToastManager.showMsg("摆错");
+            case R.id.errorview:
+                BaseQuestion currentQuestion = getCurrentQuestion();
+                String qid = currentQuestion.getQid();
+                if(currentQuestion != null && !TextUtils.isEmpty(qid)){
+                    AnswerErrorActicity.invoke(AnalysisQuestionActivity.this,qid);
+                }
                 break;
         }
+    }
+
+    /**
+     * 获取当前题目
+     */
+    public BaseQuestion getCurrentQuestion() {
+        BaseQuestion currentQuestion = null;
+        ExerciseBaseFragment currentFramgent = null;//当前的Fragment
+        FragmentStatePagerAdapter adapter;
+        int index;//当前Fragment在外层viewPager中的index
+        int size;//viewPager的总共的size
+        try {
+            adapter = (FragmentStatePagerAdapter) mViewPager.getAdapter();
+            index = mViewPager.getCurrentItem();
+            currentFramgent = (ExerciseBaseFragment) adapter.instantiateItem(mViewPager, index);
+            size = adapter.getCount();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        if (adapter == null || index < 0 || size < 1 || mViewPager == null || currentFramgent == null)
+            return null;
+
+        if (currentFramgent instanceof AnalysisComplexExerciseBaseFragment) {
+            AnalysisComplexExerciseBaseFragment complexExerciseFragment = (AnalysisComplexExerciseBaseFragment) currentFramgent;
+            ViewPager innerViewPager = complexExerciseFragment.getmViewPager();
+            FragmentStatePagerAdapter innerAdapter = (FragmentStatePagerAdapter) innerViewPager.getAdapter();
+            int innerIndex = innerViewPager.getCurrentItem();
+            int innerSize = innerViewPager.getAdapter().getCount();
+
+            if (complexExerciseFragment == null || innerViewPager == null || innerAdapter == null || innerIndex < 0 || innerSize < 1)
+                return null;
+            currentQuestion = mQuestions.get(index).getChildren().get(innerIndex);
+
+        } else if (currentFramgent instanceof AnalysisSimpleExerciseBaseFragment) { // 单题
+            currentQuestion = mQuestions.get(index);
+
+        }
+        return currentQuestion;
     }
 
 

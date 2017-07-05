@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true" android:drawable="@drawable/shape_error_tag_press"/>
+    <item android:state_selected="true" android:drawable="@drawable/shape_error_tag_press"/>
+    <item android:drawable="@drawable/shape_analysis_error_normal"/>
+</selector>

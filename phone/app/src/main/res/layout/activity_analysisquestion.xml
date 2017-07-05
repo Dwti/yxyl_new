@@ -30,15 +30,16 @@
             android:textColor="@color/color_666666"/>
 
         <TextView
-            android:id="@+id/rightview"
-            android:layout_width="@dimen/question_top_layout_rightimage_width"
-            android:layout_height="@dimen/question_top_layout_rightimage_width"
-            android:background="@android:color/holo_blue_light"
+            android:id="@+id/errorview"
+            android:layout_width="@dimen/analysis_error_width"
+            android:layout_height="@dimen/analysis_error_height"
+            android:background="@drawable/selector_analysis_error"
             android:gravity="center"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/question_top_layout_rightimage_marginRight"
-            android:text="@string/baocuo_text"/>
+            android:text="@string/baocuo_text"
+            android:textColor="@drawable/selector_analysis_error_text_color"/>
 
 
     </RelativeLayout>

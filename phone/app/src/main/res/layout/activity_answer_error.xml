@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_ffffff">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/title_bar"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/analysis_error_top_height">
+
+                <ImageView
+                    android:id="@+id/backview"
+                    android:layout_width="@dimen/common_top_layout_leftimage_wdith"
+                    android:layout_height="@dimen/common_top_layout_leftimage_wdith"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/common_top_layout_marginLeft"
+                    android:background="@drawable/answerquestion_top_backview_selecter" />
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="题目报错"
+                    android:textColor="@color/color_666666"
+                    android:textSize="21dp" />
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/analysis_view_paddingbottom"
+                android:layout_marginTop="@dimen/analysis_error_type_margintop"
+                android:text="@string/analysis_error_type"
+                android:textColor="@color/color_89e00d" />
+
+            <View
+                android:id="@+id/center_line"
+                android:layout_width="15dp"
+                android:layout_height="279dp"
+                android:layout_centerHorizontal="true" />
+
+            <RelativeLayout
+                android:id="@+id/error_1_layout"
+                android:layout_width="@dimen/analysis_error_tag_width"
+                android:layout_height="@dimen/analysis_error_tag_height"
+                android:layout_marginTop="@dimen/analysis_error_tag_margintop"
+                android:layout_toLeftOf="@id/center_line"
+                android:background="@drawable/selector_error_tag"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/error_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="25dp"
+                    android:gravity="center"
+                    android:text="@string/analysis_error_tag1" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/error_3_layout"
+                android:layout_width="@dimen/analysis_error_tag_width"
+                android:layout_height="@dimen/analysis_error_tag_height"
+                android:layout_below="@id/error_1_layout"
+                android:layout_marginTop="15dp"
+                android:layout_toLeftOf="@id/center_line"
+                android:background="@drawable/selector_error_tag"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/error_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="25dp"
+                    android:gravity="center"
+                    android:text="@string/analysis_error_tag3" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/error_5_layout"
+                android:layout_width="@dimen/analysis_error_tag_width_long"
+                android:layout_height="@dimen/analysis_error_tag_height"
+                android:layout_alignBaseline="@+id/error_6_layout"
+                android:layout_alignBottom="@+id/error_6_layout"
+                android:layout_toStartOf="@+id/center_line"
+                android:background="@drawable/selector_error_tag"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/error_5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="25dp"
+                    android:gravity="center"
+                    android:text="@string/analysis_error_tag5" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/error_2_layout"
+                android:layout_width="@dimen/analysis_error_tag_width"
+                android:layout_height="@dimen/analysis_error_tag_height"
+                android:layout_marginTop="@dimen/analysis_error_tag_margintop"
+                android:layout_toRightOf="@id/center_line"
+                android:background="@drawable/selector_error_tag"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/error_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="25dp"
+                    android:text="@string/analysis_error_tag2" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/error_4_layout"
+                android:layout_width="@dimen/analysis_error_tag_width_long"
+                android:layout_height="@dimen/analysis_error_tag_height"
+                android:layout_below="@id/error_1_layout"
+                android:layout_marginTop="15dp"
+                android:layout_toRightOf="@id/center_line"
+                android:background="@drawable/selector_error_tag"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/error_4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="25dp"
+                    android:text="@string/analysis_error_tag4" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/error_6_layout"
+                android:layout_width="@dimen/analysis_error_tag_width"
+                android:layout_height="@dimen/analysis_error_tag_height"
+                android:layout_below="@id/error_3_layout"
+                android:layout_marginTop="15dp"
+                android:layout_toRightOf="@id/center_line"
+                android:background="@drawable/selector_error_tag"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/error_6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="25dp"
+                    android:text="@string/analysis_error_tag6" />
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/error_6_layout"
+                android:layout_marginTop="15dp"
+                android:background="@color/color_cccccc" />
+
+            <EditText
+                android:id="@+id/error_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/line"
+                android:background="@color/color_fafafa"
+                android:hint="@string/analysis_error_content"
+                android:maxLength="200"
+                android:minHeight="200dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="30dp"
+                android:gravity="top"
+                android:textColor="@color/color_333333"
+                android:textColorHint="@color/color_cccccc"
+                android:textSize="@dimen/analysis_error_tag_textsize" />
+
+            <View
+                android:id="@+id/shadow"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/question_bottom_shadow"
+                android:layout_below="@id/error_content"
+                android:alpha="0.2"
+                android:background="@color/color_002c0f" />
+
+            <com.yanxiu.gphone.student.customviews.WavesLayout
+                android:id="@+id/wavesLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/shadow"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="30dp"
+                android:clickable="true"
+                app:waves_animend_alpha="102"
+                app:waves_radius="@dimen/wavesRadius">
+
+                <Button
+                    android:id="@+id/submit"
+                    android:layout_width="@dimen/answer_card_submitbutton_width"
+                    android:layout_height="@dimen/answer_card_submitbutton_height"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/selector_answercard_submit_button_bg"
+                    android:text="@string/analysis_error_submit_text"
+                    android:textColor="@color/color_ffffff"
+                    android:textSize="@dimen/answer_card_submitbutton_textsize" />
+            </com.yanxiu.gphone.student.customviews.WavesLayout>
+
+        </RelativeLayout>
+    </ScrollView>
+
+
+</RelativeLayout>

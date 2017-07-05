@@ -207,6 +207,16 @@
     <dimen name="analysis_difficuty_spaceing">5dp</dimen>
 
     <dimen name="analysis_toppadding">10dp</dimen>
+    <dimen name="analysis_error_width">50dp</dimen>
+    <dimen name="analysis_error_height">35dp</dimen>
+    <dimen name="analysis_error_top_height">55dp</dimen>
+    <dimen name="analysis_error_type_margintop">71dp</dimen>
+    <dimen name="analysis_error_tag_width">120dp</dimen>
+    <dimen name="analysis_error_tag_height">45dp</dimen>
+    <dimen name="analysis_error_tag_width_long">150dp</dimen>
+    <dimen name="analysis_error_tag_margintop">99dp</dimen>
+
+    <dimen name="analysis_error_tag_textsize">19dp</dimen>
 
 </resources>
 
