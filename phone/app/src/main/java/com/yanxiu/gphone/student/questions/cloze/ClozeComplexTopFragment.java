@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ScrollView;
 
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.common.eventbus.SingleChooseMessage;
 import com.yanxiu.gphone.student.customviews.spantextview.ClozeTextView;
 import com.yanxiu.gphone.student.customviews.spantextview.ClozeView;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
@@ -18,6 +19,8 @@ import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.Exercise
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.TopBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.util.StemUtil;
+
+import de.greenrobot.event.EventBus;
 
 
 /**
@@ -47,10 +50,17 @@ public class ClozeComplexTopFragment extends TopBaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_cloze_top, container, false);
+        EventBus.getDefault().register(ClozeComplexTopFragment.this);
         initView();
         initData();
         initListener();
         return mRootView;
+    }
+
+    public void onEventMainThread(SingleChooseMessage message){
+        if (getClozeAnsweHashCode()==message.hascode){
+            //TODO @supeng message.answer;答案已经拿到
+        }
     }
 
     private void initListener() {
@@ -170,10 +180,28 @@ public class ClozeComplexTopFragment extends TopBaseFragment {
         }
     }
 
+    /**
+     * EventBus需要的hashcode
+     * @return
+     */
+    private int getClozeAnsweHashCode(){
+        Fragment parentFragment = getParentFragment();
+        if(null != parentFragment && parentFragment instanceof ClozeAnswerComplexFragment){
+            return ((ClozeAnswerComplexFragment) parentFragment).mHashCode;
+        }
+        return -1;
+    }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable(ExerciseBaseFragment.KEY_NODE, mQuestion);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
 }

@@ -20,6 +20,7 @@ import com.yanxiu.gphone.student.questions.readingcomplex.ReadingComplexQuestion
  */
 
 public class ClozeAnswerComplexFragment extends AnswerComplexExerciseBaseFragment {
+    public int mHashCode = this.hashCode();
     private ClozeComplexQuestion mData;
     private int mTopHeight;
     private int mChildQuestionHeight = 580;//子题固定高度是四个单选的高度;
