@@ -32,6 +32,7 @@ public class ClozeComplexTopFragment extends TopBaseFragment {
     private ClozeTextView mClozeTextView;
     private ScrollView mScrollView;
     private View mViewWrapper;
+    private int mCurrentIndex = 0;
 
     @Override
     public void setData(BaseQuestion data) {
@@ -59,7 +60,8 @@ public class ClozeComplexTopFragment extends TopBaseFragment {
 
     public void onEventMainThread(SingleChooseMessage message){
         if (getClozeAnsweHashCode()==message.hascode){
-            //TODO @supeng message.answer;答案已经拿到
+            mQuestion.getFilledAnswers().set(mCurrentIndex,message.answer);
+            mClozeTextView.notifyAnswerChanged();
         }
     }
 
@@ -164,6 +166,7 @@ public class ClozeComplexTopFragment extends TopBaseFragment {
 
                     @Override
                     public void onPageSelected(int position) {
+                        mCurrentIndex = position;
                         mClozeTextView.resetSelected();
                         mClozeTextView.performTranslateAnimation(ClozeView.TextPosition.LEFT,position);
 //                        if(mClozeTextView.getSelectedClozeView().getBottom() + mViewWrapper.getPaddingTop() > mScrollView.getHeight()){

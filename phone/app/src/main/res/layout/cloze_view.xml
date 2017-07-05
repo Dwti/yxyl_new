@@ -43,7 +43,7 @@
             android:textColor="#89e00d"
             android:textSize="17dp"
             android:layout_marginLeft="5dp"
-            android:gravity="center"
+            android:gravity="center_vertical"
             />
     </LinearLayout>
 
