@@ -7,10 +7,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.annotation.StyleRes;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by sunpeng on 2017/6/15.
@@ -101,14 +103,19 @@ public class ClozeTextView extends ReplacementSpanTextView<ClozeView> implements
     }
     @Override
     public void onReplaceComplete() {
-        List<ClozeView> views = getReplaceViews();
-        if(views == null || views.size() ==0){
-            return;
+        int i = 0 ;
+        for(Map.Entry<EmptyReplacementSpan,ClozeView> entry : mTreeMap.entrySet()){
+            ClozeView view = entry.getValue();
+            if(i == 0){
+                mSelectedClozeView = view;
+            }
+            view.setTextNumber(i+1);
+            view.setAnswer(entry.getKey().answer);
+            if(!TextUtils.isEmpty(entry.getKey().answer)){
+                view.setContentCenter(false);
+            }
+            i++;
         }
-        for(int i =0; i< views.size(); i++){
-            views.get(i).setTextNumber(i+1);
-        }
-        mSelectedClozeView = views.get(0);
         post(new Runnable() {
             @Override
             public void run() {
