@@ -162,8 +162,13 @@
     <string name="answer">作答详情</string>
     <string name="answer_result">作答结果</string>
     <string name="answer_difficulty">难度</string>
+    <string name="answer_point">知识点</string>
+    <string name="answer_voice_scolded">老师评语</string>
+    <string name="answer_answer">答案</string>
     <string name="answer_sscore_title">得分</string>
     <string name="answer_sscore_string">分</string>
     <string name="answer_no">回答错误</string>
     <string name="answer_yes">回答正确</string>
+
+    <string name="voice_url_error">音频错误</string>
 </resources>

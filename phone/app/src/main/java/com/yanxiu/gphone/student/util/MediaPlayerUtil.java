@@ -193,16 +193,19 @@ public class MediaPlayerUtil {
         }
     }
 
+    public void playFinish(){
+        isPlaying=false;
+        finish();
+    }
+
     /**
      * Destruction of data
      */
     public void destory() {
         finish();
-        mCallBack = null;
-        isPlaying = false;
+        this.mCallBack = null;
         this.isPause = false;
         this.mUpdateCallBack = null;
-        this.mBufferProgress = 0;
     }
 
     public void addMediaPlayerCallBack(MediaPlayerCallBack callBack) {
@@ -255,12 +258,12 @@ public class MediaPlayerUtil {
         @Override
         public void onCompletion(MediaPlayer mp) {
             Logger.d(TAG, "media  completion");
+            finish();
+            mBufferProgress = 0;
             if (mCallBack != null && isPlaying) {
                 isPlaying = false;
                 mCallBack.onCompletion(MediaPlayerUtil.this);
             }
-            finish();
-            mBufferProgress = 0;
         }
     };
 
@@ -268,12 +271,12 @@ public class MediaPlayerUtil {
         @Override
         public boolean onError(MediaPlayer mp, int what, int extra) {
             Logger.d(TAG, "media  error");
+            finish();
+            mBufferProgress = 0;
             if (mCallBack != null && isPlaying) {
                 isPlaying = false;
                 mCallBack.onError(MediaPlayerUtil.this);
             }
-            finish();
-            mBufferProgress = 0;
             return true;
         }
     };

@@ -13,11 +13,13 @@ import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.customviews.ChooseLayout;
+import com.yanxiu.gphone.student.customviews.analysis.VoiceScoldedLayoutView;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.analysisbase.AnalysisSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.cloze.ClozeAnswerComplexFragment;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -130,5 +132,14 @@ public class SingleChooseAnalysisFragment extends AnalysisSimpleExerciseBaseFrag
     public void initAnalysisView() {
         showAnswerResultView(false,"你的打哪是阿达，啊啥京东卡啥京东卡");
         showPointView(mData.getPointList());
+        showAnswerView("你的打哪是阿达，啊啥京东卡啥京东卡");
+        List<VoiceScoldedLayoutView.ScoldedMessage> list=new ArrayList<>();
+        for (int i=0;i<5;i++){
+            VoiceScoldedLayoutView.ScoldedMessage message= VoiceScoldedLayoutView.ScoldedMessage.obtain();
+            message.time=2+i*10;
+            message.url="http://data.5sing.kgimg.com/G034/M05/16/17/ApQEAFXsgeqIXl7gAAVVd-n31lcAABOogKzlD4ABVWP363.mp3";
+            list.add(message);
+        }
+        showVoiceScoldedView(list);
     }
 }

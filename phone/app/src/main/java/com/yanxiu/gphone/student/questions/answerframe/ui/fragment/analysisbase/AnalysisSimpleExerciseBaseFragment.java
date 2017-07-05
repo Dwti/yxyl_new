@@ -15,10 +15,12 @@ import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.customviews.ListenerSeekBarLayout;
-import com.yanxiu.gphone.student.customviews.PointLayoutView;
+import com.yanxiu.gphone.student.customviews.analysis.AnswerLayoutView;
+import com.yanxiu.gphone.student.customviews.analysis.PointLayoutView;
 import com.yanxiu.gphone.student.customviews.analysis.AnalysisDifficultyView;
 import com.yanxiu.gphone.student.customviews.analysis.AnalysisQuestionResultView;
 import com.yanxiu.gphone.student.customviews.analysis.AnalysisScoreView;
+import com.yanxiu.gphone.student.customviews.analysis.VoiceScoldedLayoutView;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.NotesActicity;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionTemplate;
@@ -45,7 +47,9 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
     public ImageView mYeno_img;//答题结果对应的对错img，一定要和mAnswerResultView成对出现或隐藏
     public AnalysisScoreView mScoreView;//评分view
     public AnalysisDifficultyView mDifficultyview;//难度view
+    private AnswerLayoutView mAnswerView;//答案
     private PointLayoutView mPointView;//知识的view
+    private VoiceScoldedLayoutView mVoiceScoldedView;//语音批注
 
     private ListenerSeekBarLayout mListenView;//听力复合题只有一个子题时，题干的听力控件
 
@@ -78,7 +82,9 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
         mYeno_img = (ImageView) mRootView.findViewById(R.id.yesno_img);
         mScoreView = (AnalysisScoreView) mRootView.findViewById(R.id.scoreview);
         mDifficultyview = (AnalysisDifficultyView) mRootView.findViewById(R.id.difficultyview);
+        mAnswerView= (AnswerLayoutView) mRootView.findViewById(R.id.answerview);
         mPointView= (PointLayoutView) mRootView.findViewById(R.id.pointview);
+        mVoiceScoldedView= (VoiceScoldedLayoutView) mRootView.findViewById(R.id.voicescoldedview);
 
 //        edit = (TextView) mRootView.findViewById(R.id.edit);
 //        mNotesTextView = (TextView) mRootView.findViewById(R.id.notesContent);
@@ -190,6 +196,14 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
         }
     }
 
+    public void showAnswerView(String strem){
+        if (strem==null){
+            return;
+        }
+        mAnswerView.setText(strem);
+        mAnswerView.setVisibility(View.VISIBLE);
+    }
+
     public void showPointView(List<PointBean> data){
         if (data==null){
             return;
@@ -198,6 +212,11 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
             mPointView.setData(pointBean.getName());
         }
         mPointView.setVisibility(View.VISIBLE);
+    }
+
+    public void showVoiceScoldedView(List<VoiceScoldedLayoutView.ScoldedMessage> list){
+        mVoiceScoldedView.setData(list);
+        mVoiceScoldedView.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -232,6 +251,17 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
             if (null != mListenView)
                 mListenView.setPause();
         }
+        if (!invokeInResumeOrPause){
+            if (isVisibleToUser){
+                if (mVoiceScoldedView!=null) {
+                    mVoiceScoldedView.setResume();
+                }
+            }else {
+                if (mVoiceScoldedView!=null) {
+                    mVoiceScoldedView.setPause();
+                }
+            }
+        }
     }
 
     @Override
@@ -245,6 +275,9 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
         super.onDestroyView();
         if (null != mListenView)
             mListenView.setDestory();
+        if (mVoiceScoldedView!=null){
+            mVoiceScoldedView.setDestory();
+        }
     }
 
 

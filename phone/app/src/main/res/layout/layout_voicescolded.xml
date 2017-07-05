@@ -2,30 +2,29 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
     <TextView
         android:id="@+id/tv_name"
         style="@style/AnalysisViewLeftTitle"
-        android:text="@string/answer_point" />
+        android:text="@string/answer_voice_scolded" />
 
-    <TextView
-        android:id="@+id/tv_point"
+    <LinearLayout
+        android:id="@+id/ll_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_name"
-        android:textSize="@dimen/analysis_score_textsize2"
-        android:textColor="@color/color_336600"
         android:layout_marginBottom="@dimen/analysis_view_paddingbottom"
         android:layout_marginLeft="@dimen/analysis_view_paddingbottom"
         android:layout_marginRight="@dimen/analysis_view_paddingbottom"
-        android:lineSpacingExtra="@dimen/analysis_view_line_space" />
+        android:orientation="vertical"/>
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_point"
+        android:layout_below="@+id/ll_group"
         android:orientation="horizontal">
 
         <include layout="@layout/analysis_line_layout" />
     </LinearLayout>
+
 </RelativeLayout>

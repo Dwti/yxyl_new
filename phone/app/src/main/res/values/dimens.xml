@@ -194,6 +194,7 @@
     <dimen name="report_grid_paddingbottom">75dp</dimen>
 
     <dimen name="analysis_view_paddingbottom">15dp</dimen>
+    <dimen name="analysis_view_line_space">18dp</dimen>
     <dimen name="analysis_titleview_textsize">16dp</dimen>
     <dimen name="analysis_yseno_textsize">29dp</dimen>
     <dimen name="analysis_answer_result_textsize">17dp</dimen>
@@ -206,5 +207,8 @@
 
     <dimen name="analysis_toppadding">10dp</dimen>
 
+    <dimen name="voice_scolded_anim_icon_w_h">20dp</dimen>
+    <dimen name="voice_scolded_anim_margin_l">15dp</dimen>
+    <dimen name="voice_scolded_anim_text_size">16dp</dimen>
 </resources>
 
