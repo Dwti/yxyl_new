@@ -158,14 +158,23 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
      *
      * @param isRight 是否正确
      * @param result  server返回的（没有该数据请传空）
+     * @param textContent  给某些题型使用，传入“正确”或者“错误”；不需要请传入null
      */
-    public void showAnswerResultView(boolean isRight, String result) {
+    public void showAnswerResultView(boolean isRight, String result,String textContent) {
         if (mAnswerResultView != null && mYeno_img != null) {
             if (isRight) {
-                mAnswerResultView.setText(getResources().getString(R.string.answer_yes), result);
+                if (TextUtils.isEmpty(textContent)){
+                    mAnswerResultView.setText(getResources().getString(R.string.answer_yes), result);
+                }else{
+                    mAnswerResultView.setText(textContent, result);
+                }
                 mYeno_img.setBackgroundResource(R.drawable.analysis_yes_img);
             } else {
-                mAnswerResultView.setText(getResources().getString(R.string.answer_no), result);
+                if (TextUtils.isEmpty(textContent)){
+                    mAnswerResultView.setText(getResources().getString(R.string.answer_no), result);
+                }else{
+                    mAnswerResultView.setText(textContent, result);
+                }
                 mYeno_img.setBackgroundResource(R.drawable.analysis_wrong_img);
             }
             mAnswerResultView.setVisibility(View.VISIBLE);
@@ -180,7 +189,7 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
      * @param score 评分
      */
     public void showScoreView(String score) {
-        if (mScoreView != null) {
+        if (mScoreView != null && !TextUtils.isEmpty(score)) {
             mScoreView.setText(score);
             mScoreView.setVisibility(View.VISIBLE);
 
@@ -206,7 +215,7 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
      * @param analysis 解析
      */
     public void showAnalysisview(String analysis) {
-        if (mAnalysisview != null) {
+        if (mAnalysisview != null && !TextUtils.isEmpty(analysis)) {
             mAnalysisview.setText(analysis);
             mAnalysisview.setVisibility(View.VISIBLE);
         }
