@@ -70,10 +70,11 @@ public class SubjectiveAnalysisFragment extends AnalysisSimpleExerciseBaseFragme
             String result;
             if (mData.getScore()==5){
                 result=getString(R.string.correct);
+                showAnswerResultView(true,null,result);
             }else {
                 result=getString(R.string.wrong);
+                showAnswerResultView(false,null,result);
             }
-            showAnswerResultView(false,null,result);
         }else {
             showScoreView(String.valueOf(mData.getScore()));
         }
