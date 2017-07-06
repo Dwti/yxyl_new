@@ -130,7 +130,7 @@ public class SingleChooseAnalysisFragment extends AnalysisSimpleExerciseBaseFrag
 
     @Override
     public void initAnalysisView() {
-        showAnswerResultView(false,mData.getAnswerCompare());
+        showAnswerResultView(false,mData.getAnswerCompare(),null);
 //        showAnswerView("你的打哪是阿达，啊啥京东卡啥京东卡");
 //        List<VoiceScoldedLayoutView.ScoldedMessage> list=new ArrayList<>();
 //        for (int i=0;i<5;i++){

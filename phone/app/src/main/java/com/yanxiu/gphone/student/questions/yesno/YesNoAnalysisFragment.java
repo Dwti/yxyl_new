@@ -144,7 +144,7 @@ public class YesNoAnalysisFragment extends AnalysisSimpleExerciseBaseFragment {
      */
     @Override
     public void initAnalysisView() {
-        showAnswerResultView(true, "你的打哪是阿达，啊啥京东卡啥京东卡");
+        showAnswerResultView(true, "你的打哪是阿达，啊啥京东卡啥京东卡",null);
         showScoreView("3");
         showDifficultyview(3);
         showAnalysisview("当Fragment对用户的可见性发生了改变的时候就会回调此方法，当Fragment对用户的可见性发生了改变的时候就会回调此方法，当Fragment对用户的可见性发生了改变的时候就会回调此方。");
