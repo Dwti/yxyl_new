@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.questions.bean.JsonAudioComment;
 import com.yanxiu.gphone.student.util.MediaPlayerUtil;
 import com.yanxiu.gphone.student.util.ScreenUtils;
 import com.yanxiu.gphone.student.util.ToastManager;
@@ -58,14 +59,14 @@ public class VoiceScoldedLayoutView extends RelativeLayout implements MediaPlaye
         mMediaPlayerUtil.addMediaPlayerCallBack(VoiceScoldedLayoutView.this);
     }
 
-    public void setData(List<ScoldedMessage> list){
+    public void setData(List<JsonAudioComment> list){
         if (list==null||list.size()==0){
             return;
         }
         for (int i=0;i<list.size();i++){
             final View itemView=LayoutInflater.from(mContext).inflate(R.layout.item_voicescolded,this,false);
             ViewHolder viewHolder=new ViewHolder();
-            int time=list.get(i).time;
+            int time=list.get(i).getLength();
             viewHolder.mItemLayout= (LinearLayout) itemView.findViewById(R.id.ll_item);
             viewHolder.mItemLayout.setOnClickListener(new OnClickListener() {
                 @Override
@@ -82,7 +83,7 @@ public class VoiceScoldedLayoutView extends RelativeLayout implements MediaPlaye
             viewHolder.mAnimView= (ImageView) itemView.findViewById(R.id.iv_anim);
             viewHolder.mTimeView= (TextView) itemView.findViewById(R.id.tv_time);
             viewHolder.mTimeView.setText(getTimeFormat(time));
-            viewHolder.url=list.get(i).url;
+            viewHolder.url=list.get(i).getUrl();
             viewHolder.position=i;
             itemView.setTag(viewHolder);
             mGroupLayout.addView(itemView);
@@ -184,15 +185,6 @@ public class VoiceScoldedLayoutView extends RelativeLayout implements MediaPlaye
         if (mPlayingPosition<mGroupLayout.getChildCount()-1){
             View view=mGroupLayout.getChildAt(mPlayingPosition+1);
             OnClick(view);
-        }
-    }
-
-    public static class ScoldedMessage{
-        public String url;
-        public int time;
-
-        public static ScoldedMessage obtain(){
-            return new ScoldedMessage();
         }
     }
 

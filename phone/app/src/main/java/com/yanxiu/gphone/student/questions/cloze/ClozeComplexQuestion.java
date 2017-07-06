@@ -5,14 +5,39 @@ import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.questions.bean.PaperTestBean;
+import com.yanxiu.gphone.student.questions.choose.SingleChoiceQuestion;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by sunpeng on 2017/6/14.
  */
 
 public class ClozeComplexQuestion extends BaseQuestion {
+    private List<String> correctAnswers = new ArrayList<>();
+    private List<String> filledAnswers = new ArrayList<>();
     public ClozeComplexQuestion(PaperTestBean bean, QuestionShowType showType) {
         super(bean, showType);
+        initAnswer();
+    }
+
+    private void initAnswer() {
+        String correctAnswer,filledAnswer;
+        for(BaseQuestion question : children){
+            correctAnswer = ((SingleChoiceQuestion)question).getSingleAnswer();
+            if(((SingleChoiceQuestion)question).getAnswerList() != null && ((SingleChoiceQuestion)question).getAnswerList().size() > 0){
+                filledAnswer = convertFilledAnswer((SingleChoiceQuestion) question);
+            }else {
+                filledAnswer = "";
+            }
+            correctAnswers.add(correctAnswer);
+            filledAnswers.add(filledAnswer);
+        }
+    }
+
+    private String convertFilledAnswer(SingleChoiceQuestion question){
+        return question.getChoice().get(Integer.parseInt(question.getAnswerList().get(0)));
     }
 
     @Override
@@ -24,6 +49,22 @@ public class ClozeComplexQuestion extends BaseQuestion {
     public ExerciseBaseFragment analysisFragment() {
         //解析
         return new ClozeAnswerComplexFragment();
+    }
+
+    public List<String> getCorrectAnswers() {
+        return correctAnswers;
+    }
+
+    public void setCorrectAnswers(List<String> correctAnswers) {
+        this.correctAnswers = correctAnswers;
+    }
+
+    public List<String> getFilledAnswers() {
+        return filledAnswers;
+    }
+
+    public void setFilledAnswers(List<String> filledAnswers) {
+        this.filledAnswers = filledAnswers;
     }
 
     @Override

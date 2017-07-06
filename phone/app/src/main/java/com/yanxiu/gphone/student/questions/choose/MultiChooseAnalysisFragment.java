@@ -110,7 +110,8 @@ public class MultiChooseAnalysisFragment extends AnalysisSimpleExerciseBaseFragm
 //            list.add(message);
 //        }
 //        showVoiceScoldedView(list);
-        showmDifficultyview(mData.getStarCount());
+        showDifficultyview(mData.getStarCount());
+        showAnalysisview(mData.getQuestionAnalysis());
         showPointView(mData.getPointList());
     }
 }

@@ -12,12 +12,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.common.eventbus.SingleChooseMessage;
 import com.yanxiu.gphone.student.customviews.ChooseLayout;
 import com.yanxiu.gphone.student.questions.cloze.ClozeAnswerComplexFragment;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import java.util.List;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by 戴延枫 on 2017/5/5.
@@ -27,7 +30,7 @@ public class SingleChooseFragment extends AnswerSimpleExerciseBaseFragment imple
     private SingleChoiceQuestion mData;
     private TextView mQuestionView;
     private ChooseLayout mAnswerView;
-
+    private SingleChooseMessage mMessage;
     @Override
     public void setData(BaseQuestion data) {
         super.setData(data);
@@ -84,6 +87,18 @@ public class SingleChooseFragment extends AnswerSimpleExerciseBaseFragment imple
         }
     }
 
+    /**
+     * 在完形填空里，单选子题EventBus需要的hashcode
+     * @return
+     */
+    private int getClozeAnsweHashCode(){
+        Fragment parentFragment = getParentFragment();
+        if(null != parentFragment && parentFragment instanceof ClozeAnswerComplexFragment){
+            return ((ClozeAnswerComplexFragment) parentFragment).mHashCode;
+        }
+        return -1;
+    }
+
     private void listener() {
         mAnswerView.setSelectItemListener(SingleChooseFragment.this);
     }
@@ -96,6 +111,7 @@ public class SingleChooseFragment extends AnswerSimpleExerciseBaseFragment imple
         if (datas.size()>0){
             mAnswerView.setSelect(Integer.parseInt(datas.get(datas.size()-1)));
         }
+        mMessage = new SingleChooseMessage();
         Log.e("dyf", mData.numberStringForShow());
     }
 
@@ -112,14 +128,18 @@ public class SingleChooseFragment extends AnswerSimpleExerciseBaseFragment imple
 
     @Override
     public void onClick(int position, boolean isSelected) {
+        mMessage.hascode=getClozeAnsweHashCode();
         if(isSelected){
             mData.setIsAnswer(true);
             mData.getAnswerList().clear();
             mData.getAnswerList().add(String.valueOf(position));
+            mMessage.answer=mData.getChoice().get(position);
         }else{
             mData.setIsAnswer(false);
             mData.getAnswerList().remove(0);
+            mMessage.answer="";
         }
+        EventBus.getDefault().post(mMessage);
         saveAnswer(mData);
         updateProgress();
     }

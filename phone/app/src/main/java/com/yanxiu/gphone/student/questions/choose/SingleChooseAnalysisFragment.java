@@ -140,7 +140,8 @@ public class SingleChooseAnalysisFragment extends AnalysisSimpleExerciseBaseFrag
 //            list.add(message);
 //        }
 //        showVoiceScoldedView(list);
-        showmDifficultyview(mData.getStarCount());
+        showDifficultyview(mData.getStarCount());
+        showAnalysisview(mData.getQuestionAnalysis());
         showPointView(mData.getPointList());
 
     }

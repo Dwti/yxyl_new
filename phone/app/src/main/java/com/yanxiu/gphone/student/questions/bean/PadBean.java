@@ -16,7 +16,25 @@ public class PadBean extends BaseBean {
     private String ptid;
     private int status;
     private String uid;
+    private String audioComment;
     private TeacherCheckBean teachercheck;
+    private List<JsonAudioComment> jsonAudioComment;
+
+    public List<JsonAudioComment> getJsonAudioComment() {
+        return jsonAudioComment;
+    }
+
+    public void setJsonAudioComment(List<JsonAudioComment> jsonAudioComment) {
+        this.jsonAudioComment = jsonAudioComment;
+    }
+
+    public String getAudioComment() {
+        return audioComment;
+    }
+
+    public void setAudioComment(String audioComment) {
+        this.audioComment = audioComment;
+    }
 
     public String getAnswer() {
         return answer;
