@@ -56,6 +56,8 @@ public class AnswerCardFragment extends Fragment implements View.OnClickListener
     private View mRootView;
     private Paper mPaper;
     private ArrayList<BaseQuestion> mQuestions;
+    private Paper mPaper_report;//答题报告返回的数据
+    private ArrayList<BaseQuestion> mQuestions_report;//答题报告返回的数据
     private String mTitleString;
     private ImageView mBackView;
     private TextView mTitle;
@@ -196,30 +198,32 @@ public class AnswerCardFragment extends Fragment implements View.OnClickListener
 
             @Override
             public void onSuccess() {
-                SaveAnswerDBHelper.deleteAllAnswer();
-                String showna = mPaper.getShowana();
-                if (Constants.NOT_FINISH_STATUS.equals(showna)) {
-                    long groupStartTime = Long.parseLong(mPaper.getBegintime());
-                    long groupEndtime = Long.parseLong(mPaper.getEndtime());//作业练习截止时间
+                //提交答案成功，直接请求答题报告
+                questReportData();
 
-                    if (groupEndtime > groupStartTime && ((groupEndtime - System.currentTimeMillis()) >= 3 * 60 * 1000)) { //作业截止时间判断，还未到截止时间不产生作业报告
-                        ToastManager.showMsg("提交成功11");
-                        mDialog.showSuccessView(groupEndtime);
-                        mDialog.show();
-                    } else {
-                        questReportData();
-//                        AnswerReportActicity.invoke(getActivity(), mPaper.getId());
-//                        getActivity().finish();
-                    }
-
-                } else if (Constants.HAS_FINISH_CHECK_REPORT.equals(showna)) {
-                    questReportData();
-//                    AnswerReportActicity.invoke(getActivity(), mPaper.getId());
+//                String showna = mPaper.getShowana();
+//                if (Constants.NOT_FINISH_STATUS.equals(showna)) {
+//                    long groupStartTime = Long.parseLong(mPaper.getBegintime());
+//                    long groupEndtime = Long.parseLong(mPaper.getEndtime());//作业练习截止时间
+//
+//                    if (groupEndtime > groupStartTime && ((groupEndtime - System.currentTimeMillis()) >= 3 * 60 * 1000)) { //作业截止时间判断，还未到截止时间不产生作业报告
+//                        ToastManager.showMsg("提交成功");
+//                        mDialog.showSuccessView(groupEndtime);
+//                        mDialog.show();
+//                    } else {
+//                        questReportData();
+////                        AnswerReportActicity.invoke(getActivity(), mPaper.getId());
+////                        getActivity().finish();
+//                    }
+//
+//                } else if (Constants.HAS_FINISH_CHECK_REPORT.equals(showna)) {
+//                    questReportData();
+////                    AnswerReportActicity.invoke(getActivity(), mPaper.getId());
+////                    getActivity().finish();
+//                } else {
+//                    ToastManager.showMsg("提交成功");
 //                    getActivity().finish();
-                } else {
-                    ToastManager.showMsg("提交成功");
-                    getActivity().finish();
-                }
+//                }
             }
 
             @Override
@@ -239,7 +243,7 @@ public class AnswerCardFragment extends Fragment implements View.OnClickListener
             @Override
             public void onDataError(String msg) {
                 ToastManager.showMsg(msg);
-                if(null != mDialog)
+                if (null != mDialog)
                     mDialog.dismiss();
             }
         });
@@ -281,6 +285,7 @@ public class AnswerCardFragment extends Fragment implements View.OnClickListener
             mDialog.setAnswerCardSubmitDialogClickListener(AnswerCardFragment.this);
         }
     }
+
     //请求答题报告
     private void questReportData() {
         if (TextUtils.isEmpty(mPaper.getId())) {
@@ -298,23 +303,44 @@ public class AnswerCardFragment extends Fragment implements View.OnClickListener
             protected void onResponse(RequestBase request, PaperResponse response) {
                 if (response.getStatus().getCode() == 0) {
                     if (response.getData().size() > 0) {
-                        mPaper = new Paper(response.getData().get(0), QuestionShowType.ANALYSIS);
-                        if (mPaper != null && mPaper.getQuestions() != null && mPaper.getQuestions().size() > 0) {
-                            String key = this.hashCode()+mPaper.getId();
-                            DataFetcher.getInstance().save(key,mPaper);
-                            AnswerReportActicity.invoke(getActivity(), key);
-                            getActivity().finish();
+                        mPaper_report = new Paper(response.getData().get(0), QuestionShowType.ANALYSIS);
+                        if (mPaper_report != null && mPaper_report.getQuestions() != null && mPaper_report.getQuestions().size() > 0) {
+                            SaveAnswerDBHelper.deleteAllAnswer();
+                            String key = this.hashCode() + mPaper.getId();
+                            DataFetcher.getInstance().save(key, mPaper_report);
+
+
+                            String showna = mPaper_report.getShowana();
+                            if (Constants.NOT_FINISH_STATUS.equals(showna)) {
+                                long groupStartTime = Long.parseLong(mPaper_report.getBegintime());
+                                long groupEndtime = Long.parseLong(mPaper_report.getEndtime());//作业练习截止时间
+
+//                                if (groupEndtime > groupStartTime && ((groupEndtime - System.currentTimeMillis()) >= 3 * 60 * 1000)) { //作业截止时间判断，还未到截止时间不产生作业报告
+//                                    ToastManager.showMsg("提交成功");
+                                mDialog.showSuccessView(groupEndtime);
+                                mDialog.show();
+//                                } else {
+//                                    AnswerReportActicity.invoke(getActivity(), key);
+//                                    getActivity().finish();
+//                                }
+
+                            } else if (Constants.HAS_FINISH_CHECK_REPORT.equals(showna)) {
+                                AnswerReportActicity.invoke(getActivity(), key);
+                                getActivity().finish();
+                            } else {
+                                ToastManager.showMsg("提交成功");
+                                getActivity().finish();
+                            }
+
                         }
-                    } else {
-//                        ToastManager.showMsg("ffffff");
                     }
-                } else {
-//                    ToastManager.showMsg("666");
                 }
             }
 
             @Override
             public void onFail(RequestBase request, Error error) {
+                initDialog();
+                mDialog.showRetryView();
             }
         });
     }

@@ -144,10 +144,19 @@ public class YesNoAnalysisFragment extends AnalysisSimpleExerciseBaseFragment {
      */
     @Override
     public void initAnalysisView() {
-        showAnswerResultView(true, "你的打哪是阿达，啊啥京东卡啥京东卡");
-        showScoreView("3");
-        showDifficultyview(3);
-        showAnalysisview("当Fragment对用户的可见性发生了改变的时候就会回调此方法，当Fragment对用户的可见性发生了改变的时候就会回调此方法，当Fragment对用户的可见性发生了改变的时候就会回调此方。");
+        showAnswerResultView(false,mData.getAnswerCompare(),null);
+//        showAnswerView("你的打哪是阿达，啊啥京东卡啥京东卡");
+//        List<VoiceScoldedLayoutView.ScoldedMessage> list=new ArrayList<>();
+//        for (int i=0;i<5;i++){
+//            VoiceScoldedLayoutView.ScoldedMessage message= VoiceScoldedLayoutView.ScoldedMessage.obtain();
+//            message.time=2+i*10;
+//            message.url="http://data.5sing.kgimg.com/G034/M05/16/17/ApQEAFXsgeqIXl7gAAVVd-n31lcAABOogKzlD4ABVWP363.mp3";
+//            list.add(message);
+//        }
+//        showVoiceScoldedView(list);
+        showDifficultyview(mData.getStarCount());
+        showAnalysisview(mData.getQuestionAnalysis());
+        showPointView(mData.getPointList());
     }
 
     /**
