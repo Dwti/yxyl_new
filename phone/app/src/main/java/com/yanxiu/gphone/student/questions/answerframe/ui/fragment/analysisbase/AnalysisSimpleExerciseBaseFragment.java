@@ -249,7 +249,7 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
      * 语音批语
      * */
     public void showVoiceScoldedView(List<JsonAudioComment> list){
-        if (list==null){
+        if (list==null||list.size()==0){
             return;
         }
         mVoiceScoldedView.setData(list);

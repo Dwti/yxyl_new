@@ -64,16 +64,13 @@ public class YesNoAnalysisFragment extends AnalysisSimpleExerciseBaseFragment {
         mChooseView.setYesyNoData(mData.getChoice());
         List<String> datas = mData.getAnswerList();
         String answer = mData.getYesNoAnswer();
-        int answer_position = Integer.parseInt(answer);
+        int answer_position;
+        if(Integer.parseInt(answer) == 0){ //错误
+            answer_position = 1;
+        }else{ //正确
+            answer_position = 0;
+        }
 
-//        if (datas.size() > 0) {
-//            int result = Integer.parseInt(datas.get(0));
-//            if (result == 1) { //正确
-//                mChooseView.setSelect(0);
-//            } else { //错误
-//                mChooseView.setSelect(1);
-//            }
-//        }
         int count = mChooseView.getChildCount();
         for (int i = 0; i < count; i++) {
             View choleView = mChooseView.getChildAt(i);
@@ -82,35 +79,48 @@ public class YesNoAnalysisFragment extends AnalysisSimpleExerciseBaseFragment {
         }
 
         if (datas.size() > 0) {
-            ChooseLayout.ViewHolder selectViewHolder;
+            String select = datas.get(0);
+            ChooseLayout.ViewHolder selectViewHolder = null;
             int result = Integer.parseInt(datas.get(0));
+            int select_position;
             if (result == 1) { //正确
+                select_position = 0;
                 mChooseView.setSelect(0);
                 selectViewHolder = (ChooseLayout.ViewHolder) mChooseView.getChildAt(0).getTag();
-            } else { //错误
+            } else if(result == 0){ //错误
+                select_position = 1;
                 mChooseView.setSelect(1);
                 selectViewHolder = (ChooseLayout.ViewHolder) mChooseView.getChildAt(1).getTag();
+            }else{
+                select_position = -1;
             }
 
 
-            if (answer.equals(datas.get(0))) {
-//                mChooseView.setSelect(select_position);
-                selectViewHolder.mQuestionContentView.setTextColor(ContextCompat.getColor(getContext(), R.color.color_89e00d));
-                selectViewHolder.mQuestionContentView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.choose_right));
-            } else {
-                if (count > answer_position) {
-                    ChooseLayout.ViewHolder answerViewHolder = (ChooseLayout.ViewHolder) mChooseView.getChildAt(answer_position).getTag();
+            if (count > select_position) {
+                if (answer.equals(select)) {
+                    selectViewHolder.mQuestionContentView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.choose_right));
+                    selectViewHolder.mQuestionContentView.setTextColor(ContextCompat.getColor(getContext(), R.color.color_ffffff));
+                } else {
+                    if (count > answer_position) {
+                        ChooseLayout.ViewHolder answerViewHolder = (ChooseLayout.ViewHolder) mChooseView.getChildAt(answer_position).getTag();
 
-                    selectViewHolder.mQuestionContentView.setTextColor(ContextCompat.getColor(getContext(), R.color.color_ff7a05));
-                    selectViewHolder.mQuestionContentView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.choose_wrong));
-                    selectViewHolder.mQuestionSelectView.setBackground(ContextCompat.getDrawable(getContext(), R.mipmap.ic_launcher));
+                        selectViewHolder.mQuestionContentView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.choose_wrong));
+                        selectViewHolder.mQuestionContentView.setTextColor(ContextCompat.getColor(getContext(), R.color.color_ffffff));
+                        selectViewHolder.mQuestionSelectView.setBackground(ContextCompat.getDrawable(getContext(), R.mipmap.ic_launcher));
 
-                    answerViewHolder.mQuestionContentView.setTextColor(ContextCompat.getColor(getContext(), R.color.color_89e00d));
-                    answerViewHolder.mQuestionIdView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.choose_right));
-                    answerViewHolder.mQuestionIdView.setTextColor(ContextCompat.getColor(getContext(), R.color.color_ffffff));
+                        answerViewHolder.mQuestionContentView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.choose_right));
+                        answerViewHolder.mQuestionContentView.setTextColor(ContextCompat.getColor(getContext(), R.color.color_ffffff));
+                    }
                 }
             }
+        } else {
+            if (count > answer_position) {
+                ChooseLayout.ViewHolder answerViewHolder = (ChooseLayout.ViewHolder) mChooseView.getChildAt(answer_position).getTag();
+                answerViewHolder.mQuestionContentView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.choose_right));
+                answerViewHolder.mQuestionContentView.setTextColor(ContextCompat.getColor(getContext(), R.color.color_ffffff));
+            }
         }
+
     }
 
 
@@ -144,16 +154,7 @@ public class YesNoAnalysisFragment extends AnalysisSimpleExerciseBaseFragment {
      */
     @Override
     public void initAnalysisView() {
-        showAnswerResultView(false,mData.getAnswerCompare(),null);
-//        showAnswerView("你的打哪是阿达，啊啥京东卡啥京东卡");
-//        List<VoiceScoldedLayoutView.ScoldedMessage> list=new ArrayList<>();
-//        for (int i=0;i<5;i++){
-//            VoiceScoldedLayoutView.ScoldedMessage message= VoiceScoldedLayoutView.ScoldedMessage.obtain();
-//            message.time=2+i*10;
-//            message.url="http://data.5sing.kgimg.com/G034/M05/16/17/ApQEAFXsgeqIXl7gAAVVd-n31lcAABOogKzlD4ABVWP363.mp3";
-//            list.add(message);
-//        }
-//        showVoiceScoldedView(list);
+        showAnswerResultView(false, mData.getAnswerCompare(), null);
         showDifficultyview(mData.getStarCount());
         showAnalysisview(mData.getQuestionAnalysis());
         showPointView(mData.getPointList());
