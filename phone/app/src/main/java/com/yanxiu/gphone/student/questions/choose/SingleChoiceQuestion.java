@@ -95,4 +95,9 @@ public class SingleChoiceQuestion extends BaseQuestion {
         return answerList;
     }
 
+    @Override
+    public int getStatus() {
+        return 0;
+    }
+
 }

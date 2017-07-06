@@ -99,4 +99,9 @@ public class MultiChoiceQuestion extends BaseQuestion {
     public Object getAnswer() {
         return answerList;
     }
+
+    @Override
+    public int getStatus() {
+        return 0;
+    }
 }

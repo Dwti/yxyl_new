@@ -92,6 +92,11 @@ public class YesNoQuestion extends BaseQuestion {
         return answerList;
     }
 
+    @Override
+    public int getStatus() {
+        return 0;
+    }
+
     public String getAnswerCompare() {
         return answerCompare;
     }
