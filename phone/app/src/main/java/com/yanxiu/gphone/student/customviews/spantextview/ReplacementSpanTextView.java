@@ -35,20 +35,21 @@ import java.util.TreeSet;
  * Created by sunpeng on 2017/6/15.
  */
 
-public abstract class ReplacementSpanTextView<T extends View> extends FrameLayout implements XTextView.OnDrawFinishedListener{
+public abstract class ReplacementSpanTextView<T extends View> extends FrameLayout implements XTextView.OnDrawFinishedListener {
     protected XTextView mTextView;
     protected RelativeLayout mOverLayViewContainer;
     protected Context mContext;
-    private Spanned mSpannedStr;
-    private EmptyReplacementSpan[] mSpans;
+    protected Spanned mSpannedStr;
+    protected EmptyReplacementSpan[] mSpans;
     protected String mText;
     protected List<String> mAnswers;
+    protected List<T> replaceViews;
     protected TreeMap<EmptyReplacementSpan, T> mTreeMap;
     protected TreeSet<EmptyReplacementSpan> mSpanSet;
     protected boolean mIsReplaceCompleted = false;
-    private OnReplaceCompleteListener mOnReplaceCompleteListener;
-    private static final int MIN_WIDTH = 200;
-    private int mSpacing;
+    private List<OnReplaceCompleteListener> mOnReplaceCompleteListeners = new ArrayList<>();
+    protected static final int MIN_WIDTH = 200;
+    protected int mSpacing;
 
     public ReplacementSpanTextView(@NonNull Context context) {
         super(context);
@@ -71,8 +72,9 @@ public abstract class ReplacementSpanTextView<T extends View> extends FrameLayou
     }
 
     private void initView(Context context) {
-        mSpacing = ScreenUtils.dpToPxInt(context,5);
+        mSpacing = ScreenUtils.dpToPxInt(context, 5);
         mContext = context;
+        replaceViews = new ArrayList<>();
         mSpanSet = new TreeSet<>();
         mTreeMap = new TreeMap<>();
         View view = LayoutInflater.from(context).inflate(R.layout.replaceable_text_view, this, true);
@@ -83,58 +85,60 @@ public abstract class ReplacementSpanTextView<T extends View> extends FrameLayou
     }
 
     public void setText(String text) {
-        setText(text,null);
+        setText(text, null);
     }
 
-    public void setText(String text,List<String> answers){
+    public void setText(String text, List<String> answers) {
         mText = text;
         mAnswers = answers;
-        initText(text,answers);
+        initText();
     }
 
-    private void initText(final String text, final List<String> answers){
+    private void initText() {
         post(new Runnable() {
             @Override
             public void run() {
                 mIsReplaceCompleted = false;
-                mOverLayViewContainer.removeAllViews();
-                mSpanSet.clear();
-                mTreeMap.clear();
-                mSpannedStr = Html.fromHtml(text, getImageGetter(), getTagHandler());
-                mSpans = mSpannedStr.getSpans(0,mSpannedStr.length(),EmptyReplacementSpan.class);
+                mSpannedStr = Html.fromHtml(mText, getImageGetter(), getTagHandler());
+                mSpans = mSpannedStr.getSpans(0, mSpannedStr.length(), EmptyReplacementSpan.class);
                 sortSpans();
-                setSpanWidthAndHeight(answers);
-                mTextView.setText(mSpannedStr, TextView.BufferType.SPANNABLE);
+                setWidthAndText();
             }
         });
     }
 
-    private void sortSpans(){
-        for(EmptyReplacementSpan span : mSpans){
+    protected void setWidthAndText(){
+        mIsReplaceCompleted = false;
+        setSpanWidthAndHeight(mAnswers);
+        mTextView.setText(mSpannedStr, TextView.BufferType.SPANNABLE);
+    }
+
+    private void sortSpans() {
+        for (EmptyReplacementSpan span : mSpans) {
             int start = mSpannedStr.getSpanStart(span);
             span.setSpanStart(start);
             mSpanSet.add(span);
         }
     }
 
-    private void setSpanWidthAndHeight(List<String> answers) {
+    protected void setSpanWidthAndHeight(List<String> answers) {
 
-        if(answers == null || answers.size() == 0){
-            for(EmptyReplacementSpan emptyReplacementSpan : mSpans){
+        if (answers == null || answers.size() == 0) {
+            for (EmptyReplacementSpan emptyReplacementSpan : mSpans) {
                 emptyReplacementSpan.width = MIN_WIDTH;
                 emptyReplacementSpan.height = mTextView.getLineHeight();
                 emptyReplacementSpan.standardLineHeight = mTextView.getLineHeight();
             }
-        }else {
+        } else {
             String answer;
             int width;
             int i = 0;
-            for(EmptyReplacementSpan span : mSpanSet){
+            for (EmptyReplacementSpan span : mSpanSet) {
                 answer = i < answers.size() ? answers.get(i) : null;
-                if(TextUtils.isEmpty(answer)){
+                if (TextUtils.isEmpty(answer)) {
                     width = MIN_WIDTH;
-                }else {
-                    width = (int) Math.max(MIN_WIDTH, StringUtil.computeStringWidth(answer,mTextView.getPaint()) + mSpacing + mTextView.getTextSize());
+                } else {
+                    width = (int) Math.max(MIN_WIDTH, StringUtil.computeStringWidth(answer, mTextView.getPaint()) + mSpacing + mTextView.getTextSize());
                 }
                 span.width = width;
                 span.height = mTextView.getLineHeight();
@@ -149,8 +153,6 @@ public abstract class ReplacementSpanTextView<T extends View> extends FrameLayou
         if (spanned == null || mSpans.length == 0) {
             return;
         }
-        mOverLayViewContainer.removeAllViews();
-        mTreeMap.clear();
 
         for (final EmptyReplacementSpan span : mSpans) {
 
@@ -161,59 +163,80 @@ public abstract class ReplacementSpanTextView<T extends View> extends FrameLayou
 
             int lineStart = layout.getLineForOffset(start); //span的起始行
 
-                int topPadding = mTextView.getCompoundPaddingTop();
-                float startLeftMargin = layout.getPrimaryHorizontal(start); //span的起始位置的左边距
+            int topPadding = mTextView.getCompoundPaddingTop();
+            float startLeftMargin = layout.getPrimaryHorizontal(start); //span的起始位置的左边距
 
-                int descent = layout.getLineDescent(lineStart);
-                int base = layout.getLineBaseline(lineStart);
-                int spanTop = base + descent - span.height;
-                int topMargin = spanTop + topPadding;
+            int descent = layout.getLineDescent(lineStart);
+            int base = layout.getLineBaseline(lineStart);
+            int spanTop = base + descent - span.height;
+            int topMargin = spanTop + topPadding;
 
-                int width = span.width;
-                int height = span.height;
+            int width = span.width;
+            int height = span.height;
 
-                T view = getView();
+            T view = mTreeMap.get(span);
+            if (view == null) {
+                view = getView();
                 RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(width, height);
                 params.leftMargin = (int) startLeftMargin;
                 params.topMargin = topMargin;
                 mOverLayViewContainer.addView(view, params);
+                mTreeMap.put(span, view);
+            } else {
+                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(width, height);
+                params.width = span.width;
+                params.height = span.height;
+                params.leftMargin = (int) startLeftMargin;
+                params.topMargin = topMargin;
+                view.setLayoutParams(params);
+            }
 
+        }
+        if (mOnReplaceCompleteListeners .size() > 0) {
+            for(OnReplaceCompleteListener listener : mOnReplaceCompleteListeners){
 
-            mTreeMap.put(span,view);
+                listener.onReplaceComplete();
+            }
         }
         mIsReplaceCompleted = true;
-        if(mOnReplaceCompleteListener != null){
-            mOnReplaceCompleteListener.onReplaceComplete();
-        }
+
     }
 
-    public void notifyAnswerChanged(){
-        initText(mText,mAnswers);
-    }
-    public void setOnReplaceCompleteListener(OnReplaceCompleteListener onReplaceCompleteListener){
-        mOnReplaceCompleteListener = onReplaceCompleteListener;
+    public boolean isReplaceCompleted(){
+        return mIsReplaceCompleted;
     }
 
-    public TreeMap<EmptyReplacementSpan,T> getReplacements(){
+    public int getLineHeight(){
+        return mTextView.getLineHeight();
+    }
+
+    public void notifyAnswerChanged() {
+        setWidthAndText();
+    }
+
+    public void addOnReplaceCompleteListener(OnReplaceCompleteListener onReplaceCompleteListener) {
+        mOnReplaceCompleteListeners.add(onReplaceCompleteListener);
+    }
+
+    public void removeOnReplaceCompleteListener(OnReplaceCompleteListener listener){
+        mOnReplaceCompleteListeners.remove(listener);
+    }
+
+    public TreeMap<EmptyReplacementSpan, T> getReplacements() {
         return mTreeMap;
     }
 
-    public T getReplaceView(int index){
-        T t = null;
-        int i = 0;
-        for(Map.Entry<EmptyReplacementSpan,T> entry:mTreeMap.entrySet()){
-            if(i == index){
-                t = entry.getValue();
-                break;
-            }
-            i++;
+    public T getReplaceView(int index) {
+        if(replaceViews.size() == 0){
+            replaceViews = getReplaceViews();
         }
-        return t;
+        return replaceViews.get(index);
+
     }
 
-    public List<T> getReplaceViews(){
+    public List<T> getReplaceViews() {
         List<T> viewList = new ArrayList<>();
-        for(Map.Entry<EmptyReplacementSpan,T> entry:mTreeMap.entrySet()){
+        for (Map.Entry<EmptyReplacementSpan, T> entry : mTreeMap.entrySet()) {
             viewList.add(entry.getValue());
         }
         return viewList;
@@ -225,7 +248,7 @@ public abstract class ReplacementSpanTextView<T extends View> extends FrameLayou
         return new HtmlImageGetter(mTextView);
     }
 
-    protected Html.TagHandler getTagHandler(){
+    protected Html.TagHandler getTagHandler() {
         return new ClozeTagHandler();
     }
 

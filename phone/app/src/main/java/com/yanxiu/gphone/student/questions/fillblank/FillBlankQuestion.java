@@ -37,7 +37,7 @@ public class FillBlankQuestion extends BaseQuestion {
 
     @Override
     public ExerciseBaseFragment analysisFragment() {
-        return null;
+        return new FillBlankAnalysisFragment();
     }
 
     public List<String> getStringAnswers(){

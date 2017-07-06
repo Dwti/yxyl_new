@@ -1,6 +1,7 @@
 package com.yanxiu.gphone.student.customviews.spantextview;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.AttrRes;
 import android.support.annotation.NonNull;
@@ -30,9 +31,11 @@ public class ClozeView extends FrameLayout {
 
     private TextView mAnswer;
 
-    private View mContent;
+    private View mContent, mUnderline;
 
     private TextPosition mPosition;
+
+    private String mFilledAnswer,mCorrectAnswer;
 
     public ClozeView(@NonNull Context context) {
         super(context);
@@ -60,6 +63,7 @@ public class ClozeView extends FrameLayout {
         mNumber = (TextView) view.findViewById(R.id.text_number);
         mAnswer = (TextView) view.findViewById(R.id.text_answer);
         mContent = view.findViewById(R.id.content);
+        mUnderline = view.findViewById(R.id.underline);
         mPosition = TextPosition.CENTER;
     }
 
@@ -82,6 +86,50 @@ public class ClozeView extends FrameLayout {
         mNumber.startAnimation(translateAnimation);
     }
 
+    public void setChecked(boolean checked){
+        if(isRight()){
+            if(checked){
+                setNumberTextColor(Color.parseColor("#89e00d"));
+                setNumberBackground(R.drawable.shape_white_ring);
+                setAnswerTextColor(Color.WHITE);
+                setUnderlineColor(Color.parseColor("#89e00d"));
+                setBackground(getResources().getDrawable(R.drawable.shape_cloze_answer_correct));
+            }else {
+                setNumberTextColor(Color.WHITE);
+                setNumberBackground(R.drawable.shape_green_ring);
+                setAnswerTextColor(Color.parseColor("#89e00d"));
+                setUnderlineColor(Color.parseColor("#89e00d"));
+                setBackground(null);
+            }
+
+        }else {
+            if(checked){
+                setNumberTextColor(Color.parseColor("#ff7a05"));
+                setNumberBackground(R.drawable.shape_white_ring);
+                setAnswerTextColor(Color.WHITE);
+                setUnderlineColor(Color.parseColor("#ff7a05"));
+                setBackground(getResources().getDrawable(R.drawable.shape_cloze_answer_wrong));
+            }else {
+                setNumberTextColor(Color.WHITE);
+                setNumberBackground(R.drawable.shape_orange_ring);
+                setAnswerTextColor(Color.parseColor("#ff7a05"));
+                setUnderlineColor(Color.parseColor("#ff7a05"));
+                setBackground(null);
+            }
+        }
+    }
+
+    protected boolean isRight(){
+        if(mCorrectAnswer == null){
+            throw new IllegalArgumentException("correct answer is null!");
+        }
+        if(mCorrectAnswer.equals(mFilledAnswer)){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
     public TextPosition getTextPosition(){
         return mPosition;
     }
@@ -89,6 +137,7 @@ public class ClozeView extends FrameLayout {
     public void setTextPosition(TextPosition pos){
         mPosition = pos;
     }
+
     public void setTextNumber(int num){
         mNumber.setText(String.valueOf(num));
     }
@@ -97,10 +146,38 @@ public class ClozeView extends FrameLayout {
         return Integer.parseInt(mNumber.getText().toString());
     }
 
-    public void setAnswer(String text){
+    public void setFilledAnswer(String text){
+        mFilledAnswer = text;
         mAnswer.setText(text);
     }
 
+    public String getCorrectAnswer() {
+        return mCorrectAnswer;
+    }
+
+    public void setCorrectAnswer(String correctAnswer) {
+        this.mCorrectAnswer = correctAnswer;
+    }
+
+    public void setNumberTextColor(int color){
+        mNumber.setTextColor(color);
+    }
+
+    public void setAnswerTextColor(int color){
+        mAnswer.setTextColor(color);
+    }
+
+    public void setUnderlineColor(int color){
+        mUnderline.setBackgroundColor(color);
+    }
+
+    public void setNumberBackground(int resId){
+        mNumber.setBackground(getResources().getDrawable(resId));
+    }
+
+    public void clearNumberAnimation(){
+        mNumber.clearAnimation();
+    }
     public void setContentCenter(boolean b){
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mContent.getLayoutParams();
         if(b){

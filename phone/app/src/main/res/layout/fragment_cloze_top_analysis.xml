@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="none">
+
+    <LinearLayout
+        android:id="@+id/ll_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/question_top_content_top_padding"
+        android:paddingLeft="@dimen/question_top_content_left_padding"
+        android:paddingRight="@dimen/question_top_content_right_padding"
+        android:paddingBottom="@dimen/question_top_content_bottom_padding">
+
+        <com.yanxiu.gphone.student.customviews.analysis.AnalysisClozeTextView
+            android:id="@+id/cloze_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+</ScrollView>
