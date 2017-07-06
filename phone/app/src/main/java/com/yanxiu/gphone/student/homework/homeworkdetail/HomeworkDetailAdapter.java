@@ -78,11 +78,15 @@ public class HomeworkDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     viewHolder.mState1.setText(R.string.homework_done_uncheck);
                     viewHolder.mState2.setText("");
                 }else {
-                    viewHolder.mCommentLayout.setVisibility(View.VISIBLE);
                     viewHolder.mState1.setText(R.string.homework_checked);
                     viewHolder.mState2.setText(mContext.getString(R.string.score_rate) + bean.getPaperStatus().getScoreRate());
-                    String text = String.format(mContext.getString(R.string.comment),bean.getPaperStatus().getTeacherName(),bean.getPaperStatus().getTeachercomments());
-                    viewHolder.mComment.setText(Html.fromHtml(text));
+                    if(!TextUtils.isEmpty(bean.getPaperStatus().getTeachercomments())){
+                        viewHolder.mCommentLayout.setVisibility(View.VISIBLE);
+                        String text = String.format(mContext.getString(R.string.comment),bean.getPaperStatus().getTeacherName(),bean.getPaperStatus().getTeachercomments());
+                        viewHolder.mComment.setText(Html.fromHtml(text));
+                    }else {
+                        viewHolder.mCommentLayout.setVisibility(View.GONE);
+                    }
                 }
             }
         }else if(holder instanceof FooterViewHolder){
