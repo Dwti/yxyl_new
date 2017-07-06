@@ -18,6 +18,8 @@ public class YesNoQuestion extends BaseQuestion {
     private String yesNoAnswer;
     private List<String> choice;
     private List<String> answerList = new ArrayList<>();
+    private String answerCompare;
+    private int starCount;
 
     public YesNoQuestion(PaperTestBean bean, QuestionShowType showType) {
         super(bean, showType);
@@ -26,6 +28,16 @@ public class YesNoQuestion extends BaseQuestion {
         choice = new ArrayList<>(2);
         choice.add("正确");
         choice.add("错误");
+        try {
+            starCount = Integer.parseInt(bean.getQuestions().getDifficulty());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            answerCompare = bean.getQuestions().getExtend().getData().getAnswerCompare();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         try {
             String jsonArray = bean.getQuestions().getPad().getAnswer();
             JSONArray array;
@@ -73,6 +85,14 @@ public class YesNoQuestion extends BaseQuestion {
     @Override
     public Object getAnswer() {
         return answerList;
+    }
+
+    public String getAnswerCompare() {
+        return answerCompare;
+    }
+
+    public int getStarCount() {
+        return starCount;
     }
 
 }
