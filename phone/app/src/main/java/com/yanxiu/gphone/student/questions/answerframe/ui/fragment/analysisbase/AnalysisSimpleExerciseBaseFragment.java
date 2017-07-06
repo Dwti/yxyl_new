@@ -45,7 +45,7 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
     public View mRootView;
     public LinearLayout mAnsewr_container, mAnalysis_container;
     public AnalysisQuestionResultView mAnswerResultView;//答题结果view
-    public ImageView mYeno_img;//答题结果对应的对错img，一定要和mAnswerResultView成对出现或隐藏
+    public ImageView mYesno_img;//答题结果对应的对错img，一定要和mAnswerResultView成对出现或隐藏
     public AnalysisScoreView mScoreView;//评分view
     public AnalysisDifficultyView mDifficultyview;//难度view
     private AnswerLayoutView mAnswerView;//答案
@@ -81,7 +81,7 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
         mAnalysis_container = (LinearLayout) mRootView.findViewById(R.id.analysis_container);
 
         mAnswerResultView = (AnalysisQuestionResultView) mRootView.findViewById(R.id.answerResult);
-        mYeno_img = (ImageView) mRootView.findViewById(R.id.yesno_img);
+        mYesno_img = (ImageView) mRootView.findViewById(R.id.yesno_img);
         mScoreView = (AnalysisScoreView) mRootView.findViewById(R.id.scoreview);
         mDifficultyview = (AnalysisDifficultyView) mRootView.findViewById(R.id.difficultyview);
         mAnalysisview = (AnalysisAnsewrAnslysisView) mRootView.findViewById(R.id.analysisview);
@@ -97,6 +97,7 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
         setQaNumber(mAnsewr_container);
         setQaName(mAnsewr_container);
         initComplexStem(mAnsewr_container, mData);
+        hiddenBottomPaddinglayout(mAnsewr_container);
     }
 
     /**
@@ -124,6 +125,19 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
             mListenView.setUrl(url);
             mListenView.setVisibility(View.VISIBLE);
         }
+    }
+
+    /**
+     * 隐藏单题型底部设置的paddinglayout
+     */
+    private void hiddenBottomPaddinglayout(View view){
+        try{
+            View bottomPaddingLayout = view.findViewById(R.id.bottompadding_layout);
+            bottomPaddingLayout.setVisibility(View.GONE);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
     }
 
 
@@ -161,24 +175,25 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
      * @param textContent  给某些题型使用，传入“正确”或者“错误”；不需要请传入null
      */
     public void showAnswerResultView(boolean isRight, String result,String textContent) {
-        if (mAnswerResultView != null && mYeno_img != null) {
+        if (mAnswerResultView != null && mYesno_img != null) {
             if (isRight) {
                 if (TextUtils.isEmpty(textContent)){
                     mAnswerResultView.setText(getResources().getString(R.string.answer_yes), result);
                 }else{
                     mAnswerResultView.setText(textContent, result);
                 }
-                mYeno_img.setBackgroundResource(R.drawable.analysis_yes_img);
+                mYesno_img.setBackgroundResource(R.drawable.analysis_yes_img);
+
             } else {
                 if (TextUtils.isEmpty(textContent)){
                     mAnswerResultView.setText(getResources().getString(R.string.answer_no), result);
                 }else{
                     mAnswerResultView.setText(textContent, result);
                 }
-                mYeno_img.setBackgroundResource(R.drawable.analysis_wrong_img);
+                mYesno_img.setBackgroundResource(R.drawable.analysis_wrong_img);
             }
             mAnswerResultView.setVisibility(View.VISIBLE);
-            mYeno_img.setVisibility(View.VISIBLE);
+            mYesno_img.setVisibility(View.VISIBLE);
 
         }
     }

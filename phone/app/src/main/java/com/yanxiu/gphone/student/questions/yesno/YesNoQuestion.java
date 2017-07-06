@@ -4,6 +4,7 @@ import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.questions.bean.PaperTestBean;
+import com.yanxiu.gphone.student.questions.bean.PointBean;
 
 import org.json.JSONArray;
 
@@ -20,6 +21,8 @@ public class YesNoQuestion extends BaseQuestion {
     private List<String> answerList = new ArrayList<>();
     private String answerCompare;
     private int starCount;
+    private String questionAnalysis;
+    private List<PointBean> pointList;
 
     public YesNoQuestion(PaperTestBean bean, QuestionShowType showType) {
         super(bean, showType);
@@ -28,6 +31,8 @@ public class YesNoQuestion extends BaseQuestion {
         choice = new ArrayList<>(2);
         choice.add("正确");
         choice.add("错误");
+        pointList = bean.getQuestions().getPoint();
+        questionAnalysis = bean.getQuestions().getAnalysis();
         try {
             starCount = Integer.parseInt(bean.getQuestions().getDifficulty());
         } catch (Exception e) {
@@ -93,6 +98,14 @@ public class YesNoQuestion extends BaseQuestion {
 
     public int getStarCount() {
         return starCount;
+    }
+
+    public String getQuestionAnalysis() {
+        return questionAnalysis;
+    }
+
+    public List<PointBean> getPointList() {
+        return pointList;
     }
 
 }

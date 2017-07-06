@@ -15,17 +15,17 @@
         android:layout_below="@+id/tv_name"
         android:textSize="@dimen/analysis_score_textsize2"
         android:textColor="@color/color_336600"
-        android:layout_marginBottom="@dimen/analysis_view_paddingbottom"
+        android:layout_marginBottom="@dimen/analysis_bottom"
         android:layout_marginLeft="@dimen/analysis_view_paddingbottom"
         android:layout_marginRight="@dimen/analysis_view_paddingbottom"
         android:lineSpacingExtra="@dimen/analysis_view_line_space" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_point"
-        android:orientation="horizontal">
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@+id/tv_point"-->
+        <!--android:orientation="horizontal">-->
 
-        <include layout="@layout/analysis_line_layout" />
-    </LinearLayout>
+        <!--<include layout="@layout/analysis_line_layout" />-->
+    <!--</LinearLayout>-->
 </RelativeLayout>

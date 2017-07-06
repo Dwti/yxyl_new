@@ -88,39 +88,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:visibility="gone" />
-
-                    <RelativeLayout
-                        android:id="@+id/notesLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentTop="true"
-                            android:text="笔记"
-                            android:textSize="18dp" />
-
-                        <TextView
-                            android:id="@+id/edit"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_alignParentTop="true"
-                            android:text="编辑笔记>>"
-                            android:textSize="18dp" />
-
-                        <TextView
-                            android:id="@+id/notesContent"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:text="笔记内容"
-                            android:textColor="@color/color_7dbb24"
-                            android:textSize="18dp" />
-
-                    </RelativeLayout>
                 </LinearLayout>
             </RelativeLayout>
 
