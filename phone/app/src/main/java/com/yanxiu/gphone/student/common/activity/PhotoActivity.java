@@ -31,6 +31,10 @@ public class PhotoActivity extends YanxiuBaseActivity implements ViewPager.OnPag
     private static final String SELECTID="select";
     private static final String FROM="from";
 
+    private static final String ISCANDELETE="delete";
+    public static final int DELETE_CAN=0;
+    public static final int DELETE_CANNOT=1;
+
     private Context mContext;
     private ViewPager mImagePhotoView;
     private ImageView mBackView;
@@ -41,12 +45,14 @@ public class PhotoActivity extends YanxiuBaseActivity implements ViewPager.OnPag
     private int mFromId;
     private int mSelectPosition=-1;
     private int mTotalNum;
+    private int mIsCanDelete=DELETE_CAN;
 
-    public static void LaunchActivity(Context context, ArrayList<String> list, int selectPosition,int fromId){
+    public static void LaunchActivity(Context context, ArrayList<String> list, int selectPosition,int fromId,int isCanDelete){
         Intent intent=new Intent(context,PhotoActivity.class);
         intent.putStringArrayListExtra(PATH_LIST,list);
         intent.putExtra(SELECTID,selectPosition);
         intent.putExtra(FROM,fromId);
+        intent.putExtra(ISCANDELETE,isCanDelete);
         context.startActivity(intent);
     }
 
@@ -57,6 +63,7 @@ public class PhotoActivity extends YanxiuBaseActivity implements ViewPager.OnPag
         mContext=PhotoActivity.this;
         mSelectPosition=getIntent().getIntExtra(SELECTID,-1);
         mFromId=getIntent().getIntExtra(FROM,-1);
+        mIsCanDelete=getIntent().getIntExtra(ISCANDELETE,DELETE_CAN);
         initView();
         listener();
         initData(getIntent().getStringArrayListExtra(PATH_LIST));
@@ -80,7 +87,11 @@ public class PhotoActivity extends YanxiuBaseActivity implements ViewPager.OnPag
 
     private void initData(ArrayList<String> list) {
         mBackView.setVisibility(View.VISIBLE);
-        mDeleteView.setVisibility(View.VISIBLE);
+        if (mIsCanDelete==DELETE_CAN) {
+            mDeleteView.setVisibility(View.VISIBLE);
+        }else {
+            mDeleteView.setVisibility(View.GONE);
+        }
         mTitleView.setTextColor(Color.WHITE);
         if (list==null){
             return;

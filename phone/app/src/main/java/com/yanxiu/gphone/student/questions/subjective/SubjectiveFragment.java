@@ -95,7 +95,7 @@ public class SubjectiveFragment extends AnswerSimpleExerciseBaseFragment impleme
                 CameraActivity.LaunchActivity(getContext(), SubjectiveFragment.this.hashCode());
                 break;
             case AlbumGridView.TYPE_IMAGE:
-                PhotoActivity.LaunchActivity(getContext(), mData.answerList, position, SubjectiveFragment.this.hashCode());
+                PhotoActivity.LaunchActivity(getContext(), mData.answerList, position, SubjectiveFragment.this.hashCode(),PhotoActivity.DELETE_CAN);
                 break;
         }
     }

@@ -196,6 +196,9 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
         }
     }
 
+    /**
+     * 答案
+     * */
     public void showAnswerView(String strem){
         if (strem==null){
             return;
@@ -204,6 +207,9 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
         mAnswerView.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * 知识点
+     * */
     public void showPointView(List<PointBean> data){
         if (data==null){
             return;
@@ -214,6 +220,9 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
         mPointView.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * 语音批语
+     * */
     public void showVoiceScoldedView(List<VoiceScoldedLayoutView.ScoldedMessage> list){
         mVoiceScoldedView.setData(list);
         mVoiceScoldedView.setVisibility(View.VISIBLE);

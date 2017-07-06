@@ -4,6 +4,7 @@ import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.questions.bean.PaperTestBean;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.bean.PointBean;
 
 import org.json.JSONArray;
 
@@ -19,6 +20,10 @@ public class MultiChoiceQuestion extends BaseQuestion {
     private List<String> multianswer=new ArrayList<>();
     private List<String> choice;
     private List<String> answerList=new ArrayList<>();
+    private List<PointBean> pointList;
+    private int starCount;
+    private String questionAnalysis;
+    private String answerCompare;
 
     public MultiChoiceQuestion(PaperTestBean bean, QuestionShowType showType) {
         super(bean, showType);
@@ -28,6 +33,18 @@ public class MultiChoiceQuestion extends BaseQuestion {
             multianswer.add((String) o);
         }
         choice= bean.getQuestions().getContent().getChoices();
+        pointList=bean.getQuestions().getPoint();
+        try {
+            starCount=Integer.parseInt(bean.getQuestions().getDifficulty());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        questionAnalysis=bean.getQuestions().getAnalysis();
+        try {
+            answerCompare=bean.getQuestions().getExtend().getData().getAnswerCompare();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         try {
             String jsonArray=bean.getQuestions().getPad().getAnswer();
             JSONArray array;
@@ -40,28 +57,32 @@ public class MultiChoiceQuestion extends BaseQuestion {
         }
     }
 
-    public List<String> getMultianswer() {
-        return multianswer;
+    public List<PointBean> getPointList() {
+        return pointList;
     }
 
-    public void setMultianswer(List<String> multianswer) {
-        this.multianswer = multianswer;
+    public int getStarCount() {
+        return starCount;
+    }
+
+    public String getQuestionAnalysis() {
+        return questionAnalysis;
+    }
+
+    public String getAnswerCompare() {
+        return answerCompare;
+    }
+
+    public List<String> getMultianswer() {
+        return multianswer;
     }
 
     public List<String> getAnswerList() {
         return answerList;
     }
 
-    public void setAnswerList(List<String> answerList) {
-        this.answerList = answerList;
-    }
-
     public List<String> getChoice() {
         return choice;
-    }
-
-    public void setChoice(List<String> choice) {
-        this.choice = choice;
     }
 
     @Override

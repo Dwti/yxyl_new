@@ -17,12 +17,21 @@ public class QuestionBean extends BaseBean {
     private String id;
     private String memo;
     private PadBean pad = new PadBean();
+    private Extend extend;
     private List<PointBean> point;
     private String stem;
     private String submit_way;
     private String template;
     private String type_id;
     private String url;
+
+    public Extend getExtend() {
+        return extend;
+    }
+
+    public void setExtend(Extend extend) {
+        this.extend = extend;
+    }
 
     public String getAnalysis() {
         return analysis;

@@ -19,13 +19,27 @@ public class SingleChoiceQuestion extends BaseQuestion {
     private String singleAnswer;
     private List<String> choice;
     private List<String> answerList=new ArrayList<>();
-    private List<PointBean> pointList=new ArrayList<>();
+    private List<PointBean> pointList;
+    private int starCount;
+    private String questionAnalysis;
+    private String answerCompare;
 
     public SingleChoiceQuestion(PaperTestBean bean, QuestionShowType showType) {
         super(bean, showType);
         singleAnswer= String.valueOf(bean.getQuestions().getAnswer().get(0));
         choice= bean.getQuestions().getContent().getChoices();
         pointList=bean.getQuestions().getPoint();
+        try {
+            starCount=Integer.parseInt(bean.getQuestions().getDifficulty());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        questionAnalysis=bean.getQuestions().getAnalysis();
+        try {
+            answerCompare=bean.getQuestions().getExtend().getData().getAnswerCompare();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         try {
             String jsonArray=bean.getQuestions().getPad().getAnswer();
             JSONArray array;
@@ -38,36 +52,32 @@ public class SingleChoiceQuestion extends BaseQuestion {
         }
     }
 
-    public List<String> getAnswerList() {
-        return answerList;
+    public String getAnswerCompare() {
+        return answerCompare;
     }
 
-    public void setAnswerList(List<String> answerList) {
-        this.answerList = answerList;
+    public String getQuestionAnalysis() {
+        return questionAnalysis;
+    }
+
+    public int getStarCount() {
+        return starCount;
+    }
+
+    public List<String> getAnswerList() {
+        return answerList;
     }
 
     public String getSingleAnswer() {
         return singleAnswer;
     }
 
-    public void setSingleAnswer(String singleAnswer) {
-        this.singleAnswer = singleAnswer;
-    }
-
     public List<String> getChoice() {
         return choice;
     }
 
-    public void setChoice(List<String> choice) {
-        this.choice = choice;
-    }
-
     public List<PointBean> getPointList() {
         return pointList;
-    }
-
-    public void setPointList(List<PointBean> pointList) {
-        this.pointList = pointList;
     }
 
     @Override

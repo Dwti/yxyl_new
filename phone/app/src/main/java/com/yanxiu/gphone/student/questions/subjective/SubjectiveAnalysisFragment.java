@@ -85,7 +85,7 @@ public class SubjectiveAnalysisFragment extends AnalysisSimpleExerciseBaseFragme
     public void onClick(int Type, int position) {
         switch (Type) {
             case AlbumGridView.TYPE_IMAGE:
-                PhotoActivity.LaunchActivity(getContext(), mData.answerList, position, SubjectiveAnalysisFragment.this.hashCode());
+                PhotoActivity.LaunchActivity(getContext(), mData.answerList, position, SubjectiveAnalysisFragment.this.hashCode(),PhotoActivity.DELETE_CANNOT);
                 break;
         }
     }
