@@ -57,8 +57,21 @@
                         android:layout_height="wrap_content"
                         android:visibility="gone" />
 
+                    <com.yanxiu.gphone.student.customviews.analysis.VoiceScoldedLayoutView
+                        android:id="@+id/voicescoldedview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone" />
+
+
                     <com.yanxiu.gphone.student.customviews.analysis.AnalysisDifficultyView
                         android:id="@+id/difficultyview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone" />
+
+                    <com.yanxiu.gphone.student.customviews.analysis.AnswerLayoutView
+                        android:id="@+id/answerview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:visibility="gone" />
@@ -67,9 +80,10 @@
                         android:id="@+id/analysisview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="gone"/>
+                        android:visibility="gone" />
 
-                    <com.yanxiu.gphone.student.customviews.PointLayoutView
+
+                    <com.yanxiu.gphone.student.customviews.analysis.PointLayoutView
                         android:id="@+id/pointview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/ll_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_centerVertical="true"
+        android:background="@drawable/shape_voice_scolded_item"
+        android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/iv_anim"
+            android:layout_width="@dimen/voice_scolded_anim_icon_w_h"
+            android:layout_height="@dimen/voice_scolded_anim_icon_w_h"
+            android:src="@drawable/voice_anim_icon"
+            android:layout_marginLeft="@dimen/voice_scolded_anim_margin_l"/>
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/voice_scolded_anim_margin_l"
+            android:textColor="@color/color_336600"
+            android:layout_marginRight="@dimen/voice_scolded_anim_margin_l"
+            android:textSize="@dimen/voice_scolded_anim_text_size"/>
+    </LinearLayout>
+
+</RelativeLayout>

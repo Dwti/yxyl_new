@@ -1,4 +1,4 @@
-package com.yanxiu.gphone.student.customviews;
+package com.yanxiu.gphone.student.customviews.analysis;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.yanxiu.gphone.student.R;
 
 /**
+ * 知识点
  * Created by Canghaixiao.
  * Time : 2017/7/4 16:51.
  * Function :

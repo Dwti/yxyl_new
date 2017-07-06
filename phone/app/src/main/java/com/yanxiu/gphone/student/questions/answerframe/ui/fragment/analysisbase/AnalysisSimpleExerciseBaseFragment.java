@@ -16,10 +16,12 @@ import android.widget.TextView;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.customviews.ListenerSeekBarLayout;
 import com.yanxiu.gphone.student.customviews.analysis.AnalysisAnsewrAnslysisView;
-import com.yanxiu.gphone.student.customviews.PointLayoutView;
+import com.yanxiu.gphone.student.customviews.analysis.AnswerLayoutView;
+import com.yanxiu.gphone.student.customviews.analysis.PointLayoutView;
 import com.yanxiu.gphone.student.customviews.analysis.AnalysisDifficultyView;
 import com.yanxiu.gphone.student.customviews.analysis.AnalysisQuestionResultView;
 import com.yanxiu.gphone.student.customviews.analysis.AnalysisScoreView;
+import com.yanxiu.gphone.student.customviews.analysis.VoiceScoldedLayoutView;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.NotesActicity;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionTemplate;
@@ -46,7 +48,9 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
     public AnalysisScoreView mScoreView;//评分view
     public AnalysisDifficultyView mDifficultyview;//难度view
     public AnalysisAnsewrAnslysisView mAnalysisview;//解析view
+    private AnswerLayoutView mAnswerView;//答案
     private PointLayoutView mPointView;//知识的view
+    private VoiceScoldedLayoutView mVoiceScoldedView;//语音批注
 
     private ListenerSeekBarLayout mListenView;//听力复合题只有一个子题时，题干的听力控件
 
@@ -67,11 +71,11 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.e("dyf", "onCreateView:ppp");
         mRootView = inflater.inflate(R.layout.fragment_analysis_base, container, false);
-        initView(inflater,container);
+        initView(inflater, container);
         return mRootView;
     }
 
-    private void initView(LayoutInflater inflater,@Nullable ViewGroup container) {
+    private void initView(LayoutInflater inflater, @Nullable ViewGroup container) {
         mAnsewr_container = (LinearLayout) mRootView.findViewById(R.id.ansewr_container);
         mAnalysis_container = (LinearLayout) mRootView.findViewById(R.id.analysis_container);
 
@@ -80,14 +84,17 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
         mScoreView = (AnalysisScoreView) mRootView.findViewById(R.id.scoreview);
         mDifficultyview = (AnalysisDifficultyView) mRootView.findViewById(R.id.difficultyview);
         mAnalysisview = (AnalysisAnsewrAnslysisView) mRootView.findViewById(R.id.analysisview);
-        mPointView= (PointLayoutView) mRootView.findViewById(R.id.pointview);
-        View answerView = addAnswerView(inflater,container);
+        mPointView = (PointLayoutView) mRootView.findViewById(R.id.pointview);
+        mAnswerView = (AnswerLayoutView) mRootView.findViewById(R.id.answerview);
+        mPointView = (PointLayoutView) mRootView.findViewById(R.id.pointview);
+        mVoiceScoldedView = (VoiceScoldedLayoutView) mRootView.findViewById(R.id.voicescoldedview);
+        View answerView = addAnswerView(inflater, container);
         mAnsewr_container.addView(answerView);
-        initAnswerView(inflater,container);
+        initAnswerView(inflater, container);
         initAnalysisView();
         setQaNumber(mAnsewr_container);
         setQaName(mAnsewr_container);
-        initComplexStem(mAnsewr_container,mData);
+        initComplexStem(mAnsewr_container, mData);
     }
 
     /**
@@ -124,18 +131,20 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
 
     /**
      * 添加答题view
+     *
      * @param inflater
      * @param container
      * @return
      */
-    public abstract View addAnswerView(LayoutInflater inflater,@Nullable ViewGroup container);
+    public abstract View addAnswerView(LayoutInflater inflater, @Nullable ViewGroup container);
 
     /**
      * 初始化答题view
+     *
      * @param inflater
      * @param container
      */
-    public abstract void initAnswerView(LayoutInflater inflater,@Nullable ViewGroup container);
+    public abstract void initAnswerView(LayoutInflater inflater, @Nullable ViewGroup container);
 
     /**
      * 显示解析view
@@ -144,16 +153,17 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
 
     /**
      * 答题结果view
+     *
      * @param isRight 是否正确
-     * @param result server返回的（没有该数据请传空）
+     * @param result  server返回的（没有该数据请传空）
      */
-    public void showAnswerResultView(boolean isRight,String result) {
-        if(mAnswerResultView != null && mYeno_img != null){
-            if(isRight){
-                mAnswerResultView.setText(getResources().getString(R.string.answer_yes),result);
+    public void showAnswerResultView(boolean isRight, String result) {
+        if (mAnswerResultView != null && mYeno_img != null) {
+            if (isRight) {
+                mAnswerResultView.setText(getResources().getString(R.string.answer_yes), result);
                 mYeno_img.setBackgroundResource(R.drawable.analysis_yes_img);
-            }else{
-                mAnswerResultView.setText(getResources().getString(R.string.answer_no),result);
+            } else {
+                mAnswerResultView.setText(getResources().getString(R.string.answer_no), result);
                 mYeno_img.setBackgroundResource(R.drawable.analysis_wrong_img);
             }
             mAnswerResultView.setVisibility(View.VISIBLE);
@@ -161,47 +171,66 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
 
         }
     }
+
     /**
      * 评分view
+     *
      * @param score 评分
      */
     public void showScoreView(String score) {
-        if(mScoreView != null){
+        if (mScoreView != null) {
             mScoreView.setText(score);
             mScoreView.setVisibility(View.VISIBLE);
 
         }
     }
+
     /**
      * 难度view
+     *
      * @param score 评分
      */
     public void showDifficultyview(int score) {
-        if(mDifficultyview != null && score >= 0 && score <= 5){
+        if (mDifficultyview != null && score >= 0 && score <= 5) {
             mDifficultyview.setScore(score);
             mDifficultyview.setVisibility(View.VISIBLE);
 
         }
     }
+
     /**
      * 解析view
+     *
      * @param analysis 解析
      */
     public void showAnalysisview(String analysis) {
-        if(mAnalysisview != null){
+        if (mAnalysisview != null) {
             mAnalysisview.setText(analysis);
             mAnalysisview.setVisibility(View.VISIBLE);
         }
     }
 
-    public void showPointView(List<PointBean> data){
-        if (data==null){
+    public void showAnswerView(String strem) {
+        if (strem == null) {
             return;
         }
-        for (PointBean pointBean:data) {
+        mAnswerView.setText(strem);
+        mAnswerView.setVisibility(View.VISIBLE);
+    }
+
+    public void showPointView(List<PointBean> data) {
+        if (data == null) {
+            return;
+        }
+        for (PointBean pointBean : data) {
             mPointView.setData(pointBean.getName());
         }
         mPointView.setVisibility(View.VISIBLE);
+    }
+
+    public void showVoiceScoldedView(List<VoiceScoldedLayoutView.ScoldedMessage> list) {
+        mVoiceScoldedView.setData(list);
+        mVoiceScoldedView.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -228,13 +257,24 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
 
     @Override
     public void onVisibilityChangedToUser(boolean isVisibleToUser, boolean invokeInResumeOrPause) {
-        super.onVisibilityChangedToUser(isVisibleToUser,invokeInResumeOrPause);
+        super.onVisibilityChangedToUser(isVisibleToUser, invokeInResumeOrPause);
         if (isVisibleToUser) {
             if (null != mListenView)
                 mListenView.setResume();
         } else {
             if (null != mListenView)
                 mListenView.setPause();
+        }
+        if (!invokeInResumeOrPause) {
+            if (isVisibleToUser) {
+                if (mVoiceScoldedView != null) {
+                    mVoiceScoldedView.setResume();
+                }
+            } else {
+                if (mVoiceScoldedView != null) {
+                    mVoiceScoldedView.setPause();
+                }
+            }
         }
     }
 
@@ -249,6 +289,9 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
         super.onDestroyView();
         if (null != mListenView)
             mListenView.setDestory();
+        if (mVoiceScoldedView != null) {
+            mVoiceScoldedView.setDestory();
+        }
     }
 
 }
