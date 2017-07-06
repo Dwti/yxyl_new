@@ -1,33 +1,17 @@
 package com.yanxiu.gphone.student.questions.fillblank;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ScrollView;
 
 import com.yanxiu.gphone.student.R;
-import com.yanxiu.gphone.student.customviews.spantextview.BlankView;
-import com.yanxiu.gphone.student.customviews.spantextview.FillBlankTextView;
-import com.yanxiu.gphone.student.customviews.spantextview.OnReplaceCompleteListener;
+import com.yanxiu.gphone.student.customviews.analysis.AnalysisFillBlankTextView;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
-import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerQuestionActivity;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.analysisbase.AnalysisSimpleExerciseBaseFragment;
-import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerComplexExerciseBaseFragment;
-import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
-import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
-import com.yanxiu.gphone.student.util.KeyboardObserver;
 import com.yanxiu.gphone.student.util.StemUtil;
 
 import java.util.List;
@@ -40,21 +24,13 @@ public class FillBlankAnalysisFragment extends AnalysisSimpleExerciseBaseFragmen
 
     private FillBlankQuestion mQuestion;
 
-    private FillBlankTextView mFillBlank;
+    private AnalysisFillBlankTextView mFillBlank;
     private String mStem;
-    private Button mSend;
-    private View mRootView, mEditLayout, mBottom;
-    private ScrollView mScrollView;
-    private EditText mEditText;
-    private View mViewWrapper;
 
-    private KeyboardObserver mKeyboardObserver;
+    private View mRootView;
 
-    private boolean mIsKeyboardShowing = false;
+    private List<String> mFilledAnswers,mCorrectAnswers;
 
-    private List<String> mAnswers;
-
-    private InputMethodManager imm ;
 
     @Override
     public void setData(BaseQuestion node) {
@@ -76,34 +52,21 @@ public class FillBlankAnalysisFragment extends AnalysisSimpleExerciseBaseFragmen
         outState.putSerializable(ExerciseBaseFragment.KEY_NODE, mQuestion);
     }
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if(!isVisibleToUser && mIsKeyboardShowing){
-            imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT,0);
-        }
-    }
-
     private void initData() {
         mStem = mQuestion.getStem();
-        mAnswers = mQuestion.getStringAnswers();
+        mFilledAnswers = mQuestion.getStringAnswers();
+        mCorrectAnswers = mQuestion.getCorrectAnswers();
     }
 
     @Override
     public View addAnswerView(LayoutInflater inflater, @Nullable ViewGroup container) {
-        mRootView = inflater.inflate(R.layout.fragment_fillblank,container,false);
+        mRootView = inflater.inflate(R.layout.fragment_analysis_fill_blank,container,false);
         return mRootView;
     }
 
     @Override
     public void initAnswerView(LayoutInflater inflater, @Nullable ViewGroup container) {
-        mFillBlank = (FillBlankTextView) mRootView.findViewById(R.id.tv_fill_blank);
-        mEditLayout = mRootView.findViewById(R.id.ll_edit);
-        mSend = (Button) mRootView.findViewById(R.id.btnSend);
-        mScrollView = (ScrollView) mRootView.findViewById(R.id.scrollView);
-        mViewWrapper = mRootView.findViewById(R.id.viewWrapper);
-        mEditText = (EditText) mRootView.findViewById(R.id.editText);
-        imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        mFillBlank = (AnalysisFillBlankTextView) mRootView.findViewById(R.id.tv_fill_blank);
         mFillBlank.setBlankEditable(false);
         initData();
         initListener();
@@ -116,108 +79,12 @@ public class FillBlankAnalysisFragment extends AnalysisSimpleExerciseBaseFragmen
     }
 
     private void setStem(String text){
-        if(mQuestion.getShowType() == QuestionShowType.ANALYSIS){
-            mFillBlank.setBlankEditable(false);
-        }
-        String stem = StemUtil.initFillBlankStem(text,mAnswers);
+        String stem = StemUtil.initAnalysisFillBlankStem(text, mFilledAnswers,mCorrectAnswers);
         mFillBlank.setText(stem);
     }
 
     private void initListener() {
 
-
-        mEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if(s.length() > 0 && !mSend.isEnabled()){
-                    mSend.setEnabled(true);
-                }else if(s.length() == 0 && mSend.isEnabled()){
-                    mSend.setEnabled(false);
-                }
-            }
-        });
-
-        mSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //找出当前输入的span的位置
-                int currPos = mFillBlank.getCurrentEditBlankPosition();
-                //更新答案的内容
-                mAnswers.set(currPos,mEditText.getText().toString());
-                //重新初始化题干
-                String stem = StemUtil.initFillBlankStem(mStem,mAnswers);
-                //重绘
-                mFillBlank.setText(stem);
-                //收起键盘
-                imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT,0);
-                //保存答案
-                saveAnswer(mQuestion);
-                updateProgress();
-            }
-        });
-
-
-        mFillBlank.setOnBlankClickListener(new FillBlankTextView.OnBlankClickListener() {
-            @Override
-            public void onBlankClick(BlankView view, String filledContent, final int spanStart) {
-                //当键盘为弹起状态时，也就是mFillBlank.getLastClickSpanStart()!=-1时，需要清除掉 上一个点击的空的选中状态
-                if(mIsKeyboardShowing && spanStart != mFillBlank.getLastClickSpanStart()){
-                    mFillBlank.setBlankTransparent(mFillBlank.getLastClickSpanStart(),true);
-                    mFillBlank.setBlankTransparent(spanStart,false);
-                }
-                if(!mIsKeyboardShowing){
-                    imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT,0);
-                }
-                mEditText.setText(filledContent);
-                mEditText.setSelection(filledContent.length());
-            }
-        });
-
-        mFillBlank.setOnReplaceCompleteListener(new OnReplaceCompleteListener() {
-            @Override
-            public void onReplaceComplete() {
-                mScrollView.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if(mFillBlank.getCurrClickSpanStart() >= 0){
-                            //获取最后一个view 并滑动到它的底部
-                            List<BlankView> viewList = mFillBlank.getBlankViews(mFillBlank.getCurrClickSpanStart());
-                            if(viewList.size() > 0){
-                                final BlankView blankView = viewList.get(viewList.size() -1);
-                                if(blankView.getBottom() + mViewWrapper.getPaddingTop() > mScrollView.getHeight()){
-                                    mScrollView.scrollTo(0,blankView.getBottom() - mScrollView.getHeight() + mViewWrapper.getPaddingTop());
-                                }
-                            }
-                        }
-                    }
-                });
-            }
-        });
-    }
-
-
-
-    @Override
-    public void saveAnswer(BaseQuestion question) {
-        boolean hasAnswer = false;
-        for(String str: mAnswers){
-            if(!TextUtils.isEmpty(str)){
-                hasAnswer = true;
-                break;
-            }
-        }
-        mQuestion.setIsAnswer(hasAnswer);
-        super.saveAnswer(question);
     }
 
     @Override

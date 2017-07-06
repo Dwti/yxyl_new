@@ -15,7 +15,7 @@ import java.util.List;
 
 public class FillBlankQuestion extends BaseQuestion {
 
-    private List<String> mAnswers = new ArrayList<>();
+    private List<String> mFilledAnswers = new ArrayList<>();
     public FillBlankQuestion(PaperTestBean bean, QuestionShowType showType) {
         super(bean, showType);
         initAnswer(bean);
@@ -26,7 +26,7 @@ public class FillBlankQuestion extends BaseQuestion {
             return;
         }
         for (Object o: bean.getQuestions().getPad().getJsonAnswer()){
-            mAnswers.add(String.valueOf(o));
+            mFilledAnswers.add(String.valueOf(o));
         }
     }
 
@@ -41,12 +41,14 @@ public class FillBlankQuestion extends BaseQuestion {
     }
 
     public List<String> getStringAnswers(){
-        return mAnswers;
+        return mFilledAnswers;
     }
+
+    public List<String> getCorrectAnswers(){return server_answer;}
 
     @Override
     public Object getAnswer() {
-        return mAnswers;
+        return mFilledAnswers;
     }
 
     @Override
@@ -55,6 +57,6 @@ public class FillBlankQuestion extends BaseQuestion {
     }
 
     public void setAnswer(List<String> list){
-        mAnswers = list;
+        mFilledAnswers = list;
     }
 }

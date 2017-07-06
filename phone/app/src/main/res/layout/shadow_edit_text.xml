@@ -12,6 +12,7 @@
         android:background="@drawable/selector_blank_shadow"/>
 
     <View
+        android:id="@+id/underline"
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:background="#89e00d"/>
