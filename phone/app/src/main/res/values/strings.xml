@@ -170,6 +170,8 @@
     <string name="answer_sscore_string">分</string>
     <string name="answer_no">回答错误</string>
     <string name="answer_yes">回答正确</string>
+
+    <string name="voice_url_error">音频错误</string>
     <string name="analysis_error_type">错误类型</string>
     <string name="analysis_error_tag1">题干有误</string>
     <string name="analysis_error_tag2">答案有误</string>
@@ -182,5 +184,24 @@
     <string name="analysis_error_submit_succes">提交成功</string>
     <string name="analysis_error_submit_fail">提交失败</string>
 
-    <string name="voice_url_error">音频错误</string>
+
+    <string name="question_judge">判断题</string>
+    <string name="question_fill_blanks">填空题</string>
+    <string name="question_classfy">归类题</string>
+    <string name="question_reading">材料题</string>
+    <string name="question_listen_complex">听力题</string>
+    <string name="question_cloze_complex">完型填空</string>
+    <string name="question_translation">翻译题</string>
+    <string name="question_read_complex">阅读理解</string>
+    <string name="question_solve_complex">解答题</string>
+    <string name="question_choice_single">单选题</string>
+    <string name="question_choice_multi">多选题</string>
+    <string name="question_subjective">主观题</string>
+    <string name="question_subjects_were">改错题</string>
+    <string name="question_sorting">排序题</string>
+    <string name="question_connect">连线题</string>
+    <string name="question_compute">计算题</string>
+
+    <string name="correct">正确</string>
+    <string name="wrong">错误</string>
 </resources>

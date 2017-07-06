@@ -25,6 +25,7 @@ import com.yanxiu.gphone.student.customviews.analysis.VoiceScoldedLayoutView;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.NotesActicity;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionTemplate;
+import com.yanxiu.gphone.student.questions.bean.JsonAudioComment;
 import com.yanxiu.gphone.student.questions.bean.PointBean;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
 
@@ -47,8 +48,8 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
     public ImageView mYeno_img;//答题结果对应的对错img，一定要和mAnswerResultView成对出现或隐藏
     public AnalysisScoreView mScoreView;//评分view
     public AnalysisDifficultyView mDifficultyview;//难度view
-    public AnalysisAnsewrAnslysisView mAnalysisview;//解析view
     private AnswerLayoutView mAnswerView;//答案
+    public AnalysisAnsewrAnslysisView mAnalysisview;//解析view
     private PointLayoutView mPointView;//知识的view
     private VoiceScoldedLayoutView mVoiceScoldedView;//语音批注
 
@@ -84,11 +85,12 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
         mScoreView = (AnalysisScoreView) mRootView.findViewById(R.id.scoreview);
         mDifficultyview = (AnalysisDifficultyView) mRootView.findViewById(R.id.difficultyview);
         mAnalysisview = (AnalysisAnsewrAnslysisView) mRootView.findViewById(R.id.analysisview);
+
         mPointView = (PointLayoutView) mRootView.findViewById(R.id.pointview);
         mAnswerView = (AnswerLayoutView) mRootView.findViewById(R.id.answerview);
-        mPointView = (PointLayoutView) mRootView.findViewById(R.id.pointview);
         mVoiceScoldedView = (VoiceScoldedLayoutView) mRootView.findViewById(R.id.voicescoldedview);
-        View answerView = addAnswerView(inflater, container);
+
+        View answerView = addAnswerView(inflater,container);
         mAnsewr_container.addView(answerView);
         initAnswerView(inflater, container);
         initAnalysisView();
@@ -210,16 +212,22 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
         }
     }
 
-    public void showAnswerView(String strem) {
-        if (strem == null) {
+    /**
+     * 答案
+     * */
+    public void showAnswerView(String strem){
+        if (TextUtils.isEmpty(strem)){
             return;
         }
         mAnswerView.setText(strem);
         mAnswerView.setVisibility(View.VISIBLE);
     }
 
-    public void showPointView(List<PointBean> data) {
-        if (data == null) {
+    /**
+     * 知识点
+     * */
+    public void showPointView(List<PointBean> data){
+        if (data==null){
             return;
         }
         for (PointBean pointBean : data) {
@@ -228,7 +236,13 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
         mPointView.setVisibility(View.VISIBLE);
     }
 
-    public void showVoiceScoldedView(List<VoiceScoldedLayoutView.ScoldedMessage> list) {
+    /**
+     * 语音批语
+     * */
+    public void showVoiceScoldedView(List<JsonAudioComment> list){
+        if (list==null){
+            return;
+        }
         mVoiceScoldedView.setData(list);
         mVoiceScoldedView.setVisibility(View.VISIBLE);
     }

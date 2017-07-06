@@ -3,7 +3,9 @@ package com.yanxiu.gphone.student.questions.subjective;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
+import com.yanxiu.gphone.student.questions.bean.JsonAudioComment;
 import com.yanxiu.gphone.student.questions.bean.PaperTestBean;
+import com.yanxiu.gphone.student.questions.bean.PointBean;
 
 import org.json.JSONArray;
 
@@ -18,9 +20,39 @@ import java.util.List;
 public class SubjectiveQuestion extends BaseQuestion {
 
     public ArrayList<String> answerList=new ArrayList<>();
+    private List<PointBean> pointList;
+    private int starCount;
+    private String questionAnalysis;
+    private List<String> subjectAnswer;
+    private int typeId=-1;
+    private int score;
+    private List<JsonAudioComment> audioList;
 
     public SubjectiveQuestion(PaperTestBean bean, QuestionShowType showType) {
         super(bean, showType);
+        pointList=bean.getQuestions().getPoint();
+        try {
+            starCount=Integer.parseInt(bean.getQuestions().getDifficulty());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        try {
+            audioList=bean.getQuestions().getPad().getJsonAudioComment();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        try {
+            score=bean.getQuestions().getPad().getTeachercheck().getScore();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        questionAnalysis=bean.getQuestions().getAnalysis();
+        try {
+            typeId=Integer.parseInt(bean.getQuestions().getType_id());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        subjectAnswer=bean.getQuestions().getAnswer();
         String jsonArray=bean.getQuestions().getPad().getAnswer();
         JSONArray array;
         try {
@@ -31,6 +63,38 @@ public class SubjectiveQuestion extends BaseQuestion {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public List<JsonAudioComment> getAudioList() {
+        return audioList;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public int getTypeId() {
+        return typeId;
+    }
+
+    public List<String> getSubjectAnswer() {
+        return subjectAnswer;
+    }
+
+    public ArrayList<String> getAnswerList() {
+        return answerList;
+    }
+
+    public List<PointBean> getPointList() {
+        return pointList;
+    }
+
+    public int getStarCount() {
+        return starCount;
+    }
+
+    public String getQuestionAnalysis() {
+        return questionAnalysis;
     }
 
     @Override

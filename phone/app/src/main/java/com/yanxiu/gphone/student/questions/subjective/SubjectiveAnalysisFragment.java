@@ -12,13 +12,16 @@ import com.yanxiu.gphone.student.common.activity.CameraActivity;
 import com.yanxiu.gphone.student.common.activity.CropImageActivity;
 import com.yanxiu.gphone.student.common.activity.PhotoActivity;
 import com.yanxiu.gphone.student.customviews.AlbumGridView;
+import com.yanxiu.gphone.student.customviews.analysis.VoiceScoldedLayoutView;
 import com.yanxiu.gphone.student.customviews.spantextview.SubjectClozeTextView;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.analysisbase.AnalysisSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerSimpleExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.util.QuestionUtil;
 import com.yanxiu.gphone.student.util.StemUtil;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import de.greenrobot.event.EventBus;
 
@@ -63,6 +66,28 @@ public class SubjectiveAnalysisFragment extends AnalysisSimpleExerciseBaseFragme
 
     @Override
     public void initAnalysisView() {
+        if (mData.getTypeId()== QuestionUtil.QUESTION_TYP.QUESTION_FILL_BLANKS.type||mData.getTypeId()== QuestionUtil.QUESTION_TYP.QUESTION_TRANSLATION.type||mData.getTypeId()== QuestionUtil.QUESTION_TYP.QUESTION_SUBJECTSWERE.type){
+            String result;
+            if (mData.getScore()==5){
+                result=getString(R.string.correct);
+            }else {
+                result=getString(R.string.wrong);
+            }
+            showAnswerResultView(false,result);
+        }else {
+            showScoreView(String.valueOf(mData.getScore()));
+        }
+        showVoiceScoldedView(mData.getAudioList());
+        showDifficultyview(mData.getStarCount());
+        String answer="";
+        if (mData.getSubjectAnswer()!=null){
+            for (String s:mData.getSubjectAnswer()){
+                answer+=s;
+            }
+        }
+        showAnswerView(answer);
+        showAnalysisview(mData.getQuestionAnalysis());
+        showPointView(mData.getPointList());
     }
 
     private void initView() {
@@ -85,7 +110,7 @@ public class SubjectiveAnalysisFragment extends AnalysisSimpleExerciseBaseFragme
     public void onClick(int Type, int position) {
         switch (Type) {
             case AlbumGridView.TYPE_IMAGE:
-                PhotoActivity.LaunchActivity(getContext(), mData.answerList, position, SubjectiveAnalysisFragment.this.hashCode());
+                PhotoActivity.LaunchActivity(getContext(), mData.answerList, position, SubjectiveAnalysisFragment.this.hashCode(),PhotoActivity.DELETE_CANNOT);
                 break;
         }
     }

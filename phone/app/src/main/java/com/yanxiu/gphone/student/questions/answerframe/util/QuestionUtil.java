@@ -3,6 +3,8 @@ package com.yanxiu.gphone.student.questions.answerframe.util;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
+import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.YanxiuApplication;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
 import com.yanxiu.gphone.student.questions.answerframe.bean.ReportAnswerBean;
@@ -23,11 +25,11 @@ public class QuestionUtil {
 
     public static final int ANSER_RIGHT = 0;     //正确
     public static final int ANSER_WRONG = 1;     //错误
-    public static final int ANSER_HALF_RIGHT=2;  //半对         //只有主观题才有半对状态，服务器不会回传这个值，对于主观题的status服务器回传的只会是 3 4 5 ；
+    public static final int ANSER_HALF_RIGHT = 2;  //半对         //只有主观题才有半对状态，服务器不会回传这个值，对于主观题的status服务器回传的只会是 3 4 5 ；
     public static final int ANSER_UNFINISH = 3;  //未作答
     public static final int ANSER_FINISH = 4;    //主观题已作答
     public static final int ANSER_READED = 5;    //主观题已批改
-    public static final int ANSER_UNFINISHS=6;   //未完成
+    public static final int ANSER_UNFINISHS = 6;   //未完成
 
     /**
      * 给答题卡和答题报告设置题号
@@ -63,7 +65,7 @@ public class QuestionUtil {
                 if (questionEntity.isComplexQuestion()) {
                     typeName = getQuestionTypeNameByParentTypeId(Integer.valueOf(questionEntity.getType_id()));
                     List<BaseQuestion> childrenList = questionEntity.getChildren();
-                    for (int j = 0; j < childrenList.size(); j ++) {
+                    for (int j = 0; j < childrenList.size(); j++) {
                         BaseQuestion childQuestion = childrenList.get(j);
 
                         if (!treeMap.containsKey(typeName)) {
@@ -171,6 +173,33 @@ public class QuestionUtil {
         }
     }
 
+    public enum QUESTION_TYP {
+        QUESTION_SINGLE_CHOICES(1, YanxiuApplication.getInstance().getResources().getString(R.string.question_choice_single)),
+        QUESTION_MULTI_CHOICES(2, YanxiuApplication.getInstance().getResources().getString(R.string.question_choice_multi)),
+        QUESTION_FILL_BLANKS(3, YanxiuApplication.getInstance().getResources().getString(R.string.question_fill_blanks)),
+        QUESTION_JUDGE(4, YanxiuApplication.getInstance().getResources().getString(R.string.question_judge)),
+        QUESTION_READING(5, YanxiuApplication.getInstance().getResources().getString(R.string.question_reading)),
+        QUESTION_SUBJECTIVE(6, YanxiuApplication.getInstance().getResources().getString(R.string.question_subjective)),
+        QUESTION_CONNECT(7, YanxiuApplication.getInstance().getResources().getString(R.string.question_connect)),
+        QUESTION_COMPUTE(8, YanxiuApplication.getInstance().getResources().getString(R.string.question_compute)),
+        QUESTION_LISTEN_COMPLEX(9, YanxiuApplication.getInstance().getResources().getString(R.string.question_listen_complex)),
+        QUESTION_CLASSFY(13, YanxiuApplication.getInstance().getResources().getString(R.string.question_classfy)),
+        QUESTION_READ_COMPLEX(14, YanxiuApplication.getInstance().getResources().getString(R.string.question_read_complex)),
+        QUESTION_CLOZE_COMPLEX(15, YanxiuApplication.getInstance().getResources().getString(R.string.question_cloze_complex)),
+        QUESTION_TRANSLATION(16,YanxiuApplication.getInstance().getResources().getString(R.string.question_translation)),
+        QUESTION_SUBJECTSWERE(17,YanxiuApplication.getInstance().getResources().getString(R.string.question_subjects_were)),
+        QUESTION_SORTING(20,YanxiuApplication.getInstance().getResources().getString(R.string.question_sorting)),
+        QUESTION_SOLVE_COMPLEX(22, YanxiuApplication.getInstance().getResources().getString(R.string.question_solve_complex));
+
+        public int type;
+        public String name;
+
+        QUESTION_TYP(int type, String name) {
+            this.type = type;
+            this.name = name;
+        }
+    }
+
     public static int getIntValue(String str) {
         int result = 0;
         switch (str) {
@@ -230,6 +259,7 @@ public class QuestionUtil {
     /**
      * 答题报告数据转换
      * dyf
+     *
      * @param paper
      */
     public static void initDataWithAnswer(Paper paper) {
@@ -503,7 +533,7 @@ public class QuestionUtil {
     }
 
     public static <T extends Comparable<T>> boolean compareListByOrder(List<T> a, List<T> b) {
-        if(a.size() != b.size())
+        if (a.size() != b.size())
             return false;
 
         for (int i = 0; i < a.size(); i++) {

@@ -76,12 +76,12 @@
                         android:layout_height="wrap_content"
                         android:visibility="gone" />
 
+
                     <com.yanxiu.gphone.student.customviews.analysis.AnalysisAnsewrAnslysisView
                         android:id="@+id/analysisview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="gone" />
-
+                        android:visibility="gone"/>
 
                     <com.yanxiu.gphone.student.customviews.analysis.PointLayoutView
                         android:id="@+id/pointview"
