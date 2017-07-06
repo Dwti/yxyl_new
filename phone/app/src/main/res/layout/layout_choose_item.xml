@@ -24,19 +24,24 @@
         android:layout_toRightOf="@+id/tv_question_id"
         android:layout_marginStart="@dimen/question_fragment_q_margin_l_r"
         android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/tv_question_content"
+        <LinearLayout
             android:layout_width="@dimen/login_default_width"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginBottom="@dimen/choose_fragment_item_margin_t_b"
             android:layout_marginTop="@dimen/choose_fragment_item_margin_t_b"
-            android:layout_weight="1"
-            android:lineSpacingExtra="@dimen/choose_fragment_item_content_line_space"
-            android:lineSpacingMultiplier="1"
-            android:textColor="@color/color_666666"
-            android:textSize="@dimen/choose_fragment_item_content_text_size" />
+            android:layout_weight="1">
+            <TextView
+                android:id="@+id/tv_question_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:lineSpacingExtra="@dimen/choose_fragment_item_content_line_space"
+                android:lineSpacingMultiplier="1"
+                android:textColor="@color/color_666666"
+                android:textSize="@dimen/choose_fragment_item_content_text_size" />
+
+        </LinearLayout>
 
         <View
             android:id="@+id/v_question_select"

@@ -116,6 +116,8 @@
     <dimen name="choose_fragment_item_margin_t_b">20dp</dimen>
     <dimen name="choose_fragment_item_content_text_size">17dp</dimen>
     <dimen name="choose_fragment_item_content_line_space">8dp</dimen>
+    <dimen name="choose_fragment_item_content_width_yesno">39dp</dimen>
+    <dimen name="choose_fragment_item_content_width_yesno2">8dp</dimen>
 
     <dimen name="choose_fragment_unselect_round_w_h">20dp</dimen>
     <dimen name="choose_fragment_round_stroke_w">2dp</dimen>
@@ -222,5 +224,6 @@
     <dimen name="voice_scolded_anim_icon_w_h">20dp</dimen>
     <dimen name="voice_scolded_anim_margin_l">15dp</dimen>
     <dimen name="voice_scolded_anim_text_size">16dp</dimen>
+    <dimen name="choose_layout_ss">2dp</dimen>
 </resources>
 

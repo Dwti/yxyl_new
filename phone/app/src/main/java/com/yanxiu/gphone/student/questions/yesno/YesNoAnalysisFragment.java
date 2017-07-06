@@ -61,19 +61,19 @@ public class YesNoAnalysisFragment extends AnalysisSimpleExerciseBaseFragment {
         Spanned string = Html.fromHtml(mData.getStem(), new HtmlImageGetter(mQuestionView), null);
         mQuestionView.setText(string);
         mChooseView.setIsClick(false);
-        mChooseView.setData(mData.getChoice());
+        mChooseView.setYesyNoData(mData.getChoice());
         List<String> datas = mData.getAnswerList();
         String answer = mData.getYesNoAnswer();
         int answer_position = Integer.parseInt(answer);
 
-        if (datas.size() > 0) {
-            int result = Integer.parseInt(datas.get(0));
-            if (result == 1) { //正确
-                mChooseView.setSelect(0);
-            } else { //错误
-                mChooseView.setSelect(1);
-            }
-        }
+//        if (datas.size() > 0) {
+//            int result = Integer.parseInt(datas.get(0));
+//            if (result == 1) { //正确
+//                mChooseView.setSelect(0);
+//            } else { //错误
+//                mChooseView.setSelect(1);
+//            }
+//        }
         int count = mChooseView.getChildCount();
         for (int i = 0; i < count; i++) {
             View choleView = mChooseView.getChildAt(i);

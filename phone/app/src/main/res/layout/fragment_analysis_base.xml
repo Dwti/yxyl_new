@@ -51,17 +51,18 @@
                         android:layout_height="wrap_content"
                         android:visibility="gone" />
 
-                    <com.yanxiu.gphone.student.customviews.analysis.VoiceScoldedLayoutView
-                        android:id="@+id/voicescoldedview"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone"/>
-
                     <com.yanxiu.gphone.student.customviews.analysis.AnalysisScoreView
                         android:id="@+id/scoreview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:visibility="gone" />
+
+                    <com.yanxiu.gphone.student.customviews.analysis.VoiceScoldedLayoutView
+                        android:id="@+id/voicescoldedview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone" />
+
 
                     <com.yanxiu.gphone.student.customviews.analysis.AnalysisDifficultyView
                         android:id="@+id/difficultyview"
@@ -73,19 +74,20 @@
                         android:id="@+id/answerview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="gone"/>
+                        android:visibility="gone" />
 
-                    <com.yanxiu.gphone.student.customviews.analysis.PointLayoutView
-                        android:id="@+id/pointview"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone"/>
 
                     <com.yanxiu.gphone.student.customviews.analysis.AnalysisAnsewrAnslysisView
                         android:id="@+id/analysisview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:visibility="gone"/>
+
+                    <com.yanxiu.gphone.student.customviews.analysis.PointLayoutView
+                        android:id="@+id/pointview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone" />
 
                     <RelativeLayout
                         android:id="@+id/notesLayout"

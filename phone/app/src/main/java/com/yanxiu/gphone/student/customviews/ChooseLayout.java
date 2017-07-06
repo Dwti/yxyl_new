@@ -63,7 +63,9 @@ public class ChooseLayout extends LinearLayout implements View.OnClickListener {
     public void setData(List<String> list) {
         addChildView(list);
     }
-
+    public void setYesyNoData(List<String> list) {
+        addChildViewYesyNo(list);
+    }
     private void addChildView(List<String> list) {
         this.removeAllViews();
         for (int i = 0; i < list.size(); i++) {
@@ -73,6 +75,35 @@ public class ChooseLayout extends LinearLayout implements View.OnClickListener {
             holder.mQuestionIdView = (TextView) view.findViewById(R.id.tv_question_id);
             holder.mQuestionIdView.setText(getEmsByNum(i));
             holder.mQuestionContentView = (TextView) view.findViewById(R.id.tv_question_content);
+            Spanned string= Html.fromHtml(list.get(i),new HtmlImageGetter(holder.mQuestionContentView),null);
+            holder.mQuestionContentView.setText(string);
+            holder.mQuestionSelectView = view.findViewById(R.id.v_question_select);
+            if (mChooseType==TYPE_MULTI){
+                ViewCompat.setBackground(holder.mQuestionSelectView, ContextCompat.getDrawable(mContext, R.drawable.multi_unselect));
+            }else {
+                ViewCompat.setBackground(holder.mQuestionSelectView, ContextCompat.getDrawable(mContext, R.drawable.single_unselect));
+            }
+            view.setOnClickListener(ChooseLayout.this);
+            view.setTag(holder);
+            this.addView(view);
+        }
+    }
+
+    private void addChildViewYesyNo(List<String> list) {
+        this.removeAllViews();
+        for (int i = 0; i < list.size(); i++) {
+            View view = LayoutInflater.from(mContext).inflate(R.layout.layout_choose_item, this, false);
+            ViewHolder holder = new ViewHolder();
+            holder.position = i;
+            holder.mQuestionIdView = (TextView) view.findViewById(R.id.tv_question_id);
+            holder.mQuestionIdView.setText(getEmsByNum(i));
+            holder.mQuestionContentView = (TextView) view.findViewById(R.id.tv_question_content);
+            LinearLayout.LayoutParams  lp = (LinearLayout.LayoutParams)holder.mQuestionContentView.getLayoutParams();
+            lp.width = getResources().getDimensionPixelSize(R.dimen.choose_fragment_item_content_width_yesno);
+            lp.height = getResources().getDimensionPixelSize(R.dimen.choose_fragment_item_content_width_yesno);
+            int space =getResources().getDimensionPixelSize(R.dimen.choose_fragment_item_content_line_space);
+            int left =getResources().getDimensionPixelSize(R.dimen.choose_layout_ss);
+            holder.mQuestionContentView.setPadding(left,0,0,-space);
             Spanned string= Html.fromHtml(list.get(i),new HtmlImageGetter(holder.mQuestionContentView),null);
             holder.mQuestionContentView.setText(string);
             holder.mQuestionSelectView = view.findViewById(R.id.v_question_select);
