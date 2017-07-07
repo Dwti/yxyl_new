@@ -99,4 +99,18 @@ public class MultiChoiceQuestion extends BaseQuestion {
     public Object getAnswer() {
         return answerList;
     }
+
+    @Override
+    public int getStatus() {
+        if (multianswer.size()==answerList.size()&&multianswer.containsAll(answerList)){
+            return 0;
+        }else {
+            for (int i = 0; i < answerList.size(); i++) {
+                if (multianswer.contains(answerList.get(i))) {
+                    return 2;
+                }
+            }
+        }
+        return 1;
+    }
 }
