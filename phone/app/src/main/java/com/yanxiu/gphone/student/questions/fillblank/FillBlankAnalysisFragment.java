@@ -75,7 +75,10 @@ public class FillBlankAnalysisFragment extends AnalysisSimpleExerciseBaseFragmen
 
     @Override
     public void initAnalysisView() {
-
+        showAnswerResultView(mQuestion.isRight(),mQuestion.getAnswerCompare(),null);
+        showDifficultyview(mQuestion.getStarCount());
+        showAnalysisview(mQuestion.getQuestionAnalysis());
+        showPointView(mQuestion.getPointList());
     }
 
     private void setStem(String text){
