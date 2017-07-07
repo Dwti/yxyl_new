@@ -63,9 +63,9 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
     private ArrayList<BaseQuestion> mQuestions;
     private String mPPid;
     private String mTitleString;
-//    private AnswerReportRequest mRequest;
 
     private RelativeLayout mNopigai_layout, mPigai_layout;
+    private TextView mTitle;
     //批改view
     private TextView mTextview_correct;//正确率
     private TextView mTotalnumber;//总题数
@@ -121,6 +121,8 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
     private void initView() {
         mNopigai_layout = (RelativeLayout) findViewById(R.id.nopigai_layout);
         mPigai_layout = (RelativeLayout) findViewById(R.id.pigai_layout);
+        mTitle = (TextView) findViewById(R.id.report_title);
+        mTitle.setText(mTitleString);
         mTextview_correct = (TextView) findViewById(R.id.textview_correct);
         mTotalnumber = (TextView) findViewById(R.id.totalnumber);
         mYesnumber = (TextView) findViewById(R.id.yesnumber);

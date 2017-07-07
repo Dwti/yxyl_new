@@ -34,7 +34,7 @@
                     android:layout_alignParentTop="true"
                     android:layout_marginTop="28dp"
                     android:background="@drawable/report_header_score"
-                    android:visibility="visible">
+                    android:visibility="gone">
 
                     <TextView
                         android:id="@+id/center"
@@ -185,7 +185,7 @@
             android:background="@drawable/answerquestion_top_backview_selecter" />
 
         <TextView
-            android:id="@+id/title"
+            android:id="@+id/report_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"

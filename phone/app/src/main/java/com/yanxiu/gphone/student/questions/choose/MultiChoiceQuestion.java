@@ -1,5 +1,6 @@
 package com.yanxiu.gphone.student.questions.choose;
 
+import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.questions.bean.PaperTestBean;
@@ -102,15 +103,18 @@ public class MultiChoiceQuestion extends BaseQuestion {
 
     @Override
     public int getStatus() {
-        if (multianswer.size()==answerList.size()&&multianswer.containsAll(answerList)){
-            return 0;
-        }else {
-            for (int i = 0; i < answerList.size(); i++) {
-                if (multianswer.contains(answerList.get(i))) {
-                    return 2;
+        if (multianswer!=null&&answerList!=null) {
+            if (multianswer.size() == answerList.size() && multianswer.containsAll(answerList)) {
+                return Constants.ANSWER_STATUS_RIGHT;
+            } else {
+                for (int i = 0; i < answerList.size(); i++) {
+                    if (multianswer.contains(answerList.get(i))) {
+                        return Constants.ANSWER_STATUS_HALFRIGHT;
+                    }
                 }
+                return Constants.ANSWER_STATUS_WRONG;
             }
         }
-        return 1;
+        return Constants.ANSWER_STATUS_NOANSWERED;
     }
 }

@@ -1,5 +1,6 @@
 package com.yanxiu.gphone.student.questions.subjective;
 
+import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
@@ -110,5 +111,13 @@ public class SubjectiveQuestion extends BaseQuestion {
     @Override
     public Object getAnswer() {
         return answerList;
+    }
+
+    @Override
+    public int getStatus() {
+        if (answerList!=null&&answerList.size()>0){
+            return Constants.ANSWER_STATUS_YSUBJECT_ANSWERED;
+        }
+        return Constants.ANSWER_STATUS_NOANSWERED;
     }
 }

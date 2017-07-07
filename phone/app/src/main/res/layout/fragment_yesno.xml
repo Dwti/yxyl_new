@@ -53,6 +53,7 @@
                 android:alpha="0.2"
                 android:background="@color/color_002c0f" />
             <include
+                android:id="@+id/bottompadding_layout"
                 layout="@layout/simplequestion_bottom_padding"
                 android:layout_height="@dimen/question_bottom_layout_height"
                 android:layout_width="match_parent"

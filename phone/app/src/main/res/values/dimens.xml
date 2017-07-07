@@ -199,6 +199,7 @@
     <dimen name="analysis_view_line_space">18dp</dimen>
     <dimen name="analysis_titleview_textsize">16dp</dimen>
     <dimen name="analysis_yseno_textsize">29dp</dimen>
+    <dimen name="analysis_result_img_width">33dp</dimen>
     <dimen name="analysis_answer_analysis_textsize">19dp</dimen>
     <dimen name="analysis_answer_result_textsize">17dp</dimen>
     <dimen name="analysis_answer_result_SpacingExtra">21dp</dimen>
@@ -208,6 +209,7 @@
     <dimen name="analysis_score_textsize">72dp</dimen>
     <dimen name="analysis_score_textsize2">19dp</dimen>
     <dimen name="analysis_difficuty_spaceing">5dp</dimen>
+    <dimen name="analysis_bottom">45dp</dimen>
 
     <dimen name="analysis_toppadding">10dp</dimen>
     <dimen name="analysis_error_width">50dp</dimen>

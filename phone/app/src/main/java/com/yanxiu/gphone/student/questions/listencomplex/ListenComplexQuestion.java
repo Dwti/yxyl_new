@@ -36,4 +36,9 @@ public class ListenComplexQuestion extends BaseQuestion {
     public Object getAnswer() {
         return null;
     }
+
+    @Override
+    public int getStatus() {
+        return 0;
+    }
 }

@@ -1,5 +1,6 @@
 package com.yanxiu.gphone.student.questions.choose;
 
+import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.questions.bean.PaperTestBean;
@@ -93,6 +94,18 @@ public class SingleChoiceQuestion extends BaseQuestion {
     @Override
     public Object getAnswer() {
         return answerList;
+    }
+
+    @Override
+    public int getStatus() {
+        if (answerList!=null&&answerList.size()>0){
+            if (answerList.get(0).equals(singleAnswer)){
+                return Constants.ANSWER_STATUS_RIGHT;
+            }else {
+                return Constants.ANSWER_STATUS_WRONG;
+            }
+        }
+        return Constants.ANSWER_STATUS_NOANSWERED;
     }
 
 }

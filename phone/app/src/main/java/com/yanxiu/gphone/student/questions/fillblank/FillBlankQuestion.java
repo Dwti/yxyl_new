@@ -49,6 +49,11 @@ public class FillBlankQuestion extends BaseQuestion {
         return mAnswers;
     }
 
+    @Override
+    public int getStatus() {
+        return 0;
+    }
+
     public void setAnswer(List<String> list){
         mAnswers = list;
     }
