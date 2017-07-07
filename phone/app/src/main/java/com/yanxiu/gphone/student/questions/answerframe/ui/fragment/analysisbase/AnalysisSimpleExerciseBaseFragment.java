@@ -52,7 +52,7 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
     public AnalysisAnsewrAnslysisView mAnalysisview;//解析view
     private PointLayoutView mPointView;//知识的view
     private VoiceScoldedLayoutView mVoiceScoldedView;//语音批注
-
+    protected boolean mToVoiceIsIntent=false;
     private ListenerSeekBarLayout mListenView;//听力复合题只有一个子题时，题干的听力控件
 
     @Override
@@ -297,21 +297,14 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
     public void onVisibilityChangedToUser(boolean isVisibleToUser, boolean invokeInResumeOrPause) {
         super.onVisibilityChangedToUser(isVisibleToUser, invokeInResumeOrPause);
         if (isVisibleToUser) {
+            mToVoiceIsIntent=false;
             if (null != mListenView)
                 mListenView.setResume();
         } else {
             if (null != mListenView)
                 mListenView.setPause();
-        }
-        if (!invokeInResumeOrPause) {
-            if (isVisibleToUser) {
-                if (mVoiceScoldedView != null) {
-                    mVoiceScoldedView.setResume();
-                }
-            } else {
-                if (mVoiceScoldedView != null) {
-                    mVoiceScoldedView.setPause();
-                }
+            if (mVoiceScoldedView != null&&!mToVoiceIsIntent) {
+                mVoiceScoldedView.setDestory();
             }
         }
     }
