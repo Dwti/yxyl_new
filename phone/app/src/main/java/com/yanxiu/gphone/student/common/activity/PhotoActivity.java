@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,7 +14,6 @@ import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.common.Bean.PhotoDeleteBean;
 import com.yanxiu.gphone.student.common.adapter.PhotoPagerAdapter;
 import com.yanxiu.gphone.student.customviews.ZoomImageView;
-import com.yanxiu.gphone.student.util.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,8 +66,8 @@ public class PhotoActivity extends YanxiuBaseActivity implements ViewPager.OnPag
         mFromId=getIntent().getIntExtra(FROM,-1);
         mIsCanDelete=getIntent().getIntExtra(ISCANDELETE,DELETE_CAN);
         initView();
-        listener();
         initData(getIntent().getStringArrayListExtra(PATH_LIST));
+        listener();
     }
 
     private void initView() {
