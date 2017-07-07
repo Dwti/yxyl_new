@@ -49,6 +49,7 @@ public abstract class ReplacementSpanTextView<T extends View> extends FrameLayou
     protected boolean mIsReplaceCompleted = false;
     private List<OnReplaceCompleteListener> mOnReplaceCompleteListeners = new ArrayList<>();
     protected static final int MIN_WIDTH = 200;
+    protected int mExtraSpace;
     protected int mSpacing;
 
     public ReplacementSpanTextView(@NonNull Context context) {
@@ -73,6 +74,7 @@ public abstract class ReplacementSpanTextView<T extends View> extends FrameLayou
 
     private void initView(Context context) {
         mSpacing = ScreenUtils.dpToPxInt(context, 5);
+        mExtraSpace = ScreenUtils.dpToPxInt(context,17);
         mContext = context;
         replaceViews = new ArrayList<>();
         mSpanSet = new TreeSet<>();
@@ -138,7 +140,7 @@ public abstract class ReplacementSpanTextView<T extends View> extends FrameLayou
                 if (TextUtils.isEmpty(answer)) {
                     width = MIN_WIDTH;
                 } else {
-                    width = (int) Math.max(MIN_WIDTH, StringUtil.computeStringWidth(answer, mTextView.getPaint()) + mSpacing + mTextView.getTextSize());
+                    width = (int) Math.max(MIN_WIDTH, StringUtil.computeStringWidth(answer, mTextView.getPaint()) + mSpacing + mExtraSpace);
                 }
                 span.width = width;
                 span.height = mTextView.getLineHeight();

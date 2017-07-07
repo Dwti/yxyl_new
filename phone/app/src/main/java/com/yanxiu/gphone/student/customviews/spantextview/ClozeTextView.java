@@ -1,6 +1,7 @@
 package com.yanxiu.gphone.student.customviews.spantextview;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.AttrRes;
 import android.support.annotation.NonNull;
@@ -24,6 +25,8 @@ public class ClozeTextView extends ReplacementSpanTextView<ClozeView> implements
     protected ClozeView mSelectedClozeView;
 
     protected boolean mClozeClickable = true;
+
+    private int mSelectedPosition = 0;
 
     public ClozeTextView(@NonNull Context context) {
         super(context);
@@ -66,16 +69,10 @@ public class ClozeTextView extends ReplacementSpanTextView<ClozeView> implements
                 if (!mClozeClickable)
                     return;
                 ClozeView cv = (ClozeView) v;
-                if (mSelectedClozeView == cv) {
-                    return;
+                if(cv != mSelectedClozeView){
+                    resetSelected();
+                    setSelected(cv.getTextNumber() - 1);
                 }
-                if (cv.getTextPosition() == ClozeView.TextPosition.CENTER) {
-                    cv.performTranslateAnimation(ClozeView.TextPosition.LEFT);
-                }
-                if (mSelectedClozeView != null) {
-                    mSelectedClozeView.performTranslateAnimation(ClozeView.TextPosition.CENTER);
-                }
-                mSelectedClozeView = cv;
                 if (mOnClozeClickListener != null) {
                     mOnClozeClickListener.onClozeClick(cv, cv.getTextNumber() - 1);
                 }
@@ -85,20 +82,27 @@ public class ClozeTextView extends ReplacementSpanTextView<ClozeView> implements
     }
 
     public void resetSelected() {
-        if (mSelectedClozeView != null && mSelectedClozeView.getTextPosition() == ClozeView.TextPosition.LEFT) {
-            mSelectedClozeView.performTranslateAnimation(ClozeView.TextPosition.CENTER);
+        if (mSelectedClozeView != null) {
+            if(!mSelectedClozeView.hasFilled()  && mSelectedClozeView.getTextPosition() == ClozeView.TextPosition.LEFT ){
+                mSelectedClozeView.performTranslateAnimation(ClozeView.TextPosition.CENTER);
+            }
+            mSelectedClozeView.setAnswerTextColor(Color.parseColor("#89e00d"));
             mSelectedClozeView = null;
         }
     }
 
-    public void setOnClozeClickListener(OnClozeClickListener listener) {
-        mOnClozeClickListener = listener;
+    public void setSelected(int index){
+        ClozeView cv = getReplaceView(index);
+        mSelectedPosition = index;
+        if (!cv.hasFilled() && cv.getTextPosition() == ClozeView.TextPosition.CENTER) {
+            cv.performTranslateAnimation(ClozeView.TextPosition.LEFT);
+        }
+        cv.setAnswerTextColor(Color.parseColor("#333333"));
+        mSelectedClozeView = cv;
     }
 
-    public void performTranslateAnimation(ClozeView.TextPosition position, int index) {
-        ClozeView clozeView = getReplaceView(index);
-        clozeView.performTranslateAnimation(position);
-        mSelectedClozeView = clozeView;
+    public void setOnClozeClickListener(OnClozeClickListener listener) {
+        mOnClozeClickListener = listener;
     }
 
     @Override
@@ -109,6 +113,9 @@ public class ClozeTextView extends ReplacementSpanTextView<ClozeView> implements
             if (!TextUtils.isEmpty(entry.getKey().answer)) {
                 view.clearNumberAnimation();
             }
+            if(i == mSelectedPosition){
+                mSelectedClozeView = view;
+            }
             view.setTextNumber(i + 1);
             view.setFilledAnswer(entry.getKey().answer);
             i++;
@@ -116,11 +123,22 @@ public class ClozeTextView extends ReplacementSpanTextView<ClozeView> implements
         post(new Runnable() {
             @Override
             public void run() {
-                if (mSelectedClozeView != null)
+                if (mSelectedClozeView != null){
                     mSelectedClozeView.performTranslateAnimation(ClozeView.TextPosition.LEFT);
+                    mSelectedClozeView.setAnswerTextColor(Color.parseColor("#333333"));
+                }
             }
         });
     }
+
+    public int getSelectedPosition() {
+        return mSelectedPosition;
+    }
+
+    public void setSelectedPosition(int pos) {
+        this.mSelectedPosition = pos;
+    }
+
 
     public ClozeView getSelectedClozeView() {
         return mSelectedClozeView;

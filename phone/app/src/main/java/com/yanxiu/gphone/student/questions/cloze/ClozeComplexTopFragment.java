@@ -14,6 +14,7 @@ import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.common.eventbus.SingleChooseMessage;
 import com.yanxiu.gphone.student.customviews.spantextview.ClozeTextView;
 import com.yanxiu.gphone.student.customviews.spantextview.ClozeView;
+import com.yanxiu.gphone.student.customviews.spantextview.OnReplaceCompleteListener;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.TopBaseFragment;
@@ -33,6 +34,8 @@ public class ClozeComplexTopFragment extends TopBaseFragment {
     private ScrollView mScrollView;
     private View mViewWrapper;
     private int mCurrentIndex = 0;
+    private boolean mClicked = false;
+    private int initIndex = 0;
 
     @Override
     public void setData(BaseQuestion data) {
@@ -60,7 +63,7 @@ public class ClozeComplexTopFragment extends TopBaseFragment {
 
     public void onEventMainThread(SingleChooseMessage message){
         if (getClozeAnsweHashCode()==message.hascode){
-            mQuestion.getFilledAnswers().set(mCurrentIndex,message.answer);
+            mQuestion.getFilledAnswers().set(mCurrentIndex,message.answer.trim());
             mClozeTextView.notifyAnswerChanged();
         }
     }
@@ -68,6 +71,29 @@ public class ClozeComplexTopFragment extends TopBaseFragment {
     private void initListener() {
 
         setOnPageChangeListener();
+
+        mClozeTextView.addOnReplaceCompleteListener(new OnReplaceCompleteListener() {
+            @Override
+            public void onReplaceComplete() {
+                if (initIndex != 0) {
+                    mClozeTextView.resetSelected();
+                    mClozeTextView.setSelected(initIndex);
+                    mClozeTextView.setSelectedClozeView(mClozeTextView.getReplaceView(initIndex));
+
+                    mClozeTextView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            int bottom = mClozeTextView.getSelectedClozeView().getBottom() + mViewWrapper.getPaddingTop() - mScrollView.getScrollY();
+                            if (bottom > mScrollView.getHeight() || bottom < mClozeTextView.getLineHeight()) {
+                                mScrollView.scrollTo(0, mClozeTextView.getSelectedClozeView().getBottom() - mScrollView.getHeight() + mViewWrapper.getPaddingTop());
+                            }
+                        }
+                    });
+
+                }
+                mClozeTextView.removeOnReplaceCompleteListener(this);
+            }
+        });
 
         mRootView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
@@ -89,6 +115,11 @@ public class ClozeComplexTopFragment extends TopBaseFragment {
         mClozeTextView.setOnClozeClickListener(new ClozeTextView.OnClozeClickListener() {
             @Override
             public void onClozeClick(final ClozeView view, int position) {
+                if(position != mCurrentIndex){
+                    //当点击的位置跟上一次的位置相同的时候 ，并不会回调onPageSelected();
+                    mClicked = true;
+                }
+                mCurrentIndex = position;
                 showChildQuestion(false);
                 setCurrentItem(position);
             }
@@ -98,7 +129,6 @@ public class ClozeComplexTopFragment extends TopBaseFragment {
             @Override
             public void onClick(View v) {
                 showChildQuestion(true);
-                mClozeTextView.resetSelected();
             }
         });
     }
@@ -167,9 +197,19 @@ public class ClozeComplexTopFragment extends TopBaseFragment {
 
                     @Override
                     public void onPageSelected(int position) {
-                        mCurrentIndex = position;
-                        mClozeTextView.resetSelected();
-                        mClozeTextView.performTranslateAnimation(ClozeView.TextPosition.LEFT,position);
+                        if (!mClozeTextView.isReplaceCompleted()) {
+                            initIndex = position;
+                            mCurrentIndex = position;
+                            mClicked = false;
+                            return;
+                        }
+                        if (mClicked) {
+                            mClicked = false;
+                        } else {
+                            mCurrentIndex = position;
+                            mClozeTextView.resetSelected();
+                            mClozeTextView.setSelected(position);
+                        }
                         int bottom = mClozeTextView.getSelectedClozeView().getBottom() + mViewWrapper.getPaddingTop() - mScrollView.getScrollY();
                         if(bottom > mScrollView.getHeight() || bottom <= 0){
                             mScrollView.scrollTo(0, mClozeTextView.getSelectedClozeView().getBottom() - mScrollView.getHeight() + mViewWrapper.getPaddingTop());

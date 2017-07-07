@@ -31,8 +31,8 @@ public class ClozeComplexQuestion extends BaseQuestion {
             }else {
                 filledAnswer = "";
             }
-            correctAnswers.add(correctAnswer);
-            filledAnswers.add(filledAnswer);
+            correctAnswers.add(correctAnswer.trim());
+            filledAnswers.add(filledAnswer.trim());
         }
     }
 

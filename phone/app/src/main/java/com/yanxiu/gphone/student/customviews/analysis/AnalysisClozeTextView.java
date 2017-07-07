@@ -122,9 +122,9 @@ public class AnalysisClozeTextView extends ReplacementSpanTextView<ClozeView> im
                     width = MIN_WIDTH;
                 } else {
                     if (i == mSelectedPosition) {
-                        width = (int) Math.max(MIN_WIDTH, StringUtil.computeStringWidth(answer, mTextView.getPaint()) + mSpacing * 3 + mTextView.getTextSize());
+                        width = (int) Math.max(MIN_WIDTH, StringUtil.computeStringWidth(answer, mTextView.getPaint()) + mSpacing * 3 + mExtraSpace);
                     } else {
-                        width = (int) Math.max(MIN_WIDTH, StringUtil.computeStringWidth(answer, mTextView.getPaint()) + mSpacing + mTextView.getTextSize());
+                        width = (int) Math.max(MIN_WIDTH, StringUtil.computeStringWidth(answer, mTextView.getPaint()) + mSpacing + mExtraSpace);
                     }
                 }
                 span.width = width;

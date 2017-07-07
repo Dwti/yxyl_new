@@ -68,8 +68,6 @@ public class ClozeView extends FrameLayout {
     }
 
     public void performTranslateAnimation(TextPosition toPosition){
-        if(!TextUtils.isEmpty(mAnswer.getText()))
-            return;
         if(mPosition == toPosition)
             return;
         TranslateAnimation translateAnimation;
@@ -84,6 +82,10 @@ public class ClozeView extends FrameLayout {
         translateAnimation.setInterpolator(new DecelerateInterpolator(1.5f));
         translateAnimation.setFillAfter(true);
         mNumber.startAnimation(translateAnimation);
+    }
+
+    public boolean hasFilled(){
+        return !TextUtils.isEmpty(mFilledAnswer);
     }
 
     public void setChecked(boolean checked){
