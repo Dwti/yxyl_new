@@ -203,6 +203,7 @@ public class MediaPlayerUtil {
      */
     public void destory() {
         finish();
+        this.isPlaying=false;
         this.mCallBack = null;
         this.isPause = false;
         this.mUpdateCallBack = null;

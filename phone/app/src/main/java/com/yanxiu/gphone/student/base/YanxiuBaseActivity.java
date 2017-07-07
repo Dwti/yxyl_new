@@ -29,6 +29,7 @@ public class YanxiuBaseActivity extends FragmentActivity {
 
     @Override
     protected void onDestroy() {
+
         ActivityManger.destoryActivity(this);
         super.onDestroy();
     }

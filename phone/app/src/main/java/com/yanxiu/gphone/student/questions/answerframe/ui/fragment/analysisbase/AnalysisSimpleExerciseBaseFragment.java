@@ -23,6 +23,7 @@ import com.yanxiu.gphone.student.customviews.analysis.AnalysisQuestionResultView
 import com.yanxiu.gphone.student.customviews.analysis.AnalysisScoreView;
 import com.yanxiu.gphone.student.customviews.analysis.VoiceScoldedLayoutView;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
+import com.yanxiu.gphone.student.questions.answerframe.bean.HomeEventMessage;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.NotesActicity;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionTemplate;
 import com.yanxiu.gphone.student.questions.bean.JsonAudioComment;
@@ -280,6 +281,11 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
         }
     }
 
+    public void onEventMainThread(HomeEventMessage message){
+        mToVoiceIsIntent=false;
+        setVoicePause();
+    }
+
     public void onEventMainThread(NotesActicity.NotesMessage notesMessage) {
 //        int viewHashCode = notesMessage.mViewHashCode;
 //        String notesContent = notesMessage.mNotesContent;
@@ -303,9 +309,13 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
         } else {
             if (null != mListenView)
                 mListenView.setPause();
-            if (mVoiceScoldedView != null&&!mToVoiceIsIntent) {
-                mVoiceScoldedView.setDestory();
-            }
+            setVoicePause();
+        }
+    }
+
+    private void setVoicePause(){
+        if (mVoiceScoldedView != null&&!mToVoiceIsIntent) {
+            mVoiceScoldedView.setStop();
         }
     }
 
