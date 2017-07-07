@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,6 +15,7 @@ import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.common.Bean.PhotoDeleteBean;
 import com.yanxiu.gphone.student.common.adapter.PhotoPagerAdapter;
 import com.yanxiu.gphone.student.customviews.ZoomImageView;
+import com.yanxiu.gphone.student.util.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +39,7 @@ public class PhotoActivity extends YanxiuBaseActivity implements ViewPager.OnPag
 
     private Context mContext;
     private ViewPager mImagePhotoView;
+    private View mTopView;
     private ImageView mBackView;
     private TextView mTitleView;
     private ImageView mDeleteView;
@@ -70,6 +73,7 @@ public class PhotoActivity extends YanxiuBaseActivity implements ViewPager.OnPag
     }
 
     private void initView() {
+        mTopView=findViewById(R.id.include_top);
         mBackView= (ImageView) findViewById(R.id.iv_left);
         mTitleView= (TextView) findViewById(R.id.tv_title);
         mDeleteView= (ImageView) findViewById(R.id.iv_right);
@@ -100,6 +104,12 @@ public class PhotoActivity extends YanxiuBaseActivity implements ViewPager.OnPag
         List<ZoomImageView> zoomImageViews=new ArrayList<>();
         for (int i=0;i<list.size();i++){
             ZoomImageView imageView=new ZoomImageView(mContext);
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mTopView.setVisibility(View.VISIBLE);
+                }
+            });
             zoomImageViews.add(imageView);
         }
         mAdapter.setData(list,zoomImageViews);
@@ -123,6 +133,7 @@ public class PhotoActivity extends YanxiuBaseActivity implements ViewPager.OnPag
                 e.printStackTrace();
             }
         }
+        mTopView.setVisibility(View.GONE);
     }
 
     @Override
