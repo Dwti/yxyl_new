@@ -104,7 +104,7 @@ public class ClozeComplexTopFragment extends TopBaseFragment {
                     @Override
                     public void run() {
                         int bottom = mClozeTextView.getSelectedClozeView().getBottom() + mViewWrapper.getPaddingTop() - mScrollView.getScrollY();
-                        if(bottom > mScrollView.getHeight()){
+                        if(bottom > mScrollView.getHeight() || bottom < mClozeTextView.getLineHeight()){
                             mScrollView.scrollTo(0, mClozeTextView.getSelectedClozeView().getBottom() - mScrollView.getHeight() + mViewWrapper.getPaddingTop());
                         }
                     }
@@ -211,7 +211,7 @@ public class ClozeComplexTopFragment extends TopBaseFragment {
                             mClozeTextView.setSelected(position);
                         }
                         int bottom = mClozeTextView.getSelectedClozeView().getBottom() + mViewWrapper.getPaddingTop() - mScrollView.getScrollY();
-                        if(bottom > mScrollView.getHeight() || bottom <= 0){
+                        if(bottom > mScrollView.getHeight() || bottom < mClozeTextView.getLineHeight()){
                             mScrollView.scrollTo(0, mClozeTextView.getSelectedClozeView().getBottom() - mScrollView.getHeight() + mViewWrapper.getPaddingTop());
                         }
                     }
