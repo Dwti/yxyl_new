@@ -51,6 +51,7 @@ public abstract class ReplacementSpanTextView<T extends View> extends FrameLayou
     protected static final int MIN_WIDTH = 200;
     protected int mExtraSpace;
     protected int mSpacing;
+    protected int mExtraLineSpacing;
 
     public ReplacementSpanTextView(@NonNull Context context) {
         super(context);
@@ -82,6 +83,8 @@ public abstract class ReplacementSpanTextView<T extends View> extends FrameLayou
         View view = LayoutInflater.from(context).inflate(R.layout.replaceable_text_view, this, true);
         mTextView = (XTextView) view.findViewById(R.id.textView);
         mOverLayViewContainer = (RelativeLayout) view.findViewById(R.id.relativeLayout);
+//        mExtraLineSpacing = ScreenUtils.dpToPxInt(context,2);
+//        mTextView.setLineSpacing(mExtraLineSpacing,1);
 //        mTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP,17);
         mTextView.setOnDrawFinishedListener(this);
     }
@@ -140,7 +143,7 @@ public abstract class ReplacementSpanTextView<T extends View> extends FrameLayou
                 if (TextUtils.isEmpty(answer)) {
                     width = MIN_WIDTH;
                 } else {
-                    width = (int) Math.max(MIN_WIDTH, StringUtil.computeStringWidth(answer, mTextView.getPaint()) + mSpacing + mExtraSpace);
+                    width = (int) (StringUtil.computeStringWidth(answer, mTextView.getPaint()) + mSpacing + mExtraSpace);
                 }
                 span.width = width;
                 span.height = mTextView.getLineHeight();
