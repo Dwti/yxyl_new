@@ -17,7 +17,7 @@ import com.yanxiu.gphone.student.R;
  */
 
 public class BlankView extends LinearLayout {
-    private View mTopView;
+    private View mTopView, mUnderline;
     public BlankView(Context context) {
         super(context);
         init(context);
@@ -42,9 +42,14 @@ public class BlankView extends LinearLayout {
     private void init(Context context){
         View view = LayoutInflater.from(context).inflate(R.layout.shadow_edit_text,this,true);
         mTopView = view.findViewById(R.id.viewTop);
+        mUnderline = view.findViewById(R.id.underline);
     }
 
     public void setTransparent(boolean transparent){
         mTopView.setSelected(!transparent);
+    }
+
+    public void setUnderlineColor(int color){
+        mUnderline.setBackgroundColor(color);
     }
 }

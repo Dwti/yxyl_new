@@ -1,6 +1,7 @@
 package com.yanxiu.gphone.student.customviews.spantextview;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.AttrRes;
 import android.support.annotation.NonNull;
@@ -11,7 +12,6 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,11 +20,13 @@ import java.util.Map;
 
 public class ClozeTextView extends ReplacementSpanTextView<ClozeView> implements OnReplaceCompleteListener {
 
-    private OnClozeClickListener mOnClozeClickListener;
+    protected OnClozeClickListener mOnClozeClickListener;
 
-    private ClozeView mSelectedClozeView;
+    protected ClozeView mSelectedClozeView;
 
-    private boolean mClozeClickable = true;
+    protected boolean mClozeClickable = true;
+
+    private int mSelectedPosition = 0;
 
     public ClozeTextView(@NonNull Context context) {
         super(context);
@@ -46,8 +48,8 @@ public class ClozeTextView extends ReplacementSpanTextView<ClozeView> implements
         init();
     }
 
-    private void init(){
-        setOnReplaceCompleteListener(this);
+    private void init() {
+        addOnReplaceCompleteListener(this);
     }
 
     public boolean isClozeClickable() {
@@ -64,71 +66,89 @@ public class ClozeTextView extends ReplacementSpanTextView<ClozeView> implements
         clozeView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!mClozeClickable)
+                if (!mClozeClickable)
                     return;
                 ClozeView cv = (ClozeView) v;
-                if(mSelectedClozeView == cv){
-                    return;
+                if(cv != mSelectedClozeView){
+                    resetSelected();
+                    setSelected(cv.getTextNumber() - 1);
                 }
-                if(cv.getTextPosition() == ClozeView.TextPosition.CENTER){
-                    cv.performTranslateAnimation(ClozeView.TextPosition.LEFT);
-                }
-                if(mSelectedClozeView != null){
-                    mSelectedClozeView.performTranslateAnimation(ClozeView.TextPosition.CENTER);
-                }
-                mSelectedClozeView = cv;
-                if(mOnClozeClickListener != null){
-                    mOnClozeClickListener.onClozeClick(cv,cv.getTextNumber() - 1);
+                if (mOnClozeClickListener != null) {
+                    mOnClozeClickListener.onClozeClick(cv, cv.getTextNumber() - 1);
                 }
             }
         });
         return clozeView;
     }
 
-    public void resetSelected(){
-        if(mSelectedClozeView != null && mSelectedClozeView.getTextPosition() == ClozeView.TextPosition.LEFT){
-            mSelectedClozeView.performTranslateAnimation(ClozeView.TextPosition.CENTER);
+    public void resetSelected() {
+        if (mSelectedClozeView != null) {
+            if(!mSelectedClozeView.hasFilled()  && mSelectedClozeView.getTextPosition() == ClozeView.TextPosition.LEFT ){
+                mSelectedClozeView.performTranslateAnimation(ClozeView.TextPosition.CENTER);
+            }
+            mSelectedClozeView.setAnswerTextColor(Color.parseColor("#89e00d"));
             mSelectedClozeView = null;
         }
     }
 
-    public void setOnClozeClickListener(OnClozeClickListener listener){
+    public void setSelected(int index){
+        ClozeView cv = getReplaceView(index);
+        mSelectedPosition = index;
+        if (!cv.hasFilled() && cv.getTextPosition() == ClozeView.TextPosition.CENTER) {
+            cv.performTranslateAnimation(ClozeView.TextPosition.LEFT);
+        }
+        cv.setAnswerTextColor(Color.parseColor("#333333"));
+        mSelectedClozeView = cv;
+    }
+
+    public void setOnClozeClickListener(OnClozeClickListener listener) {
         mOnClozeClickListener = listener;
     }
 
-    public void performTranslateAnimation(ClozeView.TextPosition position,int index){
-        ClozeView clozeView = getReplaceView(index);
-        clozeView.performTranslateAnimation(position);
-        mSelectedClozeView = clozeView;
-    }
     @Override
     public void onReplaceComplete() {
-        int i = 0 ;
-        for(Map.Entry<EmptyReplacementSpan,ClozeView> entry : mTreeMap.entrySet()){
+        int i = 0;
+        for (Map.Entry<EmptyReplacementSpan, ClozeView> entry : mTreeMap.entrySet()) {
             ClozeView view = entry.getValue();
-            if(i == 0){
+            if (!TextUtils.isEmpty(entry.getKey().answer)) {
+                view.clearNumberAnimation();
+            }
+            if(i == mSelectedPosition){
                 mSelectedClozeView = view;
             }
-            view.setTextNumber(i+1);
-            view.setAnswer(entry.getKey().answer);
-            if(!TextUtils.isEmpty(entry.getKey().answer)){
-                view.setContentCenter(false);
-            }
+            view.setTextNumber(i + 1);
+            view.setFilledAnswer(entry.getKey().answer);
             i++;
         }
         post(new Runnable() {
             @Override
             public void run() {
-                mSelectedClozeView.performTranslateAnimation(ClozeView.TextPosition.LEFT);
+                if (mSelectedClozeView != null){
+                    mSelectedClozeView.performTranslateAnimation(ClozeView.TextPosition.LEFT);
+                    mSelectedClozeView.setAnswerTextColor(Color.parseColor("#333333"));
+                }
             }
         });
     }
 
-    public ClozeView getSelectedClozeView(){
+    public int getSelectedPosition() {
+        return mSelectedPosition;
+    }
+
+    public void setSelectedPosition(int pos) {
+        this.mSelectedPosition = pos;
+    }
+
+
+    public ClozeView getSelectedClozeView() {
         return mSelectedClozeView;
     }
 
-    public interface OnClozeClickListener{
+    public void setSelectedClozeView(ClozeView clozeView){
+        mSelectedClozeView = clozeView;
+    }
+
+    public interface OnClozeClickListener {
         void onClozeClick(ClozeView view, int position);
     }
 }

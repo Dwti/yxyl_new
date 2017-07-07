@@ -150,7 +150,7 @@ public class FillBlankFragment extends AnswerSimpleExerciseBaseFragment implemen
                 //找出当前输入的span的位置
                 int currPos = mFillBlank.getCurrentEditBlankPosition();
                 //更新答案的内容
-                mAnswers.set(currPos,mEditText.getText().toString());
+                mAnswers.set(currPos,mEditText.getText().toString().trim());
                 //重新初始化题干
                 String stem = StemUtil.initFillBlankStem(mStem,mAnswers);
                 //重绘

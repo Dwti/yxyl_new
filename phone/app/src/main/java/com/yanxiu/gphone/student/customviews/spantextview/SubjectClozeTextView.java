@@ -39,7 +39,7 @@ public class SubjectClozeTextView extends ReplacementSpanTextView<SubjectClozeVi
     }
 
     private void init(){
-        setOnReplaceCompleteListener(this);
+        addOnReplaceCompleteListener(this);
     }
 
     @Override

@@ -25,19 +25,23 @@ public class ClozeComplexQuestion extends BaseQuestion {
     private void initAnswer() {
         String correctAnswer,filledAnswer;
         for(BaseQuestion question : children){
-            correctAnswer = ((SingleChoiceQuestion)question).getSingleAnswer();
+            correctAnswer = convertCorrectAnswer((SingleChoiceQuestion) question);
             if(((SingleChoiceQuestion)question).getAnswerList() != null && ((SingleChoiceQuestion)question).getAnswerList().size() > 0){
                 filledAnswer = convertFilledAnswer((SingleChoiceQuestion) question);
             }else {
                 filledAnswer = "";
             }
-            correctAnswers.add(correctAnswer);
-            filledAnswers.add(filledAnswer);
+            correctAnswers.add(correctAnswer.trim());
+            filledAnswers.add(filledAnswer.trim());
         }
     }
 
     private String convertFilledAnswer(SingleChoiceQuestion question){
         return question.getChoice().get(Integer.parseInt(question.getAnswerList().get(0)));
+    }
+
+    private String convertCorrectAnswer(SingleChoiceQuestion question){
+        return question.getChoice().get(Integer.parseInt(question.getSingleAnswer()));
     }
 
     @Override
@@ -48,7 +52,7 @@ public class ClozeComplexQuestion extends BaseQuestion {
     @Override
     public ExerciseBaseFragment analysisFragment() {
         //解析
-        return new ClozeAnswerComplexFragment();
+        return new ClozeAnalysisComplexFragment();
     }
 
     public List<String> getCorrectAnswers() {

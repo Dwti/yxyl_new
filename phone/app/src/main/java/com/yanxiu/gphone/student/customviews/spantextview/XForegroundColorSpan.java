@@ -14,6 +14,7 @@ import android.text.style.ForegroundColorSpan;
 
 @SuppressLint("ParcelCreator")
 public class XForegroundColorSpan extends ForegroundColorSpan {
+    private String tag;
     public XForegroundColorSpan(@ColorInt int color) {
         super(color);
     }
@@ -21,4 +22,13 @@ public class XForegroundColorSpan extends ForegroundColorSpan {
     public XForegroundColorSpan(Parcel src) {
         super(src);
     }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
 }

@@ -205,7 +205,7 @@ public class FillBlankTextView extends FrameLayout {
                         }
                     }
 
-                    final BlankView view = getView();
+                    final BlankView view = getView(span);
 
                     if(start == tempClickSpanStart){
                         view.setTransparent(false);
@@ -286,7 +286,7 @@ public class FillBlankTextView extends FrameLayout {
         return new HtmlImageGetter(mTextView);
     }
 
-    protected BlankView getView(){
+    protected BlankView getView(XForegroundColorSpan span){
         return new BlankView(mContext);
     }
 
