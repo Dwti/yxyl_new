@@ -13,7 +13,7 @@ import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.TopBaseF
  * Time : 2017/6/9 14:47.
  * Function :
  */
-public class ListenAnalysisAnswerComplexFragment extends AnalysisComplexExerciseBaseFragment {
+public class ListenAnalysisComplexFragment extends AnalysisComplexExerciseBaseFragment {
 
     private ListenComplexQuestion mData;
     private ListenAnalysisComplexTopFragment topFragment;

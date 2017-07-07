@@ -28,7 +28,7 @@ import de.greenrobot.event.EventBus;
  * Created by 戴延枫 on 2017/6/14.
  */
 
-public class ClozeComplexTopAnalysisFragment extends TopBaseFragment {
+public class ClozeAnalysisComplexTopFragment extends TopBaseFragment {
     private ClozeComplexQuestion mQuestion;
     private AnalysisClozeTextView mClozeTextView;
     private ScrollView mScrollView;

@@ -4,14 +4,9 @@ package com.yanxiu.gphone.student.questions.cloze;
 import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
-import android.view.View;
-import android.view.ViewTreeObserver;
-import android.widget.LinearLayout;
 
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.analysisbase.AnalysisComplexExerciseBaseFragment;
-import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerComplexExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.TopBaseFragment;
 
 
@@ -36,7 +31,7 @@ public class ClozeAnalysisComplexFragment extends AnalysisComplexExerciseBaseFra
 
     @Override
     protected TopBaseFragment getTopFragment() {
-        ClozeComplexTopAnalysisFragment topFragment = new ClozeComplexTopAnalysisFragment();
+        ClozeAnalysisComplexTopFragment topFragment = new ClozeAnalysisComplexTopFragment();
         topFragment.setData(mData);
         return topFragment;
     }

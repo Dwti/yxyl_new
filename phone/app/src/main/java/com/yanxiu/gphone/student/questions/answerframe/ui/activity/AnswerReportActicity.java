@@ -4,52 +4,32 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.test.yanxiu.network.HttpCallback;
-import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
-import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.AnswerReportTitleView;
 import com.yanxiu.gphone.student.customviews.UnMoveGridView;
-import com.yanxiu.gphone.student.customviews.WavesLayout;
-import com.yanxiu.gphone.student.homework.response.PaperResponse;
 import com.yanxiu.gphone.student.questions.answerframe.adapter.AnswerReportAdapter;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
-import com.yanxiu.gphone.student.questions.answerframe.bean.ReportAnswerBean;
-import com.yanxiu.gphone.student.questions.answerframe.http.request.AnswerReportRequest;
 import com.yanxiu.gphone.student.questions.answerframe.listener.OnAnswerCardItemSelectListener;
-import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
-import com.yanxiu.gphone.student.questions.answerframe.util.QuestionTemplate;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionUtil;
-import com.yanxiu.gphone.student.util.DESBodyDealer;
 import com.yanxiu.gphone.student.util.DataFetcher;
 import com.yanxiu.gphone.student.util.ScreenUtils;
-import com.yanxiu.gphone.student.util.TextTypefaceUtil;
 import com.yanxiu.gphone.student.util.TimeUtils;
-import com.yanxiu.gphone.student.util.ToastManager;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import static com.yanxiu.gphone.student.constant.Constants.EXTRA_TITLE;
-import static com.yanxiu.gphone.student.constant.Constants.PPID_KEY;
 
 /**
  * Created by 戴延枫 on 2017/6/9.
@@ -101,8 +81,8 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
         Paper.generateUsedNumbersForNodes(mQuestions);
         mQuestions = QuestionUtil.allNodesThatHasNumber(mQuestions);
         mPPid = mPaper.getId();
-        mStatus = mPaper.getStatus();
-        mSccuracy = (int) QuestionUtil.calculateRightRate(mQuestions) * 100;
+        mStatus = mPaper.getPaperStatus().getCheckStatus();
+        mSccuracy = (int) (QuestionUtil.calculateRightRate(mQuestions) * 100);
         mRightCount = QuestionUtil.calculateRightCount(mQuestions);
         mCostTime = mPaper.getPaperStatus().getCosttime();
         try {
@@ -146,49 +126,6 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
         addGridView(QuestionUtil.classifyQuestionByType(mQuestions));
     }
 
-
-//    private void requestData() {
-//        if (TextUtils.isEmpty(mPPid)) {
-//            return;
-//        }
-//        if (mRequest != null) {
-//            mRequest.cancelRequest();
-//            mRequest = null;
-//        }
-//        mRequest = new AnswerReportRequest(mPPid);
-//        mRequest.bodyDealer = new DESBodyDealer();
-//        mRequest.startRequest(PaperResponse.class, new EXueELianBaseCallback<PaperResponse>() {
-//
-//            @Override
-//            protected void onResponse(RequestBase request, PaperResponse response) {
-//                if (response.getStatus().getCode() == 0) {
-//                    if (response.getData().size() > 0) {
-//                        mPaper = new Paper(response.getData().get(0), QuestionShowType.ANALYSIS);
-//                        if (mPaper != null && mPaper.getQuestions() != null && mPaper.getQuestions().size() > 0) {
-//                            QuestionUtil.initDataWithAnswer(mPaper);
-//                            mQuestions = new ArrayList<>();
-//                            mQuestions.addAll(mPaper.getQuestions());//为了不修改paper里的题目数据Questions
-//                            Paper.generateUsedNumbersForNodes(mQuestions);
-//                            mQuestions = QuestionUtil.allNodesThatHasNumber(mQuestions);
-//
-//                            initView();
-//
-//                            addGridView(QuestionUtil.classifyQuestionByType(mQuestions));
-//
-//                        }
-//                    } else {
-////                        ToastManager.showMsg("ffffff");
-//                    }
-//                } else {
-////                    ToastManager.showMsg("666");
-//                }
-//            }
-//
-//            @Override
-//            public void onFail(RequestBase request, Error error) {
-//            }
-//        });
-//    }
 
     private void addGridView(Map<String, List<BaseQuestion>> map) {
         if (map == null || map.size() == 0)
