@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.ChooseLayout;
 import com.yanxiu.gphone.student.customviews.analysis.VoiceScoldedLayoutView;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
@@ -130,7 +131,11 @@ public class SingleChooseAnalysisFragment extends AnalysisSimpleExerciseBaseFrag
 
     @Override
     public void initAnalysisView() {
-        showAnswerResultView(false,mData.getAnswerCompare(),null);
+        if (mData.getStatus()== Constants.ANSWER_STATUS_RIGHT){
+            showAnswerResultView(true, mData.getAnswerCompare(), null);
+        }else {
+            showAnswerResultView(false, mData.getAnswerCompare(), null);
+        }
 //        showAnswerView("你的打哪是阿达，啊啥京东卡啥京东卡");
 //        List<VoiceScoldedLayoutView.ScoldedMessage> list=new ArrayList<>();
 //        for (int i=0;i<5;i++){

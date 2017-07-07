@@ -107,11 +107,6 @@ public class MultiChoiceQuestion extends BaseQuestion {
             if (multianswer.size() == answerList.size() && multianswer.containsAll(answerList)) {
                 return Constants.ANSWER_STATUS_RIGHT;
             } else {
-                for (int i = 0; i < answerList.size(); i++) {
-                    if (multianswer.contains(answerList.get(i))) {
-                        return Constants.ANSWER_STATUS_HALFRIGHT;
-                    }
-                }
                 return Constants.ANSWER_STATUS_WRONG;
             }
         }

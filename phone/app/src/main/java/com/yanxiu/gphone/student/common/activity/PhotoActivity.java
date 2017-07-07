@@ -116,6 +116,13 @@ public class PhotoActivity extends YanxiuBaseActivity implements ViewPager.OnPag
     public void onPageSelected(int position) {
         this.mSelectPosition=position;
         mTitleView.setText((mSelectPosition+1)+"/"+mTotalNum);
+        for (ZoomImageView zoomImageView:mAdapter.getImageViews()){
+            try {
+                zoomImageView.reset();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override

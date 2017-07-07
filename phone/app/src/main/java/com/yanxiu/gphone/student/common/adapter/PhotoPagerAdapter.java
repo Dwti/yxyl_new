@@ -38,6 +38,10 @@ public class PhotoPagerAdapter extends PagerAdapter {
         this.notifyDataSetChanged();
     }
 
+    public List<ZoomImageView> getImageViews(){
+        return this.mImageViews;
+    }
+
     public void deleteItem(int position){
         if (position>-1&&position<mPaths.size()){
             this.mPaths.remove(position);

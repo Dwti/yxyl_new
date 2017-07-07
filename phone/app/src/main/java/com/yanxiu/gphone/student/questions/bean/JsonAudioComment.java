@@ -1,11 +1,13 @@
 package com.yanxiu.gphone.student.questions.bean;
 
+import com.yanxiu.gphone.student.base.BaseBean;
+
 /**
  * Created by Canghaixiao.
  * Time : 2017/7/6 12:11.
  * Function :
  */
-public class JsonAudioComment {
+public class JsonAudioComment extends BaseBean{
 
     private int length;
     private String url;
