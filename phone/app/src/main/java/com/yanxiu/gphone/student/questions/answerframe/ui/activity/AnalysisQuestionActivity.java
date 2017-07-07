@@ -1,7 +1,10 @@
 package com.yanxiu.gphone.student.questions.answerframe.ui.activity;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -23,6 +26,7 @@ import com.yanxiu.gphone.student.customviews.QuestionProgressView;
 import com.yanxiu.gphone.student.customviews.QuestionTimeTextView;
 import com.yanxiu.gphone.student.questions.answerframe.adapter.QAViewPagerAdapter;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
+import com.yanxiu.gphone.student.questions.answerframe.bean.HomeEventMessage;
 import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
 import com.yanxiu.gphone.student.questions.answerframe.listener.OnAnswerCardItemSelectListener;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.AnswerCardFragment;
@@ -36,6 +40,8 @@ import com.yanxiu.gphone.student.util.ToastManager;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+
+import de.greenrobot.event.EventBus;
 
 
 /**
@@ -55,6 +61,8 @@ public class AnalysisQuestionActivity extends YanxiuBaseActivity implements View
     private ImageView mBackView;//返回按钮
     private TextView mErrorview;//报错
 
+    private HomeEventMessage mHomeEventMessage=new HomeEventMessage();
+    private HomeKeyEventBroadCastReceiver mHomeKeyEventBroadCastReceiver=new HomeKeyEventBroadCastReceiver();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,6 +71,21 @@ public class AnalysisQuestionActivity extends YanxiuBaseActivity implements View
         initData();
         initView();
         initReportData();
+        registerReceiver(mHomeKeyEventBroadCastReceiver, new IntentFilter(Intent. ACTION_CLOSE_SYSTEM_DIALOGS));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mHomeKeyEventBroadCastReceiver);
+    }
+
+    private class HomeKeyEventBroadCastReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            EventBus.getDefault().post(mHomeEventMessage);
+        }
     }
 
     private void initData() {

@@ -97,8 +97,19 @@ public class VoiceScoldedLayoutView extends RelativeLayout implements MediaPlaye
         }
     }
 
+    public void setStop(){
+        if (mMediaPlayerUtil.isPlaying()) {
+            mMediaPlayerUtil.pause();
+        }
+        setAnim(mPlayingPosition,false);
+        this.mPlayingPosition=-1;
+        this.mIsStartPlay=false;
+        this.mIsPause=false;
+    }
+
     public void setDestory(){
         this.mMediaPlayerUtil.destory();
+        setAnim(mPlayingPosition,false);
         this.mPlayingPosition=-1;
         this.mIsStartPlay=false;
         this.mIsPause=false;
@@ -142,6 +153,9 @@ public class VoiceScoldedLayoutView extends RelativeLayout implements MediaPlaye
 
     private void setAnim(int index,boolean isCanShow){
         if (index<mGroupLayout.getChildCount()){
+            if (index==-1){
+                return;
+            }
             ViewHolder holder= (ViewHolder) mGroupLayout.getChildAt(index).getTag();
             if (isCanShow) {
                 try {

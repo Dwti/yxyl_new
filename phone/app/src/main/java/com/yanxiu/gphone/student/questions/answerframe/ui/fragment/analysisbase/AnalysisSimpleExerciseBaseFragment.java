@@ -23,6 +23,7 @@ import com.yanxiu.gphone.student.customviews.analysis.AnalysisQuestionResultView
 import com.yanxiu.gphone.student.customviews.analysis.AnalysisScoreView;
 import com.yanxiu.gphone.student.customviews.analysis.VoiceScoldedLayoutView;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
+import com.yanxiu.gphone.student.questions.answerframe.bean.HomeEventMessage;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.NotesActicity;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionTemplate;
 import com.yanxiu.gphone.student.questions.bean.JsonAudioComment;
@@ -52,7 +53,7 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
     public AnalysisAnsewrAnslysisView mAnalysisview;//解析view
     private PointLayoutView mPointView;//知识的view
     private VoiceScoldedLayoutView mVoiceScoldedView;//语音批注
-
+    protected boolean mToVoiceIsIntent=false;
     private ListenerSeekBarLayout mListenView;//听力复合题只有一个子题时，题干的听力控件
 
     @Override
@@ -280,6 +281,11 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
         }
     }
 
+    public void onEventMainThread(HomeEventMessage message){
+        mToVoiceIsIntent=false;
+        setVoicePause();
+    }
+
     public void onEventMainThread(NotesActicity.NotesMessage notesMessage) {
 //        int viewHashCode = notesMessage.mViewHashCode;
 //        String notesContent = notesMessage.mNotesContent;
@@ -297,22 +303,19 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
     public void onVisibilityChangedToUser(boolean isVisibleToUser, boolean invokeInResumeOrPause) {
         super.onVisibilityChangedToUser(isVisibleToUser, invokeInResumeOrPause);
         if (isVisibleToUser) {
+            mToVoiceIsIntent=false;
             if (null != mListenView)
                 mListenView.setResume();
         } else {
             if (null != mListenView)
                 mListenView.setPause();
+            setVoicePause();
         }
-        if (!invokeInResumeOrPause) {
-            if (isVisibleToUser) {
-                if (mVoiceScoldedView != null) {
-                    mVoiceScoldedView.setResume();
-                }
-            } else {
-                if (mVoiceScoldedView != null) {
-                    mVoiceScoldedView.setPause();
-                }
-            }
+    }
+
+    private void setVoicePause(){
+        if (mVoiceScoldedView != null&&!mToVoiceIsIntent) {
+            mVoiceScoldedView.setStop();
         }
     }
 
