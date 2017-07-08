@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,6 +65,9 @@ public class ClozeComplexTopFragment extends TopBaseFragment {
     public void onEventMainThread(SingleChooseMessage message){
         if (getClozeAnsweHashCode()==message.hascode){
             mQuestion.getFilledAnswers().set(mCurrentIndex,message.answer.trim());
+            if(!TextUtils.isEmpty(message.answer.trim())){
+                setCurrentItem(mCurrentIndex + 1);
+            }
             mClozeTextView.notifyAnswerChanged();
         }
     }
