@@ -149,9 +149,6 @@ public class AnalysisClozeTextView extends ReplacementSpanTextView<ClozeView> im
             if(i == mSelectedPosition){
                 mSelectedClozeView = view;
             }
-            if (!TextUtils.isEmpty(entry.getKey().answer)) {
-                view.clearNumberAnimation();
-            }
             view.setTextNumber(i + 1);
             view.setFilledAnswer(entry.getKey().answer);
             view.setCorrectAnswer(mCorrectAnswers.get(i));

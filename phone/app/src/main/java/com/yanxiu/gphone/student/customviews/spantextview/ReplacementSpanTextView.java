@@ -112,7 +112,7 @@ public abstract class ReplacementSpanTextView<T extends View> extends FrameLayou
         });
     }
 
-    protected void setWidthAndText(){
+    public void setWidthAndText(){
         mIsReplaceCompleted = false;
         setSpanWidthAndHeight(mAnswers);
         mTextView.setText(mSpannedStr, TextView.BufferType.SPANNABLE);

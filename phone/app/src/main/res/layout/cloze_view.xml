@@ -30,12 +30,6 @@
             android:background="@drawable/shape_green_ring"
             android:gravity="center" />
 
-
-        <View
-            android:layout_width="5dp"
-            android:layout_height="match_parent"/>
-
-
         <TextView
             android:id="@+id/text_answer"
             android:layout_width="wrap_content"
@@ -43,6 +37,7 @@
             android:textStyle="bold"
             android:textColor="#89e00d"
             android:textSize="15dp"
+            android:layout_marginLeft="5dp"
             android:gravity="center"
             />
     </LinearLayout>
