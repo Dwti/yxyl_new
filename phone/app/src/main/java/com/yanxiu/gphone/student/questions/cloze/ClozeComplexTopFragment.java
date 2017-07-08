@@ -68,6 +68,7 @@ public class ClozeComplexTopFragment extends TopBaseFragment {
             if(!TextUtils.isEmpty(message.answer.trim())){
                 setCurrentItem(mCurrentIndex + 1);
             }
+            //空中的答案有变化，开始重绘空
             mClozeTextView.notifyAnswerChanged();
         }
     }
@@ -80,10 +81,7 @@ public class ClozeComplexTopFragment extends TopBaseFragment {
             @Override
             public void onReplaceComplete() {
                 if (initIndex != 0) {
-                    mClozeTextView.resetSelected();
-                    mClozeTextView.setSelected(initIndex);
-                    mClozeTextView.setSelectedClozeView(mClozeTextView.getReplaceView(initIndex));
-
+                    //主要针对在从答题卡选择某个小题跳过去时，该小题并没有预加载绘制出来的情况
                     mClozeTextView.post(new Runnable() {
                         @Override
                         public void run() {
@@ -138,9 +136,6 @@ public class ClozeComplexTopFragment extends TopBaseFragment {
     }
 
     private void initData() {
-        if(mQuestion.getShowType() == QuestionShowType.ANALYSIS){
-            mClozeTextView.setClozeClickable(false);
-        }
         String text = StemUtil.initClozeStem(mQuestion.getStem());
         mClozeTextView.setText(text,mQuestion.getFilledAnswers());
     }
@@ -202,6 +197,7 @@ public class ClozeComplexTopFragment extends TopBaseFragment {
                     @Override
                     public void onPageSelected(int position) {
                         if (!mClozeTextView.isReplaceCompleted()) {
+                            mClozeTextView.setSelectedPosition(position);
                             initIndex = position;
                             mCurrentIndex = position;
                             mClicked = false;
