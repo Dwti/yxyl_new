@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.common.activity.PhotoActivity;
+import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.AlbumGridView;
 import com.yanxiu.gphone.student.customviews.spantextview.SubjectClozeTextView;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
@@ -58,29 +59,36 @@ public class SubjectiveAnalysisFragment extends AnalysisSimpleExerciseBaseFragme
 
     @Override
     public void initAnalysisView() {
-        if (mData.getTypeId()== QuestionUtil.QUESTION_TYP.QUESTION_FILL_BLANKS.type||mData.getTypeId()== QuestionUtil.QUESTION_TYP.QUESTION_TRANSLATION.type||mData.getTypeId()== QuestionUtil.QUESTION_TYP.QUESTION_SUBJECTSWERE.type){
-            String result;
-            if (mData.getScore()==5){
-                result=getString(R.string.correct);
-                showAnswerResultView(true,null,result);
-            }else {
-                result=getString(R.string.wrong);
-                showAnswerResultView(false,null,result);
-            }
-        }else {
-            showScoreView(String.valueOf(mData.getScore()));
-        }
-        showVoiceScoldedView(mData.getAudioList());
-        showDifficultyview(mData.getStarCount());
         String answer="";
         if (mData.getSubjectAnswer()!=null){
             for (String s:mData.getSubjectAnswer()){
                 answer+=s;
             }
         }
-        showAnswerView(answer);
-        showAnalysisview(mData.getQuestionAnalysis());
-        showPointView(mData.getPointList());
+        if(Constants.HAS_FINISH_STATUS.equals(mData.getPaperStatus())){ //已完成
+            if (mData.getTypeId()== QuestionUtil.QUESTION_TYP.QUESTION_FILL_BLANKS.type||mData.getTypeId()== QuestionUtil.QUESTION_TYP.QUESTION_TRANSLATION.type||mData.getTypeId()== QuestionUtil.QUESTION_TYP.QUESTION_SUBJECTSWERE.type){
+                String result;
+                if (mData.getScore()==5){
+                    result=getString(R.string.correct);
+                    showAnswerResultView(true,null,result);
+                }else {
+                    result=getString(R.string.wrong);
+                    showAnswerResultView(false,null,result);
+                }
+            }else {
+                showScoreView(String.valueOf(mData.getScore()));
+            }
+            showVoiceScoldedView(mData.getAudioList());
+            showDifficultyview(mData.getStarCount());
+            showAnswerView(answer);
+            showAnalysisview(mData.getQuestionAnalysis());
+            showPointView(mData.getPointList());
+        }else{ //逾期未提交的作业 题目解析展示“难度”、“答案”、“题目解析”、“知识点”
+            showDifficultyview(mData.getStarCount());
+            showAnswerView(answer);
+            showAnalysisview(mData.getQuestionAnalysis());
+            showPointView(mData.getPointList());
+        }
     }
 
     private void initView() {

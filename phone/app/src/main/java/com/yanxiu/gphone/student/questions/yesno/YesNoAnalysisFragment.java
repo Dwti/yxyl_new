@@ -155,14 +155,22 @@ public class YesNoAnalysisFragment extends AnalysisSimpleExerciseBaseFragment {
      */
     @Override
     public void initAnalysisView() {
-        if (mData.getStatus()== Constants.ANSWER_STATUS_RIGHT){
-            showAnswerResultView(true, mData.getAnswerCompare(), null);
-        }else {
-            showAnswerResultView(false, mData.getAnswerCompare(), null);
+        if(Constants.HAS_FINISH_STATUS.equals(mData.getPaperStatus())){ //已完成
+            if (mData.getStatus()== Constants.ANSWER_STATUS_RIGHT){
+                showAnswerResultView(true, mData.getAnswerCompare(), null);
+            }else {
+                showAnswerResultView(false, mData.getAnswerCompare(), null);
+            }
+            showDifficultyview(mData.getStarCount());
+            showAnalysisview(mData.getQuestionAnalysis());
+            showPointView(mData.getPointList());
+        }else{ //逾期未提交的作业 题目解析展示“难度”、“答案”、“题目解析”、“知识点”
+            showDifficultyview(mData.getStarCount());
+            showAnswerView(mData.getYesNoAnswer());
+            showAnalysisview(mData.getQuestionAnalysis());
+            showPointView(mData.getPointList());
         }
-        showDifficultyview(mData.getStarCount());
-        showAnalysisview(mData.getQuestionAnalysis());
-        showPointView(mData.getPointList());
+
     }
 
     /**
