@@ -13,7 +13,7 @@
         android:id="@+id/analysis_answer_analysis"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="-10dp"
+        android:layout_marginBottom="@dimen/analysis_view_paddingbottom"
         android:layout_marginLeft="@dimen/analysis_view_paddingbottom"
         android:layout_marginRight="@dimen/analysis_view_paddingbottom"
         android:gravity="center"
