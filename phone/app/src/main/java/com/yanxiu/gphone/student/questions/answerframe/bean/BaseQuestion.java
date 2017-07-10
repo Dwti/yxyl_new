@@ -61,6 +61,9 @@ public abstract class BaseQuestion implements Serializable {
 
     private ReportAnswerBean reportAnswerBean;
 
+    public boolean mIsShouldPlay=false;
+    public int mProgress=0;
+
     public BaseQuestion(PaperTestBean bean,QuestionShowType showType){
         this.id = bean.getId();
         this.correctRate = bean.getCorrectRate();

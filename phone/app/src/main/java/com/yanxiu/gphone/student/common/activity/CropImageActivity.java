@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.customviews.CropImageView;
+import com.yanxiu.gphone.student.db.SpManager;
 
 import java.io.Serializable;
 
@@ -33,6 +34,7 @@ public class CropImageActivity extends YanxiuBaseActivity implements View.OnClic
     private ImageView mBackView;
     private TextView mResetView;
     private ImageView mConfirmView;
+    private TextView mGuidePictureView;
 
     private int mFromId;
     private String mImgPath;
@@ -61,16 +63,23 @@ public class CropImageActivity extends YanxiuBaseActivity implements View.OnClic
         mBackView= (ImageView) findViewById(R.id.iv_back);
         mResetView= (TextView) findViewById(R.id.tv_reset);
         mConfirmView= (ImageView) findViewById(R.id.iv_ok);
+        mGuidePictureView= (TextView) findViewById(R.id.tv_picture);
     }
 
     private void listener() {
         mBackView.setOnClickListener(CropImageActivity.this);
         mResetView.setOnClickListener(CropImageActivity.this);
         mConfirmView.setOnClickListener(CropImageActivity.this);
+        mGuidePictureView.setOnClickListener(CropImageActivity.this);
     }
 
     private void initData() {
         Glide.with(mContext).load(mImgPath).asBitmap().into(mCropView);
+        if (SpManager.getCropIsLuanched()){
+            mGuidePictureView.setVisibility(View.GONE);
+        }else {
+            mGuidePictureView.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -84,6 +93,10 @@ public class CropImageActivity extends YanxiuBaseActivity implements View.OnClic
                 break;
             case R.id.iv_ok:
                 mCropView.startCrop(CropImageActivity.this);
+                break;
+            case R.id.tv_picture:
+                SpManager.setCropIsLuanched(true);
+                mGuidePictureView.setVisibility(View.GONE);
                 break;
         }
     }

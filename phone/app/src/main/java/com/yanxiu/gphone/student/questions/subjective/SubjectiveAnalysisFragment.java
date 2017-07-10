@@ -45,7 +45,7 @@ public class SubjectiveAnalysisFragment extends AnalysisSimpleExerciseBaseFragme
 
     @Override
     public View addAnswerView(LayoutInflater inflater, @Nullable ViewGroup container) {
-        mAnswerView = inflater.inflate(R.layout.fragment_subjective, container, false);
+        mAnswerView = inflater.inflate(R.layout.fragment_analysis_subjective, container, false);
         return mAnswerView;
     }
 

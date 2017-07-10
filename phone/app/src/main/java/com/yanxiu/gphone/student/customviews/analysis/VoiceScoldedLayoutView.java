@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.questions.bean.JsonAudioComment;
 import com.yanxiu.gphone.student.util.MediaPlayerUtil;
+import com.yanxiu.gphone.student.util.NetWorkUtils;
 import com.yanxiu.gphone.student.util.ScreenUtils;
 import com.yanxiu.gphone.student.util.ToastManager;
 
@@ -190,7 +191,11 @@ public class VoiceScoldedLayoutView extends RelativeLayout implements MediaPlaye
 
     @Override
     public void onError(MediaPlayerUtil mu) {
-        ToastManager.showMsg(R.string.voice_url_error);
+        if (NetWorkUtils.isNetAvailable()) {
+            ToastManager.showMsg(R.string.voice_url_error);
+        }else {
+            ToastManager.showMsg(R.string.net_null);
+        }
         setAnim(mPlayingPosition,false);
         playNext();
     }

@@ -22,6 +22,12 @@ import com.yanxiu.gphone.student.util.HtmlImageGetter;
 public abstract class AnswerSimpleExerciseBaseFragment extends AnswerExerciseBaseFragment {
 
     private ListenerSeekBarLayout mListenView;//听力复合题只有一个子题时，题干的听力控件
+    private BaseQuestion mData;
+    @Override
+    public void setData(BaseQuestion node) {
+        super.setData(node);
+        this.mData=node;
+    }
 
     /**
      * 如果是只有一个子题的复合题，显示大题的题干
@@ -54,8 +60,13 @@ public abstract class AnswerSimpleExerciseBaseFragment extends AnswerExerciseBas
     public void onVisibilityChangedToUser(boolean isVisibleToUser, boolean invokeInResumeOrPause) {
         super.onVisibilityChangedToUser(isVisibleToUser,invokeInResumeOrPause);
         if (isVisibleToUser) {
-            if (null != mListenView)
+            if (null != mListenView) {
                 mListenView.setResume();
+                if (mData.mIsShouldPlay) {
+                    mListenView.setPlayToProgress(mData.mProgress);
+                    mData.mIsShouldPlay = false;
+                }
+            }
         } else {
             if (null != mListenView)
                 mListenView.setPause();
@@ -65,7 +76,10 @@ public abstract class AnswerSimpleExerciseBaseFragment extends AnswerExerciseBas
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (null != mListenView)
+        if (null != mListenView) {
+            mData.mProgress = mListenView.getProgress();
+            mData.mIsShouldPlay = mListenView.getIsPlaying();
             mListenView.setDestory();
+        }
     }
 }

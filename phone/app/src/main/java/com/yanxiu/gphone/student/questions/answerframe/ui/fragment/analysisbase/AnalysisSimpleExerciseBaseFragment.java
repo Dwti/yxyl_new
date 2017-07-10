@@ -304,8 +304,13 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
         super.onVisibilityChangedToUser(isVisibleToUser, invokeInResumeOrPause);
         if (isVisibleToUser) {
             mToVoiceIsIntent=false;
-            if (null != mListenView)
+            if (null != mListenView) {
                 mListenView.setResume();
+                if (mData.mIsShouldPlay) {
+                    mListenView.setPlayToProgress(mData.mProgress);
+                    mData.mIsShouldPlay = false;
+                }
+            }
         } else {
             if (null != mListenView)
                 mListenView.setPause();
@@ -328,8 +333,11 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (null != mListenView)
+        if (null != mListenView) {
+            mData.mProgress = mListenView.getProgress();
+            mData.mIsShouldPlay = mListenView.getIsPlaying();
             mListenView.setDestory();
+        }
         if (mVoiceScoldedView != null) {
             mVoiceScoldedView.setDestory();
         }
