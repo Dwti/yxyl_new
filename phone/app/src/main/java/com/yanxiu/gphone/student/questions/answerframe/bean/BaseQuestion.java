@@ -6,9 +6,11 @@ import com.yanxiu.gphone.student.db.SaveAnswerDBHelper;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionConvertFactory;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
+import com.yanxiu.gphone.student.questions.answerframe.util.QuestionUtil;
 import com.yanxiu.gphone.student.questions.bean.PadBean;
 import com.yanxiu.gphone.student.questions.bean.PaperTestBean;
 import com.yanxiu.gphone.student.questions.bean.PointBean;
+import com.yanxiu.gphone.student.util.StringUtil;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -60,13 +62,15 @@ public abstract class BaseQuestion implements Serializable {
     protected int parentNumber = -1;//答题卡父题记题号的子题，需要；
 
     private ReportAnswerBean reportAnswerBean;
+    private String qaName;//每个题型对应type_id的汉字名称，用来在答题时显示题目类型
 
     public boolean mIsShouldPlay=false;
     public boolean mIsPause=false;
     public int mMax=0;
     public int mProgress=0;
+    private String mPaperStatus;//数据来源：paperStatus-status。解析力需要判断paperStatus
 
-    public BaseQuestion(PaperTestBean bean,QuestionShowType showType){
+    public BaseQuestion(PaperTestBean bean,QuestionShowType showType,String paperStatus){
         this.id = bean.getId();
         this.correctRate = bean.getCorrectRate();
         this.difficulty = bean.getDifficulty();
@@ -86,7 +90,7 @@ public abstract class BaseQuestion implements Serializable {
         this.type_id = bean.getQuestions().getType_id();
         this.sectionid = bean.getSectionid();
         this.typeid = bean.getTypeid();
-        children = QuestionConvertFactory.convertQuestion(bean.getQuestions().getChildren(),showType);
+        children = QuestionConvertFactory.convertQuestion(bean.getQuestions().getChildren(),showType,paperStatus);
         if(children == null){
             children = new ArrayList<>();
             isComplexQuestion = false;
@@ -104,6 +108,13 @@ public abstract class BaseQuestion implements Serializable {
             isAnswer = isAnswered;
         }
         this.pad = bean.getQuestions().getPad();
+        try{
+            int type_id = Integer.parseInt(bean.getTypeid());
+            qaName = QuestionUtil.getQuestionTypeNameByParentTypeId(type_id);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        mPaperStatus = paperStatus;
     }
 
     public ExerciseBaseFragment getFragment() {
@@ -355,6 +366,22 @@ public abstract class BaseQuestion implements Serializable {
 
     public void setServer_answer(List<String> server_answer) {
         this.server_answer = server_answer;
+    }
+
+    public String getQaName() {
+        return qaName;
+    }
+
+    public void setQaName(String qaName) {
+        this.qaName = qaName;
+    }
+
+    public String getPaperStatus() {
+        return mPaperStatus;
+    }
+
+    public void setPaperStatus(String mPaperStatus) {
+        this.mPaperStatus = mPaperStatus;
     }
 
 

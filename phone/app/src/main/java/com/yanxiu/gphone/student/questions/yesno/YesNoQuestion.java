@@ -25,8 +25,8 @@ public class YesNoQuestion extends BaseQuestion {
     private String questionAnalysis;
     private List<PointBean> pointList;
 
-    public YesNoQuestion(PaperTestBean bean, QuestionShowType showType) {
-        super(bean, showType);
+    public YesNoQuestion(PaperTestBean bean, QuestionShowType showType,String paperStatus) {
+        super(bean, showType,paperStatus);
         yesNoAnswer = String.valueOf(bean.getQuestions().getAnswer().get(0));
 //        choice= bean.getQuestions().getContent().getChoices();
         choice = new ArrayList<>(2);

@@ -27,8 +27,8 @@ public class FillBlankQuestion extends BaseQuestion {
     private String questionAnalysis;
     private String answerCompare;
 
-    public FillBlankQuestion(PaperTestBean bean, QuestionShowType showType) {
-        super(bean, showType);
+    public FillBlankQuestion(PaperTestBean bean, QuestionShowType showType,String paperStatus) {
+        super(bean, showType,paperStatus);
         pointList = bean.getQuestions().getPoint();
         try {
             starCount = Integer.parseInt(bean.getQuestions().getDifficulty());

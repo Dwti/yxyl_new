@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.analysis.AnalysisFillBlankTextView;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.analysisbase.AnalysisSimpleExerciseBaseFragment;
@@ -75,10 +76,23 @@ public class FillBlankAnalysisFragment extends AnalysisSimpleExerciseBaseFragmen
 
     @Override
     public void initAnalysisView() {
-        showAnswerResultView(mQuestion.isRight(),mQuestion.getAnswerCompare(),null);
-        showDifficultyview(mQuestion.getStarCount());
-        showAnalysisview(mQuestion.getQuestionAnalysis());
-        showPointView(mQuestion.getPointList());
+        if(Constants.HAS_FINISH_STATUS.equals(mQuestion.getPaperStatus())){ //已完成
+            showAnswerResultView(mQuestion.isRight(),mQuestion.getAnswerCompare(),null);
+            showDifficultyview(mQuestion.getStarCount());
+            showAnalysisview(mQuestion.getQuestionAnalysis());
+            showPointView(mQuestion.getPointList());
+        }else{ //逾期未提交的作业 题目解析展示“难度”、“答案”、“题目解析”、“知识点”
+            showDifficultyview(mQuestion.getStarCount());
+            String answer="";
+            if (mQuestion.getServer_answer()!=null){
+                for (String s:mQuestion.getServer_answer()){
+                    answer+=s;
+                }
+            }
+            showAnswerView(answer);
+            showAnalysisview(mQuestion.getQuestionAnalysis());
+            showPointView(mQuestion.getPointList());
+        }
     }
 
     private void setStem(String text){

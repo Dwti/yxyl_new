@@ -29,8 +29,8 @@ public class SubjectiveQuestion extends BaseQuestion {
     private int score;
     private List<JsonAudioComment> audioList;
 
-    public SubjectiveQuestion(PaperTestBean bean, QuestionShowType showType) {
-        super(bean, showType);
+    public SubjectiveQuestion(PaperTestBean bean, QuestionShowType showType,String paperStatus) {
+        super(bean, showType,paperStatus);
         pointList=bean.getQuestions().getPoint();
         try {
             starCount=Integer.parseInt(bean.getQuestions().getDifficulty());

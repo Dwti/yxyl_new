@@ -1,4 +1,5 @@
 <resources>
     <!--<dimen name="answer_card_item_width">60dp</dimen>-->
     <!--<dimen name="answer_card_item_space">15dp</dimen>-->
+    <dimen name="cloze_bottom_layout_height">290dp</dimen>
 </resources>

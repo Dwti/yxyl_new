@@ -19,7 +19,13 @@ public class SpManager {
      * 版本号
      */
     private static final String APP_VERSION_CODE = "version_code";
-
+    /**
+     * 答题时间
+     */
+    private static final String ANSWER_QUESTION_TOTAL_TIME = "total_time";
+    /**
+     * 第一次进入裁剪页面
+     */
     private static final String FRIST_START_LUANCH_CROPIMAGE="frist_start_luanch_crop";
 
     public static void setFristStartUp(boolean isFristStartUp) {
@@ -55,6 +61,24 @@ public class SpManager {
      */
     public static int getAppVersionCode() {
         return mySharedPreferences.getInt(APP_VERSION_CODE, -1);
+    }
+
+    /**
+     * 答题总计时间保存
+     *
+     * @return -1 ：没记录
+     */
+    public static int getTotlaTime() {
+        return mySharedPreferences.getInt(ANSWER_QUESTION_TOTAL_TIME, -1);
+    }
+
+    /**
+     * 答题总计时间保存
+     */
+    public static void setTotlaTime(int totalTime) {
+        SharedPreferences.Editor editor = mySharedPreferences.edit();
+        editor.putInt(ANSWER_QUESTION_TOTAL_TIME, totalTime);
+        editor.commit();
     }
 
     public static void setCropIsLuanched(boolean isLuanch){

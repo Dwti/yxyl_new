@@ -22,61 +22,62 @@ import java.util.List;
 public class QuestionConvertFactory {
 
     /**
-    public static Paper convertSourcePaperData(PaperBean bean, QuestionShowType showType){
-        if (bean == null)
-            return null;
-        Paper paper = new Paper();
-        paper.setAuthorid(bean.getAuthorid());
-        paper.setBedition(bean.getBedition());
-        paper.setBegintime(bean.getBegintime());
-        paper.setBuildtime(bean.getBuildtime());
-        paper.setChapterid(bean.getChapterid());
-        paper.setClassid(bean.getClassid());
-        paper.setEditionName(bean.getEditionName());
-        paper.setEndtime(bean.getEndtime());
-        paper.setId(bean.getId());
-        paper.setName(bean.getName());
-        paper.setPaperStatus(bean.getPaperStatus());
-        paper.setParentId(bean.getParentId());
-        paper.setPtype(bean.getPtype());
-        paper.setQuesnum(bean.getQuesnum());
-        paper.setRedoDays(bean.getRedoDays());
-        paper.setSectionid(bean.getSectionid());
-        paper.setShowana(bean.getShowana());
-        paper.setStageName(bean.getStageName());
-        paper.setStageid(bean.getStageid());
-        paper.setStatus(bean.getStatus());
-        paper.setSubjectName(bean.getSubjectName());
-        paper.setSubjectid(bean.getSubjectid());
-        paper.setSubquesnum(bean.getSubquesnum());
-        paper.setVolume(bean.getVolume());
-        paper.setVolumeName(bean.getVolumeName());
+     * public static Paper convertSourcePaperData(PaperBean bean, QuestionShowType showType){
+     * if (bean == null)
+     * return null;
+     * Paper paper = new Paper();
+     * paper.setAuthorid(bean.getAuthorid());
+     * paper.setBedition(bean.getBedition());
+     * paper.setBegintime(bean.getBegintime());
+     * paper.setBuildtime(bean.getBuildtime());
+     * paper.setChapterid(bean.getChapterid());
+     * paper.setClassid(bean.getClassid());
+     * paper.setEditionName(bean.getEditionName());
+     * paper.setEndtime(bean.getEndtime());
+     * paper.setId(bean.getId());
+     * paper.setName(bean.getName());
+     * paper.setPaperStatus(bean.getPaperStatus());
+     * paper.setParentId(bean.getParentId());
+     * paper.setPtype(bean.getPtype());
+     * paper.setQuesnum(bean.getQuesnum());
+     * paper.setRedoDays(bean.getRedoDays());
+     * paper.setSectionid(bean.getSectionid());
+     * paper.setShowana(bean.getShowana());
+     * paper.setStageName(bean.getStageName());
+     * paper.setStageid(bean.getStageid());
+     * paper.setStatus(bean.getStatus());
+     * paper.setSubjectName(bean.getSubjectName());
+     * paper.setSubjectid(bean.getSubjectid());
+     * paper.setSubquesnum(bean.getSubquesnum());
+     * paper.setVolume(bean.getVolume());
+     * paper.setVolumeName(bean.getVolumeName());
+     * <p>
+     * paper.setQuestions(convertQuestion(bean.getPaperTest(),showType));
+     * <p>
+     * return paper;
+     * }
+     **/
 
-        paper.setQuestions(convertQuestion(bean.getPaperTest(),showType));
-
-     return paper;
-     }**/
-
-    public static ArrayList<BaseQuestion> convertQuestion(List<PaperTestBean> list, QuestionShowType showType) {
+    public static ArrayList<BaseQuestion> convertQuestion(List<PaperTestBean> list, QuestionShowType showType, String paperStatus) {
         if (list == null || list.size() == 0)
             return null;
         ArrayList<BaseQuestion> questions = new ArrayList<>();
         for (PaperTestBean paperTestBean : list) {
             switch (paperTestBean.getQuestions().getTemplate()) {
                 case QuestionTemplate.SINGLE_CHOICE:
-                    SingleChoiceQuestion singleChoiceQuestion = new SingleChoiceQuestion(paperTestBean, showType);
+                    SingleChoiceQuestion singleChoiceQuestion = new SingleChoiceQuestion(paperTestBean, showType, paperStatus);
                     questions.add(singleChoiceQuestion);
                     break;
                 case QuestionTemplate.MULTI_CHOICES:
-                    MultiChoiceQuestion multiChoiceQuestion = new MultiChoiceQuestion(paperTestBean, showType);
+                    MultiChoiceQuestion multiChoiceQuestion = new MultiChoiceQuestion(paperTestBean, showType, paperStatus);
                     questions.add(multiChoiceQuestion);
                     break;
                 case QuestionTemplate.FILL:
-                    FillBlankQuestion fillBlankQuestion = new FillBlankQuestion(paperTestBean,showType);
+                    FillBlankQuestion fillBlankQuestion = new FillBlankQuestion(paperTestBean, showType, paperStatus);
                     questions.add(fillBlankQuestion);
                     break;
                 case QuestionTemplate.ALTER:
-                    YesNoQuestion yesNoQuestion = new YesNoQuestion(paperTestBean, showType);
+                    YesNoQuestion yesNoQuestion = new YesNoQuestion(paperTestBean, showType, paperStatus);
                     questions.add(yesNoQuestion);
                     break;
                 case QuestionTemplate.CONNECT:
@@ -84,7 +85,7 @@ public class QuestionConvertFactory {
                 case QuestionTemplate.CLASSIFY:
                     break;
                 case QuestionTemplate.ANSWER:
-                    SubjectiveQuestion subjectiveQuestion=new SubjectiveQuestion(paperTestBean,showType);
+                    SubjectiveQuestion subjectiveQuestion = new SubjectiveQuestion(paperTestBean, showType, paperStatus);
                     questions.add(subjectiveQuestion);
                     break;
 //                case QuestionTemplate.READING:
@@ -92,13 +93,13 @@ public class QuestionConvertFactory {
 //                    questions.add(readingComplexQuestion);
 //                    break;
                 case QuestionTemplate.CLOZE:
-                    ClozeComplexQuestion clozeComplexQuestion = new ClozeComplexQuestion(paperTestBean,showType);
+                    ClozeComplexQuestion clozeComplexQuestion = new ClozeComplexQuestion(paperTestBean, showType, paperStatus);
                     questions.add(clozeComplexQuestion);
                     break;
                 case QuestionTemplate.READING:
                 case QuestionTemplate.LISTEN:
                     //复合题需要判断子题数量
-                    convertQuestionComplesToSimple(questions,paperTestBean,showType);
+                    convertQuestionComplesToSimple(questions, paperTestBean, showType, paperStatus);
                     break;
                 default:
                     break;
@@ -115,7 +116,8 @@ public class QuestionConvertFactory {
      * @param showType
      * @return
      */
-    public static void convertQuestionComplesToSimple(ArrayList<BaseQuestion> questions, PaperTestBean paperTestBean, QuestionShowType showType) {
+    public static void convertQuestionComplesToSimple(ArrayList<BaseQuestion> questions, PaperTestBean paperTestBean,
+                                                      QuestionShowType showType, String paperStatus) {
         if (questions == null)
             return;
 
@@ -134,23 +136,28 @@ public class QuestionConvertFactory {
             String childTemplate = childQuestion.getQuestions().getTemplate();//唯一子题的template
             switch (childTemplate) {
                 case QuestionTemplate.SINGLE_CHOICE:
-                    SingleChoiceQuestion singleChoiceQuestion = new SingleChoiceQuestion(childQuestion, showType);
+                    SingleChoiceQuestion singleChoiceQuestion = new SingleChoiceQuestion(childQuestion, showType, paperStatus);
                     singleChoiceQuestion.setStem_complexToSimple(stem_complex);
                     singleChoiceQuestion.setTemplate_complexToSimple(template);
                     singleChoiceQuestion.setUrl_listenComplexToSimple(url_complex_listen);
                     questions.add(singleChoiceQuestion);
                     break;
                 case QuestionTemplate.MULTI_CHOICES:
-                    MultiChoiceQuestion multiChoiceQuestion = new MultiChoiceQuestion(childQuestion, showType);
+                    MultiChoiceQuestion multiChoiceQuestion = new MultiChoiceQuestion(childQuestion, showType, paperStatus);
                     multiChoiceQuestion.setStem_complexToSimple(stem_complex);
                     multiChoiceQuestion.setTemplate_complexToSimple(template);
                     multiChoiceQuestion.setUrl_listenComplexToSimple(url_complex_listen);
                     questions.add(multiChoiceQuestion);
                     break;
                 case QuestionTemplate.FILL:
+                    FillBlankQuestion fillBlankQuestion = new FillBlankQuestion(paperTestBean, showType, paperStatus);
+                    fillBlankQuestion.setStem_complexToSimple(stem_complex);
+                    fillBlankQuestion.setTemplate_complexToSimple(template);
+                    fillBlankQuestion.setUrl_listenComplexToSimple(url_complex_listen);
+                    questions.add(fillBlankQuestion);
                     break;
                 case QuestionTemplate.ALTER:
-                    YesNoQuestion yesNoQuestion = new YesNoQuestion(childQuestion, showType);
+                    YesNoQuestion yesNoQuestion = new YesNoQuestion(childQuestion, showType, paperStatus);
                     yesNoQuestion.setStem_complexToSimple(stem_complex);
                     yesNoQuestion.setTemplate_complexToSimple(template);
                     yesNoQuestion.setUrl_listenComplexToSimple(url_complex_listen);
@@ -161,7 +168,7 @@ public class QuestionConvertFactory {
                 case QuestionTemplate.CLASSIFY:
                     break;
                 case QuestionTemplate.ANSWER:
-                    SubjectiveQuestion subjectiveQuestion = new SubjectiveQuestion(childQuestion, showType);
+                    SubjectiveQuestion subjectiveQuestion = new SubjectiveQuestion(childQuestion, showType, paperStatus);
                     subjectiveQuestion.setStem_complexToSimple(stem_complex);
                     subjectiveQuestion.setTemplate_complexToSimple(template);
                     subjectiveQuestion.setUrl_listenComplexToSimple(url_complex_listen);
@@ -173,18 +180,17 @@ public class QuestionConvertFactory {
         } else { //多个子题，还是复合题不变
             switch (template) {
                 case QuestionTemplate.READING:
-                    ReadingComplexQuestion readingComplexQuestion = new ReadingComplexQuestion(paperTestBean, showType);
+                    ReadingComplexQuestion readingComplexQuestion = new ReadingComplexQuestion(paperTestBean, showType, paperStatus);
                     questions.add(readingComplexQuestion);
                     break;
                 case QuestionTemplate.LISTEN:
-                    ListenComplexQuestion listenerComplexQuestion=new ListenComplexQuestion(paperTestBean,showType);
+                    ListenComplexQuestion listenerComplexQuestion = new ListenComplexQuestion(paperTestBean, showType, paperStatus);
                     questions.add(listenerComplexQuestion);
                     break;
                 default:
                     break;
             }
         }
-
 
     }
 }

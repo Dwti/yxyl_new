@@ -26,8 +26,8 @@ public class MultiChoiceQuestion extends BaseQuestion {
     private String questionAnalysis;
     private String answerCompare;
 
-    public MultiChoiceQuestion(PaperTestBean bean, QuestionShowType showType) {
-        super(bean, showType);
+    public MultiChoiceQuestion(PaperTestBean bean, QuestionShowType showType,String paperStatus) {
+        super(bean, showType,paperStatus);
         multianswer.clear();
         List<String> data=bean.getQuestions().getAnswer();
         for (Object o:data){
