@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 
+import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerComplexExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.TopBaseFragment;
@@ -23,7 +24,7 @@ public class ClozeAnswerComplexFragment extends AnswerComplexExerciseBaseFragmen
     public int mHashCode = this.hashCode();
     private ClozeComplexQuestion mData;
     private int mTopHeight;
-    private int mChildQuestionHeight = 580;//子题固定高度是四个单选的高度;
+    private int mChildQuestionHeight;//子题固定高度是四个单选的高度;
     private Integer mDuration = 200;//展开/关闭布局执行的时间
     private ValueAnimator mOpenAnimator, mCloseAnimator;
     private boolean isExpand = false;//题干是否已经完全展开了
@@ -77,6 +78,7 @@ public class ClozeAnswerComplexFragment extends AnswerComplexExerciseBaseFragmen
             public void onGlobalLayout() {
                 mImageViewSplitter.setVisibility(View.GONE);
                 mSplitter_line.setVisibility(View.GONE);
+                mChildQuestionHeight = getResources().getDimensionPixelSize(R.dimen.cloze_bottom_layout_height);
                 mTopHeight = parentView.getHeight() - mTitleBarHight - mBottom_min_distance - mChildQuestionHeight + mLineHight_chooseLine;
                 Log.e("dyf", "parentView.getHeight():=" + parentView.getHeight() + "/n  mTitleBarHight = " + mTitleBarHight
                         + "/n topHeight = " + mTopHeight);

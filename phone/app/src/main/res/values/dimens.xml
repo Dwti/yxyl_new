@@ -227,5 +227,6 @@
     <dimen name="voice_scolded_anim_margin_l">15dp</dimen>
     <dimen name="voice_scolded_anim_text_size">16dp</dimen>
     <dimen name="choose_layout_ss">2dp</dimen>
+    <dimen name="cloze_bottom_layout_height">290dp</dimen>
 </resources>
 
