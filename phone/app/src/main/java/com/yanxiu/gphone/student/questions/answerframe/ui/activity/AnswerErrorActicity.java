@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
@@ -15,11 +17,8 @@ import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.base.EXueELianBaseResponse;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.constant.Constants;
-import com.yanxiu.gphone.student.homework.response.PaperResponse;
-import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.http.request.AnalysisErrorRequest;
 import com.yanxiu.gphone.student.util.DESBodyDealer;
-import com.yanxiu.gphone.student.util.DataFetcher;
 import com.yanxiu.gphone.student.util.ToastManager;
 
 import java.util.ArrayList;
@@ -37,7 +36,7 @@ public class AnswerErrorActicity extends YanxiuBaseActivity implements View.OnCl
     private String mContent;
     private View mTag1, mTag2, mTag3, mTag4, mTag5, mTag6;
     private EditText mError_content;
-    private Button mSubmit;
+    private TextView mSubmit;
     private ArrayList<String> mTagList = new ArrayList<>(6);
 
     private AnalysisErrorRequest mRequest;
@@ -66,7 +65,8 @@ public class AnswerErrorActicity extends YanxiuBaseActivity implements View.OnCl
         mTag5 = findViewById(R.id.error_5_layout);
         mTag6 = findViewById(R.id.error_6_layout);
         mError_content = (EditText) findViewById(R.id.error_content);
-        mSubmit = (Button) findViewById(R.id.submit);
+        mSubmit = (TextView) findViewById(R.id.submit);
+        mSubmit.setEnabled(false);
         setListener();
 
     }
@@ -79,6 +79,23 @@ public class AnswerErrorActicity extends YanxiuBaseActivity implements View.OnCl
         mTag5.setOnClickListener(this);
         mTag6.setOnClickListener(this);
         mSubmit.setOnClickListener(this);
+        mError_content.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                mContent = mError_content.getText().toString();
+                checkSubmitButtonState();
+            }
+        });
     }
 
     @Override
@@ -138,8 +155,19 @@ public class AnswerErrorActicity extends YanxiuBaseActivity implements View.OnCl
         } else {
             view.setSelected(true);
             mTagList.add(tag);
-
         }
+        checkSubmitButtonState();
+    }
+
+    private void checkSubmitButtonState() {
+        if (!mTagList.isEmpty() || !TextUtils.isEmpty(mError_content.getText().toString())) {
+            mSubmit.setEnabled(true);
+            mSubmit.setBackgroundResource(R.drawable.selector_answercard_submit_button_bg);
+        } else {
+            mSubmit.setEnabled(false);
+            mSubmit.setBackgroundResource(R.drawable.answercard_submit_button_shape_disable);
+        }
+
     }
 
     private void requestSubmit() {

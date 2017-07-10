@@ -83,7 +83,8 @@ public class ClozeTextView extends ReplacementSpanTextView<ClozeView> implements
 
     public void resetSelected() {
         if (mSelectedClozeView != null) {
-            if(!mSelectedClozeView.hasFilled()  && mSelectedClozeView.getTextPosition() == ClozeView.TextPosition.LEFT ){
+            mSelectedClozeView.setSelected(false);
+            if(!mSelectedClozeView.hasFilled()){
                 mSelectedClozeView.performTranslateAnimation(ClozeView.TextPosition.CENTER);
             }
             mSelectedClozeView.setAnswerTextColor(Color.parseColor("#89e00d"));
@@ -94,11 +95,12 @@ public class ClozeTextView extends ReplacementSpanTextView<ClozeView> implements
     public void setSelected(int index){
         ClozeView cv = getReplaceView(index);
         mSelectedPosition = index;
-        if (!cv.hasFilled() && cv.getTextPosition() == ClozeView.TextPosition.CENTER) {
+        if (!cv.hasFilled()) {
             cv.performTranslateAnimation(ClozeView.TextPosition.LEFT);
         }
         cv.setAnswerTextColor(Color.parseColor("#333333"));
         mSelectedClozeView = cv;
+        mSelectedClozeView.setSelected(true);
     }
 
     public void setOnClozeClickListener(OnClozeClickListener listener) {
@@ -107,28 +109,22 @@ public class ClozeTextView extends ReplacementSpanTextView<ClozeView> implements
 
     @Override
     public void onReplaceComplete() {
+        //此处逻辑其实只是针对从答题卡定向跳转到某个空用的（此时该题干还没经过初始化，并没有生成相应的view）
+        //但是此逻辑在选择答案的时候重绘之后，也会做一次(多余的)
         int i = 0;
         for (Map.Entry<EmptyReplacementSpan, ClozeView> entry : mTreeMap.entrySet()) {
             ClozeView view = entry.getValue();
-            if (!TextUtils.isEmpty(entry.getKey().answer)) {
-                view.clearNumberAnimation();
-            }
+            //重绘的时候 ，如果不清除动画的话，会导致在设置文字之后 ，view的位置发生改变，会重新执行以前的动画效果（此时动画的位置计算是按照view改变之后的位置计算的）
+            view.clearNumberAnimation();
             if(i == mSelectedPosition){
                 mSelectedClozeView = view;
+                mSelectedClozeView.setSelected(true);
+                mSelectedClozeView.setAnswerTextColor(Color.parseColor("#333333"));
             }
             view.setTextNumber(i + 1);
             view.setFilledAnswer(entry.getKey().answer);
             i++;
         }
-        post(new Runnable() {
-            @Override
-            public void run() {
-                if (mSelectedClozeView != null){
-                    mSelectedClozeView.performTranslateAnimation(ClozeView.TextPosition.LEFT);
-                    mSelectedClozeView.setAnswerTextColor(Color.parseColor("#333333"));
-                }
-            }
-        });
     }
 
     public int getSelectedPosition() {

@@ -304,7 +304,7 @@ public class AnalysisQuestionActivity extends YanxiuBaseActivity implements View
              * 3.处在最后一个小题，且外部大题也是最后一题，那么判断为是最后一道题，展现答题卡
              */
             if (innerIndex == (innerSize - 1) && index == (size - 1)) { //状态3
-                mNext_text.setText(R.string.complete);
+                mNext_question.setVisibility(View.GONE);
             } else {
                 mNext_text.setText(R.string.next_question);
             }
@@ -317,7 +317,7 @@ public class AnalysisQuestionActivity extends YanxiuBaseActivity implements View
 
         } else if (currentFramgent instanceof AnalysisSimpleExerciseBaseFragment) {
             if (index == (size - 1)) { //最后一题
-                mNext_text.setText(R.string.complete);
+                mNext_question.setVisibility(View.GONE);
             } else {
                 mNext_text.setText(R.string.next_question);
             }
@@ -406,18 +406,6 @@ public class AnalysisQuestionActivity extends YanxiuBaseActivity implements View
     public static void invoke(Activity activity, String key) {
         Intent intent = new Intent(activity, AnalysisQuestionActivity.class);
         intent.putExtra(Constants.EXTRA_PAPER, key);
-        activity.startActivity(intent);
-    }
-
-    /**
-     * 跳转AnalysisQuestionActivity
-     *
-     * @param activity
-     */
-    public static void invoke(Activity activity, String key, String title) {
-        Intent intent = new Intent(activity, AnalysisQuestionActivity.class);
-        intent.putExtra(Constants.EXTRA_PAPER, key);
-        intent.putExtra(Constants.EXTRA_TITLE, title);
         activity.startActivity(intent);
     }
 

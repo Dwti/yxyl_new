@@ -28,7 +28,7 @@ import de.greenrobot.event.EventBus;
  * Created by 戴延枫 on 2017/6/14.
  */
 
-public class ClozeComplexTopAnalysisFragment extends TopBaseFragment {
+public class ClozeAnalysisComplexTopFragment extends TopBaseFragment {
     private ClozeComplexQuestion mQuestion;
     private AnalysisClozeTextView mClozeTextView;
     private ScrollView mScrollView;
@@ -76,10 +76,6 @@ public class ClozeComplexTopAnalysisFragment extends TopBaseFragment {
             @Override
             public void onReplaceComplete() {
                 if (initIndex != 0) {
-                    mClozeTextView.resetSelected();
-                    mClozeTextView.setSelected(initIndex);
-                    mClozeTextView.setSelectedPosition(initIndex);
-                    mClozeTextView.setSelectedClozeView(mClozeTextView.getReplaceView(initIndex));
 
                     mClozeTextView.post(new Runnable() {
                         @Override
@@ -148,21 +144,29 @@ public class ClozeComplexTopAnalysisFragment extends TopBaseFragment {
                         //此处针对点击之后没有加载完与第一次从答题卡跳转过来没加载完时的逻辑
                         if (!mClozeTextView.isReplaceCompleted()) {
                             initIndex = position;
+                            mClozeTextView.setSelectedPosition(position);
                             mClicked = false;
                             return;
                         }
                         if (mClicked) {
                             mClicked = false;
                         } else {
-                            mClozeTextView.resetSelected();
-                            mClozeTextView.setSelected(position);
+//                            mClozeTextView.resetSelected();
+//                            mClozeTextView.setSelected(position);
                             mClozeTextView.setSelectedPosition(position);
-                            mClozeTextView.setSelectedClozeView(mClozeTextView.getReplaceView(position));
+//                            mClozeTextView.setSelectedClozeView(mClozeTextView.getReplaceView(position));
+                            mClozeTextView.setWidthAndText();
+                            mClozeTextView.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    int bottom = mClozeTextView.getSelectedClozeView().getBottom() + mViewWrapper.getPaddingTop() - mScrollView.getScrollY();
+                                    if (bottom > mScrollView.getHeight() || bottom < mClozeTextView.getLineHeight()) {
+                                        mScrollView.scrollTo(0, mClozeTextView.getSelectedClozeView().getBottom() - mScrollView.getHeight() + mViewWrapper.getPaddingTop());
+                                    }
+                                }
+                            });
                         }
-                        int bottom = mClozeTextView.getSelectedClozeView().getBottom() + mViewWrapper.getPaddingTop() - mScrollView.getScrollY();
-                        if (bottom > mScrollView.getHeight() || bottom < mClozeTextView.getLineHeight()) {
-                            mScrollView.scrollTo(0, mClozeTextView.getSelectedClozeView().getBottom() - mScrollView.getHeight() + mViewWrapper.getPaddingTop());
-                        }
+
                     }
 
                     @Override

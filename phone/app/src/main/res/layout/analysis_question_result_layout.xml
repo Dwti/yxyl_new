@@ -24,7 +24,6 @@
         android:id="@+id/analysis_answer_result"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="-6dp"
         android:layout_marginLeft="@dimen/analysis_view_paddingbottom"
         android:layout_marginRight="@dimen/analysis_view_paddingbottom"
         android:gravity="center"

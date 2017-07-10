@@ -17,6 +17,7 @@ import com.yanxiu.gphone.student.customviews.ChooseLayout;
 import com.yanxiu.gphone.student.customviews.analysis.VoiceScoldedLayoutView;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.analysisbase.AnalysisSimpleExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.cloze.ClozeAnalysisComplexFragment;
 import com.yanxiu.gphone.student.questions.cloze.ClozeAnswerComplexFragment;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
 
@@ -72,7 +73,7 @@ public class SingleChooseAnalysisFragment extends AnalysisSimpleExerciseBaseFrag
      */
     private void hiddenNumberBar(View view){
         Fragment parentFragment = getParentFragment();
-        if(null != parentFragment && parentFragment instanceof ClozeAnswerComplexFragment){
+        if(null != parentFragment && parentFragment instanceof ClozeAnalysisComplexFragment){
             View number_bar = view.findViewById(R.id.number_bar);
             View ll_question = view.findViewById(R.id.ll_question);
             View line = view.findViewById(R.id.view);

@@ -10,11 +10,13 @@ import android.support.annotation.RequiresApi;
 import android.support.annotation.StyleRes;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -31,11 +33,15 @@ public class ClozeView extends FrameLayout {
 
     private TextView mAnswer;
 
-    private View mContent, mUnderline;
+    private View mUnderline;
+
+    private LinearLayout mContent;
 
     private TextPosition mPosition;
 
     private String mFilledAnswer,mCorrectAnswer;
+
+    private int mGravity ;
 
     public ClozeView(@NonNull Context context) {
         super(context);
@@ -62,22 +68,34 @@ public class ClozeView extends FrameLayout {
         View view = LayoutInflater.from(context).inflate(R.layout.cloze_view,this,true);
         mNumber = (TextView) view.findViewById(R.id.text_number);
         mAnswer = (TextView) view.findViewById(R.id.text_answer);
-        mContent = view.findViewById(R.id.content);
+        mContent = (LinearLayout) view.findViewById(R.id.content);
         mUnderline = view.findViewById(R.id.underline);
         mPosition = TextPosition.CENTER;
+        mGravity = Gravity.CENTER;
     }
 
     public void performTranslateAnimation(TextPosition toPosition){
         if(mPosition == toPosition)
             return;
         TranslateAnimation translateAnimation;
-        if(toPosition == TextPosition.LEFT){
-            translateAnimation = new TranslateAnimation(0,-mNumber.getX(),0,0);
-            mPosition = TextPosition.LEFT;
-        }else {
-            translateAnimation = new TranslateAnimation(-mNumber.getX(),0,0,0);
-            mPosition = TextPosition.CENTER;
+        if(mGravity == Gravity.CENTER){
+            if(toPosition == TextPosition.LEFT){
+                translateAnimation = new TranslateAnimation(0,-mNumber.getX(),0,0);
+                mPosition = TextPosition.LEFT;
+            }else {
+                translateAnimation = new TranslateAnimation(-mNumber.getX(),0,0,0);
+                mPosition = TextPosition.CENTER;
+            }
+        }else{
+            if(toPosition == TextPosition.LEFT){
+                translateAnimation = new TranslateAnimation((getWidth()- mNumber.getWidth()) / 2 ,0,0,0);
+                mPosition = TextPosition.LEFT;
+            }else {
+                translateAnimation = new TranslateAnimation(0,(getWidth()- mNumber.getWidth()) / 2 ,0,0);
+                mPosition = TextPosition.CENTER;
+            }
         }
+
         translateAnimation.setDuration(500);
         translateAnimation.setInterpolator(new DecelerateInterpolator(1.5f));
         translateAnimation.setFillAfter(true);
@@ -150,6 +168,21 @@ public class ClozeView extends FrameLayout {
 
     public void setFilledAnswer(String text){
         mFilledAnswer = text;
+        if(isSelected()){
+            mContent.setGravity(Gravity.CENTER_VERTICAL);
+            mGravity = Gravity.CENTER_VERTICAL;
+            mPosition = TextPosition.LEFT;
+        }else {
+            if(TextUtils.isEmpty(mFilledAnswer)){
+                mContent.setGravity(Gravity.CENTER);
+                mGravity = Gravity.CENTER;
+                mPosition = TextPosition.CENTER;
+            }else {
+                mContent.setGravity(Gravity.CENTER_VERTICAL);
+                mGravity = Gravity.CENTER_VERTICAL;
+                mPosition = TextPosition.LEFT;
+            }
+        }
         mAnswer.setText(text);
     }
 
@@ -179,6 +212,7 @@ public class ClozeView extends FrameLayout {
 
     public void clearNumberAnimation(){
         mNumber.clearAnimation();
+        mPosition = TextPosition.CENTER;
     }
     public void setContentCenter(boolean b){
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mContent.getLayoutParams();

@@ -33,6 +33,7 @@ public class AnswerCardSubmitDialog extends Dialog implements View.OnClickListen
     //progress
     private AnswercardSubmitProgressView mProgressbar;
     private ImageView mPincil;
+    private TextView mAnswercard_progress,mAnswercard_total;
 
     //state
     private TextView mState_title, mState_content;
@@ -97,7 +98,7 @@ public class AnswerCardSubmitDialog extends Dialog implements View.OnClickListen
 
         initStateView();
         initSuccessView();
-
+        initProgressView();
         hasSubjectiveImg = false;
     }
 
@@ -115,6 +116,10 @@ public class AnswerCardSubmitDialog extends Dialog implements View.OnClickListen
         mSuccess_layout_button = (Button) mRootView.findViewById(R.id.success_layout_button);
         mSuccess_layout_button.setOnClickListener(this);
     }
+    private void initProgressView() {
+        mAnswercard_progress = (TextView) mRootView.findViewById(R.id.answercard_progress);
+        mAnswercard_total = (TextView) mRootView.findViewById(R.id.answercard_total);
+    }
 
     public void setData(ArrayList<BaseQuestion> questions) {
         mQuestions = questions;
@@ -122,9 +127,11 @@ public class AnswerCardSubmitDialog extends Dialog implements View.OnClickListen
 
     public void setProgressbarMaxCount(int count){
         mProgressbar.setMaxCount(count);
+        mAnswercard_total.setText(count+"");
     }
     public void updateProgress(int progress){
         mProgressbar.updateProgress(progress);
+        mAnswercard_progress.setText(progress+"");
     }
 
     /**

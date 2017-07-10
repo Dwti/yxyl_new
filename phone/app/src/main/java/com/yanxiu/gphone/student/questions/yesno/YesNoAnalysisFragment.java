@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.ChooseLayout;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.analysisbase.AnalysisSimpleExerciseBaseFragment;
@@ -154,7 +155,11 @@ public class YesNoAnalysisFragment extends AnalysisSimpleExerciseBaseFragment {
      */
     @Override
     public void initAnalysisView() {
-        showAnswerResultView(false, mData.getAnswerCompare(), null);
+        if (mData.getStatus()== Constants.ANSWER_STATUS_RIGHT){
+            showAnswerResultView(true, mData.getAnswerCompare(), null);
+        }else {
+            showAnswerResultView(false, mData.getAnswerCompare(), null);
+        }
         showDifficultyview(mData.getStarCount());
         showAnalysisview(mData.getQuestionAnalysis());
         showPointView(mData.getPointList());

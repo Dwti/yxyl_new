@@ -576,7 +576,8 @@ public class QuestionUtil {
                 totalCount += 1;
             }
         }
-        return Float.parseFloat(String.format("%.2f", rightCount / totalCount));
+//        return Float.parseFloat(String.format("%.2f", rightCount / totalCount));
+        return rightCount / totalCount;
     }
 
     /**

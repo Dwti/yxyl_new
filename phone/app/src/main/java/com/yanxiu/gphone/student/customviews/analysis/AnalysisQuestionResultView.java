@@ -1,6 +1,8 @@
 package com.yanxiu.gphone.student.customviews.analysis;
 
 import android.content.Context;
+import android.text.Html;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -10,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.util.HtmlImageGetter;
 
 /**
  * 作答结果view
@@ -55,7 +58,8 @@ public class AnalysisQuestionResultView extends LinearLayout {
             mYesNo.setText(yesno);
         }
         if (mResult != null && !TextUtils.isEmpty(yourAnswer)) {
-            mResult.setText(yourAnswer);
+            Spanned string = Html.fromHtml(yourAnswer, new HtmlImageGetter(mResult), null);
+            mResult.setText(string);
             mResult.setVisibility(VISIBLE);
         }
     }

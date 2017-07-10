@@ -1,5 +1,6 @@
 package com.yanxiu.gphone.student.questions.yesno;
 
+import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
@@ -94,7 +95,14 @@ public class YesNoQuestion extends BaseQuestion {
 
     @Override
     public int getStatus() {
-        return 0;
+        if (answerList!=null&&answerList.size()>0){
+            if (answerList.get(0).equals(yesNoAnswer)){
+                return Constants.ANSWER_STATUS_RIGHT;
+            }else {
+                return Constants.ANSWER_STATUS_WRONG;
+            }
+        }
+        return Constants.ANSWER_STATUS_NOANSWERED;
     }
 
     public String getAnswerCompare() {
