@@ -43,16 +43,18 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
     private boolean isPlaying = false;
     private boolean isMove = false;
     private boolean isPause = false;
+    private boolean isBackPause=false;
     private SeekBar mSeekBarView;
     private TextView mNowTimeView;
     private TextView mTotalTimeView;
     private View mLeftView;
     private View mRightView;
 
+    private int mMax=0;
     private int mProgress=0;
 
-    private String mUrl;
-//        private String mUrl="http://data.5sing.kgimg.com/G034/M05/16/17/ApQEAFXsgeqIXl7gAAVVd-n31lcAABOogKzlD4ABVWP363.mp3";
+//    private String mUrl;
+        private String mUrl="http://data.5sing.kgimg.com/G034/M05/16/17/ApQEAFXsgeqIXl7gAAVVd-n31lcAABOogKzlD4ABVWP363.mp3";
     private long mMoveDown;
 
     public ListenerSeekBarLayout(Context context) {
@@ -151,8 +153,10 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
                     if (checkIsInternal(ev)) {
                         if (!isMove) {
                             if (mMediaPlayerUtil.isPlaying()) {
+                                isBackPause=true;
                                 setPlayerPause();
                             } else {
+                                isBackPause=false;
                                 setPlayerResume();
                             }
                         }
@@ -191,12 +195,33 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
         return mProgress;
     }
 
+    public int getMax(){
+        return mMax;
+    }
+
     public boolean getIsPlaying(){
         return isPlaying;
     }
 
-    public void setPlayToProgress(int progress){
+    public boolean getIsPause(){
+        return isBackPause;
+    }
+
+    public void setPlayToProgress(int progress,int total){
         this.mProgress=progress;
+        this.isPlaying=true;
+        this.isBackPause=false;
+        mSeekBarView.setMax(total);
+        mSeekBarView.setProgress(progress);
+        mMediaPlayerUtil.start(mUrl);
+    }
+
+    public void setPauseToProgress(int progress,int total){
+        this.mProgress=progress;
+        this.isPlaying=true;
+        this.isBackPause=true;
+        mSeekBarView.setMax(total);
+        mSeekBarView.setProgress(progress);
         mMediaPlayerUtil.start(mUrl);
     }
 
@@ -204,7 +229,7 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
         if (TextUtils.isEmpty(url)) {
             return;
         }
-        this.mUrl = url;
+//        this.mUrl = url;
     }
 
     public void setPause() {
@@ -251,11 +276,15 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
     public void onStart(MediaPlayerUtil mpu, int duration) {
         Logger.d("view_ID",ListenerSeekBarLayout.this.hashCode()+"");
         this.isPlaying = true;
+        this.mMax=duration;
         mSeekBarView.setMax(duration);
         String totalTime = transferFormat(duration);
         mTotalTimeView.setText(totalTime);
         if (mProgress!=0) {
             mMediaPlayerUtil.seekTo(mProgress);
+        }
+        if (isBackPause){
+            mMediaPlayerUtil.pause();
         }
     }
 
@@ -263,7 +292,9 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
     public void onProgress(MediaPlayerUtil mu, int progress) {
         Logger.d(TAG, "progress" + progress);
         this.mProgress=progress;
-        mSeekBarView.setProgress(progress);
+        if (progress>mSeekBarView.getProgress()) {
+            mSeekBarView.setProgress(progress);
+        }
         String nowTime = transferFormat(progress);
         mNowTimeView.setText(nowTime);
     }
@@ -272,6 +303,7 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
     public void onCompletion(MediaPlayerUtil mu) {
         Logger.d(TAG, "completion");
         this.isPlaying = false;
+        this.mProgress=0;
         //Create visual effects and enhance user experience
         mSeekBarView.setProgress(mSeekBarView.getMax());
         mSeekBarView.post(new Runnable() {
@@ -288,6 +320,7 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
     @Override
     public void onError(MediaPlayerUtil mu) {
         this.isPlaying = false;
+        this.mProgress=0;
         mSeekBarView.setProgress(0);
         String nowTime = transferFormat(0);
         mNowTimeView.setText(nowTime);

@@ -306,9 +306,12 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
             mToVoiceIsIntent=false;
             if (null != mListenView) {
                 mListenView.setResume();
-                if (mData.mIsShouldPlay) {
-                    mListenView.setPlayToProgress(mData.mProgress);
-                    mData.mIsShouldPlay = false;
+                if (mData.mIsShouldPlay&&!mData.mIsPause){
+                    mListenView.setPlayToProgress(mData.mProgress,mData.mMax);
+                    mData.mIsShouldPlay=false;
+                }else if (mData.mIsShouldPlay&&mData.mIsPause){
+                    mListenView.setPauseToProgress(mData.mProgress,mData.mMax);
+                    mData.mIsShouldPlay=false;
                 }
             }
         } else {
@@ -334,8 +337,10 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
     public void onDestroyView() {
         super.onDestroyView();
         if (null != mListenView) {
-            mData.mProgress = mListenView.getProgress();
-            mData.mIsShouldPlay = mListenView.getIsPlaying();
+            mData.mProgress=mListenView.getProgress();
+            mData.mMax=mListenView.getMax();
+            mData.mIsShouldPlay=mListenView.getIsPlaying();
+            mData.mIsPause=mListenView.getIsPause();
             mListenView.setDestory();
         }
         if (mVoiceScoldedView != null) {

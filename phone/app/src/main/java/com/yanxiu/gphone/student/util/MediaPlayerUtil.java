@@ -35,6 +35,7 @@ public class MediaPlayerUtil {
     private int mBufferProgress=-1;
     private boolean isPlaying = false;
     private boolean isPause = false;
+    private boolean isPrepared=false;
     private MediaPlayerCallBack mCallBack;
     private MediaPlayerBufferUpdateCallBack mUpdateCallBack;
 
@@ -46,6 +47,7 @@ public class MediaPlayerUtil {
         if (isPlaying|| TextUtils.isEmpty(url)) {
             return;
         }
+        isPrepared=false;
         Logger.d(TAG, "start");
         mPlayer = new MediaPlayer();
         mHandle = new MyHandle(MediaPlayerUtil.this);
@@ -111,7 +113,7 @@ public class MediaPlayerUtil {
      * move
      */
     public void seekTo(final int msec) {
-        if (mPlayer != null) {
+        if (mPlayer != null&&isPrepared) {
             try {
                 isPlaying = false;
                 mPlayer.pause();
@@ -141,7 +143,7 @@ public class MediaPlayerUtil {
     }
 
     public void pause() {
-        if (mPlayer != null) {
+        if (mPlayer != null&&isPrepared) {
             try {
                 isPlaying = false;
                 isPause = true;
@@ -154,7 +156,7 @@ public class MediaPlayerUtil {
     }
 
     public void resume() {
-        if (mPlayer != null) {
+        if (mPlayer != null&&isPrepared) {
             try {
                 isPlaying = true;
                 isPause = false;
@@ -218,6 +220,7 @@ public class MediaPlayerUtil {
         public void onPrepared(MediaPlayer mp) {
             Logger.d(TAG, "media  prepared");
             if (mp != null) {
+                isPrepared=true;
                 isPlaying = true;
                 int duration = mp.getDuration();
                 mp.start();
