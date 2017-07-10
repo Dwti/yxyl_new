@@ -374,11 +374,11 @@ public abstract class BaseQuestion implements Serializable {
         this.qaName = qaName;
     }
 
-    public String getmPaperStatus() {
+    public String getPaperStatus() {
         return mPaperStatus;
     }
 
-    public void setmPaperStatus(String mPaperStatus) {
+    public void setPaperStatus(String mPaperStatus) {
         this.mPaperStatus = mPaperStatus;
     }
 
