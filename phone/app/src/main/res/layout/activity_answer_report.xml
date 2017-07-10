@@ -33,8 +33,12 @@
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
                     android:layout_marginTop="28dp"
-                    android:background="@drawable/report_header_score"
-                    android:visibility="gone">
+                    android:visibility="visible">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/report_header_score"/>
 
                     <TextView
                         android:id="@+id/center"
@@ -42,30 +46,49 @@
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         tools:text="" />
-
-                    <TextView
-                        android:id="@+id/textview_correct"
+                    <RelativeLayout
+                        android:id="@+id/textview_correct_layout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_above="@id/center"
                         android:layout_centerInParent="true"
-                        android:layout_marginBottom="-20dp"
-                        android:shadowColor="#ffffffff"
-                        android:shadowDx="0"
-                        android:shadowDy="0"
-                        android:shadowRadius="10"
-                        tools:text="89"
-                        android:textColor="@color/color_336600"
-                        android:textSize="57dp" />
+                        android:layout_marginBottom="-20dp">
+                        <TextView
+                            android:id="@+id/textview_correct_shadow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="-2.5dp"
+                            android:layout_marginLeft="2dp"
+                            android:shadowColor="#ffffffff"
+                            android:shadowDx="0"
+                            android:shadowDy="0"
+                            android:shadowRadius="10"
+                            tools:text="89"
+                            android:textColor="@color/color_ffffff"
+                            android:textSize="62dp" />
+                        <TextView
+                            android:id="@+id/textview_correct"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:shadowColor="@color/color_ffffff"
+                            android:shadowDx="0"
+                            android:shadowDy="0"
+                            android:shadowRadius="10"
+                            tools:text="89"
+                            android:textColor="@color/color_336600"
+                            android:textSize="57dp" />
+
+                    </RelativeLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_above="@id/center"
-                        android:layout_alignBottom="@id/textview_correct"
+                        android:layout_alignBottom="@id/textview_correct_layout"
                         android:layout_centerInParent="true"
-                        android:layout_marginBottom="7dp"
-                        android:layout_toRightOf="@id/textview_correct"
+                        android:layout_marginBottom="10dp"
+                        android:layout_toRightOf="@id/textview_correct_layout"
                         android:shadowColor="#ffffffff"
                         android:shadowDx="0"
                         android:shadowDy="0"
@@ -115,7 +138,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@id/totalnumber"
-                            android:layout_marginTop="-2dp"
+                            android:layout_marginTop="-3dp"
                             android:layout_toLeftOf="@id/line"
                             tools:text="答对12题"
                             android:textColor="@color/color_336600"
@@ -124,7 +147,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="-3dp"
+                            android:layout_marginTop="-2dp"
                             android:layout_toRightOf="@id/line"
                             android:text="用时"
                             android:textColor="@color/color_69ad0a"
@@ -135,8 +158,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@id/totalnumber"
-                            android:layout_marginTop="-3dp"
                             android:layout_toRightOf="@id/line"
+
                             tools:text="12:30:00"
                             android:textColor="@color/color_336600"
                             android:textSize="19dp" />
