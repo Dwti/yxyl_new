@@ -64,9 +64,21 @@ public abstract class BaseQuestion implements Serializable {
     private ReportAnswerBean reportAnswerBean;
     private String qaName;//每个题型对应type_id的汉字名称，用来在答题时显示题目类型
 
+    /**
+     * 听力是否需要播放
+     * */
     public boolean mIsShouldPlay=false;
+    /**
+     * 听力是否处于暂停状态
+     * */
     public boolean mIsPause=false;
+    /**
+     * 听力最大时长
+     * */
     public int mMax=0;
+    /**
+     * 听力当前进度
+     * */
     public int mProgress=0;
     private String mPaperStatus;//数据来源：paperStatus-status。解析力需要判断paperStatus
 
