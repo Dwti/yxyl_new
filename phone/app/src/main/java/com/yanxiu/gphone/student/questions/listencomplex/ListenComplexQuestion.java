@@ -16,8 +16,8 @@ public class ListenComplexQuestion extends BaseQuestion {
 
     public String url;
 
-    public ListenComplexQuestion(PaperTestBean bean, QuestionShowType showType) {
-        super(bean, showType);
+    public ListenComplexQuestion(PaperTestBean bean, QuestionShowType showType, String paperStatus) {
+        super(bean, showType,paperStatus);
         url=bean.getQuestions().getUrl();
     }
 

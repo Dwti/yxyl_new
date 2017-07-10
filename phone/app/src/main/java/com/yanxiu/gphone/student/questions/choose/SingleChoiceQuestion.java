@@ -25,8 +25,8 @@ public class SingleChoiceQuestion extends BaseQuestion {
     private String questionAnalysis;
     private String answerCompare;
 
-    public SingleChoiceQuestion(PaperTestBean bean, QuestionShowType showType) {
-        super(bean, showType);
+    public SingleChoiceQuestion(PaperTestBean bean, QuestionShowType showType,String paperStatus) {
+        super(bean, showType,paperStatus);
         singleAnswer= String.valueOf(bean.getQuestions().getAnswer().get(0));
         choice= bean.getQuestions().getContent().getChoices();
         pointList=bean.getQuestions().getPoint();

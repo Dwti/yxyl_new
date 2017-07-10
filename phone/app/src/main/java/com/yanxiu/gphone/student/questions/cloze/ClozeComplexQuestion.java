@@ -17,8 +17,8 @@ import java.util.List;
 public class ClozeComplexQuestion extends BaseQuestion {
     private List<String> correctAnswers = new ArrayList<>();
     private List<String> filledAnswers = new ArrayList<>();
-    public ClozeComplexQuestion(PaperTestBean bean, QuestionShowType showType) {
-        super(bean, showType);
+    public ClozeComplexQuestion(PaperTestBean bean, QuestionShowType showType,String paperStatus) {
+        super(bean, showType,paperStatus);
         initAnswer();
     }
 

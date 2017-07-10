@@ -51,12 +51,17 @@ public class Constants {
     public static final String NOTES_KEY = "notes_key";//跳转笔记页key
     public static final String PPID_KEY = "ppid";//跳转答题报告
 
-    public static final String HAS_FINISH_STATUS = "2"; //已z完成
+    /**
+     *解析状态
+     */
+    public static final String HAS_FINISH_STATUS = "2"; //已完成
     public static final String NOT_FINISH_STATUS = "1";//未完成 不可补做  查看解析报告
     public static final String WAIT_FINISH_STATUS = "0";//待完成  可以做题
     public static final String HAS_FINISH_CHECK_REPORT = "0";   //已完成  可以查看答题报告
 
-    // 题目状态 0 回答正确， 1 回答错误，  2 半对   3 未作答案  4 标示主观题 已作答
+    /**
+     * 题目状态 0 回答正确， 1 回答错误，  2 半对   3 未作答案  4 标示主观题 已作答
+     */
     public static final int ANSWER_STATUS_RIGHT = 0;// 题目状态 0 回答正确
     public static final int ANSWER_STATUS_WRONG = 1;// 题目状态 1 回答错误
     public static final int ANSWER_STATUS_HALFRIGHT = 2;// 题目状态  2 半对

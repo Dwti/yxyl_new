@@ -66,8 +66,9 @@ public abstract class BaseQuestion implements Serializable {
 
     public boolean mIsShouldPlay=false;
     public int mProgress=0;
+    private String mPaperStatus;//数据来源：paperStatus-status。解析力需要判断paperStatus
 
-    public BaseQuestion(PaperTestBean bean,QuestionShowType showType){
+    public BaseQuestion(PaperTestBean bean,QuestionShowType showType,String paperStatus){
         this.id = bean.getId();
         this.correctRate = bean.getCorrectRate();
         this.difficulty = bean.getDifficulty();
@@ -87,7 +88,7 @@ public abstract class BaseQuestion implements Serializable {
         this.type_id = bean.getQuestions().getType_id();
         this.sectionid = bean.getSectionid();
         this.typeid = bean.getTypeid();
-        children = QuestionConvertFactory.convertQuestion(bean.getQuestions().getChildren(),showType);
+        children = QuestionConvertFactory.convertQuestion(bean.getQuestions().getChildren(),showType,paperStatus);
         if(children == null){
             children = new ArrayList<>();
             isComplexQuestion = false;
@@ -111,6 +112,7 @@ public abstract class BaseQuestion implements Serializable {
         }catch(Exception e){
             e.printStackTrace();
         }
+        mPaperStatus = paperStatus;
     }
 
     public ExerciseBaseFragment getFragment() {
@@ -370,6 +372,14 @@ public abstract class BaseQuestion implements Serializable {
 
     public void setQaName(String qaName) {
         this.qaName = qaName;
+    }
+
+    public String getmPaperStatus() {
+        return mPaperStatus;
+    }
+
+    public void setmPaperStatus(String mPaperStatus) {
+        this.mPaperStatus = mPaperStatus;
     }
 
 

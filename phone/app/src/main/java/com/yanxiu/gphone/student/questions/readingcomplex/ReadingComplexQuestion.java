@@ -11,8 +11,8 @@ import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.Exercise
  */
 
 public class ReadingComplexQuestion extends BaseQuestion {
-    public ReadingComplexQuestion(PaperTestBean bean, QuestionShowType showType) {
-        super(bean, showType);
+    public ReadingComplexQuestion(PaperTestBean bean, QuestionShowType showType, String paperStatus) {
+        super(bean, showType,paperStatus);
     }
 
     @Override

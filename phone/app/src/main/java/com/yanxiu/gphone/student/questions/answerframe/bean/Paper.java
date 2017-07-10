@@ -52,7 +52,7 @@ public class Paper {
         this.id = paperBean.getId();
         this.name = paperBean.getName();
         this.paperStatus = paperBean.getPaperStatus();
-        this.questions = QuestionConvertFactory.convertQuestion(paperBean.getPaperTest(),showType);
+        this.questions = QuestionConvertFactory.convertQuestion(paperBean.getPaperTest(),showType,paperStatus.getStatus());
         this.parentId = paperBean.getParentId();
         this.ptype = paperBean.getPtype();
         this.quesnum = paperBean.getQuesnum();
