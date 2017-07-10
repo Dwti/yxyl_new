@@ -21,8 +21,10 @@ import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.YanxiuApplication;
 import com.yanxiu.gphone.student.util.Logger;
 import com.yanxiu.gphone.student.util.MediaPlayerUtil;
+import com.yanxiu.gphone.student.util.NetWorkUtils;
 import com.yanxiu.gphone.student.util.ScreenUtils;
 import com.yanxiu.gphone.student.util.TextTypefaceUtil;
+import com.yanxiu.gphone.student.util.ToastManager;
 
 /**
  * Created by Canghaixiao.
@@ -46,6 +48,8 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
     private TextView mTotalTimeView;
     private View mLeftView;
     private View mRightView;
+
+    private int mProgress=0;
 
     private String mUrl;
 //        private String mUrl="http://data.5sing.kgimg.com/G034/M05/16/17/ApQEAFXsgeqIXl7gAAVVd-n31lcAABOogKzlD4ABVWP363.mp3";
@@ -183,6 +187,19 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
 //        mSeekBarView.setThumb();
     }
 
+    public int getProgress(){
+        return mProgress;
+    }
+
+    public boolean getIsPlaying(){
+        return isPlaying;
+    }
+
+    public void setPlayToProgress(int progress){
+        this.mProgress=progress;
+        mMediaPlayerUtil.start(mUrl);
+    }
+
     public void setUrl(String url) {
         if (TextUtils.isEmpty(url)) {
             return;
@@ -237,11 +254,15 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
         mSeekBarView.setMax(duration);
         String totalTime = transferFormat(duration);
         mTotalTimeView.setText(totalTime);
+        if (mProgress!=0) {
+            mMediaPlayerUtil.seekTo(mProgress);
+        }
     }
 
     @Override
     public void onProgress(MediaPlayerUtil mu, int progress) {
         Logger.d(TAG, "progress" + progress);
+        this.mProgress=progress;
         mSeekBarView.setProgress(progress);
         String nowTime = transferFormat(progress);
         mNowTimeView.setText(nowTime);
@@ -270,6 +291,11 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
         mSeekBarView.setProgress(0);
         String nowTime = transferFormat(0);
         mNowTimeView.setText(nowTime);
+        if (NetWorkUtils.isNetAvailable()) {
+            ToastManager.showMsg(R.string.voice_url_error);
+        }else {
+            ToastManager.showMsg(R.string.net_null);
+        }
     }
 
     private String transferFormat(double duration) {

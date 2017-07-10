@@ -205,4 +205,6 @@
 
     <string name="correct">正确</string>
     <string name="wrong">错误</string>
+
+    <string name="no_picture">本题未作答</string>
 </resources>

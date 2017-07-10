@@ -51,7 +51,7 @@ public class SingleChooseAnalysisFragment extends AnalysisSimpleExerciseBaseFrag
 
     @Override
     public View addAnswerView(LayoutInflater inflater, @Nullable ViewGroup container) {
-        mAnswerView=inflater.inflate(R.layout.fragment_choose,container,false);
+        mAnswerView=inflater.inflate(R.layout.fragment_analysis_choose,container,false);
         return mAnswerView;
     }
 

@@ -55,12 +55,18 @@ public class ListenComplexTopFragment extends TopBaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        mData.mProgress=mListenView.getProgress();
+        mData.mIsShouldPlay=mListenView.getIsPlaying();
         mListenView.setDestory();
     }
 
     public void setVisibleToUser(boolean isVisibleToUser){
         if (isVisibleToUser){
             mListenView.setResume();
+            if (mData.mIsShouldPlay){
+                mListenView.setPlayToProgress(mData.mProgress);
+                mData.mIsShouldPlay=false;
+            }
         }else {
             mListenView.setPause();
         }

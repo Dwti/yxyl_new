@@ -23,7 +23,10 @@ public class SpManager {
      * 答题时间
      */
     private static final String ANSWER_QUESTION_TOTAL_TIME = "total_time";
-
+    /**
+     * 第一次进入裁剪页面
+     */
+    private static final String FRIST_START_LUANCH_CROPIMAGE="frist_start_luanch_crop";
 
     public static void setFristStartUp(boolean isFristStartUp) {
         SharedPreferences.Editor editor = mySharedPreferences.edit();
@@ -78,4 +81,12 @@ public class SpManager {
         editor.commit();
     }
 
+    public static void setCropIsLuanched(boolean isLuanch){
+        SharedPreferences.Editor editor=mySharedPreferences.edit();
+        editor.putBoolean(FRIST_START_LUANCH_CROPIMAGE,isLuanch).commit();
+    }
+
+    public static boolean getCropIsLuanched(){
+        return mySharedPreferences.getBoolean(FRIST_START_LUANCH_CROPIMAGE,false);
+    }
 }

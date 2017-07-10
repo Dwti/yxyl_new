@@ -64,6 +64,9 @@ public abstract class BaseQuestion implements Serializable {
     private ReportAnswerBean reportAnswerBean;
     private String qaName;//每个题型对应type_id的汉字名称，用来在答题时显示题目类型
 
+    public boolean mIsShouldPlay=false;
+    public int mProgress=0;
+
     public BaseQuestion(PaperTestBean bean,QuestionShowType showType){
         this.id = bean.getId();
         this.correctRate = bean.getCorrectRate();

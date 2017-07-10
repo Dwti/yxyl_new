@@ -32,7 +32,7 @@ public class MediaPlayerUtil {
 
     private MediaPlayer mPlayer;
     private MyHandle mHandle;
-    private int mBufferProgress;
+    private int mBufferProgress=-1;
     private boolean isPlaying = false;
     private boolean isPause = false;
     private MediaPlayerCallBack mCallBack;
@@ -220,13 +220,13 @@ public class MediaPlayerUtil {
             if (mp != null) {
                 isPlaying = true;
                 int duration = mp.getDuration();
+                mp.start();
                 if (mCallBack != null) {
                     mCallBack.onStart(MediaPlayerUtil.this, duration);
                 }
                 if (mHandle != null) {
                     mHandle.sendEmptyMessageDelayed(0, delayMillis);
                 }
-                mp.start();
             }
         }
     };
@@ -274,7 +274,7 @@ public class MediaPlayerUtil {
             Logger.d(TAG, "media  error");
             finish();
             mBufferProgress = 0;
-            if (mCallBack != null && isPlaying) {
+            if (mCallBack != null) {
                 isPlaying = false;
                 mCallBack.onError(MediaPlayerUtil.this);
             }
