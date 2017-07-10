@@ -96,7 +96,8 @@ public abstract class ExerciseBaseFragment extends Fragment implements IExercise
                 tp.setTypeface(DEFAULT_BOLD);
                 mQaName.setTextColor(getResources().getColor(R.color.color_333333));
             } else {
-                templateName = StringUtil.getTemplateName(mBaseQuestion.getTemplate());
+//                templateName = StringUtil.getTemplateName(mBaseQuestion.getTemplate());
+                templateName = mBaseQuestion.getQaName();
             }
             mQaName.setText(templateName);
         }catch(Exception e){
