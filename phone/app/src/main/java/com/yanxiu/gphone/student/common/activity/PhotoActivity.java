@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
@@ -94,6 +95,7 @@ public class PhotoActivity extends YanxiuBaseActivity implements ViewPager.OnPag
         }else {
             mDeleteView.setVisibility(View.GONE);
         }
+        mTopView.setBackgroundColor(ContextCompat.getColor(mContext,R.color.color_db89e00d));
         mTitleView.setTextColor(Color.WHITE);
         if (list==null){
             return;
@@ -106,6 +108,13 @@ public class PhotoActivity extends YanxiuBaseActivity implements ViewPager.OnPag
                 @Override
                 public void onClick(View v) {
                     mTopView.setVisibility(View.VISIBLE);
+                }
+            });
+            imageView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    mTopView.setVisibility(View.GONE);
+                    return true;
                 }
             });
             zoomImageViews.add(imageView);

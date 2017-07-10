@@ -32,12 +32,23 @@
                     style="@style/CommonQuestionFragmentTextView" />
             </LinearLayout>
 
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:background="@color/color_fafafa">
             <com.yanxiu.gphone.student.customviews.AlbumGridView
                 android:id="@+id/ag_image"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:background="@color/color_fafafa"/>
-
+                android:layout_height="100dp"/>
+                <TextView
+                    android:id="@+id/no_picture"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="19dp"
+                    android:gravity="center"
+                    android:text="@string/no_picture"
+                    android:textColor="@color/color_cccccc"/>
+            </FrameLayout>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

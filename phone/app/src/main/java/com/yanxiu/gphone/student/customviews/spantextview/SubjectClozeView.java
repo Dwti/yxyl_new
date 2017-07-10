@@ -45,7 +45,7 @@ public class SubjectClozeView extends FrameLayout {
     }
 
     private void initView(Context context){
-        View view = LayoutInflater.from(context).inflate(R.layout.cloze_view,this,true);
+        View view = LayoutInflater.from(context).inflate(R.layout.cloze_view1,this,true);
         mNumber = (TextView) view.findViewById(R.id.text_number);
     }
 

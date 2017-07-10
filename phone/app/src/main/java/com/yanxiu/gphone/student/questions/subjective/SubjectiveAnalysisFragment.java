@@ -5,25 +5,16 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
-import com.yanxiu.gphone.student.common.Bean.PhotoDeleteBean;
-import com.yanxiu.gphone.student.common.activity.CameraActivity;
-import com.yanxiu.gphone.student.common.activity.CropImageActivity;
 import com.yanxiu.gphone.student.common.activity.PhotoActivity;
 import com.yanxiu.gphone.student.customviews.AlbumGridView;
-import com.yanxiu.gphone.student.customviews.analysis.VoiceScoldedLayoutView;
 import com.yanxiu.gphone.student.customviews.spantextview.SubjectClozeTextView;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.analysisbase.AnalysisSimpleExerciseBaseFragment;
-import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionUtil;
 import com.yanxiu.gphone.student.util.StemUtil;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import de.greenrobot.event.EventBus;
 
 /**
  * Created by Canghaixiao.
@@ -36,6 +27,7 @@ public class SubjectiveAnalysisFragment extends AnalysisSimpleExerciseBaseFragme
     private SubjectClozeTextView mQuestionView;
     private View mAnswerView;
     private AlbumGridView mSubjectView;
+    private TextView mNoPictureView;
 
     @Override
     public void setData(BaseQuestion node) {
@@ -94,13 +86,20 @@ public class SubjectiveAnalysisFragment extends AnalysisSimpleExerciseBaseFragme
     private void initView() {
         mQuestionView = (SubjectClozeTextView) mAnswerView.findViewById(R.id.tv_question);
         mSubjectView = (AlbumGridView) mAnswerView.findViewById(R.id.ag_image);
+        mNoPictureView= (TextView) mAnswerView.findViewById(R.id.no_picture);
     }
 
     private void initData() {
         String string= StemUtil.initClozeStem(mData.getStem());
         mQuestionView.setText(string);
-        mSubjectView.setData(mData.answerList);
-        mSubjectView.setCanAddItem(false);
+        if (mData.answerList.size()>0) {
+            mNoPictureView.setVisibility(View.GONE);
+            mSubjectView.setData(mData.answerList);
+            mSubjectView.setCanAddItem(false);
+        }else {
+            mNoPictureView.setVisibility(View.VISIBLE);
+            mSubjectView.setVisibility(View.GONE);
+        }
     }
 
     private void listener() {
