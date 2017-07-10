@@ -20,6 +20,7 @@ import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.QuestionProgressView;
 import com.yanxiu.gphone.student.customviews.QuestionTimeTextView;
+import com.yanxiu.gphone.student.db.SpManager;
 import com.yanxiu.gphone.student.questions.answerframe.adapter.QAViewPagerAdapter;
 import com.yanxiu.gphone.student.questions.answerframe.listener.OnAnswerCardItemSelectListener;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.AnswerCardFragment;
@@ -86,7 +87,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         mPaper = DataFetcher.getInstance().getPaper(mKey);
         mQuestions = mPaper.getQuestions();
         initProgressViewData();
-        mTotalTime = 0;
+        mTotalTime = (SpManager.getTotlaTime() != -1) ? SpManager.getTotlaTime() : 0;
         mStartTime = System.currentTimeMillis();
         mPaper.getPaperStatus().setBegintime(mStartTime+"");
         mTitleString = mPaper.getName();
@@ -105,6 +106,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         setListener();
         initViewPager();
         mHandler = new TimingHandler(this);
+        mTimer.setTime(mTotalTime);
     }
 
     private void setListener() {
@@ -480,6 +482,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
 
     @Override
     protected void onDestroy() {
+        SpManager.setTotlaTime(mTotalTime);
         mHandler.removeCallbacksAndMessages(null);
         mHandler = null;
         mKeyboardObserver.destroy();
