@@ -87,7 +87,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         mPaper = DataFetcher.getInstance().getPaper(mKey);
         mQuestions = mPaper.getQuestions();
         initProgressViewData();
-        mTotalTime = (SpManager.getTotlaTime() != -1) ? SpManager.getTotlaTime() : 0;
+        mTotalTime = (SpManager.getTotlaTime(mPaper.getId()) != -1) ? SpManager.getTotlaTime(mPaper.getId()) : 0;
         mStartTime = System.currentTimeMillis();
         mPaper.getPaperStatus().setBegintime(mStartTime+"");
         mTitleString = mPaper.getName();
@@ -482,7 +482,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
 
     @Override
     protected void onDestroy() {
-        SpManager.setTotlaTime(mTotalTime);
+        SpManager.setTotlaTime(mPaper.getId(),mTotalTime);
         mHandler.removeCallbacksAndMessages(null);
         mHandler = null;
         mKeyboardObserver.destroy();
