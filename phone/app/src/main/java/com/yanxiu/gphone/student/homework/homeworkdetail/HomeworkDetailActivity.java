@@ -163,6 +163,7 @@ public class HomeworkDetailActivity extends Activity implements HomeworkDetailCo
 
     @Override
     public void showNoMoreData() {
+        mIsLoadingMore = false;
         //TODO
     }
 
