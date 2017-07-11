@@ -58,23 +58,24 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
-        misRefresh = getIntent().getBooleanExtra(MAINAVTIVITY_REFRESH,false);
-        refreshFragmentData();
+//        misRefresh = getIntent().getBooleanExtra(MAINAVTIVITY_REFRESH,false);
+//        refreshFragmentData();
+        showCurrentFragment(0);
     }
 
-    /**
-     * 刷新当前fragment的数据（从loginacticity回来）
-     */
-    private void refreshFragmentData(){
-        try{
-            if(misRefresh)
-                ((HomePageBaseFragment)mNaviFragmentFactory.getItem(mNaviFragmentFactory.getCurrentItem())).requestData();
-        }catch(Exception e){
-            e.printStackTrace();
-            Log.e(TAG, "刷新失败" + e.getMessage());
-        }
-
-    }
+//    /**
+//     * 刷新当前fragment的数据（从loginacticity回来）
+//     */
+//    private void refreshFragmentData(){
+//        try{
+//            if(misRefresh)
+//                ((HomePageBaseFragment)mNaviFragmentFactory.getItem(mNaviFragmentFactory.getCurrentItem())).requestData();
+//        }catch(Exception e){
+//            e.printStackTrace();
+//            Log.e(TAG, "刷新失败" + e.getMessage());
+//        }
+//
+//    }
 
     @Override
     protected void onResume() {
