@@ -18,7 +18,8 @@ public class TextTypefaceUtil {
 //        ARAL_ROUNDED_BOLD(PATH_TYPEFACE + "arial_runded_bold.ttf"),
         METRO_PLAY(PATH_TYPEFACE + "metroplaytype.otf"),
         METRO_BOLDITALIC(PATH_TYPEFACE + "metrobolditalic.OTF"),
-        METRO_MEDIUM_PLAY(PATH_TYPEFACE + "metromedium.OTF");
+        METRO_MEDIUM_PLAY(PATH_TYPEFACE + "metromedium.OTF"),
+        METRO_DEMI_BOLD(PATH_TYPEFACE + "metrodemibold.OTF");
         public String path;
 
         TypefaceType(String path) {

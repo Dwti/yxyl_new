@@ -23,6 +23,7 @@ import com.yanxiu.gphone.student.questions.answerframe.listener.OnAnswerCardItem
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionUtil;
 import com.yanxiu.gphone.student.util.DataFetcher;
 import com.yanxiu.gphone.student.util.ScreenUtils;
+import com.yanxiu.gphone.student.util.TextTypefaceUtil;
 import com.yanxiu.gphone.student.util.TimeUtils;
 
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
+ * 答题报告
  * Created by 戴延枫 on 2017/6/9.
  */
 
@@ -48,6 +50,7 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
     private TextView mTitle;
     //批改view
     private TextView mTextview_correct;//正确率
+    private TextView mTextview_correct_shadow;//正确率的阴影
     private TextView mTotalnumber;//总题数
     private TextView mYesnumber;//答对题数
     private TextView mTime;//用时
@@ -104,6 +107,7 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
         mTitle = (TextView) findViewById(R.id.report_title);
         mTitle.setText(mTitleString);
         mTextview_correct = (TextView) findViewById(R.id.textview_correct);
+        mTextview_correct_shadow = (TextView) findViewById(R.id.textview_correct_shadow);
         mTotalnumber = (TextView) findViewById(R.id.totalnumber);
         mYesnumber = (TextView) findViewById(R.id.yesnumber);
         mTime = (TextView) findViewById(R.id.time);
@@ -113,10 +117,12 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
         if ("1".equals(mStatus)) {
             //已经批改
             mTextview_correct.setText(mSccuracy + "");
+            mTextview_correct_shadow.setText(mSccuracy + "");
             mTotalnumber.setText("共" + mTotalCount + "题");
             mYesnumber.setText("答对" + mRightCount + "题");
             mTime.setText(mCostTime);
-
+            TextTypefaceUtil.setViewTypeface(TextTypefaceUtil.TypefaceType.METRO_DEMI_BOLD,mTextview_correct,mTextview_correct_shadow);
+            TextTypefaceUtil.setViewTypeface(TextTypefaceUtil.TypefaceType.METRO_MEDIUM_PLAY,mTime);
             mNopigai_layout.setVisibility(View.GONE);
             mPigai_layout.setVisibility(View.VISIBLE);
         } else {

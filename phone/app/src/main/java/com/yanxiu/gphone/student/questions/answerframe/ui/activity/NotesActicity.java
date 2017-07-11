@@ -15,6 +15,7 @@ import de.greenrobot.event.EventBus;
 import static com.yanxiu.gphone.student.constant.Constants.NOTES_KEY;
 
 /**
+ * 笔记页面
  * Created by 戴延枫 on 2017/6/9.
  */
 
