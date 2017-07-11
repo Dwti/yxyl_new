@@ -1,8 +1,6 @@
 package com.yanxiu.gphone.student.homepage.fragment;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,13 +48,5 @@ public class MyFragment extends HomePageBaseFragment implements View.OnClickList
 //                getActivity().finish();
                 break;
         }
-    }
-
-    /**
-     * 请求数据
-     */
-    @Override
-    public void requestData() {
-        Log.e("dyf",TAG);
     }
 }
