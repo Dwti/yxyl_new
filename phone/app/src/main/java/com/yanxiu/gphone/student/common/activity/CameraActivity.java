@@ -16,8 +16,6 @@ import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.customviews.CameraView;
 import com.yanxiu.gphone.student.util.AlbumUtils;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
@@ -121,7 +119,7 @@ public class CameraActivity extends YanxiuBaseActivity implements View.OnClickLi
 
     @Override
     public void onFinished(List<AlbumUtils.PictureMessage> list) {
-        if (list.size()>0) {
+        if (list!=null&&list.size()>0) {
             Glide.with(mContext).load(list.get(0).path).asBitmap().into(new CircleImageTarget(mAlbumView));
         }
     }

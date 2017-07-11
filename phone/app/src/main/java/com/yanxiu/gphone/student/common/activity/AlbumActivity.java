@@ -123,7 +123,9 @@ public class AlbumActivity extends YanxiuBaseActivity implements View.OnClickLis
     @Override
     public void onFinished(HashMap<String, List<AlbumUtils.PictureMessage>> hashMap) {
         this.mHashMap=hashMap;
-        setNamesToListFromMap(mHashMap,mNameList);
+        if (mHashMap!=null) {
+            setNamesToListFromMap(mHashMap, mNameList);
+        }
     }
 
     private void setNamesToListFromMap(HashMap<String, List<AlbumUtils.PictureMessage>> hashMap,List<AlbumParentNameAdapter.ParentImageMessage> list){

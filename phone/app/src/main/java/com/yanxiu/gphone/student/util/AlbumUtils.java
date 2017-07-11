@@ -157,7 +157,12 @@ public class AlbumUtils {
             Uri imageUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
             String[] SELECTION_ARGS = new String[]{"image/jpeg", "image/png"};
             ContentResolver contentResolver = YanxiuApplication.getInstance().getContentResolver();
-            Cursor cursor = contentResolver.query(imageUri, null, SELECTION, SELECTION_ARGS, SORTORDER);
+            Cursor cursor=null;
+            try {
+                cursor = contentResolver.query(imageUri, null, SELECTION, SELECTION_ARGS, SORTORDER);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
 
             if (cursor == null) {
                 return null;
@@ -225,6 +230,8 @@ public class AlbumUtils {
                             mFindFinishedListener.onFinished(mMessageList);
                         }
                     }
+                }else {
+                    mFindFinishedListener.onFinished(null);
                 }
             }
         }
