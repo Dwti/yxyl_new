@@ -24,6 +24,7 @@ import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +44,7 @@ public class ChooseLocationActivity extends YanxiuBaseActivity implements Picker
 
     public static final String KEY="location";
     private static final int DEFAULT_SELECT=0;
+    private static final String REQUESTCODE="requestCode";
 
     private Context mContext;
     private PickerView mChooseProvinceView;
@@ -60,9 +62,11 @@ public class ChooseLocationActivity extends YanxiuBaseActivity implements Picker
     private int mSelectCity=0;
     private int mSelectArea=0;
     private TextView mTitleView;
+    private int mRequestCode=-1;
 
-    public static void LaunchActivity(Context context){
+    public static void LaunchActivity(Context context,int requestCode){
         Intent intent=new Intent(context,ChooseLocationActivity.class);
+        intent.putExtra(REQUESTCODE,requestCode);
         context.startActivity(intent);
     }
 
@@ -70,6 +74,7 @@ public class ChooseLocationActivity extends YanxiuBaseActivity implements Picker
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext=ChooseLocationActivity.this;
+        mRequestCode=getIntent().getIntExtra(REQUESTCODE,-1);
         PublicLoadLayout rootView=new PublicLoadLayout(mContext);
         rootView.setContentView(R.layout.activity_chooselocation);
         setContentView(rootView);
@@ -222,7 +227,7 @@ public class ChooseLocationActivity extends YanxiuBaseActivity implements Picker
         return provinceList;
     }
 
-    public void onEventMainThread(CompleteInfoActivity.SchoolMessage message) {
+    public void onEventMainThread(SchoolMessage message) {
         ChooseLocationActivity.this.finish();
     }
 
@@ -230,7 +235,8 @@ public class ChooseLocationActivity extends YanxiuBaseActivity implements Picker
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.tv_right:
-                CompleteInfoActivity.SchoolMessage message=new CompleteInfoActivity.SchoolMessage();
+                SchoolMessage message=new SchoolMessage();
+                message.requestCode=mRequestCode;
                 message.provinceId=provinceList.get(mSelectProvince).getId();
                 message.provinceName=provinceList.get(mSelectProvince).getName();
                 message.cityId=cityList.get(mSelectCity).getId();
@@ -245,4 +251,21 @@ public class ChooseLocationActivity extends YanxiuBaseActivity implements Picker
                 break;
         }
     }
+
+    public static class SchoolMessage implements Serializable {
+        public int requestCode;
+
+        public String provinceId;
+        public String provinceName;
+
+        public String cityId;
+        public String cityName;
+
+        public String areaId;
+        public String areaName;
+
+        public String schoolId;
+        public String schoolName;
+    }
+
 }

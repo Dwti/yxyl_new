@@ -125,4 +125,19 @@ public class LoginInfo {
         bean.setRealname(name);
         Save();
     }
+
+    public static String getLoginType(){
+        if (!isLogIn()) {
+            return "";
+        }
+        return bean.getLoginType();
+    }
+
+    public static void setLoginType(String loginType){
+        if (!isLogIn()) {
+            return;
+        }
+        bean.setLoginType(loginType);
+        Save();
+    }
 }
