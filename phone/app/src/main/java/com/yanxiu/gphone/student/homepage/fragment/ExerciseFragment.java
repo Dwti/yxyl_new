@@ -22,12 +22,4 @@ public class ExerciseFragment extends HomePageBaseFragment {
         View view = inflater.inflate(R.layout.fragment_exercise, container, false);
         return view;
     }
-
-    /**
-     * 请求数据
-     */
-    @Override
-    public void requestData() {
-        Log.e("dyf",TAG);
-    }
 }
