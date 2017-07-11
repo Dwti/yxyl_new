@@ -220,10 +220,10 @@ public class FillBlankFragment extends AnswerSimpleExerciseBaseFragment implemen
 
     @Override
     public void saveAnswer(BaseQuestion question) {
-        boolean hasAnswer = false;
+        boolean hasAnswer = true;
         for(String str: mAnswers){
-            if(!TextUtils.isEmpty(str)){
-                hasAnswer = true;
+            if(TextUtils.isEmpty(str)){
+                hasAnswer = false;
                 break;
             }
         }
