@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -37,7 +38,7 @@ import java.util.Set;
  * Created by 戴延枫 on 2017/6/9.
  */
 
-public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswerCardItemSelectListener {
+public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswerCardItemSelectListener,View.OnClickListener {
 
 
     private String mKey;//获取数据的key
@@ -48,6 +49,7 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
 
     private RelativeLayout mNopigai_layout, mPigai_layout;
     private TextView mTitle;
+    private ImageView mBackview;
     //批改view
     private TextView mTextview_correct;//正确率
     private TextView mTextview_correct_shadow;//正确率的阴影
@@ -106,6 +108,8 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
         mPigai_layout = (RelativeLayout) findViewById(R.id.pigai_layout);
         mTitle = (TextView) findViewById(R.id.report_title);
         mTitle.setText(mTitleString);
+        mBackview = (ImageView) findViewById(R.id.backview);
+        mBackview.setOnClickListener(this);
         mTextview_correct = (TextView) findViewById(R.id.textview_correct);
         mTextview_correct_shadow = (TextView) findViewById(R.id.textview_correct_shadow);
         mTotalnumber = (TextView) findViewById(R.id.totalnumber);
@@ -194,5 +198,14 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
         String key = this.hashCode() + mPPid;
         DataFetcher.getInstance().save(key, mPaper);
         AnalysisQuestionActivity.invoke(this, key, question.getLevelPositions());
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.backview:
+                finish();
+                break;
+        }
     }
 }
