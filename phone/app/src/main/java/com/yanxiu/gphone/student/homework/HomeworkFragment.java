@@ -79,8 +79,13 @@ public class HomeworkFragment extends HomePageBaseFragment implements SearchClas
         mListView.setAdapter(mHomeworkAdapter);
 
         initListener();
-        requestData();
         return root;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadSubject();
     }
 
     private void initListener() {
@@ -121,7 +126,6 @@ public class HomeworkFragment extends HomePageBaseFragment implements SearchClas
      */
     @Override
     public void requestData() {
-        loadSubject();
     }
 
     private void checkClassInfo() {
