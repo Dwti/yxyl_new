@@ -53,7 +53,10 @@ public class SubjectiveQuestion extends BaseQuestion {
         }catch (Exception e){
             e.printStackTrace();
         }
-        subjectAnswer=bean.getQuestions().getAnswer();
+        subjectAnswer=new ArrayList<>();
+        for(Object o : bean.getQuestions().getAnswer()){
+            subjectAnswer.add(String.valueOf(o));
+        }
         String jsonArray=bean.getQuestions().getPad().getAnswer();
         JSONArray array;
         try {

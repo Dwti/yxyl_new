@@ -22,6 +22,7 @@ import java.util.List;
 public class FillBlankQuestion extends BaseQuestion {
 
     private List<String> mFilledAnswers = new ArrayList<>();
+    private List<String> mCorrectAnswers = new ArrayList<>();
     private List<PointBean> pointList;
     private int starCount;
     private String questionAnalysis;
@@ -51,6 +52,9 @@ public class FillBlankQuestion extends BaseQuestion {
         for (Object o : bean.getQuestions().getPad().getJsonAnswer()) {
             mFilledAnswers.add(String.valueOf(o));
         }
+        for(Object o : server_answer){
+            mCorrectAnswers.add(String.valueOf(o));
+        }
     }
 
     @Override
@@ -68,7 +72,7 @@ public class FillBlankQuestion extends BaseQuestion {
     }
 
     public List<String> getCorrectAnswers() {
-        return server_answer;
+        return mCorrectAnswers;
     }
 
     @Override
@@ -83,7 +87,7 @@ public class FillBlankQuestion extends BaseQuestion {
                 return Constants.ANSWER_STATUS_NOANSWERED;
             }
         }
-        boolean isRight = QuestionUtil.compareListByOrder(StringUtil.full2half(mFilledAnswers), StringUtil.full2half(server_answer));
+        boolean isRight = QuestionUtil.compareListByOrder(StringUtil.full2half(mFilledAnswers), StringUtil.full2half(mCorrectAnswers));
         if (isRight) {
             return Constants.ANSWER_STATUS_RIGHT;
         } else {
@@ -97,7 +101,7 @@ public class FillBlankQuestion extends BaseQuestion {
                 return false;
             }
         }
-        boolean isRight = QuestionUtil.compareListByOrder(StringUtil.full2half(mFilledAnswers), StringUtil.full2half(server_answer));
+        boolean isRight = QuestionUtil.compareListByOrder(StringUtil.full2half(mFilledAnswers), StringUtil.full2half(mCorrectAnswers));
         return isRight;
     }
 
