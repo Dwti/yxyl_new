@@ -1,9 +1,13 @@
 package com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -27,6 +31,19 @@ public abstract class AnswerSimpleExerciseBaseFragment extends AnswerExerciseBas
     public void setData(BaseQuestion node) {
         super.setData(node);
         this.mData=node;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initListenerData();
+    }
+
+    private void initListenerData(){
+        mData.mProgress=0;
+        mData.mMax=0;
+        mData.mIsShouldPlay=false;
+        mData.mIsPause=false;
     }
 
     /**

@@ -185,6 +185,9 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".common.activity.CropImageActivity"
             android:screenOrientation="portrait"/>
+
+        <activity android:name=".mistake.activity.MistakeListActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

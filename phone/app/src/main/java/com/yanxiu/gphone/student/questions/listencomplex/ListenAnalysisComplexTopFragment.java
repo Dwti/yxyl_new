@@ -41,6 +41,13 @@ public class ListenAnalysisComplexTopFragment extends TopBaseFragment {
         return mRootView;
     }
 
+    private void initListenerData(){
+        mData.mProgress=0;
+        mData.mMax=0;
+        mData.mIsShouldPlay=false;
+        mData.mIsPause=false;
+    }
+
     private void initView(View root) {
         mQuestionView= (TextView) root.findViewById(R.id.tv_question);
         mListenView= (ListenerSeekBarLayout) root.findViewById(R.id.lsb_listen);
@@ -83,6 +90,7 @@ public class ListenAnalysisComplexTopFragment extends TopBaseFragment {
         if (savedInstanceState != null) {
             mData = (ListenComplexQuestion) savedInstanceState.getSerializable(ExerciseBaseFragment.KEY_NODE);
         }
+        initListenerData();
     }
 
     @Override

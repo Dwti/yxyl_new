@@ -24,6 +24,7 @@ public class MyFragment extends HomePageBaseFragment implements View.OnClickList
         View view = inflater.inflate(R.layout.fragment_my, container, false);
         mLogOut = (TextView) view.findViewById(R.id.logout);
         mLogOut.setOnClickListener(this);
+        (view.findViewById(R.id.my_mistake)).setOnClickListener(this);
         return view;
     }
 
@@ -46,6 +47,9 @@ public class MyFragment extends HomePageBaseFragment implements View.OnClickList
                 LoginInfo.LogOut();
                 LoginActivity.LaunchActivity(getActivity());
 //                getActivity().finish();
+                break;
+            case R.id.my_mistake:
+
                 break;
         }
     }
