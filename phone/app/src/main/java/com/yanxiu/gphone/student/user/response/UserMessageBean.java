@@ -8,6 +8,13 @@ import org.litepal.crud.DataSupport;
  * Function :
  */
 public class UserMessageBean extends DataSupport {
+
+    public static final String LOGIN_ACCOUNT="account";
+    public static final String LOGIN_QQ="qq";
+    public static final String LOGIN_WX="wx";
+
+    private String loginType;
+
     private String mobile;
     private String nickname;
     private String realname;
@@ -25,6 +32,14 @@ public class UserMessageBean extends DataSupport {
     private String createtime;
     private String head;
     private PassportBean passport;
+
+    public String getLoginType() {
+        return loginType;
+    }
+
+    public void setLoginType(String loginType) {
+        this.loginType = loginType;
+    }
 
     public String getMobile() {
         return mobile;

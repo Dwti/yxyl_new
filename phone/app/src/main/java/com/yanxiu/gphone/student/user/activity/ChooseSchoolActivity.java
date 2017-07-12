@@ -43,13 +43,13 @@ public class ChooseSchoolActivity extends YanxiuBaseActivity implements View.OnC
     private ImageView mBackView;
     private View mTopView;
 
-    private CompleteInfoActivity.SchoolMessage message;
+    private ChooseLocationActivity.SchoolMessage message;
     private PublicLoadLayout rootView;
     private ChooseSchoolRequest mChooseSchoolRequest;
     private ChooseSchoolAdapter adapter;
     private TextView mTitleView;
 
-    public static void LuanchActivity(Context context, CompleteInfoActivity.SchoolMessage message){
+    public static void LuanchActivity(Context context, ChooseLocationActivity.SchoolMessage message){
         Intent intent=new Intent(context,ChooseSchoolActivity.class);
         intent.putExtra(ChooseLocationActivity.KEY,message);
         context.startActivity(intent);
@@ -62,7 +62,7 @@ public class ChooseSchoolActivity extends YanxiuBaseActivity implements View.OnC
         rootView=new PublicLoadLayout(mContext);
         rootView.setContentView(R.layout.activity_chooseschool);
         setContentView(rootView);
-        message= (CompleteInfoActivity.SchoolMessage) getIntent().getSerializableExtra(ChooseLocationActivity.KEY);
+        message= (ChooseLocationActivity.SchoolMessage) getIntent().getSerializableExtra(ChooseLocationActivity.KEY);
         initView();
         listener();
         initData();
