@@ -306,7 +306,7 @@ public class QuestionUtil {
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
-                                List<String> rightAnswer = childQuestion.getServer_answer();
+                                List<Object> rightAnswer = childQuestion.getServer_answer();
                                 ReportAnswerBean reportAnswerBean = childQuestion.getReportAnswerBean();
                                 int status = childQuestion.getPad().getStatus();
                                 String childTemplate = childQuestion.getTemplate();
@@ -330,7 +330,7 @@ public class QuestionUtil {
                                         if (QuestionTemplate.SINGLE_CHOICE.equals(childTemplate) || QuestionTemplate.ALTER.equals(childTemplate)) {
                                             reportAnswerBean.setSelectType(answerChildList.get(0));
                                             if (rightAnswer != null && !rightAnswer.isEmpty()) {
-                                                if (!TextUtils.isEmpty(answerChildList.get(0)) && answerChildList.get(0).equals(rightAnswer.get(0))) {
+                                                if (!TextUtils.isEmpty(answerChildList.get(0)) && answerChildList.get(0).equals(String.valueOf(rightAnswer.get(0)))) {
                                                     reportAnswerBean.setIsRight(true);
                                                 } else {
                                                     reportAnswerBean.setIsRight(false);
@@ -377,12 +377,16 @@ public class QuestionUtil {
 //
 //                                            }
                                         } else {
+                                            List<String> rightAnswerStr = new ArrayList<>();
+                                            for(Object o : rightAnswer){
+                                                rightAnswerStr.add(String.valueOf(o));
+                                            }
                                             if (QuestionTemplate.MULTI_CHOICES.equals(childTemplate)) {
                                                 reportAnswerBean.setMultiSelect((ArrayList<String>) answerChildList);
                                             } else if (QuestionTemplate.FILL.equals(childTemplate)) {
                                                 reportAnswerBean.setFillAnswers((ArrayList<String>) answerChildList);
                                             }
-                                            if (compareListByOrder(answerChildList, rightAnswer)) {
+                                            if (compareListByOrder(answerChildList, rightAnswerStr)) {
                                                 reportAnswerBean.setIsRight(true);
                                             } else {
                                                 reportAnswerBean.setIsRight(false);
