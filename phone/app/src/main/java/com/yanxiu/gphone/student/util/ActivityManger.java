@@ -41,4 +41,15 @@ public class ActivityManger {
             activityList.clear();
         }
     }
+
+    /**
+     * 获取当前Activity
+     * @return
+     */
+    public static Activity getTopActivity(){
+        if (activityList != null && activityList.size() > 0) {
+            return activityList.get(activityList.size() - 1);
+        }
+        return null;
+    }
 }
