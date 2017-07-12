@@ -28,6 +28,7 @@ import com.yanxiu.gphone.student.user.request.LoginThridRequest;
 import com.yanxiu.gphone.student.user.response.LoginResponse;
 import com.yanxiu.gphone.student.user.request.LoginRequest;
 import com.yanxiu.gphone.student.user.response.ThridMessageBean;
+import com.yanxiu.gphone.student.user.response.UserMessageBean;
 import com.yanxiu.gphone.student.util.EditTextManger;
 import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.SystemUtil;
@@ -271,6 +272,7 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
                 rootView.hiddenLoadingView();
                 if (response.getStatus().getCode()==0){
                     LoginInfo.saveCacheData(response.data.get(0));
+                    LoginInfo.setLoginType(UserMessageBean.LOGIN_ACCOUNT);
                     MainActivity.invoke(LoginActivity.this,true);
                     //there can't finish
 //                    LoginActivity.this.finish();
@@ -365,7 +367,7 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
     /**
      * thrid login
      * */
-    private void thridLoginEnd(String openid,String platform,String uniqid){
+    private void thridLoginEnd(String openid, final String platform, String uniqid){
         rootView.showLoadingView();
         mLoginThridRequest=new LoginThridRequest();
         mLoginThridRequest.openid=openid;
@@ -378,6 +380,11 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
                 rootView.hiddenLoadingView();
                 if (response.getStatus().getCode()==0){
                     LoginInfo.saveCacheData(response.data.get(0));
+                    if (platform.equals("qq")){
+                        LoginInfo.setLoginType(UserMessageBean.LOGIN_QQ);
+                    }else {
+                        LoginInfo.setLoginType(UserMessageBean.LOGIN_WX);
+                    }
                     MainActivity.invoke(LoginActivity.this,true);
                     LoginActivity.this.finish();
                 }else if (response.getStatus().getCode()==80){

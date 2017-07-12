@@ -9,8 +9,12 @@ import com.yanxiu.gphone.student.YanxiuApplication;
 public class SpManager {
 
     public static final String SP_NAME = "srt_sp";
+    public static final String SP_NAME_PAPER_ANSWERTIME = "srt_sp_paper_answer_time";
     private static SharedPreferences mySharedPreferences = YanxiuApplication.getInstance().getContext()
             .getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
+
+    private static SharedPreferences myAnswerTimeSharedPreferences = YanxiuApplication.getInstance().getContext()
+            .getSharedPreferences(SP_NAME_PAPER_ANSWERTIME, Context.MODE_PRIVATE);
     /**
      * 第一次启动
      */
@@ -19,10 +23,6 @@ public class SpManager {
      * 版本号
      */
     private static final String APP_VERSION_CODE = "version_code";
-    /**
-     * 答题时间
-     */
-    private static final String ANSWER_QUESTION_TOTAL_TIME = "total_time";
     /**
      * 第一次进入裁剪页面
      */
@@ -68,17 +68,24 @@ public class SpManager {
      *
      * @return -1 ：没记录
      */
-    public static int getTotlaTime() {
-        return mySharedPreferences.getInt(ANSWER_QUESTION_TOTAL_TIME, -1);
+    public static int getTotlaTime(String paperId) {
+        return myAnswerTimeSharedPreferences.getInt(paperId, -1);
     }
 
     /**
      * 答题总计时间保存
      */
-    public static void setTotlaTime(int totalTime) {
-        SharedPreferences.Editor editor = mySharedPreferences.edit();
-        editor.putInt(ANSWER_QUESTION_TOTAL_TIME, totalTime);
+    public static void setTotlaTime(String paperId,int totalTime) {
+        SharedPreferences.Editor editor = myAnswerTimeSharedPreferences.edit();
+        editor.putInt(paperId, totalTime);
         editor.commit();
+    }
+
+    /**
+     * 清空答题时间数据
+     */
+    public static void clearAnswerTime(){
+        myAnswerTimeSharedPreferences.edit().clear();
     }
 
     public static void setCropIsLuanched(boolean isLuanch){

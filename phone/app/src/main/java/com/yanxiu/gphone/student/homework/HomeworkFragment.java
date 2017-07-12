@@ -121,13 +121,6 @@ public class HomeworkFragment extends HomePageBaseFragment implements SearchClas
         });
     }
 
-    /**
-     * 请求数据
-     */
-    @Override
-    public void requestData() {
-    }
-
     private void checkClassInfo() {
         if(mStatus == ClassStatus.HAS_CLASS.getCode() || mStatus == ClassStatus.APPLYING_CLASS.getCode()){
             searchClass(mClassId);

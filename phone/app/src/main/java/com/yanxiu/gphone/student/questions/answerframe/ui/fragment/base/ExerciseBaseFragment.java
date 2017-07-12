@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextPaint;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -20,6 +21,7 @@ import com.yanxiu.gphone.student.questions.answerframe.listener.IExercise;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.analysisbase.AnalysisComplexExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerComplexExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.util.FragmentUserVisibleController;
+import com.yanxiu.gphone.student.questions.answerframe.util.QuestionUtil;
 import com.yanxiu.gphone.student.util.StringUtil;
 import com.yanxiu.gphone.student.util.TextTypefaceUtil;
 
@@ -88,7 +90,7 @@ public abstract class ExerciseBaseFragment extends Fragment implements IExercise
     public void setQaName(View v) {
         try{
             mQaName = (TextView) v.findViewById(R.id.qa_name);
-            String templateName;
+            String templateName = null;
             Fragment parentFragment = getParentFragment();
             if (parentFragment instanceof AnswerComplexExerciseBaseFragment || parentFragment instanceof AnalysisComplexExerciseBaseFragment) {
                 templateName = getString(R.string.question);
@@ -97,7 +99,17 @@ public abstract class ExerciseBaseFragment extends Fragment implements IExercise
                 mQaName.setTextColor(getResources().getColor(R.color.color_333333));
             } else {
 //                templateName = StringUtil.getTemplateName(mBaseQuestion.getTemplate());
-                templateName = mBaseQuestion.getQaName();
+                String type_id_complexToSimple = mBaseQuestion.getTypeId_complexToSimple();
+                if(!TextUtils.isEmpty(type_id_complexToSimple)){ //复合题只有一个子题而转成的单题型
+                    try{
+                        int type_id = Integer.parseInt(type_id_complexToSimple);
+                        templateName = QuestionUtil.getQuestionTypeNameByParentTypeId(type_id);
+                    }catch(Exception e){
+                        e.printStackTrace();
+                    }
+                }else{
+                    templateName = mBaseQuestion.getQaName();
+                }
             }
             mQaName.setText(templateName);
         }catch(Exception e){

@@ -155,16 +155,17 @@ public class PhotoActivity extends YanxiuBaseActivity implements ViewPager.OnPag
                 PhotoActivity.this.finish();
                 break;
             case R.id.iv_right:
+                PhotoDeleteBean deleteBean = new PhotoDeleteBean();
+                deleteBean.formId = mFromId;
+                deleteBean.deleteId = mSelectPosition;
+                EventBus.getDefault().post(deleteBean);
                 mAdapter.deleteItem(mSelectPosition);
                 mTotalNum=mAdapter.getCount();
+
                 if (mTotalNum==0){
                     PhotoActivity.this.finish();
                 }else {
                     mTitleView.setText((mSelectPosition + 1) + "/" + mTotalNum);
-                    PhotoDeleteBean deleteBean = new PhotoDeleteBean();
-                    deleteBean.formId = mFromId;
-                    deleteBean.deleteId = mSelectPosition;
-                    EventBus.getDefault().post(deleteBean);
                 }
                 break;
         }

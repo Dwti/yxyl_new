@@ -301,11 +301,14 @@ public class AnalysisQuestionActivity extends YanxiuBaseActivity implements View
                 return;
             /**
              * 复合题型，切换下一题，共有三种状态：
+             * 1.正常切换下一小题
+             * 2.处在最后一个小题时，且外部大题不是最后一道题，那么外部大题进入下一题
              * 3.处在最后一个小题，且外部大题也是最后一题，那么判断为是最后一道题，展现答题卡
              */
             if (innerIndex == (innerSize - 1) && index == (size - 1)) { //状态3
                 mNext_question.setVisibility(View.GONE);
             } else {
+                mNext_question.setVisibility(View.VISIBLE);
                 mNext_text.setText(R.string.next_question);
             }
 
@@ -319,6 +322,7 @@ public class AnalysisQuestionActivity extends YanxiuBaseActivity implements View
             if (index == (size - 1)) { //最后一题
                 mNext_question.setVisibility(View.GONE);
             } else {
+                mNext_question.setVisibility(View.VISIBLE);
                 mNext_text.setText(R.string.next_question);
             }
 

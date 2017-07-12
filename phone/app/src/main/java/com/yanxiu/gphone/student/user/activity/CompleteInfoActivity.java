@@ -60,7 +60,7 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
      * */
     public String stageText;
     public String stageId;
-    public SchoolMessage message;
+    public ChooseLocationActivity.SchoolMessage message;
     private CompleteInfoRequest mCompleteInfoRequest;
     private ThridMessageBean thridMessageBean;
     private CompleteInfoThridRequest mCompleteInfoThridRequest;
@@ -164,10 +164,10 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
                 mUserNameView.setText("");
                 break;
             case R.id.ll_stage:
-                ChooseStageActivity.LaunchActivity(mContext);
+                ChooseStageActivity.LaunchActivity(mContext,mContext.hashCode());
                 break;
             case R.id.ll_school:
-                ChooseLocationActivity.LaunchActivity(mContext);
+                ChooseLocationActivity.LaunchActivity(mContext,mContext.hashCode());
                 break;
             case R.id.tv_submit:
                 String userName=mUserNameView.getText().toString().trim();
@@ -286,38 +286,19 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
         setButtonFocusChange(isUserNameReady && isSchoolReady && isStageReady);
     }
 
-    public void onEventMainThread(StageMessage message){
-        if (message!=null){
+    public void onEventMainThread(ChooseStageActivity.StageMessage message){
+        if (message!=null&&message.requestCode==mContext.hashCode()){
             mStageView.setText(message.stageText);
             stageText=message.stageText;
             stageId=message.stageId;
         }
     }
 
-    public static class StageMessage{
-        public String stageText;
-        public String stageId;
-    }
-
-    public void onEventMainThread(SchoolMessage message) {
-        if (message!=null) {
+    public void onEventMainThread(ChooseLocationActivity.SchoolMessage message) {
+        if (message!=null&&message.requestCode==mContext.hashCode()) {
             this.message=message;
             mSchoolView.setData(message.schoolName);
         }
-    }
-
-    public static class SchoolMessage implements Serializable{
-        public String provinceId;
-        public String provinceName;
-
-        public String cityId;
-        public String cityName;
-
-        public String areaId;
-        public String areaName;
-
-        public String schoolId;
-        public String schoolName;
     }
 
 }

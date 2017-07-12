@@ -29,6 +29,8 @@ import de.greenrobot.event.EventBus;
  */
 public class ChooseStageActivity extends YanxiuBaseActivity implements PickerView.onSelectListener, View.OnClickListener{
 
+    private static final String REQUESTCODE="requestCode";
+
     private Context mContext;
     private PickerView mChooseStageView;
 
@@ -40,9 +42,11 @@ public class ChooseStageActivity extends YanxiuBaseActivity implements PickerVie
     private ImageView mBackView;
     private View mTopView;
     private TextView mTitleView;
+    private int mRequestCode=-1;
 
-    public static void LaunchActivity(Context context){
+    public static void LaunchActivity(Context context,int requestCode){
         Intent intent=new Intent(context,ChooseStageActivity.class);
+        intent.putExtra(REQUESTCODE,requestCode);
         context.startActivity(intent);
     }
 
@@ -50,6 +54,7 @@ public class ChooseStageActivity extends YanxiuBaseActivity implements PickerVie
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext=ChooseStageActivity.this;
+        mRequestCode=getIntent().getIntExtra(REQUESTCODE,-1);
         PublicLoadLayout rootView=new PublicLoadLayout(mContext);
         rootView.setContentView(R.layout.activity_choosestage);
         setContentView(rootView);
@@ -108,7 +113,8 @@ public class ChooseStageActivity extends YanxiuBaseActivity implements PickerVie
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.tv_right:
-                CompleteInfoActivity.StageMessage message=new CompleteInfoActivity.StageMessage();
+                StageMessage message=new StageMessage();
+                message.requestCode=mRequestCode;
                 message.stageId=stageId;
                 message.stageText=stageText;
                 EventBus.getDefault().post(message);
@@ -117,6 +123,12 @@ public class ChooseStageActivity extends YanxiuBaseActivity implements PickerVie
                 EditTextManger.getManager(mTitleView).hideSoftInput(mContext);
                 break;
         }
+    }
+
+    public static class StageMessage{
+        public int requestCode;
+        public String stageText;
+        public String stageId;
     }
 
 }

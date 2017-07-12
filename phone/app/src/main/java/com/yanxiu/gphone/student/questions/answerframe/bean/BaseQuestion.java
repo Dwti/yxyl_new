@@ -50,6 +50,7 @@ public abstract class BaseQuestion implements Serializable {
 
     private String stem_complexToSimple;//只有一个子题的复合题的主题干(复合题转成单题显示)
     private String template_complexToSimple;//只有一个子题的复合题的大题的template(复合题转成单题显示)
+    private String type_id_complexToSimple;//只有一个子题的复合题的大题的type_id(复合题转成单题显示)
     private String url_listenComplexToSimple;//只有一个子题的听力复合题的大题的url(复合题转成单题显示)
 
     protected boolean isAnswer;
@@ -333,6 +334,13 @@ public abstract class BaseQuestion implements Serializable {
 
     public void setTemplate_complexToSimple(String template_complexToSimple) {
         this.template_complexToSimple = template_complexToSimple;
+    }
+    public String getTypeId_complexToSimple() {
+        return type_id_complexToSimple;
+    }
+
+    public void setTypeId_complexToSimple(String type_id_complexToSimple) {
+        this.type_id_complexToSimple = type_id_complexToSimple;
     }
     public String getUrl_listenComplexToSimple() {
         return url_listenComplexToSimple;

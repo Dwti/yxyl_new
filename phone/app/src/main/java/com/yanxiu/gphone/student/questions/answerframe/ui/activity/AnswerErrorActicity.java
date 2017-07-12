@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.test.yanxiu.network.RequestBase;
@@ -37,6 +38,7 @@ public class AnswerErrorActicity extends YanxiuBaseActivity implements View.OnCl
     private View mTag1, mTag2, mTag3, mTag4, mTag5, mTag6;
     private EditText mError_content;
     private TextView mSubmit;
+    private ImageView mBackview;
     private ArrayList<String> mTagList = new ArrayList<>(6);
 
     private AnalysisErrorRequest mRequest;
@@ -67,6 +69,7 @@ public class AnswerErrorActicity extends YanxiuBaseActivity implements View.OnCl
         mError_content = (EditText) findViewById(R.id.error_content);
         mSubmit = (TextView) findViewById(R.id.submit);
         mSubmit.setEnabled(false);
+        mBackview = (ImageView) findViewById(R.id.backview);
         setListener();
 
     }
@@ -79,6 +82,7 @@ public class AnswerErrorActicity extends YanxiuBaseActivity implements View.OnCl
         mTag5.setOnClickListener(this);
         mTag6.setOnClickListener(this);
         mSubmit.setOnClickListener(this);
+        mBackview.setOnClickListener(this);
         mError_content.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -144,7 +148,9 @@ public class AnswerErrorActicity extends YanxiuBaseActivity implements View.OnCl
                 }
                 requestSubmit();
                 break;
-
+            case R.id.backview:
+                finish();
+                break;
         }
     }
 
