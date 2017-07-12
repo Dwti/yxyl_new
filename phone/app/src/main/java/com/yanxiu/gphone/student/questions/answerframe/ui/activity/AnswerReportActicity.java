@@ -62,7 +62,7 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
     private int mSpacing;
 
     private String mStatus;//试卷状态 0未批改 1已经批改
-    private int mSccuracy;  //正确率
+    private int mSccuracy = 0;  //正确率
     private int mRightCount;//做对的题数
     private int mTotalCount;//总题数
     private String mCostTime = "0";//用时
@@ -87,11 +87,13 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
         mQuestions = QuestionUtil.allNodesThatHasNumber(mQuestions);
         mPPid = mPaper.getId();
         mStatus = mPaper.getPaperStatus().getCheckStatus();
-        mSccuracy = (int) (QuestionUtil.calculateRightRate(mQuestions) * 100);
+//        mSccuracy = (int) (QuestionUtil.calculateRightRate(mQuestions) * 100);
+        String scoreRate =mPaper.getPaperStatus().getScoreRate();
         mRightCount = QuestionUtil.calculateRightCount(mQuestions);
         mCostTime = mPaper.getPaperStatus().getCosttime();
         try {
             mCostTime = TimeUtils.formatTime(Integer.valueOf(mCostTime));
+            mSccuracy = Integer.parseInt(scoreRate);
         } catch (Exception e) {
             e.printStackTrace();
         }
