@@ -153,7 +153,7 @@ public class QuestionConvertFactory {
                     questions.add(multiChoiceQuestion);
                     break;
                 case QuestionTemplate.FILL:
-                    FillBlankQuestion fillBlankQuestion = new FillBlankQuestion(paperTestBean, showType, paperStatus);
+                    FillBlankQuestion fillBlankQuestion = new FillBlankQuestion(childQuestion, showType, paperStatus);
                     fillBlankQuestion.setStem_complexToSimple(stem_complex);
                     fillBlankQuestion.setTemplate_complexToSimple(template);
                     fillBlankQuestion.setTypeId_complexToSimple(type_id);
