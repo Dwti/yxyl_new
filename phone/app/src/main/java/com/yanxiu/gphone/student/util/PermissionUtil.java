@@ -16,8 +16,8 @@ import java.io.InputStreamReader;
  */
 
 public class PermissionUtil {
-    public static final String SDCARD_DIR = Environment.getExternalStorageDirectory().getPath() + File.separator + ROOT_DIRECTORY_NAME + File.separator;
     public static final String ROOT_DIRECTORY_NAME = "yanxiu";
+    public static final String SDCARD_DIR = Environment.getExternalStorageDirectory().getPath() + File.separator + ROOT_DIRECTORY_NAME + File.separator;
     public static final String TESTFILE_NAME = "testPermission.txt";
 
     /**

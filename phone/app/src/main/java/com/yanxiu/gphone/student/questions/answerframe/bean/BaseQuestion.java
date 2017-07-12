@@ -128,6 +128,26 @@ public abstract class BaseQuestion implements Serializable {
             e.printStackTrace();
         }
         mPaperStatus = paperStatus;
+        initTemplateOfAnswerStem();
+    }
+
+    /**
+     *计算题和及答题的小题，题干需要拼接小题的index，诸如：（1）、（2）
+     */
+    public void initTemplateOfAnswerStem(){
+        try{
+            int type_id = Integer.parseInt(getType_id());
+            if(type_id == 8 || type_id == 22){ //计算或解答题
+                if(children != null && !children.isEmpty()){
+                    for(int index =0; index<children.size();index++){
+                        String stem = "(" + (index + 1) + ")" + "<br/>" + children.get(index).getStem();
+                        children.get(index).setStem(stem);
+                    }
+                }
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     public ExerciseBaseFragment getFragment() {
