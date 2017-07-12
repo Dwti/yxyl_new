@@ -10,7 +10,7 @@ import java.util.List;
 
 public class QuestionBean extends BaseBean {
     private String analysis;
-    private List<String> answer;
+    private List<Object> answer;
     private ContentBean content;
     private List<PaperTestBean> children;
     private String difficulty;
@@ -41,11 +41,11 @@ public class QuestionBean extends BaseBean {
         this.analysis = analysis;
     }
 
-    public List<String> getAnswer() {
+    public List<Object> getAnswer() {
         return answer;
     }
 
-    public void setAnswer(List<String> answer) {
+    public void setAnswer(List<Object> answer) {
         this.answer = answer;
     }
 
