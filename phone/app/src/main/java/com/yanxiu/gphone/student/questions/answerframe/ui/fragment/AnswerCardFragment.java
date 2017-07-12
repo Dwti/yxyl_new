@@ -22,6 +22,7 @@ import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.AnswerCardSubmitDialog;
 import com.yanxiu.gphone.student.db.SaveAnswerDBHelper;
+import com.yanxiu.gphone.student.db.SpManager;
 import com.yanxiu.gphone.student.homework.response.PaperResponse;
 import com.yanxiu.gphone.student.questions.answerframe.http.request.AnswerReportRequest;
 import com.yanxiu.gphone.student.questions.answerframe.http.request.SubmitQuesitonTask;
@@ -306,6 +307,7 @@ public class AnswerCardFragment extends Fragment implements View.OnClickListener
                         mPaper_report = new Paper(response.getData().get(0), QuestionShowType.ANALYSIS);
                         if (mPaper_report != null && mPaper_report.getQuestions() != null && mPaper_report.getQuestions().size() > 0) {
                             SaveAnswerDBHelper.deleteAllAnswer();
+                            SpManager.clearAnswerTime();
                             String key = this.hashCode() + mPaper.getId();
                             DataFetcher.getInstance().save(key, mPaper_report);
 

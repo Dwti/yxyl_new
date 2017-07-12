@@ -4,11 +4,10 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="@color/color_ffffff"
-    android:paddingBottom="@dimen/question_top_content_bottom_padding"
     android:paddingLeft="@dimen/question_top_content_left_padding"
     android:paddingRight="@dimen/question_top_content_right_padding"
     android:paddingTop="@dimen/question_top_content_top_padding">
-
+    <!--android:paddingBottom="@dimen/question_top_content_bottom_padding"-->
     <TextView
         android:id="@+id/complex_stem"
         android:layout_width="match_parent"
