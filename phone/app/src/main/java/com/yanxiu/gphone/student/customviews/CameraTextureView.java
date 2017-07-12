@@ -203,27 +203,35 @@ public class CameraTextureView extends TextureView implements TextureView.Surfac
                 Size largest = Collections.max(Arrays.asList(map.getOutputSizes(ImageFormat.JPEG)), new CompareSizesByArea());
                 mImageReader = ImageReader.newInstance(largest.getWidth(), largest.getHeight(), ImageFormat.JPEG, 2);
                 mImageReader.setOnImageAvailableListener(imageAvailableListener, null);
-                mPreviewSize = chooseOptimalSize(map.getOutputSizes(SurfaceTexture.class), mWidth, mHeight, largest);
+                mPreviewSize=getCloselyPreSize(mWidth,mHeight,map.getOutputSizes(SurfaceTexture.class));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private static Size chooseOptimalSize(Size[] choices, int width, int height, Size aspectRatio) {
-        List<Size> bigEnough = new ArrayList<>();
-        int w = aspectRatio.getWidth();
-        int h = aspectRatio.getHeight();
-        for (Size option : choices) {
-            if (option.getHeight() == option.getWidth() * h / w && option.getWidth() >= width && option.getHeight() >= height) {
-                bigEnough.add(option);
+    protected Size getCloselyPreSize(int surfaceWidth, int surfaceHeight,Size[] preSizeList) {
+
+        //先查找preview中是否存在与surfaceview相同宽高的尺寸
+        for(Size size : preSizeList){
+            if((size.getWidth() == surfaceHeight) && (size.getHeight() == surfaceWidth)){
+                return size;
             }
         }
-        if (bigEnough.size() > 0) {
-            return Collections.min(bigEnough, new CompareSizesByArea());
-        } else {
-            return choices[0];
+        // 得到与传入的宽高比最接近的size
+        float reqRatio = ((float) surfaceHeight) / surfaceWidth;
+        float curRatio, deltaRatio;
+        float deltaRatioMin = Float.MAX_VALUE;
+        Size retSize = null;
+        for (Size size : preSizeList) {
+            curRatio = ((float) size.getWidth()) / size.getHeight();
+            deltaRatio = Math.abs(reqRatio - curRatio);
+            if (deltaRatio < deltaRatioMin) {
+                deltaRatioMin = deltaRatio;
+                retSize = size;
+            }
         }
+        return retSize;
     }
 
     private static class CompareSizesByArea implements Comparator<Size> {
