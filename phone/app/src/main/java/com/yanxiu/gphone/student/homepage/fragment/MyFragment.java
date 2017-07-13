@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.HomePageBaseFragment;
+import com.yanxiu.gphone.student.mistake.activity.MistakeListActivity;
 import com.yanxiu.gphone.student.user.activity.LoginActivity;
 import com.yanxiu.gphone.student.util.LoginInfo;
 
@@ -49,7 +50,7 @@ public class MyFragment extends HomePageBaseFragment implements View.OnClickList
 //                getActivity().finish();
                 break;
             case R.id.my_mistake:
-
+                MistakeListActivity.LuanchActivity(getContext());
                 break;
         }
     }

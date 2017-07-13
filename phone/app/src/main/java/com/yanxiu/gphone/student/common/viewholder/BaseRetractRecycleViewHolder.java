@@ -12,7 +12,7 @@ import com.yanxiu.gphone.student.R;
  * Function :
  */
 public class BaseRetractRecycleViewHolder extends RecyclerView.ViewHolder {
-    private LinearLayout mRetractLayout;
+    public LinearLayout mRetractLayout;
 
     public BaseRetractRecycleViewHolder(View itemView) {
         super(itemView);

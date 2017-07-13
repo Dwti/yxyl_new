@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.base.OnPermissionCallback;
+import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.common.Bean.PhotoDeleteBean;
 import com.yanxiu.gphone.student.common.activity.CameraActivity;
 import com.yanxiu.gphone.student.common.activity.CropImageActivity;
@@ -16,8 +18,10 @@ import com.yanxiu.gphone.student.customviews.spantextview.SubjectClozeTextView;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.util.StemUtil;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerSimpleExerciseBaseFragment;
+import com.yanxiu.gphone.student.util.ToastManager;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import de.greenrobot.event.EventBus;
 
@@ -26,7 +30,7 @@ import de.greenrobot.event.EventBus;
  * Time : 2017/6/14 11:02.
  * Function :
  */
-public class SubjectiveFragment extends AnswerSimpleExerciseBaseFragment implements AlbumGridView.onClickListener, AlbumGridView.onItemChangedListener {
+public class SubjectiveFragment extends AnswerSimpleExerciseBaseFragment implements AlbumGridView.onClickListener, AlbumGridView.onItemChangedListener, OnPermissionCallback {
 
     private SubjectiveQuestion mData;
     private SubjectClozeTextView mQuestionView;
@@ -92,7 +96,7 @@ public class SubjectiveFragment extends AnswerSimpleExerciseBaseFragment impleme
     public void onClick(int Type, int position) {
         switch (Type) {
             case AlbumGridView.TYPE_CAMERA:
-                CameraActivity.LaunchActivity(getContext(), SubjectiveFragment.this.hashCode());
+                YanxiuBaseActivity.requestCameraPermission(SubjectiveFragment.this);
                 break;
             case AlbumGridView.TYPE_IMAGE:
                 PhotoActivity.LaunchActivity(getContext(), mData.answerList, position, SubjectiveFragment.this.hashCode(),PhotoActivity.DELETE_CAN);
@@ -129,4 +133,13 @@ public class SubjectiveFragment extends AnswerSimpleExerciseBaseFragment impleme
         }
     }
 
+    @Override
+    public void onPermissionsGranted() {
+        CameraActivity.LaunchActivity(getContext(), SubjectiveFragment.this.hashCode());
+    }
+
+    @Override
+    public void onPermissionsDenied(@Nullable List<String> deniedPermissions) {
+        ToastManager.showMsg(R.string.no_camera_permissions);
+    }
 }

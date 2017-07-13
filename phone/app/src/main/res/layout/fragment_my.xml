@@ -17,6 +17,8 @@
         android:layout_width="100dp"
         android:layout_height="50dp"
         android:background="@color/cardview_shadow_start_color"
+        android:text="错题"
+        android:layout_centerHorizontal="true"
         android:gravity="center"/>
 
     <TextView
