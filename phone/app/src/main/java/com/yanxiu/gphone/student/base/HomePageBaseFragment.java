@@ -6,6 +6,6 @@ import android.support.v4.app.Fragment;
 /**
  * 首页三个Fragment的基类
  */
-public abstract class HomePageBaseFragment extends Fragment {
+public abstract class HomePageBaseFragment extends YanxiuBaseFragment {
     private final static String TAG = HomePageBaseFragment.class.getSimpleName();
 }

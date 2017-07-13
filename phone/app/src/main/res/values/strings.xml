@@ -163,7 +163,7 @@
     <string name="answer_result">作答结果</string>
     <string name="answer_difficulty">难度</string>
     <string name="answer_point">知识点</string>
-    <string name="answer_voice_scolded">老师评语</string>
+    <string name="answer_voice_scolded">老师批语</string>
     <string name="answer_answer">答案</string>
     <string name="answer_sscore_title">得分</string>
     <string name="answer_analysis_title">题目解析</string>

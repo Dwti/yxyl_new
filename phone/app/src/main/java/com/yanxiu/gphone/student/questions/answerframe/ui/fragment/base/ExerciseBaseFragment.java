@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.base.YanxiuBaseFragment;
 import com.yanxiu.gphone.student.db.SaveAnswerDBHelper;
 import com.yanxiu.gphone.student.questions.answerframe.bean.AnswerBean;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnalysisQuestionActivity;
@@ -34,7 +35,7 @@ import static android.graphics.Typeface.DEFAULT_BOLD;
  * 习题Frament基类
  */
 
-public abstract class ExerciseBaseFragment extends Fragment implements IExercise, FragmentUserVisibleController.UserVisibleCallback {
+public abstract class ExerciseBaseFragment extends YanxiuBaseFragment implements IExercise, FragmentUserVisibleController.UserVisibleCallback {
     public final String TAG = this.getClass().getSimpleName();
 
     public static final String KEY_NODE = "key_question";

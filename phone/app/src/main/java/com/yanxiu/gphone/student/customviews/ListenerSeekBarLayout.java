@@ -40,9 +40,19 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
     private Context mContext;
     private int mTouchSlop;
     private MediaPlayerUtil mMediaPlayerUtil;
+    /**
+     * Solve repetitive click problems
+     * */
+    private boolean isCanClick=true;
     private boolean isPlaying = false;
     private boolean isMove = false;
+    /**
+     * onresume  onpuash
+     * */
     private boolean isPause = false;
+    /**
+     * Solve the playback progress problem returned after manual pause
+     * */
     private boolean isBackPause=false;
     private SeekBar mSeekBarView;
     private TextView mNowTimeView;
@@ -122,9 +132,10 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
             switch (ev.getAction()) {
                 case MotionEvent.ACTION_UP:
                     Logger.d("view_ID",ListenerSeekBarLayout.this.hashCode()+"");
-                    if (checkIsInternal(ev)) {
+                    if (checkIsInternal(ev)&&isCanClick) {
                         mMediaPlayerUtil.start(mUrl);
                     }
+                    isCanClick=false;
                     break;
             }
             return true;
@@ -276,6 +287,7 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
     public void onStart(MediaPlayerUtil mpu, int duration) {
         Logger.d("view_ID",ListenerSeekBarLayout.this.hashCode()+"");
         this.isPlaying = true;
+        this.isCanClick=true;
         this.mMax=duration;
         mSeekBarView.setMax(duration);
         String totalTime = transferFormat(duration);
@@ -320,6 +332,7 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
     @Override
     public void onError(MediaPlayerUtil mu) {
         this.isPlaying = false;
+        this.isCanClick=true;
         this.mProgress=0;
         mSeekBarView.setProgress(0);
         String nowTime = transferFormat(0);

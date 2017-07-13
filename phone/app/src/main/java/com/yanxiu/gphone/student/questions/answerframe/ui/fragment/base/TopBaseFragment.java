@@ -4,13 +4,14 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
+import com.yanxiu.gphone.student.base.YanxiuBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 
 /**
  * Created by 戴延枫 on 2017/5/5.
  */
 
-public abstract class TopBaseFragment extends Fragment {
+public abstract class TopBaseFragment extends YanxiuBaseFragment {
     public abstract void setData(BaseQuestion data);
     public View mRootView;
     @Override

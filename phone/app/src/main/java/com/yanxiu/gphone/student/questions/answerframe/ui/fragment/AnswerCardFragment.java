@@ -19,6 +19,7 @@ import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.YanxiuApplication;
 import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
+import com.yanxiu.gphone.student.base.YanxiuBaseFragment;
 import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.AnswerCardSubmitDialog;
 import com.yanxiu.gphone.student.db.SaveAnswerDBHelper;
@@ -52,7 +53,7 @@ import static com.yanxiu.gphone.student.customviews.AnswerCardSubmitDialog.Submi
  * 答题卡
  */
 
-public class AnswerCardFragment extends Fragment implements View.OnClickListener, AnswerCardSubmitDialog.AnswerCardSubmitDialogClickListener {
+public class AnswerCardFragment extends YanxiuBaseFragment implements View.OnClickListener, AnswerCardSubmitDialog.AnswerCardSubmitDialogClickListener {
     private final String TAG = AnswerCardFragment.class.getSimpleName();
     private View mRootView;
     private Paper mPaper;

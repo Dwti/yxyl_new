@@ -70,7 +70,7 @@ public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Call
     }
 
     private void listener() {
-        mSurfaceHolder.addCallback(this);
+        mSurfaceHolder.addCallback(CameraSurfaceView.this);
     }
 
     public void takePicture(CameraView.onTakePictureFinishedListener mTakePictureFinishedListener) {
@@ -146,7 +146,11 @@ public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Call
         mCamera.cancelAutoFocus();
         mCamera.setDisplayOrientation(90);
         mCamera.setParameters(parameters);
-        mCamera.autoFocus(this);
+        try {
+            mCamera.autoFocus(CameraSurfaceView.this);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private Camera.Size getProperSize(List<Camera.Size> pictureSizeList, float screenRatio) {
@@ -228,7 +232,6 @@ public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Call
             }
         }
     };
-
 
     private class SavePictureTask extends AsyncTask<byte[], Integer, String> {
 

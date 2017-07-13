@@ -20,7 +20,7 @@ import java.util.List;
  * Time : 2017/7/12 14:23.
  * Function :
  */
-public abstract class BaseRetractRecycleAdapter<M extends Object, T extends BaseRetractRecycleViewHolder> extends RecyclerView.Adapter<T> {
+public abstract class BaseRetractRecycleAdapter<M, T extends BaseRetractRecycleViewHolder> extends RecyclerView.Adapter<T> {
 
     private static final int DEFAULT_DATA_TYPE = 0;
     private static final int DEFAULT_INTERVAL_WIDTH = 130;
@@ -36,7 +36,7 @@ public abstract class BaseRetractRecycleAdapter<M extends Object, T extends Base
 
     /**
      * init data
-     * */
+     */
     protected void setDefaultData(List<M> list) {
         mData.clear();
         for (M m : list) {
@@ -59,32 +59,32 @@ public abstract class BaseRetractRecycleAdapter<M extends Object, T extends Base
     @Override
     public void onBindViewHolder(T holder, int position) {
         BaseRetractData retractData = mData.get(position);
-        int dataType=retractData.dataType;
+        int dataType = retractData.dataType;
         removeInterval(holder.mRetractLayout);
-        addInterval(holder.mRetractLayout,dataType);
+        addInterval(holder.mRetractLayout, dataType);
         onRetractBindView(holder, retractData.data, position, retractData.dataType);
     }
 
-    private void removeInterval(LinearLayout layout){
-        int count=layout.getChildCount();
-        for (int i=0;i<count;i++){
-            View view=layout.getChildAt(0);
+    private void removeInterval(LinearLayout layout) {
+        int count = layout.getChildCount();
+        for (int i = 0; i < count; i++) {
+            View view = layout.getChildAt(0);
             mViews.add(view);
             layout.removeView(view);
         }
     }
 
-    private void addInterval(LinearLayout layout,int count){
-        for (int i=0;i<count;i++){
+    private void addInterval(LinearLayout layout, int count) {
+        for (int i = 0; i < count; i++) {
             View view = null;
-            if (mViews.size()>0){
-                view=mViews.get(0);
+            if (mViews.size() > 0) {
+                view = mViews.get(0);
                 mViews.remove(0);
             }
 
-            if (view==null){
-                view=new View(mContext);
-                LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(setIntervalWidth(), ViewGroup.LayoutParams.WRAP_CONTENT);
+            if (view == null) {
+                view = new View(mContext);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(setIntervalWidth(), ViewGroup.LayoutParams.WRAP_CONTENT);
                 view.setLayoutParams(params);
             }
 
@@ -132,7 +132,7 @@ public abstract class BaseRetractRecycleAdapter<M extends Object, T extends Base
         while (isNext) {
             if (position < mData.size()) {
                 BaseRetractData retractData = mData.get(position);
-                if (retractData.dataType == dataType) {
+                if (retractData.dataType >= dataType) {
                     mData.remove(position);
                     Rlist.add(retractData);
                 } else {
