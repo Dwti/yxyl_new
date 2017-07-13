@@ -16,6 +16,7 @@ import com.yanxiu.gphone.student.customviews.ListenerSeekBarLayout;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionTemplate;
+import com.yanxiu.gphone.student.questions.choose.MultiChoiceQuestion;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
 
 /**
@@ -36,7 +37,16 @@ public abstract class AnswerSimpleExerciseBaseFragment extends AnswerExerciseBas
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (savedInstanceState != null && mData == null) {
+            setData((BaseQuestion) savedInstanceState.getSerializable(KEY_NODE));
+        }
         initListenerData();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(KEY_NODE, mData);
     }
 
     private void initListenerData(){
