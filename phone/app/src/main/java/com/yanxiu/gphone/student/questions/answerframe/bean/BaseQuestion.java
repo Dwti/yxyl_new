@@ -32,7 +32,7 @@ public abstract class BaseQuestion implements Serializable {
     protected String qtype;
     protected String analysis;
     //下面这些字段需要需要具体的题型去设置，并不是每个题型都有的（到时候字段的设置需要再检查一遍）
-    protected List<String> server_answer;//就是answer字段，因为已经定义了保存答案的answer字段，避免重名
+    protected List<Object> server_answer;//就是answer字段，因为已经定义了保存答案的answer字段，避免重名
 //    protected ContentBean content;
 //    protected String memo;
     protected PadBean pad;
@@ -128,6 +128,26 @@ public abstract class BaseQuestion implements Serializable {
             e.printStackTrace();
         }
         mPaperStatus = paperStatus;
+        initTemplateOfAnswerStem();
+    }
+
+    /**
+     *计算题和及答题的小题，题干需要拼接小题的index，诸如：（1）、（2）
+     */
+    public void initTemplateOfAnswerStem(){
+        try{
+            int type_id = Integer.parseInt(getType_id());
+            if(type_id == 8 || type_id == 22){ //计算或解答题
+                if(children != null && !children.isEmpty()){
+                    for(int index =0; index<children.size();index++){
+                        String stem = "(" + (index + 1) + ")" + "<br/>" + children.get(index).getStem();
+                        children.get(index).setStem(stem);
+                    }
+                }
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     public ExerciseBaseFragment getFragment() {
@@ -380,11 +400,11 @@ public abstract class BaseQuestion implements Serializable {
         this.reportAnswerBean = reportAnswerBean;
     }
 
-    public List<String> getServer_answer() {
+    public List<Object> getServer_answer() {
         return server_answer;
     }
 
-    public void setServer_answer(List<String> server_answer) {
+    public void setServer_answer(List<Object> server_answer) {
         this.server_answer = server_answer;
     }
 

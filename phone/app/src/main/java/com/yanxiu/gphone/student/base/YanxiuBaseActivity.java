@@ -22,7 +22,8 @@ import pub.devrel.easypermissions.EasyPermissions;
 public class YanxiuBaseActivity extends FragmentActivity implements EasyPermissions.PermissionCallbacks {
     private final String TAG = "YanxiuBaseActivity";
     private static final int RC_CAMERA_PERM = 123;
-    private static final int RC_OTHER_PERM = 124;
+    private static final int RC_WRITE_READ_PERM = 124;
+    private static final int RC_OTHER_PERM = 125;
     private static OnPermissionCallback mPermissionCallback;
 
     @Override
@@ -72,6 +73,29 @@ public class YanxiuBaseActivity extends FragmentActivity implements EasyPermissi
             } else {
                 // Ask for one permission
                 EasyPermissions.requestPermissions(ActivityManger.getTopActivity(), ActivityManger.getTopActivity().getString(R.string.rationale_camera), RC_CAMERA_PERM, Manifest.permission.CAMERA);
+            }
+        }
+    }
+
+    /**
+     * 请求读写权限
+     */
+    public static void requestWriteAndReadPermission(OnPermissionCallback onPermissionCallback) {
+        String[] perms = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        mPermissionCallback = onPermissionCallback;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) { //6.0系统以下
+            if (PermissionUtil.checkWritePermission() && PermissionUtil.checkReadPermission()) {
+                mPermissionCallback.onPermissionsGranted();
+            } else {
+                mPermissionCallback.onPermissionsDenied(null);
+            }
+        } else {
+            if (EasyPermissions.hasPermissions(ActivityManger.getTopActivity(), perms)) {
+                // Have permission, do the thing!
+                mPermissionCallback.onPermissionsGranted();
+            } else {
+                // Ask for one permission
+                EasyPermissions.requestPermissions(ActivityManger.getTopActivity(), ActivityManger.getTopActivity().getString(R.string.rationale_write_read), RC_WRITE_READ_PERM, perms);
             }
         }
     }
