@@ -210,4 +210,5 @@
 
     <string name="rationale_camera">此应用程序需要访问您的相机，以便您可以拍照.</string>
     <string name="rationale_other">此应用程序需要申请使用权限，请前往设置.</string>
+    <string name="clear_text">清空</string>
 </resources>

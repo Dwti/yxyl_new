@@ -1,10 +1,12 @@
 package com.yanxiu.gphone.student.questions.connect;
 
+import android.support.annotation.NonNull;
+
 /**
  * Created by sunpeng on 2017/7/13.
  */
 
-public class ConnectItemBean {
+public class ConnectItemBean implements Comparable<ConnectItemBean> {
     private String mText;
     private int mOriginPosition;
 
@@ -31,5 +33,10 @@ public class ConnectItemBean {
 
     public void setOriginPosition(int position) {
         this.mOriginPosition = position;
+    }
+
+    @Override
+    public int compareTo(@NonNull ConnectItemBean o) {
+        return this.mOriginPosition - o.mOriginPosition;
     }
 }

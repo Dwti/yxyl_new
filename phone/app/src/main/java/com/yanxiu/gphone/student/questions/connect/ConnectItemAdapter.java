@@ -12,6 +12,7 @@ import com.yanxiu.gphone.student.util.HtmlImageGetter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeSet;
 
 /**
  * Created by sunpeng on 2017/7/13.
@@ -26,23 +27,24 @@ public class ConnectItemAdapter extends RecyclerView.Adapter<ConnectItemAdapter.
 
     public ConnectItemAdapter(List<String> texts) {
         mData = new ArrayList<>();
-        for(int i=0;i<texts.size();i++){
-            mData.add(new ConnectItemBean(texts.get(i),i));
+        for (int i = 0; i < texts.size(); i++) {
+            mData.add(new ConnectItemBean(texts.get(i), i));
         }
 
     }
 
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ItemViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_connect,parent,false));
+        return new ItemViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_connect, parent, false));
     }
 
     @Override
     public void onBindViewHolder(ItemViewHolder holder, int position) {
-        holder.mText.setText(Html.fromHtml(mData.get(position).getText(),new HtmlImageGetter(holder.mText),null));
-        if(position == mLastSelectedPos){
+        holder.text.setText(Html.fromHtml(mData.get(position).getText(), new HtmlImageGetter(holder.text), null));
+        holder.itemView.setTag(mData.get(position));
+        if (position == mLastSelectedPos) {
             holder.itemView.setSelected(true);
-        }else {
+        } else {
             holder.itemView.setSelected(false);
         }
     }
@@ -52,53 +54,63 @@ public class ConnectItemAdapter extends RecyclerView.Adapter<ConnectItemAdapter.
         return mData.size();
     }
 
-    public void remove(int index){
+    public void remove(int index) {
         mData.remove(index);
-        mLastSelectedItem=null;
-        mLastSelectedPos= -1;
+        mLastSelectedItem = null;
+        mLastSelectedPos = -1;
         notifyItemRemoved(index);
     }
 
-    public void add(ConnectItemBean itemBean){
+    public void add(ConnectItemBean itemBean) {
         int pos = computeInsertPosition(itemBean);
-        mData.add(pos,itemBean);
-        if(mLastSelectedPos > pos){
-            mLastSelectedPos+=1;
+        mData.add(pos, itemBean);
+        if (mLastSelectedPos > pos) {
+            mLastSelectedPos += 1;
         }
+        notifyItemInserted(pos);
+    }
+
+    public void addAll(List<ConnectItemBean> beanList) {
+        mData.addAll(beanList);
+        TreeSet<ConnectItemBean> treeSet = new TreeSet<>(mData);
+        mData = new ArrayList<>(treeSet);
+        if (mLastSelectedItem != null)
+            mLastSelectedPos = mData.indexOf(mLastSelectedItem.getTag());
         notifyDataSetChanged();
     }
 
-    public int getLastSelectedPosition(){
+    public int getLastSelectedPosition() {
         return mLastSelectedPos;
     }
 
-    private int computeInsertPosition(ConnectItemBean itemBean){
+    private int computeInsertPosition(ConnectItemBean itemBean) {
         int result = mData.size();
-        for(int i=0;i<mData.size();i++){
-            if(itemBean.getOriginPosition() < mData.get(i).getOriginPosition()){
+        for (int i = 0; i < mData.size(); i++) {
+            if (itemBean.getOriginPosition() < mData.get(i).getOriginPosition()) {
                 result = i;
                 break;
             }
         }
         return result;
     }
-    class ItemViewHolder extends RecyclerView.ViewHolder{
 
-        private TextView mText;
+    class ItemViewHolder extends RecyclerView.ViewHolder {
+
+        private TextView text;
 
         public ItemViewHolder(final View itemView) {
             super(itemView);
-            mText = (TextView) itemView.findViewById(R.id.text);
+            text = (TextView) itemView.findViewById(R.id.text);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     mLastSelectedPos = getLayoutPosition();
-                    if(mLastSelectedItem != null)
+                    if (mLastSelectedItem != null)
                         mLastSelectedItem.setSelected(false);
                     itemView.setSelected(true);
                     mLastSelectedItem = itemView;
-                    if(mOnItemClickListener != null){
-                        mOnItemClickListener.onItemClick(itemView,mData.get(getLayoutPosition()),getLayoutPosition());
+                    if (mOnItemClickListener != null) {
+                        mOnItemClickListener.onItemClick(itemView, mData.get(getLayoutPosition()), getLayoutPosition());
                     }
                 }
             });
@@ -110,7 +122,7 @@ public class ConnectItemAdapter extends RecyclerView.Adapter<ConnectItemAdapter.
         this.mOnItemClickListener = onItemClickListener;
     }
 
-    public interface OnItemClickListener{
-        void onItemClick(View itemView,ConnectItemBean itemBean,int position);
+    public interface OnItemClickListener {
+        void onItemClick(View itemView, ConnectItemBean itemBean, int position);
     }
 }

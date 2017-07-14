@@ -122,10 +122,28 @@ public class ConnectFragment extends AnswerSimpleExerciseBaseFragment {
             View contentView = LayoutInflater.from(getContext()).inflate(R.layout.popwindow_connect_result, null);
             mPopWindow = new PopupWindow(contentView,ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             View dismiss = contentView.findViewById(R.id.dismiss);
+            View btnClear = contentView.findViewById(R.id.tv_clear);
             mRecyclerViewResult = (RecyclerView) contentView.findViewById(R.id.recyclerView);
             mResultAdapter = new ConnectResultAdapter(mConnectedList);
             mRecyclerViewResult.setLayoutManager(new LinearLayoutManager(getContext()));
             mRecyclerViewResult.setAdapter(mResultAdapter);
+
+            btnClear.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(mConnectedList.size() > 0){
+                        List<ConnectItemBean> leftToAdd = new ArrayList<>();
+                        List<ConnectItemBean> rightToAdd = new ArrayList<>();
+                        for(ConnectedBean bean : mConnectedList){
+                            leftToAdd.add(bean.getLeftItem());
+                            rightToAdd.add(bean.getRightItem());
+                        }
+                        mResultAdapter.clear();
+                        mLeftAdapter.addAll(leftToAdd);
+                        mRightAdapter.addAll(rightToAdd);
+                    }
+                }
+            });
             dismiss.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

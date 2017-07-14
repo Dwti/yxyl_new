@@ -51,6 +51,11 @@ public class ConnectResultAdapter extends RecyclerView.Adapter<ConnectResultAdap
         notifyItemRemoved(index);
     }
 
+    public void clear(){
+        mData.clear();
+        notifyDataSetChanged();
+    }
+
     class ConnectedItemViewHolder extends RecyclerView.ViewHolder{
         private TextView mLeftText,mRightText;
         private View mDetele;
