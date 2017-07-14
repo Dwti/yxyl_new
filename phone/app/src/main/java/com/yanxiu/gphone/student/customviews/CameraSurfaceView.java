@@ -82,11 +82,15 @@ public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Call
     }
 
     public void onResume() {
-        if (mCamera == null) {
-            mCamera = Camera.open();
-            if (mSurfaceHolder != null) {
-                startPreview();
+        try {
+            if (mCamera == null) {
+                mCamera = Camera.open();
+                if (mSurfaceHolder != null) {
+                    startPreview();
+                }
             }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 
@@ -181,7 +185,7 @@ public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Call
             mCamera.setPreviewDisplay(mSurfaceHolder);
             mCamera.setDisplayOrientation(90);
             mCamera.startPreview();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

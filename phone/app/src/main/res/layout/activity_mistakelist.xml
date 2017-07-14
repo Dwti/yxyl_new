@@ -4,6 +4,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <include
+        android:id="@+id/include_top"
+        layout="@layout/main_public_top_layout" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recy"
         android:layout_width="match_parent"

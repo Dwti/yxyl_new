@@ -219,6 +219,7 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
     }
 
     public void setPlayToProgress(int progress,int total){
+        Logger.d(TAG,"setPlayToProgress");
         this.mProgress=progress;
         this.isPlaying=true;
         this.isBackPause=false;
@@ -228,6 +229,7 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
     }
 
     public void setPauseToProgress(int progress,int total){
+        Logger.d(TAG,"setPauseToProgress");
         this.mProgress=progress;
         this.isPlaying=true;
         this.isBackPause=true;
@@ -244,14 +246,18 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
     }
 
     public void setPause() {
+        Logger.d(TAG,"setPause");
         if (mMediaPlayerUtil.isPlaying()) {
+            Logger.d(TAG,"setPause"+" isplaying");
             mMediaPlayerUtil.pause();
             isPause = true;
         }
     }
 
     public void setResume() {
+        Logger.d(TAG,"setResume");
         if (isPause) {
+            Logger.d(TAG,"setResume"+"isplaying");
             mMediaPlayerUtil.resume();
             isPause = false;
         }
@@ -285,7 +291,7 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
 
     @Override
     public void onStart(MediaPlayerUtil mpu, int duration) {
-        Logger.d("view_ID",ListenerSeekBarLayout.this.hashCode()+"");
+        Logger.d(TAG,"onstart");
         this.isPlaying = true;
         this.isCanClick=true;
         this.mMax=duration;
@@ -302,7 +308,7 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
 
     @Override
     public void onProgress(MediaPlayerUtil mu, int progress) {
-        Logger.d(TAG, "progress" + progress);
+//        Logger.d(TAG, "progress" + progress);
         this.mProgress=progress;
         if (progress>mSeekBarView.getProgress()) {
             mSeekBarView.setProgress(progress);
@@ -331,6 +337,7 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
 
     @Override
     public void onError(MediaPlayerUtil mu) {
+        Logger.d(TAG,"onerror");
         this.isPlaying = false;
         this.isCanClick=true;
         this.mProgress=0;

@@ -13,10 +13,10 @@ import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
 
 /**
  * Created by Canghaixiao.
- * Time : 2017/7/13 10:39.
+ * Time : 2017/7/13 17:09.
  * Function :
  */
-public class MistakeCompleteFragment extends YanxiuBaseFragment{
+public class MistakeKongledgeFragment extends YanxiuBaseFragment {
 
     private Context mContext;
 
@@ -25,22 +25,7 @@ public class MistakeCompleteFragment extends YanxiuBaseFragment{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mContext=inflater.getContext();
         PublicLoadLayout rootView=new PublicLoadLayout(mContext);
-        rootView.setContentView(R.layout.fragment_mistakecomplete);
+        rootView.setContentView(R.layout.fragment_mistakekongledge);
         return rootView;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
     }
 }

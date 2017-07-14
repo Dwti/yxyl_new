@@ -166,12 +166,16 @@ public class CameraTextureView extends TextureView implements TextureView.Surfac
     }
 
     private void startCamera() {
-        if (isAvailable()) {
-            if (cameraDevice == null) {
-                openCamera();
+        try {
+            if (isAvailable()) {
+                if (cameraDevice == null) {
+                    openCamera();
+                }
+            } else {
+                setSurfaceTextureListener(this);
             }
-        } else {
-            setSurfaceTextureListener(this);
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 

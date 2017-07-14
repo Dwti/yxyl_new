@@ -140,4 +140,11 @@ public class LoginInfo {
         bean.setLoginType(loginType);
         Save();
     }
+
+    public static String getStageid(){
+        if (!isLogIn()){
+            return "";
+        }
+        return bean.getStageid();
+    }
 }

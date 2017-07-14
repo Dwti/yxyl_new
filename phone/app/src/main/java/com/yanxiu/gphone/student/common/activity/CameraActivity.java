@@ -38,6 +38,7 @@ public class CameraActivity extends YanxiuBaseActivity implements View.OnClickLi
     private ImageView mTakePictureView;
     private ImageView mDeleteView;
     private int mFromId;
+    private boolean isTakePicture=false;
 
     public static void LaunchActivity(Context context, int fromId){
         Intent intent=new Intent(context,CameraActivity.class);
@@ -100,7 +101,10 @@ public class CameraActivity extends YanxiuBaseActivity implements View.OnClickLi
                 YanxiuBaseActivity.requestWriteAndReadPermission(CameraActivity.this);
                 break;
             case R.id.iv_takepicture:
-                mCameraView.takePicture(CameraActivity.this);
+                if (!isTakePicture) {
+                    isTakePicture=true;
+                    mCameraView.takePicture(CameraActivity.this);
+                }
                 break;
             case R.id.iv_delete:
                 CameraActivity.this.finish();
@@ -113,6 +117,7 @@ public class CameraActivity extends YanxiuBaseActivity implements View.OnClickLi
         if (isSuccess){
             CropImageActivity.LaunchActivity(mContext,path,mFromId);
         }
+        isTakePicture=false;
     }
 
     public void onEventMainThread(CropImageActivity.CropCallbackMessage message){

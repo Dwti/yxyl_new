@@ -29,6 +29,8 @@ import com.yanxiu.gphone.student.user.response.LoginResponse;
 import com.yanxiu.gphone.student.user.request.LoginRequest;
 import com.yanxiu.gphone.student.user.response.ThridMessageBean;
 import com.yanxiu.gphone.student.user.response.UserMessageBean;
+import com.yanxiu.gphone.student.util.ActivityManger;
+import com.yanxiu.gphone.student.util.DataFetcher;
 import com.yanxiu.gphone.student.util.EditTextManger;
 import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.SystemUtil;
@@ -139,6 +141,12 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
         mThirdWXView.setOnClickListener(LoginActivity.this);
         EditTextManger.getManager(mPassWordView).setInputAllNotHanzi().setTextChangedListener(LoginActivity.this);
         EditTextManger.getManager(mUserNameView).setInputNumberAndLetter().setTextChangedListener(LoginActivity.this);
+    }
+
+    @Override
+    public void onBackPressed() {
+        ActivityManger.destoryAll();
+        super.onBackPressed();
     }
 
     @Override

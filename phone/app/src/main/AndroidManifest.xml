@@ -182,11 +182,15 @@
         <activity android:name=".common.activity.AlbumActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".common.activity.PhotoActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
         <activity android:name=".common.activity.CropImageActivity"
             android:screenOrientation="portrait"/>
 
         <activity android:name=".mistake.activity.MistakeListActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".mistake.activity.MistakeClassifyActivity"
             android:screenOrientation="portrait"/>
     </application>
 
