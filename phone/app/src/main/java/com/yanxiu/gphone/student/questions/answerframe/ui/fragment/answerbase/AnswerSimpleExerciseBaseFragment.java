@@ -40,20 +40,12 @@ public abstract class AnswerSimpleExerciseBaseFragment extends AnswerExerciseBas
         if (savedInstanceState != null && mData == null) {
             setData((BaseQuestion) savedInstanceState.getSerializable(KEY_NODE));
         }
-        initListenerData();
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable(KEY_NODE, mData);
-    }
-
-    private void initListenerData(){
-        mData.mProgress=0;
-        mData.mMax=0;
-        mData.mIsShouldPlay=false;
-        mData.mIsPause=false;
     }
 
     /**

@@ -66,7 +66,6 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
-        initListenerData();
     }
 
     @Nullable
@@ -76,13 +75,6 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
         mRootView = inflater.inflate(R.layout.fragment_analysis_base, container, false);
         initView(inflater, container);
         return mRootView;
-    }
-
-    private void initListenerData(){
-        mData.mProgress=0;
-        mData.mMax=0;
-        mData.mIsShouldPlay=false;
-        mData.mIsPause=false;
     }
 
     private void initView(LayoutInflater inflater, @Nullable ViewGroup container) {
