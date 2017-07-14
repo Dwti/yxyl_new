@@ -33,7 +33,6 @@ public class ConnectFragment extends AnswerSimpleExerciseBaseFragment {
     private List<ConnectedBean> mConnectedList = new ArrayList<>();
     private ConnectItemBean mLeftSelectedItem;
     private ConnectItemBean mRightSelectedItem;
-    private int mLeftSelectedPosition = -1,mRightSelectedPosition = -1;
     private PopupWindow mPopWindow;
     private TextView mTextStem;
     private View mBasket;
@@ -55,16 +54,13 @@ public class ConnectFragment extends AnswerSimpleExerciseBaseFragment {
         mLeftAdapter.setOnItemClickListener(new ConnectItemAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View itemView, ConnectItemBean itemBean, int position) {
-                mLeftSelectedPosition = position;
                 mLeftSelectedItem = itemBean;
                 if (mRightSelectedItem != null) {
                     mConnectedList.add(new ConnectedBean(mLeftSelectedItem, mRightSelectedItem));
-                    mLeftAdapter.remove(mLeftSelectedPosition);
-                    mRightAdapter.remove(mRightSelectedPosition);
+                    mLeftAdapter.remove(position);
+                    mRightAdapter.remove(mRightAdapter.getLastSelectedPosition());
                     mLeftSelectedItem = null;
                     mRightSelectedItem = null;
-                    mLeftSelectedPosition = -1;
-                    mRightSelectedPosition = -1;
                 }
             }
         });
@@ -72,16 +68,13 @@ public class ConnectFragment extends AnswerSimpleExerciseBaseFragment {
         mRightAdapter.setOnItemClickListener(new ConnectItemAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View itemView, ConnectItemBean itemBean, int position) {
-                mRightSelectedPosition = position;
                 mRightSelectedItem = itemBean;
                 if (mLeftSelectedItem != null) {
                     mConnectedList.add(new ConnectedBean(mLeftSelectedItem, mRightSelectedItem));
-                    mLeftAdapter.remove(mLeftSelectedPosition);
-                    mRightAdapter.remove(mRightSelectedPosition);
+                    mLeftAdapter.remove(mLeftAdapter.getLastSelectedPosition());
+                    mRightAdapter.remove(position);
                     mLeftSelectedItem = null;
                     mRightSelectedItem = null;
-                    mLeftSelectedPosition = -1;
-                    mRightSelectedPosition = -1;
                 }
             }
         });
@@ -144,8 +137,6 @@ public class ConnectFragment extends AnswerSimpleExerciseBaseFragment {
                 public void onDeleted(ConnectedBean bean) {
                     mLeftAdapter.add(bean.getLeftItem());
                     mRightAdapter.add(bean.getRightItem());
-                    mLeftSelectedPosition = mLeftAdapter.getLastSelectedPosition();
-                    mRightSelectedPosition = mRightAdapter.getLastSelectedPosition();
                 }
             });
         }
