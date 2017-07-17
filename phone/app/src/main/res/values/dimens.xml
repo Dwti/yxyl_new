@@ -230,5 +230,9 @@
     <dimen name="cloze_bottom_layout_height">290dp</dimen>
 
     <dimen name="analysis_line_h">10dp</dimen>
+
+    <dimen name="classify_scroll_paddingbottom">25dp</dimen>
+    <dimen name="classify_choice_margin">15dp</dimen>
+
 </resources>
 
