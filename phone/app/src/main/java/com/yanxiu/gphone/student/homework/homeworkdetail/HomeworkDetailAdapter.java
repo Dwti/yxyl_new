@@ -129,6 +129,13 @@ public class HomeworkDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         notifyDataSetChanged();
     }
 
+    public void clearData(){
+        if(mData != null && mData.size() > 0){
+            mData.clear();
+            notifyDataSetChanged();
+        }
+    }
+
     public void addFooterView(){
         mIsLoadingMore = true;
         notifyDataSetChanged();
