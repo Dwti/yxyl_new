@@ -139,7 +139,7 @@ public class StemUtil {
     public static String replaceFirstChar(String source,String markStart){
         StringBuilder sb = new StringBuilder(source);
         int index = source.indexOf("(_)");
-        if(index != -1){
+        if(index > 0){
             if(source.length() > 4){
                 char c1 = sb.charAt(index -1);
                 char c2 = sb.charAt(index -2);
