@@ -276,6 +276,8 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
         if (fromUser && isMove) {
             Logger.d(TAG, "change");
             mMediaPlayerUtil.seekTo(progress);
+            String nowTime = transferFormat(progress);
+            mNowTimeView.setText(nowTime);
         }
     }
 
