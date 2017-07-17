@@ -88,12 +88,13 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
         mPPid = mPaper.getId();
         mStatus = mPaper.getPaperStatus().getCheckStatus();
 //        mSccuracy = (int) (QuestionUtil.calculateRightRate(mQuestions) * 100);
-        String scoreRate =mPaper.getPaperStatus().getScoreRate();
+        mSccuracy = (int)(mPaper.getPaperStatus().getScoreRate() * 100);
+
         mRightCount = QuestionUtil.calculateRightCount(mQuestions);
         mCostTime = mPaper.getPaperStatus().getCosttime();
         try {
             mCostTime = TimeUtils.formatTime(Integer.valueOf(mCostTime));
-            mSccuracy = Integer.parseInt(scoreRate);
+//            mSccuracy = Integer.parseInt(scoreRate);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -122,8 +123,8 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
 
         if ("1".equals(mStatus)) {
             //已经批改
-            mTextview_correct.setText(mSccuracy + "");
-            mTextview_correct_shadow.setText(mSccuracy + "");
+            mTextview_correct.setText(mSccuracy+"");
+            mTextview_correct_shadow.setText(mSccuracy+"");
             mTotalnumber.setText("共" + mTotalCount + "题");
             mYesnumber.setText("答对" + mRightCount + "题");
             mTime.setText(mCostTime);
