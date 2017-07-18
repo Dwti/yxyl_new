@@ -21,14 +21,27 @@ public class ConnectQuestion extends BaseQuestion {
 
     private List<String> mFilledAnswers = new ArrayList<>();
 
+    private List<String> mLeftChoices, mRightChoices;
+
 
     public ConnectQuestion(PaperTestBean bean, QuestionShowType showType, String paperStatus) {
         super(bean, showType, paperStatus);
+        initAnswer(bean);
+    }
+
+    private void initAnswer(PaperTestBean bean) {
+        if (bean.getQuestions() == null || bean.getQuestions().getPad() == null || bean.getQuestions().getPad().getJsonAnswer() == null) {
+            return;
+        }
         mChoices = bean.getQuestions().getContent().getChoices();
+
+        for (Object o : bean.getQuestions().getPad().getJsonAnswer()) {
+            mFilledAnswers.add(String.valueOf(o));
+        }
         //TODO 需要处理报错
-//        for(Object o : bean.getQuestions().getAnswer()){
-//            mCorrectAnswer.add((ConnectAnswerBean) o);
-//        }
+        for(Object o : server_answer){
+            mCorrectAnswers.add((String) o);
+        }
     }
 
     @Override
@@ -55,10 +68,24 @@ public class ConnectQuestion extends BaseQuestion {
         return mChoices;
     }
 
+    public List<String> getLeftChoices() {
+        if (mLeftChoices == null)
+            mLeftChoices = mChoices.subList(0, (mChoices.size() / 2));
+        return mLeftChoices;
+    }
+
+    public List<String> getRightChoices() {
+        if (mRightChoices == null)
+            mRightChoices = mChoices.subList(mChoices.size() / 2, mChoices.size());
+        return mRightChoices;
+    }
+
     public List<String> getCorrectAnswer() {
         return mCorrectAnswers;
     }
 
-    public List<String> getFilledAnswers(){return mFilledAnswers;}
+    public List<String> getFilledAnswers() {
+        return mFilledAnswers;
+    }
 
 }

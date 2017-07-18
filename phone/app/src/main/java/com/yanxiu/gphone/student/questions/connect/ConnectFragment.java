@@ -88,9 +88,8 @@ public class ConnectFragment extends AnswerSimpleExerciseBaseFragment {
     }
 
     private void initData() {
-        List<String> choices = mQuestion.getChoices();
-        mChoicesLeft = choices.subList(0,(choices.size() / 2));
-        mChoicesRight = choices.subList(choices.size() / 2, choices.size());
+        mChoicesLeft = mQuestion.getLeftChoices();
+        mChoicesRight = mQuestion.getRightChoices();
 
         mLeftAdapter = new ConnectItemAdapter(mChoicesLeft);
         mRightAdapter = new ConnectItemAdapter(mChoicesRight);

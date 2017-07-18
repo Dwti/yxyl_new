@@ -24,7 +24,6 @@ import java.util.List;
 public class ConnectAnalysisFragment extends AnalysisSimpleExerciseBaseFragment {
     private ConnectQuestion mQuestion;
     private View mRootView;
-    private ConnectedView mConnectedView;
     private TextView mStem;
     private List<String> mChoicesLeft, mChoicesRight;
     private List<String> mFilledAnswers,mCorrectAnswers;
@@ -69,9 +68,8 @@ public class ConnectAnalysisFragment extends AnalysisSimpleExerciseBaseFragment 
     }
 
     private void initData(){
-        List<String> choices = mQuestion.getChoices();
-        mChoicesLeft = choices.subList(0,(choices.size() / 2));
-        mChoicesRight = choices.subList(choices.size() / 2, choices.size());
+        mChoicesLeft = mQuestion.getLeftChoices();
+        mChoicesRight = mQuestion.getRightChoices();
 
         initFakeAnswer();
 
@@ -98,7 +96,7 @@ public class ConnectAnalysisFragment extends AnalysisSimpleExerciseBaseFragment 
 
     @Override
     public void initAnswerView(LayoutInflater inflater, @Nullable ViewGroup container) {
-        mConnectedView = (ConnectedView) mRootView.findViewById(R.id.connected_view);
+        ConnectedView connectedView = (ConnectedView) mRootView.findViewById(R.id.connected_view);
         mStem = (TextView) mRootView.findViewById(R.id.stem);
         initData();
         mStem.post(new Runnable() {
@@ -107,8 +105,8 @@ public class ConnectAnalysisFragment extends AnalysisSimpleExerciseBaseFragment 
                 mStem.setText(Html.fromHtml(mQuestion.getStem(),new HtmlImageGetter(mStem),null));
             }
         });
-        mConnectedView.setConnectPositionInfo(mConnectPositionInfos);
-        mConnectedView.addItems(mChoicesLeft,mChoicesRight,mConnectPositionInfos);
+        connectedView.setConnectPositionInfo(mConnectPositionInfos);
+        connectedView.addItems(mChoicesLeft,mChoicesRight,mConnectPositionInfos);
     }
 
     @Override
