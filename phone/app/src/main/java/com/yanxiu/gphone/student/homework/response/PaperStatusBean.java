@@ -14,7 +14,7 @@ public class PaperStatusBean extends BaseBean{
     private int costtime;
     private String gid;
     private int userCount;
-    private int scoreRate;
+    private float scoreRate;
     private String teachercomments;
     private String teacherName;
 
@@ -74,11 +74,11 @@ public class PaperStatusBean extends BaseBean{
         this.userCount = userCount;
     }
 
-    public int getScoreRate() {
+    public float getScoreRate() {
         return scoreRate;
     }
 
-    public void setScoreRate(int scoreRate) {
+    public void setScoreRate(float scoreRate) {
         this.scoreRate = scoreRate;
     }
 

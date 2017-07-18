@@ -17,7 +17,9 @@ public class ConnectQuestion extends BaseQuestion {
 
     private List<String> mChoices;
 
-    private List<ConnectAnswerBean> mCorrectAnswer = new ArrayList<>();
+    private List<String> mCorrectAnswers = new ArrayList<>();
+
+    private List<String> mFilledAnswers = new ArrayList<>();
 
 
     public ConnectQuestion(PaperTestBean bean, QuestionShowType showType, String paperStatus) {
@@ -36,7 +38,7 @@ public class ConnectQuestion extends BaseQuestion {
 
     @Override
     public ExerciseBaseFragment analysisFragment() {
-        return new ConnectFragment();
+        return new ConnectAnalysisFragment();
     }
 
     @Override
@@ -53,8 +55,10 @@ public class ConnectQuestion extends BaseQuestion {
         return mChoices;
     }
 
-    public List<ConnectAnswerBean> getCorrectAnswer() {
-        return mCorrectAnswer;
+    public List<String> getCorrectAnswer() {
+        return mCorrectAnswers;
     }
+
+    public List<String> getFilledAnswers(){return mFilledAnswers;}
 
 }
