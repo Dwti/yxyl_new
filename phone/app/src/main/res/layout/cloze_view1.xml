@@ -8,7 +8,7 @@
         android:id="@+id/underline"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="#89e00d"
+        android:background="#4c4c4c"
         android:layout_alignParentBottom="true"/>
 
     <LinearLayout

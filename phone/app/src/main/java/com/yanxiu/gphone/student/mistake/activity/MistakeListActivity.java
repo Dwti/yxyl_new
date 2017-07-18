@@ -113,6 +113,6 @@ public class MistakeListActivity extends YanxiuBaseActivity implements View.OnCl
 
     @Override
     public void onItemClick(View view, MistakeListResponse.Data data, int position) {
-        MistakeClassifyActivity.LaunchActivity(mContext);
+        MistakeClassifyActivity.LaunchActivity(mContext,data.name,String.valueOf(data.id),data.data.wrongNum,String.valueOf(data.data.editionId));
     }
 }
