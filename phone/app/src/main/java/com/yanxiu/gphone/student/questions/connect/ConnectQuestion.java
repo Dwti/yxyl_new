@@ -32,47 +32,54 @@ public class ConnectQuestion extends BaseQuestion {
     }
 
     private void initAnswer(PaperTestBean bean) {
-        if (bean.getQuestions() == null || bean.getQuestions().getPad() == null || bean.getQuestions().getPad().getJsonAnswer() == null) {
-            return;
-        }
-        List<String> tempCorrectAnswers = new ArrayList<>();
-        List<String> tempFilledAnswers = new ArrayList<>();
+
         mChoices = bean.getQuestions().getContent().getChoices();
 
-        for (Object o : bean.getQuestions().getPad().getJsonAnswer()) {
-            tempFilledAnswers.add(String.valueOf(o));
+        //处理用户已作答的答案
+        if(bean.getQuestions().getPad() != null && bean.getQuestions().getPad().getJsonAnswer() != null){
+
+            List<String> tempFilledAnswers = new ArrayList<>();
+            for (Object o : bean.getQuestions().getPad().getJsonAnswer()) {
+                tempFilledAnswers.add(String.valueOf(o));
+            }
+
+            for(String s : tempFilledAnswers){
+                if(!s.contains(",")){
+                    mFilledAnswers.add("");
+                    continue;
+                }
+                int leftPos = Integer.parseInt(s.split(",")[0]);
+                int rightPos = Integer.parseInt(s.split(",")[1]);
+                if(rightPos >= mChoices.size() / 2){
+                    rightPos = rightPos - mChoices.size() /2;
+                }
+                mFilledAnswers.add(leftPos + "," + rightPos);
+            }
         }
 
-        for(String s : tempFilledAnswers){
-            if(!s.contains(",")){
-                mFilledAnswers.add("");
-                continue;
-            }
-            int leftPos = Integer.parseInt(s.split(",")[0]);
-            int rightPos = Integer.parseInt(s.split(",")[1]);
-            if(rightPos >= mChoices.size() / 2){
-                rightPos = rightPos - mChoices.size() /2;
-            }
-            mFilledAnswers.add(leftPos + "," + rightPos);
-        }
+        //处理本题的正确答案
+        if(server_answer != null){
+            List<String> tempCorrectAnswers = new ArrayList<>();
 
-        for(Object o : server_answer){
-            Map<String,String> map = (Map) o;
-            for(Map.Entry<String,String> entry : map.entrySet()){
-                if(entry.getKey().equals("answer")){
-                    tempCorrectAnswers.add(entry.getValue());
+            for(Object o : server_answer){
+                Map<String,String> map = (Map) o;
+                for(Map.Entry<String,String> entry : map.entrySet()){
+                    if(entry.getKey().equals("answer")){
+                        tempCorrectAnswers.add(entry.getValue());
+                    }
                 }
             }
+
+            for(String s : tempCorrectAnswers){
+                int leftPos = Integer.parseInt(s.split(",")[0]);
+                int rightPos = Integer.parseInt(s.split(",")[1]);
+                if(rightPos >= mChoices.size() / 2){
+                    rightPos = rightPos - mChoices.size() /2;
+                }
+                mCorrectAnswers.add(leftPos + "," + rightPos);
+            }
         }
 
-        for(String s : tempCorrectAnswers){
-            int leftPos = Integer.parseInt(s.split(",")[0]);
-            int rightPos = Integer.parseInt(s.split(",")[1]);
-            if(rightPos >= mChoices.size() / 2){
-                rightPos = rightPos - mChoices.size() /2;
-            }
-            mCorrectAnswers.add(leftPos + "," + rightPos);
-        }
     }
 
     @Override
