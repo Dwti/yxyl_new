@@ -82,12 +82,14 @@ public class ConnectedView extends LinearLayout {
         for(ConnectPositionInfo positionInfo: connectPositionInfoList){
             View leftChild = getChildAt(positionInfo.getLeftPosition());
             View rightChild = getChildAt(positionInfo.getRightPosition());
-            View leftItem = leftChild.findViewById(R.id.text_left);
-            View rightItem = rightChild.findViewById(R.id.text_right);
-            if(leftItem == null || rightItem ==null){
+            if(leftChild == null || rightChild == null){
                 result.add(null);
                 continue;
             }
+
+            View leftItem = leftChild.findViewById(R.id.text_left);
+            View rightItem = rightChild.findViewById(R.id.text_right);
+
             Point leftPoint = new Point(leftItem.getRight(),leftChild.getTop() + leftChild.getHeight() / 2);
             Point rightPoint = new Point(rightItem.getLeft(),rightChild.getTop() + rightChild.getHeight() / 2);
             int color;
@@ -108,18 +110,28 @@ public class ConnectedView extends LinearLayout {
             View view = LayoutInflater.from(getContext()).inflate(R.layout.item_connect_analysis,this,false);
             TextView leftText = (TextView) view.findViewById(R.id.text_left);
             TextView rightText = (TextView) view.findViewById(R.id.text_right);
+            boolean containsLeft = false;
+            boolean containsRight = false;
             for(ConnectPositionInfo info : connPosInfos){
                 if(info.getLeftPosition() == i){
+                    containsLeft = true;
                     if(!info.isRight()){
                         leftText.setBackground(getResources().getDrawable(R.drawable.shape_connect_item_orange));
-                    }
+                }
                 }
 
                 if(info.getRightPosition() == i){
+                    containsRight = true;
                     if(!info.isRight()){
                         rightText.setBackground(getResources().getDrawable(R.drawable.shape_connect_item_orange));
                     }
                 }
+            }
+            if(!containsLeft){
+                leftText.setBackground(getResources().getDrawable(R.drawable.shape_connect_item_orange));
+            }
+            if(!containsRight){
+                rightText.setBackground(getResources().getDrawable(R.drawable.shape_connect_item_orange));
             }
             leftText.setText(Html.fromHtml(leftData.get(i),new HtmlImageGetter(leftText),null));
             rightText.setText(Html.fromHtml(rightData.get(i),new HtmlImageGetter(rightText),null));

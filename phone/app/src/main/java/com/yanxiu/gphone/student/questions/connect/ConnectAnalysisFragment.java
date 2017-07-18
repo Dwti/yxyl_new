@@ -3,6 +3,7 @@ package com.yanxiu.gphone.student.questions.connect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,20 +72,25 @@ public class ConnectAnalysisFragment extends AnalysisSimpleExerciseBaseFragment 
         mChoicesLeft = mQuestion.getLeftChoices();
         mChoicesRight = mQuestion.getRightChoices();
 
-        initFakeAnswer();
+//        initFakeAnswer();
 
-//        mFilledAnswers = mQuestion.getFilledAnswers();
-//        mCorrectAnswers = mQuestion.getCorrectAnswer();
+        mFilledAnswers = mQuestion.getFilledAnswers();
+        mCorrectAnswers = mQuestion.getCorrectAnswer();
         for(int i = 0;i<mFilledAnswers.size();i++){
             ConnectPositionInfo info;
             boolean isRight = false;
             if(mFilledAnswers.get(i).equals(mCorrectAnswers.get(i))){
                 isRight = true;
             }
-            String[] answers = mFilledAnswers.get(i).split(",");
-            int left = Integer.parseInt(answers[0]);
-            int right = Integer.parseInt(answers[1]);
-            info = new ConnectPositionInfo(left,right,isRight);
+            if(TextUtils.isEmpty(mFilledAnswers.get(i))){
+                info = new ConnectPositionInfo(-1,-1,false);
+                mConnectPositionInfos.add(info);
+            }else {
+                String[] answers = mFilledAnswers.get(i).split(",");
+                int left = Integer.parseInt(answers[0]);
+                int right = Integer.parseInt(answers[1]);
+                info = new ConnectPositionInfo(left,right,isRight);
+            }
             mConnectPositionInfos.add(info);
         }
     }
