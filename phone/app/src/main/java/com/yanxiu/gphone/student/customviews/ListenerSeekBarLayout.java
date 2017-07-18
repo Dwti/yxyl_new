@@ -70,8 +70,8 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
     private int mProgress=0;
     private int mSeekProgress=-1;
 
-//    private String mUrl;
-        private String mUrl="http://data.5sing.kgimg.com/G034/M05/16/17/ApQEAFXsgeqIXl7gAAVVd-n31lcAABOogKzlD4ABVWP363.mp3";
+    private String mUrl;
+//        private String mUrl="http://data.5sing.kgimg.com/G034/M05/16/17/ApQEAFXsgeqIXl7gAAVVd-n31lcAABOogKzlD4ABVWP363.mp3";
     private long mMoveDown;
 
     public ListenerSeekBarLayout(Context context) {
@@ -267,7 +267,7 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
         if (TextUtils.isEmpty(url)) {
             return;
         }
-//        this.mUrl = url;
+        this.mUrl = url;
     }
 
     public void setPause() {
