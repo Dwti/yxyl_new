@@ -20,10 +20,13 @@ import java.util.HashMap;
 public class HtmlImageGetter implements Html.ImageGetter {
     TextView mTextView;
     HashMap<String, UrlDrawable> mMap;
+    int mMaxWidth;
 
     public HtmlImageGetter(TextView textview) {
         mTextView = textview;
         mMap = new HashMap<>();
+        mMaxWidth = mTextView.getWidth() - mTextView.getPaddingLeft() - mTextView.getPaddingRight();
+
     }
 
     @Override
@@ -39,10 +42,10 @@ public class HtmlImageGetter implements Html.ImageGetter {
                         UrlDrawable drawable = mMap.get(source);
                         float width = resource.getIntrinsicWidth();
                         float height = resource.getIntrinsicHeight();
-                        if(width > mTextView.getWidth()){
-                            float scale = mTextView.getWidth() / width;
+                        if(width > mMaxWidth){
+                            float scale = mMaxWidth / width;
                             height = height * scale;
-                            width = mTextView.getWidth();
+                            width = mMaxWidth;
                         }
                         drawable.setBounds(0, 0, Math.round(width), Math.round(height));
                         drawable.drawable = resource;
