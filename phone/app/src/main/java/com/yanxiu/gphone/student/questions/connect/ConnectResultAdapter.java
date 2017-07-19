@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
-import com.yanxiu.gphone.student.util.ScreenUtils;
 
 import java.util.List;
 
@@ -39,9 +38,15 @@ public class ConnectResultAdapter extends RecyclerView.Adapter<ConnectResultAdap
     }
 
     @Override
-    public void onBindViewHolder(ConnectedItemViewHolder holder, int position) {
-        holder.leftText.setText(Html.fromHtml(mData.get(position).getLeftItem().getText(),new HtmlImageGetter(holder.leftText,mMaxPicWidth),null));
-        holder.rightText.setText(Html.fromHtml(mData.get(position).getRightItem().getText(),new HtmlImageGetter(holder.rightText,mMaxPicWidth),null));
+    public void onBindViewHolder(final ConnectedItemViewHolder holder, final int position) {
+        holder.itemView.post(new Runnable() {
+            @Override
+            public void run() {
+                holder.leftText.setText(Html.fromHtml(mData.get(position).getLeftItem().getText(),new HtmlImageGetter(holder.leftText),null));
+                holder.rightText.setText(Html.fromHtml(mData.get(position).getRightItem().getText(),new HtmlImageGetter(holder.rightText),null));
+            }
+        });
+
     }
 
     @Override
@@ -67,13 +72,6 @@ public class ConnectResultAdapter extends RecyclerView.Adapter<ConnectResultAdap
             leftText = (TextView) itemView.findViewById(R.id.textLeft);
             rightText = (TextView) itemView.findViewById(R.id.textRight);
             detele = itemView.findViewById(R.id.delete);
-
-            if(mMaxPicWidth == 0){
-                View leftLine = itemView.findViewById(R.id.line_left);
-                View rightLine = itemView.findViewById(R.id.line_right);
-                int space = itemView.getWidth() - itemView.getPaddingLeft() - itemView.getPaddingRight() - leftLine.getWidth() - rightLine.getWidth() - detele.getWidth() - ScreenUtils.dpToPxInt(itemView.getContext(),4);
-                mMaxPicWidth = space / 2 - leftText.getPaddingLeft() - leftText.getPaddingRight();
-            }
 
             detele.setOnClickListener(new View.OnClickListener() {
                 @Override

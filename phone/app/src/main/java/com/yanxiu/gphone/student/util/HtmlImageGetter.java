@@ -1,6 +1,5 @@
 package com.yanxiu.gphone.student.util;
 
-import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -19,25 +18,12 @@ import java.util.HashMap;
  */
 
 public class HtmlImageGetter implements Html.ImageGetter {
-    Context mContext;
     TextView mTextView;
     HashMap<String, UrlDrawable> mMap;
-    int mMaxWidth;
 
-    public HtmlImageGetter(TextView textView) {
-        mTextView = textView;
-        mContext = textView.getContext();
+    public HtmlImageGetter(TextView textview) {
+        mTextView = textview;
         mMap = new HashMap<>();
-        mMaxWidth = mTextView.getWidth() - mTextView.getPaddingLeft() - mTextView.getPaddingRight();
-
-    }
-
-    public HtmlImageGetter(TextView textView,int maxWidth){
-        mTextView = textView;
-        mContext = textView.getContext();
-        mMap = new HashMap<>();
-        mMaxWidth = maxWidth;
-
     }
 
     @Override
@@ -45,7 +31,7 @@ public class HtmlImageGetter implements Html.ImageGetter {
         UrlDrawable drawable = new UrlDrawable();
         mMap.put(source, drawable);
         drawable.setBounds(0, 0, 0, 0);
-        Glide.with(mContext)
+        Glide.with(mTextView.getContext())
                 .load(source)
                 .into(new SimpleTarget<GlideDrawable>() {
                     @Override
@@ -53,10 +39,11 @@ public class HtmlImageGetter implements Html.ImageGetter {
                         UrlDrawable drawable = mMap.get(source);
                         float width = resource.getIntrinsicWidth();
                         float height = resource.getIntrinsicHeight();
-                        if(width > mMaxWidth){
-                            float scale = mMaxWidth / width;
+                        int maxWidth = mTextView.getWidth() - mTextView.getPaddingLeft() - mTextView.getPaddingRight();
+                        if(width > maxWidth){
+                            float scale = maxWidth / width;
                             height = height * scale;
-                            width = mMaxWidth;
+                            width = maxWidth;
                         }
                         drawable.setBounds(0, 0, Math.round(width), Math.round(height));
                         drawable.drawable = resource;
