@@ -1,11 +1,13 @@
 package com.yanxiu.gphone.student.questions.connect;
 
-import com.google.gson.internal.LinkedTreeMap;
+import android.text.TextUtils;
+
+import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
-import com.yanxiu.gphone.student.questions.bean.ConnectAnswerBean;
 import com.yanxiu.gphone.student.questions.bean.PaperTestBean;
+import com.yanxiu.gphone.student.questions.bean.PointBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,69 +19,92 @@ import java.util.Map;
 
 public class ConnectQuestion extends BaseQuestion {
 
-    private List<String> mChoices;
+    private List<String> choices;
+    private List<String> correctAnswers = new ArrayList<>();
+    private List<String> filledAnswers = new ArrayList<>();
+    private List<String> leftChoices, rightChoices;
+    private List<String> serverCorrectAnswers,serverFilledAnswers;
 
-    private List<String> mCorrectAnswers = new ArrayList<>();
-
-    private List<String> mFilledAnswers = new ArrayList<>();
-
-    private List<String> mLeftChoices, mRightChoices;
+    private List<PointBean> pointList;
+    private int starCount;
+    private String questionAnalysis;
+    private String answerCompare;
 
 
     public ConnectQuestion(PaperTestBean bean, QuestionShowType showType, String paperStatus) {
         super(bean, showType, paperStatus);
+        pointList = bean.getQuestions().getPoint();
+        try {
+            starCount = Integer.parseInt(bean.getQuestions().getDifficulty());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        questionAnalysis = bean.getQuestions().getAnalysis();
+        try {
+            answerCompare = bean.getQuestions().getExtend().getData().getAnswerCompare();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         initAnswer(bean);
     }
 
     private void initAnswer(PaperTestBean bean) {
 
-        mChoices = bean.getQuestions().getContent().getChoices();
+        choices = bean.getQuestions().getContent().getChoices();
 
         //处理用户已作答的答案
         if(bean.getQuestions().getPad() != null && bean.getQuestions().getPad().getJsonAnswer() != null){
 
-            List<String> tempFilledAnswers = new ArrayList<>();
+            serverFilledAnswers  = new ArrayList<>();
             for (Object o : bean.getQuestions().getPad().getJsonAnswer()) {
-                tempFilledAnswers.add(String.valueOf(o));
+                serverFilledAnswers.add(String.valueOf(o));
             }
 
-            for(String s : tempFilledAnswers){
+            for(String s : serverFilledAnswers){
                 if(!s.contains(",")){
-                    mFilledAnswers.add("");
+                    filledAnswers.add("");
                     continue;
                 }
                 int leftPos = Integer.parseInt(s.split(",")[0]);
                 int rightPos = Integer.parseInt(s.split(",")[1]);
-                if(rightPos >= mChoices.size() / 2){
-                    rightPos = rightPos - mChoices.size() /2;
+                if(rightPos >= choices.size() / 2){
+                    rightPos = rightPos - choices.size() /2;
                 }
-                mFilledAnswers.add(leftPos + "," + rightPos);
+                filledAnswers.add(leftPos + "," + rightPos);
             }
         }
 
         //处理本题的正确答案
         if(server_answer != null){
-            List<String> tempCorrectAnswers = new ArrayList<>();
+             serverCorrectAnswers = new ArrayList<>();
 
             for(Object o : server_answer){
                 Map<String,String> map = (Map) o;
                 for(Map.Entry<String,String> entry : map.entrySet()){
                     if(entry.getKey().equals("answer")){
-                        tempCorrectAnswers.add(entry.getValue());
+                        serverCorrectAnswers.add(entry.getValue());
                     }
                 }
             }
 
-            for(String s : tempCorrectAnswers){
+            for(String s : serverCorrectAnswers){
                 int leftPos = Integer.parseInt(s.split(",")[0]);
                 int rightPos = Integer.parseInt(s.split(",")[1]);
-                if(rightPos >= mChoices.size() / 2){
-                    rightPos = rightPos - mChoices.size() /2;
+                if(rightPos >= choices.size() / 2){
+                    rightPos = rightPos - choices.size() /2;
                 }
-                mCorrectAnswers.add(leftPos + "," + rightPos);
+                correctAnswers.add(leftPos + "," + rightPos);
             }
         }
 
+    }
+
+    public boolean isRight(){
+        if(serverFilledAnswers == null)
+            return false;
+        if(serverFilledAnswers.containsAll(serverCorrectAnswers) && serverCorrectAnswers.containsAll(serverFilledAnswers))
+            return true;
+        else return false;
     }
 
     @Override
@@ -94,36 +119,68 @@ public class ConnectQuestion extends BaseQuestion {
 
     @Override
     public Object getAnswer() {
-        return null;
+        return serverFilledAnswers;
     }
 
     @Override
     public int getStatus() {
-        return 0;
+        for (String str : serverFilledAnswers) {
+            if (TextUtils.isEmpty(str.trim())) {
+                return Constants.ANSWER_STATUS_NOANSWERED;
+            }
+        }
+        if (isRight()) {
+            return Constants.ANSWER_STATUS_RIGHT;
+        } else {
+            return Constants.ANSWER_STATUS_WRONG;
+        }
     }
 
     public List<String> getChoices() {
-        return mChoices;
+        return choices;
     }
 
     public List<String> getLeftChoices() {
-        if (mLeftChoices == null)
-            mLeftChoices = mChoices.subList(0, (mChoices.size() / 2));
-        return mLeftChoices;
+        if (leftChoices == null)
+            leftChoices = choices.subList(0, (choices.size() / 2));
+        return leftChoices;
     }
 
     public List<String> getRightChoices() {
-        if (mRightChoices == null)
-            mRightChoices = mChoices.subList(mChoices.size() / 2, mChoices.size());
-        return mRightChoices;
+        if (rightChoices == null)
+            rightChoices = choices.subList(choices.size() / 2, choices.size());
+        return rightChoices;
     }
 
     public List<String> getCorrectAnswer() {
-        return mCorrectAnswers;
+        return correctAnswers;
     }
 
     public List<String> getFilledAnswers() {
-        return mFilledAnswers;
+        return filledAnswers;
     }
 
+    public List<String> getServerFilledAnswers() {
+        return serverFilledAnswers;
+    }
+
+    public void setServerFilledAnswers(List<String> serverFilledAnswers) {
+        this.serverFilledAnswers = serverFilledAnswers;
+    }
+
+    public List<PointBean> getPointList() {
+        return pointList;
+    }
+
+    public int getStarCount() {
+        return starCount;
+    }
+
+    public String getQuestionAnalysis() {
+        return questionAnalysis;
+    }
+
+    public String getAnswerCompare() {
+        return answerCompare;
+    }
 }

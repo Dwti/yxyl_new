@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.analysisbase.AnalysisSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
@@ -51,35 +52,16 @@ public class ConnectAnalysisFragment extends AnalysisSimpleExerciseBaseFragment 
         outState.putSerializable(ExerciseBaseFragment.KEY_NODE, mQuestion);
     }
 
-    private void initFakeAnswer(){
-        mFilledAnswers = new ArrayList<>();
-        mCorrectAnswers = new ArrayList<>();
-        mFilledAnswers.add("0,0");
-        mFilledAnswers.add("1,2");
-        mFilledAnswers.add("2,3");
-        mFilledAnswers.add("3,4");
-        mFilledAnswers.add("4,1");
-
-
-        mCorrectAnswers.add("0,1");
-        mCorrectAnswers.add("1,2");
-        mCorrectAnswers.add("2,3");
-        mCorrectAnswers.add("3,4");
-        mCorrectAnswers.add("4,0");
-    }
-
     private void initData(){
         mChoicesLeft = mQuestion.getLeftChoices();
         mChoicesRight = mQuestion.getRightChoices();
-
-//        initFakeAnswer();
 
         mFilledAnswers = mQuestion.getFilledAnswers();
         mCorrectAnswers = mQuestion.getCorrectAnswer();
         for(int i = 0;i<mFilledAnswers.size();i++){
             ConnectPositionInfo info;
             boolean isRight = false;
-            if(mFilledAnswers.get(i).equals(mCorrectAnswers.get(i))){
+            if(mCorrectAnswers.contains(mFilledAnswers.get(i))){
                 isRight = true;
             }
             if(TextUtils.isEmpty(mFilledAnswers.get(i))){
@@ -117,6 +99,22 @@ public class ConnectAnalysisFragment extends AnalysisSimpleExerciseBaseFragment 
 
     @Override
     public void initAnalysisView() {
-
+        if(Constants.HAS_FINISH_STATUS.equals(mQuestion.getPaperStatus())){ //已完成
+            showAnswerResultView(mQuestion.isRight(),mQuestion.getAnswerCompare(),null);
+            showDifficultyview(mQuestion.getStarCount());
+            showAnalysisview(mQuestion.getQuestionAnalysis());
+            showPointView(mQuestion.getPointList());
+        }else{ //逾期未提交的作业 题目解析展示“难度”、“答案”、“题目解析”、“知识点”
+            showDifficultyview(mQuestion.getStarCount());
+            String answer="";
+            if (mQuestion.getServer_answer()!=null){
+                for (String s:mQuestion.getCorrectAnswer()){
+                    answer+=s;
+                }
+            }
+            showAnswerView(answer);
+            showAnalysisview(mQuestion.getQuestionAnalysis());
+            showPointView(mQuestion.getPointList());
+        }
     }
 }

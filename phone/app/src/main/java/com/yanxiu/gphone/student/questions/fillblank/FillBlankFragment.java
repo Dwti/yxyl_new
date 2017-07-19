@@ -221,6 +221,8 @@ public class FillBlankFragment extends AnswerSimpleExerciseBaseFragment implemen
     @Override
     public void saveAnswer(BaseQuestion question) {
         boolean hasAnswer = true;
+        if(mAnswers.size() == 0)
+            hasAnswer = false;
         for(String str: mAnswers){
             if(TextUtils.isEmpty(str)){
                 hasAnswer = false;

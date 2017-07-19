@@ -21,8 +21,8 @@ import java.util.List;
 
 public class FillBlankQuestion extends BaseQuestion {
 
-    private List<String> mFilledAnswers = new ArrayList<>();
-    private List<String> mCorrectAnswers = new ArrayList<>();
+    private List<String> filledAnswers = new ArrayList<>();
+    private List<String> correctAnswers = new ArrayList<>();
     private List<PointBean> pointList;
     private int starCount;
     private String questionAnalysis;
@@ -50,10 +50,10 @@ public class FillBlankQuestion extends BaseQuestion {
             return;
         }
         for (Object o : bean.getQuestions().getPad().getJsonAnswer()) {
-            mFilledAnswers.add(String.valueOf(o));
+            filledAnswers.add(String.valueOf(o));
         }
         for(Object o : server_answer){
-            mCorrectAnswers.add(String.valueOf(o));
+            correctAnswers.add(String.valueOf(o));
         }
     }
 
@@ -68,26 +68,26 @@ public class FillBlankQuestion extends BaseQuestion {
     }
 
     public List<String> getStringAnswers() {
-        return mFilledAnswers;
+        return filledAnswers;
     }
 
     public List<String> getCorrectAnswers() {
-        return mCorrectAnswers;
+        return correctAnswers;
     }
 
     @Override
     public Object getAnswer() {
-        return mFilledAnswers;
+        return filledAnswers;
     }
 
     @Override
     public int getStatus() {
-        for (String str : mFilledAnswers) {
+        for (String str : filledAnswers) {
             if (TextUtils.isEmpty(str.trim())) {
                 return Constants.ANSWER_STATUS_NOANSWERED;
             }
         }
-        boolean isRight = QuestionUtil.compareListByOrder(StringUtil.full2half(mFilledAnswers), StringUtil.full2half(mCorrectAnswers));
+        boolean isRight = QuestionUtil.compareListByOrder(StringUtil.full2half(filledAnswers), StringUtil.full2half(correctAnswers));
         if (isRight) {
             return Constants.ANSWER_STATUS_RIGHT;
         } else {
@@ -96,17 +96,17 @@ public class FillBlankQuestion extends BaseQuestion {
     }
 
     public boolean isRight() {
-        for (String str : mFilledAnswers) {
+        for (String str : filledAnswers) {
             if (TextUtils.isEmpty(str.trim())) {
                 return false;
             }
         }
-        boolean isRight = QuestionUtil.compareListByOrder(StringUtil.full2half(mFilledAnswers), StringUtil.full2half(mCorrectAnswers));
+        boolean isRight = QuestionUtil.compareListByOrder(StringUtil.full2half(filledAnswers), StringUtil.full2half(correctAnswers));
         return isRight;
     }
 
     public void setAnswer(List<String> list) {
-        mFilledAnswers = list;
+        filledAnswers = list;
     }
 
     public List<PointBean> getPointList() {

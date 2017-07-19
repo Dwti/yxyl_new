@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,6 +62,8 @@ public class ConnectFragment extends AnswerSimpleExerciseBaseFragment {
                     mRightAdapter.remove(mRightAdapter.getLastSelectedPosition());
                     mLeftSelectedItem = null;
                     mRightSelectedItem = null;
+                    saveAnswer(mQuestion);
+                    updateProgress();
                 }
             }
         });
@@ -75,6 +78,8 @@ public class ConnectFragment extends AnswerSimpleExerciseBaseFragment {
                     mRightAdapter.remove(position);
                     mLeftSelectedItem = null;
                     mRightSelectedItem = null;
+                    saveAnswer(mQuestion);
+                    updateProgress();
                 }
             }
         });
@@ -111,7 +116,7 @@ public class ConnectFragment extends AnswerSimpleExerciseBaseFragment {
     private void initPopWindow() {
         if (mPopWindow == null) {
             View contentView = LayoutInflater.from(getContext()).inflate(R.layout.popwindow_connect_result, null);
-            mPopWindow = new PopupWindow(contentView,ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            mPopWindow = new PopupWindow(contentView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             View dismiss = contentView.findViewById(R.id.dismiss);
             View btnClear = contentView.findViewById(R.id.tv_clear);
             mRecyclerViewResult = (RecyclerView) contentView.findViewById(R.id.recyclerView);
@@ -122,16 +127,18 @@ public class ConnectFragment extends AnswerSimpleExerciseBaseFragment {
             btnClear.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(mConnectedList.size() > 0){
+                    if (mConnectedList.size() > 0) {
                         List<ConnectItemBean> leftToAdd = new ArrayList<>();
                         List<ConnectItemBean> rightToAdd = new ArrayList<>();
-                        for(ConnectedBean bean : mConnectedList){
+                        for (ConnectedBean bean : mConnectedList) {
                             leftToAdd.add(bean.getLeftItem());
                             rightToAdd.add(bean.getRightItem());
                         }
                         mResultAdapter.clear();
                         mLeftAdapter.addAll(leftToAdd);
                         mRightAdapter.addAll(rightToAdd);
+                        saveAnswer(mQuestion);
+                        updateProgress();
                     }
                 }
             });
@@ -146,6 +153,8 @@ public class ConnectFragment extends AnswerSimpleExerciseBaseFragment {
                 public void onDeleted(ConnectedBean bean) {
                     mLeftAdapter.add(bean.getLeftItem());
                     mRightAdapter.add(bean.getRightItem());
+                    saveAnswer(mQuestion);
+                    updateProgress();
                 }
             });
         }
@@ -153,7 +162,7 @@ public class ConnectFragment extends AnswerSimpleExerciseBaseFragment {
 
     private void showResult() {
         initPopWindow();
-        mPopWindow.showAtLocation(getActivity().getWindow().getDecorView(), Gravity.CENTER,0,0);
+        mPopWindow.showAtLocation(getActivity().getWindow().getDecorView(), Gravity.CENTER, 0, 0);
     }
 
     private void dismissResult() {
@@ -183,6 +192,36 @@ public class ConnectFragment extends AnswerSimpleExerciseBaseFragment {
 
     @Override
     public void saveAnswer(BaseQuestion question) {
+        List<String> answers = new ArrayList<>();
+        for (ConnectedBean bean : mConnectedList) {
+            int leftPos = bean.getLeftItem().getOriginPosition();
+            int rightPos = bean.getRightItem().getOriginPosition();
+            rightPos += mQuestion.getChoices().size() / 2;
+
+            answers.add(leftPos + "," + rightPos);
+        }
+        if (answers.size() < mQuestion.getChoices().size() / 2) {
+            int count = mQuestion.getChoices().size() / 2 - answers.size();
+            for (int i = 0; i < count; i++) {
+                answers.add("");
+            }
+        }
+
+        mQuestion.setServerFilledAnswers(answers);
+
+        boolean hasAnswered = true;
+        if (answers.size() == 0) {
+            hasAnswered = false;
+        } else {
+            for (String s : answers) {
+                if (TextUtils.isEmpty(s)) {
+                    hasAnswered = false;
+                    break;
+                }
+            }
+        }
+        mQuestion.setIsAnswer(hasAnswered);
+
         super.saveAnswer(question);
     }
 }
