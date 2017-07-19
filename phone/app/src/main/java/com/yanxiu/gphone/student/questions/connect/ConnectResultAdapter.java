@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
+import com.yanxiu.gphone.student.util.ScreenUtils;
 
 import java.util.List;
 
@@ -21,6 +22,8 @@ public class ConnectResultAdapter extends RecyclerView.Adapter<ConnectResultAdap
     private List<ConnectedBean> mData;
 
     private OnItemDeletedListener mOnItemDeletedListener;
+
+    private int mMaxPicWidth = 0;
 
     public void setOnItemDeteleListener(OnItemDeletedListener onItemDeletedListener) {
         this.mOnItemDeletedListener = onItemDeletedListener;
@@ -37,8 +40,8 @@ public class ConnectResultAdapter extends RecyclerView.Adapter<ConnectResultAdap
 
     @Override
     public void onBindViewHolder(ConnectedItemViewHolder holder, int position) {
-        holder.mLeftText.setText(Html.fromHtml(mData.get(position).getLeftItem().getText(),new HtmlImageGetter(holder.mLeftText),null));
-        holder.mRightText.setText(Html.fromHtml(mData.get(position).getRightItem().getText(),new HtmlImageGetter(holder.mRightText),null));
+        holder.leftText.setText(Html.fromHtml(mData.get(position).getLeftItem().getText(),new HtmlImageGetter(holder.leftText,mMaxPicWidth),null));
+        holder.rightText.setText(Html.fromHtml(mData.get(position).getRightItem().getText(),new HtmlImageGetter(holder.rightText,mMaxPicWidth),null));
     }
 
     @Override
@@ -57,14 +60,22 @@ public class ConnectResultAdapter extends RecyclerView.Adapter<ConnectResultAdap
     }
 
     class ConnectedItemViewHolder extends RecyclerView.ViewHolder{
-        private TextView mLeftText,mRightText;
-        private View mDetele;
+        private TextView leftText, rightText;
+        private View detele;
         public ConnectedItemViewHolder(View itemView) {
             super(itemView);
-            mLeftText = (TextView) itemView.findViewById(R.id.textLeft);
-            mRightText = (TextView) itemView.findViewById(R.id.textRight);
-            mDetele = itemView.findViewById(R.id.delete);
-            mDetele.setOnClickListener(new View.OnClickListener() {
+            leftText = (TextView) itemView.findViewById(R.id.textLeft);
+            rightText = (TextView) itemView.findViewById(R.id.textRight);
+            detele = itemView.findViewById(R.id.delete);
+
+            if(mMaxPicWidth == 0){
+                View leftLine = itemView.findViewById(R.id.line_left);
+                View rightLine = itemView.findViewById(R.id.line_right);
+                int space = itemView.getWidth() - itemView.getPaddingLeft() - itemView.getPaddingRight() - leftLine.getWidth() - rightLine.getWidth() - detele.getWidth() - ScreenUtils.dpToPxInt(itemView.getContext(),4);
+                mMaxPicWidth = space / 2 - leftText.getPaddingLeft() - leftText.getPaddingRight();
+            }
+
+            detele.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     ConnectedBean bean = mData.get(getLayoutPosition());

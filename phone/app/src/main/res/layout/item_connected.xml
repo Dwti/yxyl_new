@@ -23,6 +23,7 @@
         />
     
     <View
+        android:id="@+id/line_left"
         android:layout_width="15dp"
         android:layout_height="2dp"
         android:background="@android:color/white"/>
@@ -36,6 +37,7 @@
         android:background="@android:color/holo_red_light"/>
 
     <View
+        android:id="@+id/line_right"
         android:layout_width="15dp"
         android:layout_height="2dp"
         android:background="@android:color/white"/>
