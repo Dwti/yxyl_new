@@ -1,5 +1,6 @@
 package com.yanxiu.gphone.student.util;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -18,14 +19,24 @@ import java.util.HashMap;
  */
 
 public class HtmlImageGetter implements Html.ImageGetter {
+    Context mContext;
     TextView mTextView;
     HashMap<String, UrlDrawable> mMap;
     int mMaxWidth;
 
-    public HtmlImageGetter(TextView textview) {
-        mTextView = textview;
+    public HtmlImageGetter(TextView textView) {
+        mTextView = textView;
+        mContext = textView.getContext();
         mMap = new HashMap<>();
         mMaxWidth = mTextView.getWidth() - mTextView.getPaddingLeft() - mTextView.getPaddingRight();
+
+    }
+
+    public HtmlImageGetter(TextView textView,int maxWidth){
+        mTextView = textView;
+        mContext = textView.getContext();
+        mMap = new HashMap<>();
+        mMaxWidth = maxWidth;
 
     }
 
@@ -34,7 +45,7 @@ public class HtmlImageGetter implements Html.ImageGetter {
         UrlDrawable drawable = new UrlDrawable();
         mMap.put(source, drawable);
         drawable.setBounds(0, 0, 0, 0);
-        Glide.with(mTextView.getContext())
+        Glide.with(mContext)
                 .load(source)
                 .into(new SimpleTarget<GlideDrawable>() {
                     @Override
