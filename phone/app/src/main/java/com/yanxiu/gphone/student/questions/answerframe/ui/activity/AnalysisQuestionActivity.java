@@ -43,7 +43,6 @@ import java.util.ArrayList;
 
 import de.greenrobot.event.EventBus;
 
-
 /**
  * 解析页面
  */

@@ -1,7 +1,5 @@
 package com.yanxiu.gphone.student.mistake.fragment;
 
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,21 +9,26 @@ import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.homework.response.PaperResponse;
+import com.yanxiu.gphone.student.mistake.activity.MistakeClassifyActivity;
 import com.yanxiu.gphone.student.mistake.adapter.MistakeAllAdapter;
 import com.yanxiu.gphone.student.mistake.request.MistakeAllRequest;
-import com.yanxiu.gphone.student.questions.bean.PaperTestBean;
+import com.yanxiu.gphone.student.mistake.response.MistakeDeleteMessage;
+import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
+import com.yanxiu.gphone.student.questions.answerframe.ui.activity.WrongQuestionActivity;
+import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
+import com.yanxiu.gphone.student.questions.bean.PaperBean;
 import com.yanxiu.gphone.student.util.DESBodyDealer;
+import com.yanxiu.gphone.student.util.DataFetcher;
 import com.yanxiu.gphone.student.util.ToastManager;
-
-import java.util.List;
 
 /**
  * Created by Canghaixiao.
  * Time : 2017/7/13 10:39.
  * Function :
  */
-@RequiresApi(api = Build.VERSION_CODES.M)
-public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAllAdapter.onItemClickListener, SwipeRefreshLayout.OnRefreshListener, View.OnScrollChangeListener {
+public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAllAdapter.onItemClickListener, SwipeRefreshLayout.OnRefreshListener {
+
+    private static final String DEFAULT_QID = "0";
 
     private SwipeRefreshLayout mRefreshView;
     private RecyclerView mCompleteMistakeView;
@@ -43,7 +46,7 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
     protected void initView() {
         mCompleteMistakeView = (RecyclerView) rootView.findViewById(R.id.recy_complete_mistake);
         mCompleteMistakeView.setLayoutManager(new LinearLayoutManager(mContext));
-        mMistakeAllAdapter = new MistakeAllAdapter(mContext);
+        mMistakeAllAdapter = new MistakeAllAdapter(mContext,rootView);
         mCompleteMistakeView.setAdapter(mMistakeAllAdapter);
         mRefreshView = (SwipeRefreshLayout) rootView.findViewById(R.id.srl_refresh);
         mRefreshView.setSize(SwipeRefreshLayout.DEFAULT);
@@ -51,7 +54,7 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
 
     @Override
     protected void listener() {
-        mCompleteMistakeView.setOnScrollChangeListener(MistakeAllFragment.this);
+        mCompleteMistakeView.addOnScrollListener(mScrollListener);
         mMistakeAllAdapter.addItemClickListener(MistakeAllFragment.this);
         mRefreshView.setOnRefreshListener(MistakeAllFragment.this);
     }
@@ -64,7 +67,7 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
                 mRefreshView.setRefreshing(true);
             }
         });
-        requestData("0");
+        requestData(DEFAULT_QID);
     }
 
     @Override
@@ -72,6 +75,22 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
         if (mCompleteRequest != null) {
             mCompleteRequest.cancelRequest();
             mCompleteRequest = null;
+        }
+    }
+
+    @Override
+    protected void onDeleteItem(MistakeDeleteMessage message) {
+        if (message != null) {
+            this.mWrongNum=message.wrongNum;
+            if (mWrongNum==0){
+                ((MistakeClassifyActivity)mContext).finish();
+            }else {
+                mMistakeAllAdapter.deleteItem(message.position, message.questionId);
+                if (mMistakeAllAdapter.getItemCount() == 0) {
+                    mRefreshView.setRefreshing(true);
+                    requestData(DEFAULT_QID);
+                }
+            }
         }
     }
 
@@ -92,13 +111,13 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
                 }
                 if (response.getStatus().getCode() == 0) {
                     if (currentId.equals("0")) {
-                        mMistakeAllAdapter.setData(response.getData().get(0).getPaperTest());
+                        mMistakeAllAdapter.setData(response.getData().get(0));
                     } else {
-                        mMistakeAllAdapter.addData(response.getData().get(0).getPaperTest());
+                        mMistakeAllAdapter.addData(response.getData().get(0));
                     }
                     if (mWrongNum == mMistakeAllAdapter.getItemCount()) {
                         isShouldLoadMore = false;
-                    }else if (mWrongNum != mMistakeAllAdapter.getItemCount()){
+                    } else if (mWrongNum != mMistakeAllAdapter.getItemCount()) {
                         isShouldLoadMore = true;
                     }
                 } else {
@@ -118,22 +137,33 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
     }
 
     @Override
-    public void onItemClick(View view, List<PaperTestBean> paperTestBeanList, int position) {
-
+    public void onItemClick(View view, PaperBean paperBean, int position) {
+        Paper paper = new Paper(paperBean, QuestionShowType.MISTAKE_ANALYSIS);
+        DataFetcher.getInstance().save(paper.getId(), paper);
+        WrongQuestionActivity.LuanchActivity(mContext, paper.getId(), mSubjectId, mStageId, mWrongNum, position);
     }
 
     @Override
     public void onRefresh() {
-        requestData("0");
+        requestData(DEFAULT_QID);
     }
 
-    @Override
-    public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-        if (!isRequest && isShouldLoadMore) {
-            int lastItemPosition = ((LinearLayoutManager) mCompleteMistakeView.getLayoutManager()).findLastVisibleItemPosition();
-            if (lastItemPosition + 1 == mMistakeAllAdapter.getItemCount()) {
-                requestData(mMistakeAllAdapter.getLastItemWqid());
+    private RecyclerView.OnScrollListener mScrollListener = new RecyclerView.OnScrollListener() {
+        @Override
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+            if (!isRequest && isShouldLoadMore) {
+                int lastItemPosition = ((LinearLayoutManager) mCompleteMistakeView.getLayoutManager()).findLastVisibleItemPosition();
+                if (lastItemPosition + 1 == mMistakeAllAdapter.getItemCount()) {
+                    requestData(mMistakeAllAdapter.getLastItemWqid());
+                }
             }
         }
-    }
+
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+        }
+    };
+
 }

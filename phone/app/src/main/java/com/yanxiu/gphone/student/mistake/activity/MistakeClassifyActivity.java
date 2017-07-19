@@ -100,6 +100,7 @@ public class MistakeClassifyActivity extends YanxiuBaseActivity implements Radio
         chapterFragment.setArguments(bundle);
         kongledgeFragment.setArguments(bundle);
         completeFragment.setArguments(bundle);
+
         if (mStageId.equals(Constants.StageId[0]) || mStageId.equals(Constants.StageId[1])) {
             if (mTitle.equals(getText(R.string.mistake_redo_math))) {
                 transaction.add(R.id.fl_content, kongledgeFragment, MISTAKE_KONGLEDGE);

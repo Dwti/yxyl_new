@@ -1,6 +1,7 @@
 package com.yanxiu.gphone.student.mistake.fragment;
 
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.mistake.response.MistakeDeleteMessage;
 
 /**
  * Created by Canghaixiao.
@@ -31,6 +32,11 @@ public class MistakeChapterFragment extends MistakeBaseFragment {
 
     @Override
     protected void requestCancle() {
+
+    }
+
+    @Override
+    protected void onDeleteItem(MistakeDeleteMessage message) {
 
     }
 }

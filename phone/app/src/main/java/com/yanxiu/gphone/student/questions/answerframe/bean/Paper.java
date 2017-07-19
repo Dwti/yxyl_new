@@ -52,7 +52,7 @@ public class Paper {
         this.id = paperBean.getId();
         this.name = paperBean.getName();
         this.paperStatus = paperBean.getPaperStatus();
-        this.questions = QuestionConvertFactory.convertQuestion(paperBean.getPaperTest(),showType,paperStatus.getStatus());
+        this.questions = QuestionConvertFactory.convertQuestion(paperBean.getPaperTest(),showType,paperStatus!=null?paperStatus.getStatus():null);
         this.parentId = paperBean.getParentId();
         this.ptype = paperBean.getPtype();
         this.quesnum = paperBean.getQuesnum();
@@ -304,4 +304,19 @@ public class Paper {
             node.setPostfixNumber(total);
         }
     }
+
+    /**
+     * 错题记题号方法
+     * @param nodes
+     * @param totlaNumber
+     */
+    public static void generateUsedNumbersForWrongQuestion(List<BaseQuestion> nodes ,int totlaNumber) {
+        if (nodes == null) return;
+        for (int i =0; i<nodes.size();i++) {
+            BaseQuestion baseQuestion=nodes.get(i);
+            baseQuestion.setPrefixNumberForWrongQuestion(i+1);
+            baseQuestion.setPostfixNumberForWrongQuestion(totlaNumber);
+        }
+    }
+
 }

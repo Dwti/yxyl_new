@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 import com.yanxiu.gphone.student.base.YanxiuBaseFragment;
 import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
 import com.yanxiu.gphone.student.mistake.activity.MistakeClassifyActivity;
+import com.yanxiu.gphone.student.mistake.response.MistakeDeleteMessage;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by Canghaixiao.
@@ -29,6 +32,7 @@ public abstract class MistakeBaseFragment extends YanxiuBaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(MistakeBaseFragment.this);
         Bundle bundle = getArguments();
         if (bundle != null) {
             mStageId = bundle.getString(MistakeClassifyActivity.STAGEID, "");
@@ -56,6 +60,16 @@ public abstract class MistakeBaseFragment extends YanxiuBaseFragment {
         requestCancle();
     }
 
+    public void onEventMainThread(MistakeDeleteMessage message){
+        onDeleteItem(message);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(MistakeBaseFragment.this);
+    }
+
     protected abstract int getContentViewId();
 
     protected abstract void initView();
@@ -65,4 +79,6 @@ public abstract class MistakeBaseFragment extends YanxiuBaseFragment {
     protected abstract void initData();
 
     protected abstract void requestCancle();
+
+    protected abstract void onDeleteItem(MistakeDeleteMessage message);
 }

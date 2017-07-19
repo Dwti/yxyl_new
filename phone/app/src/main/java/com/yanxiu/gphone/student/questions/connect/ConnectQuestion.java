@@ -27,6 +27,11 @@ public class ConnectQuestion extends BaseQuestion {
     }
 
     @Override
+    public ExerciseBaseFragment wrongFragment() {
+        return null;
+    }
+
+    @Override
     public Object getAnswer() {
         return null;
     }
