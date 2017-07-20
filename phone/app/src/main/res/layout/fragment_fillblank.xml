@@ -22,7 +22,7 @@
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:paddingTop="25dp"
-            android:paddingBottom="@dimen/question_bottom_layout_height"
+            android:paddingBottom="50dp"
             android:orientation="vertical">
 
             <include
