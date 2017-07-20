@@ -125,6 +125,7 @@ public class MistakeClassifyActivity extends YanxiuBaseActivity implements Radio
     }
 
     private void initData() {
+        mClassifyView.setVisibility(View.GONE);
         mTitleView.setText(mTitle);
         mBackView.setVisibility(View.VISIBLE);
         mAllView.setChecked(true);
