@@ -217,5 +217,6 @@
 
     <string name="mistake_redo_math">数学</string>
     <string name="mistake_redo_english">英语</string>
+    <string name="clear_text">清空</string>
 
 </resources>
