@@ -53,7 +53,7 @@ public class WrongQuestionActivity extends YanxiuBaseActivity implements View.On
     private LinearLayout mLastQuestionView;
     private LinearLayout mNextQuestionView;
     private ImageView mBackView;
-    private TextView mDeleteView;
+    private ImageView mDeleteView;
     private QAViewPager mQaView;
     private QAWrongViewPagerAdapter mQaAdapter;
 
@@ -122,7 +122,7 @@ public class WrongQuestionActivity extends YanxiuBaseActivity implements View.On
         mLastQuestionView = (LinearLayout) findViewById(R.id.ll_last);
         mNextQuestionView = (LinearLayout) findViewById(R.id.ll_next);
         mBackView = (ImageView) findViewById(R.id.backview);
-        mDeleteView = (TextView) findViewById(R.id.tv_delete);
+        mDeleteView = (ImageView) findViewById(R.id.tv_delete);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         mQaView = (QAViewPager) findViewById(R.id.vp_viewPager);
@@ -140,7 +140,6 @@ public class WrongQuestionActivity extends YanxiuBaseActivity implements View.On
     }
 
     private void initData() {
-        mLastQuestionView.setVisibility(View.GONE);
         String key = getIntent().getStringExtra(Constants.EXTRA_PAPER);
         mSubjectId = getIntent().getStringExtra(SUBJECTID);
         mStageId = getIntent().getStringExtra(STAGEID);
@@ -222,23 +221,28 @@ public class WrongQuestionActivity extends YanxiuBaseActivity implements View.On
     }
 
     public void hiddenSwitchQuestionView() {
-        int index = mQaView.getCurrentItem();
-        WrongExercisbaseFragment currentFramgent = (WrongExercisbaseFragment) mQaAdapter.instantiateItem(mQaView, index);
-        if (index == 0) {
-            if (currentFramgent.getIsFirst()) {
-                mLastQuestionView.setVisibility(View.GONE);
-                mNextQuestionView.setVisibility(View.VISIBLE);
-                return;
+        if (mWrongNum!=1) {
+            int index = mQaView.getCurrentItem();
+            WrongExercisbaseFragment currentFramgent = (WrongExercisbaseFragment) mQaAdapter.instantiateItem(mQaView, index);
+            if (index == 0) {
+                if (currentFramgent.getIsFirst()) {
+                    mLastQuestionView.setVisibility(View.GONE);
+                    mNextQuestionView.setVisibility(View.VISIBLE);
+                    return;
+                }
+            } else if (index == mWrongNum - 1) {
+                if (currentFramgent.getIsEnd()) {
+                    mLastQuestionView.setVisibility(View.VISIBLE);
+                    mNextQuestionView.setVisibility(View.GONE);
+                    return;
+                }
             }
-        } else if (index == mWrongNum - 1) {
-            if (currentFramgent.getIsEnd()) {
-                mLastQuestionView.setVisibility(View.VISIBLE);
-                mNextQuestionView.setVisibility(View.GONE);
-                return;
-            }
+            mLastQuestionView.setVisibility(View.VISIBLE);
+            mNextQuestionView.setVisibility(View.VISIBLE);
+        }else {
+            mLastQuestionView.setVisibility(View.GONE);
+            mNextQuestionView.setVisibility(View.GONE);
         }
-        mLastQuestionView.setVisibility(View.VISIBLE);
-        mNextQuestionView.setVisibility(View.VISIBLE);
     }
 
     @Override

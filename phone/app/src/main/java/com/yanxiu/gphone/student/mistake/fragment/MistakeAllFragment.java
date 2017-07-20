@@ -8,10 +8,12 @@ import android.view.View;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
+import com.yanxiu.gphone.student.base.EXueELianBaseResponse;
 import com.yanxiu.gphone.student.homework.response.PaperResponse;
 import com.yanxiu.gphone.student.mistake.activity.MistakeClassifyActivity;
 import com.yanxiu.gphone.student.mistake.adapter.MistakeAllAdapter;
 import com.yanxiu.gphone.student.mistake.request.MistakeAllRequest;
+import com.yanxiu.gphone.student.mistake.request.MistakeDeleteQuestionRequest;
 import com.yanxiu.gphone.student.mistake.response.MistakeDeleteMessage;
 import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.WrongQuestionActivity;
@@ -20,6 +22,8 @@ import com.yanxiu.gphone.student.questions.bean.PaperBean;
 import com.yanxiu.gphone.student.util.DESBodyDealer;
 import com.yanxiu.gphone.student.util.DataFetcher;
 import com.yanxiu.gphone.student.util.ToastManager;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by Canghaixiao.
@@ -46,7 +50,7 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
     protected void initView() {
         mCompleteMistakeView = (RecyclerView) rootView.findViewById(R.id.recy_complete_mistake);
         mCompleteMistakeView.setLayoutManager(new LinearLayoutManager(mContext));
-        mMistakeAllAdapter = new MistakeAllAdapter(mContext,rootView);
+        mMistakeAllAdapter = new MistakeAllAdapter(mContext);
         mCompleteMistakeView.setAdapter(mMistakeAllAdapter);
         mRefreshView = (SwipeRefreshLayout) rootView.findViewById(R.id.srl_refresh);
         mRefreshView.setSize(SwipeRefreshLayout.DEFAULT);
@@ -131,6 +135,41 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
                 if (mRefreshView.isRefreshing()) {
                     mRefreshView.setRefreshing(false);
                 }
+                ToastManager.showMsg(error.getMessage());
+            }
+        });
+    }
+
+    public void onEventMainThread(MistakeAllAdapter.OnItemDelete itemDelete){
+        if (itemDelete!=null){
+            setDeleteItem(itemDelete);
+        }
+    }
+
+    private void setDeleteItem(final MistakeAllAdapter.OnItemDelete itemDelete){
+        rootView.showLoadingView();
+        MistakeDeleteQuestionRequest deleteQuestionRequest=new MistakeDeleteQuestionRequest();
+        deleteQuestionRequest.questionId=itemDelete.questionId;
+        deleteQuestionRequest.startRequest(EXueELianBaseResponse.class, new EXueELianBaseCallback<EXueELianBaseResponse>() {
+            @Override
+            protected void onResponse(RequestBase request, EXueELianBaseResponse response) {
+                rootView.hiddenLoadingView();
+                if (response.getStatus().getCode()==0){
+                    mWrongNum-=1;
+                    MistakeDeleteMessage deleteMessage=new MistakeDeleteMessage();
+                    deleteMessage.wrongNum=mWrongNum;
+                    deleteMessage.position=itemDelete.position;
+                    deleteMessage.questionId=itemDelete.questionId;
+                    deleteMessage.subjectId=mSubjectId;
+                    EventBus.getDefault().post(deleteMessage);
+                }else {
+                    ToastManager.showMsg(response.getStatus().getDesc());
+                }
+            }
+
+            @Override
+            public void onFail(RequestBase request, Error error) {
+                rootView.hiddenLoadingView();
                 ToastManager.showMsg(error.getMessage());
             }
         });

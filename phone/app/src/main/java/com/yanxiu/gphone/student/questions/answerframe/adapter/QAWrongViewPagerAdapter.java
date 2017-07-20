@@ -73,7 +73,7 @@ public class QAWrongViewPagerAdapter extends FragmentStatePagerAdapter {
             BaseQuestion baseQuestion = mDatas.get(position);
             MistakeDeleteMessage deleteMessage = new MistakeDeleteMessage();
             deleteMessage.position = position;
-            deleteMessage.questionId = baseQuestion.getId();
+            deleteMessage.questionId = baseQuestion.getQid();
             deleteMessage.wrongNum=wrongNum;
             deleteMessage.subjectId=mSubjectId;
             EventBus.getDefault().post(deleteMessage);

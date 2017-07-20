@@ -28,16 +28,15 @@
             android:textSize="21dp"
             android:textColor="@color/color_666666"/>
 
-        <TextView
+        <ImageView
             android:id="@+id/tv_delete"
-            android:layout_width="@dimen/analysis_error_width"
-            android:layout_height="@dimen/analysis_error_height"
-            android:background="@drawable/selector_analysis_error"
+            android:layout_width="@dimen/wrong_question_delete_w_h"
+            android:layout_height="@dimen/wrong_question_delete_w_h"
+            android:src="@drawable/wrong_quesition_delete"
             android:gravity="center"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/question_top_layout_rightimage_marginRight"
-            android:text="@string/baocuo_text"
             android:textColor="@drawable/selector_analysis_error_text_color"/>
 
 

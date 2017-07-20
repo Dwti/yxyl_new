@@ -230,5 +230,17 @@
     <dimen name="cloze_bottom_layout_height">290dp</dimen>
 
     <dimen name="analysis_line_h">10dp</dimen>
+
+    <dimen name="mistake_content_margin_t">10dp</dimen>
+    <dimen name="mistake_list_item_h">50dp</dimen>
+    <dimen name="mistake_list_item_padding_l">11dp</dimen>
+    <dimen name="mistake_list_item_padding_r">12dp</dimen>
+    <dimen name="mistake_list_item_icon_w_h">28dp</dimen>
+    <dimen name="mistake_list_item_icon2_w_h">15dp</dimen>
+    <dimen name="mistake_list_item_text_margin_icon">8dp</dimen>
+    <dimen name="mistake_list_item_text_size">18dp</dimen>
+    <dimen name="mistake_list_item_text_size2">16dp</dimen>
+
+    <dimen name="wrong_question_delete_w_h">38dp</dimen>
 </resources>
 

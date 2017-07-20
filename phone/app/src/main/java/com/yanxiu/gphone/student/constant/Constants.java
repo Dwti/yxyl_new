@@ -67,4 +67,16 @@ public class Constants {
     public static final int ANSWER_STATUS_HALFRIGHT = 2;// 题目状态  2 半对
     public static final int ANSWER_STATUS_NOANSWERED = 3;// 题目状态 3 未作答案
     public static final int ANSWER_STATUS_YSUBJECT_ANSWERED = 4;// 题目状态 4 标示主观题 已作答
+
+    public static final class SubjectId{
+        public static final int CHINESE=1102;
+        public static final int MATH=1103;
+        public static final int ENGLISH=1104;
+        public static final int PHYSICAL=1105;
+        public static final int CHEMICAL=1106;
+        public static final int BIOLOGY=1107;
+        public static final int GEOGRAPHIC=1108;
+        public static final int POLITICAL=1109;
+        public static final int HISTORY=1110;
+    }
 }
