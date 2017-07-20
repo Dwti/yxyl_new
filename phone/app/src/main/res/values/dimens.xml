@@ -242,5 +242,9 @@
     <dimen name="mistake_list_item_text_size2">16dp</dimen>
 
     <dimen name="wrong_question_delete_w_h">38dp</dimen>
+
+    <dimen name="classify_scroll_paddingbottom">25dp</dimen>
+    <dimen name="classify_choice_margin">15dp</dimen>
+
 </resources>
 

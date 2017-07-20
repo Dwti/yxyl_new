@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:background="@android:color/white">
+
+    <include
+        android:id="@+id/number_bar"
+        layout="@layout/answerquestion_common_number" />
+
+    <include
+        android:id="@+id/complex_stem_layout"
+        layout="@layout/common_stem"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/stem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="17dp"
+        android:layout_marginBottom="25dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView_left"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:layout_weight="1"
+            android:background="#e3e6e4"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView_right"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:layout_weight="1"
+            android:layout_marginLeft="15dp"
+            android:background="#e3e6e4"/>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/basket"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@android:color/holo_blue_light"
+        android:layout_gravity="center_horizontal"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/question_bottom_layout_height"/>
+
+</LinearLayout>

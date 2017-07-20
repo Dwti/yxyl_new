@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.homework.response.HomeworkDetailBean;
 
+import java.text.NumberFormat;
 import java.util.List;
 
 /**
@@ -79,7 +80,8 @@ public class HomeworkDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     viewHolder.mState2.setText("");
                 }else {
                     viewHolder.mState1.setText(R.string.homework_checked);
-                    viewHolder.mState2.setText(mContext.getString(R.string.score_rate) + bean.getPaperStatus().getScoreRate());
+                    viewHolder.mState2.setText(mContext.getString(R.string.score_rate) + NumberFormat.getPercentInstance().format(bean.getPaperStatus().getScoreRate()));
+
                     if(!TextUtils.isEmpty(bean.getPaperStatus().getTeachercomments())){
                         viewHolder.mCommentLayout.setVisibility(View.VISIBLE);
                         String text = String.format(mContext.getString(R.string.comment),bean.getPaperStatus().getTeacherName(),bean.getPaperStatus().getTeachercomments());
@@ -127,6 +129,13 @@ public class HomeworkDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public void replaceData(List<HomeworkDetailBean> data){
         this.mData = data;
         notifyDataSetChanged();
+    }
+
+    public void clearData(){
+        if(mData != null && mData.size() > 0){
+            mData.clear();
+            notifyDataSetChanged();
+        }
     }
 
     public void addFooterView(){

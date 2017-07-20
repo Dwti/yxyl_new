@@ -110,6 +110,8 @@ public class HomeworkDetailActivity extends Activity implements HomeworkDetailCo
         mRefreshBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mHomeworkDetailAdapter.clearData();
+                showContentView();
                 mPresenter.loadHomework();
             }
         });
