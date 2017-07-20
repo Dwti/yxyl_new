@@ -3,6 +3,7 @@ package com.yanxiu.gphone.student.questions.fillblank;
 
 import android.text.TextUtils;
 
+import com.google.gson.JsonArray;
 import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
@@ -11,6 +12,9 @@ import com.yanxiu.gphone.student.questions.answerframe.util.QuestionUtil;
 import com.yanxiu.gphone.student.questions.bean.PaperTestBean;
 import com.yanxiu.gphone.student.questions.bean.PointBean;
 import com.yanxiu.gphone.student.util.StringUtil;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,14 +50,19 @@ public class FillBlankQuestion extends BaseQuestion {
     }
 
     private void initAnswer(PaperTestBean bean) {
-        if (bean.getQuestions().getPad() == null || bean.getQuestions().getPad().getJsonAnswer() == null) {
-            return;
-        }
-        for (Object o : bean.getQuestions().getPad().getJsonAnswer()) {
-            filledAnswers.add(String.valueOf(o));
-        }
         for(Object o : server_answer){
             correctAnswers.add(String.valueOf(o));
+        }
+
+        if (bean.getQuestions().getPad() != null && bean.getQuestions().getPad().getAnswer() != null) {
+            try {
+                JSONArray jsonArray = new JSONArray(bean.getQuestions().getPad().getAnswer());
+                for(int i =0;i<jsonArray.length();i++){
+                    filledAnswers.add(jsonArray.getString(i));
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 

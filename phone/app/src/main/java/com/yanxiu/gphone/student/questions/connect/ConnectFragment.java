@@ -18,6 +18,7 @@ import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.An
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -30,7 +31,8 @@ public class ConnectFragment extends AnswerSimpleExerciseBaseFragment {
     private RecyclerView mRecyclerViewLeft, mRecyclerViewRight, mRecyclerViewResult;
     private ConnectResultAdapter mResultAdapter;
     private ConnectItemAdapter mLeftAdapter, mRightAdapter;
-    private List<String> mChoicesLeft, mChoicesRight;
+    private List<ConnectItemBean> mLeftChoices = new ArrayList<>();
+    private List<ConnectItemBean> mRightChoices = new ArrayList<>();
     private List<ConnectedBean> mConnectedList = new ArrayList<>();
     private ConnectItemBean mLeftSelectedItem;
     private ConnectItemBean mRightSelectedItem;
@@ -93,11 +95,48 @@ public class ConnectFragment extends AnswerSimpleExerciseBaseFragment {
     }
 
     private void initData() {
-        mChoicesLeft = mQuestion.getLeftChoices();
-        mChoicesRight = mQuestion.getRightChoices();
 
-        mLeftAdapter = new ConnectItemAdapter(mChoicesLeft);
-        mRightAdapter = new ConnectItemAdapter(mChoicesRight);
+        List<String> leftTexts = mQuestion.getLeftChoices();
+        List<String> rightTexts = mQuestion.getRightChoices();
+
+        for (int i = 0; i < leftTexts.size(); i++) {
+            mLeftChoices.add(new ConnectItemBean(leftTexts.get(i), i));
+        }
+
+        for (int i = 0; i < rightTexts.size(); i++) {
+            mRightChoices.add(new ConnectItemBean(rightTexts.get(i), i));
+        }
+
+        List<String> filledAnswers = mQuestion.getFilledAnswers();
+        for(String str: filledAnswers){
+            if(!TextUtils.isEmpty(str) && str.contains(",")){
+                int left = Integer.parseInt(str.split(",")[0]);
+                int right = Integer.parseInt(str.split(",")[1]);
+                ConnectItemBean leftItem = new ConnectItemBean(leftTexts.get(left),left);
+                ConnectItemBean rightItem = new ConnectItemBean(rightTexts.get(right),right);
+
+                mConnectedList.add(new ConnectedBean(leftItem,rightItem));
+
+
+                Iterator<ConnectItemBean> leftIterator = mLeftChoices.iterator();
+                while (leftIterator.hasNext()){
+                    if(leftIterator.next().getOriginPosition() == left){
+                        leftIterator.remove();
+                    }
+                }
+
+                Iterator<ConnectItemBean> rightIterator = mRightChoices.iterator();
+                while (rightIterator.hasNext()){
+                    if(rightIterator.next().getOriginPosition() == right){
+                        rightIterator.remove();
+                    }
+                }
+
+            }
+        }
+
+        mLeftAdapter = new ConnectItemAdapter(mLeftChoices);
+        mRightAdapter = new ConnectItemAdapter(mRightChoices);
 
         mRecyclerViewLeft.setAdapter(mLeftAdapter);
         mRecyclerViewRight.setAdapter(mRightAdapter);

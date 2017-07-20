@@ -25,12 +25,8 @@ public class ConnectItemAdapter extends RecyclerView.Adapter<ConnectItemAdapter.
     private View mLastSelectedItem;
     private int mLastSelectedPos = -1;
 
-    public ConnectItemAdapter(List<String> texts) {
-        mData = new ArrayList<>();
-        for (int i = 0; i < texts.size(); i++) {
-            mData.add(new ConnectItemBean(texts.get(i), i));
-        }
-
+    public ConnectItemAdapter(List<ConnectItemBean> data) {
+        mData = data;
     }
 
     @Override
@@ -39,8 +35,13 @@ public class ConnectItemAdapter extends RecyclerView.Adapter<ConnectItemAdapter.
     }
 
     @Override
-    public void onBindViewHolder(ItemViewHolder holder, int position) {
-        holder.text.setText(Html.fromHtml(mData.get(position).getText(), new HtmlImageGetter(holder.text), null));
+    public void onBindViewHolder(final ItemViewHolder holder, final int position) {
+        holder.itemView.post(new Runnable() {
+            @Override
+            public void run() {
+                holder.text.setText(Html.fromHtml(mData.get(position).getText(), new HtmlImageGetter(holder.text), null));
+            }
+        });
         holder.itemView.setTag(mData.get(position));
         if (position == mLastSelectedPos) {
             holder.itemView.setSelected(true);

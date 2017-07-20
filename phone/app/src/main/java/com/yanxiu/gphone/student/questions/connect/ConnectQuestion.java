@@ -9,6 +9,9 @@ import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.questions.bean.PaperTestBean;
 import com.yanxiu.gphone.student.questions.bean.PointBean;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -20,10 +23,10 @@ import java.util.Map;
 public class ConnectQuestion extends BaseQuestion {
 
     private List<String> choices;
-    private List<String> correctAnswers = new ArrayList<>();
-    private List<String> filledAnswers = new ArrayList<>();
     private List<String> leftChoices, rightChoices;
-    private List<String> serverCorrectAnswers,serverFilledAnswers;
+    private List<String> correctAnswers = new ArrayList<>(); //转换过的，右边以一半计数，比如choices的大小为10，则"0,5"为"0,0";
+    private List<String> filledAnswers = new ArrayList<>();//转换过的，右边以一半计数，比如choices的大小为10，则"0,5"为"0,0";
+    private List<String> serverCorrectAnswers,serverFilledAnswers;//为转换过的，同上，"0,5"就是为"0,5"
 
     private List<PointBean> pointList;
     private int starCount;
@@ -53,11 +56,16 @@ public class ConnectQuestion extends BaseQuestion {
         choices = bean.getQuestions().getContent().getChoices();
 
         //处理用户已作答的答案
-        if(bean.getQuestions().getPad() != null && bean.getQuestions().getPad().getJsonAnswer() != null){
+        if(bean.getQuestions().getPad() != null && bean.getQuestions().getPad().getAnswer() != null){
 
             serverFilledAnswers  = new ArrayList<>();
-            for (Object o : bean.getQuestions().getPad().getJsonAnswer()) {
-                serverFilledAnswers.add(String.valueOf(o));
+            try {
+                JSONArray jsonArray = new JSONArray(bean.getQuestions().getPad().getAnswer());
+                for(int i =0;i<jsonArray.length();i++){
+                    serverFilledAnswers.add(jsonArray.getString(i));
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
 
             for(String s : serverFilledAnswers){
@@ -142,13 +150,13 @@ public class ConnectQuestion extends BaseQuestion {
 
     public List<String> getLeftChoices() {
         if (leftChoices == null)
-            leftChoices = choices.subList(0, (choices.size() / 2));
+            leftChoices = new ArrayList<>(choices.subList(0, (choices.size() / 2)));
         return leftChoices;
     }
 
     public List<String> getRightChoices() {
         if (rightChoices == null)
-            rightChoices = choices.subList(choices.size() / 2, choices.size());
+            rightChoices = new ArrayList<>(choices.subList(choices.size() / 2, choices.size()));
         return rightChoices;
     }
 
