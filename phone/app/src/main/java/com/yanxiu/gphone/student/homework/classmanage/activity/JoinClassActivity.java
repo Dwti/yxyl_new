@@ -34,6 +34,11 @@ public class JoinClassActivity extends Activity {
 
     public static final String EXTRA_CLASS_INFO = "CLASS_INFO";
 
+    private int mClassStatus = -1;
+
+    public static int ALLOW_TO_JOIN = 0;  //班级开放加入
+    public static int NEED_VERIFY = 1;    //需要审核
+
     private ScrollView mScrollView;
 
     private String mName,mClassId;
@@ -46,15 +51,13 @@ public class JoinClassActivity extends Activity {
 
     private EditText mEditName;
 
-    private boolean mKeyBoardVisible = false;
-
-    private int mBottom;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join_class);
         ClassBean classInfo = (ClassBean) getIntent().getSerializableExtra(EXTRA_CLASS_INFO);
+        mClassStatus = classInfo.getStatus();
         initView(classInfo);
         initListener();
     }
@@ -130,33 +133,6 @@ public class JoinClassActivity extends Activity {
         });
     }
 
-//    @Override
-//    public void onWindowFocusChanged(boolean hasFocus) {
-//        super.onWindowFocusChanged(hasFocus);
-//        if(hasFocus){
-//            mBottom = mScrollView.getBottom();
-//            mScrollView.getViewTreeObserver().addOnGlobalLayoutListener(mOnGlobalLayoutListener);
-//        }
-//    }
-
-    //监听键盘的弹出收起,并且在键盘弹起时，ScrollView滑动到指定位置
-//    ViewTreeObserver.OnGlobalLayoutListener mOnGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
-//        @Override
-//        public void onGlobalLayout() {
-//            if(mScrollView.getBottom() < mBottom && !mKeyBoardVisible){
-//                mKeyBoardVisible = true;
-//                mScrollView.post(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        mScrollView.scrollTo(0, (int) mWavesLayout.getY());
-//                    }
-//                });
-//            }else if(mScrollView.getBottom() >= mBottom && mKeyBoardVisible){
-//                mKeyBoardVisible = false;
-//            }
-//        }
-//    };
-
     private void updateUserInfo(String name) {
         UpdateUserInfoRequest request = new UpdateUserInfoRequest();
         request.setRealname(name);
@@ -181,6 +157,12 @@ public class JoinClassActivity extends Activity {
         public void onResponse(RequestBase request, JoinClassResponse ret) {
             if(ret.getStatus().getCode() == 0){
                 updateUserInfo(mName);
+                if(mClassStatus == ALLOW_TO_JOIN){
+                    ToastManager.showMsg(getString(R.string.join_class_success));
+                }else if(mClassStatus == NEED_VERIFY){
+                    ToastManager.showMsg(getString(R.string.need_verify));
+                }
+            }else {
                 ToastManager.showMsg(ret.getStatus().getDesc());
             }
         }
