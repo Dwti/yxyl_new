@@ -7,8 +7,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
+import com.yanxiu.gphone.student.base.EXueELianBaseResponse;
+import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
+import com.yanxiu.gphone.student.mistake.request.MistakeDeleteQuestionRequest;
+import com.yanxiu.gphone.student.questions.bean.PaperBean;
 import com.yanxiu.gphone.student.questions.bean.PaperTestBean;
+import com.yanxiu.gphone.student.util.ToastManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,31 +28,35 @@ import java.util.List;
 public class MistakeAllAdapter extends RecyclerView.Adapter<MistakeAllAdapter.MistakeCompleteViewHolder> {
 
     public interface onItemClickListener {
-        void onItemClick(View view, List<PaperTestBean> paperTestBeanList, int position);
+        void onItemClick(View view, PaperBean paperBean, int position);
     }
 
+    private PublicLoadLayout rootView;
     private LayoutInflater mInflater;
+    private PaperBean mPaperBean;
     private List<PaperTestBean> mData = new ArrayList<>();
     private onItemClickListener mItemClickListener;
 
-    public MistakeAllAdapter(Context context) {
+    public MistakeAllAdapter(Context context,PublicLoadLayout rootView) {
+        this.rootView=rootView;
         mInflater = LayoutInflater.from(context);
     }
 
-    public void setData(List<PaperTestBean> data) {
-        if (data == null) {
+    public void setData(PaperBean data) {
+        if (data == null||data.getPaperTest()==null) {
             return;
         }
+        this.mPaperBean=data;
         mData.clear();
-        mData.addAll(data);
+        mData.addAll(data.getPaperTest());
         this.notifyDataSetChanged();
     }
 
-    public void addData(List<PaperTestBean> data){
-        if (data == null) {
+    public void addData(PaperBean data){
+        if (data == null||data.getPaperTest()==null) {
             return;
         }
-        mData.addAll(data);
+        mData.addAll(data.getPaperTest());
         this.notifyDataSetChanged();
     }
 
@@ -56,13 +67,17 @@ public class MistakeAllAdapter extends RecyclerView.Adapter<MistakeAllAdapter.Mi
         return "0";
     }
 
-    public void deleteItem(int position,int id){
+    public void deleteItem(int position,String id){
         if (position<mData.size()){
-            if (mData.get(position).getId().equals(String.valueOf(id))){
-                this.mData.remove(position);
-                this.notifyDataSetChanged();
+            if (mData.get(position).getId().equals(id)){
+                deleteItem(position);
             }
         }
+    }
+
+    private void deleteItem(int position){
+        this.mData.remove(position);
+        this.notifyDataSetChanged();
     }
 
     public void addItemClickListener(onItemClickListener itemClickListener) {
@@ -95,11 +110,31 @@ public class MistakeAllAdapter extends RecyclerView.Adapter<MistakeAllAdapter.Mi
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (mItemClickListener != null) {
-                        mItemClickListener.onItemClick(itemView, mData, getLayoutPosition());
+                    if (mItemClickListener != null&&mPaperBean!=null) {
+                        mPaperBean.setPaperTest(mData);
+                        mItemClickListener.onItemClick(itemView, mPaperBean, getLayoutPosition());
                     }
                 }
             });
         }
+    }
+
+    private void setDeleteItem(final int position, String qid){
+        rootView.showLoadingView();
+        MistakeDeleteQuestionRequest deleteQuestionRequest=new MistakeDeleteQuestionRequest();
+        deleteQuestionRequest.questionId=qid;
+        deleteQuestionRequest.startRequest(EXueELianBaseResponse.class, new EXueELianBaseCallback<EXueELianBaseResponse>() {
+            @Override
+            protected void onResponse(RequestBase request, EXueELianBaseResponse response) {
+                rootView.hiddenLoadingView();
+                deleteItem(position);
+            }
+
+            @Override
+            public void onFail(RequestBase request, Error error) {
+                rootView.hiddenLoadingView();
+                ToastManager.showMsg(error.getMessage());
+            }
+        });
     }
 }

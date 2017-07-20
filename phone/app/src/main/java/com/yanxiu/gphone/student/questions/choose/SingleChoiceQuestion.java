@@ -92,6 +92,11 @@ public class SingleChoiceQuestion extends BaseQuestion {
     }
 
     @Override
+    public ExerciseBaseFragment wrongFragment() {
+        return new SingleChooseWrongFragment();
+    }
+
+    @Override
     public Object getAnswer() {
         return answerList;
     }

@@ -29,6 +29,8 @@ public abstract class BaseQuestion implements Serializable {
     protected String parentid;
     protected String pid;
     protected String qid;
+    protected int wqid;
+    protected int wqnumber;
     protected String qtype;
     protected String analysis;
     //下面这些字段需要需要具体的题型去设置，并不是每个题型都有的（到时候字段的设置需要再检查一遍）
@@ -92,6 +94,8 @@ public abstract class BaseQuestion implements Serializable {
         this.parentid = bean.getParentid();
         this.pid = bean.getPid();
         this.qid = bean.getQid();
+        this.wqid=bean.getWqid();
+        this.wqnumber=bean.getWqnumber();
         this.qtype = bean.getQtype();
         server_answer = bean.getQuestions().getAnswer();
         this.analysis = bean.getQuestions().getAnalysis();
@@ -160,6 +164,10 @@ public abstract class BaseQuestion implements Serializable {
             fm = analysisFragment();
         }
 
+        if (showType.equals(QuestionShowType.MISTAKE_ANALYSIS)){
+            fm=wrongFragment();
+        }
+
         fm.setData(this);
         return fm;
     }
@@ -167,6 +175,8 @@ public abstract class BaseQuestion implements Serializable {
     public abstract ExerciseBaseFragment answerFragment();
 
     public abstract ExerciseBaseFragment analysisFragment();
+
+    public abstract ExerciseBaseFragment wrongFragment();
 
     /**
      * 获取答案
@@ -231,6 +241,22 @@ public abstract class BaseQuestion implements Serializable {
 
     public String getQid() {
         return qid;
+    }
+
+    public int getWqid() {
+        return wqid;
+    }
+
+    public void setWqid(int wqid) {
+        this.wqid = wqid;
+    }
+
+    public int getWqnumber() {
+        return wqnumber;
+    }
+
+    public void setWqnumber(int wqnumber) {
+        this.wqnumber = wqnumber;
     }
 
     public void setQid(String qid) {
@@ -432,6 +458,20 @@ public abstract class BaseQuestion implements Serializable {
     private int prefixNumber;//题号前缀--分子
     private int postfixNumber;//题号后缀--分母
 
+    /**
+     * 错题记题号设置题号分子
+     * @param prefixNumber
+     */
+    public  void setPrefixNumberForWrongQuestion(int prefixNumber) {
+        this.prefixNumber = prefixNumber;
+    }
+    /**
+     * 错题记题号设置题号分母
+     * @param postfixNumber
+     */
+    public void setPostfixNumberForWrongQuestion(int postfixNumber) {
+        this.postfixNumber = postfixNumber;
+    }
 
     /**
      * 标记层级和所处层级的index
@@ -507,7 +547,7 @@ public abstract class BaseQuestion implements Serializable {
     }
 
     public String numberStringForShow() {
-        if (!isNodeCountForTotal()) {
+        if (!showType.equals(QuestionShowType.MISTAKE_ANALYSIS)&&!isNodeCountForTotal()) {
             return "";
         }
 
