@@ -33,6 +33,11 @@ public class ListenComplexQuestion extends BaseQuestion {
     }
 
     @Override
+    public ExerciseBaseFragment wrongFragment() {
+        return new ListenWrongComplexFragment();
+    }
+
+    @Override
     public Object getAnswer() {
         return null;
     }

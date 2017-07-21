@@ -3,6 +3,7 @@ package com.yanxiu.gphone.student.questions.fillblank;
 
 import android.text.TextUtils;
 
+import com.google.gson.JsonArray;
 import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
@@ -11,6 +12,9 @@ import com.yanxiu.gphone.student.questions.answerframe.util.QuestionUtil;
 import com.yanxiu.gphone.student.questions.bean.PaperTestBean;
 import com.yanxiu.gphone.student.questions.bean.PointBean;
 import com.yanxiu.gphone.student.util.StringUtil;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +25,8 @@ import java.util.List;
 
 public class FillBlankQuestion extends BaseQuestion {
 
-    private List<String> mFilledAnswers = new ArrayList<>();
-    private List<String> mCorrectAnswers = new ArrayList<>();
+    private List<String> filledAnswers = new ArrayList<>();
+    private List<String> correctAnswers = new ArrayList<>();
     private List<PointBean> pointList;
     private int starCount;
     private String questionAnalysis;
@@ -46,14 +50,19 @@ public class FillBlankQuestion extends BaseQuestion {
     }
 
     private void initAnswer(PaperTestBean bean) {
-        if (bean.getQuestions().getPad() == null || bean.getQuestions().getPad().getJsonAnswer() == null) {
-            return;
-        }
-        for (Object o : bean.getQuestions().getPad().getJsonAnswer()) {
-            mFilledAnswers.add(String.valueOf(o));
-        }
         for(Object o : server_answer){
-            mCorrectAnswers.add(String.valueOf(o));
+            correctAnswers.add(String.valueOf(o));
+        }
+
+        if (bean.getQuestions().getPad() != null && bean.getQuestions().getPad().getAnswer() != null) {
+            try {
+                JSONArray jsonArray = new JSONArray(bean.getQuestions().getPad().getAnswer());
+                for(int i =0;i<jsonArray.length();i++){
+                    filledAnswers.add(jsonArray.getString(i));
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -67,27 +76,32 @@ public class FillBlankQuestion extends BaseQuestion {
         return new FillBlankAnalysisFragment();
     }
 
+    @Override
+    public ExerciseBaseFragment wrongFragment() {
+        return null;
+    }
+
     public List<String> getStringAnswers() {
-        return mFilledAnswers;
+        return filledAnswers;
     }
 
     public List<String> getCorrectAnswers() {
-        return mCorrectAnswers;
+        return correctAnswers;
     }
 
     @Override
     public Object getAnswer() {
-        return mFilledAnswers;
+        return filledAnswers;
     }
 
     @Override
     public int getStatus() {
-        for (String str : mFilledAnswers) {
+        for (String str : filledAnswers) {
             if (TextUtils.isEmpty(str.trim())) {
                 return Constants.ANSWER_STATUS_NOANSWERED;
             }
         }
-        boolean isRight = QuestionUtil.compareListByOrder(StringUtil.full2half(mFilledAnswers), StringUtil.full2half(mCorrectAnswers));
+        boolean isRight = QuestionUtil.compareListByOrder(StringUtil.full2half(filledAnswers), StringUtil.full2half(correctAnswers));
         if (isRight) {
             return Constants.ANSWER_STATUS_RIGHT;
         } else {
@@ -96,17 +110,17 @@ public class FillBlankQuestion extends BaseQuestion {
     }
 
     public boolean isRight() {
-        for (String str : mFilledAnswers) {
+        for (String str : filledAnswers) {
             if (TextUtils.isEmpty(str.trim())) {
                 return false;
             }
         }
-        boolean isRight = QuestionUtil.compareListByOrder(StringUtil.full2half(mFilledAnswers), StringUtil.full2half(mCorrectAnswers));
+        boolean isRight = QuestionUtil.compareListByOrder(StringUtil.full2half(filledAnswers), StringUtil.full2half(correctAnswers));
         return isRight;
     }
 
     public void setAnswer(List<String> list) {
-        mFilledAnswers = list;
+        filledAnswers = list;
     }
 
     public List<PointBean> getPointList() {

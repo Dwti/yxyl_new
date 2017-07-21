@@ -41,6 +41,10 @@ public class MistakeListAdapter extends RecyclerView.Adapter<MistakeListAdapter.
         this.notifyDataSetChanged();
     }
 
+    public List<MistakeListResponse.Data> getData(){
+        return mData;
+    }
+
     public void addClickListener(onItemClickListener itemClickListener){
         this.mItemClickListener=itemClickListener;
     }

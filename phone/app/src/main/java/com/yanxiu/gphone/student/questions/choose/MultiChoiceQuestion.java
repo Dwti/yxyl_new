@@ -97,6 +97,11 @@ public class MultiChoiceQuestion extends BaseQuestion {
     }
 
     @Override
+    public ExerciseBaseFragment wrongFragment() {
+        return new MultiChooseWrongFragment();
+    }
+
+    @Override
     public Object getAnswer() {
         return answerList;
     }

@@ -1,31 +1,42 @@
 package com.yanxiu.gphone.student.mistake.fragment;
 
-import android.content.Context;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.yanxiu.gphone.student.R;
-import com.yanxiu.gphone.student.base.YanxiuBaseFragment;
-import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
+import com.yanxiu.gphone.student.mistake.response.MistakeDeleteMessage;
 
 /**
  * Created by Canghaixiao.
  * Time : 2017/7/13 17:09.
  * Function :
  */
-public class MistakeChapterFragment extends YanxiuBaseFragment {
+public class MistakeChapterFragment extends MistakeBaseFragment {
 
-    private Context mContext;
-
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mContext=inflater.getContext();
-        PublicLoadLayout rootView=new PublicLoadLayout(mContext);
-        rootView.setContentView(R.layout.fragment_mistakechapter);
-        return rootView;
+    protected int getContentViewId() {
+        return R.layout.fragment_mistakechapter;
+    }
+
+    @Override
+    protected void initView() {
+
+    }
+
+    @Override
+    protected void listener() {
+
+    }
+
+    @Override
+    protected void initData() {
+
+    }
+
+    @Override
+    protected void requestCancle() {
+
+    }
+
+    @Override
+    protected void onDeleteItem(MistakeDeleteMessage message) {
+
     }
 }

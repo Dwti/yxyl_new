@@ -16,9 +16,14 @@ import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
 import com.yanxiu.gphone.student.mistake.adapter.MistakeListAdapter;
 import com.yanxiu.gphone.student.mistake.request.MistakeListRequest;
+import com.yanxiu.gphone.student.mistake.response.MistakeDeleteMessage;
 import com.yanxiu.gphone.student.mistake.response.MistakeListResponse;
 import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.ToastManager;
+
+import java.util.List;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by Canghaixiao.
@@ -43,6 +48,7 @@ public class MistakeListActivity extends YanxiuBaseActivity implements View.OnCl
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext=MistakeListActivity.this;
+        EventBus.getDefault().register(mContext);
         rootView=new PublicLoadLayout(mContext);
         rootView.setContentView(R.layout.activity_mistakelist);
         setContentView(rootView);
@@ -93,9 +99,32 @@ public class MistakeListActivity extends YanxiuBaseActivity implements View.OnCl
         });
     }
 
+    public void onEventMainThread(MistakeDeleteMessage message){
+        if (message!=null){
+            List<MistakeListResponse.Data> datas= mMistakeAdapter.getData();
+            for (MistakeListResponse.Data data:datas){
+                if (String.valueOf(data.id).equals(message.subjectId)){
+                    if (message.wrongNum==0){
+                        datas.remove(data);
+                        if (datas.size()>0){
+                            mMistakeAdapter.notifyDataSetChanged();
+                        }else {
+                            MistakeListActivity.this.finish();
+                        }
+                    }else {
+                        data.data.wrongNum=message.wrongNum;
+                        mMistakeAdapter.notifyDataSetChanged();
+                    }
+                    return;
+                }
+            }
+        }
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(mContext);
         if (mMistakeListRequest!=null){
             mMistakeListRequest.cancelRequest();
             mMistakeListRequest=null;
@@ -113,6 +142,6 @@ public class MistakeListActivity extends YanxiuBaseActivity implements View.OnCl
 
     @Override
     public void onItemClick(View view, MistakeListResponse.Data data, int position) {
-        MistakeClassifyActivity.LaunchActivity(mContext);
+        MistakeClassifyActivity.LaunchActivity(mContext,data.name,String.valueOf(data.id),data.data.wrongNum,String.valueOf(data.data.editionId));
     }
 }

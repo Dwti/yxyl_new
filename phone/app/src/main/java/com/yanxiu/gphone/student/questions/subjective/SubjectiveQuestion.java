@@ -112,6 +112,11 @@ public class SubjectiveQuestion extends BaseQuestion {
     }
 
     @Override
+    public ExerciseBaseFragment wrongFragment() {
+        return null;
+    }
+
+    @Override
     public Object getAnswer() {
         return answerList;
     }

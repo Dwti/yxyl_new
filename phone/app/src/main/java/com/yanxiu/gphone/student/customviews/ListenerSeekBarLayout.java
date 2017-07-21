@@ -40,6 +40,7 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
     private Context mContext;
     private int mTouchSlop;
     private MediaPlayerUtil mMediaPlayerUtil;
+
     /**
      * Solve repetitive click problems
      * */
@@ -54,6 +55,11 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
      * Solve the playback progress problem returned after manual pause
      * */
     private boolean isBackPause=false;
+    /**
+     * The tester lets you copy iOS and press the state to disable playback
+     * */
+    private boolean isDownPause=false;
+
     private SeekBar mSeekBarView;
     private TextView mNowTimeView;
     private TextView mTotalTimeView;
@@ -62,6 +68,7 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
 
     private int mMax=0;
     private int mProgress=0;
+    private int mSeekProgress=-1;
 
     private String mUrl;
 //        private String mUrl="http://data.5sing.kgimg.com/G034/M05/16/17/ApQEAFXsgeqIXl7gAAVVd-n31lcAABOogKzlD4ABVWP363.mp3";
@@ -147,6 +154,10 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
                     mMoveDown = 0;
                     if (checkIsInternal(ev)) {
                         mMoveDown = (long) ev.getX();
+                        if (mMediaPlayerUtil.isPlaying()) {
+                            isDownPause=true;
+                            setPlayerPause();
+                        }
                     }
                     break;
                 case MotionEvent.ACTION_MOVE:
@@ -161,6 +172,11 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
                 case MotionEvent.ACTION_CANCEL:
                 case MotionEvent.ACTION_UP:
                     Logger.d(TAG, "up");
+                    if (isDownPause){
+                        setPlayerResume();
+                        isDownPause=false;
+                    }
+                    setSeekTo();
                     if (checkIsInternal(ev)) {
                         if (!isMove) {
                             if (mMediaPlayerUtil.isPlaying()) {
@@ -188,6 +204,15 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
             flag = true;
         }
         return flag;
+    }
+
+    private void setSeekTo(){
+        if (!isDownPause) {
+            if (mSeekProgress != -1) {
+                mMediaPlayerUtil.seekTo(mSeekProgress);
+                this.mSeekProgress = -1;
+            }
+        }
     }
 
     private void setPlayerPause() {
@@ -273,9 +298,12 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        if (fromUser && isMove) {
+        if (fromUser) {
             Logger.d(TAG, "change");
-            mMediaPlayerUtil.seekTo(progress);
+            this.mSeekProgress=progress;
+            String nowTime = transferFormat(progress);
+            mNowTimeView.setText(nowTime);
+            setSeekTo();
         }
     }
 
@@ -308,7 +336,7 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
 
     @Override
     public void onProgress(MediaPlayerUtil mu, int progress) {
-//        Logger.d(TAG, "progress" + progress);
+        Logger.d(TAG, "progress" + progress);
         this.mProgress=progress;
         if (progress>mSeekBarView.getProgress()) {
             mSeekBarView.setProgress(progress);

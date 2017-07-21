@@ -192,6 +192,9 @@
 
         <activity android:name=".mistake.activity.MistakeClassifyActivity"
             android:screenOrientation="portrait"/>
+
+        <activity android:name=".questions.answerframe.ui.activity.WrongQuestionActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

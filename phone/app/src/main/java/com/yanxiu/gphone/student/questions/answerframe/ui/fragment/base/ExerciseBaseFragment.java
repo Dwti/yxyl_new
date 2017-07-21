@@ -19,8 +19,10 @@ import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerQuestio
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
 import com.yanxiu.gphone.student.questions.answerframe.listener.IExercise;
+import com.yanxiu.gphone.student.questions.answerframe.ui.activity.WrongQuestionActivity;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.analysisbase.AnalysisComplexExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerComplexExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.wrongbase.WrongComplexExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.util.FragmentUserVisibleController;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionUtil;
 import com.yanxiu.gphone.student.util.StringUtil;
@@ -74,6 +76,8 @@ public abstract class ExerciseBaseFragment extends YanxiuBaseFragment implements
             if (parentFragment instanceof AnswerComplexExerciseBaseFragment || parentFragment instanceof AnalysisComplexExerciseBaseFragment) {
                 mQaNumber.setTextColor(getResources().getColor(R.color.color_999999));
                 TextTypefaceUtil.setViewTypeface(TextTypefaceUtil.TypefaceType.METRO_PLAY,mQaNumber);
+            }else if(parentFragment instanceof WrongComplexExerciseBaseFragment){
+                mQaNumber.setVisibility(View.GONE);
             }
             mQaNumber.setText(str);
         }catch(Exception e){
@@ -235,6 +239,9 @@ public abstract class ExerciseBaseFragment extends YanxiuBaseFragment implements
         }else if(getActivity() instanceof AnalysisQuestionActivity) {
             AnalysisQuestionActivity acticity = (AnalysisQuestionActivity) getActivity();
             acticity.hiddenSwitchQuestionView();
+        }else if (getActivity() instanceof WrongQuestionActivity){
+            WrongQuestionActivity activity= (WrongQuestionActivity) getActivity();
+            activity.hiddenSwitchQuestionView();
         }
 
     }

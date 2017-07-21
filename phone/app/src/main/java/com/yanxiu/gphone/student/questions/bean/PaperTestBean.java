@@ -19,6 +19,24 @@ public class PaperTestBean extends BaseBean {
     private QuestionBean questions;
     private String sectionid;
     private String typeid;
+    private int wqid;
+    private int wqnumber;
+
+    public int getWqid() {
+        return wqid;
+    }
+
+    public void setWqid(int wqid) {
+        this.wqid = wqid;
+    }
+
+    public int getWqnumber() {
+        return wqnumber;
+    }
+
+    public void setWqnumber(int wqnumber) {
+        this.wqnumber = wqnumber;
+    }
 
     public String getCorrectRate() {
         return correctRate;
