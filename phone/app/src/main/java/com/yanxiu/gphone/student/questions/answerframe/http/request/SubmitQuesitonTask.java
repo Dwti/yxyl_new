@@ -341,9 +341,10 @@ public class SubmitQuesitonTask extends AsyncTask {
                 outQuestionObject.put("costtime", outerQuestionBean.getCosttime());
                 outQuestionObject.put("ptid", outerQuestionBean.getId());
                 outQuestionObject.put("qid", outerQuestionBean.getQid());
-                if (outerQuestionBean.getPad() != null) {
-                    outQuestionObject.put("id", id);
+                if (outerQuestionBean.getPad() != null && !TextUtils.isEmpty(outerQuestionBean.getPad().getId())) {
+                    id = outerQuestionBean.getPad().getId();
                 }
+                outQuestionObject.put("id", id);
 //                outQuestionObject.put("answer", "");
                 outQuestionObject.put("status", outerQuestionBean.getStatus());
                 outQuestionObject.put("uid", LoginInfo.getUID());
