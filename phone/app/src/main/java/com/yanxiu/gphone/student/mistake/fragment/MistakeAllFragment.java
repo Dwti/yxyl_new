@@ -21,6 +21,7 @@ import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.questions.bean.PaperBean;
 import com.yanxiu.gphone.student.util.DESBodyDealer;
 import com.yanxiu.gphone.student.util.DataFetcher;
+import com.yanxiu.gphone.student.util.ScreenUtils;
 import com.yanxiu.gphone.student.util.ToastManager;
 
 import de.greenrobot.event.EventBus;
@@ -54,6 +55,7 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
         mCompleteMistakeView.setAdapter(mMistakeAllAdapter);
         mRefreshView = (SwipeRefreshLayout) rootView.findViewById(R.id.srl_refresh);
         mRefreshView.setSize(SwipeRefreshLayout.DEFAULT);
+        mRefreshView.setProgressViewOffset(true, mRefreshView.getProgressViewStartOffset(), ScreenUtils.dpToPxInt(mContext,30));
     }
 
     @Override

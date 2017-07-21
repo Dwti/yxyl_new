@@ -34,7 +34,7 @@
         android:layout_toRightOf="@+id/fl_container"
         android:singleLine="true"
         android:text="asd"
-        android:textColor="@color/color_666666"
+        android:textColor="@color/color_333333"
         android:textSize="17dp" />
 
     <TextView
@@ -45,7 +45,7 @@
         android:layout_toRightOf="@+id/tv_name"
         android:singleLine="true"
         android:text="asdddff"
-        android:textColor="@color/color_666666"
+        android:textColor="@color/color_333333"
         android:textSize="17dp" />
 
     <View
