@@ -63,6 +63,8 @@ public class HomeworkFragment extends HomePageBaseFragment implements SearchClas
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
     private ListView mListView;
+
+    private boolean mIsRequestingClassInfo = false;
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -127,12 +129,21 @@ public class HomeworkFragment extends HomePageBaseFragment implements SearchClas
         }
     }
     private void searchClass(String id){
+        if(mIsRequestingClassInfo)
+            return;
+        mIsRequestingClassInfo = true;
         SearchClassRequest request = new SearchClassRequest();
         request.setClassId(id);
         request.startRequest(SearchClassResponse.class,mSearchClassCallback);
     }
 
     HttpCallback<SearchClassResponse> mSearchClassCallback = new EXueELianBaseCallback<SearchClassResponse>() {
+        @Override
+        public void onSuccess(RequestBase request, SearchClassResponse ret) {
+            super.onSuccess(request, ret);
+            mIsRequestingClassInfo = false;
+        }
+
         @Override
         public void onResponse(RequestBase request, SearchClassResponse ret) {
             if(ret.getStatus().getCode() == 0 ){
@@ -149,6 +160,7 @@ public class HomeworkFragment extends HomePageBaseFragment implements SearchClas
         @Override
         public void onFail(RequestBase request, Error error) {
             Toast.makeText(getActivity(),error.getLocalizedMessage(),Toast.LENGTH_SHORT).show();
+            mIsRequestingClassInfo = false;
         }
     };
 
