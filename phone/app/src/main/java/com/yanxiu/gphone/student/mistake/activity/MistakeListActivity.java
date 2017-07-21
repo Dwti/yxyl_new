@@ -2,7 +2,9 @@ package com.yanxiu.gphone.student.mistake.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -33,6 +35,7 @@ import de.greenrobot.event.EventBus;
 public class MistakeListActivity extends YanxiuBaseActivity implements View.OnClickListener, MistakeListAdapter.onItemClickListener {
 
     private Context mContext;
+    private View mTopView;
     private ImageView mBackView;
     private TextView mTitleView;
     private MistakeListAdapter mMistakeAdapter;
@@ -60,6 +63,7 @@ public class MistakeListActivity extends YanxiuBaseActivity implements View.OnCl
     private void initView() {
         mBackView= (ImageView) findViewById(R.id.iv_left);
         mTitleView= (TextView) findViewById(R.id.tv_title);
+        mTopView=findViewById(R.id.include_top);
         RecyclerView mistakeListView = (RecyclerView) findViewById(R.id.recy);
         mistakeListView.setLayoutManager(new LinearLayoutManager(this));
         mMistakeAdapter=new MistakeListAdapter(this);
@@ -72,7 +76,10 @@ public class MistakeListActivity extends YanxiuBaseActivity implements View.OnCl
     }
 
     private void initData() {
+        mTopView.setBackgroundColor(Color.WHITE);
         mBackView.setVisibility(View.VISIBLE);
+        mTitleView.setText(R.string.my_mistake);
+        mTitleView.setTextColor(ContextCompat.getColor(mContext,R.color.color_666666));
 
         requestData();
     }

@@ -56,7 +56,6 @@ public abstract class WrongSimpleExerciseBaseFragment extends WrongExercisbaseFr
     private VoiceScoldedLayoutView mVoiceScoldedView;//语音批注
     protected boolean mToVoiceIsIntent=false;
     private ListenerSeekBarLayout mListenView;//听力复合题只有一个子题时，题干的听力控件
-    private Button mShowAnalysisView;
 
     @Override
     public void setData(BaseQuestion data) {
@@ -82,8 +81,6 @@ public abstract class WrongSimpleExerciseBaseFragment extends WrongExercisbaseFr
     private void initView(LayoutInflater inflater, @Nullable ViewGroup container) {
         mAnsewr_container = (LinearLayout) mRootView.findViewById(R.id.ansewr_container);
         mAnalysis_container = (LinearLayout) mRootView.findViewById(R.id.analysis_container);
-        mShowAnalysisView= (Button) mRootView.findViewById(R.id.bt_showanalysis);
-        mShowAnalysisView.setOnClickListener(this);
 
         mAnswerResultView = (AnalysisQuestionResultView) mRootView.findViewById(R.id.answerResult);
         mYesno_img = (ImageView) mRootView.findViewById(R.id.yesno_img);
@@ -98,6 +95,7 @@ public abstract class WrongSimpleExerciseBaseFragment extends WrongExercisbaseFr
         View answerView = addAnswerView(inflater,container);
         mAnsewr_container.addView(answerView);
         initAnswerView(inflater, container);
+        initAnalysisView();
         setQaNumber(mAnsewr_container);
         setQaName(mAnsewr_container);
         initComplexStem(mAnsewr_container, mData);
@@ -280,10 +278,6 @@ public abstract class WrongSimpleExerciseBaseFragment extends WrongExercisbaseFr
 //            case R.id.edit:
 //                NotesActicity.invoke(getActivity(), edit.hashCode());
 //                break;
-            case R.id.bt_showanalysis:
-                mShowAnalysisView.setVisibility(View.GONE);
-                initAnalysisView();
-                break;
         }
     }
 

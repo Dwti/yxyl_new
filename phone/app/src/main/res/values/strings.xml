@@ -224,4 +224,16 @@
     <string name="need_verify">提交成功，等待老师审核</string>
 
     <string name="check_analysis">查看解析</string>
+    <string name="my_mistake">我的错题</string>
+    <string name="topic">题</string>
+
+    <string name="chinese">语文</string>
+    <string name="math">数学</string>
+    <string name="english">英语</string>
+    <string name="political">政治</string>
+    <string name="biological">生物</string>
+    <string name="geographic">地理</string>
+    <string name="chemical">化学</string>
+    <string name="physical">物理</string>
+    <string name="history">历史</string>
 </resources>

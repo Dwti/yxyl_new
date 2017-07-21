@@ -125,6 +125,9 @@ public class MistakeClassifyActivity extends YanxiuBaseActivity implements Radio
     }
 
     private void initData() {
+        // TODO: 2017/7/20 隐藏章节知识点
+        mClassifyView.setVisibility(View.GONE);
+
         mTitleView.setText(mTitle);
         mBackView.setVisibility(View.VISIBLE);
         mAllView.setChecked(true);
