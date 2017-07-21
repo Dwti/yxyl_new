@@ -6,8 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -22,23 +20,16 @@ import android.widget.TextView;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.constant.Constants;
-import com.yanxiu.gphone.student.customviews.QuestionProgressView;
-import com.yanxiu.gphone.student.customviews.QuestionTimeTextView;
 import com.yanxiu.gphone.student.questions.answerframe.adapter.QAViewPagerAdapter;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.bean.HomeEventMessage;
 import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
-import com.yanxiu.gphone.student.questions.answerframe.listener.OnAnswerCardItemSelectListener;
-import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.AnswerCardFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.analysisbase.AnalysisComplexExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.analysisbase.AnalysisSimpleExerciseBaseFragment;
-import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerComplexExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.view.QAViewPager;
 import com.yanxiu.gphone.student.util.DataFetcher;
-import com.yanxiu.gphone.student.util.ToastManager;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import de.greenrobot.event.EventBus;
@@ -53,8 +44,9 @@ public class AnalysisQuestionActivity extends YanxiuBaseActivity implements View
     private String mComeFrom;//获取数据的来源--从哪个页面跳转过来的
     private String mKey;//获取数据的key
     private Paper mPaper;//试卷数据
-    private ArrayList<BaseQuestion> mQuestions;//题目数据
+    public ArrayList<BaseQuestion> mQuestions;//题目数据
 
+    private View mBottomLayout,mBottom_line;
     private LinearLayout mPrevious_question, mNext_question;//上一题，下一题
     private TextView mNext_text;//下一题textview
     private ImageView mBackView;//返回按钮
@@ -135,8 +127,12 @@ public class AnalysisQuestionActivity extends YanxiuBaseActivity implements View
         mNext_text = (TextView) findViewById(R.id.next_text);
         mBackView = (ImageView) findViewById(R.id.backview);
         mErrorview = (TextView) findViewById(R.id.errorview);
+        mBottomLayout = findViewById(R.id.bottom);
+        mBottom_line = findViewById(R.id.analysis_bottom_line);
+
         setListener();
         initViewPager();
+        hiddenBottomLayout();
     }
 
     private void setListener() {
@@ -162,6 +158,16 @@ public class AnalysisQuestionActivity extends YanxiuBaseActivity implements View
                 Log.e("TAG", "Outter swipe out at end");
             }
         });
+    }
+
+    /**
+     * 当只有一个题时，隐藏bottom，并且把解析单题型fragment的bottom去掉
+     */
+    private void hiddenBottomLayout(){
+        if(mQuestions.size() == 1){
+            mBottomLayout.setVisibility(View.GONE);
+            mBottom_line.setVisibility(View.GONE);
+        }
     }
 
     /**

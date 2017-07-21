@@ -109,6 +109,7 @@
     </RelativeLayout>
 
     <View
+        android:id="@+id/analysis_bottom_line"
         android:layout_width="match_parent"
         android:layout_height="@dimen/question_bottom_layout_shape"
         android:layout_above="@id/bottom"
