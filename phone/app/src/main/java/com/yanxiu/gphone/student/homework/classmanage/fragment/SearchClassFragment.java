@@ -5,11 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -18,7 +16,6 @@ import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.customviews.CharacterSeparatedEditLayout;
 import com.yanxiu.gphone.student.customviews.WavesLayout;
-import com.yanxiu.gphone.student.homepage.MainActivity;
 import com.yanxiu.gphone.student.homework.classmanage.activity.HowToJoinClassActivity;
 import com.yanxiu.gphone.student.homework.classmanage.activity.JoinClassActivity;
 import com.yanxiu.gphone.student.homework.response.ClassBean;
@@ -46,6 +43,8 @@ public class SearchClassFragment extends Fragment {
     private int mBottom;
 
     private boolean mKeyBoardVisible = false;
+
+    private boolean mIsSearchingClass = false;
 
     private CharacterSeparatedEditLayout mInputNumWidget;
 
@@ -117,6 +116,9 @@ public class SearchClassFragment extends Fragment {
     }
 
     private void searchClass(String id) {
+        if(mIsSearchingClass)
+            return;
+        mIsSearchingClass = true;
         SearchClassRequest request = new SearchClassRequest();
         request.setClassId(id);
         request.startRequest(SearchClassResponse.class, mSearchClassCallback);
@@ -127,6 +129,12 @@ public class SearchClassFragment extends Fragment {
     }
 
     HttpCallback<SearchClassResponse> mSearchClassCallback = new EXueELianBaseCallback<SearchClassResponse>() {
+        @Override
+        public void onSuccess(RequestBase request, SearchClassResponse ret) {
+            super.onSuccess(request, ret);
+            mIsSearchingClass = false;
+        }
+
         @Override
         public void onResponse(RequestBase request, SearchClassResponse ret) {
             if (ret.getStatus().getCode() == 0 && (ret.getData().get(0).getStatus() == 0 || ret.getData().get(0).getStatus() == 1)) {
@@ -144,6 +152,7 @@ public class SearchClassFragment extends Fragment {
         @Override
         public void onFail(RequestBase request, Error error) {
             ToastManager.showMsg(error.getLocalizedMessage());
+            mIsSearchingClass = false;
         }
     };
 
