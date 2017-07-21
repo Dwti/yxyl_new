@@ -48,7 +48,7 @@ public abstract class ReplacementSpanTextView<T extends View> extends FrameLayou
     protected TreeSet<EmptyReplacementSpan> mSpanSet;
     protected boolean mIsReplaceCompleted = false;
     private List<OnReplaceCompleteListener> mOnReplaceCompleteListeners = new ArrayList<>();
-    protected static final int MIN_WIDTH = 200;
+    protected int MIN_WIDTH;
     protected int mExtraSpace;
     protected int mSpacing;
     protected int mExtraLineSpacing;
@@ -82,6 +82,7 @@ public abstract class ReplacementSpanTextView<T extends View> extends FrameLayou
         mTreeMap = new TreeMap<>();
         View view = LayoutInflater.from(context).inflate(R.layout.replaceable_text_view, this, true);
         mTextView = (XTextView) view.findViewById(R.id.textView);
+        MIN_WIDTH = (int) StringUtil.computeStringWidth("oooooo",mTextView.getPaint());
         mOverLayViewContainer = (RelativeLayout) view.findViewById(R.id.relativeLayout);
 //        mExtraLineSpacing = ScreenUtils.dpToPxInt(context,2);
 //        mTextView.setLineSpacing(mExtraLineSpacing,1);

@@ -220,6 +220,8 @@
     <string name="mistake_redo_math">数学</string>
     <string name="mistake_redo_english">英语</string>
     <string name="clear_text">清空</string>
+    <string name="join_class_success">加入成功</string>
+    <string name="need_verify">提交成功，等待老师审核</string>
 
     <string name="check_analysis">查看解析</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.yanxiu.gphone.student.questions.answerframe.ui.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,6 +12,7 @@ import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -59,6 +61,8 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
     private ImageView mShowAnswerCardView;//显示答题卡
     private View mRootView;
 
+    private InputMethodManager mInputMethodManager;
+
     private Handler mHandler;
     private int mTotalTime;//总计时间
     private long mStartTime;//开始答题时间
@@ -94,6 +98,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
     }
 
     private void initView() {
+        mInputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         mRootView = findViewById(R.id.fl_qa);
         mTimer = (QuestionTimeTextView) findViewById(R.id.timer);
         mProgressView = (QuestionProgressView) findViewById(R.id.progressBar);
@@ -210,6 +215,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
      * 显示答题卡
      */
     private void showAnswerCardFragment() {
+        mInputMethodManager.hideSoftInputFromWindow(mRootView.getWindowToken(),0);
         // 可以在这里打个断点，所有Fill Blank的答案均已存入nodes里
         if (mAnswerCardFragment == null) {
             mAnswerCardFragment = new AnswerCardFragment();

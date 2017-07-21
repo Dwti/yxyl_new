@@ -30,7 +30,7 @@ public class StemUtil {
             if(i > filledAnswers.size() -1 || TextUtils.isEmpty(filledAnswers.get(i))){
                 if(i > filledAnswers.size() - 1)
                     filledAnswers.add("");
-                stem = stem.replaceFirst("\\(_\\)", "<empty>oooooooooooo</empty>");
+                stem = stem.replaceFirst("\\(_\\)", "<empty>oooooo</empty>");
             }else {
                 stem = stem.replaceFirst("\\(_\\)", "<fill>"+filledAnswers.get(i)+"</fill>");
             }
@@ -79,7 +79,7 @@ public class StemUtil {
                 if(i > filledAnswers.size() - 1)
                     filledAnswers.add("");
                 stem = replaceFirstChar(stem,MARK_ORANGE_START);
-                stem = stem.replaceFirst("\\(_\\)", "<empty>oooooooooooo</empty>");
+                stem = stem.replaceFirst("\\(_\\)", "<empty>oooooo</empty>");
             }else if(!correctAnswers.get(i).equals(filledAnswers.get(i))){
                 stem = replaceFirstChar(stem,MARK_ORANGE_START);
                 stem = stem.replaceFirst("\\(_\\)", "<wrong>"+filledAnswers.get(i)+"</wrong>");
