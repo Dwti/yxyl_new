@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.questions.classify.ClassifyItemBean;
-import com.yanxiu.gphone.student.util.HtmlImageGetter;
+import com.yanxiu.gphone.student.util.HtmlImageGetterForClassify;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +36,7 @@ public class ClassifyChoice extends ViewGroup {
      */
     private List<Integer> mLineHeight = new ArrayList<Integer>();
     private Context context;
+    int mWidth,mHeight;
 
     public ClassifyChoice(Context context) {
         this(context, null);
@@ -198,7 +199,8 @@ public class ClassifyChoice extends ViewGroup {
 
         }
         setMeasuredDimension((modeWidth == MeasureSpec.EXACTLY) ? sizeWidth : width, (modeHeight == MeasureSpec.EXACTLY) ? sizeHeight : height);
-
+        mWidth = ClassifyChoice.this.getMeasuredWidth()-ClassifyChoice.this.getPaddingRight()-ClassifyChoice.this.getPaddingLeft();
+        mHeight = getResources().getDimensionPixelSize(R.dimen.classify_choice_img_height);
     }
 
     @Override
@@ -255,23 +257,19 @@ public class ClassifyChoice extends ViewGroup {
                 int img_height = getResources().getDimensionPixelSize(R.dimen.classify_choice_img_height);
                 LinearLayout.LayoutParams textView_lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, img_height);
                 view.setLayoutParams(textView_lp);
+            }else{
+                int paddingLeft = getResources().getDimensionPixelSize(R.dimen.classify_choice_padding);
+                int paddingTop = getResources().getDimensionPixelSize(R.dimen.classify_choice_Text_paddingTop);
+                view.setPadding(paddingLeft,paddingTop,paddingLeft,paddingTop);
             }
-//            ClassfyTextView view=new ClassfyTextView(context);
-            //view.setClasfyFlag(false);
-//           Spanned spanned=fromHtml(context,classfyItem.get(i).getName());
-//            Spanned spanned = Html.fromHtml(classfyItem.get(i));
 
             view.post(new Runnable() {
                 @Override
                 public void run() {
-                    Spanned spanned = Html.fromHtml(content, new HtmlImageGetter(view), null);
+                    Spanned spanned = Html.fromHtml(content, new HtmlImageGetterForClassify(view,mWidth,mHeight), null);
                     view.setText(spanned);
                 }
             });
-//            Spanned spanned = Html.fromHtml(content, new HtmlImageGetter(view), null);
-//            view.setText(spanned);
-            //view.setText(classfyItem.get(i).getName());
-//            view.getLayoutParams();
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
             int margin = getResources().getDimensionPixelSize(R.dimen.classify_choice_margin);
@@ -340,13 +338,17 @@ public class ClassifyChoice extends ViewGroup {
                 RelativeLayout.LayoutParams textView_lp = (RelativeLayout.LayoutParams) textView.getLayoutParams();
                 textView_lp.height = img_height;
                 textView.setLayoutParams(textView_lp);
+            }else{
+                int paddingLeft = getResources().getDimensionPixelSize(R.dimen.classify_choice_padding);
+                int paddingTop = getResources().getDimensionPixelSize(R.dimen.classify_choice_Text_paddingTop);
+                textView.setPadding(paddingLeft,paddingTop,paddingLeft,paddingTop);
             }
 
 
             textView.post(new Runnable() {
                 @Override
                 public void run() {
-                    Spanned spanned = Html.fromHtml(content, new HtmlImageGetter(textView), null);
+                    Spanned spanned = Html.fromHtml(content, new HtmlImageGetterForClassify(textView,mWidth,mHeight), null);
                     textView.setText(spanned);
                 }
             });
@@ -398,13 +400,17 @@ public class ClassifyChoice extends ViewGroup {
                 LinearLayout.LayoutParams textView_lp = (LinearLayout.LayoutParams) textView.getLayoutParams();
                 textView_lp.height = img_height;
                 textView.setLayoutParams(textView_lp);
+            }else{
+                int paddingLeft = getResources().getDimensionPixelSize(R.dimen.classify_choice_padding);
+                int paddingTop = getResources().getDimensionPixelSize(R.dimen.classify_choice_Text_paddingTop);
+                textView.setPadding(paddingLeft,paddingTop,paddingLeft,paddingTop);
             }
 
 
             textView.post(new Runnable() {
                 @Override
                 public void run() {
-                    Spanned spanned = Html.fromHtml(content, new HtmlImageGetter(textView), null);
+                    Spanned spanned = Html.fromHtml(content, new HtmlImageGetterForClassify(textView,mWidth,mHeight), null);
                     textView.setText(spanned);
                 }
             });

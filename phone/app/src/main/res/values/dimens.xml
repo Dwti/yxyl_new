@@ -245,9 +245,12 @@
 
     <dimen name="classify_scroll_paddingbottom">25dp</dimen>
     <dimen name="classify_choice_margin">15dp</dimen>
+    <dimen name="classify_choice_padding">15dp</dimen>
+    <dimen name="classify_choice_Text_paddingTop">10dp</dimen>
     <dimen name="classify_choice_margin_drawer">5dp</dimen>
     <dimen name="classify_choice_img_height">80dp</dimen>
     <dimen name="classify_analysis_titleview_textsize">21dp</dimen>
+
 
 </resources>
 

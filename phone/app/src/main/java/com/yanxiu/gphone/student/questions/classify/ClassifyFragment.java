@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
@@ -23,6 +24,9 @@ import com.yanxiu.gphone.student.util.ToastManager;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+import static android.widget.RelativeLayout.CENTER_HORIZONTAL;
 
 /**
  * Created by 戴延枫 on 2017/5/5.
@@ -126,6 +130,11 @@ public class ClassifyFragment extends AnswerSimpleExerciseBaseFragment implement
         mQuestionView.setText(string);
         mClassifyAdapter.setData(mData);
         mClassify_recyclerview.setAdapter(mClassifyAdapter);
+        if(mData.getClassifyBasket().size() <= 2){
+            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mClassify_recyclerview.getLayoutParams();
+            lp.width = WRAP_CONTENT;
+            lp.addRule(CENTER_HORIZONTAL);
+        }
     }
 
     /**

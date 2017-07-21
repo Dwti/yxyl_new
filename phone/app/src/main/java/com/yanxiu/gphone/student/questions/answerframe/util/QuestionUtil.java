@@ -5,9 +5,11 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.YanxiuApplication;
+import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
 import com.yanxiu.gphone.student.questions.answerframe.bean.ReportAnswerBean;
+import com.yanxiu.gphone.student.questions.classify.ClassifyQuestion;
 
 import org.json.JSONArray;
 
@@ -466,43 +468,57 @@ public class QuestionUtil {
                                     answerBean.setIsFinish(false);
                                 }
                             } else {
-//                                try {
-//                                    JSONArray array = new JSONArray(jsonAnswer);
-//                                    for (int k = 0; k < array.length(); k++) {
-//                                        String arrayJSONArray[] = array.getString(k).split(",");
-//                                        ArrayList<String> list = new ArrayList<String>();
-//                                        for (int l = 0; l < arrayJSONArray.length; l++) {
-//                                            if (!TextUtils.isEmpty(arrayJSONArray[l])) {
-//                                                list.add(arrayJSONArray[l]);
-//                                            }
-//                                        }
-//                                        answerBean.getConnect_classfy_answer().add(list);
-//                                    }
-//
-//
+                                try {
+                                    JSONArray array = new JSONArray(jsonAnswer);
+                                    for (int k = 0; k < array.length(); k++) {
+                                        String arrayJSONArray[] = array.getString(k).split(",");
+                                        ArrayList<String> list = new ArrayList<String>();
+                                        for (int l = 0; l < arrayJSONArray.length; l++) {
+                                            if (!TextUtils.isEmpty(arrayJSONArray[l])) {
+                                                list.add(arrayJSONArray[l]);
+                                            }
+                                        }
+                                        answerBean.getConnect_classfy_answer().add(list);
+                                    }
+
+
 //                                    if (answerBean.getConnect_classfy_answer().size() > 0) {
 //                                        int num = 0;
 //                                        for (ArrayList<String> listStr : answerBean.getConnect_classfy_answer()) {
 //                                            num = num + listStr.size();
 //                                        }
-//                                        if (QuestionTemplate.CLASSIFY.equals(template) && num < outQuestion.getContent().getChoices().size()) {
+//                                        if (QuestionTemplate.CLASSIFY.equals(template) && num < ((ClassifyQuestion)outQuestion).getChoice().size()) {
 //                                            answerBean.setIsFinish(false);
 //                                            answerBean.setIsRight(false);
-//                                        } else if (QuestionTemplate.CONNECT.equals(template) && answerBean.getConnect_classfy_answer().size() < outQuestion.getServer_answer().size()) {
-//                                            answerBean.setIsFinish(false);
-//                                            answerBean.setIsRight(false);
-//                                        } else {
-//                                            answerBean.setIsFinish(true);
-//                                            List<String> list = outQuestion.getServer_answer();
-//                                            answerBean.setIsRight(CheckConnect_classfy_answer(list, answerBean.getConnect_classfy_answer(), template));
 //                                        }
+////                                        else if (QuestionTemplate.CONNECT.equals(template) && answerBean.getConnect_classfy_answer().size() < outQuestion.getServer_answer().size()) {
+////                                            answerBean.setIsFinish(false);
+////                                            answerBean.setIsRight(false);
+////                                        }
+////                                        else {
+////                                            answerBean.setIsFinish(true);
+////                                            List<String> list = outQuestion.getServer_answer();
+////                                            answerBean.setIsRight(CheckConnect_classfy_answer(list, answerBean.getConnect_classfy_answer(), template));
+////                                        }
 //                                    } else {
 //                                        answerBean.setIsFinish(false);
 //                                        answerBean.setIsRight(false);
 //                                    }
-//                                } catch (Exception e) {
-//
-//                                }
+                                    if(Constants.ANSWER_STATUS_RIGHT == outQuestion.getPad().getStatus()){
+                                        answerBean.setIsFinish(true);
+                                        answerBean.setIsRight(true);
+
+                                    }else if(Constants.ANSWER_STATUS_WRONG == outQuestion.getPad().getStatus()){
+                                        answerBean.setIsFinish(true);
+                                        answerBean.setIsRight(false);
+                                    }else{
+                                        answerBean.setIsFinish(false);
+                                        answerBean.setIsRight(false);
+                                    }
+
+                                } catch (Exception e) {
+
+                                }
                             }
 
                         } else {
