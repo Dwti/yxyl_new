@@ -53,7 +53,7 @@ public class ClassInfoActivity extends Activity {
 
         if(classInfo != null){
             mClassId = classInfo.getId();
-            className.setText(classInfo.getGradename()+classInfo.getName());
+            className.setText(" • " + classInfo.getGradename()+classInfo.getName());
             classNum.setText(classInfo.getId());
             teacherName.setText(classInfo.getAdminName());
             studentNum.setText(String.format(getString(R.string.student_count),classInfo.getStdnum()));
