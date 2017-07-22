@@ -12,7 +12,7 @@ public interface OnPermissionCallback{
     /**
      * 获取权限
      */
-    void onPermissionsGranted();
+    void onPermissionsGranted(@Nullable List<String> deniedPermissions);
 
     /**
      * 没有权限

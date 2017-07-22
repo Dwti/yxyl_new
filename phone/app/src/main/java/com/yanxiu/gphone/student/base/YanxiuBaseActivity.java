@@ -12,6 +12,7 @@ import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.util.ActivityManger;
 import com.yanxiu.gphone.student.util.PermissionUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import pub.devrel.easypermissions.EasyPermissions;
@@ -60,16 +61,18 @@ public class YanxiuBaseActivity extends FragmentActivity implements EasyPermissi
      */
     public static void requestCameraPermission(OnPermissionCallback onPermissionCallback) {
         mPermissionCallback = onPermissionCallback;
+        ArrayList<String> permsList = new ArrayList<>();
+        permsList.add(Manifest.permission.CAMERA);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) { //6.0系统以下
             if (PermissionUtil.cameraIsCanUse()) {
-                mPermissionCallback.onPermissionsGranted();
+                mPermissionCallback.onPermissionsGranted(permsList);
             } else {
-                mPermissionCallback.onPermissionsDenied(null);
+                mPermissionCallback.onPermissionsDenied(permsList);
             }
         } else {
             if (EasyPermissions.hasPermissions(ActivityManger.getTopActivity(), Manifest.permission.CAMERA)) {
                 // Have permission, do the thing!
-                mPermissionCallback.onPermissionsGranted();
+                mPermissionCallback.onPermissionsGranted(permsList);
             } else {
                 // Ask for one permission
                 EasyPermissions.requestPermissions(ActivityManger.getTopActivity(), ActivityManger.getTopActivity().getString(R.string.rationale_camera), RC_CAMERA_PERM, Manifest.permission.CAMERA);
@@ -83,16 +86,20 @@ public class YanxiuBaseActivity extends FragmentActivity implements EasyPermissi
     public static void requestWriteAndReadPermission(OnPermissionCallback onPermissionCallback) {
         String[] perms = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         mPermissionCallback = onPermissionCallback;
+        ArrayList<String> permsList = new ArrayList<>();
+        for (int i = 0; i < perms.length; i++) {
+            permsList.add(perms[i]);
+        }
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) { //6.0系统以下
             if (PermissionUtil.checkWritePermission() && PermissionUtil.checkReadPermission()) {
-                mPermissionCallback.onPermissionsGranted();
+                mPermissionCallback.onPermissionsGranted(permsList);
             } else {
-                mPermissionCallback.onPermissionsDenied(null);
+                mPermissionCallback.onPermissionsDenied(permsList);
             }
         } else {
             if (EasyPermissions.hasPermissions(ActivityManger.getTopActivity(), perms)) {
                 // Have permission, do the thing!
-                mPermissionCallback.onPermissionsGranted();
+                mPermissionCallback.onPermissionsGranted(permsList);
             } else {
                 // Ask for one permission
                 EasyPermissions.requestPermissions(ActivityManger.getTopActivity(), ActivityManger.getTopActivity().getString(R.string.rationale_write_read), RC_WRITE_READ_PERM, perms);
@@ -109,7 +116,11 @@ public class YanxiuBaseActivity extends FragmentActivity implements EasyPermissi
         mPermissionCallback = onPermissionCallback;
         if (EasyPermissions.hasPermissions(ActivityManger.getTopActivity(), perms)) {
             // Have permissions, do the thing!
-            mPermissionCallback.onPermissionsGranted();
+            ArrayList<String> permsList = new ArrayList<>();
+            for (int i = 0; i < perms.length; i++) {
+                permsList.add(perms[i]);
+            }
+            mPermissionCallback.onPermissionsGranted(permsList);
         } else {
             // Ask for both permissions
             EasyPermissions.requestPermissions(ActivityManger.getTopActivity(), ActivityManger.getTopActivity().getString(R.string.rationale_other), RC_OTHER_PERM, perms);
@@ -125,7 +136,7 @@ public class YanxiuBaseActivity extends FragmentActivity implements EasyPermissi
     @Override
     public void onPermissionsGranted(int requestCode, List<String> perms) {
         Log.d(TAG, "onPermissionsGranted:" + requestCode + ":" + perms.size());
-        mPermissionCallback.onPermissionsGranted();
+        mPermissionCallback.onPermissionsGranted(perms);
     }
 
     @Override

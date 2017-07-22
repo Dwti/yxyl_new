@@ -133,8 +133,13 @@ public class SubjectiveFragment extends AnswerSimpleExerciseBaseFragment impleme
         }
     }
 
+    /**
+     * 获取权限
+     *
+     * @param deniedPermissions
+     */
     @Override
-    public void onPermissionsGranted() {
+    public void onPermissionsGranted(@Nullable List<String> deniedPermissions) {
         CameraActivity.LaunchActivity(getContext(), SubjectiveFragment.this.hashCode());
     }
 

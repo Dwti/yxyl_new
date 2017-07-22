@@ -133,8 +133,13 @@ public class CameraActivity extends YanxiuBaseActivity implements View.OnClickLi
         }
     }
 
+    /**
+     * 获取权限
+     *
+     * @param deniedPermissions
+     */
     @Override
-    public void onPermissionsGranted() {
+    public void onPermissionsGranted(@Nullable List<String> deniedPermissions) {
         AlbumActivity.LaunchActivity(mContext,mFromId);
     }
 
