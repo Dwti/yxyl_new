@@ -135,7 +135,7 @@ public class SubjectiveFragment extends AnswerSimpleExerciseBaseFragment impleme
 
     private  OnPermissionCallback callback=new OnPermissionCallback() {
         @Override
-        public void onPermissionsGranted() {
+        public void onPermissionsGranted(List<String> deniedPermissions) {
             CameraActivity.LaunchActivity(getContext(), SubjectiveFragment.this.hashCode());
         }
 
@@ -145,8 +145,13 @@ public class SubjectiveFragment extends AnswerSimpleExerciseBaseFragment impleme
         }
     };
 
+    /**
+     * 获取权限
+     *
+     * @param deniedPermissions
+     */
     @Override
-    public void onPermissionsGranted() {
+    public void onPermissionsGranted(List<String> deniedPermissions) {
         YanxiuBaseActivity.requestWriteAndReadPermission(callback);
     }
 

@@ -90,7 +90,7 @@ public class YesNoQuestion extends BaseQuestion {
 
     @Override
     public ExerciseBaseFragment wrongFragment() {
-        return null;
+        return new YesNoWrongFragment();
     }
 
     @Override

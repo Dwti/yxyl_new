@@ -215,9 +215,13 @@
     <string name="no_camera_permissions">相机权限被禁用，请在权限设置中开启</string>
     <string name="no_storage_permissions">存储权限被禁用，请在权限设置中开启</string>
 
+    <string name="classify_drawer_noAnswer">未作答</string>
+    <string name="classify_drawer_noClassify">未归类</string>
     <string name="mistake_redo_math">数学</string>
     <string name="mistake_redo_english">英语</string>
     <string name="clear_text">清空</string>
+    <string name="join_class_success">加入成功</string>
+    <string name="need_verify">提交成功，等待老师审核</string>
 
     <string name="check_analysis">查看解析</string>
     <string name="my_mistake">我的错题</string>

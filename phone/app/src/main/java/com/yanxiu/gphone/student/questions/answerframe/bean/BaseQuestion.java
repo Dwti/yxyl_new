@@ -65,6 +65,7 @@ public abstract class BaseQuestion implements Serializable {
     protected boolean isComplexQuestion;//是否是复合题 true : 是
 
     protected int parentNumber = -1;//答题卡父题记题号的子题，需要；
+    protected String parentType_id;//答题报告里，需要展示父题的题型名称
 
     private ReportAnswerBean reportAnswerBean;
     private String qaName;//每个题型对应type_id的汉字名称，用来在答题时显示题目类型
@@ -461,6 +462,10 @@ public abstract class BaseQuestion implements Serializable {
         this.mPaperStatus = mPaperStatus;
     }
 
+    public String getParentType_id() {
+        return parentType_id;
+    }
+
 
     /**
      * 题号逻辑开始
@@ -610,8 +615,10 @@ public abstract class BaseQuestion implements Serializable {
 
         if (children.size() > 0) {
             for (BaseQuestion node : children) {
-                if(parentIsNodeCountForTotal)
+                if(parentIsNodeCountForTotal){
                     node.parentNumber = prefixNumber;
+                    node.parentType_id = type_id;
+                }
                 retNodes.addAll(node.allNodesThatHasNumber());
             }
         }

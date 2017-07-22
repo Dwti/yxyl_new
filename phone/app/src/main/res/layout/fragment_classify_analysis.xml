@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_edf0ee"
+    android:orientation="vertical">
+
+    <include layout="@layout/answerquestion_common_number" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@color/color_ffffff"
+        android:fillViewport="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <include
+                android:id="@+id/complex_stem_layout"
+                layout="@layout/common_stem"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/ll_question"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/complex_stem_layout"
+                android:background="@color/color_ffffff">
+
+                <TextView
+                    android:id="@+id/tv_question"
+                    style="@style/CommonQuestionFragmentTextView" />
+            </LinearLayout>
+
+            <com.yanxiu.gphone.student.questions.classify.ClassifyAnslysisItemView
+                android:id="@+id/classify_choice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ll_question"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp" />
+
+
+        </RelativeLayout>
+    </ScrollView>
+
+    <View
+        android:id="@+id/view_line"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/classify_scroll_paddingbottom"
+        android:background="@color/color_ffffff" />
+
+    <View
+        android:id="@+id/shadow"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/question_bottom_shadow"
+        android:layout_below="@+id/view_line"
+        android:alpha="0.2"
+        android:background="@color/color_002c0f" />
+
+    <include
+        android:id="@+id/bottompadding_layout"
+        layout="@layout/simplequestion_bottom_padding"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/question_bottom_layout_height"
+        android:layout_below="@+id/shadow" />
+
+</LinearLayout>

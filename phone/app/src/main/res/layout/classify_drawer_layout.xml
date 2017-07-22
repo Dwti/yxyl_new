@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fl_qa"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_99000000"
+        android:clickable="true" />
+
+    <RelativeLayout
+        android:id="@+id/chioce_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="56dp"
+        android:background="@drawable/classify_drawer_bg">
+
+        <TextView
+            android:id="@+id/classfy_drawer_title"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:textColor="@color/color_69ad0a"
+            android:textSize="21dp"
+            tools:text="@string/analysis_text" />
+
+        <TextView
+            android:id="@+id/classfy_drawer_nodata"
+            android:layout_width="wrap_content"
+            android:layout_height="55dp"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:textColor="@color/color_69ad0a"
+            android:textSize="29dp"
+            android:text="@string/classify_drawer_noAnswer" />
+
+        <com.yanxiu.gphone.student.customviews.ClassifyChoice
+            android:id="@+id/classify_choice"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/classfy_drawer_title"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="15dp"
+            android:background="@color/color_89e00d"
+            android:visibility="visible"/>
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/circle_bg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/drawer_circle_bg"
+
+        />
+
+    <ImageView
+        android:id="@+id/circle_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="23dp"
+        android:background="@drawable/selector_classify_drawer_icon" />
+
+</RelativeLayout>

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
@@ -24,6 +25,7 @@ import com.yanxiu.gphone.student.customviews.analysis.AnalysisScoreView;
 import com.yanxiu.gphone.student.customviews.analysis.VoiceScoldedLayoutView;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.bean.HomeEventMessage;
+import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnalysisQuestionActivity;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.NotesActicity;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionTemplate;
 import com.yanxiu.gphone.student.questions.bean.JsonAudioComment;
@@ -55,6 +57,7 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
     private VoiceScoldedLayoutView mVoiceScoldedView;//语音批注
     protected boolean mToVoiceIsIntent=false;
     private ListenerSeekBarLayout mListenView;//听力复合题只有一个子题时，题干的听力控件
+    private ScrollView mScrollView;
 
     @Override
     public void setData(BaseQuestion data) {
@@ -91,6 +94,8 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
         mAnswerView = (AnswerLayoutView) mRootView.findViewById(R.id.answerview);
         mVoiceScoldedView = (VoiceScoldedLayoutView) mRootView.findViewById(R.id.voicescoldedview);
 
+        mScrollView = (ScrollView) mRootView.findViewById(R.id.scrollView);
+
         View answerView = addAnswerView(inflater,container);
         mAnsewr_container.addView(answerView);
         initAnswerView(inflater, container);
@@ -99,6 +104,7 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
         setQaName(mAnsewr_container);
         initComplexStem(mAnsewr_container, mData);
         hiddenBottomPaddinglayout(mAnsewr_container);
+        hiddenBottomLayout();
     }
 
     /**
@@ -141,6 +147,16 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
 
     }
 
+    /**
+     * 当paper只有一个题时，acticity里隐藏bottom，并且把解析单题型fragment的bottom去掉
+     */
+    private void hiddenBottomLayout(){
+        AnalysisQuestionActivity activity = (AnalysisQuestionActivity)getActivity();
+        if(activity.mQuestions.size() == 1){
+            mScrollView.setPadding(0,0,0,0);
+        }
+    }
+
 
     private void initData() {
 
@@ -178,7 +194,29 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
     public void showAnswerResultView(boolean isRight, String result,String textContent) {
         if (mAnswerResultView != null && mYesno_img != null) {
             int status = mData.getPad().getStatus();
-            if(status == 5){ //已批改
+            if (QuestionTemplate.ANSWER.equals(mData.getTemplate())) { //主观题
+                if(status == 5){ //已批改
+                    if (isRight) {
+                        if (TextUtils.isEmpty(textContent)){
+                            mAnswerResultView.setText(getResources().getString(R.string.answer_yes), result);
+                        }else{
+                            mAnswerResultView.setText(textContent, result);
+                        }
+                        mYesno_img.setBackgroundResource(R.drawable.analysis_yes_img);
+
+                    } else {
+                        if (TextUtils.isEmpty(textContent)){
+                            mAnswerResultView.setText(getResources().getString(R.string.answer_no), result);
+                        }else{
+                            mAnswerResultView.setText(textContent, result);
+                        }
+                        mYesno_img.setBackgroundResource(R.drawable.analysis_wrong_img);
+                    }
+                    mYesno_img.setVisibility(View.VISIBLE);
+                }else{
+                    mAnswerResultView.setText(getResources().getString(R.string.answer_no_pigai), result);
+                }
+            }else{
                 if (isRight) {
                     if (TextUtils.isEmpty(textContent)){
                         mAnswerResultView.setText(getResources().getString(R.string.answer_yes), result);
@@ -196,9 +234,9 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
                     mYesno_img.setBackgroundResource(R.drawable.analysis_wrong_img);
                 }
                 mYesno_img.setVisibility(View.VISIBLE);
-            }else{
-                mAnswerResultView.setText(getResources().getString(R.string.answer_no_pigai), result);
+
             }
+
             mAnswerResultView.setVisibility(View.VISIBLE);
         }
     }

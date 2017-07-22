@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/classify_analysis_item_title"
+        style="@style/ClassifyAnalysisItemTitle"
+        tools:text="@string/answer_analysis_title" />
+
+    <com.yanxiu.gphone.student.customviews.ClassifyChoice
+        android:id="@+id/classify_analysis_choice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>
