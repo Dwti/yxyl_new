@@ -25,6 +25,7 @@ import com.yanxiu.gphone.student.customviews.analysis.AnalysisScoreView;
 import com.yanxiu.gphone.student.customviews.analysis.VoiceScoldedLayoutView;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.bean.HomeEventMessage;
+import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnalysisQuestionActivity;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.NotesActicity;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionTemplate;
@@ -247,10 +248,16 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
      * @param score 评分
      */
     public void showScoreView(String score) {
-        if (mScoreView != null && !TextUtils.isEmpty(score)) {
-            mScoreView.setText(score);
+        Paper paper = ((AnalysisQuestionActivity) getActivity()).getPaper();
+        String status = paper.getPaperStatus().getCheckStatus();
+        if ("1".equals(status)) { //已经批改
+            if (mScoreView != null && !TextUtils.isEmpty(score)) {
+                mScoreView.setScore(score);
+                mScoreView.setVisibility(View.VISIBLE);
+            }
+        } else {
+            mScoreView.setText(getString(R.string.teacher_no_pigai));
             mScoreView.setVisibility(View.VISIBLE);
-
         }
     }
 

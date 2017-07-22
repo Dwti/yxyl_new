@@ -16,8 +16,8 @@ import com.yanxiu.gphone.student.util.TextTypefaceUtil;
  */
 
 public class AnalysisScoreView extends LinearLayout {
-
-    private TextView mScore;
+    private View mScore_layout;
+    private TextView mScore,mNoPigai;
 
 
     public AnalysisScoreView(Context context) {
@@ -38,7 +38,9 @@ public class AnalysisScoreView extends LinearLayout {
     private void initView(Context context) {
         View view = LayoutInflater.from(context).inflate(R.layout.analysis_score_layout, this, false);
         addView(view);
+        mScore_layout = view.findViewById(R.id.score_layout);
         mScore = (TextView) view.findViewById(R.id.analysis_score);
+        mNoPigai = (TextView) view.findViewById(R.id.teacher_no_pigai);
         TextTypefaceUtil.setViewTypeface(TextTypefaceUtil.TypefaceType.METRO_BOLDITALIC, mScore);
     }
 
@@ -47,9 +49,23 @@ public class AnalysisScoreView extends LinearLayout {
      *
      * @param score 评分
      */
-    public void setText(String score) {
+    public void setScore(String score) {
         if (mScore != null) {
             mScore.setText(score);
+            mScore_layout.setVisibility(VISIBLE);
+            mNoPigai.setVisibility(GONE);
+        }
+    }
+
+    /**
+     * 未批改
+     * @param content 要显示的内容
+     */
+    public void setText(String content) {
+        if (mNoPigai != null) {
+            mNoPigai.setText(content);
+            mScore_layout.setVisibility(GONE);
+            mNoPigai.setVisibility(VISIBLE);
         }
     }
 }

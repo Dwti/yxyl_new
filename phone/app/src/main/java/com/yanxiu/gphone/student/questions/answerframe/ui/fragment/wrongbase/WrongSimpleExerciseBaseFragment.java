@@ -206,7 +206,7 @@ public abstract class WrongSimpleExerciseBaseFragment extends WrongExercisbaseFr
      */
     public void showScoreView(String score) {
         if (mScoreView != null && !TextUtils.isEmpty(score)) {
-            mScoreView.setText(score);
+            mScoreView.setScore(score);
             mScoreView.setVisibility(View.VISIBLE);
 
         }
