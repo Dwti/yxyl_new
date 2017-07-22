@@ -28,7 +28,7 @@ public class ReadingComplexQuestion extends BaseQuestion {
 
     @Override
     public ExerciseBaseFragment wrongFragment() {
-        return null;
+        return new ReadingWrongComplexFragment();
     }
 
     @Override
