@@ -80,8 +80,12 @@ public class QuestionUtil {
                         }
                     }
                 } else {
-
-                    typeName = getQuestionTypeNameByParentTypeId(Integer.valueOf(questionEntity.getType_id()));
+                    String parentType_id = questionEntity.getParentType_id();
+                    if(!TextUtils.isEmpty(parentType_id)){
+                        typeName = getQuestionTypeNameByParentTypeId(Integer.valueOf(parentType_id));
+                    }else{
+                        typeName = getQuestionTypeNameByParentTypeId(Integer.valueOf(questionEntity.getType_id()));
+                    }
 
                     if (!treeMap.containsKey(typeName)) {
                         List<BaseQuestion> tempList = new ArrayList<>();

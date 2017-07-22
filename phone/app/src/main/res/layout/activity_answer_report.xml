@@ -7,7 +7,8 @@
 
     <com.yanxiu.gphone.student.customviews.UnFocusableScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/color_edf0ee">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -185,7 +186,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@id/text"
-                android:background="@color/color_edf0ee"
                 android:gravity="center_horizontal"
                 android:paddingBottom="@dimen/report_grid_paddingbottom"
                 android:orientation="vertical"></LinearLayout>
