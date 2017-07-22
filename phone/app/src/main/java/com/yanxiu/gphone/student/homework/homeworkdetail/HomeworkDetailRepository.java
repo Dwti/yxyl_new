@@ -102,9 +102,9 @@ public class HomeworkDetailRepository implements HomeworkDetailDataSource {
         PaperRequest request = new PaperRequest();
         request.setPaperId(paperId);
         request.bodyDealer = new DESBodyDealer();
-        request.startRequest(PaperResponse.class, new HttpCallback<PaperResponse>() {
+        request.startRequest(PaperResponse.class, new EXueELianBaseCallback<PaperResponse>() {
             @Override
-            public void onSuccess(RequestBase request, PaperResponse ret) {
+            public void onResponse(RequestBase request, PaperResponse ret) {
                 if(ret.getStatus().getCode() == 0){
                     if(ret.getData().size() > 0){
                         QuestionShowType type = status == HomeworkDetailPresenter.STATUS_TODO ? QuestionShowType.ANSWER:QuestionShowType.ANALYSIS;
@@ -131,9 +131,9 @@ public class HomeworkDetailRepository implements HomeworkDetailDataSource {
         HomeworkReportRequest request = new HomeworkReportRequest();
         request.setPpid(paperId);
         request.bodyDealer = new DESBodyDealer();
-        request.startRequest(PaperResponse.class, new HttpCallback<PaperResponse>() {
+        request.startRequest(PaperResponse.class, new EXueELianBaseCallback<PaperResponse>() {
             @Override
-            public void onSuccess(RequestBase request, PaperResponse ret) {
+            public void onResponse(RequestBase request, PaperResponse ret) {
                 if(ret.getStatus().getCode() == 0){
                     if(ret.getData().size() > 0){
                         Paper paper = new Paper(ret.getData().get(0), QuestionShowType.ANALYSIS);
