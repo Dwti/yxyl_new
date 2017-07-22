@@ -19,11 +19,20 @@ public class QuestionBean extends BaseBean {
     private PadBean pad = new PadBean();
     private Extend extend;
     private List<PointBean> point;
+    private JsonNoteBean jsonNote;
     private String stem;
     private String submit_way;
     private String template;
     private String type_id;
     private String url;
+
+    public JsonNoteBean getJsonNote() {
+        return jsonNote;
+    }
+
+    public void setJsonNote(JsonNoteBean jsonNote) {
+        this.jsonNote = jsonNote;
+    }
 
     public Extend getExtend() {
         return extend;

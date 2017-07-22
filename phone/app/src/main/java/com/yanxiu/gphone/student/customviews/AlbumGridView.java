@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.util.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,8 @@ import java.util.List;
  */
 public class AlbumGridView extends RelativeLayout {
 
+    private static final String TAG = "AlbumGridView";
+
     public static final int TYPE_IMAGE = 0x000;
     public static final int TYPE_CAMERA = 0x001;
 
@@ -33,7 +36,7 @@ public class AlbumGridView extends RelativeLayout {
     private WavesLayout mConverLayout;
     private TextView mButtonView;
     private GridAdapter mAdapter;
-    private boolean mIsCanAddItem=true;
+    private boolean mIsCanAddItem = true;
 
     private onClickListener mClickListener;
     private onItemChangedListener mItemChangedListener;
@@ -85,8 +88,8 @@ public class AlbumGridView extends RelativeLayout {
     }
 
     public void setCanAddItem(boolean isCanAddItem) {
-        this.mIsCanAddItem=isCanAddItem;
-        if (!mIsCanAddItem){
+        this.mIsCanAddItem = isCanAddItem;
+        if (!mIsCanAddItem) {
             mConverLayout.setVisibility(GONE);
         }
         mAdapter.setCanAddItem(isCanAddItem);
@@ -103,7 +106,7 @@ public class AlbumGridView extends RelativeLayout {
             mContentView.setVisibility(GONE);
             if (mIsCanAddItem) {
                 mConverLayout.setVisibility(VISIBLE);
-            }else {
+            } else {
                 mConverLayout.setVisibility(GONE);
             }
         } else {
@@ -142,7 +145,7 @@ public class AlbumGridView extends RelativeLayout {
                 mContentView.setVisibility(GONE);
                 if (mIsCanAddItem) {
                     mConverLayout.setVisibility(VISIBLE);
-                }else {
+                } else {
                     mConverLayout.setVisibility(GONE);
                 }
             } else {
@@ -288,10 +291,12 @@ public class AlbumGridView extends RelativeLayout {
         @Override
         public int getCount() {
             int count = mDatas != null ? mDatas.size() : 0;
-            count = count > MAXNUMBER ? MAXNUMBER : count;
             if (count > 0 && !isCanAddItem) {
                 count -= 1;
             }
+            count = count > MAXNUMBER ? MAXNUMBER : count;
+            Logger.d(TAG, "list  " + mDatas.toString());
+            Logger.d(TAG, "getCount   " + count);
             return count;
         }
 
@@ -307,6 +312,7 @@ public class AlbumGridView extends RelativeLayout {
 
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
+            Logger.d(TAG, "getView   " + position);
             final String path = mDatas.get(position);
             ViewHolder holder;
             if (convertView == null) {
@@ -342,7 +348,7 @@ public class AlbumGridView extends RelativeLayout {
 
                 if (!isCanAddItem) {
                     holder.mStrokeView.setBackground(ContextCompat.getDrawable(mInflater.getContext(), R.drawable.shape_rectangle_color_89e00d));
-                }else {
+                } else {
                     holder.mStrokeView.setBackground(ContextCompat.getDrawable(mInflater.getContext(), R.drawable.shape_rectangle_color_fafafa));
                 }
             }

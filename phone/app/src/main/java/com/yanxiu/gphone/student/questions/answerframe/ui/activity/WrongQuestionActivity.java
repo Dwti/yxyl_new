@@ -11,7 +11,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
