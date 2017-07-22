@@ -170,6 +170,11 @@ public class HomeworkDetailActivity extends Activity implements HomeworkDetailCo
     }
 
     @Override
+    public void showCanNotViewReport(String msg) {
+        ToastManager.showMsg(msg);
+    }
+
+    @Override
     public void showLoadMoreDataError(String msg) {
         //TODO
     }
@@ -222,7 +227,11 @@ public class HomeworkDetailActivity extends Activity implements HomeworkDetailCo
         @Override
         public void onHomeworkClick(HomeworkDetailBean homework) {
             if(homework.getPaperStatus().getStatus() == HomeworkDetailPresenter.STATUS_FINISHED){
-                mPresenter.getReport(homework.getId());
+                if("0".equals(homework.getShowana())){
+                    mPresenter.getReport(homework.getId());
+                }else {
+                    showCanNotViewReport(String.format(getString(R.string.can_not_view_report),homework.getOverTime()));
+                }
             }else {
                 mPresenter.getPaper(homework.getId(),homework.getPaperStatus().getStatus());
             }
