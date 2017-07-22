@@ -47,6 +47,8 @@ public interface HomeworkDetailContract {
 
     interface Presenter extends BasePresenter{
 
+        boolean shouldRefresh();
+
         void loadHomework();
 
         void loadMoreHomework();

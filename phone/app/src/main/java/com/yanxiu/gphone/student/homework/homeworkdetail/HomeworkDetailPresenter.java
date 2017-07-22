@@ -18,6 +18,7 @@ public class HomeworkDetailPresenter implements HomeworkDetailContract.Presenter
     public static final int STATUS_UNSUBMMIT = 1;  //逾期未交
     public static final int STATUS_FINISHED = 2;  //已完成
 
+    private boolean mShouldRefreshData = false;  //进入答题界面之后回来需要刷新数据
     private String mHomeworkId;
 
     public HomeworkDetailPresenter(String homeworkId, HomeworkDetailRepository mHomeworkRepository, HomeworkDetailContract.View mHomeworkDetailView) {
@@ -26,9 +27,15 @@ public class HomeworkDetailPresenter implements HomeworkDetailContract.Presenter
         this.mHomeworkDetailView = mHomeworkDetailView;
     }
 
+
     @Override
     public void start() {
         loadHomework();
+    }
+
+    @Override
+    public boolean shouldRefresh() {
+        return mShouldRefreshData;
     }
 
     @Override
@@ -37,6 +44,7 @@ public class HomeworkDetailPresenter implements HomeworkDetailContract.Presenter
         mHomeworkRepository.getHomeworkDetails(mHomeworkId, new HomeworkDetailDataSource.LoadHomeworkDetailCallback() {
             @Override
             public void onHomeworkDetailLoaded(List<HomeworkDetailBean> homeworkDetails) {
+                mShouldRefreshData = false;
                 if(!mHomeworkDetailView.isActive()){
                     return;
                 }
@@ -46,6 +54,7 @@ public class HomeworkDetailPresenter implements HomeworkDetailContract.Presenter
 
             @Override
             public void onDataEmpty() {
+                mShouldRefreshData = false;
                 if(!mHomeworkDetailView.isActive()){
                     return;
                 }
@@ -55,6 +64,7 @@ public class HomeworkDetailPresenter implements HomeworkDetailContract.Presenter
 
             @Override
             public void onDataError(int code, String msg) {
+                mShouldRefreshData = false;
                 if(!mHomeworkDetailView.isActive()){
                     return;
                 }
@@ -112,6 +122,7 @@ public class HomeworkDetailPresenter implements HomeworkDetailContract.Presenter
                 if(status == STATUS_UNSUBMMIT){
                     mHomeworkDetailView.openAnalysisQuestionUI(paper.getId());
                 }else if (status == STATUS_TODO){
+                    mShouldRefreshData = true;
                     mHomeworkDetailView.openAnswerQuestionUI(paper.getId());
                 }
             }
