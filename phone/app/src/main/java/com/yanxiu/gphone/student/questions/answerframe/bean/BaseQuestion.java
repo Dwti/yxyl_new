@@ -606,8 +606,8 @@ public abstract class BaseQuestion implements Serializable {
             for (BaseQuestion node : children) {
                 if(parentIsNodeCountForTotal){
                     node.parentNumber = prefixNumber;
-                    node.parentType_id = type_id;
                 }
+                node.parentType_id = type_id;
                 retNodes.addAll(node.allNodesThatHasNumber());
             }
         }
