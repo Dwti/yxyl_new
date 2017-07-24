@@ -51,6 +51,8 @@ public class JoinClassActivity extends Activity {
 
     private EditText mEditName;
 
+    private boolean isRequesting = false;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -119,6 +121,9 @@ public class JoinClassActivity extends Activity {
         mBtnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(isRequesting)
+                    return;
+                isRequesting = true;
                 //先申请加入班级,成功后更新用户姓名信息
                 mName = mEditName.getText().toString();
                 requestJoinClass(mClassId,mName);
@@ -154,6 +159,12 @@ public class JoinClassActivity extends Activity {
 
     HttpCallback<JoinClassResponse> mJoinClassCallback = new EXueELianBaseCallback<JoinClassResponse>() {
         @Override
+        public void onSuccess(RequestBase request, JoinClassResponse ret) {
+            super.onSuccess(request, ret);
+            isRequesting = false;
+        }
+
+        @Override
         public void onResponse(RequestBase request, JoinClassResponse ret) {
             if(ret.getStatus().getCode() == 0){
                 updateUserInfo(mName);
@@ -170,6 +181,7 @@ public class JoinClassActivity extends Activity {
         @Override
         public void onFail(RequestBase request, Error error) {
             ToastManager.showMsg(error.getLocalizedMessage());
+            isRequesting = false;
         }
     };
 
