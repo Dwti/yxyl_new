@@ -238,7 +238,7 @@ public class AnswerCardFragment extends YanxiuBaseFragment implements View.OnCli
             public void onUpdate(int count, int index) {
                 if (mDialog != null && mDialog.isShowing() && mDialog.getState() == STATE_PROGRESS) {
                     mDialog.setProgressbarMaxCount(count);
-                    mDialog.updateProgress(index + 1);
+                    mDialog.updateProgress(index);
                 }
             }
 
