@@ -165,7 +165,7 @@ public class YesNoAnalysisFragment extends AnalysisSimpleExerciseBaseFragment {
             showPointView(mData.getPointList());
         }else{ //逾期未提交的作业 题目解析展示“难度”、“答案”、“题目解析”、“知识点”
             showDifficultyview(mData.getStarCount());
-            showAnswerView(mData.getYesNoAnswer());
+//            showAnswerView(mData.getYesNoAnswer());
             showAnalysisview(mData.getQuestionAnalysis());
             showPointView(mData.getPointList());
         }

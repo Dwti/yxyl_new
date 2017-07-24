@@ -141,7 +141,7 @@ public class SingleChooseAnalysisFragment extends AnalysisSimpleExerciseBaseFrag
             showPointView(mData.getPointList());
         }else{ //逾期未提交的作业 题目解析展示“难度”、“答案”、“题目解析”、“知识点”
             showDifficultyview(mData.getStarCount());
-            showAnswerView(mData.getSingleAnswer());
+//            showAnswerView(mData.getSingleAnswer());
             showAnalysisview(mData.getQuestionAnalysis());
             showPointView(mData.getPointList());
         }
