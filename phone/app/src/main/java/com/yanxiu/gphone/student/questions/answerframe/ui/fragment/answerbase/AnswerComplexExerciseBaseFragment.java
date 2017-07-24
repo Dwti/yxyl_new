@@ -19,6 +19,7 @@ import com.yanxiu.gphone.student.questions.answerframe.adapter.QAViewPagerAdapte
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.TopBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.view.QAViewPager;
+import com.yanxiu.gphone.student.util.ScreenUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -192,6 +193,9 @@ public abstract class AnswerComplexExerciseBaseFragment extends AnswerExerciseBa
         mTopLayout.setCanChangeHeight();
         LinearLayout.LayoutParams topParams = (LinearLayout.LayoutParams) mTopLayout.getLayoutParams();
         topParams.height = mMinHight;
+        if(ScreenUtils.getScreenHeight(getActivity()) <= 800){ //低分辨率手机top设置为0，否则键盘上面的输入框显示不全
+            topParams.height = 0;
+        }
         mTopLayout.setLayoutParams(topParams);
     }
 
