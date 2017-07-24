@@ -237,6 +237,21 @@ public class ClozeComplexTopFragment extends TopBaseFragment {
         return -1;
     }
 
+    /**
+     * 获取第一个子题的题号
+     * @return
+     */
+    private int getFirstChildQuestionNumber(){
+        int questionNumber = 0;
+        try{
+            BaseQuestion firstChild = mQuestion.getChildren().get(0);
+            questionNumber = Integer.parseInt(firstChild.getAnswerCardSimpleNumber());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return questionNumber;
+    }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
