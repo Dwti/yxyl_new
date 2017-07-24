@@ -98,10 +98,7 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        if (mQuestions.size() > 0) {
-            mTotalCount = mQuestions.size();
-        }
+        mTotalCount = QuestionUtil.getTotalCount(mQuestions);
         mTitleString = mPaper.getName();
         calculationSpanCount();
     }
