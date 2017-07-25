@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.view.ViewGroup;
 
-import com.yanxiu.gphone.student.mistake.response.MistakeDeleteMessage;
+import com.yanxiu.gphone.student.user.mistake.response.MistakeDeleteMessage;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
 

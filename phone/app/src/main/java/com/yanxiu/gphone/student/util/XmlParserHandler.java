@@ -1,8 +1,8 @@
 package com.yanxiu.gphone.student.util;
 
-import com.yanxiu.gphone.student.user.response.CityBean;
-import com.yanxiu.gphone.student.user.response.AreaBean;
-import com.yanxiu.gphone.student.user.response.ProvinceBean;
+import com.yanxiu.gphone.student.login.response.CityBean;
+import com.yanxiu.gphone.student.login.response.AreaBean;
+import com.yanxiu.gphone.student.login.response.ProvinceBean;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;

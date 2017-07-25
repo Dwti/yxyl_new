@@ -57,7 +57,7 @@
         </intent-filter>
         </activity>
         <activity
-            android:name=".user.activity.LoginActivity"
+            android:name=".login.activity.LoginActivity"
             android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation"
             android:windowSoftInputMode="stateHidden|adjustResize">
@@ -68,18 +68,18 @@
         </activity>
 
         <activity
-            android:name=".user.activity.ForgetPassWordActivity"
+            android:name=".login.activity.ForgetPassWordActivity"
             android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation"
             android:windowSoftInputMode="stateHidden|adjustResize" />
 
         <activity
-            android:name=".user.activity.RegisterActivity"
+            android:name=".login.activity.RegisterActivity"
             android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation"
             android:windowSoftInputMode="stateHidden|adjustResize" />
 
-        <activity android:name=".user.activity.ResetPassWordActivity"
+        <activity android:name=".login.activity.ResetPassWordActivity"
             android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation"
             android:windowSoftInputMode="stateHidden|adjustResize"/>
@@ -89,22 +89,22 @@
             android:launchMode="singleTop"
             android:windowSoftInputMode="stateAlwaysHidden"/>
 
-        <activity android:name=".user.activity.JoinClassActivity"
+        <activity android:name=".login.activity.JoinClassActivity"
             android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation"
             android:windowSoftInputMode="stateHidden|adjustResize"/>
 
-        <activity android:name=".user.activity.CompleteInfoActivity"
+        <activity android:name=".login.activity.CompleteInfoActivity"
             android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation"
             android:windowSoftInputMode="stateHidden|adjustResize"/>
 
-        <activity android:name=".user.activity.ChooseLocationActivity"
+        <activity android:name=".login.activity.ChooseLocationActivity"
             android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation"
             android:windowSoftInputMode="stateHidden|adjustResize"/>
 
-        <activity android:name=".user.activity.ChooseSchoolActivity"
+        <activity android:name=".login.activity.ChooseSchoolActivity"
             android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation"
             android:windowSoftInputMode="stateHidden|adjustResize"/>
@@ -138,12 +138,12 @@
             android:windowSoftInputMode="adjustUnspecified|stateHidden"
             android:configChanges="orientation|keyboardHidden"/>
 
-        <activity android:name=".user.activity.JoinClassSubmitActivity"
+        <activity android:name=".login.activity.JoinClassSubmitActivity"
             android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation"
             android:windowSoftInputMode="stateHidden|adjustResize"/>
 
-        <activity android:name=".user.activity.ChooseStageActivity"
+        <activity android:name=".login.activity.ChooseStageActivity"
             android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation"
             android:windowSoftInputMode="stateHidden|adjustResize"/>
@@ -187,10 +187,10 @@
         <activity android:name=".common.activity.CropImageActivity"
             android:screenOrientation="portrait"/>
 
-        <activity android:name=".mistake.activity.MistakeListActivity"
+        <activity android:name=".user.mistake.activity.MistakeListActivity"
             android:screenOrientation="portrait"/>
 
-        <activity android:name=".mistake.activity.MistakeClassifyActivity"
+        <activity android:name=".user.mistake.activity.MistakeClassifyActivity"
             android:screenOrientation="portrait"/>
 
         <activity android:name=".questions.answerframe.ui.activity.WrongQuestionActivity"

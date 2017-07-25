@@ -1,7 +1,7 @@
 package com.yanxiu.gphone.student.util;
 
-import com.yanxiu.gphone.student.user.response.PassportBean;
-import com.yanxiu.gphone.student.user.response.UserMessageBean;
+import com.yanxiu.gphone.student.login.response.PassportBean;
+import com.yanxiu.gphone.student.login.response.UserMessageBean;
 
 import org.litepal.crud.DataSupport;
 
