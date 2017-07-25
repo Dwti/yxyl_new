@@ -3,6 +3,7 @@ package com.yanxiu.gphone.student.questions.choose;
 import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
+import com.yanxiu.gphone.student.questions.bean.JsonNoteBean;
 import com.yanxiu.gphone.student.questions.bean.PaperTestBean;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.bean.PointBean;

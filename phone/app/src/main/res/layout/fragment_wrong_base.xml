@@ -91,6 +91,11 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:visibility="gone" />
+
+                        <com.yanxiu.gphone.student.customviews.analysis.NotesLayoutView
+                            android:id="@+id/noteview"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
                     </LinearLayout>
                 </RelativeLayout>
             </FrameLayout>

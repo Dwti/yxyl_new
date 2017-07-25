@@ -36,7 +36,7 @@ public class SingleChooseWrongFragment extends WrongSimpleExerciseBaseFragment {
     @Override
     public void setData(BaseQuestion data) {
         super.setData(data);
-        this.mData= (SingleChoiceQuestion) data;
+        this.mData = (SingleChoiceQuestion) data;
     }
 
     @Override
@@ -49,7 +49,7 @@ public class SingleChooseWrongFragment extends WrongSimpleExerciseBaseFragment {
 
     @Override
     public View addAnswerView(LayoutInflater inflater, @Nullable ViewGroup container) {
-        mAnswerView=inflater.inflate(R.layout.fragment_analysis_choose,container,false);
+        mAnswerView = inflater.inflate(R.layout.fragment_analysis_choose, container, false);
         return mAnswerView;
     }
 
@@ -59,19 +59,20 @@ public class SingleChooseWrongFragment extends WrongSimpleExerciseBaseFragment {
         initData();
     }
 
-    private void initView(){
-        mQuestionView= (TextView) mAnswerView.findViewById(R.id.tv_question);
-        mChooseView= (ChooseLayout) mAnswerView.findViewById(R.id.cl_answer);
+    private void initView() {
+        mQuestionView = (TextView) mAnswerView.findViewById(R.id.tv_question);
+        mChooseView = (ChooseLayout) mAnswerView.findViewById(R.id.cl_answer);
         hiddenNumberBar(mAnswerView);
     }
 
     /**
      * 在完形填空里，单选子题需要隐藏部分view
+     *
      * @param view
      */
-    private void hiddenNumberBar(View view){
+    private void hiddenNumberBar(View view) {
         Fragment parentFragment = getParentFragment();
-        if(null != parentFragment && parentFragment instanceof ClozeAnalysisComplexFragment){
+        if (null != parentFragment && parentFragment instanceof ClozeAnalysisComplexFragment) {
             View number_bar = view.findViewById(R.id.number_bar);
             View ll_question = view.findViewById(R.id.ll_question);
             View line = view.findViewById(R.id.view);
@@ -82,51 +83,51 @@ public class SingleChooseWrongFragment extends WrongSimpleExerciseBaseFragment {
         }
     }
 
-    private void initData(){
-        Spanned string= Html.fromHtml(mData.getStem(),new HtmlImageGetter(mQuestionView),null);
+    private void initData() {
+        Spanned string = Html.fromHtml(mData.getStem(), new HtmlImageGetter(mQuestionView), null);
         mQuestionView.setText(string);
         mChooseView.setIsClick(false);
         mChooseView.setData(mData.getChoice());
     }
 
-    private void showAnalysis(){
-        List<String> datas=mData.getAnswerList();
-        String answer=mData.getSingleAnswer();
-        int answer_position=Integer.parseInt(answer);
+    private void showAnalysis() {
+        List<String> datas = mData.getAnswerList();
+        String answer = mData.getSingleAnswer();
+        int answer_position = Integer.parseInt(answer);
 
-        int count=mChooseView.getChildCount();
+        int count = mChooseView.getChildCount();
 
-        if (datas.size()>0){
-            String select=datas.get(datas.size()-1);
-            int select_position=Integer.parseInt(select);
-            if (count>select_position) {
+        if (datas.size() > 0) {
+            String select = datas.get(datas.size() - 1);
+            int select_position = Integer.parseInt(select);
+            if (count > select_position) {
                 ChooseLayout.ViewHolder selectViewHolder = (ChooseLayout.ViewHolder) mChooseView.getChildAt(select_position).getTag();
-                if (answer.equals(select)){
+                if (answer.equals(select)) {
                     mChooseView.setSelect(select_position);
-                    selectViewHolder.mQuestionContentView.setTextColor(ContextCompat.getColor(getContext(),R.color.color_89e00d));
-                    selectViewHolder.mQuestionIdView.setBackground(ContextCompat.getDrawable(getContext(),R.drawable.choose_right));
-                    selectViewHolder.mQuestionIdView.setTextColor(ContextCompat.getColor(getContext(),R.color.color_ffffff));
-                }else {
-                    if (count>answer_position) {
+                    selectViewHolder.mQuestionContentView.setTextColor(ContextCompat.getColor(getContext(), R.color.color_89e00d));
+                    selectViewHolder.mQuestionIdView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.choose_right));
+                    selectViewHolder.mQuestionIdView.setTextColor(ContextCompat.getColor(getContext(), R.color.color_ffffff));
+                } else {
+                    if (count > answer_position) {
                         ChooseLayout.ViewHolder answerViewHolder = (ChooseLayout.ViewHolder) mChooseView.getChildAt(answer_position).getTag();
 
                         selectViewHolder.mQuestionContentView.setTextColor(ContextCompat.getColor(getContext(), R.color.color_ff7a05));
-                        selectViewHolder.mQuestionIdView.setBackground(ContextCompat.getDrawable(getContext(),R.drawable.choose_wrong));
-                        selectViewHolder.mQuestionIdView.setTextColor(ContextCompat.getColor(getContext(),R.color.color_ffffff));
-                        selectViewHolder.mQuestionSelectView.setBackground(ContextCompat.getDrawable(getContext(),R.mipmap.ic_launcher));
+                        selectViewHolder.mQuestionIdView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.choose_wrong));
+                        selectViewHolder.mQuestionIdView.setTextColor(ContextCompat.getColor(getContext(), R.color.color_ffffff));
+                        selectViewHolder.mQuestionSelectView.setBackground(ContextCompat.getDrawable(getContext(), R.mipmap.ic_launcher));
 
                         answerViewHolder.mQuestionContentView.setTextColor(ContextCompat.getColor(getContext(), R.color.color_89e00d));
-                        answerViewHolder.mQuestionIdView.setBackground(ContextCompat.getDrawable(getContext(),R.drawable.choose_right));
-                        answerViewHolder.mQuestionIdView.setTextColor(ContextCompat.getColor(getContext(),R.color.color_ffffff));
+                        answerViewHolder.mQuestionIdView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.choose_right));
+                        answerViewHolder.mQuestionIdView.setTextColor(ContextCompat.getColor(getContext(), R.color.color_ffffff));
                     }
                 }
             }
-        }else {
-            if (count>answer_position) {
+        } else {
+            if (count > answer_position) {
                 ChooseLayout.ViewHolder answerViewHolder = (ChooseLayout.ViewHolder) mChooseView.getChildAt(answer_position).getTag();
                 answerViewHolder.mQuestionContentView.setTextColor(ContextCompat.getColor(getContext(), R.color.color_89e00d));
-                answerViewHolder.mQuestionIdView.setBackground(ContextCompat.getDrawable(getContext(),R.drawable.choose_right));
-                answerViewHolder.mQuestionIdView.setTextColor(ContextCompat.getColor(getContext(),R.color.color_ffffff));
+                answerViewHolder.mQuestionIdView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.choose_right));
+                answerViewHolder.mQuestionIdView.setTextColor(ContextCompat.getColor(getContext(), R.color.color_ffffff));
             }
         }
     }
@@ -134,20 +135,14 @@ public class SingleChooseWrongFragment extends WrongSimpleExerciseBaseFragment {
     @Override
     public void initAnalysisView() {
         showAnalysis();
-        if(Constants.HAS_FINISH_STATUS.equals(mData.getPaperStatus())){ //已完成
-            if (mData.getStatus()== Constants.ANSWER_STATUS_RIGHT){
-                showAnswerResultView(true, mData.getAnswerCompare(), null);
-            }else {
-                showAnswerResultView(false, mData.getAnswerCompare(), null);
-            }
-            showDifficultyview(mData.getStarCount());
-            showAnalysisview(mData.getQuestionAnalysis());
-            showPointView(mData.getPointList());
-        }else{ //逾期未提交的作业 题目解析展示“难度”、“答案”、“题目解析”、“知识点”
-            showDifficultyview(mData.getStarCount());
-            showAnswerView(mData.getSingleAnswer());
-            showAnalysisview(mData.getQuestionAnalysis());
-            showPointView(mData.getPointList());
+        if (mData.getStatus() == Constants.ANSWER_STATUS_RIGHT) {
+            showAnswerResultView(true, mData.getAnswerCompare(), null);
+        } else {
+            showAnswerResultView(false, mData.getAnswerCompare(), null);
         }
+        showDifficultyview(mData.getStarCount());
+        showAnalysisview(mData.getQuestionAnalysis());
+        showPointView(mData.getPointList());
+        showNoteView(mData.getJsonNoteBean());
     }
 }

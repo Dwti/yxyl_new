@@ -7,6 +7,7 @@ import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.Exercise
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionConvertFactory;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionUtil;
+import com.yanxiu.gphone.student.questions.bean.JsonNoteBean;
 import com.yanxiu.gphone.student.questions.bean.PadBean;
 import com.yanxiu.gphone.student.questions.bean.PaperTestBean;
 import com.yanxiu.gphone.student.questions.bean.PointBean;
@@ -47,6 +48,7 @@ public abstract class BaseQuestion implements Serializable {
     protected String typeid;
     protected ArrayList<BaseQuestion> children;
     protected QuestionShowType showType;
+    protected JsonNoteBean jsonNoteBean;
 
     private Object ansewr;//已回答的问题
 
@@ -96,6 +98,7 @@ public abstract class BaseQuestion implements Serializable {
         this.pid = bean.getPid();
         this.qid = bean.getQid();
         this.wqid=bean.getWqid();
+        this.jsonNoteBean=bean.getQuestions().getJsonNote();
         this.wqnumber=bean.getWqnumber();
         this.qtype = bean.getQtype();
         server_answer = bean.getQuestions().getAnswer();
@@ -250,6 +253,14 @@ public abstract class BaseQuestion implements Serializable {
 
     public void setWqid(int wqid) {
         this.wqid = wqid;
+    }
+
+    public JsonNoteBean getJsonNoteBean() {
+        return jsonNoteBean;
+    }
+
+    public void setJsonNoteBean(JsonNoteBean jsonNoteBean) {
+        this.jsonNoteBean = jsonNoteBean;
     }
 
     public int getWqnumber() {

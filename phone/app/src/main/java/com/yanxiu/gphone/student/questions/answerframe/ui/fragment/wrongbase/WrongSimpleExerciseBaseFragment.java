@@ -21,6 +21,7 @@ import com.yanxiu.gphone.student.customviews.analysis.AnalysisDifficultyView;
 import com.yanxiu.gphone.student.customviews.analysis.AnalysisQuestionResultView;
 import com.yanxiu.gphone.student.customviews.analysis.AnalysisScoreView;
 import com.yanxiu.gphone.student.customviews.analysis.AnswerLayoutView;
+import com.yanxiu.gphone.student.customviews.analysis.NotesLayoutView;
 import com.yanxiu.gphone.student.customviews.analysis.PointLayoutView;
 import com.yanxiu.gphone.student.customviews.analysis.VoiceScoldedLayoutView;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
@@ -28,6 +29,7 @@ import com.yanxiu.gphone.student.questions.answerframe.bean.HomeEventMessage;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.NotesActicity;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionTemplate;
 import com.yanxiu.gphone.student.questions.bean.JsonAudioComment;
+import com.yanxiu.gphone.student.questions.bean.JsonNoteBean;
 import com.yanxiu.gphone.student.questions.bean.PointBean;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
 
@@ -54,6 +56,7 @@ public abstract class WrongSimpleExerciseBaseFragment extends WrongExercisbaseFr
     public AnalysisAnsewrAnslysisView mAnalysisview;//解析view
     private PointLayoutView mPointView;//知识的view
     private VoiceScoldedLayoutView mVoiceScoldedView;//语音批注
+    private NotesLayoutView mNoteView;//笔记
     protected boolean mToVoiceIsIntent=false;
     private ListenerSeekBarLayout mListenView;//听力复合题只有一个子题时，题干的听力控件
 
@@ -91,6 +94,7 @@ public abstract class WrongSimpleExerciseBaseFragment extends WrongExercisbaseFr
         mPointView = (PointLayoutView) mRootView.findViewById(R.id.pointview);
         mAnswerView = (AnswerLayoutView) mRootView.findViewById(R.id.answerview);
         mVoiceScoldedView = (VoiceScoldedLayoutView) mRootView.findViewById(R.id.voicescoldedview);
+        mNoteView= (NotesLayoutView) mRootView.findViewById(R.id.noteview);
 
         View answerView = addAnswerView(inflater,container);
         mAnsewr_container.addView(answerView);
@@ -270,6 +274,13 @@ public abstract class WrongSimpleExerciseBaseFragment extends WrongExercisbaseFr
         }
         mVoiceScoldedView.setData(list);
         mVoiceScoldedView.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * 笔记
+     * */
+    public void showNoteView(JsonNoteBean noteBean){
+        mNoteView.setData(noteBean);
     }
 
     @Override
