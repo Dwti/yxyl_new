@@ -136,6 +136,7 @@ public class ClozeComplexTopFragment extends TopBaseFragment {
     }
 
     private void initData() {
+        mClozeTextView.setBaseIndex(getFirstChildQuestionNumber());
         String text = StemUtil.initClozeStem(mQuestion.getStem());
         mClozeTextView.setText(text,mQuestion.getFilledAnswers());
     }

@@ -28,6 +28,8 @@ public class ClozeTextView extends ReplacementSpanTextView<ClozeView> implements
 
     private int mSelectedPosition = 0;
 
+    protected int mBaseIndex;
+
     public ClozeTextView(@NonNull Context context) {
         super(context);
     }
@@ -71,10 +73,10 @@ public class ClozeTextView extends ReplacementSpanTextView<ClozeView> implements
                 ClozeView cv = (ClozeView) v;
                 if(cv != mSelectedClozeView){
                     resetSelected();
-                    setSelected(cv.getTextNumber() - 1);
+                    setSelected(cv.getTextNumber() - mBaseIndex);
                 }
                 if (mOnClozeClickListener != null) {
-                    mOnClozeClickListener.onClozeClick(cv, cv.getTextNumber() - 1);
+                    mOnClozeClickListener.onClozeClick(cv, cv.getTextNumber() - mBaseIndex);
                 }
             }
         });
@@ -121,7 +123,7 @@ public class ClozeTextView extends ReplacementSpanTextView<ClozeView> implements
                 mSelectedClozeView.setSelected(true);
                 mSelectedClozeView.setAnswerTextColor(Color.parseColor("#333333"));
             }
-            view.setTextNumber(i + 1);
+            view.setTextNumber(mBaseIndex + i);
             view.setFilledAnswer(entry.getKey().answer);
             i++;
         }
@@ -133,6 +135,10 @@ public class ClozeTextView extends ReplacementSpanTextView<ClozeView> implements
 
     public void setSelectedPosition(int pos) {
         this.mSelectedPosition = pos;
+    }
+
+    public void setBaseIndex(int index){
+        this.mBaseIndex = index;
     }
 
 
