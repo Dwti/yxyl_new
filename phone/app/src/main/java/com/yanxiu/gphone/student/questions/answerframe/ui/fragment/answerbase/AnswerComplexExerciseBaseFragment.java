@@ -75,6 +75,9 @@ public abstract class AnswerComplexExerciseBaseFragment extends AnswerExerciseBa
 
         mTopLayout = (MyMaxHeightLinearLayout) mRootView.findViewById(R.id.top_container);
         mMinHight = (int)(getResources().getDimensionPixelSize(R.dimen.question_ll_top_container_minheight));
+        if(ScreenUtils.getScreenHeight(getActivity()) <= 800){ //低分辨率手机top设置为0，否则键盘上面的输入框显示不全
+            mMinHight = 0;
+        }
         mBottom_min_distance = (int)getResources().getDimensionPixelSize(R.dimen.question_bottom_layout_height);
         mTitleBarHight = (int)getResources().getDimensionPixelSize(R.dimen.question_commonnumber_height);
         mLineHight = (int)getResources().getDimensionPixelSize(R.dimen.question_splitter_bottomview_height);
@@ -193,9 +196,6 @@ public abstract class AnswerComplexExerciseBaseFragment extends AnswerExerciseBa
         mTopLayout.setCanChangeHeight();
         LinearLayout.LayoutParams topParams = (LinearLayout.LayoutParams) mTopLayout.getLayoutParams();
         topParams.height = mMinHight;
-        if(ScreenUtils.getScreenHeight(getActivity()) <= 800){ //低分辨率手机top设置为0，否则键盘上面的输入框显示不全
-            topParams.height = 0;
-        }
         mTopLayout.setLayoutParams(topParams);
     }
 

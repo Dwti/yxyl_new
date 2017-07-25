@@ -3,6 +3,8 @@ package com.yanxiu.gphone.student.util;
 import android.hardware.Camera;
 import android.os.Environment;
 
+import com.yanxiu.gphone.student.constant.Constants;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,7 +18,7 @@ import java.io.InputStreamReader;
 
 public class PermissionUtil {
     public static final String ROOT_DIRECTORY_NAME = "yanxiu";
-    public static final String SDCARD_DIR = Environment.getExternalStorageDirectory().getPath() + File.separator + ROOT_DIRECTORY_NAME + File.separator;
+    public static final String SDCARD_DIR = Environment.getExternalStorageDirectory().getPath() + File.separator + Constants.PICTUREDIR + File.separator;
 //    public static final String OUT_SDCARD_DIR = "/storage/extSdCard" + File.separator + ROOT_DIRECTORY_NAME + File.separator;
 //    public static final String OUT_SDCARD_DIR2 = "/mnt/external_sd" + File.separator + ROOT_DIRECTORY_NAME + File.separator;
 //    public static final String OUT_SDCARD_DIR3 = "/mnt/sdcard2" + File.separator + ROOT_DIRECTORY_NAME + File.separator;
@@ -58,6 +60,9 @@ public class PermissionUtil {
     public static boolean checkReadPermission() {
         boolean result;
         File file = new File(SDCARD_DIR + TESTFILE_NAME);
+        if(!file.exists()){
+            file.mkdirs();
+        }
         FileInputStream fis = null;
         try {
             fis = new FileInputStream(file);
@@ -87,6 +92,9 @@ public class PermissionUtil {
     public static boolean checkWritePermission() {
         boolean result;
         File file = new File(SDCARD_DIR + TESTFILE_NAME);
+        if(!file.exists()){
+            file.mkdirs();
+        }
         FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(file);
