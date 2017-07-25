@@ -73,6 +73,14 @@ public class SubmitQuesitonTask extends AsyncTask {
         final ArrayList<SubjectiveUpLoadImgBean> imgList = getSubjecttiveImgAnswer();
         if (null != imgList && imgList.size() > 0) {
             final int totalCount = imgList.size() + 1;//上传总的数量= 图片数量 + 1（最后上传答案的请求算作一个计数）；
+            //回调给UI线程---开始上传图片的回调，因为上传图片没有开始的回调，所以写在这里。
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    Log.e(TAG, "开始上传");
+                    mCallBack.onUpdate(totalCount, 1);
+                }
+            });
             UpDataRequest.getInstense().setConstantParams(new UpDataRequest.findConstantParams() {
                 @NonNull
                 @Override
@@ -114,7 +122,7 @@ public class SubmitQuesitonTask extends AsyncTask {
                     //这需要保存服务服端返回的url
                     String imgUrl = parseJson(jsonString);
                     Log.e(TAG, "imgUrl" + imgUrl);
-                    saveAnswer((SubjectiveUpLoadImgBean) tag,imgUrl);
+                    saveAnswer((SubjectiveUpLoadImgBean) tag, imgUrl);
                     //回调给UI线程
                     mHandler.post(new Runnable() {
                         @Override
@@ -231,7 +239,7 @@ public class SubmitQuesitonTask extends AsyncTask {
                                 if (answerList != null && answerList.size() > 0) {
                                     for (int k = 0; k < answerList.size(); k++) {
                                         String path = answerList.get(k);
-                                        if(!TextUtils.isEmpty(path) && !path.startsWith("http")){
+                                        if (!TextUtils.isEmpty(path) && !path.startsWith("http")) {
                                             SubjectiveUpLoadImgBean bean = new SubjectiveUpLoadImgBean();
                                             bean.setLevelPositions(childQuestion.getLevelPositions());
                                             bean.setPath(path);
@@ -252,7 +260,7 @@ public class SubmitQuesitonTask extends AsyncTask {
                     if (answerList != null && answerList.size() > 0) {
                         for (int k = 0; k < answerList.size(); k++) {
                             String path = answerList.get(k);
-                            if(!TextUtils.isEmpty(path) && !path.startsWith("http")){
+                            if (!TextUtils.isEmpty(path) && !path.startsWith("http")) {
                                 SubjectiveUpLoadImgBean bean = new SubjectiveUpLoadImgBean();
                                 bean.setLevelPositions(outQuestion.getLevelPositions());
                                 bean.setPath(path);

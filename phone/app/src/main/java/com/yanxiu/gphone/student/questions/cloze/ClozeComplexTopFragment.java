@@ -136,6 +136,7 @@ public class ClozeComplexTopFragment extends TopBaseFragment {
     }
 
     private void initData() {
+        mClozeTextView.setBaseIndex(getFirstChildQuestionNumber());
         String text = StemUtil.initClozeStem(mQuestion.getStem());
         mClozeTextView.setText(text,mQuestion.getFilledAnswers());
     }
@@ -235,6 +236,21 @@ public class ClozeComplexTopFragment extends TopBaseFragment {
             return ((ClozeAnswerComplexFragment) parentFragment).mHashCode;
         }
         return -1;
+    }
+
+    /**
+     * 获取第一个子题的题号
+     * @return
+     */
+    private int getFirstChildQuestionNumber(){
+        int questionNumber = 0;
+        try{
+            BaseQuestion firstChild = mQuestion.getChildren().get(0);
+            questionNumber = Integer.parseInt(firstChild.getAnswerCardSimpleNumber());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return questionNumber;
     }
 
     @Override

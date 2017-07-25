@@ -115,7 +115,7 @@ public class MultiChooseAnalysisFragment extends AnalysisSimpleExerciseBaseFragm
                     answer+=s;
                 }
             }
-            showAnswerView(answer);
+//            showAnswerView(answer);
             showAnalysisview(mData.getQuestionAnalysis());
             showPointView(mData.getPointList());
         }

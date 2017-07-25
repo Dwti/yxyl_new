@@ -29,6 +29,7 @@ public class ClassInfoActivity extends Activity {
     public static final String EXTRA_STATUS = "CLASS_STATUS";
     private String mClassId;
     private int mStatus = -1;
+    private boolean isRequesting = false;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +54,7 @@ public class ClassInfoActivity extends Activity {
 
         if(classInfo != null){
             mClassId = classInfo.getId();
-            className.setText(classInfo.getGradename()+classInfo.getName());
+            className.setText(getString(R.string.dot) + classInfo.getGradename()+classInfo.getName());
             classNum.setText(classInfo.getId());
             teacherName.setText(classInfo.getAdminName());
             studentNum.setText(String.format(getString(R.string.student_count),classInfo.getStdnum()));
@@ -68,6 +69,9 @@ public class ClassInfoActivity extends Activity {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(isRequesting)
+                    return;
+                isRequesting = true;
                 if(status == ClassStatus.HAS_CLASS.getCode()){
                     //退出班级
                     exitClass(mClassId);
@@ -99,6 +103,12 @@ public class ClassInfoActivity extends Activity {
 
     HttpCallback<ExitClassResponse> mExitClassCallback = new EXueELianBaseCallback<ExitClassResponse>() {
         @Override
+        public void onSuccess(RequestBase request, ExitClassResponse ret) {
+            super.onSuccess(request, ret);
+            isRequesting = false;
+        }
+
+        @Override
         public void onResponse(RequestBase request, ExitClassResponse ret) {
             if(ret.getStatus().getCode() == 0 ){
                 setResult(RESULT_OK);
@@ -110,10 +120,17 @@ public class ClassInfoActivity extends Activity {
         @Override
         public void onFail(RequestBase request, Error error) {
             Toast.makeText(ClassInfoActivity.this, error.getLocalizedMessage(),Toast.LENGTH_SHORT).show();
+            isRequesting = false;
         }
     };
 
     HttpCallback<CancelApplyClassResponse> mCancelApplyClassCallback = new EXueELianBaseCallback<CancelApplyClassResponse>() {
+        @Override
+        public void onSuccess(RequestBase request, CancelApplyClassResponse ret) {
+            super.onSuccess(request, ret);
+            isRequesting = false;
+        }
+
         @Override
         public void onResponse(RequestBase request, CancelApplyClassResponse ret) {
             if(ret.getStatus().getCode() == 0 ){
@@ -126,6 +143,7 @@ public class ClassInfoActivity extends Activity {
         @Override
         public void onFail(RequestBase request, Error error) {
             Toast.makeText(ClassInfoActivity.this, error.getLocalizedMessage(),Toast.LENGTH_SHORT).show();
+            isRequesting = false;
         }
     };
 }

@@ -1,11 +1,13 @@
 package com.yanxiu.gphone.student.homework.homeworkdetail;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -118,6 +120,14 @@ public class HomeworkDetailActivity extends Activity implements HomeworkDetailCo
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        if(mPresenter.shouldRefresh()){
+            mPresenter.loadHomework();
+        }
+    }
+
+    @Override
     public void setLoadingIndicator(boolean active) {
         mSwipeRefreshLayout.setRefreshing(active);
     }
@@ -167,6 +177,11 @@ public class HomeworkDetailActivity extends Activity implements HomeworkDetailCo
     public void showNoMoreData() {
         mIsLoadingMore = false;
         //TODO
+    }
+
+    @Override
+    public void showCanNotViewReport(String msg) {
+        ToastManager.showMsg(msg);
     }
 
     @Override
@@ -222,7 +237,11 @@ public class HomeworkDetailActivity extends Activity implements HomeworkDetailCo
         @Override
         public void onHomeworkClick(HomeworkDetailBean homework) {
             if(homework.getPaperStatus().getStatus() == HomeworkDetailPresenter.STATUS_FINISHED){
-                mPresenter.getReport(homework.getId());
+                if("0".equals(homework.getShowana())){
+                    mPresenter.getReport(homework.getId());
+                }else {
+                    showCanNotViewReport(String.format(getString(R.string.can_not_view_report),homework.getOverTime()));
+                }
             }else {
                 mPresenter.getPaper(homework.getId(),homework.getPaperStatus().getStatus());
             }

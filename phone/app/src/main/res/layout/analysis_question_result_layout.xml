@@ -26,7 +26,6 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/analysis_view_paddingbottom"
         android:layout_marginRight="@dimen/analysis_view_paddingbottom"
-        android:gravity="center"
         android:lineSpacingExtra="@dimen/analysis_answer_result_SpacingExtra"
         android:textColor="@color/color_336600"
         android:textSize="@dimen/analysis_answer_result_textsize"

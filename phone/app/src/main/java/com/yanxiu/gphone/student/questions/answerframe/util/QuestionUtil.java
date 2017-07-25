@@ -15,6 +15,8 @@ import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -81,9 +83,9 @@ public class QuestionUtil {
                     }
                 } else {
                     String parentType_id = questionEntity.getParentType_id();
-                    if(!TextUtils.isEmpty(parentType_id)){
+                    if (!TextUtils.isEmpty(parentType_id)) {
                         typeName = getQuestionTypeNameByParentTypeId(Integer.valueOf(parentType_id));
-                    }else{
+                    } else {
                         typeName = getQuestionTypeNameByParentTypeId(Integer.valueOf(questionEntity.getType_id()));
                     }
 
@@ -192,9 +194,9 @@ public class QuestionUtil {
         QUESTION_CLASSFY(13, YanxiuApplication.getInstance().getResources().getString(R.string.question_classfy)),
         QUESTION_READ_COMPLEX(14, YanxiuApplication.getInstance().getResources().getString(R.string.question_read_complex)),
         QUESTION_CLOZE_COMPLEX(15, YanxiuApplication.getInstance().getResources().getString(R.string.question_cloze_complex)),
-        QUESTION_TRANSLATION(16,YanxiuApplication.getInstance().getResources().getString(R.string.question_translation)),
-        QUESTION_SUBJECTSWERE(17,YanxiuApplication.getInstance().getResources().getString(R.string.question_subjects_were)),
-        QUESTION_SORTING(20,YanxiuApplication.getInstance().getResources().getString(R.string.question_sorting)),
+        QUESTION_TRANSLATION(16, YanxiuApplication.getInstance().getResources().getString(R.string.question_translation)),
+        QUESTION_SUBJECTSWERE(17, YanxiuApplication.getInstance().getResources().getString(R.string.question_subjects_were)),
+        QUESTION_SORTING(20, YanxiuApplication.getInstance().getResources().getString(R.string.question_sorting)),
         QUESTION_SOLVE_COMPLEX(22, YanxiuApplication.getInstance().getResources().getString(R.string.question_solve_complex));
 
         public int type;
@@ -384,7 +386,7 @@ public class QuestionUtil {
 //                                            }
                                         } else {
                                             List<String> rightAnswerStr = new ArrayList<>();
-                                            for(Object o : rightAnswer){
+                                            for (Object o : rightAnswer) {
                                                 rightAnswerStr.add(String.valueOf(o));
                                             }
                                             if (QuestionTemplate.MULTI_CHOICES.equals(childTemplate)) {
@@ -508,14 +510,14 @@ public class QuestionUtil {
 //                                        answerBean.setIsFinish(false);
 //                                        answerBean.setIsRight(false);
 //                                    }
-                                    if(Constants.ANSWER_STATUS_RIGHT == outQuestion.getPad().getStatus()){
+                                    if (Constants.ANSWER_STATUS_RIGHT == outQuestion.getPad().getStatus()) {
                                         answerBean.setIsFinish(true);
                                         answerBean.setIsRight(true);
 
-                                    }else if(Constants.ANSWER_STATUS_WRONG == outQuestion.getPad().getStatus()){
+                                    } else if (Constants.ANSWER_STATUS_WRONG == outQuestion.getPad().getStatus()) {
                                         answerBean.setIsFinish(true);
                                         answerBean.setIsRight(false);
-                                    }else{
+                                    } else {
                                         answerBean.setIsFinish(false);
                                         answerBean.setIsRight(false);
                                     }
@@ -611,17 +613,65 @@ public class QuestionUtil {
      * @return
      */
     public static int calculateRightCount(List<BaseQuestion> list) {
-        if (list == null || list.size() == 0)
-            return 0;
-        int rightCount = 0;
-        for (BaseQuestion entity : list) {
-            if (entity == null)
-                continue;
-            if (entity.getReportAnswerBean().isRight()) {
-                rightCount += 1;
+        int totalCount = 0;
+        HashMap<String, Integer> map = new HashMap();
+        for (int i = 0; i < list.size(); i++) {
+            BaseQuestion question = list.get(i);
+            String prefixNumber = String.valueOf(question.getAnswerCardPrefixNumber());
+            if ("-1".equals(prefixNumber)) { //答题报告逻辑里的单题（除了8，22类型的题）
+                if (question.getReportAnswerBean().isRight())
+                    totalCount++;
+            } else {
+                if (!map.containsKey(prefixNumber)) {
+                    if (question.getReportAnswerBean().isRight()) {
+                        map.put(prefixNumber, 1);
+                    } else {
+                        map.put(prefixNumber, -10);
+                    }
+                } else { //map里已经存在了，那么判断如果key的value为-10,那么说明该大题有错题
+                    if (-10 == map.get(prefixNumber)) { //已经有错题了，那么这个就是错误的，无需再判断
+
+                    } else {
+                        if (question.getReportAnswerBean().isRight()) {
+                            map.put(prefixNumber, 1);
+                        } else {
+                            map.put(prefixNumber, -10);
+                        }
+                    }
+                }
             }
         }
-        return rightCount;
+        Iterator iter = map.entrySet().iterator();
+        while (iter.hasNext()) {
+            Map.Entry entry = (Map.Entry) iter.next();
+            int val = (int) entry.getValue();
+            if (val == 1)
+                totalCount++;
+        }
+        return totalCount;
     }
 
+    /**
+     * 答题报告里，获取总共多少题
+     *
+     * @param list
+     * @return
+     */
+    public static int getTotalCount(List<BaseQuestion> list) {
+        int totalCount = 0;
+        ArrayList<String> tempList = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            BaseQuestion question = list.get(i);
+            String prefixNumber = String.valueOf(question.getAnswerCardPrefixNumber());
+            if ("-1".equals(prefixNumber)) { //答题报告逻辑里的单题（除了8，22类型的题）
+                totalCount++;
+            } else {
+                if (!tempList.contains(prefixNumber)) {
+                    tempList.add(prefixNumber);
+                    totalCount++;
+                }
+            }
+        }
+        return totalCount;
+    }
 }

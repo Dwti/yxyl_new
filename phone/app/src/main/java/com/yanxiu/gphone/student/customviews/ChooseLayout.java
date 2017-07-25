@@ -66,17 +66,23 @@ public class ChooseLayout extends LinearLayout implements View.OnClickListener {
     public void setYesyNoData(List<String> list) {
         addChildViewYesyNo(list);
     }
-    private void addChildView(List<String> list) {
+    private void addChildView(final List<String> list) {
         this.removeAllViews();
         for (int i = 0; i < list.size(); i++) {
             View view = LayoutInflater.from(mContext).inflate(R.layout.layout_choose_item, this, false);
-            ViewHolder holder = new ViewHolder();
+            final ViewHolder holder = new ViewHolder();
             holder.position = i;
             holder.mQuestionIdView = (TextView) view.findViewById(R.id.tv_question_id);
             holder.mQuestionIdView.setText(getEmsByNum(i));
             holder.mQuestionContentView = (TextView) view.findViewById(R.id.tv_question_content);
-            Spanned string= Html.fromHtml(list.get(i),new HtmlImageGetter(holder.mQuestionContentView),null);
-            holder.mQuestionContentView.setText(string);
+            final String text = list.get(i);
+            post(new Runnable() {
+                @Override
+                public void run() {
+                    Spanned string= Html.fromHtml(text,new HtmlImageGetter(holder.mQuestionContentView),null);
+                    holder.mQuestionContentView.setText(string);
+                }
+            });
             holder.mQuestionSelectView = view.findViewById(R.id.v_question_select);
             if (mChooseType==TYPE_MULTI){
                 ViewCompat.setBackground(holder.mQuestionSelectView, ContextCompat.getDrawable(mContext, R.drawable.multi_unselect));

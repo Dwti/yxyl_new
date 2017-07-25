@@ -32,6 +32,8 @@ public interface HomeworkDetailContract {
 
         void showNoMoreData();
 
+        void showCanNotViewReport(String msg);
+
         void showLoadMoreDataError(String msg);
 
         void showGetPaperDataError(String msg);
@@ -44,6 +46,8 @@ public interface HomeworkDetailContract {
     }
 
     interface Presenter extends BasePresenter{
+
+        boolean shouldRefresh();
 
         void loadHomework();
 

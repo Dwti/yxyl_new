@@ -38,6 +38,8 @@ public class AnalysisClozeTextView extends ReplacementSpanTextView<ClozeView> im
 
     private int mSelectedPosition = 0;
 
+    protected int mBaseIndex;
+
     public AnalysisClozeTextView(@NonNull Context context) {
         super(context);
         init();
@@ -92,7 +94,7 @@ public class AnalysisClozeTextView extends ReplacementSpanTextView<ClozeView> im
                 if (mSelectedClozeView == cv) {
                     return;
                 }
-                mSelectedPosition = cv.getTextNumber() - 1;
+                mSelectedPosition = cv.getTextNumber() - mBaseIndex;
                 mSelectedClozeView = cv;
                 setWidthAndText();
                 if (mOnClozeClickListener != null) {
@@ -149,7 +151,7 @@ public class AnalysisClozeTextView extends ReplacementSpanTextView<ClozeView> im
             if(i == mSelectedPosition){
                 mSelectedClozeView = view;
             }
-            view.setTextNumber(i + 1);
+            view.setTextNumber(mBaseIndex + i);
             view.setFilledAnswer(entry.getKey().answer);
             view.setCorrectAnswer(mCorrectAnswers.get(i));
             if(i == mSelectedPosition){
@@ -171,6 +173,10 @@ public class AnalysisClozeTextView extends ReplacementSpanTextView<ClozeView> im
 
     public void setOnClozeClickListener(ClozeTextView.OnClozeClickListener listener) {
         mOnClozeClickListener = listener;
+    }
+
+    public void setBaseIndex(int index){
+        this.mBaseIndex = index;
     }
 
     public void resetSelected() {

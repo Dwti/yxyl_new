@@ -185,7 +185,7 @@ public class AnswerErrorActicity extends YanxiuBaseActivity implements View.OnCl
             mRequest = null;
         }
         mRequest = new AnalysisErrorRequest(mQid, mContent, mType);
-        mRequest.bodyDealer = new DESBodyDealer();
+//        mRequest.bodyDealer = new DESBodyDealer();
         mRequest.startRequest(EXueELianBaseResponse.class, new EXueELianBaseCallback<EXueELianBaseResponse>() {
 
             @Override
