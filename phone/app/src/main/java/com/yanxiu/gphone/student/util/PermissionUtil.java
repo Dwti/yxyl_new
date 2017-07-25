@@ -7,7 +7,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
@@ -18,6 +17,10 @@ import java.io.InputStreamReader;
 public class PermissionUtil {
     public static final String ROOT_DIRECTORY_NAME = "yanxiu";
     public static final String SDCARD_DIR = Environment.getExternalStorageDirectory().getPath() + File.separator + ROOT_DIRECTORY_NAME + File.separator;
+//    public static final String OUT_SDCARD_DIR = "/storage/extSdCard" + File.separator + ROOT_DIRECTORY_NAME + File.separator;
+//    public static final String OUT_SDCARD_DIR2 = "/mnt/external_sd" + File.separator + ROOT_DIRECTORY_NAME + File.separator;
+//    public static final String OUT_SDCARD_DIR3 = "/mnt/sdcard2" + File.separator + ROOT_DIRECTORY_NAME + File.separator;
+//    public static final String OUT_SDCARD_DIR4 = YanxiuApplication.getInstance().getFilesDir() + File.separator + ROOT_DIRECTORY_NAME + File.separator;
     public static final String TESTFILE_NAME = "testPermission.txt";
 
     /**
@@ -49,6 +52,7 @@ public class PermissionUtil {
 
     /**
      * 检测读取权限
+     *
      * @return
      */
     public static boolean checkReadPermission() {
@@ -66,8 +70,9 @@ public class PermissionUtil {
             result = false;
         } finally {
             try {
-                fis.close();
-            } catch (IOException e) {
+                if (fis != null)
+                    fis.close();
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -76,6 +81,7 @@ public class PermissionUtil {
 
     /**
      * 检测写权限
+     *
      * @return
      */
     public static boolean checkWritePermission() {
@@ -93,11 +99,13 @@ public class PermissionUtil {
             result = false;
         } finally {
             try {
-                fos.close();
-            } catch (IOException e) {
+                if (fos != null)
+                    fos.close();
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
         return result;
     }
+
 }
