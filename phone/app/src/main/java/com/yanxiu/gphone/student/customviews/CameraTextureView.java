@@ -237,7 +237,8 @@ public class CameraTextureView extends TextureView implements TextureView.Surfac
         }
 
         /*
-         * The following code cannot be used because of huawei's mobile phone problem
+         * Because of huawei's mobile phone problem, the following code must be
+         * used to prevent the size of the acquisition from being too small
          * */
         if (retSize != null && retSize.getWidth() < 720) {
             retSize = preSizeList[preSizeList.length / 2];
