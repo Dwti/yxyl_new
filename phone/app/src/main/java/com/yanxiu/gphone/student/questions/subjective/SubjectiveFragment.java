@@ -141,7 +141,7 @@ public class SubjectiveFragment extends AnswerSimpleExerciseBaseFragment impleme
 
         @Override
         public void onPermissionsDenied(@Nullable List<String> deniedPermissions) {
-
+            ToastManager.showMsg(R.string.no_storage_permissions);
         }
     };
 

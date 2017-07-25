@@ -373,7 +373,7 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
         String nowTime = transferFormat(0);
         mNowTimeView.setText(nowTime);
         if (NetWorkUtils.isNetAvailable()) {
-            ToastManager.showMsg(R.string.voice_url_error);
+//            ToastManager.showMsg(R.string.voice_url_error);
         }else {
             ToastManager.showMsg(R.string.net_null);
         }

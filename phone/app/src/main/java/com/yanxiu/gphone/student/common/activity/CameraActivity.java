@@ -116,6 +116,8 @@ public class CameraActivity extends YanxiuBaseActivity implements View.OnClickLi
     public void onComplete(boolean isSuccess, String path) {
         if (isSuccess){
             CropImageActivity.LaunchActivity(mContext,path,mFromId);
+        }else {
+            ToastManager.showMsg(R.string.no_storage_permissions);
         }
         isTakePicture=false;
     }

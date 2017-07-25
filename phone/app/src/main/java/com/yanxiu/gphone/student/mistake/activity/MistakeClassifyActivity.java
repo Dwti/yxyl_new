@@ -29,7 +29,7 @@ import com.yanxiu.gphone.student.util.LoginInfo;
  */
 public class MistakeClassifyActivity extends YanxiuBaseActivity implements RadioGroup.OnCheckedChangeListener, View.OnClickListener {
 
-    private static final String MISTAKE_ALL= "all";
+    private static final String MISTAKE_ALL = "all";
     private static final String MISTAKE_CHAPTER = "chapter";
     private static final String MISTAKE_KONGLEDGE = "kongledge";
 
@@ -68,7 +68,7 @@ public class MistakeClassifyActivity extends YanxiuBaseActivity implements Radio
         setContentView(rootView);
         mTitle = getIntent().getStringExtra(TITLE);
         mSubjectId = getIntent().getStringExtra(SUBJECTID);
-        mWrongNum = getIntent().getIntExtra(WRONGNUM,0);
+        mWrongNum = getIntent().getIntExtra(WRONGNUM, 0);
         mEditionId = getIntent().getStringExtra(EDITIONID);
         mStageId = LoginInfo.getStageid();
         initView();
@@ -83,7 +83,7 @@ public class MistakeClassifyActivity extends YanxiuBaseActivity implements Radio
 
         mClassifyView = (RadioGroup) findViewById(R.id.rg_classify);
         mAllView = (RadioButton) findViewById(R.id.rb_all);
-        mKongledgeView= (RadioButton) findViewById(R.id.rb_kongledge);
+        mKongledgeView = (RadioButton) findViewById(R.id.rb_kongledge);
     }
 
     private void initFragment() {
@@ -108,10 +108,10 @@ public class MistakeClassifyActivity extends YanxiuBaseActivity implements Radio
             } else if (mTitle.equals(getText(R.string.mistake_redo_english))) {
                 transaction.add(R.id.fl_content, chapterFragment, MISTAKE_CHAPTER);
                 mKongledgeView.setVisibility(View.INVISIBLE);
-            }else {
+            } else {
                 mClassifyView.setVisibility(View.GONE);
             }
-        }else {
+        } else {
             mClassifyView.setVisibility(View.GONE);
         }
         transaction.add(R.id.fl_content, completeFragment, MISTAKE_ALL);
@@ -136,48 +136,39 @@ public class MistakeClassifyActivity extends YanxiuBaseActivity implements Radio
     @Override
     public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
         FragmentTransaction transaction = mManager.beginTransaction();
-        Fragment allFragment;
-        Fragment chapterFragment;
-        Fragment kongledgeFragment;
+        Fragment allFragment = mManager.findFragmentByTag(MISTAKE_ALL);
+        Fragment chapterFragment = mManager.findFragmentByTag(MISTAKE_CHAPTER);
+        Fragment kongledgeFragment = mManager.findFragmentByTag(MISTAKE_KONGLEDGE);
         switch (checkedId) {
             case R.id.rb_all:
-                allFragment = mManager.findFragmentByTag(MISTAKE_ALL);
                 if (allFragment != null) {
                     transaction.show(allFragment);
-                    chapterFragment=mManager.findFragmentByTag(MISTAKE_CHAPTER);
-                    kongledgeFragment=mManager.findFragmentByTag(MISTAKE_KONGLEDGE);
-                    if (chapterFragment!=null) {
+                    if (chapterFragment != null) {
                         transaction.hide(chapterFragment);
                     }
-                    if (kongledgeFragment!=null) {
+                    if (kongledgeFragment != null) {
                         transaction.hide(kongledgeFragment);
                     }
                 }
                 break;
             case R.id.rb_chapter:
-                chapterFragment = mManager.findFragmentByTag(MISTAKE_CHAPTER);
                 if (chapterFragment != null) {
                     transaction.show(chapterFragment);
-                    allFragment=mManager.findFragmentByTag(MISTAKE_ALL);
-                    kongledgeFragment=mManager.findFragmentByTag(MISTAKE_KONGLEDGE);
-                    if (allFragment!=null) {
+                    if (allFragment != null) {
                         transaction.hide(allFragment);
                     }
-                    if (kongledgeFragment!=null) {
+                    if (kongledgeFragment != null) {
                         transaction.hide(kongledgeFragment);
                     }
                 }
                 break;
             case R.id.rb_kongledge:
-                kongledgeFragment = mManager.findFragmentByTag(MISTAKE_KONGLEDGE);
                 if (kongledgeFragment != null) {
                     transaction.show(kongledgeFragment);
-                    chapterFragment=mManager.findFragmentByTag(MISTAKE_CHAPTER);
-                    allFragment=mManager.findFragmentByTag(MISTAKE_ALL);
-                    if (chapterFragment!=null) {
+                    if (chapterFragment != null) {
                         transaction.hide(chapterFragment);
                     }
-                    if (allFragment!=null) {
+                    if (allFragment != null) {
                         transaction.hide(allFragment);
                     }
                 }

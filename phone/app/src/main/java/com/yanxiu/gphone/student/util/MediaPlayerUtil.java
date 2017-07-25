@@ -147,7 +147,6 @@ public class MediaPlayerUtil {
             try {
                 isPlaying = false;
                 isPause = true;
-                restore();
                 mPlayer.pause();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -160,21 +159,10 @@ public class MediaPlayerUtil {
             try {
                 isPlaying = true;
                 isPause = false;
-                restore();
                 mPlayer.start();
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
-    }
-
-    /**
-     * This action can restore the current progress
-     */
-    private void restore() {
-        if (mCallBack != null && mPlayer != null) {
-            int currentPosition = mPlayer.getCurrentPosition();
-            mCallBack.onProgress(MediaPlayerUtil.this, currentPosition);
         }
     }
 

@@ -109,7 +109,7 @@ public class CameraTextureView extends TextureView implements TextureView.Surfac
             if (cameraDevice == null) {
                 return;
             }
-            this.mTakePictureFinishedListener=mTakePictureFinishedListener;
+            this.mTakePictureFinishedListener = mTakePictureFinishedListener;
             mCaptureRequestBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
             mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
             mCaptureRequestBuilder.addTarget(mImageReader.getSurface());
@@ -174,7 +174,7 @@ public class CameraTextureView extends TextureView implements TextureView.Surfac
             } else {
                 setSurfaceTextureListener(this);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -207,18 +207,18 @@ public class CameraTextureView extends TextureView implements TextureView.Surfac
                 Size largest = Collections.max(Arrays.asList(map.getOutputSizes(ImageFormat.JPEG)), new CompareSizesByArea());
                 mImageReader = ImageReader.newInstance(largest.getWidth(), largest.getHeight(), ImageFormat.JPEG, 2);
                 mImageReader.setOnImageAvailableListener(imageAvailableListener, null);
-                mPreviewSize=getCloselyPreSize(mWidth,mHeight,map.getOutputSizes(SurfaceTexture.class));
+                mPreviewSize = getCloselyPreSize(mWidth, mHeight, map.getOutputSizes(SurfaceTexture.class));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    protected Size getCloselyPreSize(int surfaceWidth, int surfaceHeight,Size[] preSizeList) {
+    protected Size getCloselyPreSize(int surfaceWidth, int surfaceHeight, Size[] preSizeList) {
 
         //先查找preview中是否存在与surfaceview相同宽高的尺寸
-        for(Size size : preSizeList){
-            if((size.getWidth() == surfaceHeight) && (size.getHeight() == surfaceWidth)){
+        for (Size size : preSizeList) {
+            if ((size.getWidth() == surfaceHeight) && (size.getHeight() == surfaceWidth)) {
                 return size;
             }
         }
@@ -234,6 +234,13 @@ public class CameraTextureView extends TextureView implements TextureView.Surfac
                 deltaRatioMin = deltaRatio;
                 retSize = size;
             }
+        }
+
+        /*
+         * The following code cannot be used because of huawei's mobile phone problem
+         * */
+        if (retSize != null && retSize.getWidth() < 720) {
+            retSize = preSizeList[preSizeList.length / 2];
         }
         return retSize;
     }
@@ -278,13 +285,13 @@ public class CameraTextureView extends TextureView implements TextureView.Surfac
     private CameraDevice.StateCallback stateCallback = new CameraDevice.StateCallback() {
         @Override
         public void onOpened(@NonNull CameraDevice cameraDevice) {
-                CameraTextureView.this.cameraDevice = cameraDevice;
-                takePreview();
+            CameraTextureView.this.cameraDevice = cameraDevice;
+            takePreview();
         }
 
         @Override
         public void onDisconnected(@NonNull CameraDevice cameraDevice) {
-            if (CameraTextureView.this.cameraDevice!=null) {
+            if (CameraTextureView.this.cameraDevice != null) {
                 CameraTextureView.this.cameraDevice.close();
                 CameraTextureView.this.cameraDevice = null;
             }
@@ -292,7 +299,7 @@ public class CameraTextureView extends TextureView implements TextureView.Surfac
 
         @Override
         public void onError(@NonNull CameraDevice cameraDevice, int error) {
-                cameraDevice.close();
+            cameraDevice.close();
         }
     };
 
@@ -300,27 +307,27 @@ public class CameraTextureView extends TextureView implements TextureView.Surfac
         @Override
         public void onImageAvailable(ImageReader reader) {
             if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-                SavePictureTask task=new SavePictureTask(mContext,mTakePictureFinishedListener);
+                SavePictureTask task = new SavePictureTask(mContext, mTakePictureFinishedListener);
                 task.execute(reader);
-            }else {
+            } else {
                 ToastManager.showMsg(R.string.SD_cannot_use);
             }
         }
     };
 
-    private class SavePictureTask extends AsyncTask<ImageReader, Integer, String>{
+    private class SavePictureTask extends AsyncTask<ImageReader, Integer, String> {
 
         private Context mContext;
         private CameraView.onTakePictureFinishedListener mTakePictureFinishedListener;
 
-        SavePictureTask(Context context,CameraView.onTakePictureFinishedListener mTakePictureFinishedListener){
-            this.mContext=context;
-            this.mTakePictureFinishedListener=mTakePictureFinishedListener;
+        SavePictureTask(Context context, CameraView.onTakePictureFinishedListener mTakePictureFinishedListener) {
+            this.mContext = context;
+            this.mTakePictureFinishedListener = mTakePictureFinishedListener;
         }
 
         @Override
         protected String doInBackground(ImageReader... params) {
-            ImageReader reader=params[0];
+            ImageReader reader = params[0];
             Image image = reader.acquireNextImage();
             ByteBuffer buffer = image.getPlanes()[0].getBuffer();
             byte[] data = new byte[buffer.remaining()];
@@ -333,7 +340,7 @@ public class CameraTextureView extends TextureView implements TextureView.Surfac
                 fileOutputStream.write(data);
                 fileOutputStream.close();
             } catch (Exception e) {
-                filePath=null;
+                filePath = null;
                 e.printStackTrace();
             } finally {
                 image.close();
@@ -344,12 +351,12 @@ public class CameraTextureView extends TextureView implements TextureView.Surfac
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            if (s!=null) {
+            if (s != null) {
                 Uri localUri = Uri.fromFile(new File(s));
                 Intent localIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, localUri);
                 mContext.sendBroadcast(localIntent);
             }
-            if (mTakePictureFinishedListener!=null){
+            if (mTakePictureFinishedListener != null) {
                 mTakePictureFinishedListener.onFinish(s);
             }
         }
