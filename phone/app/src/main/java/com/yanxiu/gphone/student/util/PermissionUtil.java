@@ -18,7 +18,7 @@ import java.io.InputStreamReader;
 
 public class PermissionUtil {
     public static final String ROOT_DIRECTORY_NAME = "yanxiu";
-    public static final String SDCARD_DIR = Environment.getExternalStorageDirectory().getPath() + File.separator + Constants.PICTUREDIR + File.separator;
+    public static final String SDCARD_DIR = Environment.getExternalStorageDirectory().getPath() + Constants.PICTUREDIR;
 //    public static final String OUT_SDCARD_DIR = "/storage/extSdCard" + File.separator + ROOT_DIRECTORY_NAME + File.separator;
 //    public static final String OUT_SDCARD_DIR2 = "/mnt/external_sd" + File.separator + ROOT_DIRECTORY_NAME + File.separator;
 //    public static final String OUT_SDCARD_DIR3 = "/mnt/sdcard2" + File.separator + ROOT_DIRECTORY_NAME + File.separator;
@@ -59,12 +59,13 @@ public class PermissionUtil {
      */
     public static boolean checkReadPermission() {
         boolean result;
-        File file = new File(SDCARD_DIR + TESTFILE_NAME);
-        if(!file.exists()){
-            file.mkdirs();
+        File dir = new File(SDCARD_DIR);
+        if(!dir.exists()){
+            dir.mkdirs();
         }
         FileInputStream fis = null;
         try {
+            File file = new File(dir.getAbsolutePath() + TESTFILE_NAME);
             fis = new FileInputStream(file);
             BufferedReader br = new BufferedReader(new InputStreamReader(fis));
             String result1 = br.readLine();
@@ -91,12 +92,13 @@ public class PermissionUtil {
      */
     public static boolean checkWritePermission() {
         boolean result;
-        File file = new File(SDCARD_DIR + TESTFILE_NAME);
-        if(!file.exists()){
-            file.mkdirs();
+        File dir = new File(SDCARD_DIR);
+        if(!dir.exists()){
+            dir.mkdirs();
         }
         FileOutputStream fos = null;
         try {
+            File file = new File(dir.getAbsolutePath() + TESTFILE_NAME);
             fos = new FileOutputStream(file);
             fos.write("hahaha".getBytes());
             fos.close();

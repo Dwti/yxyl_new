@@ -151,14 +151,15 @@ public class AnswerCardFragment extends YanxiuBaseFragment implements View.OnCli
                 switch (checkAnswerState()) {
                     case STATE_HAS_NO_ANSWERED:
                         mDialog.showConfirmView();
-                        mDialog.show();
+//                        mDialog.show();
                         break;
                     case STATE_PROGRESS:
                         mDialog.showProgressView();
-                        mDialog.show();
+//                        mDialog.show();
                         requestSubmmit();
                         break;
                     default:
+                        mDialog.showLoadingView();
                         requestSubmmit();
                         break;
                 }
@@ -186,6 +187,17 @@ public class AnswerCardFragment extends YanxiuBaseFragment implements View.OnCli
         return state = STATE_RETRY;
     }
 
+    private AnswerCardSubmitDialog.SubmitState checkHasImgState() {
+        AnswerCardSubmitDialog.SubmitState state;
+        for (int i = 0; i < mQuestions.size(); i++) {
+            if (QuestionTemplate.ANSWER.equals(mQuestions.get(i).getTemplate()) && mQuestions.get(i).getIsAnswer()) { //主观题且回答了，有图片
+                state = STATE_PROGRESS;
+                return state;
+            }
+        }
+        return state = null;
+    }
+
     private void requestSubmmit() {
         if (getActivity() == null) {
             return;
@@ -202,30 +214,6 @@ public class AnswerCardFragment extends YanxiuBaseFragment implements View.OnCli
             public void onSuccess() {
                 //提交答案成功，直接请求答题报告
                 questReportData();
-
-//                String showna = mPaper.getShowana();
-//                if (Constants.NOT_FINISH_STATUS.equals(showna)) {
-//                    long groupStartTime = Long.parseLong(mPaper.getBegintime());
-//                    long groupEndtime = Long.parseLong(mPaper.getEndtime());//作业练习截止时间
-//
-//                    if (groupEndtime > groupStartTime && ((groupEndtime - System.currentTimeMillis()) >= 3 * 60 * 1000)) { //作业截止时间判断，还未到截止时间不产生作业报告
-//                        ToastManager.showMsg("提交成功");
-//                        mDialog.showSuccessView(groupEndtime);
-//                        mDialog.show();
-//                    } else {
-//                        questReportData();
-////                        AnswerReportActicity.invoke(getActivity(), mPaper.getId());
-////                        getActivity().finish();
-//                    }
-//
-//                } else if (Constants.HAS_FINISH_CHECK_REPORT.equals(showna)) {
-//                    questReportData();
-////                    AnswerReportActicity.invoke(getActivity(), mPaper.getId());
-////                    getActivity().finish();
-//                } else {
-//                    ToastManager.showMsg("提交成功");
-//                    getActivity().finish();
-//                }
             }
 
             @Override
@@ -259,14 +247,19 @@ public class AnswerCardFragment extends YanxiuBaseFragment implements View.OnCli
                 initDialog();
                 switch (state) {
                     case STATE_HAS_NO_ANSWERED:
-                        mDialog.showProgressView();
-                        mDialog.show();
+                        if(AnswerCardSubmitDialog.SubmitState.STATE_PROGRESS == checkHasImgState()){
+                            mDialog.showProgressView();
+                        }else{
+                            mDialog.showLoadingView();
+                        }
                         requestSubmmit();
                         break;
                     case STATE_RETRY:
                         if (mDialog.isHasSubjectiveImg()) {
 //                            mDialog.resetProgress();
                             mDialog.showProgressView();
+                        }else{
+                            mDialog.showLoadingView();
                         }
                         requestSubmmit();
                         break;
@@ -343,8 +336,17 @@ public class AnswerCardFragment extends YanxiuBaseFragment implements View.OnCli
             @Override
             public void onFail(RequestBase request, Error error) {
                 initDialog();
-                mDialog.showRetryView();
+//                mDialog.showRetryView();
+                getActivity().finish();
             }
         });
+    }
+
+    @Override
+    public void onDestroy() {
+        if(mDialog != null){
+            mDialog.dismiss();
+        }
+        super.onDestroy();
     }
 }
