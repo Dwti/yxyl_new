@@ -90,7 +90,6 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
     @Override
     protected void onDestroy() {
         DataFetcher.getInstance().destory();
-        ActivityManger.destoryAll();
         super.onDestroy();
     }
 
@@ -205,7 +204,7 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
 
             if (System.currentTimeMillis() - mBackTimestamp <= 2000) {
                 //Todo 退出程序
-                finish();
+                ActivityManger.destoryAll();
             } else {
                 mBackTimestamp = System.currentTimeMillis();
                 Toast.makeText(this, getString(R.string.app_exit_tip), Toast.LENGTH_SHORT).show();
