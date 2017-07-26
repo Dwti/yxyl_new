@@ -252,5 +252,17 @@
     <dimen name="classify_analysis_titleview_textsize">21dp</dimen>
 
 
+    <dimen name="setting_waves_margin_l_r">50dp</dimen>
+    <dimen name="setting_waves_margin_b">20dp</dimen>
+
+    <dimen name="check_mobile_layout_h">75dp</dimen>
+    <dimen name="check_mobile_vercode_margin_l_r">20dp</dimen>
+    <dimen name="check_mobile_vercode_textsize">19dp</dimen>
+    <dimen name="check_mobile_textsize">21dp</dimen>
+    <dimen name="check_mobile_layout_padding">15dp</dimen>
+
+    <dimen name="check_mobile_wave_w">250dp</dimen>
+    <dimen name="check_mobile_wave_h">50dp</dimen>
+    <dimen name="check_mobile_wave_margin_t">30dp</dimen>
 </resources>
 

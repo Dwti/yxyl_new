@@ -121,4 +121,24 @@
         <item name="android:textSize">@dimen/classify_analysis_titleview_textsize</item>
         <item name="android:gravity">center</item>
     </style>
+
+    <style name="CheckMobileText">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingStart">@dimen/check_mobile_layout_padding</item>
+        <item name="android:background">@color/color_fafafa</item>
+        <item name="android:textSize">@dimen/check_mobile_textsize</item>
+        <item name="android:textColorHint">@color/color_cccccc</item>
+        <item name="android:textColor">@color/color_333333</item>
+    </style>
+
+    
+    <style name="SettingWavesButton">
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:layout_width">@dimen/check_mobile_wave_w</item>
+        <item name="android:layout_height">@dimen/check_mobile_wave_h</item>
+        <item name="android:layout_marginTop">@dimen/check_mobile_wave_margin_t</item>
+    </style>
 </resources>

@@ -75,6 +75,9 @@ public abstract class BaseRetractRecycleAdapter<M, T extends BaseRetractRecycleV
     }
 
     private void addInterval(LinearLayout layout, int count) {
+        if (getMaxDataType() > -1) {
+            count = count < getMaxDataType() ? count : getMaxDataType();
+        }
         for (int i = 0; i < count; i++) {
             View view = null;
             if (mViews.size() > 0) {
@@ -84,7 +87,7 @@ public abstract class BaseRetractRecycleAdapter<M, T extends BaseRetractRecycleV
 
             if (view == null) {
                 view = new View(mContext);
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(setIntervalWidth(), ViewGroup.LayoutParams.WRAP_CONTENT);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(getIntervalWidth(), ViewGroup.LayoutParams.WRAP_CONTENT);
                 view.setLayoutParams(params);
             }
 
@@ -148,14 +151,14 @@ public abstract class BaseRetractRecycleAdapter<M, T extends BaseRetractRecycleV
     /**
      * interval width
      */
-    protected int setIntervalWidth() {
+    protected int getIntervalWidth() {
         return DEFAULT_INTERVAL_WIDTH;
     }
 
     /**
      * max data type
      */
-    protected int setMaxDataType() {
+    protected int getMaxDataType() {
         return MAX_DATA_TYPE;
     }
 

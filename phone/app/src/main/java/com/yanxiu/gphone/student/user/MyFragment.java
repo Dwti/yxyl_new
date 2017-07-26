@@ -10,6 +10,7 @@ import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.HomePageBaseFragment;
 import com.yanxiu.gphone.student.user.mistake.activity.MistakeListActivity;
 import com.yanxiu.gphone.student.login.activity.LoginActivity;
+import com.yanxiu.gphone.student.user.setting.activity.SettingActivity;
 import com.yanxiu.gphone.student.util.LoginInfo;
 
 
@@ -26,6 +27,7 @@ public class MyFragment extends HomePageBaseFragment implements View.OnClickList
         mLogOut = (TextView) view.findViewById(R.id.logout);
         mLogOut.setOnClickListener(this);
         (view.findViewById(R.id.my_mistake)).setOnClickListener(this);
+        (view.findViewById(R.id.my_setting)).setOnClickListener(this);
         return view;
     }
 
@@ -51,6 +53,9 @@ public class MyFragment extends HomePageBaseFragment implements View.OnClickList
                 break;
             case R.id.my_mistake:
                 MistakeListActivity.LuanchActivity(getContext());
+                break;
+            case R.id.my_setting:
+                SettingActivity.LaunchActivity(getContext());
                 break;
         }
     }

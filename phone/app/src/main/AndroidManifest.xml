@@ -195,6 +195,17 @@
 
         <activity android:name=".questions.answerframe.ui.activity.WrongQuestionActivity"
             android:screenOrientation="portrait"/>
+
+        <activity android:name=".user.setting.activity.SettingActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".user.setting.activity.CheckMobileActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".user.setting.activity.BindMobileActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

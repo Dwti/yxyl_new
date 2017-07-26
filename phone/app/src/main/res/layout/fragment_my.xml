@@ -21,6 +21,19 @@
         android:layout_centerHorizontal="true"
         android:gravity="center"/>
 
+
+    <TextView
+        android:id="@+id/my_setting"
+        android:layout_below="@+id/my_mistake"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:background="@color/cardview_shadow_start_color"
+        android:text="设置"
+        android:onClick="onClick"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"/>
+
+
     <TextView
         android:id="@+id/logout"
         android:layout_width="100dp"

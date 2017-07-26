@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_edf0ee"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/include_top"
+        layout="@layout/main_public_top_layout" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/check_mobile_layout_h"
+        android:background="@color/color_fafafa"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/ed_mobile"
+            style="@style/CheckMobileText"
+            android:hint="@string/register_input_mobile"
+            android:inputType="number"
+            android:maxLength="13" />
+
+        <ImageView
+            android:id="@+id/iv_clear"
+            android:layout_width="@dimen/login_edit_icon_w_h"
+            android:layout_height="@dimen/login_edit_icon_w_h"
+            android:layout_marginEnd="@dimen/login_edit_icon_w_h"
+            android:background="@color/colorPrimary"
+            android:contentDescription="@null"
+            android:visibility="invisible" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_line_height"
+        android:background="@color/color_edf0ee" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/check_mobile_layout_h"
+        android:background="@color/color_fafafa"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/ed_ver_code"
+            style="@style/CheckMobileText"
+            android:hint="@string/input_verCode"
+            android:inputType="number"
+            android:maxLength="4" />
+
+        <View
+            android:layout_width="@dimen/login_edit_margin_top"
+            android:layout_height="@dimen/login_edit_default_textsize"
+            android:background="@color/color_89e00d" />
+
+        <TextView
+            android:id="@+id/tv_send_verCode"
+            android:layout_width="@dimen/send_verCode_width"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/check_mobile_vercode_margin_l_r"
+            android:layout_marginStart="@dimen/check_mobile_vercode_margin_l_r"
+            android:gravity="center_horizontal"
+            android:text="@string/send_verCode"
+            android:textColor="@color/color_89e00d"
+            android:textSize="@dimen/check_mobile_vercode_textsize" />
+    </LinearLayout>
+
+    <com.yanxiu.gphone.student.customviews.WavesLayout
+        android:id="@+id/wl_waves"
+        style="@style/SettingWavesButton"
+        app:waves_canshowwave="false"
+        app:waves_color="@color/color_69ad0a"
+        app:waves_radius="@dimen/wavesRadius">
+
+        <TextView
+            android:id="@+id/tv_ok"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_button_height"
+            android:background="@drawable/selector_setting_button_bg"
+            android:gravity="center"
+            android:text="@string/ok"
+            android:textColor="@color/color_ffffff"
+            android:textSize="@dimen/login_edit_default_textsize" />
+
+    </com.yanxiu.gphone.student.customviews.WavesLayout>
+
+</LinearLayout>
