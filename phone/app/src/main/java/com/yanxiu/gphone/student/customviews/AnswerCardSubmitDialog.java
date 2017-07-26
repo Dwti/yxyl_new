@@ -6,6 +6,9 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -43,6 +46,10 @@ public class AnswerCardSubmitDialog extends Dialog implements View.OnClickListen
     private TextView mSuccess_content;
     private Button mSuccess_layout_button;
 
+    //loading
+    private ImageView mLoadingView;// loadingView
+    private Animation mLoadingAnim;//loadingView动画
+
     private ArrayList<BaseQuestion> mQuestions;
     private SubmitState state;
 
@@ -52,6 +59,7 @@ public class AnswerCardSubmitDialog extends Dialog implements View.OnClickListen
         STATE_HAS_NO_ANSWERED,
         STATE_RETRY,
         STATE_PROGRESS,
+        STATE_LOADING,
         STATE_SUCCESS;
     }
 
@@ -99,6 +107,7 @@ public class AnswerCardSubmitDialog extends Dialog implements View.OnClickListen
         initStateView();
         initSuccessView();
         initProgressView();
+        initLoadingView();
         hasSubjectiveImg = false;
     }
 
@@ -120,6 +129,12 @@ public class AnswerCardSubmitDialog extends Dialog implements View.OnClickListen
         mAnswercard_progress = (TextView) mRootView.findViewById(R.id.answercard_progress);
         mAnswercard_total = (TextView) mRootView.findViewById(R.id.answercard_total);
     }
+    private void initLoadingView() {
+        mLoadingView = (ImageView) findViewById(R.id.loading_view);
+        mLoadingAnim = AnimationUtils.loadAnimation(mContext, R.anim.lodingview_progress);
+        LinearInterpolator lin = new LinearInterpolator();
+        mLoadingAnim.setInterpolator(lin);
+    }
 
     public void setData(ArrayList<BaseQuestion> questions) {
         mQuestions = questions;
@@ -135,7 +150,7 @@ public class AnswerCardSubmitDialog extends Dialog implements View.OnClickListen
     }
 
     /**
-     * 有未达单独题目，确认提交界面
+     * 有未答完题目，确认提交界面
      */
     public void showConfirmView() {
         state = SubmitState.STATE_HAS_NO_ANSWERED;
@@ -144,41 +159,76 @@ public class AnswerCardSubmitDialog extends Dialog implements View.OnClickListen
         mState_title.setText("还有未答完的题目");
         mState_content.setText("确定要提交吗？");
         mButton_yes.setText("提交");
+        if(!isShowing())
+            show();
     }
 
     /**
      * 上传失败，重试界面
      */
     public void showRetryView() {
+        hiddenLoadingView();
         state = SubmitState.STATE_RETRY;
         mState_layout.setVisibility(View.VISIBLE);
         mSubmiting_layout.setVisibility(View.GONE);
         mState_title.setText("作业上传失败");
         mState_content.setText("请检查网络是否异常后重试");
         mButton_yes.setText("再试一次");
+        if(!isShowing())
+            show();
     }
 
     /**
-     * 上传进度界面
+     * 上传图片进度界面
      */
     public void showProgressView() {
+        hiddenLoadingView();
         state = SubmitState.STATE_PROGRESS;
         hasSubjectiveImg = true;
         mSubmiting_layout.setVisibility(View.VISIBLE);
         mState_layout.setVisibility(View.GONE);
+        if(!isShowing())
+            show();
+    }
 
+    /**
+     *laoding界面（没有主观题图片上传时）
+     */
+    public void showLoadingView() {
+        state = SubmitState.STATE_LOADING;
+        mSubmiting_layout.setVisibility(View.GONE);
+        mState_layout.setVisibility(View.GONE);
+        if (mLoadingView != null && mLoadingAnim != null) {
+            mLoadingView.setVisibility(View.VISIBLE);
+            mLoadingView.clearAnimation();
+            mLoadingView.startAnimation(mLoadingAnim);
+        }
+        if(!isShowing())
+            show();
+    }
+
+    /**
+     * 隐藏LoadingView
+     */
+    public void hiddenLoadingView() {
+        if (mLoadingView != null && mLoadingAnim != null) {
+            mLoadingView.clearAnimation();
+            mLoadingView.setVisibility(View.GONE);
+        }
     }
 
     /**
      * 提交成功，但是不能进入答题报告界面
      */
     public void showSuccessView(long endTime) {
+        hiddenLoadingView();
         state = SubmitState.STATE_SUCCESS;
         mSuccess_content.setText(TimeUtils.getTimeLongYMD(endTime));
         mSuccess_layout.setVisibility(View.VISIBLE);
         mSubmiting_layout.setVisibility(View.GONE);
         mState_layout.setVisibility(View.GONE);
-
+        if(!isShowing())
+            show();
     }
 
     public SubmitState getState() {
@@ -211,6 +261,7 @@ public class AnswerCardSubmitDialog extends Dialog implements View.OnClickListen
 
     @Override
     public void dismiss() {
+        hiddenLoadingView();
         mClickListener = null;
         mContext = null;
         super.dismiss();
