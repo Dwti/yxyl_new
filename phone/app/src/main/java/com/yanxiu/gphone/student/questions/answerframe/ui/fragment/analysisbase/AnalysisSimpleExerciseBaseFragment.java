@@ -153,7 +153,7 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
      */
     private void hiddenBottomLayout(){
         AnalysisQuestionActivity activity = (AnalysisQuestionActivity)getActivity();
-        if(activity.mQuestions.size() == 1){
+        if(activity.mQuestions.size() == 1 && (null == activity.mQuestions.get(0).getChildren() || activity.mQuestions.get(0).getChildren().size() <= 1)){
             mScrollView.setPadding(0,0,0,0);
         }
     }
