@@ -294,7 +294,7 @@ public class SubmitQuesitonTask extends AsyncTask {
                 BaseQuestion outerQuestionBean = paper.getQuestions().get(i);//大题数据
 
                 if (outerQuestionBean.getTemplate().equals(QuestionTemplate.READING) || outerQuestionBean.getTemplate().equals(QuestionTemplate.CLOZE)
-                        || outerQuestionBean.getTemplate().equals(QuestionTemplate.LISTEN)) { //是复合题
+                        || outerQuestionBean.getTemplate().equals(QuestionTemplate.LISTEN) ) { //是复合题
 
                     List<BaseQuestion> childQuestionList = outerQuestionBean.getChildren();//获得子题
                     if (childQuestionList == null || childQuestionList.isEmpty())
@@ -319,6 +319,8 @@ public class SubmitQuesitonTask extends AsyncTask {
 
                         if (childQuestionBean.getPad() != null && !TextUtils.isEmpty(childQuestionBean.getPad().getId())) {
                             childId = String.valueOf(childQuestionBean.getPad().getId());
+                        }else{
+                            childId = "-1";
                         }
                         childObject.put("id", childId);
                         childObject.put("qid", childQuestionBean.getQid());
@@ -334,7 +336,42 @@ public class SubmitQuesitonTask extends AsyncTask {
                     }
                     outQuestionObject.put("children", childrenArray);
 
-                } else {
+                } else if(!TextUtils.isEmpty(outerQuestionBean.getTypeId_complexToSimple())){ //只有一个子题的复合题
+                    JSONArray childrenArray = new JSONArray();//子题Array -- children
+
+//                    for (int j = 0; j < childrenCount; j++) { //小题循环
+                        JSONObject childObject = new JSONObject();
+
+                        BaseQuestion childQuestionBean = outerQuestionBean; //子题就是本身
+                        Object childAnsewr = childQuestionBean.getAnswer(); //子题答案
+                        Gson gson = new Gson();
+                        String answerJson = "";
+                        if (null != childAnsewr) {
+                            answerJson = gson.toJson(childAnsewr);//转化成json
+                        }
+                        JSONArray answers = new JSONArray(answerJson);
+                        childObject.put("answer", answers);
+
+                        if (childQuestionBean.getPad() != null && !TextUtils.isEmpty(childQuestionBean.getPad().getId())) {
+                            childId = String.valueOf(childQuestionBean.getPad().getId());
+                        }else{
+                            childId = "-1";
+                        }
+                        childObject.put("id", childId);
+                        childObject.put("qid", childQuestionBean.getQid());
+                        //childJson.put("qtype", paper.getPaperTest().get(i).getQuestions().getChildren().get(j));
+                        childObject.put("costtime", childQuestionBean.getCosttime());
+                        childObject.put("ptid", childQuestionBean.getId());
+                        childObject.put("status", childQuestionBean.getStatus());
+                        childObject.put("uid", LoginInfo.getUID());
+
+
+                        childrenArray.put(childObject);
+
+//                    }
+                    outQuestionObject.put("children", childrenArray);
+
+                } else{ //单题
                     Object ansewr = outerQuestionBean.getAnswer(); //答案
                     Gson gson = new Gson();
                     String answerJson = "";
@@ -346,12 +383,27 @@ public class SubmitQuesitonTask extends AsyncTask {
                     outQuestionObject.put("children", "");
                 }
 
-                outQuestionObject.put("costtime", outerQuestionBean.getCosttime());
-                outQuestionObject.put("ptid", outerQuestionBean.getId());
-                outQuestionObject.put("qid", outerQuestionBean.getQid());
-                if (outerQuestionBean.getPad() != null && !TextUtils.isEmpty(outerQuestionBean.getPad().getId())) {
-                    id = outerQuestionBean.getPad().getId();
+               String ptid,qid;
+                if(!TextUtils.isEmpty(outerQuestionBean.getTypeId_complexToSimple())){ //只有一个子题的复合题
+                    ptid = outerQuestionBean.getPtid_ComplexToSimple();
+                    qid = outerQuestionBean.getQid_ComplexToSimple();
+                    if (!TextUtils.isEmpty(outerQuestionBean.getPadId_ComplexToSimple())) {
+                        id = outerQuestionBean.getPadId_ComplexToSimple();
+                    }else{
+                        id = "-1";
+                    }
+                }else{
+                    ptid = outerQuestionBean.getId();
+                    qid = outerQuestionBean.getQid();
+                    if (outerQuestionBean.getPad() != null && !TextUtils.isEmpty(outerQuestionBean.getPad().getId())) {
+                        id = outerQuestionBean.getPad().getId();
+                    }else{
+                        id = "-1";
+                    }
                 }
+                outQuestionObject.put("costtime", outerQuestionBean.getCosttime());
+                outQuestionObject.put("ptid", ptid);
+                outQuestionObject.put("qid", qid);
                 outQuestionObject.put("id", id);
 //                outQuestionObject.put("answer", "");
                 outQuestionObject.put("status", outerQuestionBean.getStatus());
