@@ -132,6 +132,7 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
             mListenView.setVisibility(View.VISIBLE);
             mListenView.setUrl(url);
             mListenView.setVisibility(View.VISIBLE);
+            complex_stem_layout.setVisibility(View.VISIBLE);
         }
     }
 
