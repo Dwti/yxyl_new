@@ -7,7 +7,7 @@ import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.YanxiuApplication;
 import com.yanxiu.gphone.student.constant.Constants;
-import com.yanxiu.gphone.student.user.activity.LoginActivity;
+import com.yanxiu.gphone.student.login.activity.LoginActivity;
 import com.yanxiu.gphone.student.util.LoginInfo;
 
 

@@ -15,7 +15,7 @@ import android.widget.RelativeLayout;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.db.SpManager;
-import com.yanxiu.gphone.student.user.activity.LoginActivity;
+import com.yanxiu.gphone.student.login.activity.LoginActivity;
 import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.SystemUtil;
 

@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_edf0ee"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/include_top"
+        layout="@layout/main_public_top_layout" />
+
+    <LinearLayout
+        android:id="@+id/ll_bind_mobile"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/mistake_list_item_h"
+        android:layout_marginTop="@dimen/mistake_content_margin_t"
+        android:background="@drawable/selector_mistake_list_item"
+        android:onClick="onClick"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="@dimen/mistake_list_item_icon_w_h"
+            android:layout_height="@dimen/mistake_list_item_icon_w_h"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/mistake_list_item_padding_l"
+            android:background="@drawable/bind_mobile"
+            android:contentDescription="@null" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/mistake_list_item_text_margin_icon"
+            android:layout_weight="1"
+            android:text="@string/setting_bind_mobile"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/mistake_list_item_text_size"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_mobile_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:textSize="@dimen/mistake_list_item_text_size2"
+            android:textColor="@color/color_89e00d"
+            android:layout_marginEnd="@dimen/mistake_list_item_padding_r"/>
+
+        <ImageView
+            android:layout_width="@dimen/mistake_list_item_icon2_w_h"
+            android:layout_height="@dimen/mistake_list_item_icon2_w_h"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="@dimen/mistake_list_item_padding_r"
+            android:background="@drawable/arrow_right"
+            android:contentDescription="@null" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_line_height"
+        android:background="@color/color_edf0ee" />
+
+    <LinearLayout
+        android:id="@+id/ll_change_password"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/mistake_list_item_h"
+        android:background="@drawable/selector_mistake_list_item"
+        android:onClick="onClick"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="@dimen/mistake_list_item_icon_w_h"
+            android:layout_height="@dimen/mistake_list_item_icon_w_h"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/mistake_list_item_padding_l"
+            android:background="@drawable/change_password"
+            android:contentDescription="@null" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/mistake_list_item_text_margin_icon"
+            android:layout_weight="1"
+            android:text="@string/setting_change_password"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/mistake_list_item_text_size"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:layout_width="@dimen/mistake_list_item_icon2_w_h"
+            android:layout_height="@dimen/mistake_list_item_icon2_w_h"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="@dimen/mistake_list_item_padding_r"
+            android:background="@drawable/arrow_right"
+            android:contentDescription="@null" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_line_height"
+        android:background="@color/color_edf0ee" />
+
+    <LinearLayout
+        android:id="@+id/ll_check_updata"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/mistake_list_item_h"
+        android:background="@drawable/selector_mistake_list_item"
+        android:onClick="onClick"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="@dimen/mistake_list_item_icon_w_h"
+            android:layout_height="@dimen/mistake_list_item_icon_w_h"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/mistake_list_item_padding_l"
+            android:background="@drawable/check_updata"
+            android:contentDescription="@null" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/mistake_list_item_text_margin_icon"
+            android:layout_weight="1"
+            android:text="@string/setting_check_updata"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/mistake_list_item_text_size"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:layout_width="@dimen/mistake_list_item_icon2_w_h"
+            android:layout_height="@dimen/mistake_list_item_icon2_w_h"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="@dimen/mistake_list_item_padding_r"
+            android:background="@drawable/arrow_right"
+            android:contentDescription="@null" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_line_height"
+        android:background="@color/color_edf0ee" />
+
+    <LinearLayout
+        android:id="@+id/ll_about"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/mistake_list_item_h"
+        android:background="@drawable/selector_mistake_list_item"
+        android:onClick="onClick"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="@dimen/mistake_list_item_icon_w_h"
+            android:layout_height="@dimen/mistake_list_item_icon_w_h"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/mistake_list_item_padding_l"
+            android:background="@drawable/about"
+            android:contentDescription="@null" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/mistake_list_item_text_margin_icon"
+            android:layout_weight="1"
+            android:text="@string/setting_about"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/mistake_list_item_text_size"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:layout_width="@dimen/mistake_list_item_icon2_w_h"
+            android:layout_height="@dimen/mistake_list_item_icon2_w_h"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="@dimen/mistake_list_item_padding_r"
+            android:background="@drawable/arrow_right"
+            android:contentDescription="@null" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <com.yanxiu.gphone.student.customviews.WavesLayout
+        android:id="@+id/wl_login_out"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_button_height"
+        android:layout_marginBottom="@dimen/setting_waves_margin_b"
+        android:background="@drawable/shape_common_button_bg_disable"
+        android:onClick="onClick"
+        app:waves_canshowwave="true"
+        app:waves_color="@color/color_E3F8C5"
+        app:waves_radius="@dimen/wavesRadius">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_button_height"
+            android:background="@drawable/shape_common_button_bg_disable"
+            android:gravity="center"
+            android:text="@string/setting_login_out"
+            android:textColor="@color/color_ffffff"
+            android:textSize="@dimen/login_edit_default_textsize" />
+    </com.yanxiu.gphone.student.customviews.WavesLayout>
+
+</LinearLayout>

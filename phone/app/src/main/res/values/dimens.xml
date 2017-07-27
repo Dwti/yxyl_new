@@ -251,6 +251,31 @@
     <dimen name="classify_choice_img_height">80dp</dimen>
     <dimen name="classify_analysis_titleview_textsize">21dp</dimen>
 
+    <dimen name="user_icon_bg_radius">80dp</dimen>
+    <dimen name="user_icon_bg_margin">5dp</dimen>
+    <dimen name="user_zhanghao_textsize">15dp</dimen>
+    <dimen name="user_id_textsize">16dp</dimen>
+    <dimen name="user_line_height">10dp</dimen>
+    <dimen name="user_smallline_height">1dp</dimen>
+    <dimen name="user_item_height">50dp</dimen>
+    <dimen name="user_item_marginleft">13dp</dimen>
+    <dimen name="user_item_marginright">12dp</dimen>
+    <dimen name="user_item_text_marginleft">12dp</dimen>
+    <dimen name="user_item_text_size">18dp</dimen>
+    <dimen name="user_stage_text_size">16dp</dimen>
 
+
+    <dimen name="setting_waves_margin_l_r">50dp</dimen>
+    <dimen name="setting_waves_margin_b">20dp</dimen>
+
+    <dimen name="check_mobile_layout_h">75dp</dimen>
+    <dimen name="check_mobile_vercode_margin_l_r">20dp</dimen>
+    <dimen name="check_mobile_vercode_textsize">19dp</dimen>
+    <dimen name="check_mobile_textsize">21dp</dimen>
+    <dimen name="check_mobile_layout_padding">15dp</dimen>
+
+    <dimen name="check_mobile_wave_w">250dp</dimen>
+    <dimen name="check_mobile_wave_h">50dp</dimen>
+    <dimen name="check_mobile_wave_margin_t">30dp</dimen>
 </resources>
 

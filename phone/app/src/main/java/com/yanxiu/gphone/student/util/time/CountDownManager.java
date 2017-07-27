@@ -14,7 +14,7 @@ import java.lang.ref.WeakReference;
 @SuppressWarnings("unused")
 public class CountDownManager {
 
-    private static final long DEFAULT_TOTALTIME=60000;
+    private static final long DEFAULT_TOTALTIME=45000;
     private static final long DEFAULT_INTERVATIME=1000;
     private countDownTimer timer;
 

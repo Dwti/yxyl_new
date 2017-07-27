@@ -239,4 +239,19 @@
     <string name="history">历史</string>
     <string name="can_not_view_report">%s之后才能查看报告</string>
     <string name="dot">•</string>
+
+    <string name="setting_bind_mobile">绑定手机</string>
+    <string name="setting_change_password">修改密码</string>
+    <string name="setting_check_updata">检查更新</string>
+    <string name="setting_about">关于</string>
+    <string name="setting_login_out">退出登录</string>
+
+    <string name="check_mobile">手机号码验证</string>
+    <string name="bind_mobile">绑定手机</string>
+    <string name="bind_new_mobile">绑定新手机</string>
+    <string name="zhagnhao">账号：</string>
+    <string name="exercise_history">练习历史</string>
+    <string name="teaching_material_version">教材版本</string>
+    <string name="feedback">意见反馈</string>
+    <string name="setting">设置</string>
 </resources>
