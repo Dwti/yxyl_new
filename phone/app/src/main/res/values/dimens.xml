@@ -262,6 +262,7 @@
     <dimen name="user_item_marginright">12dp</dimen>
     <dimen name="user_item_text_marginleft">12dp</dimen>
     <dimen name="user_item_text_size">18dp</dimen>
+    <dimen name="user_stage_text_size">16dp</dimen>
 
 
     <dimen name="setting_waves_margin_l_r">50dp</dimen>
