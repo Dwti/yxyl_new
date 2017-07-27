@@ -30,6 +30,7 @@ import com.yanxiu.gphone.student.util.ScreenUtils;
 import com.yanxiu.gphone.student.util.TextTypefaceUtil;
 import com.yanxiu.gphone.student.util.TimeUtils;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -68,7 +69,7 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
     private int mSpacing;
 
     private String mStatus;//试卷状态 0未批改 1已经批改
-    private int mSccuracy = 0;  //正确率
+    private String mSccuracy = "0";  //正确率
     private int mRightCount;//做对的题数
     private int mTotalCount;//总题数
     private String mCostTime = "0";//用时
@@ -94,7 +95,7 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
         mPPid = mPaper.getId();
         mStatus = mPaper.getPaperStatus().getCheckStatus();
 //        mSccuracy = (int) (QuestionUtil.calculateRightRate(mQuestions) * 100);
-        mSccuracy = (int) (mPaper.getPaperStatus().getScoreRate() * 100);
+        mSccuracy = NumberFormat.getPercentInstance().format(mPaper.getPaperStatus().getScoreRate()).replace("%","");
 
         mRightCount = QuestionUtil.calculateRightCount(mQuestions);
         mCostTime = mPaper.getPaperStatus().getCosttime();
@@ -128,8 +129,8 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
 
         if ("1".equals(mStatus)) {
             //已经批改
-            mTextview_correct.setText(mSccuracy + "");
-            mTextview_correct_shadow.setText(mSccuracy + "");
+            mTextview_correct.setText(mSccuracy);
+            mTextview_correct_shadow.setText(mSccuracy);
             mTotalnumber.setText("共" + mTotalCount + "题");
             mYesnumber.setText("答对" + mRightCount + "题");
             mTime.setText(mCostTime);
