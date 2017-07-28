@@ -15,6 +15,7 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.HomePageBaseFragment;
 import com.yanxiu.gphone.student.common.adapter.AlbumParentNameAdapter;
+import com.yanxiu.gphone.student.exercise.SelectSubjectActivity;
 import com.yanxiu.gphone.student.user.mistake.activity.MistakeListActivity;
 import com.yanxiu.gphone.student.login.activity.LoginActivity;
 import com.yanxiu.gphone.student.user.setting.activity.SettingActivity;
@@ -130,7 +131,7 @@ public class MyFragment extends HomePageBaseFragment implements View.OnClickList
                 ToastManager.showMsg("学段");
                 break;
             case R.id.user_teaching_material_version:
-                ToastManager.showMsg("教材版本");
+                SelectSubjectActivity.invoke(getActivity());
                 break;
             case R.id.user_feedback:
                 ToastManager.showMsg("反馈");
