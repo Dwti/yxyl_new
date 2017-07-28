@@ -14,6 +14,8 @@ public class ChapterBean extends BaseBean{
     protected String name;
     protected String question_num;
     protected List<ChapterBean> children = new ArrayList<>();
+    protected boolean isExpanded = false;
+    protected int level = 0;
 
     public String getId() {
         return id;
@@ -45,5 +47,25 @@ public class ChapterBean extends BaseBean{
 
     public void setChildren(List<ChapterBean> children) {
         this.children = children;
+    }
+
+    public boolean isExpanded() {
+        return isExpanded;
+    }
+
+    public void setExpanded(boolean expanded) {
+        isExpanded = expanded;
+    }
+
+    public boolean isHasChildren() {
+        return children != null && children.size() >0;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
     }
 }

@@ -18,6 +18,7 @@ import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.base.HomePageBaseFragment;
 import com.yanxiu.gphone.student.common.eventbus.SingleChooseMessage;
 import com.yanxiu.gphone.student.exercise.EditionSelectChangeMessage;
+import com.yanxiu.gphone.student.exercise.SelecChapterAndKnowledgeActivity;
 import com.yanxiu.gphone.student.exercise.SelectEditionActivity;
 import com.yanxiu.gphone.student.exercise.SelectSubjectActivity;
 import com.yanxiu.gphone.student.exercise.bean.SubjectBean;
@@ -72,11 +73,12 @@ public class ExerciseFragment extends HomePageBaseFragment {
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(((SubjectBean) mAdapter.getItem(position)).getData() != null){
+                SubjectBean bean = (SubjectBean) mAdapter.getItem(position);
+                if(bean.getData() != null){
                     //TODO 请求借口进入做练习
+                    SelecChapterAndKnowledgeActivity.invoke(getActivity(),bean.getId(),bean.getName(),bean.getData().getEditionId());
 
                 }else {
-                    SubjectBean bean = (SubjectBean) mAdapter.getItem(position);
                     String subjectId = bean.getId();
                     String subjectName = bean.getName();
                     String editionName = null;

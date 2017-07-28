@@ -31,7 +31,7 @@ import de.greenrobot.event.EventBus;
 public class SelectSubjectActivity extends Activity {
 
     private TextView mTips;
-    private View mTipsView;
+    private View mTipsView,mBack;
     private Button mRefreshBtn;
     private GridView mGridView;
     private SubjectsAdapter mAdapter;
@@ -60,6 +60,7 @@ public class SelectSubjectActivity extends Activity {
         mTipsView = findViewById(R.id.tips_layout);
         mRefreshBtn = (Button) findViewById(R.id.btn_refresh);
         mTips = (TextView) findViewById(R.id.tv_tips);
+        mBack = findViewById(R.id.back);
     }
 
     private void initListener() {
@@ -80,6 +81,12 @@ public class SelectSubjectActivity extends Activity {
                     editionName = bean.getData().getEditionName();
                 }
                 SelectEditionActivity.invoke(SelectSubjectActivity.this, subjectId, subjectName,editionName,SelectEditionActivity.FROM_SUBJECT_SELECT);
+            }
+        });
+        mBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }

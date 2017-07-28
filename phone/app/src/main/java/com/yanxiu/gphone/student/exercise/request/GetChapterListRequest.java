@@ -14,7 +14,7 @@ public class GetChapterListRequest extends EXueELianBaseRequest {
     protected String volume;   //205322
     @Override
     protected String urlPath() {
-        return "commom/getChapterList.do";
+        return "common/getChapterList.do";
     }
 
     public String getSubjectId() {
