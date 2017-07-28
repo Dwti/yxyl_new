@@ -1,6 +1,9 @@
-package com.yanxiu.gphone.student.exercise;
+package com.yanxiu.gphone.student.exercise.bean;
 
 import com.yanxiu.gphone.student.base.BaseBean;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by sp on 17-7-26.
@@ -23,6 +26,7 @@ public class EditionBean extends BaseBean {
     }
 
     public void setEditionName(String editionName) {
+
         this.editionName = editionName;
     }
 }

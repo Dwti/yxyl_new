@@ -1,4 +1,4 @@
-package com.yanxiu.gphone.student.exercise;
+package com.yanxiu.gphone.student.exercise.request;
 
 import com.yanxiu.gphone.student.base.EXueELianBaseRequest;
 import com.yanxiu.gphone.student.util.LoginInfo;

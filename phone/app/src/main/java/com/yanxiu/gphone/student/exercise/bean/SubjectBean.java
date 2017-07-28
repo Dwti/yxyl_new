@@ -1,4 +1,4 @@
-package com.yanxiu.gphone.student.exercise;
+package com.yanxiu.gphone.student.exercise.bean;
 
 import com.yanxiu.gphone.student.base.BaseBean;
 

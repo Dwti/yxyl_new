@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.exercise.bean.SubjectBean;
 
 import java.util.List;
 
@@ -68,7 +69,7 @@ public class SubjectsAdapter extends BaseAdapter {
                 imageView.setImageResource(R.drawable.wuli);
                 break;
             case "1106":
-                imageView.setImageResource(R.drawable.huxue);
+                imageView.setImageResource(R.drawable.huaxue);
                 break;
             case "1107":
                 imageView.setImageResource(R.drawable.shengwu);

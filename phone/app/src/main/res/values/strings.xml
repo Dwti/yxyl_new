@@ -237,6 +237,7 @@
     <string name="chemical">化学</string>
     <string name="physical">物理</string>
     <string name="history">历史</string>
+<<<<<<< 3ab9283d4cdcda1cabaf289d10432c1d7b48ac8c
     <string name="can_not_view_report">%s之后才能查看报告</string>
     <string name="dot">•</string>
 
@@ -254,4 +255,7 @@
     <string name="teaching_material_version">教材版本</string>
     <string name="feedback">意见反馈</string>
     <string name="setting">设置</string>
+=======
+    <string name="data_empty">暂无数据</string>
+>>>>>>> 添加教材版本选择
 </resources>

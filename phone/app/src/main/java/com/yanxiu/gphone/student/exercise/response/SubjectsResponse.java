@@ -1,6 +1,7 @@
-package com.yanxiu.gphone.student.exercise;
+package com.yanxiu.gphone.student.exercise.response;
 
 import com.yanxiu.gphone.student.base.EXueELianBaseResponse;
+import com.yanxiu.gphone.student.exercise.bean.SubjectBean;
 
 import java.util.ArrayList;
 import java.util.List;
