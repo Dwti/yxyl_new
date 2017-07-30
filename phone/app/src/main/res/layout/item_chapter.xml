@@ -17,7 +17,7 @@
             android:id="@+id/indicator"
             android:layout_width="14dp"
             android:layout_height="14dp"
-            android:background="@android:color/holo_green_light"/>
+            android:src="@drawable/collapse_normal"/>
     </LinearLayout>
     
     <TextView
@@ -27,7 +27,8 @@
         android:layout_weight="1"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:gravity="center"
+        android:gravity="center_vertical"
+        android:textSize="16dp"
         />
     
     <ImageView

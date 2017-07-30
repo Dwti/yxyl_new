@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
@@ -21,20 +20,18 @@ import java.util.List;
 
 public class ExpandChapterAdapter extends RecyclerView.Adapter<ExpandChapterAdapter.ChapterViewHolder> {
 
-    private List<ChapterBean> mSourceData;
-    private List<ChapterBean> mBindData;
+    private List<ChapterBean> mData;
     private int mIndentation;  //缩进
 
     public ExpandChapterAdapter(List<ChapterBean> data) {
         initLevel(data,-1);
-        this.mSourceData = data;
-        mBindData = getBindData(mSourceData,0);
+        mData = data;
+//        mData = addChildren(data);
     }
 
     public void replaceData(List<ChapterBean> data){
         initLevel(data,-1);
-        this.mSourceData = data;
-        mBindData = getBindData(mSourceData,0);
+        mData = data;
         notifyDataSetChanged();
     }
     @Override
@@ -46,40 +43,43 @@ public class ExpandChapterAdapter extends RecyclerView.Adapter<ExpandChapterAdap
 
     @Override
     public void onBindViewHolder(ChapterViewHolder holder, int position) {
-        holder.text.setText(mSourceData.get(position).getName());
-        if(mSourceData.get(position).isHasChildren()){
+        holder.text.setText(mData.get(position).getName());
+        if(mData.get(position).isHasChildren()){
             holder.ll_indicator.setVisibility(View.VISIBLE);
         }else {
             holder.ll_indicator.setVisibility(View.INVISIBLE);
         }
         RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) holder.itemView.getLayoutParams();
-        layoutParams.leftMargin = mIndentation * mSourceData.get(position).getLevel();
+        layoutParams.leftMargin = mIndentation * mData.get(position).getLevel();
         holder.itemView.setLayoutParams(layoutParams);
     }
 
     @Override
     public int getItemCount() {
-        return mBindData.size();
+        return mData.size();
     }
 
     private void expand(int position){
-        List<ChapterBean> dataToInsert = mSourceData.get(position).getChildren();
-        mSourceData.addAll(position+1,dataToInsert);
-//        notifyItemRangeInserted(position,dataToInsert.size());
-        notifyDataSetChanged();
+        List<ChapterBean> dataToInsert = mData.get(position).getChildren();
+        mData.addAll(position+1,dataToInsert);
+        notifyItemRangeInserted(position + 1 ,dataToInsert.size());
+//        notifyDataSetChanged();
     }
 
     private void collapse(int position){
-        List<ChapterBean> dataToRemove = mSourceData.get(position).getChildren();
-        mSourceData.removeAll(dataToRemove);
-//        notifyItemRangeRemoved(position+1,dataToRemove.size());
-        notifyDataSetChanged();
+        List<ChapterBean> dataToRemove = mData.get(position).getChildren();
+        mData.removeAll(dataToRemove);
+        notifyItemRangeRemoved(position+1,dataToRemove.size());
+//        notifyDataSetChanged();
     }
 
-    private List<ChapterBean> getBindData(List<ChapterBean> data,int defaultExpandLevel){
+    public List<ChapterBean> addChildren(List<ChapterBean> data){
         List<ChapterBean> result = new ArrayList<>();
         for(ChapterBean bean : data){
+            bean.setExpanded(true);
             result.add(bean);
+            if(bean.getChildren() != null && bean.getChildren().size() > 0)
+               result.addAll(addChildren(bean.getChildren()));
         }
         return result;
     }
@@ -99,7 +99,7 @@ public class ExpandChapterAdapter extends RecyclerView.Adapter<ExpandChapterAdap
         public TextView text;
         public View ll_indicator;
 
-        public ChapterViewHolder(View itemView) {
+        public ChapterViewHolder(final View itemView) {
             super(itemView);
             indicator = (ImageView) itemView.findViewById(R.id.indicator);
             text = (TextView) itemView.findViewById(R.id.text);
@@ -108,10 +108,14 @@ public class ExpandChapterAdapter extends RecyclerView.Adapter<ExpandChapterAdap
             ll_indicator.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(mSourceData.get(getLayoutPosition()).isExpanded()){
+                    if(mData.get(getLayoutPosition()).isExpanded()){
+                        mData.get(getLayoutPosition()).setExpanded(false);
                         collapse(getLayoutPosition());
+                        indicator.setImageResource(R.drawable.collapse_normal);
                     }else {
+                        mData.get(getLayoutPosition()).setExpanded(true);
                         expand(getLayoutPosition());
+                        indicator.setImageResource(R.drawable.expand_normal);
                     }
                 }
             });
