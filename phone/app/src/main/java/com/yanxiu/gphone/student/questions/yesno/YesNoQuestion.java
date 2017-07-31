@@ -1,5 +1,7 @@
 package com.yanxiu.gphone.student.questions.yesno;
 
+import android.text.TextUtils;
+
 import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
@@ -28,6 +30,9 @@ public class YesNoQuestion extends BaseQuestion {
     public YesNoQuestion(PaperTestBean bean, QuestionShowType showType,String paperStatus) {
         super(bean, showType,paperStatus);
         yesNoAnswer = String.valueOf(bean.getQuestions().getAnswer().get(0));
+        if(!TextUtils.isEmpty(yesNoAnswer) && yesNoAnswer.contains(".")){ //系统有可能会把0转化为0.0，导致出错
+            yesNoAnswer = yesNoAnswer.substring(0,yesNoAnswer.indexOf("."));
+        }
 //        choice= bean.getQuestions().getContent().getChoices();
         choice = new ArrayList<>(2);
         choice.add("正确");
