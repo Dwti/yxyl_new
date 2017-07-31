@@ -19,7 +19,7 @@ import java.util.List;
  * Created by sp on 17-7-31.
  */
 
-public class ExerciseExpandableAdapter<T extends Node> extends BaseExpandableRecyclerAdapter<T,RecyclerView.ViewHolder> {
+public class ExerciseExpandableAdapter<T extends Node> extends BaseExpandableRecyclerAdapter<T> {
     private int mIndentation;  //缩进
     public ExerciseExpandableAdapter(List<T> data) {
         super(data);

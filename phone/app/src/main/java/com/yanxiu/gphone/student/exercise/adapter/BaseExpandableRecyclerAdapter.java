@@ -13,7 +13,7 @@ import java.util.List;
  * Created by sp on 17-7-31.
  */
 
-public abstract class BaseExpandableRecyclerAdapter<T extends Node,VH extends ViewHolder> extends RecyclerView.Adapter<VH> {
+public abstract class BaseExpandableRecyclerAdapter<T extends Node> extends RecyclerView.Adapter {
     protected List<T> mData;
     protected OnItemClickListener mOnItemClickListener;
 
