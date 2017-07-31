@@ -1,6 +1,7 @@
 package com.yanxiu.gphone.student.user.userinfo.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -24,6 +25,11 @@ public class UserInfoActivity extends YanxiuBaseActivity implements View.OnClick
     private View mTopView;
     private ImageView mBackView;
     private TextView mTitleView;
+
+    public static void LaunchActivity(Context context){
+        Intent intent=new Intent(context,UserInfoActivity.class);
+        context.startActivity(intent);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

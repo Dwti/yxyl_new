@@ -252,6 +252,18 @@
 
         <activity android:name=".user.userinfo.activity.UserInfoActivity"
             android:screenOrientation="portrait" />
+
+        <activity android:name=".exercise.SelectSubjectActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".exercise.SelectEditionActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".exercise.SelecChapterAndKnowledgeActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

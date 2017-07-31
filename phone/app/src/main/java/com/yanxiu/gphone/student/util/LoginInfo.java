@@ -174,6 +174,14 @@ public class LoginInfo {
         return bean.getStageid();
     }
 
+    public static void saveStageid(String stageId){
+        if (!isLogIn()) {
+            return;
+        }
+        bean.setStageid(stageId);
+        Save();
+    }
+
     public static void saveUid(int uid){
         if (!isLogIn()) {
             return;
@@ -206,6 +214,14 @@ public class LoginInfo {
             return "";
         }
         return bean.getStageName();
+    }
+
+    public static void saveStageName(String stageName){
+        if (!isLogIn()) {
+            return;
+        }
+        bean.setStageName(stageName);
+        Save();
     }
 
     /**

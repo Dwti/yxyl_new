@@ -276,4 +276,9 @@
     <string name="feed_send_error">请详细描述您的问题，至少2个字</string>
 
     <string name="user_message">个人资料</string>
+    <string name="data_empty">暂无数据</string>
+
+    <string name="stage_change">学段更改后，练习将切换到相应学段。</string>
+    <string name="stage_change_true">你确定要更改吗？</string>
+    <string name="stage_change_text">更改</string>
 </resources>

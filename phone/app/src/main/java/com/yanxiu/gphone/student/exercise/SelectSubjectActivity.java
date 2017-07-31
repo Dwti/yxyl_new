@@ -1,11 +1,11 @@
-package com.yanxiu.gphone.student.homepage.fragment;
+package com.yanxiu.gphone.student.exercise;
 
-
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
+import android.support.annotation.Nullable;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
@@ -15,14 +15,7 @@ import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
-import com.yanxiu.gphone.student.base.HomePageBaseFragment;
-import com.yanxiu.gphone.student.common.eventbus.SingleChooseMessage;
-import com.yanxiu.gphone.student.exercise.EditionSelectChangeMessage;
-import com.yanxiu.gphone.student.exercise.SelecChapterAndKnowledgeActivity;
-import com.yanxiu.gphone.student.exercise.SelectEditionActivity;
-import com.yanxiu.gphone.student.exercise.SelectSubjectActivity;
 import com.yanxiu.gphone.student.exercise.bean.SubjectBean;
-import com.yanxiu.gphone.student.exercise.SubjectsAdapter;
 import com.yanxiu.gphone.student.exercise.request.SubjectsRequest;
 import com.yanxiu.gphone.student.exercise.response.SubjectsResponse;
 
@@ -32,35 +25,42 @@ import java.util.List;
 import de.greenrobot.event.EventBus;
 
 /**
- * 首页 “练习”Fragment
+ * Created by sp on 17-7-26.
  */
-public class ExerciseFragment extends HomePageBaseFragment {
-    private final static String TAG = ExerciseFragment.class.getSimpleName();
+
+public class SelectSubjectActivity extends Activity {
+
     private TextView mTips;
-    private View mTipsView;
+    private View mTipsView,mBack;
     private Button mRefreshBtn;
     private GridView mGridView;
     private SubjectsAdapter mAdapter;
 
+    public static void invoke(Context context) {
+        Intent intent = new Intent(context, SelectSubjectActivity.class);
+        context.startActivity(intent);
+    }
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_exercise, container, false);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_select_subject);
         EventBus.getDefault().register(this);
-        initView(view);
+        initView();
         initData();
         initListener();
-        return view;
     }
 
     public void onEventMainThread(EditionSelectChangeMessage message){
         requestSubjects();
     }
 
-    private void initView(View view) {
-        mGridView = (GridView) view.findViewById(R.id.gridView);
-        mTipsView = view.findViewById(R.id.tips_layout);
-        mRefreshBtn = (Button) view.findViewById(R.id.btn_refresh);
-        mTips = (TextView) view.findViewById(R.id.tv_tips);
+    private void initView() {
+        mGridView = (GridView) findViewById(R.id.gridView);
+        mTipsView = findViewById(R.id.tips_layout);
+        mRefreshBtn = (Button) findViewById(R.id.btn_refresh);
+        mTips = (TextView) findViewById(R.id.tv_tips);
+        mBack = findViewById(R.id.back);
     }
 
     private void initListener() {
@@ -74,19 +74,19 @@ public class ExerciseFragment extends HomePageBaseFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 SubjectBean bean = (SubjectBean) mAdapter.getItem(position);
+                String subjectId = bean.getId();
+                String subjectName = bean.getName();
+                String editionName = null;
                 if(bean.getData() != null){
-                    //TODO 请求借口进入做练习
-                    SelecChapterAndKnowledgeActivity.invoke(getActivity(),bean.getId(),bean.getName(),bean.getData().getEditionId());
-
-                }else {
-                    String subjectId = bean.getId();
-                    String subjectName = bean.getName();
-                    String editionName = null;
-                    if(bean.getData() != null){
-                        editionName = bean.getData().getEditionName();
-                    }
-                    SelectEditionActivity.invoke(getActivity(), subjectId, subjectName,editionName,SelectEditionActivity.FROM_EXERCISE);
+                    editionName = bean.getData().getEditionName();
                 }
+                SelectEditionActivity.invoke(SelectSubjectActivity.this, subjectId, subjectName,editionName,SelectEditionActivity.FROM_SUBJECT_SELECT);
+            }
+        });
+        mBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }
@@ -97,52 +97,46 @@ public class ExerciseFragment extends HomePageBaseFragment {
         requestSubjects();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
-    }
-
-    private void showDataEmptyView(){
+    private void showDataEmptyView() {
         mGridView.setVisibility(View.GONE);
         mTipsView.setVisibility(View.VISIBLE);
-        mTips.setText("");
+        mTips.setText(R.string.data_empty);
         mRefreshBtn.setText(R.string.click_to_retry);
     }
 
-    private void showDataErrorView(){
+    private void showDataErrorView() {
         mGridView.setVisibility(View.GONE);
         mTipsView.setVisibility(View.VISIBLE);
         mTips.setText(R.string.load_failed);
         mRefreshBtn.setText(R.string.click_to_retry);
     }
 
-    private void showSubjects(List<SubjectBean> data){
+    private void showSubjects(List<SubjectBean> data) {
         mGridView.setVisibility(View.VISIBLE);
         mTipsView.setVisibility(View.GONE);
         mAdapter.replaceData(data);
     }
 
-    private void requestSubjects(){
+    private void requestSubjects() {
         SubjectsRequest request = new SubjectsRequest();
-        request.startRequest(SubjectsResponse.class,mSubjectsCallback);
+        request.startRequest(SubjectsResponse.class, mSubjectsCallback);
     }
 
     HttpCallback<SubjectsResponse> mSubjectsCallback = new EXueELianBaseCallback<SubjectsResponse>() {
         @Override
+        public void onSuccess(RequestBase request, SubjectsResponse ret) {
+            super.onSuccess(request, ret);
+        }
+
+        @Override
         protected void onResponse(RequestBase request, SubjectsResponse response) {
-            if(response.getStatus().getCode() == 0){
-                if(response.getData().size() > 0){
+            if (response.getStatus().getCode() == 0) {
+                if (response.getData().size() > 0) {
                     showSubjects(response.getData());
-                }else {
+                } else {
                     showDataEmptyView();
                 }
-            }else {
+            } else {
                 showDataErrorView();
             }
         }
@@ -152,4 +146,10 @@ public class ExerciseFragment extends HomePageBaseFragment {
             showDataErrorView();
         }
     };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 }

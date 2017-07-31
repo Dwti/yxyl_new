@@ -2,6 +2,7 @@ package com.yanxiu.gphone.student.user;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.view.LayoutInflater;
@@ -14,13 +15,17 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.HomePageBaseFragment;
+import com.yanxiu.gphone.student.login.activity.ChooseStageActivity;
 import com.yanxiu.gphone.student.user.feedback.activity.FeedbackActivity;
+import com.yanxiu.gphone.student.exercise.SelectSubjectActivity;
 import com.yanxiu.gphone.student.user.mistake.activity.MistakeListActivity;
-import com.yanxiu.gphone.student.login.activity.LoginActivity;
 import com.yanxiu.gphone.student.user.setting.activity.SettingActivity;
+import com.yanxiu.gphone.student.user.userinfo.activity.UserInfoActivity;
 import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.TextTypefaceUtil;
 import com.yanxiu.gphone.student.util.ToastManager;
+
+import de.greenrobot.event.EventBus;
 
 
 /**
@@ -52,6 +57,18 @@ public class MyFragment extends HomePageBaseFragment implements View.OnClickList
         mRootView = inflater.inflate(R.layout.fragment_my, container, false);
         initView();
         return mRootView;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(MyFragment.this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(MyFragment.this);
     }
 
     @Override
@@ -114,15 +131,20 @@ public class MyFragment extends HomePageBaseFragment implements View.OnClickList
         }
     }
 
+    public void onEventMainThread(ChooseStageActivity.StageMessage message){
+        if (message!=null&&message.requestCode==MyFragment.this.hashCode()){
+            mStageName = message.stageText;
+            mStage.setText(mStageName);
+            LoginInfo.saveStageid(message.stageId);
+            LoginInfo.saveStageName(message.stageText);
+        }
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.logout:
-                LoginInfo.LogOut();
-                LoginActivity.LaunchActivity(getContext());
-                break;
             case R.id.user_edit_userinfo:
-                ToastManager.showMsg("编辑用户信息");
+                UserInfoActivity.LaunchActivity(getContext());
                 break;
             case R.id.user_my_mistake:
                 MistakeListActivity.LuanchActivity(getContext());
@@ -131,10 +153,10 @@ public class MyFragment extends HomePageBaseFragment implements View.OnClickList
                 ToastManager.showMsg("练习历史");
                 break;
             case R.id.user_xueduan:
-                ToastManager.showMsg("学段");
+                ChooseStageActivity.LaunchActivity(getContext(),this.hashCode());
                 break;
             case R.id.user_teaching_material_version:
-                ToastManager.showMsg("教材版本");
+                SelectSubjectActivity.invoke(getActivity());
                 break;
             case R.id.user_feedback:
                 FeedbackActivity.LaunchActivity(getContext());
