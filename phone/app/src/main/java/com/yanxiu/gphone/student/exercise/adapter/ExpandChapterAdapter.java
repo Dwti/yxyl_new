@@ -24,29 +24,34 @@ public class ExpandChapterAdapter extends RecyclerView.Adapter<ExpandChapterAdap
     private int mIndentation;  //缩进
 
     public ExpandChapterAdapter(List<ChapterBean> data) {
-        initLevel(data,-1);
+        initLevel(data, -1);
         mData = data;
-//        mData = addChildren(data);
     }
 
-    public void replaceData(List<ChapterBean> data){
-        initLevel(data,-1);
+    public void replaceData(List<ChapterBean> data) {
+        initLevel(data, -1);
         mData = data;
         notifyDataSetChanged();
     }
+
     @Override
     public ChapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if(mIndentation == 0)
-            mIndentation = ScreenUtils.dpToPxInt(parent.getContext(),50);
-        return new ChapterViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_chapter,parent,false));
+        if (mIndentation == 0)
+            mIndentation = ScreenUtils.dpToPxInt(parent.getContext(), 50);
+        return new ChapterViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_chapter, parent, false));
     }
 
     @Override
     public void onBindViewHolder(ChapterViewHolder holder, int position) {
         holder.text.setText(mData.get(position).getName());
-        if(mData.get(position).isHasChildren()){
+        if (mData.get(position).isExpanded()) {
+            holder.indicator.setImageResource(R.drawable.expand_normal);
+        } else {
+            holder.indicator.setImageResource(R.drawable.collapse_normal);
+        }
+        if (mData.get(position).hasChildren()) {
             holder.ll_indicator.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             holder.ll_indicator.setVisibility(View.INVISIBLE);
         }
         RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) holder.itemView.getLayoutParams();
@@ -59,41 +64,73 @@ public class ExpandChapterAdapter extends RecyclerView.Adapter<ExpandChapterAdap
         return mData.size();
     }
 
-    private void expand(int position){
+    public void expand(int position, boolean animation) {
+        mData.get(position).setExpanded(true);
         List<ChapterBean> dataToInsert = mData.get(position).getChildren();
-        mData.addAll(position+1,dataToInsert);
-        notifyItemRangeInserted(position + 1 ,dataToInsert.size());
-//        notifyDataSetChanged();
+        mData.addAll(position + 1, dataToInsert);
+        if (animation) {
+            notifyItemRangeInserted(position + 1, dataToInsert.size());
+        } else {
+            notifyDataSetChanged();
+        }
     }
 
-    private void collapse(int position){
-        List<ChapterBean> dataToRemove = mData.get(position).getChildren();
+    public void collapse(int position, boolean animation) {
+        mData.get(position).setExpanded(false);
+        List<ChapterBean> dataToRemove;
+        if (animation) {
+            dataToRemove = getAllNodesWithChildrenExpanded(mData.get(position).getChildren());
+        } else {
+            dataToRemove = getAllNodes(mData.get(position).getChildren());
+        }
+        //收起的时候，需要连子节点一块收起，设置展开状态为false，否则下次刷新，子节点的indicator状态显示不正确
+        setExpand(dataToRemove, false);
         mData.removeAll(dataToRemove);
-        notifyItemRangeRemoved(position+1,dataToRemove.size());
-//        notifyDataSetChanged();
+        if (animation) {
+            notifyItemRangeRemoved(position + 1, dataToRemove.size());
+        } else {
+            notifyDataSetChanged();
+        }
     }
 
-    public List<ChapterBean> addChildren(List<ChapterBean> data){
+    private void setExpand(List<ChapterBean> data, boolean expand) {
+        if (data == null)
+            return;
+        for (ChapterBean bean : data) {
+            bean.setExpanded(expand);
+        }
+    }
+
+    public List<ChapterBean> getAllNodes(List<ChapterBean> data) {
         List<ChapterBean> result = new ArrayList<>();
-        for(ChapterBean bean : data){
-            bean.setExpanded(true);
+        for (ChapterBean bean : data) {
             result.add(bean);
-            if(bean.getChildren() != null && bean.getChildren().size() > 0)
-               result.addAll(addChildren(bean.getChildren()));
+            if (bean.getChildren() != null && bean.getChildren().size() > 0)
+                result.addAll(getAllNodes(bean.getChildren()));
         }
         return result;
     }
 
-    private void initLevel(List<ChapterBean> data,int parentLevel){
-        for(ChapterBean bean : data){
+    public List<ChapterBean> getAllNodesWithChildrenExpanded(List<ChapterBean> data) {
+        List<ChapterBean> result = new ArrayList<>();
+        for (ChapterBean bean : data) {
+            result.add(bean);
+            if (bean.getChildren() != null && bean.getChildren().size() > 0 && bean.isExpanded())
+                result.addAll(getAllNodes(bean.getChildren()));
+        }
+        return result;
+    }
+
+    private void initLevel(List<ChapterBean> data, int parentLevel) {
+        for (ChapterBean bean : data) {
             bean.setLevel(parentLevel + 1);
-            if(bean.getChildren() != null && bean.getChildren().size() > 0){
-                initLevel(bean.getChildren(),bean.getLevel());
+            if (bean.getChildren() != null && bean.getChildren().size() > 0) {
+                initLevel(bean.getChildren(), bean.getLevel());
             }
         }
     }
 
-    class ChapterViewHolder extends RecyclerView.ViewHolder{
+    class ChapterViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView indicator;
         public TextView text;
@@ -108,14 +145,12 @@ public class ExpandChapterAdapter extends RecyclerView.Adapter<ExpandChapterAdap
             ll_indicator.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(mData.get(getLayoutPosition()).isExpanded()){
-                        mData.get(getLayoutPosition()).setExpanded(false);
-                        collapse(getLayoutPosition());
+                    if (mData.get(getLayoutPosition()).isExpanded()) {
                         indicator.setImageResource(R.drawable.collapse_normal);
-                    }else {
-                        mData.get(getLayoutPosition()).setExpanded(true);
-                        expand(getLayoutPosition());
+                        collapse(getLayoutPosition(),true);
+                    } else {
                         indicator.setImageResource(R.drawable.expand_normal);
+                        expand(getLayoutPosition(),true);
                     }
                 }
             });

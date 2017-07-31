@@ -57,7 +57,7 @@ public class ChapterBean extends BaseBean{
         isExpanded = expanded;
     }
 
-    public boolean isHasChildren() {
+    public boolean hasChildren() {
         return children != null && children.size() >0;
     }
 
