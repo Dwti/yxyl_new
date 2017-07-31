@@ -338,6 +338,10 @@ public class QuestionUtil {
                                         if (QuestionTemplate.SINGLE_CHOICE.equals(childTemplate) || QuestionTemplate.ALTER.equals(childTemplate)) {
                                             reportAnswerBean.setSelectType(answerChildList.get(0));
                                             if (rightAnswer != null && !rightAnswer.isEmpty()) {
+                                                String rightString = String.valueOf(rightAnswer.get(0));
+                                                if(!TextUtils.isEmpty(rightString) && rightString.contains(".")){ //系统有可能会把0转化为0.0，导致出错
+                                                    rightAnswer.set(0,rightString.substring(0,rightString.indexOf(".")));
+                                                }
                                                 if (!TextUtils.isEmpty(answerChildList.get(0)) && answerChildList.get(0).equals(String.valueOf(rightAnswer.get(0)))) {
                                                     reportAnswerBean.setIsRight(true);
                                                 } else {
