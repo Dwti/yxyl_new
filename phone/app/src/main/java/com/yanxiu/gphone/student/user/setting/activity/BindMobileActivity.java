@@ -17,10 +17,15 @@ import com.yanxiu.gphone.student.base.EXueELianBaseResponse;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
 import com.yanxiu.gphone.student.customviews.WavesLayout;
+import com.yanxiu.gphone.student.user.setting.bean.BindMobileMessage;
+import com.yanxiu.gphone.student.user.setting.request.BindMobileRequest;
 import com.yanxiu.gphone.student.user.setting.request.SendVerCodeBindMobileRequest;
 import com.yanxiu.gphone.student.util.EditTextManger;
+import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.ToastManager;
 import com.yanxiu.gphone.student.util.time.CountDownManager;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by Canghaixiao.
@@ -51,6 +56,7 @@ public class BindMobileActivity extends YanxiuBaseActivity implements View.OnCli
     private boolean isVerCodeReady = false;
 
     private SendVerCodeBindMobileRequest mVerCodeBindMobileRequest;
+    private BindMobileRequest mBindMobileRequest;
 
     public static void LaunchActivity(Context context, String comeFrom) {
         Intent intent = new Intent(context, BindMobileActivity.class);
@@ -102,13 +108,11 @@ public class BindMobileActivity extends YanxiuBaseActivity implements View.OnCli
         if (COME_TYPE_CHECK_MOBILE.equals(comeFrom)) {
             mTitleView.setText(R.string.bind_new_mobile);
         } else {
-            mTitleView.setText(R.string.bind_mobile);
+            mTitleView.setText(R.string.setting_bind_mobile);
         }
         mTitleView.setTextColor(ContextCompat.getColor(mContext, R.color.color_666666));
 
         mSureView.setEnabled(false);
-
-
     }
 
     @Override
@@ -118,13 +122,17 @@ public class BindMobileActivity extends YanxiuBaseActivity implements View.OnCli
             mVerCodeBindMobileRequest.cancelRequest();
             mVerCodeBindMobileRequest = null;
         }
+        if (mBindMobileRequest!=null){
+            mBindMobileRequest.cancelRequest();
+            mBindMobileRequest=null;
+        }
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_left:
-                EditTextManger.getManager(mSureView).hideSoftInput(mContext);
+                EditTextManger.getManager(mSureView).hideSoftInput();
                 BindMobileActivity.this.finish();
                 break;
             case R.id.iv_clear:
@@ -178,27 +186,43 @@ public class BindMobileActivity extends YanxiuBaseActivity implements View.OnCli
         });
     }
 
-    private void checkMobile(String mobile, String verCode) {
+    private void checkMobile(final String mobile, String verCode) {
+        rootView.showLoadingView();
+        mBindMobileRequest=new BindMobileRequest();
+        mBindMobileRequest.code=verCode;
+        mBindMobileRequest.newMobile=mobile;
+        mBindMobileRequest.startRequest(EXueELianBaseResponse.class, new EXueELianBaseCallback<EXueELianBaseResponse>() {
+            @Override
+            protected void onResponse(RequestBase request, EXueELianBaseResponse response) {
+                rootView.hiddenLoadingView();
+                if (response.getStatus().getCode()==0){
+                    LoginInfo.saveMobile(mobile);
+                    EventBus.getDefault().post(new BindMobileMessage());
+                    BindMobileActivity.this.finish();
+                }else {
+                    ToastManager.showMsg(response.getStatus().getDesc());
+                }
+            }
 
+            @Override
+            public void onFail(RequestBase request, Error error) {
+                rootView.hiddenLoadingView();
+                ToastManager.showMsg(error.getMessage());
+            }
+        });
     }
 
     @Override
     public void onChanged(View view, String value, boolean isEmpty) {
         if (view == mMobileView) {
-            if (isEmpty) {
-                isMobileReady = false;
-            } else {
+            isMobileReady=!isEmpty;
+            if (isMobileReady) {
                 setAddorRemoveSpace(value);
-                isMobileReady = true;
             }
             setEditMobileIsEmpty(isEmpty);
             setSendVerCodeViewFocusChange(isMobileReady);
         } else if (view == mVerCodeView) {
-            if (isEmpty) {
-                isVerCodeReady = false;
-            } else {
-                isVerCodeReady = true;
-            }
+            isVerCodeReady = !isEmpty;
         }
         setButtonFocusChange(isMobileReady && isVerCodeReady);
     }

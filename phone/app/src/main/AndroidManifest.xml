@@ -6,12 +6,13 @@
 
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
+
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -29,8 +30,7 @@
 
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="5927f282f43e487b97000e80" >
-        </meta-data>
+            android:value="5927f282f43e487b97000e80"></meta-data>
 
         <activity
             android:name=".homepage.WelcomeActivity"
@@ -45,108 +45,123 @@
         </activity>
         <activity
             android:name=".homepage.MainActivity"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTask"
             android:configChanges="keyboardHidden|orientation"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"
-            android:taskAffinity="com.yanxiu.gphone.student">
-        <intent-filter>
-            <action android:name="android.intent.action.VIEW" />
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:taskAffinity="com.yanxiu.gphone.student"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
 
-            <category android:name="android.intent.category.DEFAULT" />
-        </intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".login.activity.LoginActivity"
-            android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize">
             <!--<intent-filter>-->
-                <!--<action android:name="com.yanxiu.gphone.student.LoginActivity" />-->
-                <!--<category android:name="android.intent.category.DEFAULT" />-->
+            <!--<action android:name="com.yanxiu.gphone.student.LoginActivity" />-->
+            <!--<category android:name="android.intent.category.DEFAULT" />-->
             <!--</intent-filter>-->
         </activity>
 
         <activity
             android:name=".login.activity.ForgetPassWordActivity"
-            android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
 
         <activity
             android:name=".login.activity.RegisterActivity"
-            android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
 
-        <activity android:name=".login.activity.ResetPassWordActivity"
-            android:screenOrientation="portrait"
+        <activity
+            android:name=".login.activity.ResetPassWordActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:windowSoftInputMode="stateHidden|adjustResize"/>
-
-        <activity android:name=".homework.classmanage.activity.JoinClassActivity"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+
+        <activity
+            android:name=".homework.classmanage.activity.JoinClassActivity"
             android:launchMode="singleTop"
-            android:windowSoftInputMode="stateAlwaysHidden"/>
-
-        <activity android:name=".login.activity.JoinClassActivity"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+
+        <activity
+            android:name=".login.activity.JoinClassActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:windowSoftInputMode="stateHidden|adjustResize"/>
-
-        <activity android:name=".login.activity.CompleteInfoActivity"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+
+        <activity
+            android:name=".login.activity.CompleteInfoActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:windowSoftInputMode="stateHidden|adjustResize"/>
-
-        <activity android:name=".login.activity.ChooseLocationActivity"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+
+        <activity
+            android:name=".login.activity.ChooseLocationActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:windowSoftInputMode="stateHidden|adjustResize"/>
-
-        <activity android:name=".login.activity.ChooseSchoolActivity"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+
+        <activity
+            android:name=".login.activity.ChooseSchoolActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:windowSoftInputMode="stateHidden|adjustResize"/>
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
 
-        <activity android:name=".homework.classmanage.activity.ClassInfoActivity"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTop"/>
-
-        <activity android:name=".homework.classmanage.activity.HowToJoinClassActivity"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTop"/>
-
-        <activity android:name=".homework.homeworkdetail.HomeworkDetailActivity"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTop"/>
-        <activity android:name=".questions.answerframe.ui.activity.AnswerQuestionActivity"
-            android:screenOrientation="portrait"
+        <activity
+            android:name=".homework.classmanage.activity.ClassInfoActivity"
             android:launchMode="singleTop"
-            android:windowSoftInputMode="adjustResize"/>
-        <activity android:name=".questions.answerframe.ui.activity.AnalysisQuestionActivity"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTop"
-            android:windowSoftInputMode="adjustResize"/>
-        <activity android:name=".questions.answerframe.ui.activity.AnswerReportActicity"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTop"
-            android:windowSoftInputMode="adjustResize"/>
-        <activity android:name=".questions.answerframe.ui.activity.AnswerErrorActicity"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTop"
-            android:windowSoftInputMode="adjustUnspecified|stateHidden"
-            android:configChanges="orientation|keyboardHidden"/>
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".login.activity.JoinClassSubmitActivity"
-            android:screenOrientation="portrait"
-            android:configChanges="keyboardHidden|orientation"
-            android:windowSoftInputMode="stateHidden|adjustResize"/>
+        <activity
+            android:name=".homework.classmanage.activity.HowToJoinClassActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".login.activity.ChooseStageActivity"
+        <activity
+            android:name=".homework.homeworkdetail.HomeworkDetailActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".questions.answerframe.ui.activity.AnswerQuestionActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".questions.answerframe.ui.activity.AnalysisQuestionActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".questions.answerframe.ui.activity.AnswerReportActicity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".questions.answerframe.ui.activity.AnswerErrorActicity"
+            android:configChanges="orientation|keyboardHidden"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
+
+        <activity
+            android:name=".login.activity.JoinClassSubmitActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:windowSoftInputMode="stateHidden|adjustResize"/>
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+
+        <activity
+            android:name=".login.activity.ChooseStageActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
 
         <activity
             android:name=".wxapi.WXEntryActivity"
@@ -158,54 +173,85 @@
         <activity
             android:name="com.umeng.qq.tencent.AuthActivity"
             android:launchMode="singleTask"
-            android:noHistory="true" >
+            android:noHistory="true">
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="tencent100424468" />
             </intent-filter>
         </activity>
 
         <activity
             android:name="com.umeng.qq.tencent.AssistActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:configChanges="orientation|keyboardHidden|screenSize"/>
-        <activity android:name="com.yanxiu.gphone.student.questions.answerframe.ui.activity.NotesActicity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name="com.yanxiu.gphone.student.questions.answerframe.ui.activity.NotesActicity"
             android:screenOrientation="portrait" />
 
-        <activity android:name=".common.activity.CameraActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".common.activity.CameraActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".common.activity.AlbumActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".common.activity.PhotoActivity"
+        <activity
+            android:name=".common.activity.AlbumActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".common.activity.PhotoActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".common.activity.CropImageActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".common.activity.CropImageActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".user.mistake.activity.MistakeListActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".user.mistake.activity.MistakeListActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".user.mistake.activity.MistakeClassifyActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".user.mistake.activity.MistakeClassifyActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".questions.answerframe.ui.activity.WrongQuestionActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".questions.answerframe.ui.activity.WrongQuestionActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".user.setting.activity.SettingActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".user.setting.activity.SettingActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".user.setting.activity.CheckMobileActivity"
+        <activity
+            android:name=".user.setting.activity.CheckMobileActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".user.setting.activity.BindMobileActivity"
+        <activity
+            android:name=".user.setting.activity.BindMobileActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".user.setting.activity.ChangePassWordActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait" />
+
+        <activity android:name=".user.setting.activity.AboutActivity"
+            android:screenOrientation="portrait" />
+
+        <activity android:name=".user.setting.activity.PrivacyActivity"
+            android:screenOrientation="portrait" />
+
+        <activity android:name=".user.feedback.activity.FeedbackActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait" />
+
+        <activity android:name=".user.userinfo.activity.UserInfoActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.HomePageBaseFragment;
+import com.yanxiu.gphone.student.user.feedback.activity.FeedbackActivity;
 import com.yanxiu.gphone.student.user.mistake.activity.MistakeListActivity;
 import com.yanxiu.gphone.student.login.activity.LoginActivity;
 import com.yanxiu.gphone.student.user.setting.activity.SettingActivity;
@@ -59,7 +60,7 @@ public class MyFragment extends HomePageBaseFragment implements View.OnClickList
         switch (v.getId()) {
             case R.id.logout:
                 LoginInfo.LogOut();
-                LoginActivity.LaunchActivity(getActivity());
+                LoginActivity.LaunchActivity(getContext());
                 break;
             case R.id.user_edit_userinfo:
                 ToastManager.showMsg("编辑用户信息");
@@ -77,7 +78,7 @@ public class MyFragment extends HomePageBaseFragment implements View.OnClickList
                 ToastManager.showMsg("教材版本");
                 break;
             case R.id.user_feedback:
-                ToastManager.showMsg("反馈");
+                FeedbackActivity.LaunchActivity(getContext());
                 break;
             case R.id.user_seeting:
                 SettingActivity.LaunchActivity(getContext());

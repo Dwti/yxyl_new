@@ -278,7 +278,7 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
                 rootView.hiddenLoadingView();
                 if (response.getStatus().getCode()==0){
                     LoginInfo.saveCacheData(response.data.get(0));
-                    LoginInfo.setLoginType(UserMessageBean.LOGIN_ACCOUNT);
+                    LoginInfo.saveLoginType(UserMessageBean.LOGIN_ACCOUNT);
                     MainActivity.invoke(LoginActivity.this,true);
                     //there can't finish
 //                    LoginActivity.this.finish();
@@ -387,9 +387,9 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
                 if (response.getStatus().getCode()==0){
                     LoginInfo.saveCacheData(response.data.get(0));
                     if (platform.equals("qq")){
-                        LoginInfo.setLoginType(UserMessageBean.LOGIN_QQ);
+                        LoginInfo.saveLoginType(UserMessageBean.LOGIN_QQ);
                     }else {
-                        LoginInfo.setLoginType(UserMessageBean.LOGIN_WX);
+                        LoginInfo.saveLoginType(UserMessageBean.LOGIN_WX);
                     }
                     MainActivity.invoke(LoginActivity.this,true);
                     LoginActivity.this.finish();

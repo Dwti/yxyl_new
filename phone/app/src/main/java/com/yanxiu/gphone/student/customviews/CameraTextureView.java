@@ -39,11 +39,9 @@ import com.yanxiu.gphone.student.util.ToastManager;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 /**
  * Created by Canghaixiao.
@@ -205,9 +203,10 @@ public class CameraTextureView extends TextureView implements TextureView.Surfac
             StreamConfigurationMap map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
             if (map != null) {
                 Size largest = Collections.max(Arrays.asList(map.getOutputSizes(ImageFormat.JPEG)), new CompareSizesByArea());
-                mImageReader = ImageReader.newInstance(largest.getWidth(), largest.getHeight(), ImageFormat.JPEG, 2);
-                mImageReader.setOnImageAvailableListener(imageAvailableListener, null);
                 mPreviewSize = getCloselyPreSize(mWidth, mHeight, map.getOutputSizes(SurfaceTexture.class));
+                mImageReader = ImageReader.newInstance(mPreviewSize.getWidth(), mPreviewSize.getHeight(), ImageFormat.JPEG, 2);
+//                mImageReader = ImageReader.newInstance(largest.getWidth(), largest.getHeight(), ImageFormat.JPEG, 2);
+                mImageReader.setOnImageAvailableListener(imageAvailableListener, null);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -228,19 +227,17 @@ public class CameraTextureView extends TextureView implements TextureView.Surfac
         float deltaRatioMin = Float.MAX_VALUE;
         Size retSize = null;
         for (Size size : preSizeList) {
-            curRatio = ((float) size.getWidth()) / size.getHeight();
-            deltaRatio = Math.abs(reqRatio - curRatio);
-            if (deltaRatio < deltaRatioMin) {
-                deltaRatioMin = deltaRatio;
-                retSize = size;
+            if (size.getWidth()>=720&&size.getHeight()<surfaceHeight) {
+                curRatio = ((float) size.getWidth()) / size.getHeight();
+                deltaRatio = Math.abs(reqRatio - curRatio);
+                if (deltaRatio < deltaRatioMin) {
+                    deltaRatioMin = deltaRatio;
+                    retSize = size;
+                }
             }
         }
 
-        /*
-         * Because of huawei's mobile phone problem, the following code must be
-         * used to prevent the size of the acquisition from being too small
-         * */
-        if (retSize != null && retSize.getWidth() < 720) {
+        if (retSize == null) {
             retSize = preSizeList[preSizeList.length / 2];
         }
         return retSize;

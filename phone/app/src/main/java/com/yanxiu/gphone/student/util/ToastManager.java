@@ -2,6 +2,7 @@ package com.yanxiu.gphone.student.util;
 
 import android.widget.Toast;
 
+import com.yanxiu.gphone.student.BuildConfig;
 import com.yanxiu.gphone.student.YanxiuApplication;
 
 /**
@@ -28,5 +29,16 @@ public class ToastManager {
             toast.setText(YanxiuApplication.getContext().getResources().getString(resId));
         }
         toast.show();
+    }
+
+    public static void showMsgOnDebug(CharSequence msg){
+        if (BuildConfig.DEBUG){
+            if (toast==null){
+                toast=Toast.makeText(YanxiuApplication.getContext(),msg,Toast.LENGTH_LONG);
+            }else {
+                toast.setText(msg);
+            }
+            toast.show();
+        }
     }
 }

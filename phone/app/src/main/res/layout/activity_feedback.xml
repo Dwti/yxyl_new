@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/color_edf0ee"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/include_top"
+        layout="@layout/main_public_top_layout" />
+
+    <EditText
+        android:id="@+id/et_feed"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/feed_edit_h"
+        android:textColor="@color/color_333333"
+        android:textColorHint="@color/color_cccccc"
+        android:hint="@string/feed_text"
+        android:gravity="top"
+        android:background="@color/color_fafafa"
+        android:textSize="@dimen/login_edit_default_textsize"
+        android:inputType="textMultiLine"
+        android:maxLength="200"
+        android:paddingTop="@dimen/feed_padding_t_b"
+        android:paddingBottom="@dimen/feed_padding_t_b"
+        android:paddingStart="@dimen/about_text_margin_l_r"
+        android:paddingEnd="@dimen/about_text_margin_l_r"/>
+
+    <com.yanxiu.gphone.student.customviews.WavesLayout
+        android:id="@+id/wl_waves"
+        style="@style/SettingWavesButton"
+        app:waves_canshowwave="false"
+        app:waves_color="@color/color_69ad0a"
+        app:waves_radius="@dimen/wavesRadius">
+
+        <TextView
+            android:id="@+id/tv_send"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_button_height"
+            android:background="@drawable/selector_setting_button_bg"
+            android:gravity="center"
+            android:text="@string/feed_send"
+            android:textColor="@color/color_ffffff"
+            android:textSize="@dimen/login_edit_default_textsize" />
+
+    </com.yanxiu.gphone.student.customviews.WavesLayout>
+
+</LinearLayout>

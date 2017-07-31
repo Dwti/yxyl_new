@@ -169,7 +169,7 @@ public class ForgetPassWordActivity extends YanxiuBaseActivity implements View.O
         switch (v.getId()) {
             case R.id.iv_left:
                 ForgetPassWordActivity.this.finish();
-                EditTextManger.getManager(mTitleView).hideSoftInput(mContext);
+                EditTextManger.getManager(mTitleView).hideSoftInput();
                 break;
             case R.id.iv_clear:
                 mMobileView.setText("");

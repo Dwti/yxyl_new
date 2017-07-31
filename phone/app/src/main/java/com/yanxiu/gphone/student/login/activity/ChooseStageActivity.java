@@ -120,7 +120,7 @@ public class ChooseStageActivity extends YanxiuBaseActivity implements PickerVie
                 EventBus.getDefault().post(message);
             case R.id.iv_left:
                 ChooseStageActivity.this.finish();
-                EditTextManger.getManager(mTitleView).hideSoftInput(mContext);
+                EditTextManger.getManager(mTitleView).hideSoftInput();
                 break;
         }
     }

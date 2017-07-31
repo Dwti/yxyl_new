@@ -141,4 +141,22 @@
         <item name="android:layout_height">@dimen/check_mobile_wave_h</item>
         <item name="android:layout_marginTop">@dimen/check_mobile_wave_margin_t</item>
     </style>
+
+    <style name="AboutTextLeft">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textSize">@dimen/login_edit_default_textsize</item>
+        <item name="android:textColor">@color/color_336600</item>
+        <item name="android:layout_marginStart">@dimen/about_text_margin_l_r</item>
+    </style>
+
+    <style name="AboutTextRight">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/login_edit_default_textsize</item>
+        <item name="android:textColor">@color/color_ffffff</item>
+        <item name="android:layout_marginEnd">@dimen/about_text_margin_l_r</item>
+    </style>
+
 </resources>

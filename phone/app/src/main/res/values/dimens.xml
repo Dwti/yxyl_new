@@ -276,5 +276,10 @@
     <dimen name="check_mobile_wave_w">250dp</dimen>
     <dimen name="check_mobile_wave_h">50dp</dimen>
     <dimen name="check_mobile_wave_margin_t">30dp</dimen>
+
+    <dimen name="about_text_margin_l_r">15dp</dimen>
+    <dimen name="about_image_margin_r">12dp</dimen>
+    <dimen name="feed_edit_h">265dp</dimen>
+    <dimen name="feed_padding_t_b">25dp</dimen>
 </resources>
 

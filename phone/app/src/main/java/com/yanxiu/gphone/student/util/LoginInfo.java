@@ -8,9 +8,13 @@ import org.litepal.crud.DataSupport;
 /**
  * Created by Canghaixiao.
  * Time : 2017/5/17 12:27.
- * Function :
+ * <p>
+ * Function :添加方法时需要注意，方法名规则  :
+ * <p>
+ * getXXX: 获取XXX数据
+ * setXXX：临时保存XXX数据,退出程序即清除
+ * saveXXX：真正保存XXX数据到数据库
  */
-@SuppressWarnings("unused")
 public class LoginInfo {
 
     /**
@@ -50,18 +54,18 @@ public class LoginInfo {
         Save();
     }
 
-    private static void Save(){
+    private static void Save() {
         bean.getPassport().save();
         bean.save();
     }
 
-    public static void LogOut(){
-        if (!isLogIn()){
+    public static void LogOut() {
+        if (!isLogIn()) {
             return;
         }
         LOGIN_STATUS = LOGIN_OUT;
         bean.delete();
-        bean=null;
+        bean = null;
     }
 
     /**
@@ -71,27 +75,33 @@ public class LoginInfo {
         return LOGIN_STATUS == LOGIN_IN;
     }
 
-    private static void init(){
-        if (bean==null){
-            PassportBean passportBean=new PassportBean();
-            bean=new UserMessageBean();
+    private static void init() {
+        if (bean == null) {
+            PassportBean passportBean = new PassportBean();
+            bean = new UserMessageBean();
             bean.setPassport(passportBean);
         }
     }
 
-    public static void setMobile(String mobile){
+    public static void setMobile(String mobile) {
         init();
         bean.setMobile(mobile);
         bean.getPassport().setMobile(mobile);
     }
 
-    public static void setPassWord(String passWord){
+    public static void saveMobile(String mobile) {
+        bean.setMobile(mobile);
+        bean.getPassport().setMobile(mobile);
+        Save();
+    }
+
+    public static void setPassWord(String passWord) {
         init();
         bean.getPassport().setPassword(passWord);
     }
 
     public static String getMobile() {
-        if (bean==null||bean.getMobile()==null) {
+        if (bean == null || bean.getMobile() == null) {
             return "";
         }
         return bean.getMobile();
@@ -118,7 +128,7 @@ public class LoginInfo {
         return bean.getRealname();
     }
 
-    public static void setRealName(String name) {
+    public static void saveRealName(String name) {
         if (!isLogIn()) {
             return;
         }
@@ -126,14 +136,14 @@ public class LoginInfo {
         Save();
     }
 
-    public static String getLoginType(){
+    public static String getLoginType() {
         if (!isLogIn()) {
             return "";
         }
         return bean.getLoginType();
     }
 
-    public static void setLoginType(String loginType){
+    public static void saveLoginType(String loginType) {
         if (!isLogIn()) {
             return;
         }
@@ -141,10 +151,34 @@ public class LoginInfo {
         Save();
     }
 
-    public static String getStageid(){
-        if (!isLogIn()){
+    public static String getStageid() {
+        if (!isLogIn()) {
             return "";
         }
         return bean.getStageid();
+    }
+
+    public static void saveUid(int uid){
+        if (!isLogIn()) {
+            return;
+        }
+        bean.getPassport().setUid(uid);
+        Save();
+    }
+
+    public static void saveToken(String token){
+        if (!isLogIn()) {
+            return;
+        }
+        bean.getPassport().setToken(token);
+        Save();
+    }
+
+    public static void savePassWord(String passWord){
+        if (!isLogIn()) {
+            return;
+        }
+        bean.getPassport().setPassword(passWord);
+        Save();
     }
 }
