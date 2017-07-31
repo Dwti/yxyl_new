@@ -1,6 +1,6 @@
 package com.yanxiu.gphone.student.exercise.adapter;
 
-import com.yanxiu.gphone.student.exercise.bean.ChapterBean;
+import com.yanxiu.gphone.student.exercise.bean.KnowledgePointBean;
 
 import java.util.List;
 
@@ -8,8 +8,8 @@ import java.util.List;
  * Created by sp on 17-7-31.
  */
 
-public class ChapterAdapter extends ExerciseExpandableAdapter<ChapterBean> {
-    public ChapterAdapter(List<ChapterBean> data) {
+public class KnowledgePointAdapter extends ExerciseExpandableAdapter<KnowledgePointBean> {
+    public KnowledgePointAdapter(List<KnowledgePointBean> data) {
         super(data);
     }
 

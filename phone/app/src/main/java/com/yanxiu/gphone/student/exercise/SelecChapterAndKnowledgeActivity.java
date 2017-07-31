@@ -14,16 +14,16 @@ import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.exercise.adapter.ChapterAdapter;
-import com.yanxiu.gphone.student.exercise.adapter.ExpandChapterAdapter;
-import com.yanxiu.gphone.student.exercise.bean.ChapterBean;
+import com.yanxiu.gphone.student.exercise.adapter.KnowledgePointAdapter;
 import com.yanxiu.gphone.student.exercise.bean.EditionBeanEx;
 import com.yanxiu.gphone.student.exercise.request.EditionRequest;
-import com.yanxiu.gphone.student.exercise.request.GetChapterListRequest;
+import com.yanxiu.gphone.student.exercise.request.ChapterListRequest;
+import com.yanxiu.gphone.student.exercise.request.KnowledgePointRequest;
 import com.yanxiu.gphone.student.exercise.response.ChapterListResponse;
 import com.yanxiu.gphone.student.exercise.response.EditionResponse;
+import com.yanxiu.gphone.student.exercise.response.KnowledgePointResponse;
 import com.yanxiu.gphone.student.util.ToastManager;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,7 +35,8 @@ public class SelecChapterAndKnowledgeActivity extends Activity{
     private View mBack;
     private TextView mTitle;
     private RecyclerView mRecyclerView;
-    private ExpandChapterAdapter mAdapter;
+    private ChapterAdapter mChapterAdapter;
+    private KnowledgePointAdapter mKnowledgePointAdapter;
     private String mSubjectName,mSubjectId,mEditionId;
 
     private static final String SUBJECT_ID = "SUBJECT_ID";
@@ -81,15 +82,22 @@ public class SelecChapterAndKnowledgeActivity extends Activity{
         mSubjectName = getIntent().getStringExtra(SUBJECT_NAME);
         mEditionId = getIntent().getStringExtra(EDITION_ID);
         mTitle.setText(mSubjectName);
-        getEditionList(mSubjectId);
+//        getEditionList(mSubjectId);
+        getKnowledgePointList(mSubjectId);
     }
 
     private void getChapterList(String subjectId,String editionId,String volume){
-        GetChapterListRequest request = new GetChapterListRequest();
+        ChapterListRequest request = new ChapterListRequest();
         request.setSubjectId(subjectId);
         request.setEditionId(editionId);
         request.setVolume(volume);
         request.startRequest(ChapterListResponse.class,mChapterCallback);
+    }
+
+    private void getKnowledgePointList(String subjectId){
+        KnowledgePointRequest request = new KnowledgePointRequest();
+        request.setSubjectId(subjectId);
+        request.startRequest(KnowledgePointResponse.class,mKnowledgePointCallback);
     }
 
     private void getEditionList(String subjectId){
@@ -132,8 +140,25 @@ public class SelecChapterAndKnowledgeActivity extends Activity{
         @Override
         protected void onResponse(RequestBase request, ChapterListResponse response) {
             if(response.getStatus().getCode() == 0){
-                mAdapter = new ExpandChapterAdapter(response.getData());
-                mRecyclerView.setAdapter(mAdapter);
+                mChapterAdapter = new ChapterAdapter(response.getData());
+                mRecyclerView.setAdapter(mChapterAdapter);
+            }else {
+                ToastManager.showMsg(response.getStatus().getDesc());
+            }
+        }
+
+        @Override
+        public void onFail(RequestBase request, Error error) {
+            ToastManager.showMsg(error.getLocalizedMessage());
+        }
+    };
+
+    HttpCallback<KnowledgePointResponse> mKnowledgePointCallback = new EXueELianBaseCallback<KnowledgePointResponse>() {
+        @Override
+        protected void onResponse(RequestBase request, KnowledgePointResponse response) {
+            if(response.getStatus().getCode() == 0){
+                mKnowledgePointAdapter = new KnowledgePointAdapter(response.getData());
+                mRecyclerView.setAdapter(mKnowledgePointAdapter);
             }else {
                 ToastManager.showMsg(response.getStatus().getDesc());
             }

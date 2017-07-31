@@ -9,13 +9,10 @@ import java.util.List;
  * Created by sp on 17-7-28.
  */
 
-public class ChapterBean extends BaseBean{
+public class ChapterBean extends Node<ChapterBean>{
     protected String id;
     protected String name;
     protected String question_num;
-    protected List<ChapterBean> children = new ArrayList<>();
-    protected boolean isExpanded = false;
-    protected int level = 0;
 
     public String getId() {
         return id;
@@ -41,31 +38,4 @@ public class ChapterBean extends BaseBean{
         this.question_num = question_num;
     }
 
-    public List<ChapterBean> getChildren() {
-        return children;
-    }
-
-    public void setChildren(List<ChapterBean> children) {
-        this.children = children;
-    }
-
-    public boolean isExpanded() {
-        return isExpanded;
-    }
-
-    public void setExpanded(boolean expanded) {
-        isExpanded = expanded;
-    }
-
-    public boolean hasChildren() {
-        return children != null && children.size() >0;
-    }
-
-    public int getLevel() {
-        return level;
-    }
-
-    public void setLevel(int level) {
-        this.level = level;
-    }
 }

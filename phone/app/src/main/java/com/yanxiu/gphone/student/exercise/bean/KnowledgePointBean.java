@@ -9,11 +9,10 @@ import java.util.List;
  * Created by sp on 17-7-28.
  */
 
-public class KnowledgePointBean extends BaseBean {
+public class KnowledgePointBean extends Node<KnowledgePointBean> {
     protected String id;
     protected String name;
     protected MasterBean data;
-    protected List<KnowledgePointBean> children = new ArrayList<>();
 
     public String getId() {
         return id;
@@ -39,11 +38,4 @@ public class KnowledgePointBean extends BaseBean {
         this.data = data;
     }
 
-    public List<KnowledgePointBean> getChildren() {
-        return children;
-    }
-
-    public void setChildren(List<KnowledgePointBean> children) {
-        this.children = children;
-    }
 }
