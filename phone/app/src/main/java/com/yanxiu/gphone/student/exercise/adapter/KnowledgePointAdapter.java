@@ -1,5 +1,7 @@
 package com.yanxiu.gphone.student.exercise.adapter;
 
+import android.support.v7.widget.RecyclerView;
+
 import com.yanxiu.gphone.student.exercise.bean.KnowledgePointBean;
 
 import java.util.List;
@@ -14,8 +16,8 @@ public class KnowledgePointAdapter extends ExerciseExpandableAdapter<KnowledgePo
     }
 
     @Override
-    public void onBindViewHolder(ExpandableViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
-        holder.text.setText(mData.get(position).getName());
+        ((ExpandableViewHolder)holder).text.setText(mData.get(position).getName());
     }
 }
