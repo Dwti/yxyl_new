@@ -35,7 +35,7 @@
                     android:layout_marginTop="22dp"
                     android:background="@drawable/shape_user_icon_bg"
                     android:padding="5dp"
-                    android:src="@drawable/loading_img" />
+                    android:src="@drawable/user_icon_default" />
 
                 <TextView
                     android:id="@+id/user_name"
@@ -190,10 +190,11 @@
                 android:id="@+id/user_xueduan"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/user_item_height"
-                android:layout_below="@id/line3"
                 android:background="@drawable/selector_user_fragment_item"
                 android:paddingLeft="@dimen/user_item_marginleft"
-                android:paddingRight="@dimen/user_item_marginright">
+                android:paddingRight="@dimen/user_item_marginright"
+                android:layout_below="@+id/line3"
+                android:layout_alignParentStart="true">
 
                 <ImageView
                     android:id="@+id/user_xueduan_icon"
@@ -213,7 +214,20 @@
                     android:textColor="@color/color_333333"
                     android:textSize="@dimen/user_item_text_size" />
 
+                <TextView
+                    android:id="@+id/stage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/user_item_text_marginleft"
+                    android:layout_toLeftOf="@id/icon"
+                    android:gravity="center"
+                    tools:text="@string/period"
+                    android:textColor="@color/color_89e00d"
+                    android:textSize="@dimen/user_stage_text_size" />
+
                 <ImageView
+                    android:id="@+id/icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -354,15 +368,6 @@
                 android:layout_below="@+id/user_seeting"
                 android:alpha="0.2"
                 android:background="@color/color_002c0f" />
-
-            <TextView
-                android:id="@+id/logout"
-                android:layout_width="100dp"
-                android:layout_height="50dp"
-                android:layout_centerInParent="true"
-                android:background="@color/cardview_shadow_start_color"
-                android:gravity="center"
-                android:text="退出" />
         </RelativeLayout>
     </ScrollView>
 </RelativeLayout>

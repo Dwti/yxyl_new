@@ -132,6 +132,7 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
             mListenView.setVisibility(View.VISIBLE);
             mListenView.setUrl(url);
             mListenView.setVisibility(View.VISIBLE);
+            complex_stem_layout.setVisibility(View.VISIBLE);
         }
     }
 
@@ -153,7 +154,7 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
      */
     private void hiddenBottomLayout(){
         AnalysisQuestionActivity activity = (AnalysisQuestionActivity)getActivity();
-        if(activity.mQuestions.size() == 1){
+        if(activity.mQuestions.size() == 1 && (null == activity.mQuestions.get(0).getChildren() || activity.mQuestions.get(0).getChildren().size() <= 1)){
             mScrollView.setPadding(0,0,0,0);
         }
     }

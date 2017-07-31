@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
@@ -17,6 +18,8 @@ import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.AnswerReportTitleView;
 import com.yanxiu.gphone.student.customviews.UnMoveGridView;
+import com.yanxiu.gphone.student.customviews.vieweffect.GradientEffect;
+import com.yanxiu.gphone.student.customviews.vieweffect.GradientEffectImpl;
 import com.yanxiu.gphone.student.questions.answerframe.adapter.AnswerReportAdapter;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
@@ -27,6 +30,7 @@ import com.yanxiu.gphone.student.util.ScreenUtils;
 import com.yanxiu.gphone.student.util.TextTypefaceUtil;
 import com.yanxiu.gphone.student.util.TimeUtils;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -38,7 +42,7 @@ import java.util.Set;
  * Created by 戴延枫 on 2017/6/9.
  */
 
-public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswerCardItemSelectListener,View.OnClickListener {
+public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswerCardItemSelectListener, View.OnClickListener {
 
 
     private String mKey;//获取数据的key
@@ -46,8 +50,11 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
     private ArrayList<BaseQuestion> mQuestions;
     private String mPPid;
     private String mTitleString;
-
+    private ScrollView mScrollView;
     private RelativeLayout mNopigai_layout, mPigai_layout;
+
+    private GradientEffectImpl mGradientEffect;
+    private View mTitle_bar;
     private TextView mTitle;
     private ImageView mBackview;
     //批改view
@@ -62,7 +69,7 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
     private int mSpacing;
 
     private String mStatus;//试卷状态 0未批改 1已经批改
-    private int mSccuracy = 0;  //正确率
+    private String mSccuracy = "0";  //正确率
     private int mRightCount;//做对的题数
     private int mTotalCount;//总题数
     private String mCostTime = "0";//用时
@@ -88,7 +95,7 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
         mPPid = mPaper.getId();
         mStatus = mPaper.getPaperStatus().getCheckStatus();
 //        mSccuracy = (int) (QuestionUtil.calculateRightRate(mQuestions) * 100);
-        mSccuracy = (int)(mPaper.getPaperStatus().getScoreRate() * 100);
+        mSccuracy = NumberFormat.getPercentInstance().format(mPaper.getPaperStatus().getScoreRate()).replace("%","");
 
         mRightCount = QuestionUtil.calculateRightCount(mQuestions);
         mCostTime = mPaper.getPaperStatus().getCosttime();
@@ -104,8 +111,10 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
     }
 
     private void initView() {
+        mScrollView = (ScrollView) findViewById(R.id.scrollView);
         mNopigai_layout = (RelativeLayout) findViewById(R.id.nopigai_layout);
         mPigai_layout = (RelativeLayout) findViewById(R.id.pigai_layout);
+        mTitle_bar = findViewById(R.id.title_bar);
         mTitle = (TextView) findViewById(R.id.report_title);
         mTitle.setText(mTitleString);
         mBackview = (ImageView) findViewById(R.id.backview);
@@ -120,13 +129,13 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
 
         if ("1".equals(mStatus)) {
             //已经批改
-            mTextview_correct.setText(mSccuracy+"");
-            mTextview_correct_shadow.setText(mSccuracy+"");
+            mTextview_correct.setText(mSccuracy);
+            mTextview_correct_shadow.setText(mSccuracy);
             mTotalnumber.setText("共" + mTotalCount + "题");
             mYesnumber.setText("答对" + mRightCount + "题");
             mTime.setText(mCostTime);
-            TextTypefaceUtil.setViewTypeface(TextTypefaceUtil.TypefaceType.METRO_DEMI_BOLD,mTextview_correct,mTextview_correct_shadow);
-            TextTypefaceUtil.setViewTypeface(TextTypefaceUtil.TypefaceType.METRO_MEDIUM_PLAY,mTime);
+            TextTypefaceUtil.setViewTypeface(TextTypefaceUtil.TypefaceType.METRO_DEMI_BOLD, mTextview_correct, mTextview_correct_shadow);
+            TextTypefaceUtil.setViewTypeface(TextTypefaceUtil.TypefaceType.METRO_MEDIUM_PLAY, mTime);
             mNopigai_layout.setVisibility(View.GONE);
             mPigai_layout.setVisibility(View.VISIBLE);
         } else {
@@ -134,6 +143,7 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
             mPigai_layout.setVisibility(View.GONE);
         }
         addGridView(QuestionUtil.classifyQuestionByType(mQuestions));
+        setDragAmin();
     }
 
 
@@ -166,6 +176,30 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
             mCardGrid.addView(gridView);
 
         }
+    }
+
+
+    /**
+     * 设置拖拽渐变动画回调
+     */
+    private void setDragAmin() {
+        mTitle_bar.getBackground().mutate();//因为加了alpha渐变，不加该方法，会在个别手机上造成闪屏。
+        View sliderView;
+        if ("1".equals(mStatus)) {
+            //已经批改
+            sliderView = mPigai_layout;
+        }else{
+            sliderView = mNopigai_layout;
+        }
+        mGradientEffect = new GradientEffectImpl(mTitle_bar, sliderView, mScrollView);
+        mGradientEffect.setOnGradientEffectListener(new GradientEffect.OnGradientEffectListener() {
+            @Override
+            public void onGrade(float ratio) {
+                //设置导航条背景透明度
+                int alpha = (int) (ratio * 255);
+                mTitle_bar.getBackground().setAlpha(alpha);
+            }
+        });
     }
 
     /**
@@ -202,10 +236,19 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.backview:
                 finish();
                 break;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (mGradientEffect != null) {
+            mGradientEffect.releaseObserver();
+            mGradientEffect = null;
+        }
+        super.onDestroy();
     }
 }

@@ -72,6 +72,7 @@ public abstract class AnswerSimpleExerciseBaseFragment extends AnswerExerciseBas
             mListenView.setVisibility(View.VISIBLE);
             mListenView.setUrl(url);
             mListenView.setVisibility(View.VISIBLE);
+            complex_stem_layout.setVisibility(View.VISIBLE);
         }
     }
 

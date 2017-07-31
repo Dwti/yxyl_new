@@ -136,6 +136,9 @@ public class QuestionConvertFactory {
         String type_id = paperTestBean.getQuestions().getType_id();//复合题的type_id
         String stem_complex = paperTestBean.getQuestions().getStem();//复合题的题干
         String url_complex_listen = paperTestBean.getQuestions().getUrl();//听力复合题的url
+        String padId_complex = paperTestBean.getQuestions().getPad().getId();//复合题的pad里的id,上传答案时需要
+        String ptid_complex = paperTestBean.getId();//复合题的上传答案时的ptid
+        String qid_complex = paperTestBean.getQid();//复合题的上传答案时的qid
         int childCount = ChildQuestion.size();
 
         if (childCount == 1) { //只有一个子题，转成单题
@@ -148,6 +151,9 @@ public class QuestionConvertFactory {
                     singleChoiceQuestion.setTemplate_complexToSimple(template);
                     singleChoiceQuestion.setTypeId_complexToSimple(type_id);
                     singleChoiceQuestion.setUrl_listenComplexToSimple(url_complex_listen);
+                    singleChoiceQuestion.setPadId_ComplexToSimple(padId_complex);
+                    singleChoiceQuestion.setPtid_ComplexToSimple(ptid_complex);
+                    singleChoiceQuestion.setQid_ComplexToSimple(qid_complex);
                     questions.add(singleChoiceQuestion);
                     break;
                 case QuestionTemplate.MULTI_CHOICES:
@@ -156,6 +162,9 @@ public class QuestionConvertFactory {
                     multiChoiceQuestion.setTemplate_complexToSimple(template);
                     multiChoiceQuestion.setTypeId_complexToSimple(type_id);
                     multiChoiceQuestion.setUrl_listenComplexToSimple(url_complex_listen);
+                    multiChoiceQuestion.setPadId_ComplexToSimple(padId_complex);
+                    multiChoiceQuestion.setPtid_ComplexToSimple(ptid_complex);
+                    multiChoiceQuestion.setQid_ComplexToSimple(qid_complex);
                     questions.add(multiChoiceQuestion);
                     break;
                 case QuestionTemplate.FILL:
@@ -164,6 +173,9 @@ public class QuestionConvertFactory {
                     fillBlankQuestion.setTemplate_complexToSimple(template);
                     fillBlankQuestion.setTypeId_complexToSimple(type_id);
                     fillBlankQuestion.setUrl_listenComplexToSimple(url_complex_listen);
+                    fillBlankQuestion.setPadId_ComplexToSimple(padId_complex);
+                    fillBlankQuestion.setPtid_ComplexToSimple(ptid_complex);
+                    fillBlankQuestion.setQid_ComplexToSimple(qid_complex);
                     questions.add(fillBlankQuestion);
                     break;
                 case QuestionTemplate.ALTER:
@@ -172,6 +184,9 @@ public class QuestionConvertFactory {
                     yesNoQuestion.setTemplate_complexToSimple(template);
                     yesNoQuestion.setTypeId_complexToSimple(type_id);
                     yesNoQuestion.setUrl_listenComplexToSimple(url_complex_listen);
+                    yesNoQuestion.setPadId_ComplexToSimple(padId_complex);
+                    yesNoQuestion.setPtid_ComplexToSimple(ptid_complex);
+                    yesNoQuestion.setQid_ComplexToSimple(qid_complex);
                     questions.add(yesNoQuestion);
                     break;
                 case QuestionTemplate.CONNECT:
@@ -184,6 +199,9 @@ public class QuestionConvertFactory {
                     subjectiveQuestion.setTemplate_complexToSimple(template);
                     subjectiveQuestion.setTypeId_complexToSimple(type_id);
                     subjectiveQuestion.setUrl_listenComplexToSimple(url_complex_listen);
+                    subjectiveQuestion.setPadId_ComplexToSimple(padId_complex);
+                    subjectiveQuestion.setPtid_ComplexToSimple(ptid_complex);
+                    subjectiveQuestion.setQid_ComplexToSimple(qid_complex);
                     questions.add(subjectiveQuestion);
                     break;
                 default:

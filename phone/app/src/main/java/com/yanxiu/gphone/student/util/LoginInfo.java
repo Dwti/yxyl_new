@@ -100,6 +100,10 @@ public class LoginInfo {
         bean.getPassport().setPassword(passWord);
     }
 
+    /**
+     * 账号（手机号）
+     * @return 手机号
+     */
     public static String getMobile() {
         if (bean == null || bean.getMobile() == null) {
             return "";
@@ -121,6 +125,10 @@ public class LoginInfo {
         return bean.getPassport().getToken();
     }
 
+    /**
+     * 账号名称
+     * @return 真实姓名
+     */
     public static String getRealName() {
         if (!isLogIn()) {
             return "";
@@ -136,7 +144,11 @@ public class LoginInfo {
         Save();
     }
 
-    public static String getLoginType() {
+    /**
+     * 登录方式（账号登录、三方登录）
+     * @return 三方类型
+     */
+    public static String getLoginType(){
         if (!isLogIn()) {
             return "";
         }
@@ -151,8 +163,12 @@ public class LoginInfo {
         Save();
     }
 
-    public static String getStageid() {
-        if (!isLogIn()) {
+    /**
+     * 学段ID
+     * @return 学段ID
+     */
+    public static String getStageid(){
+        if (!isLogIn()){
             return "";
         }
         return bean.getStageid();
@@ -174,11 +190,32 @@ public class LoginInfo {
         Save();
     }
 
-    public static void savePassWord(String passWord){
+    public static void savePassWord(String passWord) {
         if (!isLogIn()) {
             return;
         }
         bean.getPassport().setPassword(passWord);
         Save();
+    }
+    /**
+     * 学段
+     * @return 学段名称
+     */
+    public static String getStageName(){
+        if (!isLogIn()){
+            return "";
+        }
+        return bean.getStageName();
+    }
+
+    /**
+     * 用户头像
+     * @return 头像URL
+     */
+    public static String getHeadIcon(){
+        if (!isLogIn()){
+            return "";
+        }
+        return bean.getHead();
     }
 }

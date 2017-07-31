@@ -56,6 +56,9 @@ public abstract class BaseQuestion implements Serializable {
     private String template_complexToSimple;//只有一个子题的复合题的大题的template(复合题转成单题显示)
     private String type_id_complexToSimple;//只有一个子题的复合题的大题的type_id(复合题转成单题显示)
     private String url_listenComplexToSimple;//只有一个子题的听力复合题的大题的url(复合题转成单题显示)
+    private String padId_ComplexToSimple;//只有一个子题的复合题的大题的pad里的id(复合题转成单题，提交答案时使用)
+    private String ptid_ComplexToSimple;//只有一个子题的复合题的大题的上传答案时的ptid(复合题转成单题，提交答案时使用)
+    private String qid_ComplexToSimple;//只有一个子题的复合题的大题的上传答案时的qid(复合题转成单题，提交答案时使用)
 
     protected boolean isAnswer;
     protected long costtime;//答题时间
@@ -464,6 +467,30 @@ public abstract class BaseQuestion implements Serializable {
 
     public String getParentType_id() {
         return parentType_id;
+    }
+
+    public String getPadId_ComplexToSimple() {
+        return padId_ComplexToSimple;
+    }
+
+    public void setPadId_ComplexToSimple(String padId_ComplexToSimple) {
+        this.padId_ComplexToSimple = padId_ComplexToSimple;
+    }
+
+    public String getPtid_ComplexToSimple() {
+        return ptid_ComplexToSimple;
+    }
+
+    public void setPtid_ComplexToSimple(String ptid_ComplexToSimple) {
+        this.ptid_ComplexToSimple = ptid_ComplexToSimple;
+    }
+
+    public String getQid_ComplexToSimple() {
+        return qid_ComplexToSimple;
+    }
+
+    public void setQid_ComplexToSimple(String qid_ComplexToSimple) {
+        this.qid_ComplexToSimple = qid_ComplexToSimple;
     }
 
 

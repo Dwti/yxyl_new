@@ -164,7 +164,7 @@ public class AnalysisQuestionActivity extends YanxiuBaseActivity implements View
      * 当只有一个题时，隐藏bottom，并且把解析单题型fragment的bottom去掉
      */
     private void hiddenBottomLayout(){
-        if(mQuestions.size() == 1){
+        if(mQuestions.size() == 1 && (null == mQuestions.get(0).getChildren() || mQuestions.get(0).getChildren().size() <= 1)){
             mBottomLayout.setVisibility(View.GONE);
             mBottom_line.setVisibility(View.GONE);
         }
