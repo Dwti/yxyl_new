@@ -79,4 +79,13 @@ public class Constants {
         public static final int POLITICAL=1109;
         public static final int HISTORY=1110;
     }
+
+    /**
+     * 推送相关
+     */
+    public static final String MAINAVTIVITY_PUSHMSGBEAN = "mPushMsgBean";//在首页获取推送数据的key
+    public static final int NOTIFICATION_ACTION_HOMEWORK_CORRECTING = 0;//批改作业
+    public static final int NOTIFICATION_ACTION_ASSIGN_HOMEWORK = 1;//布置作业
+    public static final int NOTIFICATION_ACTION_JOIN_THE_CLASS = 2;//班级加入成功||班级审核未通过
+    public static final int NOTIFICATION_ACTION_OPEN_WEBVIEW = 3;//调用内置webView
 }
