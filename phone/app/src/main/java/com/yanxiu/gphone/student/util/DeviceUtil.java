@@ -65,4 +65,15 @@ public class DeviceUtil {
             return data.replace(" ", "_");
         }
     }
+
+
+    public static String getOSVersionCode() {
+        int version = -1;
+        try {
+            version = Integer.valueOf(Build.VERSION.SDK_INT);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        return String.valueOf(version);
+    }
 }

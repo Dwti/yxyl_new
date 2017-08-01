@@ -136,7 +136,7 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
         switch (v.getId()){
             case R.id.iv_left:
                 JoinClassSubmitActivity.this.finish();
-                EditTextManger.getManager(mTitleView).hideSoftInput(mContext);
+                EditTextManger.getManager(mTitleView).hideSoftInput();
                 break;
             case R.id.iv_write:
                 mInputNameView.setEnabled(true);

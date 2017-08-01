@@ -17,11 +17,14 @@ import com.yanxiu.gphone.student.base.EXueELianBaseResponse;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
 import com.yanxiu.gphone.student.customviews.WavesLayout;
+import com.yanxiu.gphone.student.user.setting.bean.BindMobileMessage;
 import com.yanxiu.gphone.student.user.setting.request.CheckMobileRequest;
 import com.yanxiu.gphone.student.user.setting.request.SendVerCodeBindMobileRequest;
 import com.yanxiu.gphone.student.util.EditTextManger;
 import com.yanxiu.gphone.student.util.ToastManager;
 import com.yanxiu.gphone.student.util.time.CountDownManager;
+
+import de.greenrobot.event.EventBus;
 
 @SuppressWarnings("all")
 /**
@@ -62,6 +65,7 @@ public class CheckMobileActivity extends YanxiuBaseActivity implements View.OnCl
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = CheckMobileActivity.this;
+        EventBus.getDefault().register(mContext);
         rootView = new PublicLoadLayout(mContext);
         rootView.setContentView(R.layout.activity_checkmobile);
         setContentView(rootView);
@@ -111,6 +115,7 @@ public class CheckMobileActivity extends YanxiuBaseActivity implements View.OnCl
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(mContext);
         if (mVerCodeBindMobileRequest != null) {
             mVerCodeBindMobileRequest.cancelRequest();
             mVerCodeBindMobileRequest = null;
@@ -121,11 +126,17 @@ public class CheckMobileActivity extends YanxiuBaseActivity implements View.OnCl
         }
     }
 
+    public void onEventMainThread(BindMobileMessage message) {
+        if (message != null) {
+            CheckMobileActivity.this.finish();
+        }
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_left:
-                EditTextManger.getManager(mSureView).hideSoftInput(mContext);
+                EditTextManger.getManager(mSureView).hideSoftInput();
                 CheckMobileActivity.this.finish();
                 break;
             case R.id.tv_send_verCode:
@@ -176,7 +187,7 @@ public class CheckMobileActivity extends YanxiuBaseActivity implements View.OnCl
             protected void onResponse(RequestBase request, EXueELianBaseResponse response) {
                 rootView.hiddenLoadingView();
                 if (response.getStatus().getCode() == 0) {
-                    BindMobileActivity.LaunchActivity(mContext,BindMobileActivity.COME_TYPE_CHECK_MOBILE);
+                    BindMobileActivity.LaunchActivity(mContext, BindMobileActivity.COME_TYPE_CHECK_MOBILE);
                 } else {
                     ToastManager.showMsg(response.getStatus().getDesc());
                 }

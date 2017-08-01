@@ -160,9 +160,9 @@ public class EditTextManger implements TextWatcher {
     /**
      * Only this method,The view could be all but EditText
      * */
-    public void hideSoftInput(Context context){
+    public void hideSoftInput(){
         if (view!=null) {
-            InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }

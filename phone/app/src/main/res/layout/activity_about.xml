@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_89e00d"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/include_top"
+        layout="@layout/main_public_top_layout" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@null">
+
+        <RelativeLayout
+            android:id="@+id/rl_forget_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <include
+                android:id="@+id/include_img"
+                layout="@layout/layout_login_top_image" />
+
+            <LinearLayout
+                android:id="@+id/ll_mobile"
+                style="@style/LoginLayoutButton"
+                android:background="@drawable/shape_login_edit_top"
+                android:layout_below="@+id/include_img"
+                android:gravity="center_vertical"
+                android:layout_marginTop="@dimen/login_margin_top_img"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/AboutTextLeft"
+                    android:text="@string/about_wx"/>
+
+                <TextView
+                    style="@style/AboutTextRight"
+                    android:text="@string/about_wx_code"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_ver_code"
+                style="@style/LoginLayoutButton"
+                android:layout_below="@+id/ll_mobile"
+                android:layout_marginTop="@dimen/login_edit_margin_top"
+                android:background="@drawable/shape_login_edit_bottom"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/AboutTextLeft"
+                    android:text="@string/about_qq"/>
+
+                <TextView
+                    style="@style/AboutTextRight"
+                    android:text="@string/about_qq_code"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_pass_word"
+                style="@style/LoginLayoutButton"
+                android:layout_below="@+id/ll_ver_code"
+                android:layout_marginTop="@dimen/login_margin_top_img"
+                android:background="@drawable/shape_login_edit"
+                android:gravity="center_vertical"
+                android:onClick="onClick"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/AboutTextLeft"
+                    android:text="@string/about_privacy"/>
+
+                <ImageView
+                    android:layout_width="@dimen/login_edit_icon_w_h"
+                    android:layout_height="@dimen/login_edit_icon_w_h"
+                    android:layout_marginEnd="@dimen/about_image_margin_r"
+                    android:background="@color/colorPrimary"
+                    android:contentDescription="@null" />
+
+            </LinearLayout>
+        </RelativeLayout>
+
+    </ScrollView>
+
+</LinearLayout>

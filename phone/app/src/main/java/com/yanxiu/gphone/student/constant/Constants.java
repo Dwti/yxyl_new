@@ -25,6 +25,7 @@ public class Constants {
     public static String deviceId = "-";
     public static String version = String.valueOf(SystemUtil.getVersionCode());
 
+    public static final String PRIVACY_POLICY_URL = "http://mobile.hwk.yanxiu.com/privacy_policy.html";
 
 
     public static int[] StageTxtId = {R.string.primary_txt, R.string.juinor_txt, R.string.high_txt};

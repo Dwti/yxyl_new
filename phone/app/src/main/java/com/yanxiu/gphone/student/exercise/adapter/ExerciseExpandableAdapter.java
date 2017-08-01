@@ -19,7 +19,7 @@ import java.util.List;
  * Created by sp on 17-7-31.
  */
 
-public class ExerciseExpandableAdapter<T extends Node> extends BaseExpandableRecyclerAdapter<T,ExerciseExpandableAdapter.ExpandableViewHolder> {
+public class ExerciseExpandableAdapter<T extends Node> extends BaseExpandableRecyclerAdapter<T> {
     private int mIndentation;  //缩进
     public ExerciseExpandableAdapter(List<T> data) {
         super(data);
@@ -33,20 +33,20 @@ public class ExerciseExpandableAdapter<T extends Node> extends BaseExpandableRec
     }
 
     @Override
-    public void onBindViewHolder(ExpandableViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (mData.get(position).isExpanded()) {
-            holder.indicator.setImageResource(R.drawable.expand_normal);
+            ((ExpandableViewHolder)holder).indicator.setImageResource(R.drawable.expand_normal);
         } else {
-            holder.indicator.setImageResource(R.drawable.collapse_normal);
+            ((ExpandableViewHolder)holder).indicator.setImageResource(R.drawable.collapse_normal);
         }
         if (mData.get(position).hasChildren()) {
-            holder.ll_indicator.setVisibility(View.VISIBLE);
+            ((ExpandableViewHolder)holder).ll_indicator.setVisibility(View.VISIBLE);
         } else {
-            holder.ll_indicator.setVisibility(View.INVISIBLE);
+            ((ExpandableViewHolder)holder).ll_indicator.setVisibility(View.INVISIBLE);
         }
         setBackgroundByLevel(holder.itemView,mData.get(position).getLevel());
-        setTextSizeByLevel(holder.text,mData.get(position).getLevel());
-        holder.ll_above.setPadding(mIndentation * mData.get(position).getLevel(),0,0,0);
+        setTextSizeByLevel(((ExpandableViewHolder)holder).text,mData.get(position).getLevel());
+        ((ExpandableViewHolder)holder).ll_above.setPadding(mIndentation * mData.get(position).getLevel(),0,0,0);
     }
 
     @Override
