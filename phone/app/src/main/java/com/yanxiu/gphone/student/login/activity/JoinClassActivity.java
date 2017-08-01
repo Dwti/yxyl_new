@@ -117,7 +117,7 @@ public class JoinClassActivity extends YanxiuBaseActivity implements View.OnClic
         switch (v.getId()){
             case R.id.iv_left:
                 JoinClassActivity.this.finish();
-                EditTextManger.getManager(mTitleView).hideSoftInput(mContext);
+                EditTextManger.getManager(mTitleView).hideSoftInput();
                 break;
             case R.id.btn_next:
                 String classNumber=mInputClassNumberView.getText().trim();

@@ -117,7 +117,7 @@ public class ChooseSchoolActivity extends YanxiuBaseActivity implements View.OnC
                 break;
             case R.id.iv_left:
                 ChooseSchoolActivity.this.finish();
-                EditTextManger.getManager(mTitleView).hideSoftInput(mContext);
+                EditTextManger.getManager(mTitleView).hideSoftInput();
                 break;
         }
     }

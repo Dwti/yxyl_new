@@ -95,6 +95,8 @@ public class MistakeListActivity extends YanxiuBaseActivity implements View.OnCl
                 rootView.hiddenLoadingView();
                 if (response.getStatus().getCode()==0){
                     mMistakeAdapter.setData(response.data);
+                }else {
+                    ToastManager.showMsg(response.getStatus().getDesc());
                 }
             }
 

@@ -247,12 +247,38 @@
     <string name="setting_login_out">退出登录</string>
 
     <string name="check_mobile">手机号码验证</string>
-    <string name="bind_mobile">绑定手机</string>
     <string name="bind_new_mobile">绑定新手机</string>
     <string name="zhagnhao">账号：</string>
     <string name="exercise_history">练习历史</string>
     <string name="teaching_material_version">教材版本</string>
     <string name="feedback">意见反馈</string>
     <string name="setting">设置</string>
+
+    <string name="change_password_input">请输入6&#8211;18位新密码</string>
+    <string name="change_password_input_again">请确认新密码</string>
+    <string name="change_sure">确认修改</string>
+    <string name="input_password_old_error">原密码错误</string>
+    <string name="input_password_new_error">新密码不符合要求</string>
+    
+    <string name="change_password_success">修改成功</string>
+
+    <string name="about_wx">官方微信</string>
+    <string name="about_wx_code">yixueyilian</string>
+    <string name="about_qq">QQ群</string>
+    <string name="about_qq_code">438863057</string>
+    <string name="about_privacy">隐私政策</string>
+
+    <string name="privacy_policy_txt">隐私策略</string>
+
+    <string name="feed_text">请描述您的意见或问题（200字以内）</string>
+    <string name="feed_send">发送</string>
+    <string name="feed_send_success">发送成功</string>
+    <string name="feed_send_error">请详细描述您的问题，至少2个字</string>
+
+    <string name="user_message">个人资料</string>
     <string name="data_empty">暂无数据</string>
+
+    <string name="stage_change">学段更改后，练习将切换到相应学段。</string>
+    <string name="stage_change_true">你确定要更改吗？</string>
+    <string name="stage_change_text">更改</string>
 </resources>
