@@ -33,8 +33,15 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/top_layout_height"
-        android:background="@android:color/white"
-        android:visibility="gone"></RelativeLayout>
+        android:background="@android:color/white">
+
+        <com.yanxiu.gphone.student.customviews.ChapterSwitchBar
+            android:id="@+id/switchBar"
+            android:layout_width="134dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="15dp"
+            android:layout_centerVertical="true"/>
+    </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"

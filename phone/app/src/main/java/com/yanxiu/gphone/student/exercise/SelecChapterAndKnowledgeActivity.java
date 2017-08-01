@@ -13,6 +13,7 @@ import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
+import com.yanxiu.gphone.student.customviews.ChapterSwitchBar;
 import com.yanxiu.gphone.student.exercise.adapter.ChapterAdapter;
 import com.yanxiu.gphone.student.exercise.adapter.KnowledgePointAdapter;
 import com.yanxiu.gphone.student.exercise.bean.EditionBeanEx;
@@ -38,6 +39,7 @@ public class SelecChapterAndKnowledgeActivity extends Activity{
     private ChapterAdapter mChapterAdapter;
     private KnowledgePointAdapter mKnowledgePointAdapter;
     private String mSubjectName,mSubjectId,mEditionId;
+    private ChapterSwitchBar mSwitchBar;
 
     private static final String SUBJECT_ID = "SUBJECT_ID";
     private static final String SUBJECT_NAME = "SUBJECT_NAME";
@@ -68,9 +70,30 @@ public class SelecChapterAndKnowledgeActivity extends Activity{
                 finish();
             }
         });
+
+        mSwitchBar.setOnCheckedChangedListener(new ChapterSwitchBar.OnCheckedChangedListener() {
+            @Override
+            public void onCheckedChanged(boolean isOff) {
+                if(isOff){
+                    if(mChapterAdapter == null){
+                        getEditionList(mSubjectId);
+                    }else {
+                        mRecyclerView.setAdapter(mChapterAdapter);
+                    }
+                }else {
+                    if(mKnowledgePointAdapter == null){
+                        getKnowledgePointList(mSubjectId);
+                    }else {
+                        mRecyclerView.setAdapter(mKnowledgePointAdapter);
+                    }
+                }
+            }
+        });
     }
 
     private void initView() {
+        mSwitchBar = (ChapterSwitchBar) findViewById(R.id.switchBar);
+        mSwitchBar.setVisibility(View.INVISIBLE);
         mBack = findViewById(R.id.back);
         mTitle = (TextView) findViewById(R.id.title);
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
@@ -82,8 +105,7 @@ public class SelecChapterAndKnowledgeActivity extends Activity{
         mSubjectName = getIntent().getStringExtra(SUBJECT_NAME);
         mEditionId = getIntent().getStringExtra(EDITION_ID);
         mTitle.setText(mSubjectName);
-//        getEditionList(mSubjectId);
-        getKnowledgePointList(mSubjectId);
+        getEditionList(mSubjectId);
     }
 
     private void getChapterList(String subjectId,String editionId,String volume){
@@ -140,6 +162,7 @@ public class SelecChapterAndKnowledgeActivity extends Activity{
         @Override
         protected void onResponse(RequestBase request, ChapterListResponse response) {
             if(response.getStatus().getCode() == 0){
+                mSwitchBar.setVisibility(View.VISIBLE);
                 mChapterAdapter = new ChapterAdapter(response.getData());
                 mRecyclerView.setAdapter(mChapterAdapter);
             }else {
