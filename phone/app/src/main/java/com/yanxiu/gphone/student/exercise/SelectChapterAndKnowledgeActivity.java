@@ -237,7 +237,7 @@ public class SelectChapterAndKnowledgeActivity extends Activity{
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(popupWindow !=null & popupWindow.isShowing()){
+        if(popupWindow !=null && popupWindow.isShowing()){
             popupWindow.dismiss();
             popupWindow = null;
         }
