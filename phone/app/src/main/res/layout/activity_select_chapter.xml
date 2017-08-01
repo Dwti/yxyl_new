@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -31,10 +32,49 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/rl_tool_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/top_layout_height"
-        android:background="@android:color/white"
-        android:visibility="gone"></RelativeLayout>
+        android:background="@android:color/white">
+
+        <com.yanxiu.gphone.student.customviews.ChapterSwitchBar
+            android:id="@+id/switchBar"
+            android:layout_width="134dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="15dp"
+            android:layout_centerVertical="true"/>
+
+        <LinearLayout
+            android:id="@+id/ll_stage"
+            android:layout_width="135dp"
+            android:layout_height="35dp"
+            android:orientation="horizontal"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="12dp"
+            android:gravity="center_vertical"
+            android:background="@drawable/pop_list_bar_bg">
+
+            <TextView
+                android:id="@+id/tv_stage"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:textSize="14dp"
+                android:layout_marginRight="10dp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textColor="#89e00d"/>
+            
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:background="@drawable/selector_stage"/>
+        </LinearLayout>
+    </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
