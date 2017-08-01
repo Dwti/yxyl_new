@@ -283,5 +283,10 @@
     <dimen name="about_image_margin_r">12dp</dimen>
     <dimen name="feed_edit_h">265dp</dimen>
     <dimen name="feed_padding_t_b">25dp</dimen>
+
+    <dimen name="notifi_icon_margin">10dp</dimen>
+    <dimen name="notifi_icon_padding">5dp</dimen>
+    <dimen name="notifi_time_textsize">11dp</dimen>
+    <dimen name="notifi_title_textsize">14dp</dimen>
 </resources>
 

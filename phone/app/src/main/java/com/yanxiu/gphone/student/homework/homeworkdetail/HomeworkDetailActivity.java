@@ -255,4 +255,16 @@ public class HomeworkDetailActivity extends Activity implements HomeworkDetailCo
             }
         }
     };
+
+    /**
+     * 跳转HomeworkDetailActivity
+     *
+     * @param activity
+     */
+    public static void invoke(Activity activity,String id , String name) {
+        Intent intent = new Intent(activity, HomeworkDetailActivity.class);
+        intent.putExtra(HomeworkDetailActivity.EXTRA_SUBJECT_ID,id);
+        intent.putExtra(HomeworkDetailActivity.EXTRA_SUBJECT_NAME,name);
+        activity.startActivity(intent);
+    }
 }

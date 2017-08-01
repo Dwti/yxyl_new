@@ -1,9 +1,11 @@
 package com.yanxiu.gphone.student.homepage;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -14,19 +16,37 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.igexin.sdk.PushManager;
+import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
-import com.yanxiu.gphone.student.base.HomePageBaseFragment;
+import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
+import com.yanxiu.gphone.student.constant.Constants;
+import com.yanxiu.gphone.student.homework.HomeworkFragment;
+import com.yanxiu.gphone.student.homework.homeworkdetail.HomeworkDetailActivity;
+import com.yanxiu.gphone.student.homework.response.PaperResponse;
+import com.yanxiu.gphone.student.push.PushMsgBean;
+import com.yanxiu.gphone.student.push.YanxiuPushService;
+import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
+import com.yanxiu.gphone.student.questions.answerframe.http.request.AnswerReportRequest;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerReportActicity;
+import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.util.ActivityManger;
+import com.yanxiu.gphone.student.util.DESBodyDealer;
 import com.yanxiu.gphone.student.util.DataFetcher;
+import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.UpdateUtil;
 
+import static com.yanxiu.gphone.student.constant.Constants.MAINAVTIVITY_PUSHMSGBEAN;
 import static com.yanxiu.gphone.student.constant.Constants.MAINAVTIVITY_REFRESH;
 
 public class MainActivity extends YanxiuBaseActivity implements View.OnClickListener{
 
     private final String TAG = MainActivity.this.getClass().getSimpleName();
+    private final String PUSH_TAG = "pushTag";
+
+    private static MainActivity mainInstance;
+    private int msg_type = 0;//推送消息类型
 
     public boolean misRefresh;//是否需要刷新
 
@@ -46,36 +66,27 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
     public NaviFragmentFactory mNaviFragmentFactory;
     public FragmentManager mFragmentManager;
 
+    private AnswerReportRequest mRequest;//答题报告请求
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mainInstance = this;
+        PushManager.getInstance().initialize(this.getApplicationContext(), YanxiuPushService.class);
         initView();
         UpdateUtil.Initialize(this,false);
+        judgeToJump(getIntent());
+        PushManager.getInstance().bindAlias(this.getApplicationContext(), LoginInfo.getUID());
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
-//        misRefresh = getIntent().getBooleanExtra(MAINAVTIVITY_REFRESH,false);
-//        refreshFragmentData();
         showCurrentFragment(0);
+        judgeToJump(getIntent());
     }
-
-//    /**
-//     * 刷新当前fragment的数据（从loginacticity回来）
-//     */
-//    private void refreshFragmentData(){
-//        try{
-//            if(misRefresh)
-//                ((HomePageBaseFragment)mNaviFragmentFactory.getItem(mNaviFragmentFactory.getCurrentItem())).requestData();
-//        }catch(Exception e){
-//            e.printStackTrace();
-//            Log.e(TAG, "刷新失败" + e.getMessage());
-//        }
-//
-//    }
 
     @Override
     protected void onResume() {
@@ -90,7 +101,12 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
     @Override
     protected void onDestroy() {
         DataFetcher.getInstance().destory();
+        if (mRequest != null) {
+            mRequest.cancelRequest();
+            mRequest = null;
+        }
         super.onDestroy();
+        mainInstance = null;
     }
 
     private void initView() {
@@ -215,6 +231,56 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
         }
     }
 
+    public static MainActivity getInstance() {
+        return mainInstance;
+    }
+
+    /**
+     * 推送跳转逻辑
+     * @param intent
+     */
+    public void judgeToJump(Intent intent) {
+        if (intent != null) {
+            int currIndex = mNaviFragmentFactory.getCurrentItem();
+            PushMsgBean mPushMsgBean = (PushMsgBean) intent.getSerializableExtra(MAINAVTIVITY_PUSHMSGBEAN);
+            if(mPushMsgBean != null) {
+                Log.e(TAG, "-----------MainActivity----push----");
+                msg_type = mPushMsgBean.getMsg_type();//msg_type：0为作业报告，1为学科作业列表，2为作业首页；
+                Log.e(PUSH_TAG, "msg_type =" + msg_type);
+                switch (msg_type) {
+                    case Constants.NOTIFICATION_ACTION_HOMEWORK_CORRECTING:
+                        questReportData(String.valueOf(mPushMsgBean.getId()));
+                        break;
+                    case Constants.NOTIFICATION_ACTION_ASSIGN_HOMEWORK:
+                        HomeworkDetailActivity.invoke(MainActivity.this, String.valueOf(mPushMsgBean.getId()), mPushMsgBean.getName());
+                        break;
+                    case Constants.NOTIFICATION_ACTION_JOIN_THE_CLASS:
+                        //进入作业首页
+                        if (currIndex == INDEX_HOMEWORK) { //作业
+                            if (mNaviFragmentFactory.getCurrentItem() == 0) {
+                                Log.e(PUSH_TAG, "mNaviFragmentFactory");
+                                ((HomeworkFragment) mNaviFragmentFactory.getItem(0)).loadSubject();
+                            }
+                        } else {
+                            ActivityManger.destoryAllActivity();
+                            showCurrentFragment(INDEX_HOMEWORK);
+                        }
+                        break;
+                    case Constants.NOTIFICATION_ACTION_OPEN_WEBVIEW:
+//                        ActivityManager.destoryWebviewActivity();
+//                        WebViewActivity.launch(MainActivity.this, mPushMsgBean.getName(), getString(R.string.app_name));
+                        break;
+                    default:
+                        break;
+                }
+            }
+//            int type=intent.getIntExtra("type",0);
+//            if (type==1){
+//                showCurrentFragment(0);
+//            }
+        }
+    }
+
     /**
      * 跳转MainActivity
      *
@@ -234,6 +300,20 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
         Intent intent = new Intent(activity, MainActivity.class);
         intent.putExtra(MAINAVTIVITY_REFRESH,refresh);
         activity.startActivity(intent);
+    }
+
+    public static void invoke(Context context, PushMsgBean mPushMsgBean) {
+        Intent intent = new Intent();
+        if (MainActivity.mainInstance != null) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        }
+        intent.setClass(context, MainActivity.class);
+        if (!(context instanceof Activity)) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        }
+        intent.putExtra(MAINAVTIVITY_PUSHMSGBEAN, mPushMsgBean);
+        context.startActivity(intent);
     }
 
     public void setBottomNaviBarsVisibility(int visibility) {
@@ -277,6 +357,43 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
             }
 
             public void onAnimationRepeat(Animation animation) {}
+        });
+    }
+
+
+    /**
+     * 请求答题报告
+     */
+    private void questReportData(String paperId) {
+        if (TextUtils.isEmpty(paperId)) {
+            return;
+        }
+        if (mRequest != null) {
+            mRequest.cancelRequest();
+            mRequest = null;
+        }
+        mRequest = new AnswerReportRequest(paperId);
+        mRequest.bodyDealer = new DESBodyDealer();
+        mRequest.startRequest(PaperResponse.class, new EXueELianBaseCallback<PaperResponse>() {
+
+            @Override
+            protected void onResponse(RequestBase request, PaperResponse response) {
+                if (response.getStatus().getCode() == 0) {
+                    if (response.getData().size() > 0) {
+                        Paper paper_report = new Paper(response.getData().get(0), QuestionShowType.ANALYSIS);
+                        if (paper_report != null && paper_report.getQuestions() != null && paper_report.getQuestions().size() > 0) {
+                            String key = this.hashCode() + paper_report.getId();
+                            DataFetcher.getInstance().save(key, paper_report);
+                            AnswerReportActicity.invoke(MainActivity.this, key);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFail(RequestBase request, Error error) {
+//                ToastManager.showMsg("提交成功");
+            }
         });
     }
 }
