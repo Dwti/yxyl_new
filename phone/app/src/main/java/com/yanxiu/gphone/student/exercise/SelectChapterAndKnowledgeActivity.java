@@ -31,7 +31,7 @@ import java.util.List;
  * Created by sp on 17-7-28.
  */
 
-public class SelecChapterAndKnowledgeActivity extends Activity{
+public class SelectChapterAndKnowledgeActivity extends Activity{
 
     private View mBack;
     private TextView mTitle;
@@ -47,7 +47,7 @@ public class SelecChapterAndKnowledgeActivity extends Activity{
 
 
     public static void invoke(Activity activity,String subjectId,String subjectName,String editionId){
-        Intent intent = new Intent(activity,SelecChapterAndKnowledgeActivity.class);
+        Intent intent = new Intent(activity,SelectChapterAndKnowledgeActivity.class);
         intent.putExtra(SUBJECT_ID,subjectId);
         intent.putExtra(SUBJECT_NAME,subjectName);
         intent.putExtra(EDITION_ID,editionId);
@@ -162,7 +162,10 @@ public class SelecChapterAndKnowledgeActivity extends Activity{
         @Override
         protected void onResponse(RequestBase request, ChapterListResponse response) {
             if(response.getStatus().getCode() == 0){
-                mSwitchBar.setVisibility(View.VISIBLE);
+                if(!"1104".equals(mSubjectId)){
+                    //英语不展示知识点切换
+                    mSwitchBar.setVisibility(View.VISIBLE);
+                }
                 mChapterAdapter = new ChapterAdapter(response.getData());
                 mRecyclerView.setAdapter(mChapterAdapter);
             }else {

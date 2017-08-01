@@ -261,7 +261,7 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
 
-        <activity android:name=".exercise.SelecChapterAndKnowledgeActivity"
+        <activity android:name=".exercise.SelectChapterAndKnowledgeActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
     </application>
