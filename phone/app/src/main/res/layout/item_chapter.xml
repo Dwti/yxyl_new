@@ -47,7 +47,7 @@
                 android:layout_width="14dp"
                 android:layout_height="14dp"
                 android:layout_marginRight="12dp"
-                android:background="@android:color/holo_red_light" />
+                android:src="@drawable/selector_indicator_in" />
 
         </LinearLayout>
 
