@@ -31,7 +31,6 @@ android {
                         GETUI_APP_ID    : "Riw2lQ0vEQ9iEv8ADs2Qg5", //APP_ID
                         GETUI_APP_KEY   : "fpq9FFbGLB8zpLkwCO1oQA",   //APP_KEY
                         GETUI_APP_SECRET: "PiNzRvizni8i4Enu1HYuh7",   //APPSECRET
-
                 ]
                 //APP_ID、APP_KEY、APP_SECRET请根据个推开发者后台申请到的应用参数进行相应替换
             }
@@ -78,8 +77,8 @@ android {
         compile fileTree(include: ['*.jar'], dir: 'libs')
         compile files('libs/litepal_db_1.1.1.jar')
         compile files('libs/eventbus-2.4.0.jar')
-        compile 'pub.devrel:easypermissions:0.4.2'
         compile 'com.getui:sdk:2.9.5.0'
+        compile 'pub.devrel:easypermissions:0.4.2'
         releaseCompile project(path: ':libs:network', configuration: 'release')
         debugCompile project(path: ':libs:network', configuration: 'debug')
         compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
