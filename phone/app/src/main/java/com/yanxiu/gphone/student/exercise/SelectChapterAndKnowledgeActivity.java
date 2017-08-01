@@ -6,7 +6,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.test.yanxiu.network.HttpCallback;
@@ -16,13 +22,16 @@ import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.customviews.ChapterSwitchBar;
 import com.yanxiu.gphone.student.exercise.adapter.ChapterAdapter;
 import com.yanxiu.gphone.student.exercise.adapter.KnowledgePointAdapter;
+import com.yanxiu.gphone.student.exercise.adapter.PopListAdapter;
 import com.yanxiu.gphone.student.exercise.bean.EditionBeanEx;
+import com.yanxiu.gphone.student.exercise.bean.EditionChildBean;
 import com.yanxiu.gphone.student.exercise.request.EditionRequest;
 import com.yanxiu.gphone.student.exercise.request.ChapterListRequest;
 import com.yanxiu.gphone.student.exercise.request.KnowledgePointRequest;
 import com.yanxiu.gphone.student.exercise.response.ChapterListResponse;
 import com.yanxiu.gphone.student.exercise.response.EditionResponse;
 import com.yanxiu.gphone.student.exercise.response.KnowledgePointResponse;
+import com.yanxiu.gphone.student.util.ScreenUtils;
 import com.yanxiu.gphone.student.util.ToastManager;
 
 import java.util.List;
@@ -33,13 +42,16 @@ import java.util.List;
 
 public class SelectChapterAndKnowledgeActivity extends Activity{
 
-    private View mBack;
-    private TextView mTitle;
+    private View mBack, mLayoutStage,mRootView;
+    private TextView mTitle,mStage;
     private RecyclerView mRecyclerView;
     private ChapterAdapter mChapterAdapter;
     private KnowledgePointAdapter mKnowledgePointAdapter;
-    private String mSubjectName,mSubjectId,mEditionId;
+    private String mSubjectName,mSubjectId,mEditionId,mVolume;
     private ChapterSwitchBar mSwitchBar;
+    private PopupWindow popupWindow;
+    private List<EditionChildBean> mEditionChildBeanList;
+    private int mLastSelectedPos = 0;
 
     private static final String SUBJECT_ID = "SUBJECT_ID";
     private static final String SUBJECT_NAME = "SUBJECT_NAME";
@@ -75,17 +87,30 @@ public class SelectChapterAndKnowledgeActivity extends Activity{
             @Override
             public void onCheckedChanged(boolean isOff) {
                 if(isOff){
+                    mLayoutStage.setVisibility(View.VISIBLE);
                     if(mChapterAdapter == null){
                         getEditionList(mSubjectId);
                     }else {
                         mRecyclerView.setAdapter(mChapterAdapter);
                     }
                 }else {
+                    mLayoutStage.setVisibility(View.GONE);
                     if(mKnowledgePointAdapter == null){
                         getKnowledgePointList(mSubjectId);
                     }else {
                         mRecyclerView.setAdapter(mKnowledgePointAdapter);
                     }
+                }
+            }
+        });
+
+        mLayoutStage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(popupWindow ==null || (popupWindow != null && !popupWindow.isShowing())){
+                    showPop(mEditionChildBeanList);
+                }else {
+                    dismissPop();
                 }
             }
         });
@@ -95,6 +120,9 @@ public class SelectChapterAndKnowledgeActivity extends Activity{
         mSwitchBar = (ChapterSwitchBar) findViewById(R.id.switchBar);
         mSwitchBar.setVisibility(View.INVISIBLE);
         mBack = findViewById(R.id.back);
+        mStage = (TextView) findViewById(R.id.tv_stage);
+        mLayoutStage = findViewById(R.id.ll_stage);
+        mRootView = findViewById(R.id.root);
         mTitle = (TextView) findViewById(R.id.title);
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -108,6 +136,71 @@ public class SelectChapterAndKnowledgeActivity extends Activity{
         getEditionList(mSubjectId);
     }
 
+    private void showPop(final List<EditionChildBean> data){
+        if(data == null && data.size() == 0)
+            return;
+        if(popupWindow == null){
+            View view = LayoutInflater.from(this).inflate(R.layout.popwindow_stage,null);
+            popupWindow = new PopupWindow(view,ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
+
+            View stage = view.findViewById(R.id.ll_stage_pop);
+            final TextView tvPop = (TextView) view.findViewById(R.id.tv_pop);
+            data.get(0).setSelected(true);
+            tvPop.setText(data.get(0).getName());
+
+            ListView listView = (ListView) view.findViewById(R.id.list_view);
+            final PopListAdapter adapter = new PopListAdapter(data);
+            listView.setAdapter(adapter);
+
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    if(position != mLastSelectedPos){
+                        tvPop.setText(data.get(position).getName());
+                        mStage.setText(data.get(position).getName());
+                        mVolume = data.get(position).getId();
+                        data.get(position).setSelected(true);
+                        data.get(mLastSelectedPos).setSelected(false);
+                        mLastSelectedPos = position;
+                        adapter.notifyDataSetChanged();
+
+                        dismissPop();
+                        getChapterList(mSubjectId,mEditionId,mVolume);
+                    }
+
+                }
+            });
+
+            stage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dismissPop();
+                }
+            });
+
+            if(data.size() > 6){
+                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) listView.getLayoutParams();
+                layoutParams.height = ScreenUtils.dpToPxInt(this,51 * 6);
+                listView.setLayoutParams(layoutParams);
+            }
+
+            popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    mLayoutStage.setVisibility(View.VISIBLE);
+                }
+            });
+            popupWindow.setFocusable(true);
+        }
+        mLayoutStage.setVisibility(View.INVISIBLE);
+        popupWindow.showAsDropDown(mRootView);
+
+    }
+
+    private void dismissPop(){
+        if(popupWindow != null && popupWindow.isShowing())
+            popupWindow.dismiss();
+    }
     private void getChapterList(String subjectId,String editionId,String volume){
         ChapterListRequest request = new ChapterListRequest();
         request.setSubjectId(subjectId);
@@ -141,12 +234,23 @@ public class SelectChapterAndKnowledgeActivity extends Activity{
         return volume;
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(popupWindow !=null & popupWindow.isShowing()){
+            popupWindow.dismiss();
+            popupWindow = null;
+        }
+    }
+
     HttpCallback<EditionResponse> mEditionCallback = new EXueELianBaseCallback<EditionResponse>() {
         @Override
         protected void onResponse(RequestBase request, EditionResponse response) {
             if(response.getStatus().getCode() == 0){
-                String volume = getVolume(response.getData(),mEditionId);
-                getChapterList(mSubjectId,mEditionId,volume);
+                mEditionChildBeanList = response.getData().get(0).getChildren();
+                mVolume = getVolume(response.getData(),mEditionId);
+                mStage.setText(response.getData().get(0).getChildren().get(0).getName());
+                getChapterList(mSubjectId,mEditionId,mVolume);
             }else {
                 ToastManager.showMsg(response.getStatus().getDesc());
             }
