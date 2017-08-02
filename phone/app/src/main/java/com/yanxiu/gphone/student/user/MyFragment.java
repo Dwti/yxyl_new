@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.HomePageBaseFragment;
+import com.yanxiu.gphone.student.exercise.SubjectHistoryActivity;
 import com.yanxiu.gphone.student.login.activity.ChooseStageActivity;
 import com.yanxiu.gphone.student.user.feedback.activity.FeedbackActivity;
 import com.yanxiu.gphone.student.exercise.SelectSubjectActivity;
@@ -150,7 +151,7 @@ public class MyFragment extends HomePageBaseFragment implements View.OnClickList
                 MistakeListActivity.LuanchActivity(getContext());
                 break;
             case R.id.user_exrcise_history:
-                ToastManager.showMsg("练习历史");
+                SubjectHistoryActivity.invoke(getContext());
                 break;
             case R.id.user_xueduan:
                 ChooseStageActivity.LaunchActivity(getContext(),this.hashCode());

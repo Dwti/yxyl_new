@@ -313,6 +313,9 @@
         /**
         * 个推相关结束
         */
+        <activity android:name=".exercise.SubjectHistoryActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
