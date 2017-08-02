@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.igexin.sdk.PushManager;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.login.activity.LoginActivity;
@@ -109,6 +110,7 @@ public class SettingActivity extends YanxiuBaseActivity implements View.OnClickL
                 AboutActivity.LaunchActivity(mContext);
                 break;
             case R.id.wl_login_out:
+                PushManager.getInstance().unBindAlias(this.getApplicationContext(), String.valueOf(LoginInfo.getUID()), true);
                 LoginInfo.LogOut();
                 LoginActivity.LaunchActivity(mContext);
                 break;
