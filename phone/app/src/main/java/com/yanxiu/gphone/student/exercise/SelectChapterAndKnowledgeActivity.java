@@ -23,8 +23,10 @@ import com.yanxiu.gphone.student.customviews.ChapterSwitchBar;
 import com.yanxiu.gphone.student.exercise.adapter.ChapterAdapter;
 import com.yanxiu.gphone.student.exercise.adapter.KnowledgePointAdapter;
 import com.yanxiu.gphone.student.exercise.adapter.PopListAdapter;
+import com.yanxiu.gphone.student.exercise.bean.ChapterBean;
 import com.yanxiu.gphone.student.exercise.bean.EditionBeanEx;
 import com.yanxiu.gphone.student.exercise.bean.EditionChildBean;
+import com.yanxiu.gphone.student.exercise.bean.KnowledgePointBean;
 import com.yanxiu.gphone.student.exercise.request.EditionRequest;
 import com.yanxiu.gphone.student.exercise.request.ChapterListRequest;
 import com.yanxiu.gphone.student.exercise.request.KnowledgePointRequest;
@@ -34,6 +36,7 @@ import com.yanxiu.gphone.student.exercise.response.KnowledgePointResponse;
 import com.yanxiu.gphone.student.util.ScreenUtils;
 import com.yanxiu.gphone.student.util.ToastManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -88,17 +91,15 @@ public class SelectChapterAndKnowledgeActivity extends Activity{
             public void onCheckedChanged(boolean isOff) {
                 if(isOff){
                     mLayoutStage.setVisibility(View.VISIBLE);
-                    if(mChapterAdapter == null){
+                    mRecyclerView.setAdapter(mChapterAdapter);
+                    if(mChapterAdapter.getItemCount() == 0){
                         getEditionList(mSubjectId);
-                    }else {
-                        mRecyclerView.setAdapter(mChapterAdapter);
                     }
                 }else {
                     mLayoutStage.setVisibility(View.GONE);
-                    if(mKnowledgePointAdapter == null){
+                    mRecyclerView.setAdapter(mKnowledgePointAdapter);
+                    if(mKnowledgePointAdapter.getItemCount() == 0){
                         getKnowledgePointList(mSubjectId);
-                    }else {
-                        mRecyclerView.setAdapter(mKnowledgePointAdapter);
                     }
                 }
             }
@@ -126,6 +127,11 @@ public class SelectChapterAndKnowledgeActivity extends Activity{
         mTitle = (TextView) findViewById(R.id.title);
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        mChapterAdapter = new ChapterAdapter(new ArrayList<ChapterBean>(0));
+        mKnowledgePointAdapter = new KnowledgePointAdapter(new ArrayList<KnowledgePointBean>());
+
+        mRecyclerView.setAdapter(mChapterAdapter);
     }
 
     private void initData(){
@@ -270,8 +276,8 @@ public class SelectChapterAndKnowledgeActivity extends Activity{
                     //英语不展示知识点切换
                     mSwitchBar.setVisibility(View.VISIBLE);
                 }
-                mChapterAdapter = new ChapterAdapter(response.getData());
-                mRecyclerView.setAdapter(mChapterAdapter);
+
+                mChapterAdapter.replaceData(response.getData());
             }else {
                 ToastManager.showMsg(response.getStatus().getDesc());
             }
@@ -287,8 +293,7 @@ public class SelectChapterAndKnowledgeActivity extends Activity{
         @Override
         protected void onResponse(RequestBase request, KnowledgePointResponse response) {
             if(response.getStatus().getCode() == 0){
-                mKnowledgePointAdapter = new KnowledgePointAdapter(response.getData());
-                mRecyclerView.setAdapter(mKnowledgePointAdapter);
+                mKnowledgePointAdapter.replaceData(response.getData());
             }else {
                 ToastManager.showMsg(response.getStatus().getDesc());
             }
