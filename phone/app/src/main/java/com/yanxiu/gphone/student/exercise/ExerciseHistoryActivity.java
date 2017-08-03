@@ -122,6 +122,8 @@ public class ExerciseHistoryActivity extends Activity {
         mEditionId = getIntent().getStringExtra(EXTRA_EDITION_ID);
         mTitle.setText(subjectName);
 
+        setSwitchBarVisibility(mSubjectId);
+
         getEditionList(mSubjectId);
     }
 
@@ -429,6 +431,21 @@ public class ExerciseHistoryActivity extends Activity {
         mTipsView.setVisibility(View.VISIBLE);
         mTips.setText(R.string.load_failed);
         mRefreshBtn.setText(R.string.click_to_retry);
+    }
+
+    private void setSwitchBarVisibility(String subjectId) {
+        switch (subjectId){
+            //非数理化生科目，不展示章节知识点切换（只有章节）
+            case "1102":
+            case "1104":
+            case "1108":
+            case "1109":
+            case "1110":
+               mSwitchBar.setVisibility(View.GONE);
+                break;
+            default:
+                break;
+        }
     }
 
     ExerciseAdapter.ExerciseItemClickListener mItemClickListener = new ExerciseAdapter.ExerciseItemClickListener() {
