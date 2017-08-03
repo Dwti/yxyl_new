@@ -105,7 +105,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
      */
     private void initExerciseData(){
         if(Constants.MAINAVTIVITY_FROMTYPE_EXERCISE.equals(mFromType)){
-            //todo  @sunpeng 初始化练习页面传过来的数据
+            //todo  @sunpeng 初始化练习页面传过来的数据，应该是获取传过来的bean
         }
     }
 
