@@ -47,6 +47,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
     private QAViewPager mViewPager;
     private QAViewPagerAdapter mAdapter;
     private String mKey;//获取数据的key
+    private String mFromType;//从哪个页面跳转过来的（练习页面）
     private String mTitleString;//试卷的title-答题卡需要
     private Paper mPaper;//试卷数据
     private ArrayList<BaseQuestion> mQuestions;//题目数据
@@ -88,6 +89,8 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         mKey = getIntent().getStringExtra(Constants.EXTRA_PAPER);
         if (TextUtils.isEmpty(mKey))
             finish();
+        mFromType = getIntent().getStringExtra(Constants.EXTRA_FROMTYPE);
+        initExerciseData();
         mPaper = DataFetcher.getInstance().getPaper(mKey);
         mQuestions = mPaper.getQuestions();
         initProgressViewData();
@@ -95,6 +98,15 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         mStartTime = System.currentTimeMillis();
         mPaper.getPaperStatus().setBegintime(mStartTime+"");
         mTitleString = mPaper.getName();
+    }
+
+    /**
+     * 从练习页面跳转过来的，初始化相关数据
+     */
+    private void initExerciseData(){
+        if(Constants.MAINAVTIVITY_FROMTYPE_EXERCISE.equals(mFromType)){
+            //todo  @sunpeng 初始化练习页面传过来的数据
+        }
     }
 
     private void initView() {
@@ -507,14 +519,16 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
     }
 
     /**
-     * 跳转AnswerQuestionActivity
+     * 练习跳转答题
      *
      * @param activity
+     * @param fromType  练习页面 ：Constants.MAINAVTIVITY_FROMTYPE_EXERCISE
      */
-    public static void invoke(Activity activity, String key,String title) {
+    public static void invoke(Activity activity, String key,String fromType) {
         Intent intent = new Intent(activity, AnswerQuestionActivity.class);
         intent.putExtra(Constants.EXTRA_PAPER, key);
-        intent.putExtra(Constants.EXTRA_TITLE, title);
+        intent.putExtra(Constants.EXTRA_FROMTYPE, fromType);
+        // todo  @孙鹏 传个bean，然后在
         activity.startActivity(intent);
     }
 
