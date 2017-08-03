@@ -143,7 +143,7 @@ public class SelectChapterAndKnowledgeActivity extends Activity{
     }
 
     private void showPop(final List<EditionChildBean> data){
-        if(data == null && data.size() == 0)
+        if(data == null || data.size() == 0)
             return;
         if(popupWindow == null){
             View view = LayoutInflater.from(this).inflate(R.layout.popwindow_stage,null);

@@ -299,4 +299,5 @@
     <string name="exercise_correct_rate">正确率 %s</string>
     <string name="exercise_wait_to_finish">待完成</string>
     <string name="no_exercise">这里还没有练习历史哦</string>
+    <string name="no_more_data">没有更多数据了</string>
 </resources>
