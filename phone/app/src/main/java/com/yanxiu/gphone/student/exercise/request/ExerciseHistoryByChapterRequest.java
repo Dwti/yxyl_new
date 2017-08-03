@@ -7,13 +7,13 @@ import com.yanxiu.gphone.student.util.LoginInfo;
  * Created by sp on 17-8-2.
  */
 
-public class ExerciseHistoryRequest extends EXueELianBaseRequest {
+public class ExerciseHistoryByChapterRequest extends EXueELianBaseRequest {
     protected String stageId = LoginInfo.getStageid();
     protected String subjectId;
     protected String beditionId;
-    protected String volume;
-    protected int pageSize = 10;
-    protected int nextPage = 1;
+    protected String volume = "";
+    protected String pageSize = "10";
+    protected String nextPage = "1";
 
     @Override
     protected String urlPath() {
@@ -52,19 +52,19 @@ public class ExerciseHistoryRequest extends EXueELianBaseRequest {
         this.volume = volume;
     }
 
-    public int getPageSize() {
+    public String getPageSize() {
         return pageSize;
     }
 
-    public void setPageSize(int pageSize) {
+    public void setPageSize(String pageSize) {
         this.pageSize = pageSize;
     }
 
-    public int getNextPage() {
+    public String getNextPage() {
         return nextPage;
     }
 
-    public void setNextPage(int nextPage) {
+    public void setNextPage(String nextPage) {
         this.nextPage = nextPage;
     }
 }
