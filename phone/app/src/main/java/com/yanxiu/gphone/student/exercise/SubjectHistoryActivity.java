@@ -80,10 +80,8 @@ public class SubjectHistoryActivity extends Activity {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Intent intent = new Intent(SubjectHistoryActivity.this, HomeworkDetailActivity.class);
-//                intent.putExtra(HomeworkDetailActivity.EXTRA_SUBJECT_ID,((SubjectBean) mAdapter.getItem(position)).getId());
-//                intent.putExtra(HomeworkDetailActivity.EXTRA_SUBJECT_NAME,((SubjectBean) mAdapter.getItem(position)).getName());
-//                startActivity(intent);
+                SubjectBean bean = (SubjectBean) mAdapter.getItem(position);
+                ExerciseHistoryActivity.invoke(SubjectHistoryActivity.this,bean.getId(),bean.getName(),bean.getData().getEditionId());
             }
         });
         mRefreshBtn.setOnClickListener(new View.OnClickListener() {

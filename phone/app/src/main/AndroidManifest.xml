@@ -303,6 +303,10 @@
         <activity android:name=".exercise.SubjectHistoryActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
+
+        <activity android:name=".exercise.ExerciseHistoryActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

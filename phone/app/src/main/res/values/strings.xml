@@ -281,4 +281,8 @@
     <string name="stage_change">学段更改后，练习将切换到相应学段。</string>
     <string name="stage_change_true">你确定要更改吗？</string>
     <string name="stage_change_text">更改</string>
+    <string name="exercise_end_time">完成时间 %s</string>
+    <string name="exercise_correct_rate">正确率 %s</string>
+    <string name="exercise_wait_to_finish">待完成</string>
+    <string name="no_exercise">这里还没有练习历史哦</string>
 </resources>
