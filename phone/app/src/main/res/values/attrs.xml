@@ -22,12 +22,20 @@
     </declare-styleable>
 
     <declare-styleable name="MyMaxHeightLinearLayout">
-        <attr name="maxHeight" format="dimension"></attr>
-        <attr name="minHeight" format="dimension"></attr>
+        <attr name="maxHeight" format="dimension"/>
+        <attr name="minHeight" format="dimension"/>
     </declare-styleable>
 
     <declare-styleable name="SinglineEditText">
         <attr name="hint" format="string"/>
+    </declare-styleable>
+
+    <declare-styleable name="UserInfoHeadImageView">
+        <attr name="textHeight" format="dimension"/>
+        <attr name="textSize" format="dimension"/>
+        <attr name="textBgColor" format="color"/>
+        <attr name="textColor" format="color"/>
+        <attr name="text" format="string"/>
     </declare-styleable>
 
 </resources>

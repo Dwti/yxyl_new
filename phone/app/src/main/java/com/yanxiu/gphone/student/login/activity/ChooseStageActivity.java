@@ -122,8 +122,8 @@ public class ChooseStageActivity extends YanxiuBaseActivity implements PickerVie
         int[] ids = Constants.StageTxtId;
         stageText = getText(ids[0]).toString();
         stageId = stageIds[0];
-        for (int i = 0; i < ids.length; i++) {
-            list.add(getText(ids[i]).toString());
+        for (int id:ids) {
+            list.add(getText(id).toString());
         }
         return list;
     }

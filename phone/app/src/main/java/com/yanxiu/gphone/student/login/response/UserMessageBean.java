@@ -9,9 +9,9 @@ import org.litepal.crud.DataSupport;
  */
 public class UserMessageBean extends DataSupport {
 
-    public static final String LOGIN_ACCOUNT="account";
-    public static final String LOGIN_QQ="qq";
-    public static final String LOGIN_WX="wx";
+    public static final String LOGIN_ACCOUNT = "account";
+    public static final String LOGIN_QQ = "qq";
+    public static final String LOGIN_WX = "wx";
 
     private String loginType;
 
@@ -22,6 +22,7 @@ public class UserMessageBean extends DataSupport {
     private String stageName;
     private String schoolid;
     private String schoolName;
+    private int sex;
     private String provinceid;
     private String provinceName;
     private String cityid;
@@ -32,6 +33,14 @@ public class UserMessageBean extends DataSupport {
     private String createtime;
     private String head;
     private PassportBean passport;
+
+    public int getSex() {
+        return sex;
+    }
+
+    public void setSex(int sex) {
+        this.sex = sex;
+    }
 
     public String getLoginType() {
         return loginType;

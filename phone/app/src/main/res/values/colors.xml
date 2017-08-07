@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="color_89e00d">#89e00d</color>
+    <color name="color_f289e00d">#f289e00d</color>
     <color name="color_db89e00d">#db89e00d</color>
     <color name="color_69ad0a">#69ad0a</color>
     <color name="color_c969ad0a">#c969ad0a</color>
@@ -43,4 +44,6 @@
     <color name="color_dbdbdb">#dbdbdb</color>
     <color name="color_1689e00d">#1689e00d</color>
     <color name="color_16ccff00">#16ccff00</color>
+
+    <color name="color_a6000000">#a6000000</color>
 </resources>

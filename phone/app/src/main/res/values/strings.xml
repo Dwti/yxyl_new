@@ -281,4 +281,18 @@
     <string name="stage_change">学段更改后，练习将切换到相应学段。</string>
     <string name="stage_change_true">你确定要更改吗？</string>
     <string name="stage_change_text">更改</string>
+
+    <string name="userinfo_name">姓名</string>
+    <string name="userinfo_sex">性别</string>
+    <string name="userinfo_school">学校</string>
+
+    <string name="save">保存</string>
+    <string name="data_uploader_failed">提交失败</string>
+    <string name="sex_man">男</string>
+    <string name="sex_woman">女</string>
+    <string name="sex_unknown">保密</string>
+
+    <string name="editor_head">编辑头像</string>
+    <string name="editor_album">相册</string>
+    <string name="editor_camera">拍照</string>
 </resources>
