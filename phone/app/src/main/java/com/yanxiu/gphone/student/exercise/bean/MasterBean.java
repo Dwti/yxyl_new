@@ -10,6 +10,7 @@ public class MasterBean extends BaseBean {
     protected String masterNum;
     protected String totalNum;
     protected String avgMasterRate;
+    protected String masterLevel;
 
     public String getMasterNum() {
         return masterNum;
@@ -33,5 +34,13 @@ public class MasterBean extends BaseBean {
 
     public void setAvgMasterRate(String avgMasterRate) {
         this.avgMasterRate = avgMasterRate;
+    }
+
+    public String getMasterLevel() {
+        return masterLevel;
+    }
+
+    public void setMasterLevel(String masterLevel) {
+        this.masterLevel = masterLevel;
     }
 }

@@ -32,3 +32,14 @@ ext {
     glideLibraryVersion = '3.8.0'
     junitVersion = '4.12'
 }
+allprojects {
+    repositories {
+        jcenter()
+        mavenCentral()
+        //Maven URL地址
+        maven {
+            url "http://mvn.gt.igexin.com/nexus/content/repositories/releases/"
+        }
+
+    }
+}

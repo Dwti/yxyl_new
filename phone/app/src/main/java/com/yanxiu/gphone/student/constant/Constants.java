@@ -36,11 +36,12 @@ public class Constants {
     public static final String COME_REPORT = "come_report";//在解析页标识来源--来自于答题报告
     public static final String EXTRA_PAPER = "extra_Paper";//传递给答题页的paper数据的key
     public static final String EXTRA_QID = "extra_Qid";//传递给报错页的题目的qid
-    public static final String EXTRA_TITLE = "extra_Title";//传递给答题页的paper数据的title
+    public static final String EXTRA_FROMTYPE = "extra_fromtype";//答题页的来源
     public static final String EXTRA_ANALYSIS_LEVELPOSITION = "extra_levelPositions";//答题报告传递给解析页的levelPositions
     public static final String URL_SERVER_FILE_NAME = "env_config.json"; //存放server配置的文件名
 
     public static final String MAINAVTIVITY_REFRESH = "mainActivity_refresh";//跳转到首页需要刷新数据
+    public static final String MAINAVTIVITY_FROMTYPE_EXERCISE = "mainActivity_fromtype_exxercise";//从练习页跳转到首页标识
     public static final String STUDENT_UPLOAD = "student/yanxiustudent.apk";
     public static final char CHARACTER_SLASH = '/';
     public static final String DOMYBOXDIR = "YanXiu/app/student";
@@ -88,4 +89,12 @@ public class Constants {
         public static final int SEX_TYPE_WOMAN = 1;
         public static final int SEX_TYPE_UNKNOWN = 0;
     }
+    /**
+     * 推送相关
+     */
+    public static final String MAINAVTIVITY_PUSHMSGBEAN = "mPushMsgBean";//在首页获取推送数据的key
+    public static final int NOTIFICATION_ACTION_HOMEWORK_CORRECTING = 0;//批改作业
+    public static final int NOTIFICATION_ACTION_ASSIGN_HOMEWORK = 1;//布置作业
+    public static final int NOTIFICATION_ACTION_JOIN_THE_CLASS = 2;//班级加入成功||班级审核未通过
+    public static final int NOTIFICATION_ACTION_OPEN_WEBVIEW = 3;//调用内置webView
 }

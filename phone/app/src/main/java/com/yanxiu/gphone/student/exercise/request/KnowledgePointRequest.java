@@ -7,7 +7,7 @@ import com.yanxiu.gphone.student.util.LoginInfo;
  * Created by sp on 17-7-28.
  */
 
-public class GetKnowledgePointRequest extends EXueELianBaseRequest {
+public class KnowledgePointRequest extends EXueELianBaseRequest {
     protected String stageId = LoginInfo.getStageid();
     protected String subjectId;
     @Override

@@ -46,4 +46,6 @@
     <color name="color_16ccff00">#16ccff00</color>
 
     <color name="color_a6000000">#a6000000</color>
+    <color name="color_ff333333">#ff333333</color>
+    <color name="color_ff999999">#ff999999</color>
 </resources>

@@ -295,5 +295,9 @@
     <dimen name="userinfo_dialog_icon_margin_l">60dp</dimen>
     <dimen name="userinfo_dialog_text_margin_t">9dp</dimen>
     <dimen name="userinfo_dialog_textsize">23dp</dimen>
+    <dimen name="notifi_icon_margin">10dp</dimen>
+    <dimen name="notifi_icon_padding">5dp</dimen>
+    <dimen name="notifi_time_textsize">11dp</dimen>
+    <dimen name="notifi_title_textsize">14dp</dimen>
 </resources>
 

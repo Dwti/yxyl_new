@@ -14,6 +14,8 @@ import org.litepal.LitePalApplication;
 public class YanxiuApplication extends LitePalApplication {
     private static YanxiuApplication instance;
 
+    private boolean isForceUpdate = false;//是否强制升级
+
     public static YanxiuApplication getInstance() {
         return instance;
     }
@@ -42,6 +44,14 @@ public class YanxiuApplication extends LitePalApplication {
         String urlJson = FileUtil.getDataFromAssets(this, Constants.URL_SERVER_FILE_NAME);
         UrlBean urlBean = gson.fromJson(urlJson,UrlBean.class);
         UrlRepository.getInstance().setUrlBean(urlBean);
+    }
+
+    public boolean isForceUpdate () {
+        return isForceUpdate;
+    }
+
+    public void setIsForceUpdate (boolean isForceUpdate) {
+        this.isForceUpdate = isForceUpdate;
     }
 
 }

@@ -20,6 +20,10 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
 
+    <!-- 个推iBeancon功能所需权限 -->;
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+
     <application
         android:name=".YanxiuApplication"
         android:allowBackup="true"
@@ -240,28 +244,33 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
 
-        <activity android:name=".user.setting.activity.AboutActivity"
+        <activity
+            android:name=".user.setting.activity.AboutActivity"
             android:screenOrientation="portrait" />
 
-        <activity android:name=".user.setting.activity.PrivacyActivity"
+        <activity
+            android:name=".user.setting.activity.PrivacyActivity"
             android:screenOrientation="portrait" />
 
-        <activity android:name=".user.feedback.activity.FeedbackActivity"
+        <activity
+            android:name=".user.feedback.activity.FeedbackActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
 
-        <activity android:name=".user.userinfo.activity.UserInfoActivity"
+        <activity
+            android:name=".user.userinfo.activity.UserInfoActivity"
             android:screenOrientation="portrait" />
 
-        <activity android:name=".exercise.SelectSubjectActivity"
+        <activity
+            android:name=".exercise.SelectSubjectActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".exercise.SelectEditionActivity"
+            android:screenOrientation="portrait" />*/
+        <activity
+            android:name=".exercise.SelectEditionActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".exercise.SelecChapterAndKnowledgeActivity"
+            android:screenOrientation="portrait" />
+        
+        <activity android:name=".exercise.SelectChapterAndKnowledgeActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
 
@@ -277,6 +286,33 @@
 
         <activity android:name=".common.activity.UserHeadCropImageActivity"
             android:screenOrientation="portrait" />
+
+        /**
+        * 个推相关开始
+        */
+        <service
+            android:name=".push.YanxiuPushService"
+            android:exported="true"
+            android:label="PushService"
+            android:process=":pushservice" />
+        <receiver android:name=".push.YanxiuPushUpdateReceiver">
+            <intent-filter>
+                <action android:name="com.yanxiu.gphone.student.yanxiu_push_update_receiver" />
+            </intent-filter>
+        </receiver>
+        <!-- 配置第三方Receiver -->
+        <!-- 此处com.getui.demo.PushDemoReceiver，需要替换成开发者自己的BroadcastReceiver文件全名 -->
+        <receiver
+            android:name=".push.YanxiuPushReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.igexin.sdk.action.${GETUI_APP_ID}" />
+            </intent-filter>
+        </receiver>
+
+        /**
+        * 个推相关结束
+        */
     </application>
 
 </manifest>

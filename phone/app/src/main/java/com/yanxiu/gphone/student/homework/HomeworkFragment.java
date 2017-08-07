@@ -107,10 +107,9 @@ public class HomeworkFragment extends HomePageBaseFragment implements SearchClas
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), HomeworkDetailActivity.class);
-                intent.putExtra(HomeworkDetailActivity.EXTRA_SUBJECT_ID,((SubjectBean)mHomeworkAdapter.getItem(position)).getId());
-                intent.putExtra(HomeworkDetailActivity.EXTRA_SUBJECT_NAME,((SubjectBean)mHomeworkAdapter.getItem(position)).getName());
-                startActivity(intent);
+                String homeworkId = ((SubjectBean)mHomeworkAdapter.getItem(position)).getId();
+                String name = ((SubjectBean)mHomeworkAdapter.getItem(position)).getName();
+                HomeworkDetailActivity.invoke(getActivity(),homeworkId,name);
             }
         });
         mRefreshBtn.setOnClickListener(new View.OnClickListener() {
@@ -164,7 +163,7 @@ public class HomeworkFragment extends HomePageBaseFragment implements SearchClas
         }
     };
 
-    private void loadSubject() {
+    public void loadSubject() {
         mSwipeRefreshLayout.setRefreshing(true);
         SubjectRequest request = new SubjectRequest();
         request.startRequest(SubjectResponse.class, mLoadSubjectCallback);

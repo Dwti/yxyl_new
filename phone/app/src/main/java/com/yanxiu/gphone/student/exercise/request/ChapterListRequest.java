@@ -7,7 +7,7 @@ import com.yanxiu.gphone.student.util.LoginInfo;
  * Created by sp on 17-7-28.
  */
 
-public class GetChapterListRequest extends EXueELianBaseRequest {
+public class ChapterListRequest extends EXueELianBaseRequest {
     protected String stageId = LoginInfo.getStageid();
     protected String subjectId;
     protected String editionId;

@@ -2,7 +2,6 @@ package com.yanxiu.gphone.student.homepage.fragment;
 
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +15,9 @@ import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.base.HomePageBaseFragment;
-import com.yanxiu.gphone.student.common.eventbus.SingleChooseMessage;
 import com.yanxiu.gphone.student.exercise.EditionSelectChangeMessage;
-import com.yanxiu.gphone.student.exercise.SelecChapterAndKnowledgeActivity;
+import com.yanxiu.gphone.student.exercise.SelectChapterAndKnowledgeActivity;
 import com.yanxiu.gphone.student.exercise.SelectEditionActivity;
-import com.yanxiu.gphone.student.exercise.SelectSubjectActivity;
 import com.yanxiu.gphone.student.exercise.bean.SubjectBean;
 import com.yanxiu.gphone.student.exercise.SubjectsAdapter;
 import com.yanxiu.gphone.student.exercise.request.SubjectsRequest;
@@ -76,7 +73,7 @@ public class ExerciseFragment extends HomePageBaseFragment {
                 SubjectBean bean = (SubjectBean) mAdapter.getItem(position);
                 if(bean.getData() != null){
                     //TODO 请求借口进入做练习
-                    SelecChapterAndKnowledgeActivity.invoke(getActivity(),bean.getId(),bean.getName(),bean.getData().getEditionId());
+                    SelectChapterAndKnowledgeActivity.invoke(getActivity(),bean.getId(),bean.getName(),bean.getData().getEditionId());
 
                 }else {
                     String subjectId = bean.getId();

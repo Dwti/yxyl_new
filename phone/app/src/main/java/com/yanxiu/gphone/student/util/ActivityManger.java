@@ -2,6 +2,8 @@ package com.yanxiu.gphone.student.util;
 
 import android.app.Activity;
 
+import com.yanxiu.gphone.student.homepage.MainActivity;
+
 import java.util.ArrayList;
 
 /**
@@ -39,6 +41,19 @@ public class ActivityManger {
                 activity.finish();
             }
             activityList.clear();
+        }
+    }
+
+    /**
+     * finish掉除了MainActivity之外的所有Activity
+     */
+    public static void destoryAllActivity(){
+        if(activityList!=null && activityList.size() > 0){
+            for(Activity activity : activityList){
+                if(!(activity instanceof MainActivity)){
+                    activity.finish();
+                }
+            }
         }
     }
 
