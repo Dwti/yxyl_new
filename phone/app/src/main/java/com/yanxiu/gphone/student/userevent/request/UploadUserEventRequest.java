@@ -4,6 +4,12 @@ import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.base.UrlBean;
 import com.yanxiu.gphone.student.db.UrlRepository;
 
+import java.util.UUID;
+
+import okhttp3.MediaType;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+
 /**
  * Created by Canghaixiao.
  * Time : 2017/8/7 14:16.
@@ -25,9 +31,9 @@ public class UploadUserEventRequest extends RequestBase {
 
     @Override
     protected String urlServer() {
-        if (UrlBean.RELEASE.equals(UrlRepository.getInstance().getMode())){
+        if (UrlBean.RELEASE.equals(UrlRepository.getInstance().getMode())) {
             return "http://boss.shangruitong.com/logup";
-        }else {
+        } else {
             return "http://boss.shangruitong.com/upfile";
         }
     }
@@ -35,5 +41,18 @@ public class UploadUserEventRequest extends RequestBase {
     @Override
     protected String urlPath() {
         return null;
+    }
+
+    @Override
+    protected Request generateRequest(UUID uuid) throws NullPointerException, IllegalAccessException, IllegalArgumentException {
+        Request.Builder builder = new Request.Builder()
+                .tag(uuid)
+                .url(fullUrl());
+
+        MediaType type = MediaType.parse("application/json; charset=utf-8");
+        RequestBody body = RequestBody.create(type, yxyl_statistic);
+        builder.post(body);
+
+        return builder.build();
     }
 }
