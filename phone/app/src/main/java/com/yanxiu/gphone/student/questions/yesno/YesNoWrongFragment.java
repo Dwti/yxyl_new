@@ -162,7 +162,7 @@ public class YesNoWrongFragment extends WrongSimpleExerciseBaseFragment {
         showDifficultyview(mData.getStarCount());
         showAnalysisview(mData.getQuestionAnalysis());
         showPointView(mData.getPointList());
-
+        showNoteView(mData.getJsonNoteBean());
     }
 
     /**
