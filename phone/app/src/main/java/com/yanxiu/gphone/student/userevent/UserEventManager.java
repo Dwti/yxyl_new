@@ -14,6 +14,8 @@ import org.litepal.crud.DataSupport;
 import java.util.List;
 
 /**
+ * 打点
+ *
  * Created by Canghaixiao.
  * Time : 2017/8/7 11:06.
  * Function :
@@ -36,8 +38,7 @@ public class UserEventManager {
      * 注册成功
      */
     public void whenRegistSuccess() {
-        String fileData = EventDataUtils.getRegistSuccessMap();
-        startRequest(fileData);
+        startRequest(EventDataUtils.getRegistSuccessMap());
     }
 
     /**
@@ -105,7 +106,7 @@ public class UserEventManager {
     /**
      * 加入班级成功
      */
-    public void whenEnterClassApp() {
+    public void whenEnterClass() {
         startRequest(EventDataUtils.getEnterClassMap());
     }
 

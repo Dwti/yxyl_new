@@ -1,6 +1,7 @@
 package com.yanxiu.gphone.student.base;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.userevent.UserEventManager;
 import com.yanxiu.gphone.student.util.ActivityManger;
 import com.yanxiu.gphone.student.util.PermissionUtil;
 
@@ -26,6 +28,7 @@ public class YanxiuBaseActivity extends FragmentActivity implements EasyPermissi
     private static final int RC_WRITE_READ_PERM = 124;
     private static final int RC_OTHER_PERM = 125;
     private static OnPermissionCallback mPermissionCallback;
+    private boolean isActive = true;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,11 +39,19 @@ public class YanxiuBaseActivity extends FragmentActivity implements EasyPermissi
     @Override
     protected void onResume() {
         super.onResume();
+        if (!isActive) {
+            isActive=true;
+            UserEventManager.getInstense().whenEnterFront();
+        }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        if (isAppOnForeground()) {
+            isActive=false;
+            UserEventManager.getInstense().whenEnterBack();
+        }
     }
 
     @Override
@@ -148,5 +159,27 @@ public class YanxiuBaseActivity extends FragmentActivity implements EasyPermissi
 //            new AppSettingsDialog.Builder(this).build().show();
 //        }
         mPermissionCallback.onPermissionsDenied(perms);
+    }
+
+    public boolean isAppOnForeground() {
+        try {
+            android.app.ActivityManager activityManager = (android.app.ActivityManager) getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
+            String packageName = getApplicationContext().getPackageName();
+
+            List<android.app.ActivityManager.RunningAppProcessInfo> appProcesses = activityManager
+                    .getRunningAppProcesses();
+            if (appProcesses == null)
+                return false;
+
+            for (android.app.ActivityManager.RunningAppProcessInfo appProcess : appProcesses) {
+                if (appProcess.processName.equals(packageName)
+                        && appProcess.importance == android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+                    return true;
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return false;
     }
 }

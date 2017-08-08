@@ -20,6 +20,7 @@ import com.yanxiu.gphone.student.login.request.JoinClassSubmitThridRequest;
 import com.yanxiu.gphone.student.login.response.JoinClassResponse;
 import com.yanxiu.gphone.student.login.response.LoginResponse;
 import com.yanxiu.gphone.student.login.response.ThridMessageBean;
+import com.yanxiu.gphone.student.userevent.UserEventManager;
 import com.yanxiu.gphone.student.util.EditTextManger;
 import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.SysEncryptUtil;
@@ -184,6 +185,7 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
                 if (response.getStatus().getCode()==0){
                     LoginInfo.saveCacheData(response.data.get(0));
                     MainActivity.invoke(JoinClassSubmitActivity.this,true);
+                    UserEventManager.getInstense().whenEnterClass();
                     JoinClassSubmitActivity.this.finish();
                 }else {
                     ToastManager.showMsg(response.getStatus().getDesc());
