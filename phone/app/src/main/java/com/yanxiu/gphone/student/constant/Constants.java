@@ -123,7 +123,6 @@ public class Constants {
         public static final String SUBJECT_ID = "subjectID";
         public static final String PAPER_TYPE = "paperType";
         public static final String QUES_Num = "quesNum";
-        public static final String YXYL_STATISTIC = "yxyl_statistic";
 
         public static final class UserEventID {
             public static final String REGISTER_SUCCESS = "20:event_1";

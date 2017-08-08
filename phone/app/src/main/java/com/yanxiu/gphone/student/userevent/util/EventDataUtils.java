@@ -123,7 +123,6 @@ public class EventDataUtils {
         return eventMapToJsonMap(map);
     }
 
-
     public static String getFirstStartMap(){
         HashMap<String,String> map=getEventDataMap();
         map.put(Constants.UserEvent.EVENT_ID,Constants.UserEvent.UserEventID.FIRST_START);

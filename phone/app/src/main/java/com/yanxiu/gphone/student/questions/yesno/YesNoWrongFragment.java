@@ -65,9 +65,9 @@ public class YesNoWrongFragment extends WrongSimpleExerciseBaseFragment {
         List<String> datas = mData.getAnswerList();
         String answer = mData.getYesNoAnswer();
         int answer_position;
-        if(Integer.parseInt(answer) == 0){ //错误
+        if (Integer.parseInt(answer) == 0) { //错误
             answer_position = 1;
-        }else{ //正确
+        } else { //正确
             answer_position = 0;
         }
 
@@ -87,11 +87,11 @@ public class YesNoWrongFragment extends WrongSimpleExerciseBaseFragment {
                 select_position = 0;
                 mChooseView.setSelect(0);
                 selectViewHolder = (ChooseLayout.ViewHolder) mChooseView.getChildAt(0).getTag();
-            } else if(result == 0){ //错误
+            } else if (result == 0) { //错误
                 select_position = 1;
                 mChooseView.setSelect(1);
                 selectViewHolder = (ChooseLayout.ViewHolder) mChooseView.getChildAt(1).getTag();
-            }else{
+            } else {
                 select_position = -1;
             }
 
@@ -154,21 +154,14 @@ public class YesNoWrongFragment extends WrongSimpleExerciseBaseFragment {
      */
     @Override
     public void initAnalysisView() {
-        if(Constants.HAS_FINISH_STATUS.equals(mData.getPaperStatus())){ //已完成
-            if (mData.getStatus()== Constants.ANSWER_STATUS_RIGHT){
-                showAnswerResultView(true, mData.getAnswerCompare(), null);
-            }else {
-                showAnswerResultView(false, mData.getAnswerCompare(), null);
-            }
-            showDifficultyview(mData.getStarCount());
-            showAnalysisview(mData.getQuestionAnalysis());
-            showPointView(mData.getPointList());
-        }else{ //逾期未提交的作业 题目解析展示“难度”、“答案”、“题目解析”、“知识点”
-            showDifficultyview(mData.getStarCount());
-            showAnswerView(mData.getYesNoAnswer());
-            showAnalysisview(mData.getQuestionAnalysis());
-            showPointView(mData.getPointList());
+        if (mData.getStatus() == Constants.ANSWER_STATUS_RIGHT) {
+            showAnswerResultView(true, mData.getAnswerCompare(), null);
+        } else {
+            showAnswerResultView(false, mData.getAnswerCompare(), null);
         }
+        showDifficultyview(mData.getStarCount());
+        showAnalysisview(mData.getQuestionAnalysis());
+        showPointView(mData.getPointList());
 
     }
 
