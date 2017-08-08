@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -57,16 +58,20 @@ import java.util.List;
 
 public class SelectChapterAndKnowledgeActivity extends Activity{
 
-    private View mBack, mLayoutStage,mRootView;
-    private TextView mTitle,mStage;
+    private View mBack, mLayoutStage,mRootView,mToolBar,mTipsView;
+    private TextView mTitle,mStage,mTips;
     private RecyclerView mRecyclerView;
     private ChapterAdapter mChapterAdapter;
     private KnowledgePointAdapter mKnowledgePointAdapter;
     private String mSubjectName,mSubjectId,mEditionId, mVolumeId;
     private ChapterSwitchBar mSwitchBar;
     private PopupWindow popupWindow;
+    private Button mRefreshBtn;
     private List<EditionChildBean> mEditionChildBeanList;
     private int mLastSelectedPos = 0;
+    private boolean mIsChapterMode = true;  //当前选中的是否是章节
+    private boolean mNoEditions = true; //第一次进来是否请求Editions数据失败
+
 
     private static final String SUBJECT_ID = "SUBJECT_ID";
     private static final String SUBJECT_NAME = "SUBJECT_NAME";
@@ -102,12 +107,14 @@ public class SelectChapterAndKnowledgeActivity extends Activity{
             @Override
             public void onCheckedChanged(boolean isOff) {
                 if(isOff){
+                    mIsChapterMode = true;
                     mLayoutStage.setVisibility(View.VISIBLE);
                     mRecyclerView.setAdapter(mChapterAdapter);
                     if(mChapterAdapter.getItemCount() == 0){
                         getEditionList(mSubjectId);
                     }
                 }else {
+                    mIsChapterMode = false;
                     mLayoutStage.setVisibility(View.GONE);
                     mRecyclerView.setAdapter(mKnowledgePointAdapter);
                     if(mKnowledgePointAdapter.getItemCount() == 0){
@@ -124,6 +131,23 @@ public class SelectChapterAndKnowledgeActivity extends Activity{
                     showPop(mEditionChildBeanList);
                 }else {
                     dismissPop();
+                }
+            }
+        });
+
+        mRefreshBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mIsChapterMode){
+                    mChapterAdapter.clearData();
+                }else {
+                    mKnowledgePointAdapter.clearData();
+                }
+                showContentView();
+                if(mNoEditions){
+                    getEditionList(mSubjectId);
+                }else {
+                    loadData();
                 }
             }
         });
@@ -179,10 +203,14 @@ public class SelectChapterAndKnowledgeActivity extends Activity{
     private void initView() {
         mSwitchBar = (ChapterSwitchBar) findViewById(R.id.switchBar);
         mBack = findViewById(R.id.back);
+        mToolBar = findViewById(R.id.rl_tool_bar);
         mStage = (TextView) findViewById(R.id.tv_stage);
         mLayoutStage = findViewById(R.id.ll_stage);
         mRootView = findViewById(R.id.root);
         mTitle = (TextView) findViewById(R.id.title);
+        mTipsView = findViewById(R.id.tips_layout);
+        mTips = (TextView) findViewById(R.id.tv_tips);
+        mRefreshBtn = (Button) findViewById(R.id.btn_refresh);
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -203,6 +231,13 @@ public class SelectChapterAndKnowledgeActivity extends Activity{
         getEditionList(mSubjectId);
     }
 
+    private void loadData(){
+        if(mIsChapterMode){
+            getChapterList(mSubjectId,mEditionId,mVolumeId);
+        }else {
+            getKnowledgePointList(mSubjectId);
+        }
+    }
     private void showPop(final List<EditionChildBean> data){
         if(data == null || data.size() == 0)
             return;
@@ -288,6 +323,31 @@ public class SelectChapterAndKnowledgeActivity extends Activity{
                 break;
         }
     }
+    private void showContentView(){
+        mToolBar.setVisibility(View.VISIBLE);
+        mRecyclerView.setVisibility(View.VISIBLE);
+        mTipsView.setVisibility(View.GONE);
+    }
+
+    private void showDataEmptyView(boolean hideToolBar){
+        if(hideToolBar){
+            mToolBar.setVisibility(View.GONE);
+        }
+        mRecyclerView.setVisibility(View.GONE);
+        mTipsView.setVisibility(View.VISIBLE);
+        mTips.setText("");
+        mRefreshBtn.setText(R.string.click_to_refresh);
+    }
+
+    private void showDataErrorView(boolean hideToolBar){
+        if(hideToolBar){
+            mToolBar.setVisibility(View.GONE);
+        }
+        mRecyclerView.setVisibility(View.GONE);
+        mTipsView.setVisibility(View.VISIBLE);
+        mTips.setText(R.string.load_failed);
+        mRefreshBtn.setText(R.string.click_to_retry);
+    }
 
     private void getChapterList(String subjectId,String editionId,String volume){
         ChapterListRequest request = new ChapterListRequest();
@@ -335,18 +395,20 @@ public class SelectChapterAndKnowledgeActivity extends Activity{
         @Override
         protected void onResponse(RequestBase request, EditionResponse response) {
             if(response.getStatus().getCode() == 0){
+                mNoEditions = false;
                 mEditionChildBeanList = response.getData().get(0).getChildren();
                 mVolumeId = getVolume(response.getData(),mEditionId);
+                showContentView();
                 mStage.setText(response.getData().get(0).getChildren().get(0).getName());
                 getChapterList(mSubjectId,mEditionId, mVolumeId);
             }else {
-                ToastManager.showMsg(response.getStatus().getDesc());
+                showDataErrorView(true);
             }
         }
 
         @Override
         public void onFail(RequestBase request, Error error) {
-            ToastManager.showMsg(error.getLocalizedMessage());
+            showDataErrorView(true);
         }
     };
 
@@ -354,15 +416,16 @@ public class SelectChapterAndKnowledgeActivity extends Activity{
         @Override
         protected void onResponse(RequestBase request, ChapterListResponse response) {
             if(response.getStatus().getCode() == 0){
+                showContentView();
                 mChapterAdapter.replaceData(response.getData());
             }else {
-                ToastManager.showMsg(response.getStatus().getDesc());
+                showDataErrorView(false);
             }
         }
 
         @Override
         public void onFail(RequestBase request, Error error) {
-            ToastManager.showMsg(error.getLocalizedMessage());
+            showDataErrorView(false);
         }
     };
 
@@ -370,15 +433,16 @@ public class SelectChapterAndKnowledgeActivity extends Activity{
         @Override
         protected void onResponse(RequestBase request, KnowledgePointResponse response) {
             if(response.getStatus().getCode() == 0){
+                showContentView();
                 mKnowledgePointAdapter.replaceData(response.getData());
             }else {
-                ToastManager.showMsg(response.getStatus().getDesc());
+                showDataErrorView(false);
             }
         }
 
         @Override
         public void onFail(RequestBase request, Error error) {
-            ToastManager.showMsg(error.getLocalizedMessage());
+            showDataErrorView(false);
         }
     };
 

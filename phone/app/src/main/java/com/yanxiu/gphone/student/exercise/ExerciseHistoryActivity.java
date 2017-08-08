@@ -75,7 +75,7 @@ public class ExerciseHistoryActivity extends Activity {
     private int mChapterTotalPage = 0;
     private int mKnowTotalPage = 0;
     private boolean mIsChapterMode = true;  //当前选中的是否是章节
-    private boolean mNoEditions = true; //第一次进来是否没有请求Editions数据失败
+    private boolean mNoEditions = true; //第一次进来是否请求Editions数据失败
 
 
     public static void invoke(Context context,String subjectId, String subjectName,String editionId){
