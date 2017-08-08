@@ -42,6 +42,7 @@ import com.yanxiu.gphone.student.homework.response.PaperResponse;
 import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerQuestionActivity;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
+import com.yanxiu.gphone.student.userevent.UserEventManager;
 import com.yanxiu.gphone.student.util.DESBodyDealer;
 import com.yanxiu.gphone.student.util.DataFetcher;
 import com.yanxiu.gphone.student.util.ScreenUtils;
@@ -264,6 +265,7 @@ public class SelectChapterAndKnowledgeActivity extends Activity{
     }
 
     protected void openAnswerQuestionUI(String key,GenQuesRequest request){
+        UserEventManager.getInstense().whenEnterWork();
         AnswerQuestionActivity.invoke(this,key, Constants.MAINAVTIVITY_FROMTYPE_EXERCISE,request);
     }
 

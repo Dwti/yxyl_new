@@ -105,7 +105,7 @@ public class UserEventManager {
     /**
      * 加入班级成功
      */
-    public void whenEnterClassApp() {
+    public void whenEnterClass() {
         startRequest(EventDataUtils.getEnterClassMap());
     }
 
