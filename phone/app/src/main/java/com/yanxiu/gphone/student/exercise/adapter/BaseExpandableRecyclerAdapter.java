@@ -1,7 +1,6 @@
 package com.yanxiu.gphone.student.exercise.adapter;
 
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.View;
 
 import com.yanxiu.gphone.student.exercise.bean.Node;
@@ -19,12 +18,12 @@ public abstract class BaseExpandableRecyclerAdapter<T extends Node> extends Recy
 
 
     public BaseExpandableRecyclerAdapter(List<T> data) {
-        initLevel(data,-1);
+        initModel(data,null,-1);
         this.mData = data;
     }
 
     public void replaceData(List<T> data) {
-        initLevel(data, -1);
+        initModel(data,null, -1);
         mData = data;
         notifyDataSetChanged();
     }
@@ -86,11 +85,12 @@ public abstract class BaseExpandableRecyclerAdapter<T extends Node> extends Recy
         return result;
     }
 
-    private void initLevel(List<T> data, int parentLevel) {
+    private void initModel(List<T> data, T parent,int parentLevel) {
         for (T node : data) {
+            node.setParent(parent);
             node.setLevel(parentLevel + 1);
             if (node.getChildren() != null && node.getChildren().size() > 0) {
-                initLevel(node.getChildren(), node.getLevel());
+                initModel(node.getChildren(), node, node.getLevel());
             }
         }
     }
@@ -99,7 +99,7 @@ public abstract class BaseExpandableRecyclerAdapter<T extends Node> extends Recy
         mOnItemClickListener = listener;
     }
 
-    interface OnItemClickListener<K extends Node>{
+    public interface OnItemClickListener<K extends Node>{
         void onItemClick(View itemView, int position, K k);
     }
 }

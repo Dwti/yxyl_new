@@ -7,6 +7,6 @@ package com.yanxiu.gphone.student.userevent.bean;
  */
 public class WorkBean {
 
-    public String classId;
+    public String stageId;
     public String waitFinishNum;
 }

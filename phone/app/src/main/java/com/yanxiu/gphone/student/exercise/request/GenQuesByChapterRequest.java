@@ -9,7 +9,7 @@ import java.io.Serializable;
  * Created by sunpeng on 2017/8/3.
  */
 
-public class GenQuesByChapterRequest extends EXueELianBaseRequest implements Serializable {
+public class GenQuesByChapterRequest extends GenQuesRequest {
     protected String stageId = LoginInfo.getStageid();
     protected String subjectId;
     protected String editionId;

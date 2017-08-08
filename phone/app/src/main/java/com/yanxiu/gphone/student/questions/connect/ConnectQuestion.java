@@ -126,7 +126,7 @@ public class ConnectQuestion extends BaseQuestion {
 
     @Override
     public ExerciseBaseFragment wrongFragment() {
-        return null;
+        return new ConnectWrongFragment();
     }
 
     @Override

@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -17,6 +16,9 @@ import com.yanxiu.gphone.student.homework.response.HomeworkDetailBean;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnalysisQuestionActivity;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerQuestionActivity;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerReportActicity;
+import com.yanxiu.gphone.student.userevent.UserEventManager;
+import com.yanxiu.gphone.student.userevent.bean.WorkBean;
+import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.ToastManager;
 
 import java.util.ArrayList;
@@ -146,6 +148,7 @@ public class HomeworkDetailActivity extends Activity implements HomeworkDetailCo
     public void showHomework(List<HomeworkDetailBean> homeworkList) {
         showContentView();
         mHomeworkDetailAdapter.replaceData(homeworkList);
+        uploadUserEvent(homeworkList);
     }
 
     @Override
@@ -187,6 +190,17 @@ public class HomeworkDetailActivity extends Activity implements HomeworkDetailCo
     @Override
     public void showLoadMoreDataError(String msg) {
         //TODO
+    }
+
+    private void uploadUserEvent(List<HomeworkDetailBean> list){
+        List<WorkBean> works = new ArrayList<>();
+        for(HomeworkDetailBean bean : list){
+            WorkBean work = new WorkBean();
+            work.stageId = LoginInfo.getStageid();
+            work.waitFinishNum = bean.getQuesnum();
+            works.add(work);
+        }
+        UserEventManager.getInstense().whenReceiveWork(works);
     }
 
     @Override
