@@ -5,6 +5,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.srt.refresh.BaseRefreshLayout;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
@@ -35,7 +36,7 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
 
     private static final String DEFAULT_QID = "0";
 
-    private SwipeRefreshLayout mRefreshView;
+    private BaseRefreshLayout mRefreshView;
     private RecyclerView mCompleteMistakeView;
     private MistakeAllAdapter mMistakeAllAdapter;
     private MistakeAllRequest mCompleteRequest;
@@ -53,9 +54,11 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
         mCompleteMistakeView.setLayoutManager(new LinearLayoutManager(mContext));
         mMistakeAllAdapter = new MistakeAllAdapter(mContext);
         mCompleteMistakeView.setAdapter(mMistakeAllAdapter);
-        mRefreshView = (SwipeRefreshLayout) rootView.findViewById(R.id.srl_refresh);
-        mRefreshView.setSize(SwipeRefreshLayout.DEFAULT);
-        mRefreshView.setProgressViewOffset(true, mRefreshView.getProgressViewStartOffset(), ScreenUtils.dpToPxInt(mContext,30));
+        mRefreshView = (BaseRefreshLayout) rootView.findViewById(R.id.srl_refresh);
+        mRefreshView.setLoadMoreEnable(true);
+        mRefreshView.setPullToRefreshListener(MistakeAllFragment.this);
+//        mRefreshView.setSize(SwipeRefreshLayout.DEFAULT);
+//        mRefreshView.setProgressViewOffset(true, mRefreshView.getProgressViewStartOffset(), ScreenUtils.dpToPxInt(mContext,30));
     }
 
     @Override
