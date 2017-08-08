@@ -9,7 +9,9 @@ import java.io.Serializable;
 
 public class UrlBean implements Serializable {
 
-
+    public static final String RELEASE="release";
+    public static final String TEST="test";
+    public static final String DEV="dev";
 
     private String server;     //普通接口
     private String loginServer;//登陆接口

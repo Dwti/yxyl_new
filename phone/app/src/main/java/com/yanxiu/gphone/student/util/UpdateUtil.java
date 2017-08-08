@@ -82,15 +82,19 @@ public class UpdateUtil {
                                     }
                                 });
                             }else {
-                                ToastManager.showMsgOnDebug("这是版本更新接口提示,测试同学,你们辛苦了,请按照正常的作业流程走,不要乱跑,此条消息只在debug环境下出现");
+                                ToastManager.showMsgOnDebug("这是版本更新接口提示,测试同学,你们辛苦了,请按照正常的作业流程走,不要乱跑,谢谢合作,此条消息只在debug环境下出现");
                             }
                         }else {
-                            ToastManager.showMsgOnDebug("这是版本更新接口提示,测试同学,你们辛苦了,请按照正常的作业流程走,不要乱跑,此条消息只在debug环境下出现");
+                            ToastManager.showMsgOnDebug("这是版本更新接口提示,测试同学,你们辛苦了,请按照正常的作业流程走,不要乱跑,谢谢合作,此条消息只在debug环境下出现");
                         }
                     } else {
                         if (isFromUser) {
                             ToastManager.showMsg(R.string.update_new);
                         }
+                    }
+                }else {
+                    if (isFromUser) {
+                        ToastManager.showMsg(R.string.update_new);
                     }
                 }
             }

@@ -6,7 +6,9 @@ import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 import com.yanxiu.gphone.student.base.UrlBean;
 import com.yanxiu.gphone.student.constant.Constants;
+import com.yanxiu.gphone.student.db.SpManager;
 import com.yanxiu.gphone.student.db.UrlRepository;
+import com.yanxiu.gphone.student.userevent.UserEventManager;
 import com.yanxiu.gphone.student.util.FileUtil;
 
 import org.litepal.LitePalApplication;
@@ -27,6 +29,11 @@ public class YanxiuApplication extends LitePalApplication {
         initUm();
         initUrlServer();
         Stetho.initializeWithDefaults(this);
+        if (SpManager.isFristStartUp()) {
+            UserEventManager.getInstense().whenFirstStart();
+        }else {
+            UserEventManager.getInstense().whenEnterFront();
+        }
     }
 
     private void initUm() {
