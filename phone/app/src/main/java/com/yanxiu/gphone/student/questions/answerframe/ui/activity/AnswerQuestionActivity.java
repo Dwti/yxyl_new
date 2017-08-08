@@ -17,12 +17,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.QuestionProgressView;
 import com.yanxiu.gphone.student.customviews.QuestionTimeTextView;
 import com.yanxiu.gphone.student.db.SpManager;
+import com.yanxiu.gphone.student.exercise.request.GenQuesRequest;
 import com.yanxiu.gphone.student.questions.answerframe.adapter.QAViewPagerAdapter;
 import com.yanxiu.gphone.student.questions.answerframe.listener.OnAnswerCardItemSelectListener;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.AnswerCardFragment;
@@ -524,11 +526,11 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
      * @param activity
      * @param fromType  练习页面 ：Constants.MAINAVTIVITY_FROMTYPE_EXERCISE
      */
-    public static void invoke(Activity activity, String key,String fromType) {
+    public static void invoke(Activity activity, String key, String fromType, GenQuesRequest request) {
         Intent intent = new Intent(activity, AnswerQuestionActivity.class);
         intent.putExtra(Constants.EXTRA_PAPER, key);
         intent.putExtra(Constants.EXTRA_FROMTYPE, fromType);
-        // todo  @孙鹏 传个bean，然后在
+        intent.putExtra(Constants.EXTRA_REQUEST,request);
         activity.startActivity(intent);
     }
 

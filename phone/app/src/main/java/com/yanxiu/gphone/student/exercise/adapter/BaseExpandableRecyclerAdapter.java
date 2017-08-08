@@ -99,7 +99,7 @@ public abstract class BaseExpandableRecyclerAdapter<T extends Node> extends Recy
         mOnItemClickListener = listener;
     }
 
-    interface OnItemClickListener<K extends Node>{
+    public interface OnItemClickListener<K extends Node>{
         void onItemClick(View itemView, int position, K k);
     }
 }

@@ -19,7 +19,9 @@ import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
+import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.ChapterSwitchBar;
+import com.yanxiu.gphone.student.exercise.adapter.BaseExpandableRecyclerAdapter;
 import com.yanxiu.gphone.student.exercise.adapter.ChapterAdapter;
 import com.yanxiu.gphone.student.exercise.adapter.KnowledgePointAdapter;
 import com.yanxiu.gphone.student.exercise.adapter.PopListAdapter;
@@ -29,10 +31,19 @@ import com.yanxiu.gphone.student.exercise.bean.EditionChildBean;
 import com.yanxiu.gphone.student.exercise.bean.KnowledgePointBean;
 import com.yanxiu.gphone.student.exercise.request.EditionRequest;
 import com.yanxiu.gphone.student.exercise.request.ChapterListRequest;
+import com.yanxiu.gphone.student.exercise.request.GenQuesByChapterRequest;
+import com.yanxiu.gphone.student.exercise.request.GenQuesByKnpointRequest;
+import com.yanxiu.gphone.student.exercise.request.GenQuesRequest;
 import com.yanxiu.gphone.student.exercise.request.KnowledgePointRequest;
 import com.yanxiu.gphone.student.exercise.response.ChapterListResponse;
 import com.yanxiu.gphone.student.exercise.response.EditionResponse;
 import com.yanxiu.gphone.student.exercise.response.KnowledgePointResponse;
+import com.yanxiu.gphone.student.homework.response.PaperResponse;
+import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
+import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerQuestionActivity;
+import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
+import com.yanxiu.gphone.student.util.DESBodyDealer;
+import com.yanxiu.gphone.student.util.DataFetcher;
 import com.yanxiu.gphone.student.util.ScreenUtils;
 import com.yanxiu.gphone.student.util.ToastManager;
 
@@ -50,7 +61,7 @@ public class SelectChapterAndKnowledgeActivity extends Activity{
     private RecyclerView mRecyclerView;
     private ChapterAdapter mChapterAdapter;
     private KnowledgePointAdapter mKnowledgePointAdapter;
-    private String mSubjectName,mSubjectId,mEditionId,mVolume;
+    private String mSubjectName,mSubjectId,mEditionId, mVolumeId;
     private ChapterSwitchBar mSwitchBar;
     private PopupWindow popupWindow;
     private List<EditionChildBean> mEditionChildBeanList;
@@ -115,6 +126,53 @@ public class SelectChapterAndKnowledgeActivity extends Activity{
                 }
             }
         });
+
+        mChapterAdapter.setOnItemClickListener(new BaseExpandableRecyclerAdapter.OnItemClickListener<ChapterBean>() {
+            @Override
+            public void onItemClick(View itemView, int position, ChapterBean node) {
+                GenQuesByChapterRequest request = new GenQuesByChapterRequest();
+                request.setSubjectId(mSubjectId);
+                request.setEditionId(mEditionId);
+                request.setVolumeId(mVolumeId);
+                request.bodyDealer = new DESBodyDealer();
+                if(node.getLevel() == 0){
+                    request.setChapterId(node.getId());
+                }else if(node.getLevel() == 1){
+                    request.setChapterId(node.getParent().getId());
+                    request.setSectionId(node.getId());
+                }else if(node.getLevel() == 2){
+                    request.setChapterId(node.getParent().getParent().getId());
+                    request.setSectionId(node.getParent().getId());
+                    request.setCellId(node.getId());
+                }
+                request.startRequest(PaperResponse.class,mGenQuesByChapterCallback);
+            }
+        });
+
+        mKnowledgePointAdapter.setOnItemClickListener(new BaseExpandableRecyclerAdapter.OnItemClickListener<ChapterBean>() {
+            @Override
+            public void onItemClick(View itemView, int position, ChapterBean node) {
+                GenQuesByKnpointRequest request = new GenQuesByKnpointRequest();
+                request.setSubjectId(mSubjectId);
+                request.bodyDealer = new DESBodyDealer();
+                if(node.getLevel() == 0){
+                    request.setKnpId1(node.getId());
+                }else if(node.getLevel() == 1){
+                    request.setKnpId1(node.getParent().getId());
+                    request.setKnpId2(node.getId());
+                }else if(node.getLevel() == 2){
+                    request.setKnpId1(node.getParent().getParent().getId());
+                    request.setKnpId2(node.getParent().getId());
+                    request.setKnpId3(node.getId());
+                }else if(node.getLevel() == 3){
+                    request.setKnpId1(node.getParent().getParent().getParent().getId());
+                    request.setKnpId2(node.getParent().getParent().getId());
+                    request.setKnpId3(node.getParent().getId());
+                    request.setKnpId4(node.getId());
+                }
+                request.startRequest(PaperResponse.class,mGenQuesByKnpointCallback);
+            }
+        });
     }
 
     private void initView() {
@@ -166,14 +224,14 @@ public class SelectChapterAndKnowledgeActivity extends Activity{
                     if(position != mLastSelectedPos){
                         tvPop.setText(data.get(position).getName());
                         mStage.setText(data.get(position).getName());
-                        mVolume = data.get(position).getId();
+                        mVolumeId = data.get(position).getId();
                         data.get(position).setSelected(true);
                         data.get(mLastSelectedPos).setSelected(false);
                         mLastSelectedPos = position;
                         adapter.notifyDataSetChanged();
 
                         dismissPop();
-                        getChapterList(mSubjectId,mEditionId,mVolume);
+                        getChapterList(mSubjectId,mEditionId, mVolumeId);
                     }
 
                 }
@@ -203,6 +261,10 @@ public class SelectChapterAndKnowledgeActivity extends Activity{
         mLayoutStage.setVisibility(View.INVISIBLE);
         popupWindow.showAsDropDown(mRootView);
 
+    }
+
+    protected void openAnswerQuestionUI(String key,GenQuesRequest request){
+        AnswerQuestionActivity.invoke(this,key, Constants.MAINAVTIVITY_FROMTYPE_EXERCISE,request);
     }
 
     private void dismissPop(){
@@ -272,9 +334,9 @@ public class SelectChapterAndKnowledgeActivity extends Activity{
         protected void onResponse(RequestBase request, EditionResponse response) {
             if(response.getStatus().getCode() == 0){
                 mEditionChildBeanList = response.getData().get(0).getChildren();
-                mVolume = getVolume(response.getData(),mEditionId);
+                mVolumeId = getVolume(response.getData(),mEditionId);
                 mStage.setText(response.getData().get(0).getChildren().get(0).getName());
-                getChapterList(mSubjectId,mEditionId,mVolume);
+                getChapterList(mSubjectId,mEditionId, mVolumeId);
             }else {
                 ToastManager.showMsg(response.getStatus().getDesc());
             }
@@ -309,6 +371,42 @@ public class SelectChapterAndKnowledgeActivity extends Activity{
                 mKnowledgePointAdapter.replaceData(response.getData());
             }else {
                 ToastManager.showMsg(response.getStatus().getDesc());
+            }
+        }
+
+        @Override
+        public void onFail(RequestBase request, Error error) {
+            ToastManager.showMsg(error.getLocalizedMessage());
+        }
+    };
+
+    HttpCallback<PaperResponse> mGenQuesByChapterCallback = new EXueELianBaseCallback<PaperResponse>() {
+        @Override
+        public void onResponse(RequestBase request, PaperResponse ret) {
+            if(ret.getStatus().getCode() == 0){
+                Paper paper = new Paper(ret.getData().get(0), QuestionShowType.ANSWER);
+                DataFetcher.getInstance().save(paper.getId(),paper);
+                openAnswerQuestionUI(paper.getId(), (GenQuesRequest) request);
+            }else {
+                ToastManager.showMsg(ret.getStatus().getDesc());
+            }
+        }
+
+        @Override
+        public void onFail(RequestBase request, Error error) {
+            ToastManager.showMsg(error.getLocalizedMessage());
+        }
+    };
+
+    HttpCallback<PaperResponse> mGenQuesByKnpointCallback = new EXueELianBaseCallback<PaperResponse>() {
+        @Override
+        public void onResponse(RequestBase request, PaperResponse ret) {
+            if(ret.getStatus().getCode() == 0){
+                Paper paper = new Paper(ret.getData().get(0), QuestionShowType.ANSWER);
+                DataFetcher.getInstance().save(paper.getId(),paper);
+                openAnswerQuestionUI(paper.getId(), (GenQuesRequest) request);
+            }else {
+                ToastManager.showMsg(ret.getStatus().getDesc());
             }
         }
 
