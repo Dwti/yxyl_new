@@ -75,6 +75,7 @@ public class ExerciseHistoryActivity extends Activity {
     private int mChapterTotalPage = 0;
     private int mKnowTotalPage = 0;
     private boolean mIsChapterMode = true;  //当前选中的是否是章节
+    private boolean mNoEditions = true; //第一次进来是否没有请求Editions数据失败
 
 
     public static void invoke(Context context,String subjectId, String subjectName,String editionId){
@@ -121,6 +122,8 @@ public class ExerciseHistoryActivity extends Activity {
         mEditionId = getIntent().getStringExtra(EXTRA_EDITION_ID);
         mTitle.setText(subjectName);
 
+        setSwitchBarVisibility(mSubjectId);
+
         getEditionList(mSubjectId);
     }
 
@@ -137,6 +140,7 @@ public class ExerciseHistoryActivity extends Activity {
             public void onCheckedChanged(boolean isOff) {
                 if(isOff){
                     mIsChapterMode = true;
+                    showContentView();
                     mLayoutStage.setVisibility(View.VISIBLE);
                     mRecyclerView.setAdapter(mChapterAdapter);
                     if(mChapterAdapter.getItemCount() == 0){
@@ -148,6 +152,7 @@ public class ExerciseHistoryActivity extends Activity {
                     }
                 }else {
                     mIsChapterMode = false;
+                    showContentView();
                     mLayoutStage.setVisibility(View.GONE);
                     mRecyclerView.setAdapter(mKnowAdapter);
                     if(mKnowAdapter.getItemCount() == 0){
@@ -199,7 +204,11 @@ public class ExerciseHistoryActivity extends Activity {
                     mKnowAdapter.clearData();
                 }
                 showContentView();
-                loadData();
+                if(mNoEditions){
+                    getEditionList(mSubjectId);
+                }else {
+                    loadData();
+                }
             }
         });
     }
@@ -211,6 +220,7 @@ public class ExerciseHistoryActivity extends Activity {
     }
 
     private void getExercisesByChapter(int nextPage){
+        mChapterCurrentPage = nextPage;
         ExerciseHistoryByChapterRequest request = new ExerciseHistoryByChapterRequest();
         request.setSubjectId(mSubjectId);
         request.setBeditionId(mEditionId);
@@ -220,6 +230,7 @@ public class ExerciseHistoryActivity extends Activity {
     }
 
     private void getExercisesByKnow(int nextPage){
+        mKnowCurrentPage = nextPage;
         ExerciseHistoryByKnowRequest request = new ExerciseHistoryByKnowRequest();
         request.setSubjectId(mSubjectId);
         request.setNextPage(String.valueOf(nextPage));
@@ -254,6 +265,7 @@ public class ExerciseHistoryActivity extends Activity {
     }
 
     private void loadData(){
+        setLoadingIndicator(true);
         if(mIsChapterMode){
             getExercisesByChapter(1);
         }else {
@@ -262,7 +274,16 @@ public class ExerciseHistoryActivity extends Activity {
     }
 
     private void loadMoreData(){
+        if(!canLoadMore(mIsChapterMode))
+            return;
         setLoadingMoreIndicator(true);
+        if(mIsChapterMode){
+            mChapterCurrentPage++;
+            getExercisesByChapter(mChapterCurrentPage);
+        }else {
+            mKnowCurrentPage++;
+            getExercisesByKnow(mKnowCurrentPage);
+        }
     }
 
     public void setLoadingIndicator(boolean active) {
@@ -278,13 +299,21 @@ public class ExerciseHistoryActivity extends Activity {
         }
     }
 
-    public void showExercise(List<ExerciseBean> data,ExerciseAdapter adapter) {
+    private boolean canLoadMore(boolean isChapterMode){
+        if(isChapterMode){
+            return mChapterCurrentPage < mChapterTotalPage;
+        }else {
+            return  mKnowCurrentPage < mKnowTotalPage;
+        }
+    }
+
+    public void updateExercises(ExerciseAdapter adapter) {
         showContentView();
-        adapter.replaceData(data);
+        adapter.notifyDataSetChanged();
     }
 
     private void showPop(final List<EditionChildBean> data){
-        if(data == null && data.size() == 0)
+        if(data == null || data.size() == 0)
             return;
         if(popupWindow == null){
             View view = LayoutInflater.from(this).inflate(R.layout.popwindow_stage,null);
@@ -359,7 +388,7 @@ public class ExerciseHistoryActivity extends Activity {
     }
 
     public void showNoMoreData() {
-        //TODO
+        showMsg(getString(R.string.no_more_data));
     }
 
     public void showMsg(String msg) {
@@ -367,7 +396,7 @@ public class ExerciseHistoryActivity extends Activity {
     }
 
     public void showLoadMoreDataError(String msg) {
-        //TODO
+        showMsg(msg);
     }
 
     public boolean isActive() {
@@ -404,6 +433,21 @@ public class ExerciseHistoryActivity extends Activity {
         mRefreshBtn.setText(R.string.click_to_retry);
     }
 
+    private void setSwitchBarVisibility(String subjectId) {
+        switch (subjectId){
+            //非数理化生科目，不展示章节知识点切换（只有章节）
+            case "1102":
+            case "1104":
+            case "1108":
+            case "1109":
+            case "1110":
+                mSwitchBar.setVisibility(View.GONE);
+                break;
+            default:
+                break;
+        }
+    }
+
     ExerciseAdapter.ExerciseItemClickListener mItemClickListener = new ExerciseAdapter.ExerciseItemClickListener() {
         @Override
         public void onHomeworkClick(ExerciseBean bean) {
@@ -426,19 +470,50 @@ public class ExerciseHistoryActivity extends Activity {
         @Override
         protected void onResponse(RequestBase request, ExerciseHistoryResponse response) {
             if(response.getStatus().getCode() == 0){
-                if(response.getData() != null && response.getData().size() > 0){
-                    showExercise(response.getData(),mChapterAdapter);
-                }else {
-                    showDataEmptyView(false);
+                if(mChapterCurrentPage == 1){
+                    setLoadingIndicator(false);
+                    mChapterTotalPage = response.getPage().getTotalPage();
+                    if(response.getData() != null && response.getData().size() > 0){
+                        mExerciseListChapter.clear();
+                        mExerciseListChapter.addAll(response.getData());
+                        updateExercises(mChapterAdapter);
+                    }else {
+                        mChapterAdapter.clearData();
+                        showDataEmptyView(false);
+                    }
+                }else if(mChapterCurrentPage > 1){
+                    setLoadingMoreIndicator(false);
+                    mChapterTotalPage = response.getPage().getTotalPage();
+                    if(response.getData() != null && response.getData().size() > 0){
+                        mExerciseListChapter.addAll(response.getData());
+                        updateExercises(mChapterAdapter);
+                    }else {
+                        showNoMoreData();
+                    }
                 }
+
             }else {
-                showDataEmptyView(false);
+                if(mChapterCurrentPage == 1){
+                    setLoadingIndicator(false);
+                    mChapterAdapter.clearData();
+                    showDataEmptyView(false);
+                }else if(mChapterCurrentPage > 1){
+                    setLoadingMoreIndicator(false);
+                    showLoadMoreDataError(response.getStatus().getDesc());
+                }
             }
         }
 
         @Override
         public void onFail(RequestBase request, Error error) {
-            showDataErrorView(false);
+            if(mChapterCurrentPage == 1){
+                setLoadingIndicator(false);
+                mChapterAdapter.clearData();
+                showDataErrorView(false);
+            }else if(mChapterCurrentPage > 1){
+                setLoadingMoreIndicator(false);
+                showLoadMoreDataError(error.getLocalizedMessage());
+            }
         }
     };
 
@@ -446,19 +521,50 @@ public class ExerciseHistoryActivity extends Activity {
         @Override
         protected void onResponse(RequestBase request, ExerciseHistoryResponse response) {
             if(response.getStatus().getCode() == 0){
-                if(response.getData() != null && response.getData().size() > 0){
-                    showExercise(response.getData(),mKnowAdapter);
-                }else {
-                    showDataEmptyView(false);
+                if(mKnowCurrentPage == 1){
+                    setLoadingIndicator(false);
+                    mKnowTotalPage = response.getPage().getTotalPage();
+                    if(response.getData() != null && response.getData().size() > 0){
+                        mExerciseListKnow.clear();
+                        mExerciseListKnow.addAll(response.getData());
+                        updateExercises(mKnowAdapter);
+                    }else {
+                        mKnowAdapter.clearData();
+                        showDataEmptyView(false);
+                    }
+                }else if(mKnowCurrentPage > 1){
+                    setLoadingMoreIndicator(false);
+                    mKnowTotalPage = response.getPage().getTotalPage();
+                    if(response.getData() != null && response.getData().size() > 0){
+                        mExerciseListKnow.addAll(response.getData());
+                        updateExercises(mKnowAdapter);
+                    }else {
+                        showNoMoreData();
+                    }
                 }
+
             }else {
-                showDataEmptyView(false);
+                if(mKnowCurrentPage == 1){
+                    setLoadingIndicator(false);
+                    mKnowAdapter.clearData();
+                    showDataEmptyView(false);
+                }else if(mKnowCurrentPage > 1){
+                    setLoadingMoreIndicator(false);
+                    showLoadMoreDataError(response.getStatus().getDesc());
+                }
             }
         }
 
         @Override
         public void onFail(RequestBase request, Error error) {
-            showDataErrorView(false);
+            if(mKnowCurrentPage == 1){
+                setLoadingIndicator(false);
+                mKnowAdapter.clearData();
+                showDataErrorView(false);
+            }else if(mKnowCurrentPage > 1){
+                setLoadingMoreIndicator(false);
+                showLoadMoreDataError(error.getLocalizedMessage());
+            }
         }
     };
 
@@ -480,7 +586,7 @@ public class ExerciseHistoryActivity extends Activity {
 
         @Override
         public void onFail(RequestBase request, Error error) {
-                showMsg(error.getLocalizedMessage());
+            showMsg(error.getLocalizedMessage());
         }
     };
 
@@ -511,6 +617,7 @@ public class ExerciseHistoryActivity extends Activity {
         @Override
         protected void onResponse(RequestBase request, EditionResponse response) {
             if(response.getStatus().getCode() == 0){
+                mNoEditions = false;
                 mEditionChildBeanList = response.getData().get(0).getChildren();
                 mVolume = getVolume(response.getData(),mEditionId);
                 mStage.setText(response.getData().get(0).getChildren().get(0).getName());

@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
+import com.yanxiu.gphone.student.common.Bean.CropCallbackMessage;
 import com.yanxiu.gphone.student.customviews.CropImageView;
 import com.yanxiu.gphone.student.db.SpManager;
 
@@ -110,11 +111,6 @@ public class CropImageActivity extends YanxiuBaseActivity implements View.OnClic
             EventBus.getDefault().post(message);
             CropImageActivity.this.finish();
         }
-    }
-
-    public static class CropCallbackMessage implements Serializable {
-        public int fromId;
-        public String path;
     }
 
 }

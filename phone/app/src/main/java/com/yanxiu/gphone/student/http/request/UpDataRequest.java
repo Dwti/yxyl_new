@@ -1,5 +1,7 @@
 package com.yanxiu.gphone.student.http.request;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -30,7 +32,6 @@ public class UpDataRequest {
         @NonNull
         String findUpdataUrl();
 
-        @NonNull
         int findFileNumber();
 
         @Nullable
@@ -39,16 +40,18 @@ public class UpDataRequest {
 
     public interface findImgPath {
         @NonNull
-        String findImgPath(int position);
+        String getImgPath(int position);
     }
 
     public interface findImgTag {
         @Nullable
-        Object findImgTag(int position);
+        Object getImgTag(int position);
     }
 
     private static final String IMGKEY = "img";
     private static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
+
+    private Handler mHandler = new Handler(Looper.getMainLooper());
 
     private static UpDataRequest mUpDataRequest;
     private final OkHttpClient mOkHttpClient;
@@ -102,22 +105,36 @@ public class UpDataRequest {
         }
     }
 
+    private void postMainThread(Runnable runnable) {
+        mHandler.post(runnable);
+    }
+
     private void upData(final String url, final int position, final Map<String, String> params, final onUpDatalistener upDatalistener) {
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
 
         final String imgPath;
         if (mFindImgPath != null) {
-            imgPath = mFindImgPath.findImgPath(position);
+            imgPath = mFindImgPath.getImgPath(position);
         } else {
             if (upDatalistener != null) {
-                upDatalistener.onError("Can not find img path ");
+                postMainThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        upDatalistener.onError("Can not find img path ");
+                    }
+                });
             }
             return;
         }
 
         if (TextUtils.isEmpty(imgPath)) {
             if (upDatalistener != null) {
-                upDatalistener.onError("The imgPath can not be NULL");
+                postMainThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        upDatalistener.onError("The imgPath can not be NULL");
+                    }
+                });
             }
             return;
         }
@@ -134,37 +151,59 @@ public class UpDataRequest {
 
         if (TextUtils.isEmpty(url)) {
             if (upDatalistener != null) {
-                upDatalistener.onError("The url can not be NULL");
+                postMainThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        upDatalistener.onError("The url can not be NULL");
+                    }
+                });
             }
             return;
         }
         MultipartBody requestBody = builder.build();
         Request request = new Request.Builder().url(url).post(requestBody).build();
         if (upDatalistener != null) {
-            upDatalistener.onUpDataStart(position, imgPath);
+            postMainThread(new Runnable() {
+                @Override
+                public void run() {
+                    upDatalistener.onUpDataStart(position, imgPath);
+                }
+            });
         }
         mOkHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 if (upDatalistener != null) {
-                    String message = e.getMessage();
+                    final String message = e.getMessage();
                     Object tag = null;
                     if (mFindImgTag != null) {
-                        tag = mFindImgTag.findImgTag(position);
+                        tag = mFindImgTag.getImgTag(position);
                     }
-                    upDatalistener.onUpDataFailed(position, tag, message);
+                    final Object finalTag = tag;
+                    postMainThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            upDatalistener.onUpDataFailed(position, finalTag, message);
+                        }
+                    });
                 }
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if (upDatalistener != null) {
-                    String jsonString = response.body().string();
+                    final String jsonString = response.body().string();
                     Object tag = null;
                     if (mFindImgTag != null) {
-                        tag = mFindImgTag.findImgTag(position);
+                        tag = mFindImgTag.getImgTag(position);
                     }
-                    upDatalistener.onUpDataSuccess(position, tag, jsonString);
+                    final Object finalTag = tag;
+                    postMainThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            upDatalistener.onUpDataSuccess(position, finalTag, jsonString);
+                        }
+                    });
                 }
             }
         });

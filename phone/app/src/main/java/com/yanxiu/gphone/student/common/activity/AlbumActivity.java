@@ -10,10 +10,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
+import com.yanxiu.gphone.student.common.Bean.CropCallbackMessage;
 import com.yanxiu.gphone.student.common.adapter.AlbumImageAdapter;
 import com.yanxiu.gphone.student.common.adapter.AlbumParentNameAdapter;
 import com.yanxiu.gphone.student.util.AlbumUtils;
@@ -23,6 +23,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import de.greenrobot.event.EventBus;
+
 import static com.yanxiu.gphone.student.common.activity.CameraActivity.RESULTCODE;
 
 /**
@@ -31,6 +33,11 @@ import static com.yanxiu.gphone.student.common.activity.CameraActivity.RESULTCOD
  * Function :
  */
 public class AlbumActivity extends YanxiuBaseActivity implements View.OnClickListener, AlbumUtils.onFindFinishedListener, AlbumUtils.onFindToGroupFinishedListener, AlbumParentNameAdapter.onItemClickListener, AlbumImageAdapter.onItemClickListener {
+
+    private static final String COME_FROM="from";
+
+    public static final String COME_FROM_USERINFO="userInfo";
+    public static final String COME_FROM_OTHER="other";
 
     private Context mContext;
     private ImageView mBackView;
@@ -47,10 +54,16 @@ public class AlbumActivity extends YanxiuBaseActivity implements View.OnClickLis
     private AlbumParentNameAdapter mParentNameAdapter;
 
     private int mFromId;
+    private String mComeFrom=COME_FROM_OTHER;
 
     public static void LaunchActivity(Context context,int fromId){
+        LaunchActivity(context,fromId,COME_FROM_OTHER);
+    }
+
+    public static void LaunchActivity(Context context,int fromId,String comeFrom){
         Intent intent=new Intent(context,AlbumActivity.class);
         intent.putExtra(RESULTCODE,fromId);
+        intent.putExtra(COME_FROM,comeFrom);
         context.startActivity(intent);
     }
 
@@ -59,10 +72,18 @@ public class AlbumActivity extends YanxiuBaseActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_album);
         mContext=AlbumActivity.this;
+        EventBus.getDefault().register(mContext);
         mFromId=getIntent().getIntExtra(RESULTCODE,-1);
+        mComeFrom=getIntent().getStringExtra(COME_FROM);
         initView();
         listener();
         initData();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(mContext);
     }
 
     private void initView() {
@@ -156,7 +177,18 @@ public class AlbumActivity extends YanxiuBaseActivity implements View.OnClickLis
 
     @Override
     public void onItemClick(View view, AlbumUtils.PictureMessage message, int position) {
-        CropImageActivity.LaunchActivity(mContext,message.path,mFromId);
-        AlbumActivity.this.finish();
+        if (mComeFrom.equals(COME_FROM_OTHER)) {
+            CropImageActivity.LaunchActivity(mContext, message.path, mFromId);
+            AlbumActivity.this.finish();
+        }else if (mComeFrom.equals(COME_FROM_USERINFO)){
+            UserHeadCropImageActivity.LaunchActivity(mContext, message.path, mFromId);
+        }
     }
+
+    public void onEventMainThread(CropCallbackMessage message){
+        if (mFromId==message.fromId){
+            AlbumActivity.this.finish();
+        }
+    }
+
 }

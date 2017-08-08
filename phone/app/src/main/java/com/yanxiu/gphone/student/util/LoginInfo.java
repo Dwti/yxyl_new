@@ -234,4 +234,41 @@ public class LoginInfo {
         }
         return bean.getHead();
     }
+
+    public static void saveHeadIcon(String path){
+        if (!isLogIn()) {
+            return;
+        }
+        bean.setHead(path);
+        Save();
+    }
+
+    /**
+     * 学校名称
+     * @return 学校名称
+     * */
+    public static String getSchoolName(){
+        if (!isLogIn()){
+            return "";
+        }
+        return bean.getSchoolName();
+    }
+
+    /**
+     * 获取性别
+     * */
+    public static int getSex(){
+        if (!isLogIn()){
+            return -1;
+        }
+        return bean.getSex();
+    }
+
+    public static void saveSex(int sex){
+        if (!isLogIn()) {
+            return;
+        }
+        bean.setSex(sex);
+        Save();
+    }
 }

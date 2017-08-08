@@ -88,7 +88,6 @@ public class SubmitQuesitonTask extends AsyncTask {
                     return UrlRepository.getInstance().getServer() + "/common/uploadImgs.do?";
                 }
 
-                @NonNull
                 @Override
                 public int findFileNumber() {
                     return imgList.size();
@@ -102,13 +101,13 @@ public class SubmitQuesitonTask extends AsyncTask {
             }).setImgPath(new UpDataRequest.findImgPath() {
                 @NonNull
                 @Override
-                public String findImgPath(int position) {
+                public String getImgPath(int position) {
                     return imgList.get(position).getPath();
                 }
             }).setTag(new UpDataRequest.findImgTag() {
                 @Nullable
                 @Override
-                public Object findImgTag(int position) {
+                public Object getImgTag(int position) {
                     return imgList.get(position);
                 }
             }).setListener(new onUpDatalistener() {

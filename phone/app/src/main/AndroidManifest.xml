@@ -272,6 +272,19 @@
         
         <activity android:name=".exercise.SelectChapterAndKnowledgeActivity"
             android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".user.userinfo.activity.UserEditNameActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait" />
+
+        <activity android:name=".user.userinfo.activity.UserSexActivity"
+            android:screenOrientation="portrait" />
+
+        <activity android:name=".common.activity.UserHeadCameraActivity"
+            android:screenOrientation="portrait" />
+
+        <activity android:name=".common.activity.UserHeadCropImageActivity"
             android:screenOrientation="portrait" />
 
         /**

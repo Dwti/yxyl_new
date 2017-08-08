@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/include_top"
+        layout="@layout/main_public_top_layout" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_line_height"
+        android:background="@color/color_edf0ee" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/et_name"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:paddingStart="15dp"
+            android:paddingEnd="12dp"
+            android:hint=""
+            android:inputType="text"
+            android:singleLine="true"
+            android:textSize="21dp"
+            android:maxLength="16"
+            android:textColor="@color/color_333333"
+            android:background="@color/color_ffffff"
+            android:text="asd"
+            android:gravity="center_vertical"
+            android:textStyle="bold"/>
+
+        <ImageView
+            android:id="@+id/iv_clear"
+            android:layout_width="@dimen/login_edit_icon_w_h"
+            android:layout_height="@dimen/login_edit_icon_w_h"
+            android:layout_marginStart="@dimen/mistake_list_item_padding_r"
+            android:layout_marginEnd="@dimen/mistake_list_item_padding_r"
+            android:background="@color/color_00cccc"
+            android:layout_gravity="center_vertical"
+            android:contentDescription="@null"
+            android:visibility="invisible" />
+
+    </LinearLayout>
+
+</LinearLayout>

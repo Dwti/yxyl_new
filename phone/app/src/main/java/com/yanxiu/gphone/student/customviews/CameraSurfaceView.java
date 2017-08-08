@@ -32,6 +32,12 @@ import java.util.List;
  * Function :
  */
 public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Callback, Camera.AutoFocusCallback {
+
+    private static final int CAMERA_FACING_BACK = Camera.CameraInfo.CAMERA_FACING_BACK;
+    private static final int CAMERA_FACING_FRONT = Camera.CameraInfo.CAMERA_FACING_FRONT;
+
+    private int mCameraId = CAMERA_FACING_BACK;
+
     private Context mContext;
     private SurfaceHolder mSurfaceHolder;
     private Camera mCamera;
@@ -82,21 +88,45 @@ public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Call
     }
 
     public void onResume() {
-        try {
-            if (mCamera == null) {
-                mCamera = Camera.open();
-                if (mSurfaceHolder != null) {
-                    startPreview();
-                }
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        cameraOpen(mCameraId);
     }
 
     public void onPause() {
         if (mCamera != null) {
             release();
+        }
+    }
+
+    public void changeDirection() {
+        onPause();
+//        int cameraCount=Camera.getNumberOfCameras();
+//        Camera.CameraInfo cameraInfo=new Camera.CameraInfo();
+//        for (int i=0;i<cameraCount;i++){
+//            Camera.getCameraInfo(i,cameraInfo);
+//            if (cameraInfo.facing== Camera.CameraInfo.CAMERA_FACING_FRONT){
+//                mCameraId=CAMERA_FACING_BACK;
+//            }else if (cameraInfo.facing== Camera.CameraInfo.CAMERA_FACING_BACK){
+//                mCameraId=CAMERA_FACING_FRONT;
+//            }
+//        }
+        if (mCameraId == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+            mCameraId = CAMERA_FACING_BACK;
+        } else if (mCameraId == Camera.CameraInfo.CAMERA_FACING_BACK) {
+            mCameraId = CAMERA_FACING_FRONT;
+        }
+        onResume();
+    }
+
+    private void cameraOpen(int cameraId) {
+        try {
+            if (mCamera == null) {
+                mCamera = Camera.open(cameraId);
+                if (mSurfaceHolder != null) {
+                    startPreview();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -152,7 +182,7 @@ public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Call
         mCamera.setParameters(parameters);
         try {
             mCamera.autoFocus(CameraSurfaceView.this);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -216,7 +246,7 @@ public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Call
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
             if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-                SavePictureTask savePictureTask = new SavePictureTask(mContext, saveFinishedListener);
+                SavePictureTask savePictureTask = new SavePictureTask(mContext, saveFinishedListener,mCameraId);
                 savePictureTask.execute(data);
             } else {
                 ToastManager.showMsg(R.string.SD_cannot_use);
@@ -227,11 +257,11 @@ public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Call
     private onSaveFinishedListener saveFinishedListener = new onSaveFinishedListener() {
         @Override
         public void onFinished(String path) {
-            if (mCamera!=null) {
+            if (mCamera != null) {
                 mCamera.stopPreview();
                 mCamera.startPreview();
             }
-            if (mTakePictureFinishedListener!=null) {
+            if (mTakePictureFinishedListener != null) {
                 mTakePictureFinishedListener.onFinish(path);
             }
         }
@@ -240,10 +270,12 @@ public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Call
     private class SavePictureTask extends AsyncTask<byte[], Integer, String> {
 
         private Context mContext;
+        private int mCameraId;
         private onSaveFinishedListener mSaveFinishedListener;
 
-        SavePictureTask(Context context, onSaveFinishedListener mSaveFinishedListener) {
+        SavePictureTask(Context context, onSaveFinishedListener mSaveFinishedListener,int cameraId) {
             this.mContext = context;
+            this.mCameraId=cameraId;
             this.mSaveFinishedListener = mSaveFinishedListener;
         }
 
@@ -258,10 +290,16 @@ public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Call
                 int width = bitmap.getWidth();
                 int height = bitmap.getHeight();
 
-                if (width > height) {
+                if (mCameraId==CAMERA_FACING_FRONT){
                     Matrix matrix = new Matrix();
-                    matrix.postRotate(90);
+                    matrix.postRotate(-90);
                     bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+                }else if (mCameraId==CAMERA_FACING_BACK){
+                    if (width > height) {
+                        Matrix matrix = new Matrix();
+                        matrix.postRotate(90);
+                        bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+                    }
                 }
 
                 filePath = FileUtil.getSavePicturePath(System.currentTimeMillis() + ".jpg");
@@ -290,7 +328,7 @@ public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Call
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            if (s!=null) {
+            if (s != null) {
                 setPictureDegreeZero(s);
                 Uri localUri = Uri.fromFile(new File(s));
                 Intent localIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, localUri);

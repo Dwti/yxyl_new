@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/rl_conver"
+    android:background="@color/color_a6000000">
+    <!--android:background="@color/color_a6000000"-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/userinfo_dialog_h"
+        android:layout_alignParentBottom="true"
+        android:background="@color/color_89e00d"
+        android:paddingTop="@dimen/userinfo_dialog_icon_margin_t">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal">
+
+            <LinearLayout
+                android:id="@+id/ll_album"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/userinfo_dialog_icon_margin_l"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/userinfo_dialog_icon_w_h"
+                    android:layout_height="@dimen/userinfo_dialog_icon_w_h"
+                    android:background="@color/color_00cccc"
+                    android:contentDescription="@null" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/userinfo_dialog_text_margin_t"
+                    android:text="@string/editor_album"
+                    android:textColor="@color/color_336600"
+                    android:textSize="@dimen/userinfo_dialog_textsize" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_camera"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/ll_album"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/userinfo_dialog_icon_w_h"
+                    android:layout_height="@dimen/userinfo_dialog_icon_w_h"
+                    android:background="@color/color_00cccc"
+                    android:contentDescription="@null" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/editor_camera"
+                    android:layout_marginTop="@dimen/userinfo_dialog_text_margin_t"
+                    android:textColor="@color/color_336600"
+                    android:textSize="@dimen/userinfo_dialog_textsize" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_line_height"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/userinfo_dialog_icon_margin_l"
+            android:background="@color/color_81d40d" />
+
+        <TextView
+            android:id="@+id/tv_cancle"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/userinfo_dialog_icon_margin_l"
+            android:layout_alignParentBottom="true"
+            android:gravity="center"
+            android:text="@string/app_update_cancle"
+            android:textColor="@color/color_ffffff"
+            android:textSize="@dimen/userinfo_dialog_textsize" />
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

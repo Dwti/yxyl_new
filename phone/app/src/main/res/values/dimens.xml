@@ -284,6 +284,17 @@
     <dimen name="feed_edit_h">265dp</dimen>
     <dimen name="feed_padding_t_b">25dp</dimen>
 
+    <dimen name="userinfo_head_w_h">120dp</dimen>
+    <dimen name="userinfo_parent_h">155dp</dimen>
+    <dimen name="userinfo_editor_head_textsize">13dp</dimen>
+    <dimen name="userinfo_editor_head_text_h">25dp</dimen>
+
+    <dimen name="userinfo_dialog_h">235dp</dimen>
+    <dimen name="userinfo_dialog_icon_margin_t">26dp</dimen>
+    <dimen name="userinfo_dialog_icon_w_h">95dp</dimen>
+    <dimen name="userinfo_dialog_icon_margin_l">60dp</dimen>
+    <dimen name="userinfo_dialog_text_margin_t">9dp</dimen>
+    <dimen name="userinfo_dialog_textsize">23dp</dimen>
     <dimen name="notifi_icon_margin">10dp</dimen>
     <dimen name="notifi_icon_padding">5dp</dimen>
     <dimen name="notifi_time_textsize">11dp</dimen>

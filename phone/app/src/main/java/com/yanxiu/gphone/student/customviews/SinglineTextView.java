@@ -37,7 +37,7 @@ public class SinglineTextView extends TextView {
         Paint paint=getPaint();
         int count=paint.breakText(text,true,width,null);
         String sureText=text;
-        if (count<text.length()) {
+        if (count>0&&count<text.length()) {
             sureText = text.substring(0, count - 1) + "...";
             int measure_width = (int) paint.measureText(sureText);
             while (measure_width > width) {
