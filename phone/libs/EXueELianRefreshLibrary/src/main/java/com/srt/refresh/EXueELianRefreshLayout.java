@@ -283,7 +283,7 @@ public class EXueELianRefreshLayout extends BaseRefreshLayout {
         return valve;
     }
 
-    public interface BuautifulRefreshListener {
+    public interface RefreshListener {
         /**
          * 刷新中
          */
@@ -295,9 +295,9 @@ public class EXueELianRefreshLayout extends BaseRefreshLayout {
         void onLoadMore(EXueELianRefreshLayout refreshLayout);
     }
 
-    private BuautifulRefreshListener listener;
+    private RefreshListener listener;
 
-    public void setBuautifulRefreshListener(BuautifulRefreshListener listener) {
+    public void setRefreshListener(RefreshListener listener) {
         this.listener = listener;
     }
 }
