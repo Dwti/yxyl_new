@@ -17,14 +17,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.QuestionProgressView;
 import com.yanxiu.gphone.student.customviews.QuestionTimeTextView;
 import com.yanxiu.gphone.student.db.SpManager;
 import com.yanxiu.gphone.student.exercise.request.GenQuesRequest;
+import com.yanxiu.gphone.student.homework.response.PaperResponse;
 import com.yanxiu.gphone.student.questions.answerframe.adapter.QAViewPagerAdapter;
 import com.yanxiu.gphone.student.questions.answerframe.listener.OnAnswerCardItemSelectListener;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.AnswerCardFragment;
@@ -33,9 +36,11 @@ import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.Exercise
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
+import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.questions.answerframe.view.QAViewPager;
 import com.yanxiu.gphone.student.util.DataFetcher;
 import com.yanxiu.gphone.student.util.KeyboardObserver;
+import com.yanxiu.gphone.student.util.ToastManager;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -50,6 +55,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
     private QAViewPagerAdapter mAdapter;
     private String mKey;//获取数据的key
     private String mFromType;//从哪个页面跳转过来的（练习页面）
+    private GenQuesRequest mGenQuesequest;//从选择章节只是点进入答题页，章节知识点的请求Request
     private String mTitleString;//试卷的title-答题卡需要
     private Paper mPaper;//试卷数据
     private ArrayList<BaseQuestion> mQuestions;//题目数据
@@ -107,7 +113,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
      */
     private void initExerciseData(){
         if(Constants.MAINAVTIVITY_FROMTYPE_EXERCISE.equals(mFromType)){
-            //todo  @sunpeng 初始化练习页面传过来的数据，应该是获取传过来的bean
+            mGenQuesequest = (GenQuesRequest)getIntent().getSerializableExtra(Constants.EXTRA_REQUEST);
         }
     }
 
@@ -414,6 +420,14 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
 
     public QuestionProgressView getProgressView() {
         return mProgressView;
+    }
+
+    public String getFromType() {
+        return mFromType;
+    }
+
+    public GenQuesRequest getGenQuesequest() {
+        return mGenQuesequest;
     }
 
     @Override

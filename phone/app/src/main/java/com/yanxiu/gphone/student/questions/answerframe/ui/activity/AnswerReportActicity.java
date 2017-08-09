@@ -7,28 +7,38 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.test.yanxiu.network.HttpCallback;
+import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.AnswerReportTitleView;
+import com.yanxiu.gphone.student.customviews.LoadingView;
 import com.yanxiu.gphone.student.customviews.UnMoveGridView;
 import com.yanxiu.gphone.student.customviews.vieweffect.GradientEffect;
 import com.yanxiu.gphone.student.customviews.vieweffect.GradientEffectImpl;
+import com.yanxiu.gphone.student.exercise.request.GenQuesRequest;
+import com.yanxiu.gphone.student.homework.response.PaperResponse;
 import com.yanxiu.gphone.student.questions.answerframe.adapter.AnswerReportAdapter;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
 import com.yanxiu.gphone.student.questions.answerframe.listener.OnAnswerCardItemSelectListener;
+import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionUtil;
+import com.yanxiu.gphone.student.util.DESBodyDealer;
 import com.yanxiu.gphone.student.util.DataFetcher;
 import com.yanxiu.gphone.student.util.ScreenUtils;
 import com.yanxiu.gphone.student.util.TextTypefaceUtil;
 import com.yanxiu.gphone.student.util.TimeUtils;
+import com.yanxiu.gphone.student.util.ToastManager;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -44,6 +54,9 @@ import java.util.Set;
 
 public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswerCardItemSelectListener, View.OnClickListener {
 
+    private String mFromType;//从哪个页面跳转过来的（练习页面）
+    private GenQuesRequest mGenQuesequest;//从选择章节只是点进入答题页，章节知识点的请求Request
+    private LoadingView mLoading_view;//loadingview
 
     private String mKey;//获取数据的key
     private Paper mPaper;//试卷数据
@@ -57,6 +70,8 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
     private View mTitle_bar;
     private TextView mTitle;
     private ImageView mBackview;
+    private View mOnceagainLayout;
+    private Button mOnceagain;//再练一组
     //批改view
     private TextView mTextview_correct;//正确率
     private TextView mTextview_correct_shadow;//正确率的阴影
@@ -86,6 +101,8 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
         mKey = getIntent().getStringExtra(Constants.EXTRA_PAPER);
         if (TextUtils.isEmpty(mKey))
             finish();
+        mFromType = getIntent().getStringExtra(Constants.EXTRA_FROMTYPE);
+        initExerciseData();
         mPaper = DataFetcher.getInstance().getPaper(mKey);
         QuestionUtil.initDataWithAnswer(mPaper);
         mQuestions = new ArrayList<>();
@@ -110,7 +127,22 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
         calculationSpanCount();
     }
 
+    /**
+     * 从练习页面跳转过来的，初始化相关数据
+     */
+    private void initExerciseData(){
+        if(Constants.MAINAVTIVITY_FROMTYPE_EXERCISE.equals(mFromType)){
+            mGenQuesequest = (GenQuesRequest)getIntent().getSerializableExtra(Constants.EXTRA_REQUEST);
+            mOnceagainLayout = findViewById(R.id.wavesLayout);
+            mOnceagain = (Button)findViewById(R.id.onceagain);
+            mOnceagain.setText(getText(R.string.onceagain));
+            mOnceagainLayout.setVisibility(View.VISIBLE);
+            mOnceagain.setOnClickListener(this);
+        }
+    }
+
     private void initView() {
+        mLoading_view = (LoadingView) findViewById(R.id.loading_view);
         mScrollView = (ScrollView) findViewById(R.id.scrollView);
         mNopigai_layout = (RelativeLayout) findViewById(R.id.nopigai_layout);
         mPigai_layout = (RelativeLayout) findViewById(R.id.pigai_layout);
@@ -215,15 +247,27 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
         mSpacing = (screenWidth - item_width * mSpanCount) / (mSpanCount + 1);
     }
 
-
     /**
-     * 跳转AnswerQuestionActivity
+     * 跳转AnswerReportActicity
      *
      * @param activity
      */
     public static void invoke(Activity activity, String key) {
         Intent intent = new Intent(activity, AnswerReportActicity.class);
         intent.putExtra(Constants.EXTRA_PAPER, key);
+        activity.startActivity(intent);
+    }
+
+    /**
+     * 练习跳转AnswerReportActicity
+     *
+     * @param activity
+     */
+    public static void invoke(Activity activity, String key,String fromType, GenQuesRequest request) {
+        Intent intent = new Intent(activity, AnswerReportActicity.class);
+        intent.putExtra(Constants.EXTRA_PAPER, key);
+        intent.putExtra(Constants.EXTRA_FROMTYPE, fromType);
+        intent.putExtra(Constants.EXTRA_REQUEST,request);
         activity.startActivity(intent);
     }
 
@@ -239,6 +283,32 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
         switch (v.getId()) {
             case R.id.backview:
                 finish();
+                break;
+            case R.id.onceagain:
+                 //练习里，再练一组的请求
+                if(mGenQuesequest != null){
+                    mLoading_view.showLoadingView();
+                    mGenQuesequest.bodyDealer = new DESBodyDealer();
+                    mGenQuesequest.startRequest(PaperResponse.class,new EXueELianBaseCallback<PaperResponse>() {
+                        @Override
+                        public void onResponse(RequestBase request, PaperResponse ret) {
+                            mLoading_view.hiddenLoadingView();
+                            if(ret.getStatus().getCode() == 0){
+                                Paper paper = new Paper(ret.getData().get(0), QuestionShowType.ANSWER);
+                                DataFetcher.getInstance().save(paper.getId(),paper);
+                                AnswerQuestionActivity.invoke(AnswerReportActicity.this,paper.getId(), Constants.MAINAVTIVITY_FROMTYPE_EXERCISE,mGenQuesequest);
+                            }else {
+                                ToastManager.showMsg(ret.getStatus().getDesc());
+                            }
+                        }
+
+                        @Override
+                        public void onFail(RequestBase request, Error error) {
+                            mLoading_view.hiddenLoadingView();
+                            ToastManager.showMsg(error.getLocalizedMessage());
+                        }
+                    });
+                }
                 break;
         }
     }
