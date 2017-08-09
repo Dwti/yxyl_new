@@ -210,7 +210,6 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         if (mAnswerCardFragment != null) {
             mFragmentManager.beginTransaction().remove(mAnswerCardFragment).commit();
         }
-
         // 2, 跳转
         int index = item.getLevelPositions().get(0);
         FragmentStatePagerAdapter a1 = (FragmentStatePagerAdapter) mViewPager.getAdapter();
@@ -226,6 +225,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
             AnswerComplexExerciseBaseFragment f = (AnswerComplexExerciseBaseFragment) a.instantiateItem(mViewPager, index);
             f.setChildrenPositionRecursively(remainPositions);
         }
+        controlListenView(false);
     }
 
     public View getRootView(){
@@ -245,6 +245,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         if (mFragmentManager.findFragmentById(R.id.fragment_answercard) == null) {
             mFragmentManager.beginTransaction().add(R.id.fragment_answercard, mAnswerCardFragment).commit();
         }
+        controlListenView(true);
     }
 
     /**
@@ -412,6 +413,34 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
                 mPrevious_question.setVisibility(View.VISIBLE);
             }
         }
+    }
+
+    /**
+     * 答题卡显示或隐藏，回调给fragment，用来控制听力播放控件
+     */
+    public void controlListenView(boolean answerCardFragmentIsShwon) {
+        ExerciseBaseFragment currentFramgent = null;//当前的Fragment
+        FragmentStatePagerAdapter adapter;
+        int index;//当前Fragment在外层viewPager中的index
+        int size;//viewPager的总共的size
+        try {
+            adapter = (FragmentStatePagerAdapter) mViewPager.getAdapter();
+            index = mViewPager.getCurrentItem();
+            currentFramgent = (ExerciseBaseFragment) adapter.instantiateItem(mViewPager, index);
+            size = adapter.getCount();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+
+        if (adapter == null || index < 0 || size < 1 || mViewPager == null || currentFramgent == null)
+            return;
+
+        if (currentFramgent instanceof ExerciseBaseFragment) {
+            ExerciseBaseFragment fragment = (ExerciseBaseFragment) currentFramgent;
+            fragment.onAnswerCardVisibleToUser(answerCardFragmentIsShwon);
+        }
+
     }
 
     public Paper getPaper() {

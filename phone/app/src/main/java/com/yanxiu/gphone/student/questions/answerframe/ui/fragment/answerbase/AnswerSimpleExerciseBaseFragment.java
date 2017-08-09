@@ -96,6 +96,30 @@ public abstract class AnswerSimpleExerciseBaseFragment extends AnswerExerciseBas
         }
     }
 
+    /**
+     * 答题卡显示或者隐藏时，给页面的回调，用来控制听力控件
+     * @param isVisibleToUser  true :答题卡显示 false : 答题卡不显示
+     */
+    @Override
+    public void onAnswerCardVisibleToUser(boolean isVisibleToUser) {
+        super.onAnswerCardVisibleToUser(isVisibleToUser);
+        if (!isVisibleToUser) {
+            if (null != mListenView) {
+                mListenView.setResume();
+                if (mData.mIsShouldPlay&&!mData.mIsPause){
+                    mListenView.setPlayToProgress(mData.mProgress,mData.mMax);
+                    mData.mIsShouldPlay=false;
+                }else if (mData.mIsShouldPlay&&mData.mIsPause){
+                    mListenView.setPauseToProgress(mData.mProgress,mData.mMax);
+                    mData.mIsShouldPlay=false;
+                }
+            }
+        } else {
+            if (null != mListenView)
+                mListenView.setPause();
+        }
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();

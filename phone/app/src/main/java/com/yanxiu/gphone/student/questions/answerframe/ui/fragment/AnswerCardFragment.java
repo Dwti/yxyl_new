@@ -166,6 +166,7 @@ public class AnswerCardFragment extends YanxiuBaseFragment implements View.OnCli
                 break;
             case R.id.backview:
                 getActivity().getSupportFragmentManager().beginTransaction().remove(AnswerCardFragment.this).commit();
+                mActivity.controlListenView(false);
                 break;
         }
     }

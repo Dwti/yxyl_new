@@ -66,4 +66,16 @@ public class ListenAnswerComplexFragment extends AnswerComplexExerciseBaseFragme
         }
     }
 
+    /**
+     * 答题卡显示或者隐藏时，给页面的回调，用来控制听力控件
+     * @param isVisibleToUser  true :答题卡显示 false : 答题卡不显示
+     */
+    @Override
+    public void onAnswerCardVisibleToUser(boolean isVisibleToUser) {
+        super.onAnswerCardVisibleToUser(isVisibleToUser);
+        if (topFragment!=null) {
+            topFragment.setVisibleToUser(!isVisibleToUser);
+        }
+    }
+
 }

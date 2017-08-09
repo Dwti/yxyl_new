@@ -331,4 +331,12 @@ public abstract class ExerciseBaseFragment extends YanxiuBaseFragment implements
             acticity.getProgressView().updateProgress(answeredCount);
         }
     }
+
+    /**
+     * 答题卡显示或者隐藏时，给页面的回调，用来控制听力复合题和单题型的听力控件
+     * @param isVisibleToUser  true :答题卡显示 false : 答题卡不显示
+     */
+    public void onAnswerCardVisibleToUser(boolean isVisibleToUser){
+
+    }
 }
