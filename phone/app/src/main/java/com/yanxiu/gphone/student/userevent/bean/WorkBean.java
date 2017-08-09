@@ -6,12 +6,10 @@ package com.yanxiu.gphone.student.userevent.bean;
  * Function :
  */
 public class WorkBean {
-    public String stageId;
-    public String waitFinishNum;
     /**
-     * 班级ID
+     * 年级ID
      */
-    public String classId;
+    public String stageId;
     /**
      * 题目数量
      */
