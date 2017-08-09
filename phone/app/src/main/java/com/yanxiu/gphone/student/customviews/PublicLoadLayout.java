@@ -25,6 +25,7 @@ public class PublicLoadLayout extends FrameLayout{
     private RelativeLayout mOtherErrorLayoutContainer;//其他错误页面容器，默认网络错误页面
 //    private View mNetErrorLayout;//错误页面容器，默认网络错误页面
     private Button mRetry_button;//重试按钮
+    private View mLoadingLayout;//loadingLayout
     private ImageView mLoadingView;// loadingView
     private Animation mLoadingAnim;//loadingView动画
 
@@ -67,11 +68,12 @@ public class PublicLoadLayout extends FrameLayout{
      * 初始化加载动画布局
      */
     private void initLoadingView() {
+        mLoadingLayout = findViewById(R.id.loadingLayout);
         mLoadingView = (ImageView) findViewById(R.id.loadingView);
         mLoadingAnim = AnimationUtils.loadAnimation(mContext, R.anim.lodingview_progress);
         LinearInterpolator lin = new LinearInterpolator();
         mLoadingAnim.setInterpolator(lin);
-        mLoadingView.setVisibility(GONE);
+        mLoadingLayout.setVisibility(GONE);
     }
 
 
@@ -137,7 +139,7 @@ public class PublicLoadLayout extends FrameLayout{
      */
     public void showLoadingView() {
         if (mLoadingView != null && mLoadingAnim != null) {
-            mLoadingView.setVisibility(View.VISIBLE);
+            mLoadingLayout.setVisibility(View.VISIBLE);
             mLoadingView.clearAnimation();
             mLoadingView.startAnimation(mLoadingAnim);
         }
@@ -149,7 +151,7 @@ public class PublicLoadLayout extends FrameLayout{
     public void hiddenLoadingView() {
         if (mLoadingView != null && mLoadingAnim != null) {
             mLoadingView.clearAnimation();
-            mLoadingView.setVisibility(View.GONE);
+            mLoadingLayout.setVisibility(View.GONE);
         }
     }
 
