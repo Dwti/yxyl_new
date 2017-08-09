@@ -138,7 +138,7 @@ public class SubjectHistoryActivity extends Activity {
     private void showDataEmptyView(){
         mListView.setVisibility(View.GONE);
         mTipsView.setVisibility(View.VISIBLE);
-        mTips.setText(R.string.class_no_homework);
+        mTips.setText(R.string.no_exercise);
         mRefreshBtn.setText(R.string.click_to_refresh);
     }
 

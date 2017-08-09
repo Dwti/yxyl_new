@@ -23,6 +23,7 @@ import com.yanxiu.gphone.student.homework.response.JoinClassResponse;
 import com.yanxiu.gphone.student.homework.request.UpdateUserInfoRequest;
 import com.yanxiu.gphone.student.homework.response.UpdateUserInfoResponse;
 import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
+import com.yanxiu.gphone.student.userevent.UserEventManager;
 import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.ToastManager;
 
@@ -173,6 +174,7 @@ public class JoinClassActivity extends Activity {
                 }else if(mClassStatus == NEED_VERIFY){
                     ToastManager.showMsg(getString(R.string.need_verify));
                 }
+                UserEventManager.getInstense().whenEnterClass();
             }else {
                 ToastManager.showMsg(ret.getStatus().getDesc());
             }

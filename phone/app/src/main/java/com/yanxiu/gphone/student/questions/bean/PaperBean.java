@@ -19,7 +19,7 @@ public class PaperBean extends BaseBean {
     private String endtime;
     private String id;
     private String name;
-    private PaperStatusBean paperStatus;
+    private PaperStatusBean paperStatus = new PaperStatusBean();
     private List<PaperTestBean> paperTest;
     private String parentId;
     private String ptype;

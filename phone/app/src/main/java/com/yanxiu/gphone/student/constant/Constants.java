@@ -35,6 +35,7 @@ public class Constants {
     public static final String EXTRA_COME = "extra_Come";//数据来源
     public static final String COME_REPORT = "come_report";//在解析页标识来源--来自于答题报告
     public static final String EXTRA_PAPER = "extra_Paper";//传递给答题页的paper数据的key
+    public static final String EXTRA_REQUEST = "extra_Request";//从选择章节只是点进入答题页，章节知识点的请求Request
     public static final String EXTRA_QID = "extra_Qid";//传递给报错页的题目的qid
     public static final String EXTRA_FROMTYPE = "extra_fromtype";//答题页的来源
     public static final String EXTRA_ANALYSIS_LEVELPOSITION = "extra_levelPositions";//答题报告传递给解析页的levelPositions

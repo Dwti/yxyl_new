@@ -12,6 +12,7 @@ public class Node<T extends Node> extends BaseBean {
     protected boolean isExpanded = false;
     protected int level = 0;
     protected List<T> children;
+    protected T parent;
 
     public boolean isExpanded() {
         return isExpanded;
@@ -39,5 +40,13 @@ public class Node<T extends Node> extends BaseBean {
 
     public boolean hasChildren(){
         return children != null && children.size() >0;
+    }
+
+    public T getParent() {
+        return parent;
+    }
+
+    public void setParent(T parent) {
+        this.parent = parent;
     }
 }
