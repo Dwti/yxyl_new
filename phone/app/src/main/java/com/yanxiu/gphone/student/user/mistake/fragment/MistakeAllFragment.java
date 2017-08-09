@@ -30,7 +30,7 @@ import de.greenrobot.event.EventBus;
  * Time : 2017/7/13 10:39.
  * Function :
  */
-public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAllAdapter.onItemClickListener, EXueELianRefreshLayout.RefreshListener {
+public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAllAdapter.onItemClickListener, EXueELianRefreshLayout.RefreshListener ,View.OnClickListener{
 
     private static final String DEFAULT_QID = "0";
 
@@ -114,6 +114,10 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
                         mRefreshView.setLoadMoreEnable(true);
                     }
                 } else {
+                    if (currentId.equals("0")){
+                        rootView.showNetErrorView();
+                        mMistakeAllAdapter.clear();
+                    }
                     ToastManager.showMsg(response.getStatus().getDesc());
                 }
             }
@@ -123,6 +127,9 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
                 rootView.hiddenLoadingView();
                 mRefreshView.finishLoadMore();
                 mRefreshView.finishRefreshing();
+                if (currentId.equals("0")){
+                    rootView.showNetErrorView();
+                }
                 ToastManager.showMsg(error.getMessage());
             }
         });
@@ -178,5 +185,16 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
     @Override
     public void onLoadMore(EXueELianRefreshLayout refreshLayout) {
         requestData(mMistakeAllAdapter.getLastItemWqid());
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.retry_button:
+                rootView.hiddenNetErrorView();
+                rootView.showLoadingView();
+                onRefresh(null);
+                break;
+        }
     }
 }

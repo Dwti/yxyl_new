@@ -73,6 +73,7 @@ public class MistakeListActivity extends YanxiuBaseActivity implements View.OnCl
     private void listener() {
         mBackView.setOnClickListener(MistakeListActivity.this);
         mMistakeAdapter.addClickListener(MistakeListActivity.this);
+        rootView.setRetryButtonOnclickListener(MistakeListActivity.this);
     }
 
     private void initData() {
@@ -95,7 +96,11 @@ public class MistakeListActivity extends YanxiuBaseActivity implements View.OnCl
                 rootView.hiddenLoadingView();
                 if (response.getStatus().getCode()==0){
                     mMistakeAdapter.setData(response.data);
+                }else if (response.getStatus().getCode()==67){
+                    //no data
+                    rootView.showOtherErrorView();
                 }else {
+                    rootView.showNetErrorView();
                     ToastManager.showMsg(response.getStatus().getDesc());
                 }
             }
@@ -103,6 +108,7 @@ public class MistakeListActivity extends YanxiuBaseActivity implements View.OnCl
             @Override
             public void onFail(RequestBase request, Error error) {
                 rootView.hiddenLoadingView();
+                rootView.showNetErrorView();
                 ToastManager.showMsg(error.getMessage().trim());
             }
         });
@@ -145,6 +151,10 @@ public class MistakeListActivity extends YanxiuBaseActivity implements View.OnCl
         switch (v.getId()){
             case R.id.iv_left:
                 finish();
+                break;
+            case R.id.retry_button:
+                rootView.hiddenNetErrorView();
+                requestData();
                 break;
         }
     }

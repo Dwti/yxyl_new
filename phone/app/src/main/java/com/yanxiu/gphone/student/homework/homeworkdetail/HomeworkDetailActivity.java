@@ -197,7 +197,7 @@ public class HomeworkDetailActivity extends Activity implements HomeworkDetailCo
         for(HomeworkDetailBean bean : list){
             WorkBean work = new WorkBean();
             work.stageId = LoginInfo.getStageid();
-            work.waitFinishNum = bean.getQuesnum();
+            work.questionNum = bean.getQuesnum();
             works.add(work);
         }
         UserEventManager.getInstense().whenReceiveWork(works);
