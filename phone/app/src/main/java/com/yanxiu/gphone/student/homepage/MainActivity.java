@@ -3,8 +3,11 @@ package com.yanxiu.gphone.student.homepage;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -16,6 +19,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.igexin.sdk.PushManager;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
@@ -135,6 +140,18 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
         mNavTextViews[0].setText(R.string.navi_tbm_group);
         mNavTextViews[1].setText(R.string.exercises);
         mNavTextViews[2].setText(R.string.navi_tbm_my);
+
+        // Todo 移除icon背景色 后期美工出切图后，这行代码可以去掉
+        mNavIconViews[2].setBackground(null);
+
+        Glide.with(this).load(LoginInfo.getHeadIcon()).asBitmap().into(new BitmapImageViewTarget(mNavIconViews[2]){
+            @Override
+            protected void setResource(Bitmap resource) {
+                RoundedBitmapDrawable bitmapDrawable= RoundedBitmapDrawableFactory.create(view.getContext().getResources(),resource);
+                bitmapDrawable.setCircular(true);
+                view.setImageDrawable(bitmapDrawable);
+            }
+        });
     }
 
     @Override

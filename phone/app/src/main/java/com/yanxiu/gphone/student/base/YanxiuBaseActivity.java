@@ -40,7 +40,7 @@ public class YanxiuBaseActivity extends FragmentActivity implements EasyPermissi
     protected void onResume() {
         super.onResume();
         if (!isActive) {
-            isActive=true;
+            isActive = true;
             UserEventManager.getInstense().whenEnterFront();
         }
     }
@@ -48,8 +48,8 @@ public class YanxiuBaseActivity extends FragmentActivity implements EasyPermissi
     @Override
     protected void onStop() {
         super.onStop();
-        if (isAppOnForeground()) {
-            isActive=false;
+        if (!isAppOnForeground()) {
+            isActive = false;
             UserEventManager.getInstense().whenEnterBack();
         }
     }
@@ -177,7 +177,7 @@ public class YanxiuBaseActivity extends FragmentActivity implements EasyPermissi
                     return true;
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return false;

@@ -149,7 +149,9 @@ public class UserEventManager {
     }
 
     private void saveToDb(String data) {
-        UserEventBean eventBean = new UserEventBean(data);
-        eventBean.save();
+        if (data!=null) {
+            UserEventBean eventBean = new UserEventBean(data);
+            eventBean.save();
+        }
     }
 }
