@@ -32,7 +32,7 @@ public class YanxiuApplication extends LitePalApplication {
         if (SpManager.isFristStartUp()) {
             UserEventManager.getInstense().whenFirstStart();
         }else {
-            UserEventManager.getInstense().whenEnterFront();
+            UserEventManager.getInstense().whenStartApp();
         }
     }
 

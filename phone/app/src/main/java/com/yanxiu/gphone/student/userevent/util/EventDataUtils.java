@@ -87,6 +87,8 @@ public class EventDataUtils {
             reserved.put(Constants.UserEvent.EVENT_ID, Constants.UserEvent.UserEventID.RECEIVE_WORK);
             reserved.put(Constants.UserEvent.CLASS_ID, bean.stageId);
             reserved.put(Constants.UserEvent.QUES_Num, bean.waitFinishNum);
+            reserved.put(Constants.UserEvent.CLASS_ID, bean.classId);
+            reserved.put(Constants.UserEvent.QUES_Num, bean.questionNum);
             map.put(Constants.UserEvent.RESERVED, eventMapToJsonString(reserved));
             hashMaps.add(map);
         }
@@ -122,7 +124,6 @@ public class EventDataUtils {
         map.put(Constants.UserEvent.EVENT_ID,Constants.UserEvent.UserEventID.ENTER_CLASS);
         return eventMapToJsonMap(map);
     }
-
 
     public static String getFirstStartMap(){
         HashMap<String,String> map=getEventDataMap();

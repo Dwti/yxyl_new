@@ -44,7 +44,7 @@
             android:layout_height="@dimen/mistake_list_item_icon_w_h"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/mistake_list_item_padding_l"
-            android:background="@drawable/bind_mobile"
+            android:background="@drawable/user_info_name"
             android:contentDescription="@null" />
 
         <TextView
@@ -96,7 +96,7 @@
             android:layout_height="@dimen/mistake_list_item_icon_w_h"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/mistake_list_item_padding_l"
-            android:background="@drawable/bind_mobile"
+            android:background="@drawable/user_info_sex"
             android:contentDescription="@null" />
 
         <TextView
@@ -148,7 +148,7 @@
             android:layout_height="@dimen/mistake_list_item_icon_w_h"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/mistake_list_item_padding_l"
-            android:background="@drawable/bind_mobile"
+            android:background="@drawable/user_info_school"
             android:contentDescription="@null" />
 
         <TextView

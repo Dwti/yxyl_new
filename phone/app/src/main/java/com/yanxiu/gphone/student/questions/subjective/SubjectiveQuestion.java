@@ -113,7 +113,7 @@ public class SubjectiveQuestion extends BaseQuestion {
 
     @Override
     public ExerciseBaseFragment wrongFragment() {
-        return null;
+        return new SubjectiveWrongFragment();
     }
 
     @Override
