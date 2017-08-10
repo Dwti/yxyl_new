@@ -153,11 +153,9 @@ public class AnswerCardFragment extends YanxiuBaseFragment implements View.OnCli
                 switch (checkAnswerState()) {
                     case STATE_HAS_NO_ANSWERED:
                         mDialog.showConfirmView();
-//                        mDialog.show();
                         break;
                     case STATE_PROGRESS:
                         mDialog.showProgressView();
-//                        mDialog.show();
                         requestSubmmit();
                         break;
                     default:

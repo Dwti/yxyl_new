@@ -301,4 +301,7 @@
 
     <string name="no_more_data">没有更多数据了</string>
     <string name="onceagain">再练一组</string>
+    <string name="question_no_finish_live">您可以在练习历史中找到记录并继续答题</string>
+    <string name="quite">离开</string>
+    <string name="submit_exericse_answer">"提交练习答案"</string>
 </resources>
