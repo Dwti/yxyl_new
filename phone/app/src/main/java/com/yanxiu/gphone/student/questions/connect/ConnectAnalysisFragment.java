@@ -108,8 +108,12 @@ public class ConnectAnalysisFragment extends AnalysisSimpleExerciseBaseFragment 
             showDifficultyview(mQuestion.getStarCount());
             String answer="";
             if (mQuestion.getServer_answer()!=null){
-                for (String s:mQuestion.getCorrectAnswer()){
-                    answer+=s;
+                for (int i = 0; i < mQuestion.getCorrectAnswer().size(); i++) {
+                    if(i < mQuestion.getCorrectAnswer().size() -1){// 不是最后一个
+                        answer += mQuestion.getCorrectAnswer().get(i) + ",";
+                    }else{
+                        answer += mQuestion.getCorrectAnswer().get(i);
+                    }
                 }
             }
             showAnswerView(answer);

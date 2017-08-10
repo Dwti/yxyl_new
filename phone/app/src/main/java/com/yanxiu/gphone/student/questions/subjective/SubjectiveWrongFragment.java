@@ -61,8 +61,12 @@ public class SubjectiveWrongFragment extends AnalysisSimpleExerciseBaseFragment 
     public void initAnalysisView() {
         String answer = "";
         if (mData.getSubjectAnswer() != null) {
-            for (String s : mData.getSubjectAnswer()) {
-                answer += s;
+            for (int i = 0; i < mData.getSubjectAnswer().size(); i++) {
+                if(i < mData.getSubjectAnswer().size() -1){// 不是最后一个
+                    answer += mData.getSubjectAnswer().get(i) + ",";
+                }else{
+                    answer += mData.getSubjectAnswer().get(i);
+                }
             }
         }
         if (mData.getTypeId() == QuestionUtil.QUESTION_TYP.QUESTION_FILL_BLANKS.type || mData.getTypeId() == QuestionUtil.QUESTION_TYP.QUESTION_TRANSLATION.type || mData.getTypeId() == QuestionUtil.QUESTION_TYP.QUESTION_SUBJECTSWERE.type) {
