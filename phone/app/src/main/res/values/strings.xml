@@ -301,4 +301,7 @@
 
     <string name="no_more_data">没有更多数据了</string>
     <string name="onceagain">再练一组</string>
+
+    <string name="edit_note">编辑笔记</string>
+    <string name="note_desc">请输入笔记详情</string>
 </resources>

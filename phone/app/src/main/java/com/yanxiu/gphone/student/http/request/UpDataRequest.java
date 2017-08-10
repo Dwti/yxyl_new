@@ -48,10 +48,31 @@ public class UpDataRequest {
         Object getImgTag(int position);
     }
 
+    public interface onUpDatalistener {
+        void onUpDataStart(int position, Object tag);
+
+        void onUpDataSuccess(int position, Object tag, String jsonString);
+
+        void onUpDataFailed(int position, Object tag, String failMsg);
+
+        void onError(String errorMsg);
+    }
+
+    public interface onProgressListener {
+        void onRequestStart();
+
+        void onProgress(int index);
+
+        void onRequestEnd();
+    }
+
     private static final String IMGKEY = "img";
     private static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
 
     private Handler mHandler = new Handler(Looper.getMainLooper());
+
+    private int totalCount = 0;
+    private int index = 0;
 
     private static UpDataRequest mUpDataRequest;
     private final OkHttpClient mOkHttpClient;
@@ -59,6 +80,7 @@ public class UpDataRequest {
     private findConstantParams mFindConstantParams;
     private findImgPath mFindImgPath;
     private findImgTag mFindImgTag;
+    private onProgressListener mProgressListener;
 
     public static UpDataRequest getInstense() {
         if (mUpDataRequest == null) {
@@ -86,6 +108,11 @@ public class UpDataRequest {
         return mUpDataRequest;
     }
 
+    public UpDataRequest setProgressListener(onProgressListener progressListener) {
+        this.mProgressListener = progressListener;
+        return mUpDataRequest;
+    }
+
     public void setListener(@Nullable onUpDatalistener upDatalistener) {
         int fileNumber;
         String url;
@@ -99,6 +126,11 @@ public class UpDataRequest {
                 upDatalistener.onError("can not find constant params");
             }
             return;
+        }
+        index = 0;
+        totalCount = fileNumber;
+        if (mProgressListener != null) {
+            mProgressListener.onRequestStart();
         }
         for (int i = 0; i < fileNumber; i++) {
             upData(url, i, params, upDatalistener);
@@ -173,6 +205,15 @@ public class UpDataRequest {
         mOkHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
+                if (mProgressListener != null) {
+                    index++;
+                    postMainThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mProgressListener.onProgress(index);
+                        }
+                    });
+                }
                 if (upDatalistener != null) {
                     final String message = e.getMessage();
                     Object tag = null;
@@ -187,10 +228,29 @@ public class UpDataRequest {
                         }
                     });
                 }
+                if (index == totalCount) {
+                    if (mProgressListener != null) {
+                        postMainThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                mProgressListener.onRequestEnd();
+                            }
+                        });
+                    }
+                }
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+                if (mProgressListener != null) {
+                    index++;
+                    postMainThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mProgressListener.onProgress(index);
+                        }
+                    });
+                }
                 if (upDatalistener != null) {
                     final String jsonString = response.body().string();
                     Object tag = null;
@@ -205,18 +265,18 @@ public class UpDataRequest {
                         }
                     });
                 }
+                if (index == totalCount) {
+                    if (mProgressListener != null) {
+                        postMainThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                mProgressListener.onRequestEnd();
+                            }
+                        });
+                    }
+                }
             }
         });
-    }
-
-    public interface onUpDatalistener {
-        void onUpDataStart(int position, Object tag);
-
-        void onUpDataSuccess(int position, Object tag, String jsonString);
-
-        void onUpDataFailed(int position, Object tag, String failMsg);
-
-        void onError(String errorMsg);
     }
 
 }
