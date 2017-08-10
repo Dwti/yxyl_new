@@ -304,7 +304,7 @@ public class PickerViewEx extends View {
         Paint.FontMetrics metrics = nPaint.getFontMetrics();
         float text_height = metrics.descent - metrics.ascent;
 
-        RectF rect = new RectF(0+2,mViewHeight / 2 - (int)text_height,mViewWidth-2,mViewHeight / 2 + (int)text_height);
+        RectF rect = new RectF(0+2,mViewHeight / 2 - (int)text_height - 5,mViewWidth-2,mViewHeight / 2 + (int)text_height + 5);
         canvas.drawRoundRect(rect,6,6,nPaint);
     }
 
