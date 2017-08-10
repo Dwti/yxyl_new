@@ -164,7 +164,7 @@ public class LoginInfo {
     }
 
     /**
-     * 学段ID
+     * 学段ID、年级id
      * @return 学段ID
      */
     public static String getStageid(){

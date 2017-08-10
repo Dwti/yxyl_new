@@ -38,8 +38,10 @@ import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionTemplate;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerReportActicity;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionUtil;
+import com.yanxiu.gphone.student.userevent.UserEventManager;
 import com.yanxiu.gphone.student.util.DESBodyDealer;
 import com.yanxiu.gphone.student.util.DataFetcher;
+import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.ScreenUtils;
 import com.yanxiu.gphone.student.util.ToastManager;
 
@@ -163,6 +165,18 @@ public class AnswerCardFragment extends YanxiuBaseFragment implements View.OnCli
                         requestSubmmit();
                         break;
                 }
+                /**
+                 * 提交练习/作业
+                 *
+                 * @param bedition    教材版本
+                 * @param gradeId     年级ID
+                 * @param subjectId   学科ID
+                 * @param paperType   试卷类型 0，练习，1，作业
+                 * @param questionNum 题目数量
+                 * @param questionId  [qid,qid,qid...]
+                 */
+                getPvData();
+                UserEventManager.getInstense().whenSubmitWork(mPaper.getBedition(), LoginInfo.getStageid(), mPaper.getSubjectid(), mPaperType, mQuestionCount, mQuestionQid);
                 break;
             case R.id.backview:
                 getActivity().getSupportFragmentManager().beginTransaction().remove(AnswerCardFragment.this).commit();
@@ -354,4 +368,30 @@ public class AnswerCardFragment extends YanxiuBaseFragment implements View.OnCli
         }
         super.onDestroy();
     }
+
+    /**
+     * pv上报数据--作答题数和对应的qid
+     */
+    private void getPvData() {
+        mPaperType = Constants.MAINAVTIVITY_FROMTYPE_EXERCISE.equals(mActivity.getFromType())? "0": "1";
+        int count =0;
+        StringBuffer sb = new StringBuffer("[");
+        for (int i = 0; i < mQuestions.size(); i++) {
+            if (mQuestions.get(i).getIsAnswer()) { //作答的
+                count++;
+                sb.append(mQuestions.get(i).getQid()+",");
+            }
+        }
+        if (count == 0){
+            sb = null;
+        }else{
+            sb.replace(sb.length()-1,sb.length(),"]");
+        }
+        mQuestionCount = String.valueOf(count);
+        mQuestionQid = sb != null ? sb.toString() : "";
+
+    }
+    private String mQuestionCount = "";//pv数据
+    private String mQuestionQid = "";//pv数据
+    private String mPaperType = "1";//pv数据
 }

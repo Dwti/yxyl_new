@@ -18,7 +18,7 @@ public class UserMessageBean extends DataSupport {
     private String mobile;
     private String nickname;
     private String realname;
-    private String stageid;
+    private String stageid;//年级id
     private String stageName;
     private String schoolid;
     private String schoolName;

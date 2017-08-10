@@ -125,7 +125,7 @@ public class ClassifyQuestion extends BaseQuestion {
 
     @Override
     public ExerciseBaseFragment wrongFragment() {
-        return null;
+        return new ClassifyWrongFragment();
     }
 
     @Override
