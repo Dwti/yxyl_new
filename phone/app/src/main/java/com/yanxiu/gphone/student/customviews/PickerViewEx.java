@@ -317,10 +317,10 @@ public class PickerViewEx extends View {
         float d = (float) (MARGIN_ALPHA * mMinTextSize * position + type
                 * mMoveLen);
         float scale = parabola(mViewHeight / 4.0f, d);
-        float size = (mMaxTextSize - mMinTextSize) * scale + mMinTextSize;
+        float size = (mMaxTextSize - mMinTextSize) * scale + mMinTextSize + (3-position) * 5 ;
         nPaint.setTextSize(size);
         nPaint.setAlpha((int) ((mMaxTextAlpha - mMinTextAlpha) * scale + mMinTextAlpha));
-        float y = (float) (mViewHeight / 2.0 + type * d);
+        float y = (float) (mViewHeight / 2.0 + type * d - type * (position - 1) * 30);
         FontMetricsInt fmi = nPaint.getFontMetricsInt();
         float baseline = (float) (y - (fmi.bottom / 2.0 + fmi.top / 2.0));
 
