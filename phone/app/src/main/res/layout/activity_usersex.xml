@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_edf0ee"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/include_top"
+        layout="@layout/main_public_top_layout" />
+
+    <com.yanxiu.gphone.student.customviews.PickerView
+        android:id="@+id/pv_stage"
+        android:layout_width="@dimen/choose_stage_w"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/color_edf0ee"
+        app:choose_max_textsize="@dimen/choose_stage_text_max_size"
+        app:choose_min_textsize="@dimen/choose_stage_text_min_size" />
+
+</LinearLayout>

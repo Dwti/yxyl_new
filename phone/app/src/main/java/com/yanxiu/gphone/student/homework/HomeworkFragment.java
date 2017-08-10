@@ -16,11 +16,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.srt.refresh.EXueELianRefreshLayout;
 import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.base.HomePageBaseFragment;
+import com.yanxiu.gphone.student.customviews.LoadingView;
 import com.yanxiu.gphone.student.homework.classmanage.activity.ClassInfoActivity;
 import com.yanxiu.gphone.student.homework.classmanage.ClassStatus;
 import com.yanxiu.gphone.student.homework.classmanage.fragment.SearchClassFragment;
@@ -58,9 +60,11 @@ public class HomeworkFragment extends HomePageBaseFragment implements SearchClas
 
     private Button mRefreshBtn;
 
+    private LoadingView mLoadingView;
+
     private ImageView mBtnCheckClassInfo;
 
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private EXueELianRefreshLayout mRefreshLayout;
 
     private ListView mListView;
 
@@ -71,11 +75,12 @@ public class HomeworkFragment extends HomePageBaseFragment implements SearchClas
         View root = inflater.inflate(R.layout.fragment_homework, container, false);
         mBtnCheckClassInfo = (ImageView) root.findViewById(R.id.iv_join_class);
         mTitle = (TextView) root.findViewById(R.id.tv_title);
+        mLoadingView = (LoadingView) root.findViewById(R.id.loading);
         mListView = (ListView) root.findViewById(R.id.list_view);
         mTipsView = root.findViewById(R.id.tips_layout);
         mTips = (TextView) root.findViewById(R.id.tv_tips);
         mRefreshBtn = (Button) root.findViewById(R.id.btn_refresh);
-        mSwipeRefreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.swipeRefreshLayout);
+        mRefreshLayout = (EXueELianRefreshLayout) root.findViewById(R.id.refreshLayout);
 
         mHomeworkAdapter = new HomeworkAdapter(new ArrayList<SubjectBean>(0));
         mListView.setAdapter(mHomeworkAdapter);
@@ -98,26 +103,29 @@ public class HomeworkFragment extends HomePageBaseFragment implements SearchClas
             }
         });
 
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        mRefreshLayout.setRefreshListener(new EXueELianRefreshLayout.RefreshListener() {
             @Override
-            public void onRefresh() {
+            public void onRefresh(EXueELianRefreshLayout refreshLayout) {
                 loadSubject();
+            }
+
+            @Override
+            public void onLoadMore(EXueELianRefreshLayout refreshLayout) {
+
             }
         });
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), HomeworkDetailActivity.class);
-                intent.putExtra(HomeworkDetailActivity.EXTRA_SUBJECT_ID,((SubjectBean)mHomeworkAdapter.getItem(position)).getId());
-                intent.putExtra(HomeworkDetailActivity.EXTRA_SUBJECT_NAME,((SubjectBean)mHomeworkAdapter.getItem(position)).getName());
-                startActivity(intent);
+                String homeworkId = ((SubjectBean)mHomeworkAdapter.getItem(position)).getId();
+                String name = ((SubjectBean)mHomeworkAdapter.getItem(position)).getName();
+                HomeworkDetailActivity.invoke(getActivity(),homeworkId,name);
             }
         });
         mRefreshBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                clearSubjects();
-                showContentView();
+                mLoadingView.showLoadingView();
                 loadSubject();
             }
         });
@@ -164,18 +172,22 @@ public class HomeworkFragment extends HomePageBaseFragment implements SearchClas
         }
     };
 
-    private void loadSubject() {
-        mSwipeRefreshLayout.setRefreshing(true);
+    public void loadSubject() {
         SubjectRequest request = new SubjectRequest();
         request.startRequest(SubjectResponse.class, mLoadSubjectCallback);
     }
 
 
     HttpCallback<SubjectResponse> mLoadSubjectCallback = new EXueELianBaseCallback<SubjectResponse>(){
+        @Override
+        public void onSuccess(RequestBase request, SubjectResponse ret) {
+            mRefreshLayout.finishRefreshing();
+            mLoadingView.hiddenLoadingView();
+            super.onSuccess(request, ret);
+        }
 
         @Override
         public void onResponse(RequestBase request, SubjectResponse ret) {
-            mSwipeRefreshLayout.setRefreshing(false);
             if(ret.getStatus().getCode() == ClassStatus.HAS_CLASS.getCode()){  //已经加入班级
                 mClassId = ret.getProperty().getClassId();
                 if(ret.getData() == null || ret.getData().size() == 0){
@@ -198,7 +210,8 @@ public class HomeworkFragment extends HomePageBaseFragment implements SearchClas
 
         @Override
         public void onFail(RequestBase request, Error error) {
-            mSwipeRefreshLayout.setRefreshing(false);
+            mLoadingView.hiddenLoadingView();
+            mRefreshLayout.finishRefreshing();
             showDataErrorView();
         }
     } ;
@@ -219,26 +232,26 @@ public class HomeworkFragment extends HomePageBaseFragment implements SearchClas
     }
 
     private void showContentView(){
-        mSwipeRefreshLayout.setVisibility(View.VISIBLE);
+        mRefreshLayout.setVisibility(View.VISIBLE);
         mTipsView.setVisibility(View.GONE);
     }
 
     private void showDataEmptyView(){
-        mSwipeRefreshLayout.setVisibility(View.GONE);
+        mRefreshLayout.setVisibility(View.GONE);
         mTipsView.setVisibility(View.VISIBLE);
         mTips.setText(R.string.class_no_homework);
         mRefreshBtn.setText(R.string.click_to_refresh);
     }
 
     private void showClassApplyView(){
-        mSwipeRefreshLayout.setVisibility(View.GONE);
+        mRefreshLayout.setVisibility(View.GONE);
         mTipsView.setVisibility(View.VISIBLE);
         mTips.setText(R.string.apply_for_class_checking);
         mRefreshBtn.setText(R.string.click_to_refresh);
     }
 
     private void showDataErrorView(){
-        mSwipeRefreshLayout.setVisibility(View.GONE);
+        mRefreshLayout.setVisibility(View.GONE);
         mTipsView.setVisibility(View.VISIBLE);
         mTips.setText(R.string.load_failed);
         mRefreshBtn.setText(R.string.click_to_retry);
@@ -323,6 +336,4 @@ public class HomeworkFragment extends HomePageBaseFragment implements SearchClas
             return convertView;
         }
     }
-
-
 }

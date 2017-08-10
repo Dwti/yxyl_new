@@ -26,7 +26,8 @@ public class ConnectQuestion extends BaseQuestion {
     private List<String> leftChoices, rightChoices;
     private List<String> correctAnswers = new ArrayList<>(); //转换过的，右边以一半计数，比如choices的大小为10，则"0,5"为"0,0";
     private List<String> filledAnswers = new ArrayList<>();//转换过的，右边以一半计数，比如choices的大小为10，则"0,5"为"0,0";
-    private List<String> serverCorrectAnswers,serverFilledAnswers;//为转换过的，同上，"0,5"就是为"0,5"
+    private List<String> serverCorrectAnswers = new ArrayList<>();
+    private List<String> serverFilledAnswers = new ArrayList<>();//为转换过的，同上，"0,5"就是为"0,5"
 
     private List<PointBean> pointList;
     private int starCount;
@@ -58,7 +59,6 @@ public class ConnectQuestion extends BaseQuestion {
         //处理用户已作答的答案
         if(bean.getQuestions().getPad() != null && bean.getQuestions().getPad().getAnswer() != null){
 
-            serverFilledAnswers  = new ArrayList<>();
             try {
                 JSONArray jsonArray = new JSONArray(bean.getQuestions().getPad().getAnswer());
                 for(int i =0;i<jsonArray.length();i++){
@@ -84,7 +84,6 @@ public class ConnectQuestion extends BaseQuestion {
 
         //处理本题的正确答案
         if(server_answer != null){
-             serverCorrectAnswers = new ArrayList<>();
 
             for(Object o : server_answer){
                 Map<String,String> map = (Map) o;
@@ -127,7 +126,7 @@ public class ConnectQuestion extends BaseQuestion {
 
     @Override
     public ExerciseBaseFragment wrongFragment() {
-        return null;
+        return new ConnectWrongFragment();
     }
 
     @Override

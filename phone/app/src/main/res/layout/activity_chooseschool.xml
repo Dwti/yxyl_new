@@ -16,14 +16,17 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/ll_focus"
             android:layout_width="match_parent"
             android:layout_height="@dimen/common_button_height"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/input_school_layout_margin_l_r"
             android:layout_marginRight="@dimen/input_school_layout_margin_l_r"
             android:layout_marginTop="@dimen/login_button_margin_top"
-            android:background="@drawable/shape_input_school_layout"
+            android:background="@drawable/shape_input_school_layout_unfocus"
             android:gravity="center_vertical"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:orientation="horizontal">
 
             <EditText

@@ -40,7 +40,6 @@ public class HomeworkDetailPresenter implements HomeworkDetailContract.Presenter
 
     @Override
     public void loadHomework() {
-        mHomeworkDetailView.setLoadingIndicator(true);
         mHomeworkRepository.getHomeworkDetails(mHomeworkId, new HomeworkDetailDataSource.LoadHomeworkDetailCallback() {
             @Override
             public void onHomeworkDetailLoaded(List<HomeworkDetailBean> homeworkDetails) {
@@ -77,10 +76,10 @@ public class HomeworkDetailPresenter implements HomeworkDetailContract.Presenter
     @Override
     public void loadMoreHomework() {
         if(!mHomeworkRepository.canLoadMore()){
+            mHomeworkDetailView.setLoadingMoreIndicator(false);
             mHomeworkDetailView.showNoMoreData();
             return;
         }
-        mHomeworkDetailView.setLoadingMoreIndicator(true);
         mHomeworkRepository.getMoreHomeworkDetails(mHomeworkId, new HomeworkDetailDataSource.LoadHomeworkDetailCallback() {
             @Override
             public void onHomeworkDetailLoaded(List<HomeworkDetailBean> homeworkDetails) {

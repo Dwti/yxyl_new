@@ -20,6 +20,7 @@ import com.yanxiu.gphone.student.customviews.WavesLayout;
 import com.yanxiu.gphone.student.login.request.JoinClassRequest;
 import com.yanxiu.gphone.student.login.response.JoinClassResponse;
 import com.yanxiu.gphone.student.login.response.ThridMessageBean;
+import com.yanxiu.gphone.student.userevent.UserEventManager;
 import com.yanxiu.gphone.student.util.EditTextManger;
 import com.yanxiu.gphone.student.util.ToastManager;
 
@@ -73,6 +74,7 @@ public class JoinClassActivity extends YanxiuBaseActivity implements View.OnClic
         initView();
         initData();
         Listener();
+        UserEventManager.getInstense().whenRegistSuccess();
     }
 
     @Override
@@ -117,7 +119,7 @@ public class JoinClassActivity extends YanxiuBaseActivity implements View.OnClic
         switch (v.getId()){
             case R.id.iv_left:
                 JoinClassActivity.this.finish();
-                EditTextManger.getManager(mTitleView).hideSoftInput(mContext);
+                EditTextManger.getManager(mTitleView).hideSoftInput();
                 break;
             case R.id.btn_next:
                 String classNumber=mInputClassNumberView.getText().trim();

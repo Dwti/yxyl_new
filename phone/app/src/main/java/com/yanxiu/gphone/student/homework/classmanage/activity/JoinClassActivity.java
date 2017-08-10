@@ -23,6 +23,7 @@ import com.yanxiu.gphone.student.homework.response.JoinClassResponse;
 import com.yanxiu.gphone.student.homework.request.UpdateUserInfoRequest;
 import com.yanxiu.gphone.student.homework.response.UpdateUserInfoResponse;
 import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
+import com.yanxiu.gphone.student.userevent.UserEventManager;
 import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.ToastManager;
 
@@ -87,7 +88,7 @@ public class JoinClassActivity extends Activity {
 
         if(classInfo != null){
             mClassId = classInfo.getId();
-            className.setText(getString(R.string.dot) + classInfo.getGradename()+classInfo.getName());
+            className.setText(" • " + classInfo.getGradename()+classInfo.getName());
             classNum.setText(classInfo.getId());
             teacherName.setText(classInfo.getAdminName());
             studentNum.setText(String.format(getString(R.string.student_count),classInfo.getStdnum()));
@@ -173,6 +174,7 @@ public class JoinClassActivity extends Activity {
                 }else if(mClassStatus == NEED_VERIFY){
                     ToastManager.showMsg(getString(R.string.need_verify));
                 }
+                UserEventManager.getInstense().whenEnterClass();
             }else {
                 ToastManager.showMsg(ret.getStatus().getDesc());
             }

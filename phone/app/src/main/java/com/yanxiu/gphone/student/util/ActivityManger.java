@@ -2,6 +2,9 @@ package com.yanxiu.gphone.student.util;
 
 import android.app.Activity;
 
+import com.yanxiu.gphone.student.homepage.MainActivity;
+import com.yanxiu.gphone.student.userevent.UserEventManager;
+
 import java.util.ArrayList;
 
 /**
@@ -34,11 +37,25 @@ public class ActivityManger {
      * 在退出程序时，必须调用该方法
      */
     public static void destoryAll() {
+        UserEventManager.getInstense().whenExitApp();
         if (activityList != null && activityList.size() > 0) {
             for (Activity activity : activityList) {
                 activity.finish();
             }
             activityList.clear();
+        }
+    }
+
+    /**
+     * finish掉除了MainActivity之外的所有Activity
+     */
+    public static void destoryAllActivity(){
+        if(activityList!=null && activityList.size() > 0){
+            for(Activity activity : activityList){
+                if(!(activity instanceof MainActivity)){
+                    activity.finish();
+                }
+            }
         }
     }
 

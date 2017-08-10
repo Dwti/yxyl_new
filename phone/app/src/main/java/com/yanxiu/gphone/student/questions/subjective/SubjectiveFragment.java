@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.OnPermissionCallback;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
+import com.yanxiu.gphone.student.common.Bean.CropCallbackMessage;
 import com.yanxiu.gphone.student.common.Bean.PhotoDeleteBean;
 import com.yanxiu.gphone.student.common.activity.CameraActivity;
 import com.yanxiu.gphone.student.common.activity.CropImageActivity;
@@ -119,7 +120,7 @@ public class SubjectiveFragment extends AnswerSimpleExerciseBaseFragment impleme
         updateProgress();
     }
 
-    public void onEventMainThread(CropImageActivity.CropCallbackMessage message) {
+    public void onEventMainThread(CropCallbackMessage message) {
         if (message != null && message.fromId == SubjectiveFragment.this.hashCode()) {
             if (message.path != null) {
                 mAnswerView.addData(message.path);

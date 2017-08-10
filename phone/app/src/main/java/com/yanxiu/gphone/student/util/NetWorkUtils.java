@@ -3,6 +3,7 @@ package com.yanxiu.gphone.student.util;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.telephony.TelephonyManager;
 
 import com.yanxiu.gphone.student.YanxiuApplication;
 
@@ -47,6 +48,44 @@ public class NetWorkUtils {
                 netWorkType = "1";
             } else if (netWorkInfo.getType() == ConnectivityManager.TYPE_MOBILE) {
                 netWorkType = "0";
+            }
+        }
+        return netWorkType;
+    }
+
+    /**
+     * user_event
+     * */
+    public static String getNetType() {
+        String netWorkType = "5";
+        NetworkInfo netWorkInfo = getAvailableNetWorkInfo();
+        if (netWorkInfo != null) {
+            if (netWorkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+                netWorkType = "0";
+            } else if (netWorkInfo.getType() == ConnectivityManager.TYPE_MOBILE) {
+                switch (netWorkInfo.getSubtype()){
+                    case TelephonyManager.NETWORK_TYPE_GPRS:
+                    case TelephonyManager.NETWORK_TYPE_EDGE:
+                    case TelephonyManager.NETWORK_TYPE_CDMA:
+                        netWorkType = "4";
+                        break;
+                    case TelephonyManager.NETWORK_TYPE_EVDO_0:
+                    case TelephonyManager.NETWORK_TYPE_EVDO_A:
+                    case TelephonyManager.NETWORK_TYPE_EVDO_B:
+                    case TelephonyManager.NETWORK_TYPE_HSDPA:
+                    case TelephonyManager.NETWORK_TYPE_HSPA:
+                    case TelephonyManager.NETWORK_TYPE_HSPAP:
+                    case TelephonyManager.NETWORK_TYPE_HSUPA:
+                    case TelephonyManager.NETWORK_TYPE_UMTS:
+                        netWorkType = "3";
+                        break;
+                    case TelephonyManager.NETWORK_TYPE_LTE:
+                        netWorkType = "2";
+                        break;
+                    default:
+                        netWorkType = "5";
+                        break;
+                }
             }
         }
         return netWorkType;

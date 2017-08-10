@@ -247,11 +247,61 @@
     <string name="setting_login_out">退出登录</string>
 
     <string name="check_mobile">手机号码验证</string>
-    <string name="bind_mobile">绑定手机</string>
     <string name="bind_new_mobile">绑定新手机</string>
     <string name="zhagnhao">账号：</string>
     <string name="exercise_history">练习历史</string>
     <string name="teaching_material_version">教材版本</string>
     <string name="feedback">意见反馈</string>
     <string name="setting">设置</string>
+
+    <string name="change_password_input">请输入6&#8211;18位新密码</string>
+    <string name="change_password_input_again">请确认新密码</string>
+    <string name="change_sure">确认修改</string>
+    <string name="input_password_old_error">原密码错误</string>
+    <string name="input_password_new_error">新密码不符合要求</string>
+    
+    <string name="change_password_success">修改成功</string>
+
+    <string name="about_wx">官方微信</string>
+    <string name="about_wx_code">yixueyilian</string>
+    <string name="about_qq">QQ群</string>
+    <string name="about_qq_code">438863057</string>
+    <string name="about_privacy">隐私政策</string>
+
+    <string name="privacy_policy_txt">隐私策略</string>
+
+    <string name="feed_text">请描述您的意见或问题（200字以内）</string>
+    <string name="feed_send">发送</string>
+    <string name="feed_send_success">发送成功</string>
+    <string name="feed_send_error">请详细描述您的问题，至少2个字</string>
+
+    <string name="user_message">个人资料</string>
+    <string name="data_empty">暂无数据</string>
+
+    <string name="stage_change">学段更改后，练习将切换到相应学段。</string>
+    <string name="stage_change_true">你确定要更改吗？</string>
+    <string name="stage_change_text">更改</string>
+    <string name="userinfo_name">姓名</string>
+    <string name="userinfo_sex">性别</string>
+    <string name="userinfo_school">学校</string>
+
+    <string name="save">保存</string>
+    <string name="data_uploader_failed">提交失败</string>
+    <string name="sex_man">男</string>
+    <string name="sex_woman">女</string>
+    <string name="sex_unknown">保密</string>
+
+    <string name="editor_head">编辑头像</string>
+    <string name="editor_album">相册</string>
+    <string name="editor_camera">拍照</string>
+    <string name="exercise_end_time">完成时间 %s</string>
+    <string name="exercise_correct_rate">正确率 %s</string>
+    <string name="exercise_wait_to_finish">待完成</string>
+    <string name="no_exercise">这里还没有练习历史哦</string>
+
+    <string name="no_more_data">没有更多数据了</string>
+    <string name="onceagain">再练一组</string>
+    <string name="question_no_finish_live">您可以在练习历史中找到记录并继续答题</string>
+    <string name="quite">离开</string>
+    <string name="submit_exericse_answer">"提交练习答案"</string>
 </resources>

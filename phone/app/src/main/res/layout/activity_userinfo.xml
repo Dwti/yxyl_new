@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/color_edf0ee"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/include_top"
+        layout="@layout/main_public_top_layout" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/userinfo_parent_h"
+        android:background="@color/color_ffffff">
+
+        <com.yanxiu.gphone.student.customviews.UserInfoHeadImageView
+            android:id="@+id/iv_head"
+            android:layout_width="@dimen/userinfo_head_w_h"
+            android:layout_height="@dimen/userinfo_head_w_h"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/mistake_content_margin_t"
+            android:contentDescription="@null"
+            android:src="@color/color_00cccc"
+            app:text="@string/editor_head"
+            app:textBgColor="@color/color_f289e00d"
+            app:textSize="@dimen/userinfo_editor_head_textsize"
+            app:textHeight="@dimen/userinfo_editor_head_text_h"
+            app:textColor="@color/color_ffffff"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_name"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/mistake_list_item_h"
+        android:layout_marginTop="@dimen/mistake_content_margin_t"
+        android:background="@drawable/selector_mistake_list_item"
+        android:onClick="onClick"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="@dimen/mistake_list_item_icon_w_h"
+            android:layout_height="@dimen/mistake_list_item_icon_w_h"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/mistake_list_item_padding_l"
+            android:background="@drawable/user_info_name"
+            android:contentDescription="@null" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/mistake_list_item_text_margin_icon"
+            android:text="@string/userinfo_name"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/mistake_list_item_text_size"
+            android:textStyle="bold" />
+
+        <com.yanxiu.gphone.student.customviews.SinglineTextView
+            android:id="@+id/tv_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="@dimen/mistake_list_item_padding_r"
+            android:layout_marginStart="@dimen/mistake_list_item_icon2_w_h"
+            android:textColor="@color/color_89e00d"
+            android:textSize="@dimen/mistake_list_item_text_size2" />
+
+        <ImageView
+            android:layout_width="@dimen/mistake_list_item_icon2_w_h"
+            android:layout_height="@dimen/mistake_list_item_icon2_w_h"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="@dimen/mistake_list_item_padding_r"
+            android:background="@drawable/arrow_right"
+            android:contentDescription="@null" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_line_height"
+        android:background="@color/color_edf0ee" />
+
+    <LinearLayout
+        android:id="@+id/ll_sex"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/mistake_list_item_h"
+        android:background="@drawable/selector_mistake_list_item"
+        android:onClick="onClick"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="@dimen/mistake_list_item_icon_w_h"
+            android:layout_height="@dimen/mistake_list_item_icon_w_h"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/mistake_list_item_padding_l"
+            android:background="@drawable/user_info_sex"
+            android:contentDescription="@null" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/mistake_list_item_text_margin_icon"
+            android:text="@string/userinfo_sex"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/mistake_list_item_text_size"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_sex"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="@dimen/mistake_list_item_padding_r"
+            android:layout_marginStart="@dimen/mistake_list_item_icon2_w_h"
+            android:textColor="@color/color_89e00d"
+            android:textSize="@dimen/mistake_list_item_text_size2" />
+
+        <ImageView
+            android:layout_width="@dimen/mistake_list_item_icon2_w_h"
+            android:layout_height="@dimen/mistake_list_item_icon2_w_h"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="@dimen/mistake_list_item_padding_r"
+            android:background="@drawable/arrow_right"
+            android:contentDescription="@null" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_line_height"
+        android:background="@color/color_edf0ee" />
+
+    <LinearLayout
+        android:id="@+id/ll_school"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/mistake_list_item_h"
+        android:background="@drawable/selector_mistake_list_item"
+        android:onClick="onClick"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="@dimen/mistake_list_item_icon_w_h"
+            android:layout_height="@dimen/mistake_list_item_icon_w_h"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/mistake_list_item_padding_l"
+            android:background="@drawable/user_info_school"
+            android:contentDescription="@null" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/mistake_list_item_text_margin_icon"
+            android:text="@string/userinfo_school"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/mistake_list_item_text_size"
+            android:textStyle="bold" />
+
+        <com.yanxiu.gphone.student.customviews.SinglineTextView
+            android:id="@+id/tv_school"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="@dimen/mistake_list_item_padding_r"
+            android:layout_marginStart="@dimen/mistake_list_item_icon2_w_h"
+            android:textColor="@color/color_89e00d"
+            android:textSize="@dimen/mistake_list_item_text_size2" />
+
+        <ImageView
+            android:layout_width="@dimen/mistake_list_item_icon2_w_h"
+            android:layout_height="@dimen/mistake_list_item_icon2_w_h"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="@dimen/mistake_list_item_padding_r"
+            android:background="@drawable/arrow_right"
+            android:contentDescription="@null" />
+    </LinearLayout>
+
+</LinearLayout>

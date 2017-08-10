@@ -10,11 +10,16 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.igexin.sdk.PushManager;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.login.activity.LoginActivity;
+import com.yanxiu.gphone.student.user.setting.bean.BindMobileMessage;
 import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.ToastManager;
+import com.yanxiu.gphone.student.util.UpdateUtil;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by Canghaixiao.
@@ -38,10 +43,17 @@ public class SettingActivity extends YanxiuBaseActivity implements View.OnClickL
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = SettingActivity.this;
+        EventBus.getDefault().register(mContext);
         setContentView(R.layout.activity_setting);
         initView();
         listener();
         initData();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(mContext);
     }
 
     private void initView() {
@@ -68,6 +80,12 @@ public class SettingActivity extends YanxiuBaseActivity implements View.OnClickL
         mMobileCodeView.setText(mobile);
     }
 
+    public void onEventMainThread(BindMobileMessage message) {
+        if (message != null) {
+            SettingActivity.this.finish();
+        }
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -75,23 +93,24 @@ public class SettingActivity extends YanxiuBaseActivity implements View.OnClickL
                 SettingActivity.this.finish();
                 break;
             case R.id.ll_bind_mobile:
-                String mobile=LoginInfo.getMobile();
-                if (TextUtils.isEmpty(mobile)){
-                    BindMobileActivity.LaunchActivity(mContext,BindMobileActivity.COME_TYPE_SETTING);
-                }else {
-                    CheckMobileActivity.LaunchActivity(mContext,mobile);
+                String mobile = LoginInfo.getMobile();
+                if (TextUtils.isEmpty(mobile)) {
+                    BindMobileActivity.LaunchActivity(mContext, BindMobileActivity.COME_TYPE_SETTING);
+                } else {
+                    CheckMobileActivity.LaunchActivity(mContext, mobile);
                 }
                 break;
             case R.id.ll_change_password:
-                ToastManager.showMsg("2");
+                ChangePassWordActivity.LaunchActivity(mContext);
                 break;
             case R.id.ll_check_updata:
-                ToastManager.showMsg("3");
+                UpdateUtil.Initialize(this,true);
                 break;
             case R.id.ll_about:
-                ToastManager.showMsg("4");
+                AboutActivity.LaunchActivity(mContext);
                 break;
             case R.id.wl_login_out:
+                PushManager.getInstance().unBindAlias(this.getApplicationContext(), String.valueOf(LoginInfo.getUID()), true);
                 LoginInfo.LogOut();
                 LoginActivity.LaunchActivity(mContext);
                 break;

@@ -156,7 +156,7 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
         switch (v.getId()) {
             case R.id.iv_left:
                 CompleteInfoActivity.this.finish();
-                EditTextManger.getManager(mTitleView).hideSoftInput(mContext);
+                EditTextManger.getManager(mTitleView).hideSoftInput();
                 break;
             case R.id.iv_clear:
                 mUserNameView.setText("");

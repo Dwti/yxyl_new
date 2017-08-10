@@ -57,6 +57,7 @@ public class AnswerCardSubmitDialog extends Dialog implements View.OnClickListen
 
     public enum SubmitState {
         STATE_HAS_NO_ANSWERED,
+        STATE_EXERICSE_CONFIRM,
         STATE_RETRY,
         STATE_PROGRESS,
         STATE_LOADING,
@@ -231,6 +232,20 @@ public class AnswerCardSubmitDialog extends Dialog implements View.OnClickListen
             show();
     }
 
+    /**
+     * 练习提交答案，确认提交界面
+     */
+    public void showExerciseConfirmView() {
+        state = SubmitState.STATE_EXERICSE_CONFIRM;
+        mState_layout.setVisibility(View.VISIBLE);
+        mSubmiting_layout.setVisibility(View.GONE);
+        mState_title.setText(mContext.getString(R.string.submit_exericse_answer));
+        mState_content.setText(mContext.getString(R.string.question_no_finish_live));
+        mButton_yes.setText(mContext.getString(R.string.quite));
+        if(!isShowing())
+            show();
+    }
+
     public SubmitState getState() {
         return state;
     }
@@ -262,8 +277,8 @@ public class AnswerCardSubmitDialog extends Dialog implements View.OnClickListen
     @Override
     public void dismiss() {
         hiddenLoadingView();
-        mClickListener = null;
-        mContext = null;
+//        mClickListener = null;
+//        mContext = null;
         super.dismiss();
     }
 

@@ -115,7 +115,7 @@ public class ResetPassWordActivity extends YanxiuBaseActivity implements View.On
         switch (v.getId()){
             case R.id.iv_left:
                 ResetPassWordActivity.this.finish();
-                EditTextManger.getManager(mTitleView).hideSoftInput(mContext);
+                EditTextManger.getManager(mTitleView).hideSoftInput();
                 break;
             case R.id.tv_reset_password:
                 passWord=mPassWordView.getText().toString().trim();

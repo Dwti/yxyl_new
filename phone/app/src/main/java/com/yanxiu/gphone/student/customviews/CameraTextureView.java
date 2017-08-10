@@ -5,7 +5,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.ImageFormat;
+import android.graphics.Matrix;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
@@ -34,16 +36,16 @@ import android.view.TextureView;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.util.FileUtil;
+import com.yanxiu.gphone.student.util.ScreenUtils;
 import com.yanxiu.gphone.student.util.ToastManager;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 /**
  * Created by Canghaixiao.
@@ -53,7 +55,10 @@ import java.util.List;
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class CameraTextureView extends TextureView implements TextureView.SurfaceTextureListener {
 
-    private static final String mCameraId = "0";
+    private static final String CAMERA_FACING_BACK = "0";
+    private static final String CAMERA_FACING_FRONT = "1";
+
+    private String mCameraId = CAMERA_FACING_BACK;
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
 
     private Context mContext;
@@ -92,6 +97,16 @@ public class CameraTextureView extends TextureView implements TextureView.Surfac
     private void initView(Context context) {
         this.mContext = context;
         this.setSurfaceTextureListener(this);
+    }
+
+    public void changeDirection() {
+        onPause();
+        if (CAMERA_FACING_BACK.equals(mCameraId)) {
+            mCameraId = CAMERA_FACING_FRONT;
+        } else if (CAMERA_FACING_FRONT.equals(mCameraId)) {
+            mCameraId = CAMERA_FACING_BACK;
+        }
+        onResume();
     }
 
     public void onPause() {
@@ -204,10 +219,11 @@ public class CameraTextureView extends TextureView implements TextureView.Surfac
             CameraCharacteristics characteristics = manager.getCameraCharacteristics(mCameraId);
             StreamConfigurationMap map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
             if (map != null) {
-                Size largest = Collections.max(Arrays.asList(map.getOutputSizes(ImageFormat.JPEG)), new CompareSizesByArea());
-                mImageReader = ImageReader.newInstance(largest.getWidth(), largest.getHeight(), ImageFormat.JPEG, 2);
-                mImageReader.setOnImageAvailableListener(imageAvailableListener, null);
+//                Size largest = Collections.max(Arrays.asList(map.getOutputSizes(ImageFormat.JPEG)), new CompareSizesByArea());
                 mPreviewSize = getCloselyPreSize(mWidth, mHeight, map.getOutputSizes(SurfaceTexture.class));
+                mImageReader = ImageReader.newInstance(mPreviewSize.getWidth(), mPreviewSize.getHeight(), ImageFormat.JPEG, 2);
+//                mImageReader = ImageReader.newInstance(largest.getWidth(), largest.getHeight(), ImageFormat.JPEG, 2);
+                mImageReader.setOnImageAvailableListener(imageAvailableListener, null);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -228,30 +244,28 @@ public class CameraTextureView extends TextureView implements TextureView.Surfac
         float deltaRatioMin = Float.MAX_VALUE;
         Size retSize = null;
         for (Size size : preSizeList) {
-            curRatio = ((float) size.getWidth()) / size.getHeight();
-            deltaRatio = Math.abs(reqRatio - curRatio);
-            if (deltaRatio < deltaRatioMin) {
-                deltaRatioMin = deltaRatio;
-                retSize = size;
+            if (size.getWidth() >= 720 && size.getHeight() < surfaceHeight) {
+                curRatio = ((float) size.getWidth()) / size.getHeight();
+                deltaRatio = Math.abs(reqRatio - curRatio);
+                if (deltaRatio < deltaRatioMin) {
+                    deltaRatioMin = deltaRatio;
+                    retSize = size;
+                }
             }
         }
 
-        /*
-         * Because of huawei's mobile phone problem, the following code must be
-         * used to prevent the size of the acquisition from being too small
-         * */
-        if (retSize != null && retSize.getWidth() < 720) {
+        if (retSize == null) {
             retSize = preSizeList[preSizeList.length / 2];
         }
         return retSize;
     }
 
-    private static class CompareSizesByArea implements Comparator<Size> {
-        @Override
-        public int compare(Size lhs, Size rhs) {
-            return Long.signum((long) lhs.getWidth() * lhs.getHeight() - (long) rhs.getWidth() * rhs.getHeight());
-        }
-    }
+//    private static class CompareSizesByArea implements Comparator<Size> {
+//        @Override
+//        public int compare(Size lhs, Size rhs) {
+//            return Long.signum((long) lhs.getWidth() * lhs.getHeight() - (long) rhs.getWidth() * rhs.getHeight());
+//        }
+//    }
 
     private void takePreview() {
         SurfaceTexture mSurfaceTexture = getSurfaceTexture();
@@ -308,7 +322,7 @@ public class CameraTextureView extends TextureView implements TextureView.Surfac
         @Override
         public void onImageAvailable(ImageReader reader) {
             if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-                SavePictureTask task = new SavePictureTask(mContext, mTakePictureFinishedListener);
+                SavePictureTask task = new SavePictureTask(mContext, mTakePictureFinishedListener,mCameraId);
                 task.execute(reader);
             } else {
                 ToastManager.showMsg(R.string.SD_cannot_use);
@@ -319,10 +333,12 @@ public class CameraTextureView extends TextureView implements TextureView.Surfac
     private class SavePictureTask extends AsyncTask<ImageReader, Integer, String> {
 
         private Context mContext;
+        private String mCameraId;
         private CameraView.onTakePictureFinishedListener mTakePictureFinishedListener;
 
-        SavePictureTask(Context context, CameraView.onTakePictureFinishedListener mTakePictureFinishedListener) {
+        SavePictureTask(Context context, CameraView.onTakePictureFinishedListener mTakePictureFinishedListener,String cameraId) {
             this.mContext = context;
+            this.mCameraId=cameraId;
             this.mTakePictureFinishedListener = mTakePictureFinishedListener;
         }
 
@@ -333,6 +349,16 @@ public class CameraTextureView extends TextureView implements TextureView.Surfac
             ByteBuffer buffer = image.getPlanes()[0].getBuffer();
             byte[] data = new byte[buffer.remaining()];
             buffer.get(data);
+
+            if (CAMERA_FACING_FRONT.equals(mCameraId)){
+                Bitmap bitmap = ScreenUtils.decodeBitmap(data, ScreenUtils.getScreenWidth(mContext), ScreenUtils.getScreenHeight(mContext));
+                Matrix matrix = new Matrix();
+                matrix.postRotate(-90);
+                bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                data=baos.toByteArray();
+            }
 
             String filePath = FileUtil.getSavePicturePath(System.currentTimeMillis() + ".jpg");
             File file = new File(filePath);

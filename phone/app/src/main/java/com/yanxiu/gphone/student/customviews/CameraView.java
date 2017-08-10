@@ -77,6 +77,16 @@ public class CameraView extends FrameLayout {
         }
     }
 
+    public void changeDirection(){
+        if (TYPE.equals(TYPE_DEFAULT)) {
+            mSurfaceView.changeDirection();
+        }else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                mTextureView.changeDirection();
+            }
+        }
+    }
+
     public void takePicture(onTakePictureListener onTakePictureListener) {
         this.mTakePictureListener=onTakePictureListener;
         if (TYPE.equals(TYPE_DEFAULT)) {

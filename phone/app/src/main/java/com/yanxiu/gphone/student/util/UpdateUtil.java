@@ -1,4 +1,4 @@
-package com.yanxiu.gphone.student.util;
+ package com.yanxiu.gphone.student.util;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -59,28 +60,41 @@ public class UpdateUtil {
                 if (ret.data != null && ret.data.size() > 0) {
                     boolean isUpgrade = checkIsShouldUpdate(Constants.version, ret.data.get(0).version);
                     if (isUpgrade) {
-                        showUpdateDialog(context, ret.data.get(0), new OnUpgradeCallBack() {
-                            @Override
-                            public void onExit() {
-                                ActivityManger.destoryAll();
-                                android.os.Process.killProcess(android.os.Process.myPid());
-                                System.exit(-1);
+                        if (!TextUtils.isEmpty(ret.data.get(0).fileURL)) {
+                            String[] str = ret.data.get(0).fileURL.split(".");
+                            if (str.length>1&&"apk".equals(str[str.length-1])) {
+                                showUpdateDialog(context, ret.data.get(0), new OnUpgradeCallBack() {
+                                    @Override
+                                    public void onExit() {
+                                        ActivityManger.destoryAll();
+                                        android.os.Process.killProcess(android.os.Process.myPid());
+                                        System.exit(-1);
+                                    }
+
+                                    @Override
+                                    public void onDownloadApk(boolean isSuccess) {
+
+                                    }
+
+                                    @Override
+                                    public void onInstallApk(boolean isSuccess) {
+
+                                    }
+                                });
+                            }else {
+                                ToastManager.showMsgOnDebug("这是版本更新接口提示,测试同学,你们辛苦了,请按照正常的作业流程走,不要乱跑,谢谢合作,此条消息只在debug环境下出现");
                             }
-
-                            @Override
-                            public void onDownloadApk(boolean isSuccess) {
-
-                            }
-
-                            @Override
-                            public void onInstallApk(boolean isSuccess) {
-
-                            }
-                        });
+                        }else {
+                            ToastManager.showMsgOnDebug("这是版本更新接口提示,测试同学,你们辛苦了,请按照正常的作业流程走,不要乱跑,谢谢合作,此条消息只在debug环境下出现");
+                        }
                     } else {
                         if (isFromUser) {
                             ToastManager.showMsg(R.string.update_new);
                         }
+                    }
+                }else {
+                    if (isFromUser) {
+                        ToastManager.showMsg(R.string.update_new);
                     }
                 }
             }

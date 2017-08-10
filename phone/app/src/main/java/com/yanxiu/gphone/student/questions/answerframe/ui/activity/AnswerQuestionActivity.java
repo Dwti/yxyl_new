@@ -3,6 +3,7 @@ package com.yanxiu.gphone.student.questions.answerframe.ui.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -18,13 +19,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.YanxiuApplication;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.constant.Constants;
+import com.yanxiu.gphone.student.customviews.AnswerCardSubmitDialog;
 import com.yanxiu.gphone.student.customviews.QuestionProgressView;
 import com.yanxiu.gphone.student.customviews.QuestionTimeTextView;
 import com.yanxiu.gphone.student.db.SpManager;
+import com.yanxiu.gphone.student.exercise.request.GenQuesRequest;
 import com.yanxiu.gphone.student.questions.answerframe.adapter.QAViewPagerAdapter;
+import com.yanxiu.gphone.student.questions.answerframe.http.request.SubmitQuesitonTask;
 import com.yanxiu.gphone.student.questions.answerframe.listener.OnAnswerCardItemSelectListener;
+import com.yanxiu.gphone.student.questions.answerframe.listener.SubmitAnswerCallback;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.AnswerCardFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerComplexExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
@@ -34,19 +40,24 @@ import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
 import com.yanxiu.gphone.student.questions.answerframe.view.QAViewPager;
 import com.yanxiu.gphone.student.util.DataFetcher;
 import com.yanxiu.gphone.student.util.KeyboardObserver;
+import com.yanxiu.gphone.student.util.ToastManager;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 
+
 /**
  * 答题页面
  */
-public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.OnClickListener, OnAnswerCardItemSelectListener {
+public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.OnClickListener, OnAnswerCardItemSelectListener
+        , AnswerCardSubmitDialog.AnswerCardSubmitDialogClickListener {
     private FragmentManager mFragmentManager;
     private QAViewPager mViewPager;
     private QAViewPagerAdapter mAdapter;
     private String mKey;//获取数据的key
+    private String mFromType;//从哪个页面跳转过来的（练习页面）
+    private GenQuesRequest mGenQuesequest;//从选择章节只是点进入答题页，章节知识点的请求Request
     private String mTitleString;//试卷的title-答题卡需要
     private Paper mPaper;//试卷数据
     private ArrayList<BaseQuestion> mQuestions;//题目数据
@@ -88,6 +99,8 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         mKey = getIntent().getStringExtra(Constants.EXTRA_PAPER);
         if (TextUtils.isEmpty(mKey))
             finish();
+        mFromType = getIntent().getStringExtra(Constants.EXTRA_FROMTYPE);
+        initExerciseData();
         mPaper = DataFetcher.getInstance().getPaper(mKey);
         mQuestions = mPaper.getQuestions();
         initProgressViewData();
@@ -95,6 +108,16 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         mStartTime = System.currentTimeMillis();
         mPaper.getPaperStatus().setBegintime(mStartTime+"");
         mTitleString = mPaper.getName();
+    }
+
+    /**
+     * 从练习页面跳转过来的，初始化相关数据
+     */
+    private void initExerciseData(){
+        if(Constants.MAINAVTIVITY_FROMTYPE_EXERCISE.equals(mFromType)){
+            mGenQuesequest = (GenQuesRequest)getIntent().getSerializableExtra(Constants.EXTRA_REQUEST);
+            initDialog();
+        }
     }
 
     private void initView() {
@@ -190,7 +213,6 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         if (mAnswerCardFragment != null) {
             mFragmentManager.beginTransaction().remove(mAnswerCardFragment).commit();
         }
-
         // 2, 跳转
         int index = item.getLevelPositions().get(0);
         FragmentStatePagerAdapter a1 = (FragmentStatePagerAdapter) mViewPager.getAdapter();
@@ -206,6 +228,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
             AnswerComplexExerciseBaseFragment f = (AnswerComplexExerciseBaseFragment) a.instantiateItem(mViewPager, index);
             f.setChildrenPositionRecursively(remainPositions);
         }
+        controlListenView(false);
     }
 
     public View getRootView(){
@@ -225,6 +248,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         if (mFragmentManager.findFragmentById(R.id.fragment_answercard) == null) {
             mFragmentManager.beginTransaction().add(R.id.fragment_answercard, mAnswerCardFragment).commit();
         }
+        controlListenView(true);
     }
 
     /**
@@ -394,12 +418,48 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         }
     }
 
+    /**
+     * 答题卡显示或隐藏，回调给fragment，用来控制听力播放控件
+     */
+    public void controlListenView(boolean answerCardFragmentIsShwon) {
+        ExerciseBaseFragment currentFramgent = null;//当前的Fragment
+        FragmentStatePagerAdapter adapter;
+        int index;//当前Fragment在外层viewPager中的index
+        int size;//viewPager的总共的size
+        try {
+            adapter = (FragmentStatePagerAdapter) mViewPager.getAdapter();
+            index = mViewPager.getCurrentItem();
+            currentFramgent = (ExerciseBaseFragment) adapter.instantiateItem(mViewPager, index);
+            size = adapter.getCount();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+
+        if (adapter == null || index < 0 || size < 1 || mViewPager == null || currentFramgent == null)
+            return;
+
+        if (currentFramgent instanceof ExerciseBaseFragment) {
+            ExerciseBaseFragment fragment = (ExerciseBaseFragment) currentFramgent;
+            fragment.onAnswerCardVisibleToUser(answerCardFragmentIsShwon);
+        }
+
+    }
+
     public Paper getPaper() {
         return mPaper;
     }
 
     public QuestionProgressView getProgressView() {
         return mProgressView;
+    }
+
+    public String getFromType() {
+        return mFromType;
+    }
+
+    public GenQuesRequest getGenQuesequest() {
+        return mGenQuesequest;
     }
 
     @Override
@@ -507,15 +567,119 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
     }
 
     /**
-     * 跳转AnswerQuestionActivity
+     * 练习跳转答题
      *
      * @param activity
+     * @param fromType  练习页面 ：Constants.MAINAVTIVITY_FROMTYPE_EXERCISE
      */
-    public static void invoke(Activity activity, String key,String title) {
+    public static void invoke(Activity activity, String key, String fromType, GenQuesRequest request) {
         Intent intent = new Intent(activity, AnswerQuestionActivity.class);
         intent.putExtra(Constants.EXTRA_PAPER, key);
-        intent.putExtra(Constants.EXTRA_TITLE, title);
+        intent.putExtra(Constants.EXTRA_FROMTYPE, fromType);
+        intent.putExtra(Constants.EXTRA_REQUEST,request);
         activity.startActivity(intent);
     }
 
+    @Override
+    public void onBackPressed() {
+        if(Constants.MAINAVTIVITY_FROMTYPE_EXERCISE.equals(mFromType)){ // 练习
+            quitSubmmitDialog();
+        }else{
+            super.onBackPressed();
+        }
+    }
+    //提交练习答案dialog
+    private AnswerCardSubmitDialog mDialog;
+    //提交练习答案task
+    private SubmitQuesitonTask mSubmitQuesitonTask;
+
+    /**
+     * 提交练习答案dialog
+     */
+    private void initDialog() {
+        mDialog = new AnswerCardSubmitDialog(AnswerQuestionActivity.this);
+        mDialog.setCancelable(true);
+        mDialog.setAnswerCardSubmitDialogClickListener(AnswerQuestionActivity.this);
+    }
+
+    /**
+     * 如果是练习，退出时，需要提交练习答案
+     */
+    private void quitSubmmitDialog(){
+        if (checkQuestionHasAnswerd()) {
+            mDialog.setData(mQuestions);
+            mDialog.showExerciseConfirmView();
+        }else{
+            finish();
+        }
+    }
+
+    /**
+     * 提交练习答案
+     */
+    private void requestSubmmit() {
+        if (mSubmitQuesitonTask != null && !mSubmitQuesitonTask.isCancelled()) {
+            mSubmitQuesitonTask.cancel(true);
+        }
+        String endtime = String.valueOf(System.currentTimeMillis());
+        mPaper.getPaperStatus().setEndtime(endtime);
+        mPaper.getPaperStatus().setCosttime(getmTotalTime() + "");
+        mSubmitQuesitonTask = new SubmitQuesitonTask(YanxiuApplication.getContext(), mPaper, mSubmitQuesitonTask.SUBMIT_CODE, new SubmitAnswerCallback() {
+
+            @Override
+            public void onSuccess() {
+                //提交练习答案成功
+                finish();
+            }
+
+            @Override
+            public void onFail() {
+                mDialog.showRetryView();
+            }
+
+            @Override
+            public void onUpdate(int count, int index) {
+
+            }
+
+            @Override
+            public void onDataError(String msg) {
+                ToastManager.showMsg(msg);
+                finish();
+            }
+        });
+        mSubmitQuesitonTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "");
+    }
+
+    @Override
+    public void onDialogButtonClick(View v, AnswerCardSubmitDialog.SubmitState state) {
+        switch (v.getId()) {
+            case R.id.button_yes:
+                switch (state) {
+                    case STATE_EXERICSE_CONFIRM:
+                    case STATE_RETRY:
+                        mDialog.showLoadingView();
+                        requestSubmmit();
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     * 练习提交答案，如果试卷完全没有回答，则不提交
+     * @return true 有回答的题
+     */
+    private boolean checkQuestionHasAnswerd(){
+        for (int i = 0; i < mQuestions.size(); i++) {
+            if (mQuestions.get(i).getIsAnswer()) { //有已经答的
+                return true;
+            }
+        }
+        return false;
+    }
 }

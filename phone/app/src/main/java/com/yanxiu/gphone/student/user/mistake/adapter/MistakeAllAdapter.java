@@ -59,6 +59,11 @@ public class MistakeAllAdapter extends RecyclerView.Adapter<MistakeAllAdapter.Mi
         this.notifyDataSetChanged();
     }
 
+    public void clear(){
+        mData.clear();
+        this.notifyDataSetChanged();
+    }
+
     public String getLastItemWqid() {
         if (mData.size() > 0) {
             return String.valueOf(mData.get(mData.size() - 1).getWqid());

@@ -186,8 +186,7 @@
 
     <com.yanxiu.gphone.student.customviews.WavesLayout
         android:id="@+id/wl_login_out"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/common_button_height"
+        style="@style/SettingWavesButton"
         android:layout_marginBottom="@dimen/setting_waves_margin_b"
         android:background="@drawable/shape_common_button_bg_disable"
         android:onClick="onClick"

@@ -15,6 +15,7 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.OnPermissionCallback;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
+import com.yanxiu.gphone.student.common.Bean.CropCallbackMessage;
 import com.yanxiu.gphone.student.customviews.CameraView;
 import com.yanxiu.gphone.student.util.AlbumUtils;
 import com.yanxiu.gphone.student.util.ToastManager;
@@ -122,7 +123,7 @@ public class CameraActivity extends YanxiuBaseActivity implements View.OnClickLi
         isTakePicture=false;
     }
 
-    public void onEventMainThread(CropImageActivity.CropCallbackMessage message){
+    public void onEventMainThread(CropCallbackMessage message){
         if (mFromId==message.fromId){
             CameraActivity.this.finish();
         }

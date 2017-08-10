@@ -247,7 +247,7 @@ public class ChooseLocationActivity extends YanxiuBaseActivity implements Picker
                 break;
             case R.id.iv_left:
                 ChooseLocationActivity.this.finish();
-                EditTextManger.getManager(mTitleView).hideSoftInput(mContext);
+                EditTextManger.getManager(mTitleView).hideSoftInput();
                 break;
         }
     }
