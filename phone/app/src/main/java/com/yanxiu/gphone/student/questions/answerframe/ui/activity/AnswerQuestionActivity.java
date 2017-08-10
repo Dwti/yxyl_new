@@ -37,6 +37,7 @@ import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.Exercise
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
+import com.yanxiu.gphone.student.questions.answerframe.util.QuestionUtil;
 import com.yanxiu.gphone.student.questions.answerframe.view.QAViewPager;
 import com.yanxiu.gphone.student.util.DataFetcher;
 import com.yanxiu.gphone.student.util.KeyboardObserver;
@@ -549,6 +550,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
     @Override
     protected void onDestroy() {
         SpManager.setTotlaTime(mPaper.getId(),mTotalTime);
+        SpManager.setCompleteQuestionCount(mPaper.getId(),QuestionUtil.calculateCompleteCount(mQuestions));
         mHandler.removeCallbacksAndMessages(null);
         mHandler = null;
         mKeyboardObserver.destroy();

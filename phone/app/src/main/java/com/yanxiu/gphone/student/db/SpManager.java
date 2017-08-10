@@ -10,11 +10,18 @@ public class SpManager {
 
     public static final String SP_NAME = "srt_sp";
     public static final String SP_NAME_PAPER_ANSWERTIME = "srt_sp_paper_answer_time";
+    public static final String SP_NAME_PAPER_COMPLETEANSWER = "srt_sp_paper_complete_answer";
     private static SharedPreferences mySharedPreferences = YanxiuApplication.getInstance().getContext()
             .getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
 
     private static SharedPreferences myAnswerTimeSharedPreferences = YanxiuApplication.getInstance().getContext()
             .getSharedPreferences(SP_NAME_PAPER_ANSWERTIME, Context.MODE_PRIVATE);
+
+    /**
+     * 答题完成数量，其他使用paperId为key的数据，切勿使用该表保存
+     */
+    private static SharedPreferences myCompeleteAnswerSharedPreferences = YanxiuApplication.getInstance().getContext()
+            .getSharedPreferences(SP_NAME_PAPER_COMPLETEANSWER, Context.MODE_PRIVATE);
     /**
      * 第一次启动
      */
@@ -88,8 +95,26 @@ public class SpManager {
         myAnswerTimeSharedPreferences.edit().clear();
     }
 
+    /**
+     * 计算已经完成的题目数
+     * 答题没有提交答案的情况下，保存本地数据库。作业列表需要
+     */
+    public static void setCompleteQuestionCount(String paperId,int count) {
+        SharedPreferences.Editor editor = myCompeleteAnswerSharedPreferences.edit();
+        editor.putInt(paperId, count);
+        editor.commit();
+    }
+
+    /**
+     * 已经完成的题目数
+     * @return -1 ：没记录
+     */
+    public static int getCompleteQuestionCount(String paperId) {
+        return myCompeleteAnswerSharedPreferences.getInt(paperId, -1);
+    }
+
     public static void setCropIsLuanched(boolean isLuanch){
-        SharedPreferences.Editor editor=mySharedPreferences.edit();
+        SharedPreferences.Editor editor=myCompeleteAnswerSharedPreferences.edit();
         editor.putBoolean(FRIST_START_LUANCH_CROPIMAGE,isLuanch).commit();
     }
 
