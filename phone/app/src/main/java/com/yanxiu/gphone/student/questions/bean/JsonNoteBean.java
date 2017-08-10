@@ -2,6 +2,7 @@ package com.yanxiu.gphone.student.questions.bean;
 
 import com.yanxiu.gphone.student.base.BaseBean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,16 +12,25 @@ import java.util.List;
  */
 public class JsonNoteBean extends BaseBean{
 
-    private List<String> images;
+    private ArrayList<String> images;
     private String qid;
+    private String wqid;
     private String text;
 
-    public List<String> getImages() {
+    public ArrayList<String> getImages() {
         return images;
     }
 
-    public void setImages(List<String> images) {
+    public void setImages(ArrayList<String> images) {
         this.images = images;
+    }
+
+    public String getWqid() {
+        return wqid;
+    }
+
+    public void setWqid(String wqid) {
+        this.wqid = wqid;
     }
 
     public String getQid() {

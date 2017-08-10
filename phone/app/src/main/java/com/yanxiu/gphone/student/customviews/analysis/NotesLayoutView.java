@@ -19,6 +19,8 @@ import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.NotesActicity;
 import com.yanxiu.gphone.student.questions.bean.JsonNoteBean;
 
+import java.util.ArrayList;
+
 import de.greenrobot.event.EventBus;
 
 /**
@@ -36,6 +38,11 @@ public class NotesLayoutView extends LinearLayout implements View.OnClickListene
     private ImageView mImgCenterLeftView;
     private ImageView mImgCenterRightView;
     private ImageView mImgRightView;
+
+    private String mWqid;
+    private String mQid;
+    private String mContent;
+    private ArrayList<String> mPhotoPath;
 
     public NotesLayoutView(Context context) {
         this(context,null);
@@ -70,20 +77,28 @@ public class NotesLayoutView extends LinearLayout implements View.OnClickListene
         if (jsonNoteBean==null){
             return;
         }
-        mNoteContentView.setText(jsonNoteBean.getText());
-        for (int i=0;i<jsonNoteBean.getImages().size();i++){
+        this.mWqid=jsonNoteBean.getWqid();
+        this.mQid=jsonNoteBean.getQid();
+        this.mContent=jsonNoteBean.getText();
+        mNoteContentView.setText(mContent);
+        this.mPhotoPath=jsonNoteBean.getImages();
+        setNoteImg(mPhotoPath);
+    }
+
+    private void setNoteImg(ArrayList<String> paths){
+        for (int i=0;i<paths.size();i++){
             switch (i){
                 case 0:
-                    Glide.with(mContext).load(jsonNoteBean.getImages().get(0)).asBitmap().into(new CornersImageTarget(mImgLeftView));
+                    Glide.with(mContext).load(paths.get(0)).asBitmap().into(new CornersImageTarget(mImgLeftView));
                     break;
                 case 1:
-                    Glide.with(mContext).load(jsonNoteBean.getImages().get(1)).asBitmap().into(new CornersImageTarget(mImgCenterLeftView));
+                    Glide.with(mContext).load(paths.get(1)).asBitmap().into(new CornersImageTarget(mImgCenterLeftView));
                     break;
                 case 2:
-                    Glide.with(mContext).load(jsonNoteBean.getImages().get(2)).asBitmap().into(new CornersImageTarget(mImgCenterRightView));
+                    Glide.with(mContext).load(paths.get(2)).asBitmap().into(new CornersImageTarget(mImgCenterRightView));
                     break;
                 case 3:
-                    Glide.with(mContext).load(jsonNoteBean.getImages().get(3)).asBitmap().into(new CornersImageTarget(mImgRightView));
+                    Glide.with(mContext).load(paths.get(3)).asBitmap().into(new CornersImageTarget(mImgRightView));
                     break;
             }
         }
@@ -117,16 +132,19 @@ public class NotesLayoutView extends LinearLayout implements View.OnClickListene
 
     public void onEventMainThread(NotesActicity.NotesMessage notesMessage) {
         int viewHashCode = notesMessage.mViewHashCode;
-        String notesContent = notesMessage.mNotesContent;
-        if (viewHashCode == NotesLayoutView.this.hashCode())
-            mNoteContentView.setText(notesContent);
+        if (viewHashCode == NotesLayoutView.this.hashCode()) {
+            this.mContent = notesMessage.mNotesContent;
+            mNoteContentView.setText(mContent);
+            this.mPhotoPath=notesMessage.mPaths;
+            setNoteImg(mPhotoPath);
+        }
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.ll_note:
-                NotesActicity.invoke((Activity) mContext,NotesLayoutView.this.hashCode());
+                NotesActicity.invoke(mContext,NotesLayoutView.this.hashCode(),mWqid,mQid,mContent,mPhotoPath);
                 break;
         }
     }

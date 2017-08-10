@@ -678,4 +678,52 @@ public class QuestionUtil {
         }
         return totalCount;
     }
+
+    /**
+     * 计算已经完成的题目数
+     * 答题没有提交答案的情况下，保存本地数据库。作业列表需要
+     *
+     * @param questionList
+     * @return
+     */
+    public static int calculateCompleteCount(ArrayList<BaseQuestion> questionList) {
+        ArrayList<BaseQuestion> list = (ArrayList<BaseQuestion>)questionList.clone();
+        list = allNodesThatHasNumber(list);
+        int totalCount = 0;
+        HashMap<String, Integer> map = new HashMap();
+        for (int i = 0; i < list.size(); i++) {
+            BaseQuestion question = list.get(i);
+            String prefixNumber = String.valueOf(question.getAnswerCardPrefixNumber());
+            if ("-1".equals(prefixNumber)) { //答题报告逻辑里的单题（除了8，22类型的题）
+                if (question.getIsAnswer())
+                    totalCount++;
+            } else {
+                if (!map.containsKey(prefixNumber)) {
+                    if (question.getIsAnswer()) {
+                        map.put(prefixNumber, 1);
+                    } else {
+                        map.put(prefixNumber, -10);
+                    }
+                } else { //map里已经存在了，那么判断如果key的value为-10,那么说明该大题有未答题
+                    if (-10 == map.get(prefixNumber)) { //已经有未答题了，那么这个就是未答的，无需再判断
+
+                    } else {
+                        if (question.getIsAnswer()) {
+                            map.put(prefixNumber, 1);
+                        } else {
+                            map.put(prefixNumber, -10);
+                        }
+                    }
+                }
+            }
+        }
+        Iterator iter = map.entrySet().iterator();
+        while (iter.hasNext()) {
+            Map.Entry entry = (Map.Entry) iter.next();
+            int val = (int) entry.getValue();
+            if (val == 1)
+                totalCount++;
+        }
+        return totalCount;
+    }
 }

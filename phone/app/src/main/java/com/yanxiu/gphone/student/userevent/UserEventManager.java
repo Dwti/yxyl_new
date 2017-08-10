@@ -1,5 +1,7 @@
 package com.yanxiu.gphone.student.userevent;
 
+import android.text.TextUtils;
+
 import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.userevent.bean.UserEventBean;
@@ -122,6 +124,9 @@ public class UserEventManager {
     }
 
     private void startRequest(final String fileData, final UserEventBean eventBean) {
+        if (TextUtils.isEmpty(fileData)){
+            return;
+        }
         UploadUserEventRequest userEventRequest = new UploadUserEventRequest();
         userEventRequest.yxyl_statistic = fileData;
         userEventRequest.startRequest(UploadUserEventResponse.class, new HttpCallback<UploadUserEventResponse>() {

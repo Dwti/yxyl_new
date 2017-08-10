@@ -16,7 +16,6 @@ import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.login.activity.LoginActivity;
 import com.yanxiu.gphone.student.user.setting.bean.BindMobileMessage;
 import com.yanxiu.gphone.student.util.LoginInfo;
-import com.yanxiu.gphone.student.util.ToastManager;
 import com.yanxiu.gphone.student.util.UpdateUtil;
 
 import de.greenrobot.event.EventBus;
