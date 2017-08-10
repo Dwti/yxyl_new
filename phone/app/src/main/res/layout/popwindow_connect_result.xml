@@ -1,28 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
+    <View
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:background="@android:color/black"
-        android:alpha="0.6"
-        android:paddingTop="15dp">
-
-        <View
-            android:id="@+id/dismiss"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:background="@android:color/holo_blue_light"
-            android:layout_centerInParent="true"/>
-    </RelativeLayout>
+        android:alpha="0.6"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:layout_marginTop="56dp"
         android:background="#89e00d">
         <RelativeLayout
             android:layout_width="match_parent"
@@ -58,4 +49,21 @@
             android:layout_marginRight="15dp"/>
     </LinearLayout>
 
-</LinearLayout>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/drawer_circle_bg"
+
+        />
+
+    <ImageView
+        android:id="@+id/dismiss"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="23dp"
+        android:background="@drawable/selector_classify_drawer_icon" />
+
+</RelativeLayout>
