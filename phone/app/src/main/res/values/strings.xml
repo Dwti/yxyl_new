@@ -304,4 +304,7 @@
 
     <string name="edit_note">编辑笔记</string>
     <string name="note_desc">请输入笔记详情</string>
+    <string name="question_no_finish_live">您可以在练习历史中找到记录并继续答题</string>
+    <string name="quite">离开</string>
+    <string name="submit_exericse_answer">"提交练习答案"</string>
 </resources>

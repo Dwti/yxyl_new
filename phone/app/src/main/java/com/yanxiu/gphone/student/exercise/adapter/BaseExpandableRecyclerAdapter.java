@@ -22,6 +22,12 @@ public abstract class BaseExpandableRecyclerAdapter<T extends Node> extends Recy
         this.mData = data;
     }
 
+    public void clearData(){
+        if(mData != null){
+            mData.clear();
+            notifyDataSetChanged();
+        }
+    }
     public void replaceData(List<T> data) {
         initModel(data,null, -1);
         mData = data;

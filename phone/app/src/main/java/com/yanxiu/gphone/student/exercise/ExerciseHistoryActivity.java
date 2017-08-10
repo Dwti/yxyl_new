@@ -18,11 +18,13 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.srt.refresh.EXueELianRefreshLayout;
 import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.customviews.ChapterSwitchBar;
+import com.yanxiu.gphone.student.customviews.LoadingView;
 import com.yanxiu.gphone.student.exercise.adapter.PopListAdapter;
 import com.yanxiu.gphone.student.exercise.bean.EditionBeanEx;
 import com.yanxiu.gphone.student.exercise.bean.EditionChildBean;
@@ -61,7 +63,8 @@ public class ExerciseHistoryActivity extends Activity {
     private List<ExerciseBean> mExerciseListKnow = new ArrayList<>();
     private ExerciseAdapter mChapterAdapter,mKnowAdapter;
     private RecyclerView mRecyclerView;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private EXueELianRefreshLayout mRefreshLayout;
+    private LoadingView mLoadingView;
     private View mRootView,mTipsView, mBack,mLayoutStage,mToolBar;
     private String mSubjectId,mEditionId,mVolume;
     private TextView mTitle, mTips,mStage;
@@ -75,7 +78,7 @@ public class ExerciseHistoryActivity extends Activity {
     private int mChapterTotalPage = 0;
     private int mKnowTotalPage = 0;
     private boolean mIsChapterMode = true;  //当前选中的是否是章节
-    private boolean mNoEditions = true; //第一次进来是否没有请求Editions数据失败
+    private boolean mNoEditions = true; //第一次进来是否请求Editions数据失败
 
 
     public static void invoke(Context context,String subjectId, String subjectName,String editionId){
@@ -102,7 +105,8 @@ public class ExerciseHistoryActivity extends Activity {
         mSwitchBar = (ChapterSwitchBar) findViewById(R.id.switchBar);
         mLayoutStage = findViewById(R.id.ll_stage);
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
+        mRefreshLayout = (EXueELianRefreshLayout) findViewById(R.id.refreshLayout);
+        mLoadingView = (LoadingView) findViewById(R.id.loading);
         mTipsView = findViewById(R.id.tips_layout);
         mTips = (TextView) findViewById(R.id.tv_tips);
         mStage = (TextView) findViewById(R.id.tv_stage);
@@ -112,6 +116,8 @@ public class ExerciseHistoryActivity extends Activity {
         mKnowAdapter = new ExerciseAdapter(mExerciseListKnow,mItemClickListener);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mChapterAdapter);
+
+        mRefreshLayout.setLoadMoreEnable(true);
 
     }
 
@@ -173,37 +179,21 @@ public class ExerciseHistoryActivity extends Activity {
             }
         });
 
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-
-            LinearLayoutManager layoutManager = (LinearLayoutManager) mRecyclerView.getLayoutManager();
-            int totalItemCount ;
-            int lastVisibleItemPosition;
+        mRefreshLayout.setRefreshListener(new EXueELianRefreshLayout.RefreshListener() {
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                totalItemCount = layoutManager.getItemCount();
-                lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
-                boolean isLoadingMore = ((ExerciseAdapter)recyclerView.getAdapter()).isLoadingMore();
-                if(dy > 0 && !isLoadingMore && lastVisibleItemPosition + 1 == totalItemCount){
-                    loadMoreData();
-                }
-            }
-        });
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
+            public void onRefresh(EXueELianRefreshLayout refreshLayout) {
                 loadData();
+            }
+
+            @Override
+            public void onLoadMore(EXueELianRefreshLayout refreshLayout) {
+                loadMoreData();
             }
         });
         mRefreshBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mIsChapterMode){
-                    mChapterAdapter.clearData();
-                }else {
-                    mKnowAdapter.clearData();
-                }
-                showContentView();
+               mLoadingView.showLoadingView();
                 if(mNoEditions){
                     getEditionList(mSubjectId);
                 }else {
@@ -265,18 +255,18 @@ public class ExerciseHistoryActivity extends Activity {
     }
 
     private void loadData(){
-        setLoadingIndicator(true);
         if(mIsChapterMode){
             getExercisesByChapter(1);
         }else {
-            getExercisesByChapter(1);
+            getExercisesByKnow(1);
         }
     }
 
     private void loadMoreData(){
-        if(!canLoadMore(mIsChapterMode))
+        if(!canLoadMore(mIsChapterMode)){
+            mRefreshLayout.finishLoadMore();
             return;
-        setLoadingMoreIndicator(true);
+        }
         if(mIsChapterMode){
             mChapterCurrentPage++;
             getExercisesByChapter(mChapterCurrentPage);
@@ -287,15 +277,15 @@ public class ExerciseHistoryActivity extends Activity {
     }
 
     public void setLoadingIndicator(boolean active) {
-        mSwipeRefreshLayout.setRefreshing(active);
+        if(!active){
+            mLoadingView.hiddenLoadingView();
+            mRefreshLayout.finishRefreshing();
+        }
     }
 
     public void setLoadingMoreIndicator(boolean active) {
-        ExerciseAdapter adapter = (ExerciseAdapter) mRecyclerView.getAdapter();
-        if(active){
-            adapter.addFooterView();
-        }else {
-            adapter.removeFooterView();
+        if(!active){
+            mRefreshLayout.finishLoadMore();
         }
     }
 
@@ -409,7 +399,7 @@ public class ExerciseHistoryActivity extends Activity {
 
     private void showContentView(){
         mToolBar.setVisibility(View.VISIBLE);
-        mSwipeRefreshLayout.setVisibility(View.VISIBLE);
+        mRefreshLayout.setVisibility(View.VISIBLE);
         mTipsView.setVisibility(View.GONE);
     }
 
@@ -417,7 +407,7 @@ public class ExerciseHistoryActivity extends Activity {
         if(hideToolBar){
             mToolBar.setVisibility(View.GONE);
         }
-        mSwipeRefreshLayout.setVisibility(View.GONE);
+        mRefreshLayout.setVisibility(View.GONE);
         mTipsView.setVisibility(View.VISIBLE);
         mTips.setText(R.string.no_exercise);
         mRefreshBtn.setText(R.string.click_to_refresh);
@@ -427,7 +417,7 @@ public class ExerciseHistoryActivity extends Activity {
         if(hideToolBar){
             mToolBar.setVisibility(View.GONE);
         }
-        mSwipeRefreshLayout.setVisibility(View.GONE);
+        mRefreshLayout.setVisibility(View.GONE);
         mTipsView.setVisibility(View.VISIBLE);
         mTips.setText(R.string.load_failed);
         mRefreshBtn.setText(R.string.click_to_retry);

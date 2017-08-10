@@ -87,16 +87,18 @@ public class ExerciseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public int getItemCount() {
-        return mData.size() > 0? mData.size() +1 :0;
+//        return mData.size() > 0? mData.size() +1 :0;
+        return mData.size();
     }
 
     @Override
     public int getItemViewType(int position) {
-        if(position == getItemCount() -1){
-            return TYPE_FOOTER;
-        }else {
-            return TYPE_NORMAL;
-        }
+        return TYPE_NORMAL;
+//        if(position == getItemCount() -1){
+//            return TYPE_FOOTER;
+//        }else {
+//            return TYPE_NORMAL;
+//        }
     }
 
     public ExerciseBean getItem(int position){
