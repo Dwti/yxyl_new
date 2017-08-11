@@ -191,7 +191,7 @@ public class SubmitQuesitonTask extends AsyncTask {
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {
-                            mCallBack.onDataError(ret.getStatus().getDesc());
+                            mCallBack.onDataError(ret.getStatus().getCode(),ret.getStatus().getDesc());
                         }
                     });
                 }

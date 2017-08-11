@@ -646,7 +646,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
             }
 
             @Override
-            public void onDataError(String msg) {
+            public void onDataError(int responeCode,String msg) {
                 ToastManager.showMsg(msg);
                 finish();
             }
