@@ -218,7 +218,6 @@ public class ClassifyFragment extends AnswerSimpleExerciseBaseFragment implement
      */
     @Override
     public void onClassifyChoiceItemCloseClick(View view) {
-        ToastManager.showMsg(view.getTag().toString());
         int id = -1;
         String chioce = view.getTag().toString();
         try {
