@@ -77,7 +77,7 @@
                     android:layout_width="@dimen/login_edit_icon_w_h"
                     android:layout_height="@dimen/login_edit_icon_w_h"
                     android:layout_marginEnd="@dimen/about_image_margin_r"
-                    android:background="@color/colorPrimary"
+                    android:background="@drawable/selector_privacy"
                     android:contentDescription="@null" />
 
             </LinearLayout>

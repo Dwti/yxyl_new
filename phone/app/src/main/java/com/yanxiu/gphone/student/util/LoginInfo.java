@@ -164,7 +164,7 @@ public class LoginInfo {
     }
 
     /**
-     * 学段ID、年级id
+     * 学段ID
      * @return 学段ID
      */
     public static String getStageid(){
@@ -206,7 +206,7 @@ public class LoginInfo {
         Save();
     }
     /**
-     * 学段
+     * 学段名称
      * @return 学段名称
      */
     public static String getStageName(){
@@ -259,7 +259,7 @@ public class LoginInfo {
      * */
     public static int getSex(){
         if (!isLogIn()){
-            return -1;
+            return 0;
         }
         return bean.getSex();
     }

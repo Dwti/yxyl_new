@@ -14,6 +14,7 @@ import com.yanxiu.gphone.student.customviews.AlbumGridView;
 import com.yanxiu.gphone.student.customviews.spantextview.SubjectClozeTextView;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.analysisbase.AnalysisSimpleExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.wrongbase.WrongSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionUtil;
 import com.yanxiu.gphone.student.util.StemUtil;
 
@@ -22,7 +23,7 @@ import com.yanxiu.gphone.student.util.StemUtil;
  * Time : 2017/6/14 11:02.
  * Function :
  */
-public class SubjectiveWrongFragment extends AnalysisSimpleExerciseBaseFragment implements AlbumGridView.onClickListener {
+public class SubjectiveWrongFragment extends WrongSimpleExerciseBaseFragment implements AlbumGridView.onClickListener {
 
     private SubjectiveQuestion mData;
     private SubjectClozeTextView mQuestionView;
@@ -82,6 +83,7 @@ public class SubjectiveWrongFragment extends AnalysisSimpleExerciseBaseFragment 
         showAnswerView(answer);
         showAnalysisview(mData.getQuestionAnalysis());
         showPointView(mData.getPointList());
+        showNoteView(mData.getJsonNoteBean());
     }
 
     private void initView() {

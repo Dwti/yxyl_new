@@ -122,12 +122,7 @@ public class UserInfoActivity extends YanxiuBaseActivity implements View.OnClick
     }
 
     private void setHeadImg(String url) {
-        Glide.with(mContext).load(url).asBitmap().into(new BitmapImageViewTarget(mUserHeadImgView) {
-            @Override
-            protected void setResource(Bitmap resource) {
-                view.setImageBitmap(resource);
-            }
-        });
+        Glide.with(mContext).load(url).asBitmap().placeholder(R.drawable.user_info_headimg_default).into(mUserHeadImgView);
     }
 
     private void setSexText(int sexId) {
