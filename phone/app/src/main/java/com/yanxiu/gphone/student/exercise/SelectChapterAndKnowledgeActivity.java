@@ -108,6 +108,7 @@ public class SelectChapterAndKnowledgeActivity extends Activity{
             public void onCheckedChanged(boolean isOff) {
                 if(isOff){
                     mIsChapterMode = true;
+                    showContentView();
                     mLayoutStage.setVisibility(View.VISIBLE);
                     mRecyclerView.setAdapter(mChapterAdapter);
                     if(mChapterAdapter.getItemCount() == 0){
@@ -115,6 +116,7 @@ public class SelectChapterAndKnowledgeActivity extends Activity{
                     }
                 }else {
                     mIsChapterMode = false;
+                    showContentView();
                     mLayoutStage.setVisibility(View.GONE);
                     mRecyclerView.setAdapter(mKnowledgePointAdapter);
                     if(mKnowledgePointAdapter.getItemCount() == 0){
@@ -174,9 +176,9 @@ public class SelectChapterAndKnowledgeActivity extends Activity{
             }
         });
 
-        mKnowledgePointAdapter.setOnItemClickListener(new BaseExpandableRecyclerAdapter.OnItemClickListener<ChapterBean>() {
+        mKnowledgePointAdapter.setOnItemClickListener(new BaseExpandableRecyclerAdapter.OnItemClickListener<KnowledgePointBean>() {
             @Override
-            public void onItemClick(View itemView, int position, ChapterBean node) {
+            public void onItemClick(View itemView, int position, KnowledgePointBean node) {
                 GenQuesByKnpointRequest request = new GenQuesByKnpointRequest();
                 request.setSubjectId(mSubjectId);
                 request.bodyDealer = new DESBodyDealer();
