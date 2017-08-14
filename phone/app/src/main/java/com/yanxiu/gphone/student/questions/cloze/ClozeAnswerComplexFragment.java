@@ -4,6 +4,7 @@ package com.yanxiu.gphone.student.questions.cloze;
 import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -39,8 +40,13 @@ public class ClozeAnswerComplexFragment extends AnswerComplexExerciseBaseFragmen
     protected TopBaseFragment getTopFragment() {
         ClozeComplexTopFragment topFragment = new ClozeComplexTopFragment();
         topFragment.setData(mData);
-        hiddenSplitter();
         return topFragment;
+    }
+
+    @Override
+    protected void setTopFragment(Fragment fragment) {
+        super.setTopFragment(fragment);
+        hiddenSplitter();
     }
 
     @Override
@@ -71,7 +77,7 @@ public class ClozeAnswerComplexFragment extends AnswerComplexExerciseBaseFragmen
     /**
      * 完形填空不显示滑块，隐藏滑块view
      */
-    public void hiddenSplitter() {
+    private void hiddenSplitter() {
         final LinearLayout parentView = (LinearLayout) mImageViewSplitter.getParent();
         parentView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
