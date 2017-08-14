@@ -51,6 +51,14 @@ public class ClassifyAnimationUtil {
             final PathMeasure mPathMeasure;
             final float[] mCurrentPosition = new float[2];
             final View chioceView = mChoiceViewList.get(i);
+
+            //得到商品图片的坐标（用于计算动画开始的坐标）
+            /**
+             * change start location
+             * */
+            int startLoc[] = new int[2];
+            chioceView.getLocationInWindow(startLoc);
+
             mWidth = chioceView.getWidth();
             mHeight = chioceView.getHeight();
             parentView.removeView(chioceView);
@@ -62,9 +70,6 @@ public class ClassifyAnimationUtil {
             int[] parentLocation = new int[2];
             rl.getLocationInWindow(parentLocation);
 
-            //得到商品图片的坐标（用于计算动画开始的坐标）
-            int startLoc[] = new int[2];
-            chioceView.getLocationInWindow(startLoc);
 
             //得到购物车图片的坐标(用于计算动画结束后的坐标)
             int endLoc[] = new int[2];
@@ -75,8 +80,13 @@ public class ClassifyAnimationUtil {
             //开始掉落的商品的起始点：商品起始点-父布局起始点+该商品图片的一半
 //        float startX = startLoc[0] - parentLocation[0] + choiceView.getWidth() / 2;
 //        float startY = startLoc[1] - parentLocation[1] + choiceView.getHeight() ;
-            float startX = startLoc[0] + chioceView.getWidth() / 2;
-            float startY = startLoc[1] + chioceView.getHeight() / 2;
+
+            /**
+             * change start location
+             * cwq
+             * */
+            float startX = startLoc[0] -parentLocation[0];
+            float startY = startLoc[1] -parentLocation[1];
 
             //商品掉落后的终点坐标：购物车起始点-父布局起始点+购物车图片的1/5
             /**
