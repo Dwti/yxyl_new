@@ -16,11 +16,14 @@ import java.util.List;
  * Created by sunpeng on 2017/7/13.
  */
 
-public class ConnectResultAdapter extends RecyclerView.Adapter<ConnectResultAdapter.ConnectedItemViewHolder> {
+public class ConnectResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<ConnectedBean> mData;
 
     private OnItemDeletedListener mOnItemDeletedListener;
+
+    private static final int TYPE_NORMAL = 0;
+    private static final int TYPE_EMPTY = 1;
 
     private int mMaxPicWidth = 0;
 
@@ -33,25 +36,40 @@ public class ConnectResultAdapter extends RecyclerView.Adapter<ConnectResultAdap
     }
 
     @Override
-    public ConnectedItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ConnectedItemViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_connected,parent,false));
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if(viewType == TYPE_NORMAL){
+            return new ConnectedItemViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_connected,parent,false));
+        }else {
+            return new EmptyViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.connect_basket_empty_view,parent,false));
+        }
     }
 
     @Override
-    public void onBindViewHolder(final ConnectedItemViewHolder holder, final int position) {
-        holder.itemView.post(new Runnable() {
-            @Override
-            public void run() {
-                holder.leftText.setText(Html.fromHtml(mData.get(position).getLeftItem().getText(),new HtmlImageGetter(holder.leftText),null));
-                holder.rightText.setText(Html.fromHtml(mData.get(position).getRightItem().getText(),new HtmlImageGetter(holder.rightText),null));
-            }
-        });
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+        if(holder instanceof ConnectedItemViewHolder){
+            holder.itemView.post(new Runnable() {
+                @Override
+                public void run() {
+                    ((ConnectedItemViewHolder)holder).leftText.setText(Html.fromHtml(mData.get(position).getLeftItem().getText(),new HtmlImageGetter(((ConnectedItemViewHolder)holder).leftText),null));
+                    ((ConnectedItemViewHolder)holder).rightText.setText(Html.fromHtml(mData.get(position).getRightItem().getText(),new HtmlImageGetter(((ConnectedItemViewHolder)holder).rightText),null));
+                }
+            });
+        }
 
     }
 
     @Override
     public int getItemCount() {
-        return mData.size();
+        return mData.size()==0?1:mData.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if(mData.size() == 0 ){
+            return TYPE_EMPTY;
+        }else {
+            return TYPE_NORMAL;
+        }
     }
 
     private void remove(int index){
@@ -83,6 +101,13 @@ public class ConnectResultAdapter extends RecyclerView.Adapter<ConnectResultAdap
                     }
                 }
             });
+        }
+    }
+
+    class EmptyViewHolder extends RecyclerView.ViewHolder{
+
+        public EmptyViewHolder(View itemView) {
+            super(itemView);
         }
     }
 

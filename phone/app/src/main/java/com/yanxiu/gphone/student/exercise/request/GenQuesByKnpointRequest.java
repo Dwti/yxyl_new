@@ -19,7 +19,7 @@ public class GenQuesByKnpointRequest extends GenQuesRequest {
     protected String knpId4="";
     @Override
     protected String urlPath() {
-        return "q/genKnpointQBlock.do";
+        return "q/genKnpointQBlockNew.do";
     }
 
     public String getSubjectId() {

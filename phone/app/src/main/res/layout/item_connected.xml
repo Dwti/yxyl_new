@@ -28,13 +28,13 @@
         android:layout_height="2dp"
         android:background="@android:color/white"/>
 
-    <View
+    <ImageView
         android:id="@+id/delete"
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_marginLeft="2dp"
         android:layout_marginRight="2dp"
-        android:background="@android:color/holo_red_light"/>
+        android:background="@drawable/selector_connect_delete"/>
 
     <View
         android:id="@+id/line_right"

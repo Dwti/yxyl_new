@@ -9,7 +9,7 @@ public class WorkBean {
     /**
      * 年级ID
      */
-    public String stageId;
+    public String volume;
     /**
      * 题目数量
      */

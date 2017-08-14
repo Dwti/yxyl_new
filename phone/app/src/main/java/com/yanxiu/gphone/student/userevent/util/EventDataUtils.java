@@ -85,7 +85,7 @@ public class EventDataUtils {
             HashMap<String, String> map = getEventDataMap();
             HashMap<String, String> reserved = new HashMap<>();
             reserved.put(Constants.UserEvent.EVENT_ID, Constants.UserEvent.UserEventID.RECEIVE_WORK);
-            reserved.put(Constants.UserEvent.CLASS_ID, bean.stageId);
+            reserved.put(Constants.UserEvent.CLASS_ID, bean.volume);
             reserved.put(Constants.UserEvent.QUES_Num, bean.questionNum);
             map.put(Constants.UserEvent.RESERVED, eventMapToJsonString(reserved));
             hashMaps.add(map);

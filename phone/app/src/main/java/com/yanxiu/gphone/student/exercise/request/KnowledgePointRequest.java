@@ -12,7 +12,7 @@ public class KnowledgePointRequest extends EXueELianBaseRequest {
     protected String subjectId;
     @Override
     protected String urlPath() {
-        return "anaofstd/listKnpStat.do";
+        return "anaofstd/listKnpStatNew.do";
     }
 
     public String getSubjectId() {

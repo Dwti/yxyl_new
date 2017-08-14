@@ -107,10 +107,10 @@ public class SpManager {
 
     /**
      * 已经完成的题目数
-     * @return -1 ：没记录
+     * @return 0 ：没记录
      */
     public static int getCompleteQuestionCount(String paperId) {
-        return myCompeleteAnswerSharedPreferences.getInt(paperId, -1);
+        return myCompeleteAnswerSharedPreferences.getInt(paperId, 0);
     }
 
     public static void setCropIsLuanched(boolean isLuanch){

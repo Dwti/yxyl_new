@@ -186,13 +186,13 @@ public class ChangePassWordActivity extends YanxiuBaseActivity implements View.O
     public void onChanged(View view, String value, boolean isEmpty) {
         if (view == mPassWordView) {
             isPassWordReady = !isEmpty;
-            setClearButtonFocusChange(isPassWordReady,mPassWordView);
+            setClearButtonFocusChange(isPassWordReady,mClearPassWordView);
         } else if (view == mPassWordNewView) {
             isPassWordNewReady = !isEmpty;
-            setClearButtonFocusChange(isPassWordNewReady,mPassWordNewView);
+            setClearButtonFocusChange(isPassWordNewReady,mClearPassWordNewView);
         } else if (view == mPassWordAgainView) {
             isPassWordAgainReady = !isEmpty;
-            setClearButtonFocusChange(isPassWordAgainReady,mPassWordAgainView);
+            setClearButtonFocusChange(isPassWordAgainReady,mClearPassWordAgainView);
         }
         setSureButtonFocusChange(isPassWordReady&&isPassWordNewReady&&isPassWordAgainReady);
     }
@@ -216,5 +216,4 @@ public class ChangePassWordActivity extends YanxiuBaseActivity implements View.O
             mSureView.setEnabled(false);
         }
     }
-
 }

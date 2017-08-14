@@ -9,6 +9,6 @@ public interface SubmitAnswerCallback<T> {
 
     void onUpdate(int count, int index);
 
-    void onDataError(String msg);
+    void onDataError(int responeCode ,String msg);
 
 }

@@ -174,7 +174,7 @@ public class AnswerCardFragment extends YanxiuBaseFragment implements View.OnCli
                  * @param questionId  [qid,qid,qid...]
                  */
                 getPvData();
-                UserEventManager.getInstense().whenSubmitWork(mPaper.getBedition(), LoginInfo.getStageid(), mPaper.getSubjectid(), mPaperType, mQuestionCount, mQuestionQid);
+                UserEventManager.getInstense().whenSubmitWork(mPaper.getBedition(), mPaper.getVolume(), mPaper.getSubjectid(), mPaperType, mQuestionCount, mQuestionQid);
                 break;
             case R.id.backview:
                 getActivity().getSupportFragmentManager().beginTransaction().remove(AnswerCardFragment.this).commit();
@@ -244,10 +244,15 @@ public class AnswerCardFragment extends YanxiuBaseFragment implements View.OnCli
             }
 
             @Override
-            public void onDataError(String msg) {
-                ToastManager.showMsg(msg);
+            public void onDataError(int responeCode,String msg) {
                 if (null != mDialog)
                     mDialog.dismiss();
+                if(responeCode == 66){
+                    ToastManager.showMsg(getString(R.string.homework_delete));
+                    getActivity().finish();
+                }else{
+                    ToastManager.showMsg(msg);
+                }
             }
         });
         mSubmitQuesitonTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "");
