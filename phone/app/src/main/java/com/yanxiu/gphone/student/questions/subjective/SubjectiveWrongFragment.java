@@ -9,11 +9,9 @@ import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.common.activity.PhotoActivity;
-import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.AlbumGridView;
 import com.yanxiu.gphone.student.customviews.spantextview.SubjectClozeTextView;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
-import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.analysisbase.AnalysisSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.wrongbase.WrongSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionUtil;
 import com.yanxiu.gphone.student.util.StemUtil;
