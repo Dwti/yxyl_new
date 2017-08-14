@@ -42,7 +42,11 @@ public class ClassifyAnimationUtil {
         mChoiceViewList = choiceViewList;
         if (mChoiceViewList == null || mChoiceViewList.isEmpty())
             return;
-        mBasketView = basketView;
+        /**
+         * change target view
+         * cwq
+         * */
+        mBasketView = (View) basketView.getTag();
         for (int i = 0; i < mChoiceViewList.size(); i++) {
             final PathMeasure mPathMeasure;
             final float[] mCurrentPosition = new float[2];
@@ -75,7 +79,11 @@ public class ClassifyAnimationUtil {
             float startY = startLoc[1] + chioceView.getHeight() / 2;
 
             //商品掉落后的终点坐标：购物车起始点-父布局起始点+购物车图片的1/5
-            float toX = endLoc[0] - parentLocation[0] - basketView.getWidth() / 2;
+            /**
+             * change end location
+             * cwq
+             * */
+            float toX = endLoc[0] - parentLocation[0] ;
             float toY = endLoc[1] - parentLocation[1];
 //        float toX = endLoc[0]  + basketView.getWidth() / 5;
 //        float toY = endLoc[1];
@@ -171,27 +179,6 @@ public class ClassifyAnimationUtil {
             }
         });
         valueAnimator.start();
-        valueAnimator.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-
-            }
-
-            //当动画结束后：
-            @Override
-            public void onAnimationEnd(Animator animation) {
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
-        });
     }
 
     /**
@@ -213,27 +200,5 @@ public class ClassifyAnimationUtil {
             }
         });
         valueAnimator.start();
-        valueAnimator.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-
-            }
-
-            //当动画结束后：
-            @Override
-            public void onAnimationEnd(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
-        });
     }
 }
