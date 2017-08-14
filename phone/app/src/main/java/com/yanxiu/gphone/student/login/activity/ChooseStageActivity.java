@@ -110,8 +110,8 @@ public class ChooseStageActivity extends YanxiuBaseActivity implements PickerVie
         mChooseStageView.setTextLocation(PickerView.DEFAULT_CENTER);
         String stageName = LoginInfo.getStageName();
         if (!TextUtils.isEmpty(stageName)) {
-            stageText=stageName;
-            stageId=LoginInfo.getStageid();
+            stageText = stageName;
+            stageId = LoginInfo.getStageid();
             mChooseStageView.setSelected(stageName);
 
         }
@@ -122,7 +122,7 @@ public class ChooseStageActivity extends YanxiuBaseActivity implements PickerVie
         int[] ids = Constants.StageTxtId;
         stageText = getText(ids[0]).toString();
         stageId = stageIds[0];
-        for (int id:ids) {
+        for (int id : ids) {
             list.add(getText(id).toString());
         }
         return list;
@@ -143,8 +143,7 @@ public class ChooseStageActivity extends YanxiuBaseActivity implements PickerVie
         switch (v.getId()) {
             case R.id.tv_right:
                 if (LoginInfo.isLogIn()) {
-                    if (!stageId.equals(LoginInfo.getStageid()))
-                        showDialog();
+                    showDialog();
                 } else {
                     result();
                 }
