@@ -104,6 +104,7 @@ public class ClassifyAdapter extends RecyclerView.Adapter<ClassifyAdapter.Answer
             classify_basket = (TextView) itemView.findViewById(R.id.classify_basket);
             classify_item_count = (TextView) itemView.findViewById(R.id.classify_item_count);
 //            mWavesLayout.setOtherView(mQuestion_number);
+            classify_basket.setTag(classify_item_count);
             TextTypefaceUtil.setViewTypeface(TextTypefaceUtil.TypefaceType.METRO_PLAY, classify_item_count);
         }
     }

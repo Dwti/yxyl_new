@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -43,6 +44,8 @@ public class ClassifyFragment extends AnswerSimpleExerciseBaseFragment implement
     private RecyclerView mClassify_recyclerview;
     private ClassifyAdapter mClassifyAdapter;
 
+    private RelativeLayout ll;
+
     @Override
     public void setData(BaseQuestion data) {
         super.setData(data);
@@ -67,6 +70,7 @@ public class ClassifyFragment extends AnswerSimpleExerciseBaseFragment implement
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_classify, container, false);
+        ll = (RelativeLayout) view.findViewById(R.id.ll);
         setQaNumber(view);
         setQaName(view);
         initView(view);
@@ -136,7 +140,7 @@ public class ClassifyFragment extends AnswerSimpleExerciseBaseFragment implement
             lp.addRule(CENTER_HORIZONTAL);
         }
     }
-
+    private ArrayList<View> chioceView = new ArrayList<>();
     /**
      * 归类题，归类篮子ItemClick的回调接口
      */
@@ -167,6 +171,8 @@ public class ClassifyFragment extends AnswerSimpleExerciseBaseFragment implement
                 }
                 mHasChoosedChoiceListForNotifyDataChange.add(chioce);
             }
+            ClassifyAnimationUtil ss = new ClassifyAnimationUtil();
+            ss.addCart(ll,mClassify_choice,(View)view.getTag(),chioceView);
             mClassify_choice.refreshData(mHasChoosedChoiceListForNotifyDataChange);
 //            mClassify_choice.setData(mHasChoosedChoiceList, this);//刷新chioceview
             mData.getAnswerList().set(position, answerList);//保存答案数据
@@ -199,10 +205,12 @@ public class ClassifyFragment extends AnswerSimpleExerciseBaseFragment implement
             view.setSelected(false); //取消选中
             if (tempList.contains(name))
                 tempList.remove(name);
+            chioceView.remove(view);
         } else {
             view.setSelected(true); //选中
             if (!tempList.contains(name))
                 tempList.add(name);
+            chioceView.add(view);
         }
         if (!tempList.isEmpty()) {// 有选中数据
             hasChoiceData = true;
