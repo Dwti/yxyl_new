@@ -18,18 +18,28 @@
             android:id="@+id/backview"
             android:layout_width="@dimen/common_top_layout_leftimage_wdith"
             android:layout_height="@dimen/common_top_layout_leftimage_wdith"
-            android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/common_top_layout_marginLeft"
+            android:layout_marginRight="@dimen/common_top_layout_marginLeft"
+            android:layout_centerVertical="true"
             android:background="@drawable/answerquestion_top_backview_selecter" />
+
+        <View
+            android:id="@+id/right_null"
+            android:layout_width="@dimen/common_top_layout_marginRight"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"/>
 
         <TextView
             android:id="@+id/title"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginLeft="100dp"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:layout_toRightOf="@+id/backview"
+            android:layout_toLeftOf="@+id/right_null"
             android:ellipsize="end"
-            android:maxLines="1"
+            android:singleLine="true"
             android:textColor="@color/color_666666"
             android:textSize="20dp"
             android:textStyle="bold"

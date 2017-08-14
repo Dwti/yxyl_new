@@ -7,6 +7,8 @@ import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Paint.FontMetricsInt;
 import android.graphics.Paint.Style;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.ContextCompat;
@@ -36,7 +38,7 @@ public class PickerViewEx extends View {
     /**
      * text之间间距和minTextSize之比
      */
-    public static final float MARGIN_ALPHA = 2.5f;
+    public static final float MARGIN_ALPHA = 2.8f;
     /**
      * 自动回滚到中间的速度
      */
@@ -294,7 +296,7 @@ public class PickerViewEx extends View {
 
     private void drawLines(Canvas canvas) {
         Paint nPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        nPaint.setStyle(Style.FILL);
+        nPaint.setStyle(Style.STROKE);
         nPaint.setTextAlign(Align.CENTER);
         nPaint.setColor(ContextCompat.getColor(mContext, R.color.color_ffffff));
         nPaint.setStrokeWidth(4);
@@ -302,8 +304,8 @@ public class PickerViewEx extends View {
         Paint.FontMetrics metrics = nPaint.getFontMetrics();
         float text_height = metrics.descent - metrics.ascent;
 
-        canvas.drawLine(0, mViewHeight / 2 + text_height, mViewWidth, mViewHeight / 2 + text_height, nPaint);
-        canvas.drawLine(0, mViewHeight / 2 - text_height, mViewWidth, mViewHeight / 2 - text_height, nPaint);
+        RectF rect = new RectF(0+2,mViewHeight / 2 - (int)text_height - 5,mViewWidth-2,mViewHeight / 2 + (int)text_height + 5);
+        canvas.drawRoundRect(rect,6,6,nPaint);
     }
 
     /**
@@ -315,10 +317,10 @@ public class PickerViewEx extends View {
         float d = (float) (MARGIN_ALPHA * mMinTextSize * position + type
                 * mMoveLen);
         float scale = parabola(mViewHeight / 4.0f, d);
-        float size = (mMaxTextSize - mMinTextSize) * scale + mMinTextSize;
+        float size = (mMaxTextSize - mMinTextSize) * scale + mMinTextSize + (3-position) * 5 ;
         nPaint.setTextSize(size);
         nPaint.setAlpha((int) ((mMaxTextAlpha - mMinTextAlpha) * scale + mMinTextAlpha));
-        float y = (float) (mViewHeight / 2.0 + type * d);
+        float y = (float) (mViewHeight / 2.0 + type * d - type * (position - 1) * 30);
         FontMetricsInt fmi = nPaint.getFontMetricsInt();
         float baseline = (float) (y - (fmi.bottom / 2.0 + fmi.top / 2.0));
 

@@ -474,6 +474,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
                 nextQuestion();
                 break;
             case R.id.backview:
+                SpManager.setCompleteQuestionCount(mPaper.getId(),QuestionUtil.calculateCompleteCount(mQuestions));
                 finish();
                 break;
             case R.id.answercardview:
@@ -550,7 +551,6 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
     @Override
     protected void onDestroy() {
         SpManager.setTotlaTime(mPaper.getId(),mTotalTime);
-        SpManager.setCompleteQuestionCount(mPaper.getId(),QuestionUtil.calculateCompleteCount(mQuestions));
         mHandler.removeCallbacksAndMessages(null);
         mHandler = null;
         mKeyboardObserver.destroy();
@@ -587,6 +587,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         if(Constants.MAINAVTIVITY_FROMTYPE_EXERCISE.equals(mFromType)){ // 练习
             quitSubmmitDialog();
         }else{
+            SpManager.setCompleteQuestionCount(mPaper.getId(),QuestionUtil.calculateCompleteCount(mQuestions));
             super.onBackPressed();
         }
     }
@@ -645,7 +646,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
             }
 
             @Override
-            public void onDataError(String msg) {
+            public void onDataError(int responeCode,String msg) {
                 ToastManager.showMsg(msg);
                 finish();
             }

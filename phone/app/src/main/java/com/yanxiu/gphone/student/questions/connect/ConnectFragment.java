@@ -156,6 +156,7 @@ public class ConnectFragment extends AnswerSimpleExerciseBaseFragment {
         if (mPopWindow == null) {
             View contentView = LayoutInflater.from(getContext()).inflate(R.layout.popwindow_connect_result, null);
             mPopWindow = new PopupWindow(contentView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            mPopWindow.setAnimationStyle(R.style.pop_anim);
             View dismiss = contentView.findViewById(R.id.dismiss);
             View btnClear = contentView.findViewById(R.id.tv_clear);
             mRecyclerViewResult = (RecyclerView) contentView.findViewById(R.id.recyclerView);

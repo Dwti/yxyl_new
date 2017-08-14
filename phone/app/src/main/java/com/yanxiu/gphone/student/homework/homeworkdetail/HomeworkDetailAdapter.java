@@ -12,6 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.db.SpManager;
 import com.yanxiu.gphone.student.homework.response.HomeworkDetailBean;
 
 import java.text.NumberFormat;
@@ -62,7 +63,7 @@ public class HomeworkDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             viewHolder.mName.setText(bean.getName());
             //TODO 根据状态设置icon
             if(bean.getPaperStatus().getStatus() == HomeworkDetailPresenter.STATUS_TODO){   //待完成
-                viewHolder.mState1.setText(mContext.getString(R.string.homework_done_num) + bean.getAnswernum()  + "/" + bean.getQuesnum());
+                viewHolder.mState1.setText(mContext.getString(R.string.homework_done_num) + SpManager.getCompleteQuestionCount(bean.getId()) + "/" + bean.getQuesnum());
                 if(bean.getIsEnd() == 0){  //未截止
                     viewHolder.mState2.setText(mContext.getString(R.string.homework_remain_time)+ bean.getRemaindertimeStr());
                 }else {   //已截止

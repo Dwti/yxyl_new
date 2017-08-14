@@ -40,7 +40,7 @@ public class SelectEditionActivity extends Activity {
     private ImageView mIcon, mBack;
     private PickerViewEx mPickerView;
     private Button mBtnOk;
-    private String mSubjectId = "";
+    private String mSubjectId = "",mSubjectName;
     private int mSelectedIndex;
     private String mDefaultEditionName;
     private boolean mIsSavingEdition = false;
@@ -92,7 +92,8 @@ public class SelectEditionActivity extends Activity {
         mSubjectId = getIntent().getStringExtra(SUBJECT_ID);
         mComeFrom = getIntent().getIntExtra(COME_FROM, -1);
         mDefaultEditionName = getIntent().getStringExtra(EDITION_NAME);
-        mSubject.setText(getIntent().getStringExtra(SUBJECT_NAME));
+        mSubjectName = getIntent().getStringExtra(SUBJECT_NAME);
+        mSubject.setText(mSubjectName);
         if (mIcon != null)
             setIcon(mIcon, mSubjectId);
         requestEditions(mSubjectId);
@@ -223,7 +224,9 @@ public class SelectEditionActivity extends Activity {
                 if (mComeFrom == FROM_SUBJECT_SELECT) {
                     finish();
                 } else if (mComeFrom == FROM_EXERCISE) {
-                    //TODO 直接进入练习
+                    String editionId = editions.get(mPickerView.getSelectedIndex()).getId();
+                    SelectChapterAndKnowledgeActivity.invoke(SelectEditionActivity.this,mSubjectId,mSubjectName,editionId);
+                    finish();
                 }
             } else {
                 ToastManager.showMsg(response.getStatus().getDesc());
