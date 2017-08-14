@@ -61,8 +61,12 @@ public class SubjectiveAnalysisFragment extends AnalysisSimpleExerciseBaseFragme
     public void initAnalysisView() {
         String answer="";
         if (mData.getSubjectAnswer()!=null){
-            for (String s:mData.getSubjectAnswer()){
-                answer+=s;
+            for (int i = 0; i < mData.getSubjectAnswer().size(); i++) {
+                if(i < mData.getSubjectAnswer().size() -1){// 不是最后一个
+                    answer += mData.getSubjectAnswer().get(i) + ",";
+                }else{
+                    answer += mData.getSubjectAnswer().get(i);
+                }
             }
         }
         if(Constants.HAS_FINISH_STATUS.equals(mData.getPaperStatus())){ //已完成

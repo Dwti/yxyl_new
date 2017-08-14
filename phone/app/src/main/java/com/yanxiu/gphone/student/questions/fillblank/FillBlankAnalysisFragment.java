@@ -85,8 +85,12 @@ public class FillBlankAnalysisFragment extends AnalysisSimpleExerciseBaseFragmen
             showDifficultyview(mQuestion.getStarCount());
             String answer="";
             if (mQuestion.getServer_answer()!=null){
-                for (String s:mQuestion.getCorrectAnswers()){
-                    answer+=s;
+                for (int i = 0; i < mQuestion.getCorrectAnswers().size(); i++) {
+                    if(i < mQuestion.getCorrectAnswers().size() -1){// 不是最后一个
+                        answer += mQuestion.getCorrectAnswers().get(i) + ",";
+                    }else{
+                        answer += mQuestion.getCorrectAnswers().get(i);
+                    }
                 }
             }
             showAnswerView(answer);

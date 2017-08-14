@@ -54,6 +54,7 @@
     <dimen name="login_thrid_padding">5dp</dimen>
 
     <dimen name="common_top_layout_marginLeft">12dp</dimen>
+    <dimen name="common_top_layout_marginRight">50dp</dimen>
     <dimen name="common_top_layout_leftimage_wdith">26dp</dimen>
     <dimen name="question_top_layout_time_textsize">23dp</dimen>
     <dimen name="question_top_layout_time_maohao">20dp</dimen>
