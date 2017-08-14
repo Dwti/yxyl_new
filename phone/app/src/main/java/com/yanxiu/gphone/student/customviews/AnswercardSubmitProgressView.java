@@ -60,16 +60,6 @@ public class AnswercardSubmitProgressView extends RelativeLayout {
     }
 
     /***
-     * 设置最大的进度值
-     *
-     * @param maxCount
-     */
-    public void setMaxCount(float maxCount) {
-        this.maxCount = maxCount;
-        mPercent = mWidth / maxCount;
-    }
-
-    /***
      * 更新当前的进度值
      */
     public void updateProgress(int currentAnswerNumber) {
@@ -85,6 +75,16 @@ public class AnswercardSubmitProgressView extends RelativeLayout {
                 requestLayout();
             }
         }
+    }
+
+    /***
+     * 设置最大的进度值
+     *
+     * @param maxCount
+     */
+    public void setMaxCount(float maxCount) {
+        this.maxCount = maxCount;
+        mPercent = mWidth / maxCount;
     }
 
     public void reset(){
