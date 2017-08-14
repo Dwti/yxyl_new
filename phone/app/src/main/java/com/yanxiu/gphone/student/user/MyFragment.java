@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.srt.refresh.BaseRefreshLayout2;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.HomePageBaseFragment;
 import com.yanxiu.gphone.student.exercise.SubjectHistoryActivity;
@@ -53,6 +54,10 @@ public class MyFragment extends HomePageBaseFragment implements View.OnClickList
     private String mMobile;//账号（手机号）
     private String mStageName;//学段
 
+    private BaseRefreshLayout2 mRefreshLayout;
+
+    private View mHead_layout,mFly_icon,mHill_icon;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_my, container, false);
@@ -91,6 +96,15 @@ public class MyFragment extends HomePageBaseFragment implements View.OnClickList
         mFeedback = mRootView.findViewById(R.id.user_feedback);
         mSetting = mRootView.findViewById(R.id.user_seeting);
         initListener();
+
+        mRefreshLayout = (BaseRefreshLayout2) mRootView.findViewById(R.id.refreshLayout);
+        mHead_layout = mRootView.findViewById(R.id.head_layout);
+        mFly_icon = mRootView.findViewById(R.id.fly_icon);
+        mHill_icon = mRootView.findViewById(R.id.user_hill);
+        mRefreshLayout.setHeadLayout(mHead_layout);
+        mRefreshLayout.setFlyView(mFly_icon);
+        mRefreshLayout.setHillView(mHill_icon);
+        mRefreshLayout.setHeaderHeight(200);
     }
 
     private void intData() {
