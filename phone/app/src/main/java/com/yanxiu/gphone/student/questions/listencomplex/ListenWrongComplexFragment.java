@@ -2,9 +2,9 @@ package com.yanxiu.gphone.student.questions.listencomplex;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
-import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.analysisbase.AnalysisComplexExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.TopBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.wrongbase.WrongComplexExerciseBaseFragment;
 
@@ -16,7 +16,7 @@ import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.wrongbase.Wro
 public class ListenWrongComplexFragment extends WrongComplexExerciseBaseFragment{
 
     private ListenComplexQuestion mData;
-    private ListenAnalysisComplexTopFragment topFragment;
+    private ListenWrongComplexTopFragment topFragment;
 
     @Override
     public void setData(BaseQuestion baseQuestion) {
@@ -24,17 +24,24 @@ public class ListenWrongComplexFragment extends WrongComplexExerciseBaseFragment
         mData = (ListenComplexQuestion) baseQuestion;
     }
 
+
     @Override
     protected TopBaseFragment getTopFragment() {
-        topFragment=new ListenAnalysisComplexTopFragment();
+        ListenWrongComplexTopFragment topFragment=new ListenWrongComplexTopFragment();
         topFragment.setData(mData);
         return topFragment;
     }
 
     @Override
+    protected void setTopFragment(Fragment fragment) {
+        topFragment= (ListenWrongComplexTopFragment) fragment;
+        topFragment.setData(mData);
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState != null) {
+        if (savedInstanceState != null&&mData==null) {
             setData((ListenComplexQuestion) savedInstanceState.getSerializable(KEY_NODE));
         }
     }

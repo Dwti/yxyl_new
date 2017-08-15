@@ -42,7 +42,7 @@ public class FillBlankWrongFragment extends WrongSimpleExerciseBaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState != null) {
+        if (savedInstanceState != null&&mQuestion==null) {
             setData((FillBlankQuestion) savedInstanceState.getSerializable(KEY_NODE));
         }
     }
