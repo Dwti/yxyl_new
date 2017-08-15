@@ -61,7 +61,7 @@ public class UpDataRequest {
     public interface onProgressListener {
         void onRequestStart();
 
-        void onProgress(int index);
+        void onProgress(int index,int position);
 
         void onRequestEnd();
     }
@@ -210,7 +210,7 @@ public class UpDataRequest {
                     postMainThread(new Runnable() {
                         @Override
                         public void run() {
-                            mProgressListener.onProgress(index);
+                            mProgressListener.onProgress(index,position);
                         }
                     });
                 }
@@ -247,7 +247,7 @@ public class UpDataRequest {
                     postMainThread(new Runnable() {
                         @Override
                         public void run() {
-                            mProgressListener.onProgress(index);
+                            mProgressListener.onProgress(index,position);
                         }
                     });
                 }

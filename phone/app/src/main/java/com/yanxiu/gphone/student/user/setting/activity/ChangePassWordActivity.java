@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -157,6 +158,13 @@ public class ChangePassWordActivity extends YanxiuBaseActivity implements View.O
     private void changePassWord(String passWord,String passWordNew){
         rootView.showLoadingView();
         mChangePassWordRequest=new ChangePassWordRequest();
+        String mobile=LoginInfo.getMobile();
+        mChangePassWordRequest.mobile = mobile;
+        if (TextUtils.isEmpty(mobile)){
+            mChangePassWordRequest.loginName=LoginInfo.getLoginName();
+        }else {
+            mChangePassWordRequest.loginName="";
+        }
         mChangePassWordRequest.oldPass=passWord;
         mChangePassWordRequest.newPass=passWordNew;
         mChangePassWordRequest.startRequest(ChangePassWordResponse.class, new EXueELianBaseCallback<ChangePassWordResponse>() {

@@ -141,6 +141,8 @@ public class UserSexActivity extends YanxiuBaseActivity implements View.OnClickL
             case R.id.tv_right:
                 if (mSexId!=LoginInfo.getSex()) {
                     saveSex();
+                }else {
+                    finish();
                 }
                 break;
         }

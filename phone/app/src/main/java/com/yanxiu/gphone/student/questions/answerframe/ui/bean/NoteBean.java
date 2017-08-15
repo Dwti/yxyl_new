@@ -8,9 +8,9 @@ import java.util.ArrayList;
  * Function :
  */
 public class NoteBean {
-    private String qid;
-    private String text;
-    private ArrayList<String> images = new ArrayList<>();
+    public String qid;
+    public String text;
+    public ArrayList<String> images = new ArrayList<>();
 
     public String getQid() {
         return qid;

@@ -44,6 +44,10 @@ import java.util.Map;
  */
 public class SubmitQuesitonTask extends AsyncTask {
 
+    private interface OnPictureUploadFinish{
+        void onFinish();
+    }
+
     private final String TAG = "submit";
     //    "ppstatus" : 0         状态     0 未作答， 1 未完成， 2 已完成
     public static final int SUBMIT_CODE = 2;
@@ -52,122 +56,143 @@ public class SubmitQuesitonTask extends AsyncTask {
     private Paper paper;
     private int status;
     private String ppid;
-
+    private int mTotalCount;
     private SubmitAnswerRequest request;
 
     private Handler mHandler = new Handler();
-
-    private int mSuccessCount;
 
     public SubmitQuesitonTask(Context context, Paper paper, int status, SubmitAnswerCallback callBack) {
         mCallBack = callBack;
         this.paper = paper;
         this.status = status;
         ppid = paper.getId();
-        mSuccessCount = 0;
     }
 
     @Override
     protected Object doInBackground(Object[] params) {
         //上传图片
-        final ArrayList<SubjectiveUpLoadImgBean> imgList = getSubjecttiveImgAnswer();
+        final ArrayList<ArrayList<SubjectiveUpLoadImgBean>> imgList = getSubjecttiveImgAnswer();
         if (null != imgList && imgList.size() > 0) {
-            final int totalCount = imgList.size() + 1;//上传总的数量= 图片数量 + 1（最后上传答案的请求算作一个计数）；
-            //回调给UI线程---开始上传图片的回调，因为上传图片没有开始的回调，所以写在这里。
-            mHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    Log.e(TAG, "开始上传");
-                    mCallBack.onUpdate(totalCount, 1);
-                }
-            });
-            UpDataRequest.getInstense().setConstantParams(new UpDataRequest.findConstantParams() {
-                @NonNull
-                @Override
-                public String findUpdataUrl() {
-                    return UrlRepository.getInstance().getServer() + "/common/uploadImgs.do?";
-                }
-
-                @Override
-                public int findFileNumber() {
-                    return imgList.size();
-                }
-
-                @Nullable
-                @Override
-                public Map<String, String> findParams() {
-                    return null;
-                }
-            }).setImgPath(new UpDataRequest.findImgPath() {
-                @NonNull
-                @Override
-                public String getImgPath(int position) {
-                    return imgList.get(position).getPath();
-                }
-            }).setTag(new UpDataRequest.findImgTag() {
-                @Nullable
-                @Override
-                public Object getImgTag(int position) {
-                    return imgList.get(position);
-                }
-            }).setListener(new onUpDatalistener() {
-                @Override
-                public void onUpDataStart(int position, Object tag) {
-//                    Log.e(TAG, "onUpDataStart: " + position);
-                }
-
-                @Override
-                public void onUpDataSuccess(final int position, final Object tag, final String jsonString) {
-                    //这需要保存服务服端返回的url
-                    String imgUrl = parseJson(jsonString);
-                    Log.e(TAG, "imgUrl" + imgUrl);
-                    saveAnswer((SubjectiveUpLoadImgBean) tag, imgUrl);
-                    //回调给UI线程
-                    mHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            mSuccessCount++;
-                            Log.e(TAG, "post开始执行");
-                            if (mSuccessCount == imgList.size()) { //图片最后一个
-                                requestSumbmit(); //图片传完了，提交答案
-                            } else {
-                                mCallBack.onUpdate(totalCount, mSuccessCount);
-
-                            }
-                        }
-                    });
-
-                }
-
-                @Override
-                public void onUpDataFailed(int position, Object tag, String failMsg) {
-                    Log.e(TAG, "onUpDataFailed" + failMsg);
-                    mHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            mCallBack.onFail();
-                        }
-                    });
-                }
-
-                @Override
-                public void onError(String errorMsg) {
-                    Log.e(TAG, "onError" + errorMsg);
-//                    mCallBack.onFail();
-                    mHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            mCallBack.onFail();
-                        }
-                    });
-                }
-            });
+//            final int totalCount = imgList.size() + 1;//上传总的数量= 图片数量 + 1（最后上传答案的请求算作一个计数）；
+            startUpload(imgList,0);
         } else { //没有图片，直接提交答案
             requestSumbmit();
         }
-
-
         return null;
+    }
+
+    private void startUpload(final ArrayList<ArrayList<SubjectiveUpLoadImgBean>> imgList, final int index){
+        if (index<mTotalCount) {
+            uploadPicture(imgList.get(index), index + 1, new OnPictureUploadFinish() {
+                @Override
+                public void onFinish() {
+                    startUpload(imgList,index+1);
+                }
+            });
+        }
+    }
+
+    private void uploadPicture(final ArrayList<SubjectiveUpLoadImgBean> imgList, final int nowIndex, final OnPictureUploadFinish uploadFinish){
+        UpDataRequest.getInstense().setConstantParams(new UpDataRequest.findConstantParams() {
+            @NonNull
+            @Override
+            public String findUpdataUrl() {
+                return UrlRepository.getInstance().getServer() + "/common/uploadImgs.do?";
+            }
+
+            @Override
+            public int findFileNumber() {
+                return imgList.size();
+            }
+
+            @Nullable
+            @Override
+            public Map<String, String> findParams() {
+                return null;
+            }
+        }).setImgPath(new UpDataRequest.findImgPath() {
+            @NonNull
+            @Override
+            public String getImgPath(int position) {
+                return imgList.get(position).getPath();
+            }
+        }).setTag(new UpDataRequest.findImgTag() {
+            @Nullable
+            @Override
+            public Object getImgTag(int position) {
+                return imgList.get(position);
+            }
+        }).setProgressListener(new UpDataRequest.onProgressListener() {
+            @Override
+            public void onRequestStart() {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.e(TAG, "开始上传");
+                        mCallBack.onUpdate(mTotalCount, nowIndex-1);
+                    }
+                });
+            }
+
+            @Override
+            public void onProgress(final int index, final int position) {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mCallBack.onUpdate(mTotalCount, nowIndex);
+                    }
+                });
+            }
+
+            @Override
+            public void onRequestEnd() {
+                //回调给UI线程
+                uploadFinish.onFinish();
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (nowIndex==mTotalCount) {
+                            requestSumbmit(); //图片传完了，提交答案
+                        }
+                    }
+                });
+            }
+        }).setListener(new onUpDatalistener() {
+            @Override
+            public void onUpDataStart(int position, Object tag) {
+//                    Log.e(TAG, "onUpDataStart: " + position);
+            }
+
+            @Override
+            public void onUpDataSuccess(final int position, final Object tag, final String jsonString) {
+                //这需要保存服务服端返回的url
+                String imgUrl = parseJson(jsonString);
+                Log.e(TAG, "imgUrl" + imgUrl);
+                saveAnswer((SubjectiveUpLoadImgBean) tag, imgUrl);
+            }
+
+            @Override
+            public void onUpDataFailed(int position, Object tag, String failMsg) {
+                Log.e(TAG, "onUpDataFailed" + failMsg);
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mCallBack.onFail();
+                    }
+                });
+            }
+
+            @Override
+            public void onError(String errorMsg) {
+                Log.e(TAG, "onError" + errorMsg);
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mCallBack.onFail();
+                    }
+                });
+            }
+        });
     }
 
     private void requestSumbmit() {
@@ -191,7 +216,7 @@ public class SubmitQuesitonTask extends AsyncTask {
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {
-                            mCallBack.onDataError(ret.getStatus().getCode(),ret.getStatus().getDesc());
+                            mCallBack.onDataError(ret.getStatus().getCode(), ret.getStatus().getDesc());
                         }
                     });
                 }
@@ -212,8 +237,8 @@ public class SubmitQuesitonTask extends AsyncTask {
     /**
      * 获取主观题图片路径
      */
-    private ArrayList<SubjectiveUpLoadImgBean> getSubjecttiveImgAnswer() {
-        ArrayList<SubjectiveUpLoadImgBean> imgList = new ArrayList<>();
+    private ArrayList<ArrayList<SubjectiveUpLoadImgBean>> getSubjecttiveImgAnswer() {
+        ArrayList<ArrayList<SubjectiveUpLoadImgBean>> arrayLists=new ArrayList<>();
         if (paper == null)
             return null;
         ArrayList<BaseQuestion> questions = paper.getQuestions();
@@ -223,20 +248,25 @@ public class SubmitQuesitonTask extends AsyncTask {
         }
         for (int i = 0; i < size; i++) {
             BaseQuestion outQuestion = questions.get(i);
-            if (outQuestion.getTemplate().equals(QuestionTemplate.READING) || outQuestion.getTemplate().equals(QuestionTemplate.CLOZE)
-                    || outQuestion.getTemplate().equals(QuestionTemplate.LISTEN)) { //复合题
+            if (outQuestion.getTemplate().equals(QuestionTemplate.READING) || outQuestion.getTemplate().equals(QuestionTemplate.CLOZE) || outQuestion.getTemplate().equals(QuestionTemplate.LISTEN)) { //复合题
                 ArrayList<BaseQuestion> childQuestions = outQuestion.getChildren();
                 int childSize = childQuestions.size();
                 if (null != childQuestions && childSize >= 1) {
                     for (int j = 0; j < childSize; j++) {
                         BaseQuestion childQuestion = childQuestions.get(j);
                         if (QuestionTemplate.ANSWER.equals(childQuestion.getTemplate())) {
+                            ArrayList<SubjectiveUpLoadImgBean> imgList = new ArrayList<>();
+                            boolean isShouldSetTotalCount=true;
                             Object answer = childQuestion.getAnswer();
                             ArrayList<String> answerList = null;
                             if (null != answer) {
                                 answerList = (ArrayList) answer;
                                 if (answerList != null && answerList.size() > 0) {
                                     for (int k = 0; k < answerList.size(); k++) {
+                                        if (isShouldSetTotalCount){
+                                            mTotalCount++;
+                                            isShouldSetTotalCount=false;
+                                        }
                                         String path = answerList.get(k);
                                         if (!TextUtils.isEmpty(path) && !path.startsWith("http")) {
                                             SubjectiveUpLoadImgBean bean = new SubjectiveUpLoadImgBean();
@@ -246,6 +276,9 @@ public class SubmitQuesitonTask extends AsyncTask {
                                         }
                                     }
                                 }
+                                if (!isShouldSetTotalCount){
+                                    arrayLists.add(imgList);
+                                }
                             }
                         }
                     }
@@ -254,23 +287,32 @@ public class SubmitQuesitonTask extends AsyncTask {
             } else if (QuestionTemplate.ANSWER.equals(outQuestion.getTemplate())) {
                 Object answer = outQuestion.getAnswer();
                 ArrayList<String> answerList = null;
+                boolean isShouldSetTotalCount=true;
                 if (null != answer) {
                     answerList = (ArrayList) answer;
                     if (answerList != null && answerList.size() > 0) {
+                        ArrayList<SubjectiveUpLoadImgBean> imgList = new ArrayList<>();
                         for (int k = 0; k < answerList.size(); k++) {
                             String path = answerList.get(k);
                             if (!TextUtils.isEmpty(path) && !path.startsWith("http")) {
+                                if (isShouldSetTotalCount){
+                                    mTotalCount++;
+                                    isShouldSetTotalCount=false;
+                                }
                                 SubjectiveUpLoadImgBean bean = new SubjectiveUpLoadImgBean();
                                 bean.setLevelPositions(outQuestion.getLevelPositions());
                                 bean.setPath(path);
                                 imgList.add(bean);
                             }
                         }
+                        if (!isShouldSetTotalCount){
+                            arrayLists.add(imgList);
+                        }
                     }
                 }
             }
         }
-        return imgList;
+        return arrayLists;
     }
 
     /**
@@ -293,7 +335,7 @@ public class SubmitQuesitonTask extends AsyncTask {
                 BaseQuestion outerQuestionBean = paper.getQuestions().get(i);//大题数据
 
                 if (outerQuestionBean.getTemplate().equals(QuestionTemplate.READING) || outerQuestionBean.getTemplate().equals(QuestionTemplate.CLOZE)
-                        || outerQuestionBean.getTemplate().equals(QuestionTemplate.LISTEN) ) { //是复合题
+                        || outerQuestionBean.getTemplate().equals(QuestionTemplate.LISTEN)) { //是复合题
 
                     List<BaseQuestion> childQuestionList = outerQuestionBean.getChildren();//获得子题
                     if (childQuestionList == null || childQuestionList.isEmpty())
@@ -318,7 +360,7 @@ public class SubmitQuesitonTask extends AsyncTask {
 
                         if (childQuestionBean.getPad() != null && !TextUtils.isEmpty(childQuestionBean.getPad().getId())) {
                             childId = String.valueOf(childQuestionBean.getPad().getId());
-                        }else{
+                        } else {
                             childId = "-1";
                         }
                         childObject.put("id", childId);
@@ -335,42 +377,42 @@ public class SubmitQuesitonTask extends AsyncTask {
                     }
                     outQuestionObject.put("children", childrenArray);
 
-                } else if(!TextUtils.isEmpty(outerQuestionBean.getTypeId_complexToSimple())){ //只有一个子题的复合题
+                } else if (!TextUtils.isEmpty(outerQuestionBean.getTypeId_complexToSimple())) { //只有一个子题的复合题
                     JSONArray childrenArray = new JSONArray();//子题Array -- children
 
 //                    for (int j = 0; j < childrenCount; j++) { //小题循环
-                        JSONObject childObject = new JSONObject();
+                    JSONObject childObject = new JSONObject();
 
-                        BaseQuestion childQuestionBean = outerQuestionBean; //子题就是本身
-                        Object childAnsewr = childQuestionBean.getAnswer(); //子题答案
-                        Gson gson = new Gson();
-                        String answerJson = "";
-                        if (null != childAnsewr) {
-                            answerJson = gson.toJson(childAnsewr);//转化成json
-                        }
-                        JSONArray answers = new JSONArray(answerJson);
-                        childObject.put("answer", answers);
+                    BaseQuestion childQuestionBean = outerQuestionBean; //子题就是本身
+                    Object childAnsewr = childQuestionBean.getAnswer(); //子题答案
+                    Gson gson = new Gson();
+                    String answerJson = "";
+                    if (null != childAnsewr) {
+                        answerJson = gson.toJson(childAnsewr);//转化成json
+                    }
+                    JSONArray answers = new JSONArray(answerJson);
+                    childObject.put("answer", answers);
 
-                        if (childQuestionBean.getPad() != null && !TextUtils.isEmpty(childQuestionBean.getPad().getId())) {
-                            childId = String.valueOf(childQuestionBean.getPad().getId());
-                        }else{
-                            childId = "-1";
-                        }
-                        childObject.put("id", childId);
-                        childObject.put("qid", childQuestionBean.getQid());
-                        //childJson.put("qtype", paper.getPaperTest().get(i).getQuestions().getChildren().get(j));
-                        childObject.put("costtime", childQuestionBean.getCosttime());
-                        childObject.put("ptid", childQuestionBean.getId());
-                        childObject.put("status", childQuestionBean.getStatus());
-                        childObject.put("uid", LoginInfo.getUID());
+                    if (childQuestionBean.getPad() != null && !TextUtils.isEmpty(childQuestionBean.getPad().getId())) {
+                        childId = String.valueOf(childQuestionBean.getPad().getId());
+                    } else {
+                        childId = "-1";
+                    }
+                    childObject.put("id", childId);
+                    childObject.put("qid", childQuestionBean.getQid());
+                    //childJson.put("qtype", paper.getPaperTest().get(i).getQuestions().getChildren().get(j));
+                    childObject.put("costtime", childQuestionBean.getCosttime());
+                    childObject.put("ptid", childQuestionBean.getId());
+                    childObject.put("status", childQuestionBean.getStatus());
+                    childObject.put("uid", LoginInfo.getUID());
 
 
-                        childrenArray.put(childObject);
+                    childrenArray.put(childObject);
 
 //                    }
                     outQuestionObject.put("children", childrenArray);
 
-                } else{ //单题
+                } else { //单题
                     Object ansewr = outerQuestionBean.getAnswer(); //答案
                     Gson gson = new Gson();
                     String answerJson = "";
@@ -382,21 +424,21 @@ public class SubmitQuesitonTask extends AsyncTask {
                     outQuestionObject.put("children", "");
                 }
 
-               String ptid,qid;
-                if(!TextUtils.isEmpty(outerQuestionBean.getTypeId_complexToSimple())){ //只有一个子题的复合题
+                String ptid, qid;
+                if (!TextUtils.isEmpty(outerQuestionBean.getTypeId_complexToSimple())) { //只有一个子题的复合题
                     ptid = outerQuestionBean.getPtid_ComplexToSimple();
                     qid = outerQuestionBean.getQid_ComplexToSimple();
                     if (!TextUtils.isEmpty(outerQuestionBean.getPadId_ComplexToSimple())) {
                         id = outerQuestionBean.getPadId_ComplexToSimple();
-                    }else{
+                    } else {
                         id = "-1";
                     }
-                }else{
+                } else {
                     ptid = outerQuestionBean.getId();
                     qid = outerQuestionBean.getQid();
                     if (outerQuestionBean.getPad() != null && !TextUtils.isEmpty(outerQuestionBean.getPad().getId())) {
                         id = outerQuestionBean.getPad().getId();
-                    }else{
+                    } else {
                         id = "-1";
                     }
                 }

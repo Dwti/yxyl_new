@@ -175,7 +175,7 @@ public class NotesActicity extends YanxiuBaseActivity implements View.OnClickLis
                 data.add(message);
             }
         }
-        if (data.size()==0&&paths.size()>0){
+        if (data.size()==0){
             uploadData(paths, content);
             return;
         }
@@ -216,7 +216,7 @@ public class NotesActicity extends YanxiuBaseActivity implements View.OnClickLis
 
             }
             @Override
-            public void onProgress(int index) {}
+            public void onProgress(int index,int position) {}
             @Override
             public void onRequestEnd() {
                 uploadData(paths, content);

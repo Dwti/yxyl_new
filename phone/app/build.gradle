@@ -23,7 +23,7 @@ android {
         buildTypes {
             debug {
                 minifyEnabled false
-                signingConfig signingConfigs.debug
+//                signingConfig signingConfigs.debug
                 proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
                 //参数说明
                 manifestPlaceholders = [
@@ -37,7 +37,7 @@ android {
 
             release {
                 minifyEnabled false
-                signingConfig signingConfigs.debug
+//                signingConfig signingConfigs.debug
                 proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
                 //参数说明
                 manifestPlaceholders = [

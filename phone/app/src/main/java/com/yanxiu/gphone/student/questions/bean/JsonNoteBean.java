@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class JsonNoteBean extends BaseBean{
 
-    private ArrayList<String> images;
+    private ArrayList<String> images=new ArrayList<>();
     private String qid;
     private String wqid;
     private String text;

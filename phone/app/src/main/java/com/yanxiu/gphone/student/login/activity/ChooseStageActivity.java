@@ -113,7 +113,6 @@ public class ChooseStageActivity extends YanxiuBaseActivity implements PickerVie
             stageText=stageName;
             stageId=LoginInfo.getStageid();
             mChooseStageView.setSelected(stageName);
-
         }
     }
 
@@ -143,8 +142,11 @@ public class ChooseStageActivity extends YanxiuBaseActivity implements PickerVie
         switch (v.getId()) {
             case R.id.tv_right:
                 if (LoginInfo.isLogIn()) {
-                    if (!stageId.equals(LoginInfo.getStageid()))
+                    if (!stageId.equals(LoginInfo.getStageid())) {
                         showDialog();
+                    }else {
+                        finish();
+                    }
                 } else {
                     result();
                 }
