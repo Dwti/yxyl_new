@@ -4,6 +4,7 @@ package com.yanxiu.gphone.student.questions.cloze;
 import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.analysisbase.AnalysisComplexExerciseBaseFragment;
@@ -38,9 +39,15 @@ public class ClozeWrongComplexFragment extends WrongComplexExerciseBaseFragment 
     }
 
     @Override
+    protected void setTopFragment(Fragment fragment) {
+        super.setTopFragment(fragment);
+        ((ClozeWrongComplexTopFragment)fragment).setData(mData);
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState != null) {
+        if (savedInstanceState != null&&mData==null) {
             setData((ClozeComplexQuestion) savedInstanceState.getSerializable(KEY_NODE));
         }
     }
