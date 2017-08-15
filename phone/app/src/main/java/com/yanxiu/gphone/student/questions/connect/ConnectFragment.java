@@ -5,6 +5,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,7 @@ import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
+import com.yanxiu.gphone.student.util.ScreenUtils;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -39,6 +42,8 @@ public class ConnectFragment extends AnswerSimpleExerciseBaseFragment {
     private PopupWindow mPopWindow;
     private TextView mTextStem;
     private View mBasket;
+    private int[] mEndLocation = new int[2];
+    private View mLeftSelectedItemView,mRightSelectedItemView;
 
     @Nullable
     @Override
@@ -53,15 +58,41 @@ public class ConnectFragment extends AnswerSimpleExerciseBaseFragment {
         return root;
     }
 
+    private int[] computeStartLocation(RecyclerView recyclerView, View itemView, int itemPosition){
+        int[] location = new int[2];
+        LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+        int firstVisiblePos = layoutManager.findFirstVisibleItemPosition();
+        int lastVisiblePos = layoutManager.findLastVisibleItemPosition();
+        if(itemPosition < firstVisiblePos){
+            recyclerView.getLocationInWindow(location);
+            location[0] = location[0] + recyclerView.getPaddingLeft();
+            location[1] = location[1] - itemView.getHeight();
+        }else if (itemPosition > lastVisiblePos){
+            recyclerView.getLocationInWindow(location);
+            location[0] = location[0] + recyclerView.getPaddingLeft();
+            location[1] = location[1] + recyclerView.getHeight();
+        }else {
+            itemView.getLocationInWindow(location);
+        }
+        return location;
+    }
+
     private void initListener() {
         mLeftAdapter.setOnItemClickListener(new ConnectItemAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View itemView, ConnectItemBean itemBean, int position) {
                 mLeftSelectedItem = itemBean;
+                mLeftSelectedItemView = itemView;
                 if (mRightSelectedItem != null) {
+                    int[] start_location1 = computeStartLocation(mRecyclerViewLeft,mLeftSelectedItemView,position);
+                    int[] start_location2 = computeStartLocation(mRecyclerViewRight,mRightSelectedItemView,mRightAdapter.getLastSelectedPosition());
                     mConnectedList.add(new ConnectedBean(mLeftSelectedItem, mRightSelectedItem));
-                    mLeftAdapter.remove(position);
                     mRightAdapter.remove(mRightAdapter.getLastSelectedPosition());
+                    mLeftAdapter.remove(position);
+                    ConnectAnimationHelper.startAnimation(getActivity(),mBasket,mLeftSelectedItemView,start_location1,mEndLocation);
+                    ConnectAnimationHelper.startAnimation(getActivity(),mBasket,mRightSelectedItemView,start_location2,mEndLocation);
+                    mLeftSelectedItemView = null ;
+                    mRightSelectedItemView = null;
                     mLeftSelectedItem = null;
                     mRightSelectedItem = null;
                     saveAnswer(mQuestion);
@@ -74,10 +105,17 @@ public class ConnectFragment extends AnswerSimpleExerciseBaseFragment {
             @Override
             public void onItemClick(View itemView, ConnectItemBean itemBean, int position) {
                 mRightSelectedItem = itemBean;
+                mRightSelectedItemView = itemView;
                 if (mLeftSelectedItem != null) {
+                    int[] start_location1 = computeStartLocation(mRecyclerViewLeft,mLeftSelectedItemView,mLeftAdapter.getLastSelectedPosition());
+                    int[] start_location2 = computeStartLocation(mRecyclerViewRight,mRightSelectedItemView,position);
                     mConnectedList.add(new ConnectedBean(mLeftSelectedItem, mRightSelectedItem));
                     mLeftAdapter.remove(mLeftAdapter.getLastSelectedPosition());
                     mRightAdapter.remove(position);
+                    ConnectAnimationHelper.startAnimation(getActivity(),mBasket,mLeftSelectedItemView,start_location1,mEndLocation);
+                    ConnectAnimationHelper.startAnimation(getActivity(),mBasket,mRightSelectedItemView,start_location2,mEndLocation);
+                    mLeftSelectedItemView = null ;
+                    mRightSelectedItemView = null;
                     mLeftSelectedItem = null;
                     mRightSelectedItem = null;
                     saveAnswer(mQuestion);
@@ -150,7 +188,15 @@ public class ConnectFragment extends AnswerSimpleExerciseBaseFragment {
         mRecyclerViewRight.setLayoutManager(new LinearLayoutManager(getContext()));
         mTextStem = (TextView) root.findViewById(R.id.stem);
         mBasket = root.findViewById(R.id.basket);
+        mBasket.post(new Runnable() {
+            @Override
+            public void run() {
+                mBasket.getLocationInWindow(mEndLocation);
+                mEndLocation[0] = mEndLocation[0] + mBasket.getWidth() / 2;
+            }
+        });
     }
+
 
     private void initPopWindow() {
         if (mPopWindow == null) {
@@ -208,6 +254,12 @@ public class ConnectFragment extends AnswerSimpleExerciseBaseFragment {
     private void dismissResult() {
         if (mPopWindow.isShowing())
             mPopWindow.dismiss();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mBasket.clearAnimation();
     }
 
     @Override
