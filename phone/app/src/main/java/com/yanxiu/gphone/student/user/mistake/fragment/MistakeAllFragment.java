@@ -56,6 +56,7 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
     protected void listener() {
         mMistakeAllAdapter.addItemClickListener(MistakeAllFragment.this);
         mRefreshView.setRefreshListener(MistakeAllFragment.this);
+        rootView.setRetryButtonOnclickListener(MistakeAllFragment.this);
     }
 
     @Override
@@ -124,11 +125,12 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
 
             @Override
             public void onFail(RequestBase request, Error error) {
-                rootView.hiddenLoadingView();
                 mRefreshView.finishLoadMore();
                 mRefreshView.finishRefreshing();
+                rootView.hiddenLoadingView();
                 if (currentId.equals("0")){
                     rootView.showNetErrorView();
+                    mMistakeAllAdapter.clear();
                 }
                 ToastManager.showMsg(error.getMessage());
             }

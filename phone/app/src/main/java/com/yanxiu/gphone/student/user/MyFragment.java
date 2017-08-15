@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +25,6 @@ import com.yanxiu.gphone.student.user.setting.activity.SettingActivity;
 import com.yanxiu.gphone.student.user.userinfo.activity.UserInfoActivity;
 import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.TextTypefaceUtil;
-import com.yanxiu.gphone.student.util.ToastManager;
 
 import de.greenrobot.event.EventBus;
 
@@ -47,11 +47,6 @@ public class MyFragment extends HomePageBaseFragment implements View.OnClickList
     private TextView mUser_name;//用户名
     private TextView mUser_id;//账号
     private TextView mStage;//学段
-
-    private String mHeadIconPath;//头像
-    private String mUserName;//用户名字
-    private String mMobile;//账号（手机号）
-    private String mStageName;//学段
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -94,15 +89,18 @@ public class MyFragment extends HomePageBaseFragment implements View.OnClickList
     }
 
     private void intData() {
-        mHeadIconPath = LoginInfo.getHeadIcon();
-        mUserName = LoginInfo.getRealName();
-        mMobile = LoginInfo.getMobile();
-        mStageName = LoginInfo.getStageName();
-        Glide.with(getActivity()).load(mHeadIconPath).asBitmap().into(new CircleImageTarget(mUser_icon));
-        mUser_name.setText(mUserName);
-        mUser_id.setText(mMobile);
+        String headIconPath = LoginInfo.getHeadIcon();
+        String userName = LoginInfo.getRealName();
+        String loginName=LoginInfo.getLoginName();
+        String stageName = LoginInfo.getStageName();
+        Glide.with(getActivity()).load(headIconPath).asBitmap().into(new CircleImageTarget(mUser_icon));
+        mUser_name.setText(userName);
+        if (TextUtils.isEmpty(loginName)){
+            loginName = LoginInfo.getMobile();
+        }
+        mUser_id.setText(loginName);
         TextTypefaceUtil.setViewTypeface(TextTypefaceUtil.TypefaceType.METRO_MEDIUM_PLAY,mUser_id);
-        mStage.setText(mStageName);
+        mStage.setText(stageName);
     }
 
     private void initListener() {
@@ -134,8 +132,7 @@ public class MyFragment extends HomePageBaseFragment implements View.OnClickList
 
     public void onEventMainThread(ChooseStageActivity.StageMessage message){
         if (message!=null&&message.requestCode==MyFragment.this.hashCode()){
-            mStageName = message.stageText;
-            mStage.setText(mStageName);
+            mStage.setText(message.stageText);
             LoginInfo.saveStageid(message.stageId);
             LoginInfo.saveStageName(message.stageText);
         }

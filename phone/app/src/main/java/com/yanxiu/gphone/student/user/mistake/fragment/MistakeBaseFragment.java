@@ -48,6 +48,7 @@ public abstract class MistakeBaseFragment extends YanxiuBaseFragment {
         mContext = inflater.getContext();
         rootView = new PublicLoadLayout(mContext);
         rootView.setContentView(getContentViewId());
+        rootView.setErrorLayoutFullScreen();
         initView();
         listener();
         initData();

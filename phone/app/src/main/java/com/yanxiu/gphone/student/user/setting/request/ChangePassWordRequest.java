@@ -10,8 +10,8 @@ import com.yanxiu.gphone.student.util.LoginInfo;
  */
 public class ChangePassWordRequest extends EXueELianBaseRequest {
 
-    public String mobile= LoginInfo.getMobile();
-    public String loginName="";
+    public String mobile;
+    public String loginName;
     public String newPass;
     public String oldPass;
 
