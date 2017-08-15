@@ -49,11 +49,6 @@ public class MyFragment extends HomePageBaseFragment implements View.OnClickList
     private TextView mUser_id;//账号
     private TextView mStage;//学段
 
-    private String mHeadIconPath;//头像
-    private String mUserName;//用户名字
-    private String mMobile;//账号（手机号）
-    private String mStageName;//学段
-
     private BaseRefreshLayout2 mRefreshLayout;
 
     private View mHead_layout,mFly_icon,mHill_icon;
