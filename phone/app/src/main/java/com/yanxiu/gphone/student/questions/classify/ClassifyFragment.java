@@ -171,8 +171,8 @@ public class ClassifyFragment extends AnswerSimpleExerciseBaseFragment implement
                 }
                 mHasChoosedChoiceListForNotifyDataChange.add(chioce);
             }
-            ClassifyAnimationUtil ss = new ClassifyAnimationUtil();
-            ss.addCart(ll,mClassify_choice,view,chioceView);
+            ClassifyAnimationUtil classifyAnimationUtil = new ClassifyAnimationUtil();
+            classifyAnimationUtil.addCart(ll,mClassify_choice,view,chioceView);
             mClassify_choice.refreshData(mHasChoosedChoiceListForNotifyDataChange);
 //            mClassify_choice.setData(mHasChoosedChoiceList, this);//刷新chioceview
             mData.getAnswerList().set(position, answerList);//保存答案数据
