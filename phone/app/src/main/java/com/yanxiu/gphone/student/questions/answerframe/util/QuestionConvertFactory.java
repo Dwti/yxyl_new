@@ -139,7 +139,14 @@ public class QuestionConvertFactory {
         String padId_complex = paperTestBean.getQuestions().getPad().getId();//复合题的pad里的id,上传答案时需要
         String ptid_complex = paperTestBean.getId();//复合题的上传答案时的ptid
         String qid_complex = paperTestBean.getQid();//复合题的上传答案时的qid
+        int wqid=paperTestBean.getWqid();
+        int wqnumber=paperTestBean.getWqnumber();
         int childCount = ChildQuestion.size();
+
+        for (PaperTestBean testBean:ChildQuestion){
+            testBean.setWqid(wqid);
+            testBean.setWqnumber(wqnumber);
+        }
 
         if (childCount == 1) { //只有一个子题，转成单题
             PaperTestBean childQuestion = ChildQuestion.get(0);//唯一子题

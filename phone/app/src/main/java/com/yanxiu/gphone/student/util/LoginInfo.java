@@ -136,6 +136,16 @@ public class LoginInfo {
         return bean.getRealname();
     }
 
+    /**
+     * 获得登录名称
+     * */
+    public static String getLoginName(){
+        if (!isLogIn()) {
+            return "";
+        }
+        return bean.getLoginName();
+    }
+
     public static void saveRealName(String name) {
         if (!isLogIn()) {
             return;

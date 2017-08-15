@@ -66,9 +66,9 @@ public class UserSexActivity extends YanxiuBaseActivity implements View.OnClickL
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mUserSexRequest != null) {
+        if (mUserSexRequest!=null){
             mUserSexRequest.cancelRequest();
-            mUserSexRequest = null;
+            mUserSexRequest=null;
         }
     }
 
@@ -139,27 +139,31 @@ public class UserSexActivity extends YanxiuBaseActivity implements View.OnClickL
                 finish();
                 break;
             case R.id.tv_right:
-                saveSex();
+                if (mSexId!=LoginInfo.getSex()) {
+                    saveSex();
+                }else {
+                    finish();
+                }
                 break;
         }
     }
 
-    private void saveSex() {
+    private void saveSex(){
         rootView.showLoadingView();
-        mUserSexRequest = new UserSexRequest();
-        mUserSexRequest.sex = String.valueOf(mSexId);
+        mUserSexRequest=new UserSexRequest();
+        mUserSexRequest.sex=String.valueOf(mSexId);
         mUserSexRequest.startRequest(EXueELianBaseResponse.class, new EXueELianBaseCallback<EXueELianBaseResponse>() {
             @Override
             protected void onResponse(RequestBase request, EXueELianBaseResponse response) {
                 rootView.hiddenLoadingView();
-                if (response.getStatus().getCode() == 0) {
+                if (response.getStatus().getCode()==0){
                     LoginInfo.saveSex(mSexId);
-                    SexMessage message = new SexMessage();
-                    message.sexId = mSexId;
-                    message.sexTxt = mSexText;
+                    SexMessage message=new SexMessage();
+                    message.sexId=mSexId;
+                    message.sexTxt=mSexText;
                     EventBus.getDefault().post(message);
                     UserSexActivity.this.finish();
-                } else {
+                }else {
                     ToastManager.showMsg(response.getStatus().getDesc());
                 }
             }
@@ -178,7 +182,7 @@ public class UserSexActivity extends YanxiuBaseActivity implements View.OnClickL
         mSexId = mSexIds[selectId];
     }
 
-    public class SexMessage {
+    public class SexMessage{
         public String sexTxt;
         public int sexId;
     }

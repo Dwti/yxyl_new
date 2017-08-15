@@ -276,7 +276,7 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
             @Override
             protected void onResponse(RequestBase request, LoginResponse response) {
                 rootView.hiddenLoadingView();
-                if (response.getStatus().getCode()==0){
+                if (response.getStatus().getCode()==0&&response.data!=null&&response.data.size()>0){
                     LoginInfo.saveCacheData(response.data.get(0));
                     LoginInfo.saveLoginType(UserMessageBean.LOGIN_ACCOUNT);
                     MainActivity.invoke(LoginActivity.this,true);
@@ -316,17 +316,21 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
         mUMShareAPI.doOauthVerify(LoginActivity.this, platform, new UMAuthListener() {
             @Override
             public void onStart(SHARE_MEDIA share_media) {
+//                ToastManager.showMsg("doOauth "+"onStart");
             }
 
             @Override
             public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
+                ToastManager.showMsg("doOauth "+"onComplete");
                 mUMShareAPI.getPlatformInfo(LoginActivity.this, platform, new UMAuthListener() {
                         @Override
                         public void onStart(SHARE_MEDIA share_media) {
+//                            ToastManager.showMsg("PlatformInfo "+"onStart");
                         }
 
                         @Override
                         public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
+//                            ToastManager.showMsg("PlatformInfo "+"onComplete");
                             mThridMessageBean =new ThridMessageBean();
                             String openid=map.get("openid");
                             String platform="";
@@ -362,6 +366,7 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
                 }else if (share_media.toString().endsWith(SHARE_MEDIA.WEIXIN.toString())){
                     ToastManager.showMsg(getText(R.string.no_install_weixin));
                 }
+//                ToastManager.showMsg("doOauth "+"onError");
             }
 
             @Override

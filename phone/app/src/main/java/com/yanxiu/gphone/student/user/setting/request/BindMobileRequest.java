@@ -10,7 +10,6 @@ import com.yanxiu.gphone.student.constant.Constants;
  */
 public class BindMobileRequest extends EXueELianBaseRequest {
 
-    public String token= Constants.token;
     public String newMobile;
     public String code;
 

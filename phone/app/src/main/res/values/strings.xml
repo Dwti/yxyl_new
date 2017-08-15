@@ -309,4 +309,6 @@
     <string name="quite">离开</string>
     <string name="submit_exericse_answer">"提交练习答案"</string>
     <string name="homework_delete">当前作业已被老师删除</string>
+
+    <string name="input_old_password">请输入原密码</string>
 </resources>

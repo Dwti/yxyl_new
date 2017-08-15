@@ -18,6 +18,7 @@ public class UserMessageBean extends DataSupport {
     private String mobile;
     private String nickname;
     private String realname;
+    private String loginName;
     private String stageid;
     private String stageName;
     private String schoolid;
@@ -64,6 +65,14 @@ public class UserMessageBean extends DataSupport {
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public String getLoginName() {
+        return loginName;
+    }
+
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
     }
 
     public String getRealname() {
