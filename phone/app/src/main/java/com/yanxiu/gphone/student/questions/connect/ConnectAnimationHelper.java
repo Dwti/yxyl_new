@@ -11,8 +11,10 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -22,7 +24,7 @@ import android.widget.RelativeLayout;
 
 public class ConnectAnimationHelper {
 
-    private static Bitmap getDrawBitmap(View view){
+    public static Bitmap getDrawBitmap(View view){
         view.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
                 View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
         view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
@@ -117,7 +119,7 @@ public class ConnectAnimationHelper {
         return set;
     }
 
-    public static void startAnimation(Activity activity,View basket,View item,int[] start_location, int[] end_location){
+    public static void startDropIntoBasketAnimation(Activity activity, View basket, View item, int[] start_location, int[] end_location){
         ImageView imageView = new ImageView(activity);
         imageView.setImageBitmap(getDrawBitmap(item));
         RelativeLayout relativeLayout = createAnimationLayout(activity);
@@ -127,5 +129,20 @@ public class ConnectAnimationHelper {
         AnimationSet set = setAnim(basket,imageView,start_location,end_location);
 
         imageView.startAnimation(set);
+    }
+
+    public static void startDeleteAnimation(View view, float fromDegrees, float toDegrees, float pivotX, float pivotY, Animation.AnimationListener listener){
+        RotateAnimation rotateAnimation = new RotateAnimation(fromDegrees,toDegrees,Animation.RELATIVE_TO_SELF,pivotX,Animation.RELATIVE_TO_SELF,pivotY);
+
+        AlphaAnimation alphaAnimation = new AlphaAnimation(1.0f,0.0f);
+
+        AnimationSet animationSet = new AnimationSet(true);
+        animationSet.setInterpolator(new DecelerateInterpolator());
+        animationSet.setFillAfter(true);
+        animationSet.addAnimation(rotateAnimation);
+        animationSet.addAnimation(alphaAnimation);
+        animationSet.setDuration(350);
+        animationSet.setAnimationListener(listener);
+        view.startAnimation(animationSet);
     }
 }
