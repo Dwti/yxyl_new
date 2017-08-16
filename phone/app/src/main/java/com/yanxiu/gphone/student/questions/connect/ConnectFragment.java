@@ -5,12 +5,11 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -18,7 +17,6 @@ import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
-import com.yanxiu.gphone.student.util.ScreenUtils;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -89,8 +87,8 @@ public class ConnectFragment extends AnswerSimpleExerciseBaseFragment {
                     mConnectedList.add(new ConnectedBean(mLeftSelectedItem, mRightSelectedItem));
                     mRightAdapter.remove(mRightAdapter.getLastSelectedPosition());
                     mLeftAdapter.remove(position);
-                    ConnectAnimationHelper.startAnimation(getActivity(),mBasket,mLeftSelectedItemView,start_location1,mEndLocation);
-                    ConnectAnimationHelper.startAnimation(getActivity(),mBasket,mRightSelectedItemView,start_location2,mEndLocation);
+                    ConnectAnimationHelper.startDropIntoBasketAnimation(getActivity(),mBasket,mLeftSelectedItemView,start_location1,mEndLocation);
+                    ConnectAnimationHelper.startDropIntoBasketAnimation(getActivity(),mBasket,mRightSelectedItemView,start_location2,mEndLocation);
                     mLeftSelectedItemView = null ;
                     mRightSelectedItemView = null;
                     mLeftSelectedItem = null;
@@ -112,8 +110,8 @@ public class ConnectFragment extends AnswerSimpleExerciseBaseFragment {
                     mConnectedList.add(new ConnectedBean(mLeftSelectedItem, mRightSelectedItem));
                     mLeftAdapter.remove(mLeftAdapter.getLastSelectedPosition());
                     mRightAdapter.remove(position);
-                    ConnectAnimationHelper.startAnimation(getActivity(),mBasket,mLeftSelectedItemView,start_location1,mEndLocation);
-                    ConnectAnimationHelper.startAnimation(getActivity(),mBasket,mRightSelectedItemView,start_location2,mEndLocation);
+                    ConnectAnimationHelper.startDropIntoBasketAnimation(getActivity(),mBasket,mLeftSelectedItemView,start_location1,mEndLocation);
+                    ConnectAnimationHelper.startDropIntoBasketAnimation(getActivity(),mBasket,mRightSelectedItemView,start_location2,mEndLocation);
                     mLeftSelectedItemView = null ;
                     mRightSelectedItemView = null;
                     mLeftSelectedItem = null;
@@ -205,10 +203,14 @@ public class ConnectFragment extends AnswerSimpleExerciseBaseFragment {
             mPopWindow.setAnimationStyle(R.style.pop_anim);
             View dismiss = contentView.findViewById(R.id.dismiss);
             View btnClear = contentView.findViewById(R.id.tv_clear);
+            FrameLayout animationLayout = (FrameLayout) contentView.findViewById(R.id.animation_layout);
+
             mRecyclerViewResult = (RecyclerView) contentView.findViewById(R.id.recyclerView);
             mResultAdapter = new ConnectResultAdapter(mConnectedList);
             mRecyclerViewResult.setLayoutManager(new LinearLayoutManager(getContext()));
             mRecyclerViewResult.setAdapter(mResultAdapter);
+
+            mResultAdapter.setAnimationLayout(animationLayout);
 
             btnClear.setOnClickListener(new View.OnClickListener() {
                 @Override
