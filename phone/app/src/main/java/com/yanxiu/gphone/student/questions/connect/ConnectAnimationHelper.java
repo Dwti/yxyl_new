@@ -55,7 +55,7 @@ public class ConnectAnimationHelper {
         parent.addView(view);
     }
 
-    private static AnimationSet setAnim(final View basket, final View view, int[] start_location, int[] end_location) {
+    private static AnimationSet setAnim(final ViewGroup viewGroup, final View basket, final View view, int[] start_location, int[] end_location) {
 
         int startX = start_location[0];
         int startY = start_location[1];
@@ -89,8 +89,6 @@ public class ConnectAnimationHelper {
             // 动画的开始
             @Override
             public void onAnimationStart(Animation animation) {
-                view.setVisibility(View.VISIBLE);
-
                 ScaleAnimation scaleAnimation = new ScaleAnimation(1.0f,1.2f,1.0f,1.2f,ScaleAnimation.RELATIVE_TO_SELF,0.5f,ScaleAnimation.RELATIVE_TO_SELF,0.5f);
                 scaleAnimation.setInterpolator(new LinearInterpolator());
                 scaleAnimation.setDuration(200);
@@ -106,8 +104,7 @@ public class ConnectAnimationHelper {
             // 动画的结束
             @Override
             public void onAnimationEnd(Animation animation) {
-                view.setVisibility(View.GONE);
-
+                viewGroup.removeView(view); // 此处不能设置view.setVisibile(GONE) 会因为Bitmap被回收而崩溃，原因不明
                 ScaleAnimation scaleAnimation = new ScaleAnimation(1.2f,1.0f,1.2f,1.0f,ScaleAnimation.RELATIVE_TO_SELF,0.5f,ScaleAnimation.RELATIVE_TO_SELF,0.5f);
                 scaleAnimation.setInterpolator(new LinearInterpolator());
                 scaleAnimation.setDuration(200);
@@ -126,7 +123,7 @@ public class ConnectAnimationHelper {
 
         addViewToAnimLayout(relativeLayout,imageView,start_location);
 
-        AnimationSet set = setAnim(basket,imageView,start_location,end_location);
+        AnimationSet set = setAnim(relativeLayout,basket,imageView,start_location,end_location);
 
         imageView.startAnimation(set);
     }
