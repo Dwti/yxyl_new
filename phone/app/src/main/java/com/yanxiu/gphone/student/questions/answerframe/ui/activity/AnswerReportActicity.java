@@ -297,6 +297,7 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
                                 Paper paper = new Paper(ret.getData().get(0), QuestionShowType.ANSWER);
                                 DataFetcher.getInstance().save(paper.getId(),paper);
                                 AnswerQuestionActivity.invoke(AnswerReportActicity.this,paper.getId(), Constants.MAINAVTIVITY_FROMTYPE_EXERCISE,mGenQuesequest);
+                                finish();
                             }else {
                                 ToastManager.showMsg(ret.getStatus().getDesc());
                             }
