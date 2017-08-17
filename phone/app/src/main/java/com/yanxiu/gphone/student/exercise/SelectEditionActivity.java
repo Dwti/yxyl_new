@@ -110,8 +110,10 @@ public class SelectEditionActivity extends Activity {
         mBtnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mSelectedIndex == mPickerView.getSelectedIndex())
+                if (mSelectedIndex == mPickerView.getSelectedIndex()){
+                    finish();
                     return;
+                }
                 String editionId = editions.get(mPickerView.getSelectedIndex()).getId();
                 saveEdition(mSubjectId, editionId);
             }
