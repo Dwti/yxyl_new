@@ -75,11 +75,7 @@ public class HomeworkDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 viewHolder.mState2.setText("");
                 viewHolder.mCommentLayout.setVisibility(View.GONE);
             }else if(bean.getPaperStatus().getStatus() == HomeworkDetailPresenter.STATUS_FINISHED){//已完成
-                if(bean.getPaperStatus().getTeachercomments() == null && Integer.parseInt(bean.getSubquesnum()) > 0){
-                    viewHolder.mCommentLayout.setVisibility(View.GONE);
-                    viewHolder.mState1.setText(R.string.homework_done_uncheck);
-                    viewHolder.mState2.setText("");
-                }else {
+                if("1".equals(bean.getPaperStatus().getCheckStatus())) {
                     viewHolder.mState1.setText(R.string.homework_checked);
                     viewHolder.mState2.setText(mContext.getString(R.string.score_rate) + NumberFormat.getPercentInstance().format(bean.getPaperStatus().getScoreRate()));
 
@@ -90,6 +86,10 @@ public class HomeworkDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     }else {
                         viewHolder.mCommentLayout.setVisibility(View.GONE);
                     }
+                }else {
+                    viewHolder.mCommentLayout.setVisibility(View.GONE);
+                    viewHolder.mState1.setText(R.string.homework_done_uncheck);
+                    viewHolder.mState2.setText("");
                 }
             }
         }else if(holder instanceof FooterViewHolder){
