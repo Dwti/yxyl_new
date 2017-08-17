@@ -40,6 +40,7 @@ public class Constants {
     public static final String EXTRA_FROMTYPE = "extra_fromtype";//答题页的来源
     public static final String EXTRA_ANALYSIS_LEVELPOSITION = "extra_levelPositions";//答题报告传递给解析页的levelPositions
     public static final String URL_SERVER_FILE_NAME = "env_config.json"; //存放server配置的文件名
+    public static final String MULTICONFIG = "multiConfig"; //多环境节点配置模式
 
     public static final String MAINAVTIVITY_REFRESH = "mainActivity_refresh";//跳转到首页需要刷新数据
     public static final String MAINAVTIVITY_FROMTYPE_EXERCISE = "mainActivity_fromtype_exxercise";//从练习页跳转到首页标识
