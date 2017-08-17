@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
+import com.yanxiu.gphone.student.util.ScreenUtils;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -82,6 +84,8 @@ public class ConnectFragment extends AnswerSimpleExerciseBaseFragment {
                 mLeftSelectedItem = itemBean;
                 mLeftSelectedItemView = itemView;
                 if (mRightSelectedItem != null) {
+                    mBasket.getLocationInWindow(mEndLocation);
+                    mEndLocation[0] = mEndLocation[0] + mBasket.getWidth() / 2;
                     int[] start_location1 = computeStartLocation(mRecyclerViewLeft,mLeftSelectedItemView,position);
                     int[] start_location2 = computeStartLocation(mRecyclerViewRight,mRightSelectedItemView,mRightAdapter.getLastSelectedPosition());
                     mConnectedList.add(new ConnectedBean(mLeftSelectedItem, mRightSelectedItem));
@@ -105,6 +109,8 @@ public class ConnectFragment extends AnswerSimpleExerciseBaseFragment {
                 mRightSelectedItem = itemBean;
                 mRightSelectedItemView = itemView;
                 if (mLeftSelectedItem != null) {
+                    mBasket.getLocationInWindow(mEndLocation);
+                    mEndLocation[0] = mEndLocation[0] + mBasket.getWidth() / 2;
                     int[] start_location1 = computeStartLocation(mRecyclerViewLeft,mLeftSelectedItemView,mLeftAdapter.getLastSelectedPosition());
                     int[] start_location2 = computeStartLocation(mRecyclerViewRight,mRightSelectedItemView,position);
                     mConnectedList.add(new ConnectedBean(mLeftSelectedItem, mRightSelectedItem));
@@ -186,13 +192,6 @@ public class ConnectFragment extends AnswerSimpleExerciseBaseFragment {
         mRecyclerViewRight.setLayoutManager(new LinearLayoutManager(getContext()));
         mTextStem = (TextView) root.findViewById(R.id.stem);
         mBasket = root.findViewById(R.id.basket);
-        mBasket.post(new Runnable() {
-            @Override
-            public void run() {
-                mBasket.getLocationInWindow(mEndLocation);
-                mEndLocation[0] = mEndLocation[0] + mBasket.getWidth() / 2;
-            }
-        });
     }
 
 
