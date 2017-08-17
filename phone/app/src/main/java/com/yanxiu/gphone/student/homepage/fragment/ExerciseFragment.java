@@ -22,6 +22,7 @@ import com.yanxiu.gphone.student.exercise.bean.SubjectBean;
 import com.yanxiu.gphone.student.exercise.SubjectsAdapter;
 import com.yanxiu.gphone.student.exercise.request.SubjectsRequest;
 import com.yanxiu.gphone.student.exercise.response.SubjectsResponse;
+import com.yanxiu.gphone.student.login.activity.ChooseStageActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +54,10 @@ public class ExerciseFragment extends HomePageBaseFragment {
         requestSubjects();
     }
 
+    public void onEventMainThread(ChooseStageActivity.StageMessage message){
+        requestSubjects();
+    }
+
     private void initView(View view) {
         mGridView = (GridView) view.findViewById(R.id.gridView);
         mTipsView = view.findViewById(R.id.tips_layout);
@@ -72,9 +77,7 @@ public class ExerciseFragment extends HomePageBaseFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 SubjectBean bean = (SubjectBean) mAdapter.getItem(position);
                 if(bean.getData() != null){
-                    //TODO 请求借口进入做练习
                     SelectChapterAndKnowledgeActivity.invoke(getActivity(),bean.getId(),bean.getName(),bean.getData().getEditionId());
-
                 }else {
                     String subjectId = bean.getId();
                     String subjectName = bean.getName();
