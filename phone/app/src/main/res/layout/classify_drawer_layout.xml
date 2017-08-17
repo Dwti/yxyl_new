@@ -37,7 +37,7 @@
             android:layout_centerInParent="true"
             android:gravity="center"
             android:textColor="@color/color_69ad0a"
-            android:textSize="29dp"
+            android:textSize="27dp"
             android:text="@string/classify_drawer_noAnswer" />
 
         <com.yanxiu.gphone.student.customviews.ClassifyChoice

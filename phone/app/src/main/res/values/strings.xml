@@ -216,7 +216,7 @@
     <string name="no_camera_permissions">相机权限被禁用，请在权限设置中开启</string>
     <string name="no_storage_permissions">存储权限被禁用，请在权限设置中开启</string>
 
-    <string name="classify_drawer_noAnswer">未作答</string>
+    <string name="classify_drawer_noAnswer">当前类别下内容为空</string>
     <string name="classify_drawer_noClassify">未归类</string>
     <string name="mistake_redo_math">数学</string>
     <string name="mistake_redo_english">英语</string>
