@@ -34,7 +34,7 @@ import de.greenrobot.event.EventBus;
 
 public class SelectEditionActivity extends Activity {
 
-    private TextView mTips, mSubject;
+    private TextView mTips, mSubject,mDes;
     private View mTipsView, mContent;
     private Button mRefreshBtn;
     private ImageView mIcon, mBack;
@@ -85,6 +85,7 @@ public class SelectEditionActivity extends Activity {
         mBack = (ImageView) findViewById(R.id.back);
         mPickerView = (PickerViewEx) findViewById(R.id.picker_view);
         mBtnOk = (Button) findViewById(R.id.btn_ok);
+        mDes = (TextView) findViewById(R.id.tv_des);
         mPickerView.setTextLocation(PickerViewEx.DEFAULT_CENTER);
     }
 
@@ -96,6 +97,9 @@ public class SelectEditionActivity extends Activity {
         mSubject.setText(mSubjectName);
         if (mIcon != null)
             setIcon(mIcon, mSubjectId);
+        if(mComeFrom == FROM_SUBJECT_SELECT){
+            mDes.setVisibility(View.INVISIBLE);
+        }
         requestEditions(mSubjectId);
     }
 
