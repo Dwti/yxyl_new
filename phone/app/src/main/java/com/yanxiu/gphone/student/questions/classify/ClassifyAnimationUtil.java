@@ -100,6 +100,7 @@ public class ClassifyAnimationUtil {
 //        float toY = endLoc[1];
 
 //        四、计算中间动画的插值坐标（贝塞尔曲线）（其实就是用贝塞尔曲线来完成起终点的过程）
+
                 //开始绘制贝塞尔曲线
                 Path path = new Path();
                 //移动到起始点（贝塞尔曲线的起点）

@@ -95,7 +95,7 @@ public class ClozeWrongComplexTopFragment extends TopBaseFragment {
 
     private void initData() {
         String text = StemUtil.initClozeStem(mQuestion.getStem());
-        mClozeTextView.setBaseIndex(getFirstChildQuestionNumber());
+        mClozeTextView.setBaseIndex(1);
         mClozeTextView.setSelectedPosition(0);
         mClozeTextView.setCorrectAnswers(mQuestion.getCorrectAnswers());
         mClozeTextView.setText(text, mQuestion.getFilledAnswers());

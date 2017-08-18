@@ -4,6 +4,7 @@ import com.facebook.stetho.Stetho;
 import com.google.gson.Gson;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
+import com.yanxiu.gphone.student.base.EnvConfigBean;
 import com.yanxiu.gphone.student.base.UrlBean;
 import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.db.SpManager;
@@ -49,9 +50,15 @@ public class YanxiuApplication extends LitePalApplication {
     }
 
     private void initUrlServer(){
+        UrlBean urlBean;
         Gson gson = new Gson();
         String urlJson = FileUtil.getDataFromAssets(this, Constants.URL_SERVER_FILE_NAME);
-        UrlBean urlBean = gson.fromJson(urlJson,UrlBean.class);
+        if(urlJson.contains(Constants.MULTICONFIG)){
+            EnvConfigBean envConfigBean = gson.fromJson(urlJson,EnvConfigBean.class);
+            urlBean = envConfigBean.getData().get(envConfigBean.getCurrentIndex());
+        }else {
+            urlBean = gson.fromJson(urlJson,UrlBean.class);
+        }
         UrlRepository.getInstance().setUrlBean(urlBean);
     }
 

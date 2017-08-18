@@ -60,6 +60,8 @@ public class ConnectResultAdapter extends RecyclerView.Adapter<RecyclerView.View
 
             ((ConnectedItemViewHolder)holder).ll_left.setVisibility(View.VISIBLE);
             ((ConnectedItemViewHolder)holder).ll_right.setVisibility(View.VISIBLE);
+            ((ConnectedItemViewHolder)holder).delete.setClickable(true);
+            ((ConnectedItemViewHolder)holder).delete.setLongClickable(true);
             holder.itemView.post(new Runnable() {
                 @Override
                 public void run() {
@@ -117,6 +119,9 @@ public class ConnectResultAdapter extends RecyclerView.Adapter<RecyclerView.View
             delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    delete.setClickable(false);
+                    delete.setLongClickable(false);
+
                     bean = mData.get(getLayoutPosition());
 
                     int centerX = itemView.getWidth() / 2 ;

@@ -54,6 +54,7 @@ public class MyFragment extends HomePageBaseFragment implements View.OnClickList
 
     private View mHead_layout,mFly_icon,mHill_icon;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_my, container, false);

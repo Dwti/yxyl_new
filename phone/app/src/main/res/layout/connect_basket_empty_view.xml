@@ -9,5 +9,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="尚未开始连线"
-        android:textSize="20dp"/>
+        android:textColor="@color/color_69ad0a"
+        android:textSize="27dp"/>
 </LinearLayout>
