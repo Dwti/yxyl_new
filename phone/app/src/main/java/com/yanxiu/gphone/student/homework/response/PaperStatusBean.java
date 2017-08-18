@@ -17,6 +17,7 @@ public class PaperStatusBean extends BaseBean{
     private float scoreRate;
     private String teachercomments;
     private String teacherName;
+    private String checkStatus;  // 1:已批改；0：未批改
 
     public String getTid() {
         return tid;
@@ -96,5 +97,13 @@ public class PaperStatusBean extends BaseBean{
 
     public void setTeacherName(String teacherName) {
         this.teacherName = teacherName;
+    }
+
+    public String getCheckStatus() {
+        return checkStatus;
+    }
+
+    public void setCheckStatus(String checkStatus) {
+        this.checkStatus = checkStatus;
     }
 }
