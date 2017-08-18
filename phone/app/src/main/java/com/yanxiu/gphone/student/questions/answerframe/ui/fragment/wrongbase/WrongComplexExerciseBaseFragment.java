@@ -2,6 +2,7 @@ package com.yanxiu.gphone.student.questions.answerframe.ui.fragment.wrongbase;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.Log;
@@ -117,6 +118,7 @@ public abstract class WrongComplexExerciseBaseFragment extends WrongExercisbaseF
                     .add(R.id.top_container, topFragment)
                     .commit();
         }
+        setTopFragment(topFragment);
         mViewPager = (QAViewPager) mRootView.findViewById(R.id.ll_bottom_container);
         mAdapter = new QAViewPagerAdapter(fm);
         mAdapter.setData(mBaseQuestion.getChildren());
@@ -175,6 +177,7 @@ public abstract class WrongComplexExerciseBaseFragment extends WrongExercisbaseF
     }
 
     abstract protected TopBaseFragment getTopFragment();
+    protected void setTopFragment(Fragment fragment){};
 
     /**
      * 递归

@@ -264,6 +264,21 @@ public class LoginInfo {
         return bean.getSchoolName();
     }
 
+    public static void saveSchoolMessage(String areaId, String areaName, String cityId, String cityName, String provinceId, String provinceName, String schoolId, String schoolName){
+        if (!isLogIn()) {
+            return;
+        }
+        bean.setAreaid(areaId);
+        bean.setAreaName(areaName);
+        bean.setCityid(cityId);
+        bean.setCityName(cityName);
+        bean.setProvinceid(provinceId);
+        bean.setProvinceName(provinceName);
+        bean.setSchoolid(schoolId);
+        bean.setSchoolName(schoolName);
+        Save();
+    }
+
     /**
      * 获取性别
      * */

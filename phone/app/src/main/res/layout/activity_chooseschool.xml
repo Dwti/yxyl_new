@@ -53,7 +53,7 @@
                 android:layout_height="@dimen/login_edit_icon_w_h"
                 android:layout_marginEnd="@dimen/input_school_r_icon_margin"
                 android:layout_marginStart="@dimen/input_school_r_icon_margin"
-                android:background="@color/color_33ffff"
+                android:background="@drawable/selector_choose_school"
                 android:contentDescription="@null" />
         </LinearLayout>
 

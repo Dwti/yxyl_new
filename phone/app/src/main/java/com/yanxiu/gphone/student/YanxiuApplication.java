@@ -11,6 +11,7 @@ import com.yanxiu.gphone.student.db.SpManager;
 import com.yanxiu.gphone.student.db.UrlRepository;
 import com.yanxiu.gphone.student.userevent.UserEventManager;
 import com.yanxiu.gphone.student.util.FileUtil;
+import com.yanxiu.gphone.student.util.SoundManger;
 
 import org.litepal.LitePalApplication;
 
@@ -30,6 +31,7 @@ public class YanxiuApplication extends LitePalApplication {
         initUm();
         initUrlServer();
         Stetho.initializeWithDefaults(this);
+        SoundManger.getInstence().initialize(this);
         if (SpManager.isFristStartUp()) {
             UserEventManager.getInstense().whenFirstStart();
         }else {

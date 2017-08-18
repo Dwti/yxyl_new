@@ -84,6 +84,11 @@ public class ClassifyAdapter extends RecyclerView.Adapter<ClassifyAdapter.Answer
      */
     private void generateQuestionNumber(String name, int count ,AnswerCardViewHolder holder) {
         holder.classify_basket.setText(name);
+        int lineCount=holder.classify_basket.getLineCount();
+        if (lineCount>2){
+            // TODO 设置根据文字行数控制字体大小
+//            holder.classify_basket.setTextSize();
+        }
         holder.classify_item_count.setText(count + "");
     }
 

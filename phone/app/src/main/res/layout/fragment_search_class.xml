@@ -21,7 +21,8 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:background="@android:color/holo_blue_light"/>
+                android:scaleType="fitXY"
+                android:background="@drawable/joinclass_top"/>
             <TextView
                 android:id="@+id/tv_join_class"
                 android:layout_width="wrap_content"
@@ -92,7 +93,7 @@
                     android:layout_width="15dp"
                     android:layout_height="15dp"
                     android:layout_marginLeft="5dp"
-                    android:background="@android:color/holo_blue_light"/>
+                    android:background="@drawable/selector_jump"/>
             </LinearLayout>
 
             <View

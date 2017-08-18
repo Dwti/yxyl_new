@@ -104,15 +104,21 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
                 mRefreshView.finishLoadMore();
                 mRefreshView.finishRefreshing();
                 if (response.getStatus().getCode() == 0) {
-                    if (currentId.equals("0")) {
-                        mMistakeAllAdapter.setData(response.getData().get(0));
-                    } else {
-                        mMistakeAllAdapter.addData(response.getData().get(0));
-                    }
-                    if (mWrongNum == mMistakeAllAdapter.getItemCount()) {
-                        mRefreshView.setLoadMoreEnable(false);
-                    } else if (mWrongNum != mMistakeAllAdapter.getItemCount()) {
-                        mRefreshView.setLoadMoreEnable(true);
+                    if (response.getData()!=null&&response.getData().size()>0) {
+                        if (currentId.equals("0")) {
+                            mMistakeAllAdapter.setData(response.getData().get(0));
+                        } else {
+                            mMistakeAllAdapter.addData(response.getData().get(0));
+                        }
+                        if (mWrongNum == mMistakeAllAdapter.getItemCount()) {
+                            mRefreshView.setLoadMoreEnable(false);
+                        } else if (mWrongNum != mMistakeAllAdapter.getItemCount()) {
+                            mRefreshView.setLoadMoreEnable(true);
+                        }
+                    }else {
+                        if (currentId.equals("0")) {
+                            rootView.showOtherErrorView();
+                        }
                     }
                 } else {
                     if (currentId.equals("0")){

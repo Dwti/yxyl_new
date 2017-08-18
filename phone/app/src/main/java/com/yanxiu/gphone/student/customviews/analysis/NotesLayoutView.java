@@ -1,6 +1,5 @@
 package com.yanxiu.gphone.student.customviews.analysis;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.annotation.Nullable;
@@ -16,6 +15,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.common.activity.PhotoActivity;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.NotesActicity;
 import com.yanxiu.gphone.student.questions.bean.JsonNoteBean;
 
@@ -86,19 +86,34 @@ public class NotesLayoutView extends LinearLayout implements View.OnClickListene
     }
 
     private void setNoteImg(ArrayList<String> paths){
+        mImgCenterLeftView.setImageBitmap(null);
+        mImgCenterLeftView.setOnClickListener(null);
+
+        mImgCenterRightView.setImageBitmap(null);
+        mImgCenterRightView.setOnClickListener(null);
+
+        mImgLeftView.setImageBitmap(null);
+        mImgLeftView.setOnClickListener(null);
+
+        mImgRightView.setImageBitmap(null);
+        mImgRightView.setOnClickListener(null);
         for (int i=0;i<paths.size();i++){
             switch (i){
                 case 0:
                     Glide.with(mContext).load(paths.get(0)).asBitmap().into(new CornersImageTarget(mImgLeftView));
+                    mImgLeftView.setOnClickListener(NotesLayoutView.this);
                     break;
                 case 1:
                     Glide.with(mContext).load(paths.get(1)).asBitmap().into(new CornersImageTarget(mImgCenterLeftView));
+                    mImgCenterLeftView.setOnClickListener(NotesLayoutView.this);
                     break;
                 case 2:
                     Glide.with(mContext).load(paths.get(2)).asBitmap().into(new CornersImageTarget(mImgCenterRightView));
+                    mImgCenterRightView.setOnClickListener(NotesLayoutView.this);
                     break;
                 case 3:
                     Glide.with(mContext).load(paths.get(3)).asBitmap().into(new CornersImageTarget(mImgRightView));
+                    mImgRightView.setOnClickListener(NotesLayoutView.this);
                     break;
             }
         }
@@ -145,6 +160,18 @@ public class NotesLayoutView extends LinearLayout implements View.OnClickListene
         switch (v.getId()){
             case R.id.ll_note:
                 NotesActicity.invoke(mContext,NotesLayoutView.this.hashCode(),mWqid,mQid,mContent,mPhotoPath);
+                break;
+            case R.id.iv_left:
+                PhotoActivity.LaunchActivity(mContext, mPhotoPath, 0, mContext.hashCode(), PhotoActivity.DELETE_CANNOT);
+                break;
+            case R.id.iv_right:
+                PhotoActivity.LaunchActivity(mContext, mPhotoPath, 1, mContext.hashCode(), PhotoActivity.DELETE_CANNOT);
+                break;
+            case R.id.iv_center_left:
+                PhotoActivity.LaunchActivity(mContext, mPhotoPath, 2, mContext.hashCode(), PhotoActivity.DELETE_CANNOT);
+                break;
+            case R.id.iv_center_right:
+                PhotoActivity.LaunchActivity(mContext, mPhotoPath, 3, mContext.hashCode(), PhotoActivity.DELETE_CANNOT);
                 break;
         }
     }

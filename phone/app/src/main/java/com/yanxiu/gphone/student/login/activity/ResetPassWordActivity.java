@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
@@ -48,7 +49,7 @@ public class ResetPassWordActivity extends YanxiuBaseActivity implements View.On
     private TextView mTitleView;
     private ImageView mCipherView;
     private ImageView mCipherAgainView;
-
+    private ImageView mTopImageView;
     /**
      * default they are cipher
      * */
@@ -82,6 +83,7 @@ public class ResetPassWordActivity extends YanxiuBaseActivity implements View.On
     }
 
     private void initView() {
+        mTopImageView= (ImageView) findViewById(R.id.iv_top);
         mBackView= (ImageView) findViewById(R.id.iv_left);
         mTitleView= (TextView) findViewById(R.id.tv_title);
         mPassWordView= (EditText) findViewById(R.id.ed_pass_word);
@@ -97,6 +99,8 @@ public class ResetPassWordActivity extends YanxiuBaseActivity implements View.On
         mTitleView.setText(getText(R.string.resetpassword));
         mWavesView.setCanShowWave(false);
         mResetPassWordView.setEnabled(false);
+        Glide.with(mContext).load(R.drawable.resetpassword_top).into(mTopImageView);
+        mBackView.setBackgroundResource(R.drawable.selector_white_back);
     }
 
     private void listener() {

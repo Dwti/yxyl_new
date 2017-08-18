@@ -8,6 +8,7 @@ import org.litepal.crud.DataSupport;
  * Function :
  */
 public class PassportBean extends DataSupport{
+    private int id;
     private int uid;
     private String mobile;
     private String password;
@@ -15,6 +16,14 @@ public class PassportBean extends DataSupport{
     private String deviceId;
     private String type;
     private UserMessageBean bean;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public UserMessageBean getBean() {
         return bean;

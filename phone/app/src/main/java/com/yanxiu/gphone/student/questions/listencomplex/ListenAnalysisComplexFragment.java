@@ -2,10 +2,10 @@ package com.yanxiu.gphone.student.questions.listencomplex;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.analysisbase.AnalysisComplexExerciseBaseFragment;
-import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerComplexExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.TopBaseFragment;
 
 /**
@@ -26,9 +26,14 @@ public class ListenAnalysisComplexFragment extends AnalysisComplexExerciseBaseFr
 
     @Override
     protected TopBaseFragment getTopFragment() {
-        topFragment=new ListenAnalysisComplexTopFragment();
+        ListenAnalysisComplexTopFragment topFragment=new ListenAnalysisComplexTopFragment();
         topFragment.setData(mData);
         return topFragment;
+    }
+
+    @Override
+    protected void setTopFragment(Fragment fragment) {
+        topFragment= (ListenAnalysisComplexTopFragment) fragment;
     }
 
     @Override

@@ -114,7 +114,7 @@ public class SpManager {
     }
 
     public static void setCropIsLuanched(boolean isLuanch){
-        SharedPreferences.Editor editor=myCompeleteAnswerSharedPreferences.edit();
+        SharedPreferences.Editor editor=mySharedPreferences.edit();
         editor.putBoolean(FRIST_START_LUANCH_CROPIMAGE,isLuanch).commit();
     }
 

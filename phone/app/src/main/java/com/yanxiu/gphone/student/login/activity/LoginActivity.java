@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.test.yanxiu.network.RequestBase;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
@@ -86,6 +87,7 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
     private ThridMessageBean mThridMessageBean;
     private LoginThridRequest mLoginThridRequest;
     private LinearLayout mThridLoginView;
+    private ImageView mTopImageView;
 
     public static void LaunchActivity(Context context){
         Intent intent=new Intent(context,LoginActivity.class);
@@ -108,6 +110,7 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
     }
 
     private void initView() {
+        mTopImageView= (ImageView) findViewById(R.id.iv_top);
         mUserNameView = (EditText) findViewById(R.id.ed_user_name);
         mClearView = (ImageView) findViewById(R.id.iv_clear);
         mPassWordView = (EditText) findViewById(R.id.ed_pass_word);
@@ -127,6 +130,7 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
         mTitleView.setVisibility(View.INVISIBLE);
         mClearView.setEnabled(false);
         mLoginView.setEnabled(false);
+        Glide.with(mContext).load(R.drawable.login_top).into(mTopImageView);
     }
 
     private void listener() {
@@ -199,9 +203,10 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
 
     private void setEditPassWordChange(boolean isCipher) {
         if (isCipher) {
-//            mCipherView.setBackgroundResource();
+            mCipherView.setBackgroundResource(R.drawable.selector_password_hide);
             mPassWordView.setTransformationMethod(PasswordTransformationMethod.getInstance());
         } else {
+            mCipherView.setBackgroundResource(R.drawable.selector_password_show);
             mPassWordView.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
         }
         String text = mPassWordView.getText().toString();
@@ -281,7 +286,7 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
                     LoginInfo.saveLoginType(UserMessageBean.LOGIN_ACCOUNT);
                     MainActivity.invoke(LoginActivity.this,true);
                     //there can't finish
-//                    LoginActivity.this.finish();
+                    LoginActivity.this.finish();
                 }else if (response.getStatus().getCode()==80){
                     LoginInfo.setMobile(user_name);
                     LoginInfo.setPassWord(pass_word);
@@ -397,7 +402,7 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
                         LoginInfo.saveLoginType(UserMessageBean.LOGIN_WX);
                     }
                     MainActivity.invoke(LoginActivity.this,true);
-                    LoginActivity.this.finish();
+//                    LoginActivity.this.finish();
                 }else if (response.getStatus().getCode()==80){
                     JoinClassActivity.LaunchActivity(mContext, mThridMessageBean);
                 }else {

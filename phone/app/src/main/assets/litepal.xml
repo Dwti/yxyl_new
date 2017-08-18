@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <litepal>
     <dbname value="yan_xiu_student_db"/>
-    <version value="10"/>
+    <version value="12"/>
     <list>
         <mapping class="com.yanxiu.gphone.student.login.response.UserMessageBean" />
         <mapping class="com.yanxiu.gphone.student.login.response.PassportBean" />

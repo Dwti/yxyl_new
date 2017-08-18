@@ -43,7 +43,7 @@ public class ClozeWrongComplexTopFragment extends TopBaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState != null) {
+        if (savedInstanceState != null&&mQuestion==null) {
             mQuestion = (ClozeComplexQuestion) savedInstanceState.getSerializable(ExerciseBaseFragment.KEY_NODE);
         }
     }

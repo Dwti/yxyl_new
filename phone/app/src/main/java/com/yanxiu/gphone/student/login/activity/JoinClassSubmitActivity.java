@@ -40,7 +40,7 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
     private TextView mStudentNumberView;
     private TextView mSchoolNameView;
     private EditText mInputNameView;
-    private ImageView mWriteNameView;
+    private ImageView mClearNameView;
     private WavesLayout mWavesView;
     private TextView mAddClassView;
     private JoinClassResponse.Data mData;
@@ -105,7 +105,7 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
         mStudentNumberView= (TextView) findViewById(R.id.tv_student_number);
         mSchoolNameView= (TextView) findViewById(R.id.tv_school_name);
         mInputNameView= (EditText) findViewById(R.id.et_name);
-        mWriteNameView= (ImageView) findViewById(R.id.iv_write);
+        mClearNameView= (ImageView) findViewById(R.id.iv_clear);
         mWavesView= (WavesLayout) findViewById(R.id.wavesLayout);
         mAddClassView= (TextView) findViewById(R.id.tv_add_class);
     }
@@ -113,7 +113,7 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
     private void listener() {
         mBackView.setOnClickListener(JoinClassSubmitActivity.this);
         EditTextManger.getManager(mInputNameView).setTextChangedListener(JoinClassSubmitActivity.this);
-        mWriteNameView.setOnClickListener(JoinClassSubmitActivity.this);
+        mClearNameView.setOnClickListener(JoinClassSubmitActivity.this);
         mAddClassView.setOnClickListener(JoinClassSubmitActivity.this);
     }
 
@@ -130,6 +130,8 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
             mStudentNumberView.setText(mData.stdnum+getText(R.string.person));
             mSchoolNameView.setText(mData.schoolname);
         }
+        mBackView.setBackgroundResource(R.drawable.selector_white_back);
+        mInputNameView.setText("");
     }
 
     @Override
@@ -139,8 +141,8 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
                 JoinClassSubmitActivity.this.finish();
                 EditTextManger.getManager(mTitleView).hideSoftInput();
                 break;
-            case R.id.iv_write:
-                mInputNameView.setEnabled(true);
+            case R.id.iv_clear:
+                mInputNameView.setText("");
                 break;
             case R.id.tv_add_class:
                 String userName=mInputNameView.getText().toString().trim();
@@ -158,9 +160,13 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
         if (isEmpty){
             mWavesView.setCanShowWave(false);
             mAddClassView.setEnabled(false);
+            mClearNameView.setEnabled(false);
+            mClearNameView.setVisibility(View.INVISIBLE);
         }else {
             mWavesView.setCanShowWave(true);
             mAddClassView.setEnabled(true);
+            mClearNameView.setEnabled(true);
+            mClearNameView.setVisibility(View.VISIBLE);
         }
     }
 

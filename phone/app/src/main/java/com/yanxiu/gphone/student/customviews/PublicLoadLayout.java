@@ -1,6 +1,8 @@
 package com.yanxiu.gphone.student.customviews;
 
 import android.content.Context;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.IdRes;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.Animation;
@@ -10,6 +12,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
 
@@ -28,6 +31,8 @@ public class PublicLoadLayout extends FrameLayout{
     private View mLoadingLayout;//loadingLayout
     private ImageView mLoadingView;// loadingView
     private Animation mLoadingAnim;//loadingView动画
+    private ImageView mDataEmptyTopView;
+    private TextView mDataEmptyContentView;
 
     public PublicLoadLayout(Context context) {
         this(context, null);
@@ -53,6 +58,13 @@ public class PublicLoadLayout extends FrameLayout{
         mOtherErrorLayoutContainer = (RelativeLayout) findViewById(R.id.otherErrorLayoutContainer);
         initDefaultLayout();
         initLoadingView();
+        initDataEmptyView();
+    }
+
+    private void initDataEmptyView() {
+        inflate(mContext, R.layout.data_empty_layout, mOtherErrorLayoutContainer);
+        mDataEmptyTopView= (ImageView) findViewById(R.id.empty_top);
+        mDataEmptyContentView= (TextView) findViewById(R.id.empty_content);
     }
 
     /**
@@ -199,6 +211,14 @@ public class PublicLoadLayout extends FrameLayout{
         if(mOtherErrorLayoutContainer != null){
             mOtherErrorLayoutContainer.setVisibility(GONE);
         }
+    }
+
+    /**
+     * 設置空界面顯示
+     * */
+    public void setDataEmptyErrorView(@DrawableRes int resId, String content){
+        mDataEmptyTopView.setBackgroundResource(resId);
+        mDataEmptyContentView.setText(content);
     }
 
     /**

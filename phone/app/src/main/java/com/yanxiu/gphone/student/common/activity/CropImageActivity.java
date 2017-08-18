@@ -76,11 +76,11 @@ public class CropImageActivity extends YanxiuBaseActivity implements View.OnClic
 
     private void initData() {
         Glide.with(mContext).load(mImgPath).asBitmap().into(mCropView);
-        if (SpManager.getCropIsLuanched()){
+//        if (SpManager.getCropIsLuanched()){
             mGuidePictureView.setVisibility(View.GONE);
-        }else {
-            mGuidePictureView.setVisibility(View.VISIBLE);
-        }
+//        }else {
+//            mGuidePictureView.setVisibility(View.VISIBLE);
+//        }
     }
 
     @Override

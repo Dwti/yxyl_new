@@ -8,12 +8,14 @@ import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.igexin.sdk.PushManager;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.login.activity.LoginActivity;
+import com.yanxiu.gphone.student.login.response.UserMessageBean;
 import com.yanxiu.gphone.student.user.setting.bean.BindMobileMessage;
 import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.UpdateUtil;
@@ -32,6 +34,8 @@ public class SettingActivity extends YanxiuBaseActivity implements View.OnClickL
     private ImageView mBackView;
     private TextView mTitleView;
     private TextView mMobileCodeView;
+    private LinearLayout mBindMobileLayout;
+    private LinearLayout mChangePassWordLayout;
 
     public static void LaunchActivity(Context context) {
         Intent intent = new Intent(context, SettingActivity.class);
@@ -60,6 +64,8 @@ public class SettingActivity extends YanxiuBaseActivity implements View.OnClickL
         mTitleView = (TextView) findViewById(R.id.tv_title);
         mTopView = findViewById(R.id.include_top);
         mMobileCodeView = (TextView) findViewById(R.id.tv_mobile_code);
+        mBindMobileLayout= (LinearLayout) findViewById(R.id.ll_bind_mobile);
+        mChangePassWordLayout= (LinearLayout) findViewById(R.id.ll_change_password);
     }
 
     private void listener() {
@@ -77,6 +83,11 @@ public class SettingActivity extends YanxiuBaseActivity implements View.OnClickL
             mobile = mobile.substring(0, 3) + "****" + mobile.substring(7, mobile.length());
         }
         mMobileCodeView.setText(mobile);
+
+        if (!UserMessageBean.LOGIN_ACCOUNT.equals(LoginInfo.getLoginType())){
+            mBindMobileLayout.setVisibility(View.GONE);
+            mChangePassWordLayout.setVisibility(View.GONE);
+        }
     }
 
     public void onEventMainThread(BindMobileMessage message) {

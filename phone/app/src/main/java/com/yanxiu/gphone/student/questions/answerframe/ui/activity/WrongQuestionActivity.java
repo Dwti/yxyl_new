@@ -166,6 +166,9 @@ public class WrongQuestionActivity extends YanxiuBaseActivity implements View.On
                 break;
             case R.id.tv_delete:
                 setDeleteQuestion();
+//                int index = mQaView.getCurrentItem();
+//                mWrongNum -= 1;
+//                mQaAdapter.deleteItem(index, mWrongNum);
                 break;
         }
     }

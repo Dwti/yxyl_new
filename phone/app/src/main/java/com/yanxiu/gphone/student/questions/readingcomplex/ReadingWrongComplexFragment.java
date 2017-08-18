@@ -3,6 +3,7 @@ package com.yanxiu.gphone.student.questions.readingcomplex;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.TopBaseFragment;
@@ -24,15 +25,21 @@ public class ReadingWrongComplexFragment extends WrongComplexExerciseBaseFragmen
 
     @Override
     protected TopBaseFragment getTopFragment() {
-        ReadingAnalysisComplexTopFragment topFragment = new ReadingAnalysisComplexTopFragment();
+        ReadingWrongComplexTopFragment topFragment = new ReadingWrongComplexTopFragment();
         topFragment.setData(mData);
         return topFragment;
     }
 
     @Override
+    protected void setTopFragment(Fragment fragment) {
+        super.setTopFragment(fragment);
+        ((ReadingWrongComplexTopFragment)fragment).setData(mData);
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState != null) {
+        if (savedInstanceState != null&&mData==null) {
             setData((ReadingComplexQuestion) savedInstanceState.getSerializable(KEY_NODE));
         }
     }

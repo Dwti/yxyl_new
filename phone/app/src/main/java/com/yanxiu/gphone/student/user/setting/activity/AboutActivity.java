@@ -48,7 +48,8 @@ public class AboutActivity extends YanxiuBaseActivity implements View.OnClickLis
 
     private void initData() {
         mBackView.setVisibility(View.VISIBLE);
-        mTitleView.setText(R.string.setting_about);
+//        mTitleView.setText(R.string.setting_about);
+        mTitleView.setText("");
     }
 
     @Override

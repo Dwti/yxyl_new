@@ -192,6 +192,13 @@ public class ConnectFragment extends AnswerSimpleExerciseBaseFragment {
         mRecyclerViewRight.setLayoutManager(new LinearLayoutManager(getContext()));
         mTextStem = (TextView) root.findViewById(R.id.stem);
         mBasket = root.findViewById(R.id.basket);
+        mBasket.post(new Runnable() {
+            @Override
+            public void run() {
+                mBasket.getLocationInWindow(mEndLocation);
+                mEndLocation[0] = mEndLocation[0] + mBasket.getWidth() / 2;
+            }
+        });
     }
 
 
