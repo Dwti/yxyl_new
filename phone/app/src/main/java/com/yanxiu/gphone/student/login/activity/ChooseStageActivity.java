@@ -114,6 +114,7 @@ public class ChooseStageActivity extends YanxiuBaseActivity implements PickerVie
             stageId=LoginInfo.getStageid();
             mChooseStageView.setSelected(stageName);
         }
+        mBackView.setBackgroundResource(R.drawable.selector_back);
     }
 
     private List<String> getList() {

@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
@@ -51,6 +52,7 @@ public class ForgetPassWordActivity extends YanxiuBaseActivity implements View.O
     private PublicLoadLayout rootView;
     private ImageView mBackView;
     private TextView mTitleView;
+    private ImageView mTopImageView;
 
     public static void LaunchActivity(Context context, String mobile) {
         Intent intent = new Intent(context, ForgetPassWordActivity.class);
@@ -86,6 +88,7 @@ public class ForgetPassWordActivity extends YanxiuBaseActivity implements View.O
     }
 
     private void initView() {
+        mTopImageView= (ImageView) findViewById(R.id.iv_top);
         mBackView= (ImageView) findViewById(R.id.iv_left);
         mTitleView= (TextView) findViewById(R.id.tv_title);
         mMobileView = (EditText) findViewById(R.id.ed_mobile);
@@ -106,6 +109,8 @@ public class ForgetPassWordActivity extends YanxiuBaseActivity implements View.O
         if (mobile.length() > 0) {
             mMobileView.setSelection(mobile.length());
         }
+        Glide.with(mContext).load(R.drawable.forgetpassword_top).into(mTopImageView);
+        mBackView.setBackgroundResource(R.drawable.selector_close);
     }
 
     private void listener() {

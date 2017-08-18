@@ -57,7 +57,7 @@
                         android:layout_height="@dimen/login_edit_icon_w_h"
                         android:layout_gravity="center_vertical"
                         android:layout_marginEnd="@dimen/login_edit_icon_w_h"
-                        android:background="@color/color_00cccc"
+                        android:background="@drawable/selector_input_white_delete"
                         android:contentDescription="@null" />
 
                 </LinearLayout>
@@ -90,7 +90,7 @@
                         android:layout_height="@dimen/login_edit_icon_w_h"
                         android:layout_gravity="center_vertical"
                         android:layout_marginEnd="@dimen/login_edit_icon_w_h"
-                        android:background="@color/color_00cccc"
+                        android:background="@drawable/selector_choose"
                         android:contentDescription="@null" />
                 </LinearLayout>
 
@@ -122,7 +122,7 @@
                         android:layout_height="@dimen/login_edit_icon_w_h"
                         android:layout_gravity="center_vertical"
                         android:layout_marginEnd="@dimen/login_edit_icon_w_h"
-                        android:background="@color/color_00cccc"
+                        android:background="@drawable/selector_choose"
                         android:contentDescription="@null" />
                 </LinearLayout>
 

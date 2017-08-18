@@ -75,6 +75,7 @@ public class UserHeadCameraActivity extends YanxiuBaseActivity implements View.O
 
     private void initData() {
         mFlipView.setBackgroundResource(R.drawable.selector_camera_rotate);
+        mDeleteView.setBackgroundResource(R.drawable.selector_close);
     }
 
     @Override

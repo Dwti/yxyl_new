@@ -94,7 +94,7 @@ public class MistakeListActivity extends YanxiuBaseActivity implements View.OnCl
             @Override
             protected void onResponse(RequestBase request, MistakeListResponse response) {
                 rootView.hiddenLoadingView();
-                if (response.getStatus().getCode()==0){
+                if (response.getStatus().getCode()==0&&response.data!=null&&response.data.size()>0){
                     mMistakeAdapter.setData(response.data);
                 }else if (response.getStatus().getCode()==67){
                     //no data

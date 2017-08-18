@@ -60,6 +60,7 @@ public class ClassifyDrawerLayout extends FrameLayout implements OnClickListener
         mNoAnswer = (TextView) mRootLayout.findViewById(R.id.classfy_drawer_nodata);
         mCircle_icon.setOnClickListener(this);
         addView(mRootLayout);
+        setBackgroundResource(R.color.color_66000000);
     }
 
     /**
@@ -127,7 +128,7 @@ public class ClassifyDrawerLayout extends FrameLayout implements OnClickListener
      */
     public void expand() {
         if (!isExpand)
-            openValueAnimator(this).setDuration(mDuration).start();
+            openValueAnimator(mRootLayout).setDuration(mDuration).start();
     }
 
     /**
@@ -135,7 +136,7 @@ public class ClassifyDrawerLayout extends FrameLayout implements OnClickListener
      */
     public void collapse() {
         if (isExpand)
-            closeValueAnimator(this).setDuration(mDuration).start();
+            closeValueAnimator(mRootLayout).setDuration(mDuration).start();
     }
 
     /**

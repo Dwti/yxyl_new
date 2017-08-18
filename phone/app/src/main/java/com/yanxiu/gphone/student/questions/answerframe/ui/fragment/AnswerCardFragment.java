@@ -43,6 +43,7 @@ import com.yanxiu.gphone.student.util.DESBodyDealer;
 import com.yanxiu.gphone.student.util.DataFetcher;
 import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.ScreenUtils;
+import com.yanxiu.gphone.student.util.SoundManger;
 import com.yanxiu.gphone.student.util.ToastManager;
 
 import java.util.ArrayList;
@@ -227,6 +228,7 @@ public class AnswerCardFragment extends YanxiuBaseFragment implements View.OnCli
             public void onSuccess() {
                 //提交答案成功，直接请求答题报告
                 questReportData();
+                SoundManger.getInstence().playSubmitMusic();
             }
 
             @Override

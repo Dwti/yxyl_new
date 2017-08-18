@@ -47,7 +47,7 @@
                     android:layout_width="@dimen/login_edit_icon_w_h"
                     android:layout_height="@dimen/login_edit_icon_w_h"
                     android:layout_marginEnd="@dimen/login_edit_icon_w_h"
-                    android:background="@color/colorPrimary"
+                    android:background="@drawable/selector_input_white_delete"
                     android:contentDescription="@null"
                     android:visibility="invisible" />
             </LinearLayout>
@@ -73,7 +73,7 @@
                     android:layout_width="@dimen/login_edit_icon_w_h"
                     android:layout_height="@dimen/login_edit_icon_w_h"
                     android:layout_marginEnd="@dimen/login_edit_icon_w_h"
-                    android:background="@color/colorPrimary"
+                    android:background="@drawable/selector_password_hide"
                     android:contentDescription="@null" />
             </LinearLayout>
 
@@ -187,7 +187,7 @@
                     android:layout_marginLeft="@dimen/login_thrid_icon_margin"
                     android:layout_marginRight="@dimen/login_thrid_icon_margin"
                     android:layout_marginStart="@dimen/login_thrid_icon_margin"
-                    android:background="@color/colorPrimary"
+                    android:background="@drawable/selector_qq_login"
                     android:contentDescription="@null" />
 
                 <ImageView
@@ -198,7 +198,7 @@
                     android:layout_marginLeft="@dimen/login_thrid_icon_margin"
                     android:layout_marginRight="@dimen/login_thrid_icon_margin"
                     android:layout_marginStart="@dimen/login_thrid_icon_margin"
-                    android:background="@color/colorPrimary"
+                    android:background="@drawable/selector_wx_login"
                     android:contentDescription="@null" />
             </LinearLayout>
         </LinearLayout>

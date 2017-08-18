@@ -156,6 +156,7 @@ public class UserEventManager {
     private void saveToDb(String data) {
         if (data!=null) {
             UserEventBean eventBean = new UserEventBean(data);
+            Logger.d(TAG,data);
             eventBean.save();
         }
     }

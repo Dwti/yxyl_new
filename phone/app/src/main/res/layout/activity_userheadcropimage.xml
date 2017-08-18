@@ -21,7 +21,7 @@
             android:layout_height="@dimen/crop_button_w_h"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/crop_button_margin_l_r"
-            android:background="@color/color_00cccc"
+            android:background="@drawable/selector_back"
             android:onClick="onClick" />
 
         <ImageView
@@ -31,7 +31,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/crop_button_margin_l_r"
-            android:background="@color/color_00cccc"
+            android:background="@drawable/selector_crop"
             android:onClick="onClick" />
     </RelativeLayout>
 

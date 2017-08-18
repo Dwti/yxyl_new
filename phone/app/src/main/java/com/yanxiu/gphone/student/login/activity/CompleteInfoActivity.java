@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
@@ -65,6 +66,7 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
     private ImageView mBackView;
     private TextView mTitleView;
     private ImageView mClearView;
+    private ImageView mTopImageView;
 
     public static void LaunchActivity(Context context) {
         Intent intent = new Intent(context, CompleteInfoActivity.class);
@@ -111,6 +113,7 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
     }
 
     private void initView() {
+        mTopImageView= (ImageView) findViewById(R.id.iv_top);
         mBackView= (ImageView) findViewById(R.id.iv_left);
         mTitleView= (TextView) findViewById(R.id.tv_title);
         mUserNameView = (EditText) findViewById(R.id.ed_user_name);
@@ -128,6 +131,8 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
         mSubmitView.setEnabled(false);
         mTitleView.setText(R.string.complete_message);
         mBackView.setVisibility(View.VISIBLE);
+        Glide.with(mContext).load(R.drawable.completeinfo_top).into(mTopImageView);
+        mBackView.setBackgroundResource(R.drawable.selector_white_back);
     }
 
     private void listener() {

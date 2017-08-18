@@ -17,6 +17,7 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.srt.refresh.BaseRefreshLayout2;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.HomePageBaseFragment;
+import com.yanxiu.gphone.student.customviews.SinglineTextView;
 import com.yanxiu.gphone.student.exercise.SubjectHistoryActivity;
 import com.yanxiu.gphone.student.login.activity.ChooseStageActivity;
 import com.yanxiu.gphone.student.user.feedback.activity.FeedbackActivity;
@@ -45,7 +46,7 @@ public class MyFragment extends HomePageBaseFragment implements View.OnClickList
 
     private ImageView mEdit_userinfo;//编辑用户信息
     private ImageView mUser_icon;//头像
-    private TextView mUser_name;//用户名
+    private SinglineTextView mUser_name;//用户名
     private TextView mUser_id;//账号
     private TextView mStage;//学段
 
@@ -81,7 +82,7 @@ public class MyFragment extends HomePageBaseFragment implements View.OnClickList
     private void initView() {
         mEdit_userinfo = (ImageView) mRootView.findViewById(R.id.user_edit_userinfo);
         mUser_icon = (ImageView) mRootView.findViewById(R.id.user_icon);
-        mUser_name = (TextView) mRootView.findViewById(R.id.user_name);
+        mUser_name = (SinglineTextView) mRootView.findViewById(R.id.user_name);
         mUser_id = (TextView) mRootView.findViewById(R.id.user_id);
         mStage = (TextView) mRootView.findViewById(R.id.stage);
         mMy_mistake = mRootView.findViewById(R.id.user_my_mistake);
@@ -104,11 +105,16 @@ public class MyFragment extends HomePageBaseFragment implements View.OnClickList
 
     private void intData() {
         String headIconPath = LoginInfo.getHeadIcon();
-        String userName = LoginInfo.getRealName();
+        final String userName = LoginInfo.getRealName();
         String loginName=LoginInfo.getLoginName();
         String stageName = LoginInfo.getStageName();
-        Glide.with(getActivity()).load(headIconPath).asBitmap().into(new CircleImageTarget(mUser_icon));
-        mUser_name.setText(userName);
+        Glide.with(getActivity()).load(headIconPath).asBitmap().placeholder(R.drawable.user_info_headimg_default).into(new CircleImageTarget(mUser_icon));
+        mUser_name.post(new Runnable() {
+            @Override
+            public void run() {
+                mUser_name.setData(userName);
+            }
+        });
         if (TextUtils.isEmpty(loginName)){
             loginName = LoginInfo.getMobile();
         }

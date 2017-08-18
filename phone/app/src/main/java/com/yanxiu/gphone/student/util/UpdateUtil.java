@@ -61,7 +61,7 @@ public class UpdateUtil {
                     boolean isUpgrade = checkIsShouldUpdate(Constants.version, ret.data.get(0).version);
                     if (isUpgrade) {
                         if (!TextUtils.isEmpty(ret.data.get(0).fileURL)) {
-                            String[] str = ret.data.get(0).fileURL.split(".");
+                            String[] str = ret.data.get(0).fileURL.split("\\.");
                             if (str.length>1&&"apk".equals(str[str.length-1])) {
                                 showUpdateDialog(context, ret.data.get(0), new OnUpgradeCallBack() {
                                     @Override

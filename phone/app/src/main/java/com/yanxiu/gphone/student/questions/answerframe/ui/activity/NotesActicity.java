@@ -295,7 +295,7 @@ public class NotesActicity extends YanxiuBaseActivity implements View.OnClickLis
         if (viewType == NotesAdapter.TYPE_CAMERA) {
             YanxiuBaseActivity.requestCameraPermission(NotesActicity.this);
         } else if (viewType == NotesAdapter.TYPE_IMAGE) {
-            PhotoActivity.LaunchActivity(mContext, mAdapter.getData(), position, mContent.hashCode(), PhotoActivity.DELETE_CAN);
+            PhotoActivity.LaunchActivity(mContext, mAdapter.getData(), position, mContext.hashCode(), PhotoActivity.DELETE_CAN);
         }
     }
 

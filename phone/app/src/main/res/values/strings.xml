@@ -311,4 +311,6 @@
     <string name="homework_delete">当前作业已被老师删除</string>
 
     <string name="input_old_password">请输入原密码</string>
+
+    <string name="no_wrong_data">真棒!还没有错题哦</string>
 </resources>

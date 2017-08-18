@@ -15,6 +15,7 @@ public class UserMessageBean extends DataSupport {
 
     private String loginType;
 
+    private int id;
     private String mobile;
     private String nickname;
     private String realname;
@@ -34,6 +35,14 @@ public class UserMessageBean extends DataSupport {
     private String createtime;
     private String head;
     private PassportBean passport;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public int getSex() {
         return sex;

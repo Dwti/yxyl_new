@@ -21,7 +21,8 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/join_class_submit_image_top_h"
-                android:background="@android:color/holo_blue_light"
+                android:background="@drawable/joinclasssubmit_top"
+                android:scaleType="fitXY"
                 android:contentDescription="@null" />
 
             <LinearLayout
@@ -198,12 +199,12 @@
                         android:textSize="@dimen/login_edit_default_textsize" />
 
                     <ImageView
-                        android:id="@+id/iv_write"
+                        android:id="@+id/iv_clear"
                         android:layout_width="@dimen/login_edit_icon_w_h"
                         android:layout_height="@dimen/login_edit_icon_w_h"
                         android:layout_marginLeft="@dimen/login_edit_icon_w_h"
                         android:layout_marginRight="@dimen/login_edit_icon_w_h"
-                        android:background="@android:color/holo_blue_light"
+                        android:background="@drawable/selector_input_white_delete"
                         android:contentDescription="@null" />
 
                 </LinearLayout>

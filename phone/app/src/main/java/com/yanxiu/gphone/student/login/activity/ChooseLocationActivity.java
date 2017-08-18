@@ -124,6 +124,8 @@ public class ChooseLocationActivity extends YanxiuBaseActivity implements Picker
         setProvinceDatas(DEFAULT_SELECT);
         setCityDatas(DEFAULT_SELECT);
         setAreaDatas(DEFAULT_SELECT);
+
+        mBackView.setBackgroundResource(R.drawable.selector_back);
     }
 
     private List<String> getProvinceNamesByDatas(List<ProvinceBean> datas){

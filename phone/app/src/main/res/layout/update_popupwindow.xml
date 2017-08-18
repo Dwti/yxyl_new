@@ -1,85 +1,117 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/update_popup_width"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:background="@drawable/forget_pwd_sel"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/update_title"
-        style="@style/ShadowTextStyle"
-        android:layout_width="match_parent"
+    <View
+        android:layout_width="30dp"
+        android:layout_height="wrap_content" />
+
+    <RelativeLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="left"
-        android:paddingBottom="@dimen/update_margin"
-        android:paddingLeft="@dimen/update_margin"
-        android:paddingTop="@dimen/update_margin"
-        android:shadowColor="@color/color_ffff99"
-        android:text="@string/app_update"
-        android:textColor="@color/color_805500"
-        android:textSize="@dimen/update_textsize" />
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1">
 
-    <ProgressBar
-        android:id="@+id/pb_loadapk"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/update_progress_height"
-        android:layout_marginLeft="@dimen/update_margin"
-        android:layout_marginRight="@dimen/update_margin"
-        android:max="100"
-        android:progress="0"
-        android:visibility="gone" />
+        <com.yanxiu.gphone.student.customviews.UpdataRelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
 
-    <TextView
-        android:id="@+id/update_content"
-        style="@style/ShadowTextStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="left"
-        android:lineSpacingExtra="@dimen/update_line_spacing"
-        android:paddingBottom="@dimen/update_margin"
-        android:paddingLeft="@dimen/update_margin"
-        android:shadowColor="@color/color_ffff99"
-        android:textColor="@color/color_805500"
-        android:textSize="@dimen/update_textsize"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="124dp"
+                android:background="@drawable/updata_bottom"
+                android:orientation="vertical"
+                android:paddingTop="131dp">
 
-    <LinearLayout
-        android:id="@+id/update_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/update_margin"
-        android:orientation="horizontal">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingTop="3dp"
+                    android:text="新版本更新"
+                    android:textColor="@color/color_336600"
+                    android:textSize="23dp" />
 
-        <TextView
-            android:id="@+id/update_layout_sure"
-            style="@style/ShadowTextStyle"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/update_text_height"
-            android:layout_weight="1"
-            android:background="@drawable/register_code_selector"
-            android:gravity="center"
-            android:shadowColor="@color/color_ffff99"
-            android:text="@string/app_update_sure"
-            android:textColor="@color/color_805500"
-            android:textSize="@dimen/update_textsize2"
-            android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/tv_updata_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:paddingBottom="5dp" />
 
-        <View
-            android:layout_width="@dimen/common_line_height"
-            android:layout_height="@dimen/update_line_height"
-            android:background="@color/color_ffc8c7cc" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="15dp"
+                    android:paddingEnd="15dp"
+                    android:paddingStart="15dp">
 
-        <TextView
-            android:id="@+id/update_layout_cel"
-            style="@style/ShadowTextStyle"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/update_line_height"
-            android:layout_weight="1"
-            android:background="@drawable/register_code_selector"
-            android:gravity="center"
-            android:shadowColor="@color/color_ffff99"
-            android:text="@string/app_update_cancle"
-            android:textColor="@color/color_805500"
-            android:textSize="@dimen/update_textsize" />
-    </LinearLayout>
+                    <com.yanxiu.gphone.student.customviews.WavesLayout
+                        android:id="@+id/wave_no"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="15dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_weight="1"
+                        app:waves_animend_alpha="102"
+                        app:waves_radius="@dimen/wavesRadius">
+
+                        <TextView
+                            android:id="@+id/update_layout_cel"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/shape_updata_no_bg"
+                            android:gravity="center"
+                            android:text="以后再说"
+                            android:textColor="@drawable/selector_answercard_no_text_color"
+                            android:textSize="@dimen/answer_card_submitbutton_textsize" />
+                    </com.yanxiu.gphone.student.customviews.WavesLayout>
+
+                    <View
+                        android:layout_width="15dp"
+                        android:layout_height="0dp" />
+
+                    <com.yanxiu.gphone.student.customviews.WavesLayout
+                        android:id="@+id/wave_yes"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="15dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_weight="1"
+                        app:waves_animend_alpha="102"
+                        app:waves_radius="@dimen/wavesRadius">
+
+                        <TextView
+                            android:id="@+id/update_layout_sure"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/shape_common_button_bg_normal"
+                            android:gravity="center"
+                            android:text="立即更新"
+                            android:textColor="@drawable/selector_answercard_no_text_color"
+                            android:textSize="@dimen/answer_card_submitbutton_textsize" />
+                    </com.yanxiu.gphone.student.customviews.WavesLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="255dp"
+                android:contentDescription="@null"
+                android:src="@drawable/updata_top" />
+        </com.yanxiu.gphone.student.customviews.UpdataRelativeLayout>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="30dp"
+        android:layout_height="wrap_content" />
 </LinearLayout>

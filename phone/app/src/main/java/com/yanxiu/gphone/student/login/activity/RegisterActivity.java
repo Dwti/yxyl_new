@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
@@ -62,6 +63,7 @@ public class RegisterActivity extends YanxiuBaseActivity implements View.OnClick
     private PublicLoadLayout rootView;
     private ImageView mBackView;
     private TextView mTitleView;
+    private ImageView mTopImageView;
 
     public static void LaunchActivity(Context context) {
         Intent intent = new Intent(context, RegisterActivity.class);
@@ -81,6 +83,7 @@ public class RegisterActivity extends YanxiuBaseActivity implements View.OnClick
     }
 
     private void initView() {
+        mTopImageView= (ImageView) findViewById(R.id.iv_top);
         mBackView= (ImageView) findViewById(R.id.iv_left);
         mTitleView= (TextView) findViewById(R.id.tv_title);
         mMobileView = (EditText) findViewById(R.id.ed_mobile);
@@ -99,6 +102,8 @@ public class RegisterActivity extends YanxiuBaseActivity implements View.OnClick
         mClearView.setEnabled(false);
         mSendVerCodeView.setEnabled(false);
         mRegisterView.setEnabled(false);
+        Glide.with(mContext).load(R.drawable.register_top).into(mTopImageView);
+        mBackView.setBackgroundResource(R.drawable.selector_close);
     }
 
     private void listener() {
@@ -275,9 +280,10 @@ public class RegisterActivity extends YanxiuBaseActivity implements View.OnClick
     private void setEditPassWordChange() {
         this.isCipher = !isCipher;
         if (isCipher) {
-//            mCipherView.setBackgroundResource();
+            mCipherView.setBackgroundResource(R.drawable.selector_password_hide);
             mPassWordView.setTransformationMethod(PasswordTransformationMethod.getInstance());
         } else {
+            mCipherView.setBackgroundResource(R.drawable.selector_password_show);
             mPassWordView.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
         }
         String text = mPassWordView.getText().toString();

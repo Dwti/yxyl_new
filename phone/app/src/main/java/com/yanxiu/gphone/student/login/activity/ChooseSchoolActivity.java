@@ -114,6 +114,8 @@ public class ChooseSchoolActivity extends YanxiuBaseActivity implements View.OnC
         mCityView.setText(message.cityName);
         mAreaView.setText(message.areaName);
         mSchoolListView.setAdapter(adapter);
+
+        mBackView.setBackgroundResource(R.drawable.selector_back);
     }
 
     @Override
@@ -210,6 +212,7 @@ public class ChooseSchoolActivity extends YanxiuBaseActivity implements View.OnC
             protected void onResponse(RequestBase request, EXueELianBaseResponse response) {
                 rootView.hiddenLoadingView();
                 if (response.getStatus().getCode()==0){
+                    LoginInfo.saveSchoolMessage(message.areaId,message.areaName,message.cityId,message.cityName,message.provinceId,message.provinceName,message.schoolId,message.schoolName);
                     result();
                 }else {
                     ToastManager.showMsg(response.getStatus().getDesc());
