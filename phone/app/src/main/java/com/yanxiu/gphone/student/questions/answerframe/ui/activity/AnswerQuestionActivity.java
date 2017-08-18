@@ -618,12 +618,8 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
      * 如果是练习，退出时，需要提交练习答案
      */
     private void quitSubmmitDialog(){
-        if (checkQuestionHasAnswerd()) {
-            mDialog.setData(mQuestions);
-            mDialog.showExerciseConfirmView();
-        }else{
-            finish();
-        }
+        mDialog.setData(mQuestions);
+        mDialog.showExerciseConfirmView();
     }
 
     /**
