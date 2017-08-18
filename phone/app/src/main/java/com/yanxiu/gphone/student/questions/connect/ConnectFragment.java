@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +17,6 @@ import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
-import com.yanxiu.gphone.student.util.ScreenUtils;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -320,7 +318,7 @@ public class ConnectFragment extends AnswerSimpleExerciseBaseFragment {
                 }
             }
         }
-        mQuestion.setIsAnswer(hasAnswered);
+        mQuestion.setHasAnswered(hasAnswered);
 
         super.saveAnswer(question);
     }

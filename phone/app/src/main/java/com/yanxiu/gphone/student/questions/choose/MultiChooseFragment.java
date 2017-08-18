@@ -99,9 +99,9 @@ public class MultiChooseFragment extends AnswerSimpleExerciseBaseFragment implem
             mData.getAnswerList().remove(String.valueOf(position));
         }
         if (mData.getAnswerList().size()>0){
-            mData.setIsAnswer(true);
+            mData.setHasAnswered(true);
         }else {
-            mData.setIsAnswer(false);
+            mData.setHasAnswered(false);
         }
         saveAnswer(mData);
         updateProgress();
