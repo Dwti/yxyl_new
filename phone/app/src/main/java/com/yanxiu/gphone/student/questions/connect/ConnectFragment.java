@@ -9,6 +9,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -39,6 +40,8 @@ public class ConnectFragment extends AnswerSimpleExerciseBaseFragment {
     private PopupWindow mPopWindow;
     private TextView mTextStem;
     private View mBasket;
+    private int[] mEndLocation = new int[2];
+    private View mLeftSelectedItemView,mRightSelectedItemView;
 
     @Nullable
     @Override
@@ -53,15 +56,41 @@ public class ConnectFragment extends AnswerSimpleExerciseBaseFragment {
         return root;
     }
 
+    private int[] computeStartLocation(RecyclerView recyclerView, View itemView, int itemPosition){
+        int[] location = new int[2];
+        LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+        int firstVisiblePos = layoutManager.findFirstVisibleItemPosition();
+        int lastVisiblePos = layoutManager.findLastVisibleItemPosition();
+        if(itemPosition < firstVisiblePos){
+            recyclerView.getLocationInWindow(location);
+            location[0] = location[0] + recyclerView.getPaddingLeft();
+            location[1] = location[1] - itemView.getHeight();
+        }else if (itemPosition > lastVisiblePos){
+            recyclerView.getLocationInWindow(location);
+            location[0] = location[0] + recyclerView.getPaddingLeft();
+            location[1] = location[1] + recyclerView.getHeight();
+        }else {
+            itemView.getLocationInWindow(location);
+        }
+        return location;
+    }
+
     private void initListener() {
         mLeftAdapter.setOnItemClickListener(new ConnectItemAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View itemView, ConnectItemBean itemBean, int position) {
                 mLeftSelectedItem = itemBean;
+                mLeftSelectedItemView = itemView;
                 if (mRightSelectedItem != null) {
+                    int[] start_location1 = computeStartLocation(mRecyclerViewLeft,mLeftSelectedItemView,position);
+                    int[] start_location2 = computeStartLocation(mRecyclerViewRight,mRightSelectedItemView,mRightAdapter.getLastSelectedPosition());
                     mConnectedList.add(new ConnectedBean(mLeftSelectedItem, mRightSelectedItem));
-                    mLeftAdapter.remove(position);
                     mRightAdapter.remove(mRightAdapter.getLastSelectedPosition());
+                    mLeftAdapter.remove(position);
+                    ConnectAnimationHelper.startDropIntoBasketAnimation(getActivity(),mBasket,mLeftSelectedItemView,start_location1,mEndLocation);
+                    ConnectAnimationHelper.startDropIntoBasketAnimation(getActivity(),mBasket,mRightSelectedItemView,start_location2,mEndLocation);
+                    mLeftSelectedItemView = null ;
+                    mRightSelectedItemView = null;
                     mLeftSelectedItem = null;
                     mRightSelectedItem = null;
                     saveAnswer(mQuestion);
@@ -74,10 +103,17 @@ public class ConnectFragment extends AnswerSimpleExerciseBaseFragment {
             @Override
             public void onItemClick(View itemView, ConnectItemBean itemBean, int position) {
                 mRightSelectedItem = itemBean;
+                mRightSelectedItemView = itemView;
                 if (mLeftSelectedItem != null) {
+                    int[] start_location1 = computeStartLocation(mRecyclerViewLeft,mLeftSelectedItemView,mLeftAdapter.getLastSelectedPosition());
+                    int[] start_location2 = computeStartLocation(mRecyclerViewRight,mRightSelectedItemView,position);
                     mConnectedList.add(new ConnectedBean(mLeftSelectedItem, mRightSelectedItem));
                     mLeftAdapter.remove(mLeftAdapter.getLastSelectedPosition());
                     mRightAdapter.remove(position);
+                    ConnectAnimationHelper.startDropIntoBasketAnimation(getActivity(),mBasket,mLeftSelectedItemView,start_location1,mEndLocation);
+                    ConnectAnimationHelper.startDropIntoBasketAnimation(getActivity(),mBasket,mRightSelectedItemView,start_location2,mEndLocation);
+                    mLeftSelectedItemView = null ;
+                    mRightSelectedItemView = null;
                     mLeftSelectedItem = null;
                     mRightSelectedItem = null;
                     saveAnswer(mQuestion);
@@ -150,7 +186,15 @@ public class ConnectFragment extends AnswerSimpleExerciseBaseFragment {
         mRecyclerViewRight.setLayoutManager(new LinearLayoutManager(getContext()));
         mTextStem = (TextView) root.findViewById(R.id.stem);
         mBasket = root.findViewById(R.id.basket);
+        mBasket.post(new Runnable() {
+            @Override
+            public void run() {
+                mBasket.getLocationInWindow(mEndLocation);
+                mEndLocation[0] = mEndLocation[0] + mBasket.getWidth() / 2;
+            }
+        });
     }
+
 
     private void initPopWindow() {
         if (mPopWindow == null) {
@@ -159,10 +203,14 @@ public class ConnectFragment extends AnswerSimpleExerciseBaseFragment {
             mPopWindow.setAnimationStyle(R.style.pop_anim);
             View dismiss = contentView.findViewById(R.id.dismiss);
             View btnClear = contentView.findViewById(R.id.tv_clear);
+            FrameLayout animationLayout = (FrameLayout) contentView.findViewById(R.id.animation_layout);
+
             mRecyclerViewResult = (RecyclerView) contentView.findViewById(R.id.recyclerView);
             mResultAdapter = new ConnectResultAdapter(mConnectedList);
             mRecyclerViewResult.setLayoutManager(new LinearLayoutManager(getContext()));
             mRecyclerViewResult.setAdapter(mResultAdapter);
+
+            mResultAdapter.setAnimationLayout(animationLayout);
 
             btnClear.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -208,6 +256,12 @@ public class ConnectFragment extends AnswerSimpleExerciseBaseFragment {
     private void dismissResult() {
         if (mPopWindow.isShowing())
             mPopWindow.dismiss();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mBasket.clearAnimation();
     }
 
     @Override

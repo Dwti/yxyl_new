@@ -1,32 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+
+    android:id="@+id/ll_content"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="45dp"
-    android:padding="15dp"
+    android:layout_centerInParent="true"
     android:layout_marginTop="15dp"
     android:background="@drawable/shape_connected_item_bg"
-    android:gravity="center">
+    android:gravity="center"
+    android:minHeight="45dp"
+    android:orientation="horizontal"
+    android:padding="15dp">
 
-
-    <TextView
-        android:id="@+id/textLeft"
+    <LinearLayout
+        android:id="@+id/ll_left"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:padding="15dp"
-        android:textSize="17dp"
-        android:textColor="#666666"
-        android:gravity="center"
-        android:background="@drawable/shape_connected_item_text_bg"
-        />
-    
-    <View
-        android:id="@+id/line_left"
-        android:layout_width="15dp"
-        android:layout_height="2dp"
-        android:background="@android:color/white"/>
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textLeft"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/shape_connected_item_text_bg"
+            android:gravity="center"
+            android:padding="15dp"
+            android:textColor="#666666"
+            android:textSize="17dp" />
+
+        <View
+            android:id="@+id/line_left"
+            android:layout_width="15dp"
+            android:layout_height="2dp"
+            android:background="@android:color/white" />
+
+    </LinearLayout>
+
 
     <ImageView
         android:id="@+id/delete"
@@ -34,24 +47,35 @@
         android:layout_height="32dp"
         android:layout_marginLeft="2dp"
         android:layout_marginRight="2dp"
-        android:background="@drawable/selector_connect_delete"/>
+        android:background="@drawable/connect_delete_norml" />
 
-    <View
-        android:id="@+id/line_right"
-        android:layout_width="15dp"
-        android:layout_height="2dp"
-        android:background="@android:color/white"/>
-
-    <TextView
-        android:id="@+id/textRight"
+    <LinearLayout
+        android:id="@+id/ll_right"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:padding="15dp"
-        android:textSize="17dp"
-        android:textColor="#666666"
-        android:gravity="center"
-        android:background="@drawable/shape_connected_item_text_bg"
-        />
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <View
+            android:id="@+id/line_right"
+            android:layout_width="15dp"
+            android:layout_height="2dp"
+            android:background="@android:color/white" />
+
+        <TextView
+            android:id="@+id/textRight"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/shape_connected_item_text_bg"
+            android:gravity="center"
+            android:padding="15dp"
+            android:textColor="#666666"
+            android:textSize="17dp" />
+
+    </LinearLayout>
+
 
 </LinearLayout>
+
