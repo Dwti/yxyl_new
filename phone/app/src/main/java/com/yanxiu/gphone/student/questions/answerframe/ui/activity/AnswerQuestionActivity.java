@@ -636,7 +636,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         String endtime = String.valueOf(System.currentTimeMillis());
         mPaper.getPaperStatus().setEndtime(endtime);
         mPaper.getPaperStatus().setCosttime(getmTotalTime() + "");
-        mSubmitQuesitonTask = new SubmitQuesitonTask(YanxiuApplication.getContext(), mPaper, mSubmitQuesitonTask.SUBMIT_CODE, new SubmitAnswerCallback() {
+        mSubmitQuesitonTask = new SubmitQuesitonTask(YanxiuApplication.getContext(), mPaper, mSubmitQuesitonTask.LIVE_CODE, new SubmitAnswerCallback() {
 
             @Override
             public void onSuccess() {
