@@ -121,6 +121,7 @@ public class MyFragment extends HomePageBaseFragment implements View.OnClickList
         mUser_id.setText(loginName);
         TextTypefaceUtil.setViewTypeface(TextTypefaceUtil.TypefaceType.METRO_MEDIUM_PLAY,mUser_id);
         mStage.setText(stageName);
+
     }
 
     private void initListener() {
