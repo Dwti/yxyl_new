@@ -110,6 +110,8 @@ public class CheckMobileActivity extends YanxiuBaseActivity implements View.OnCl
         mMobileView.setText(builder);
         mMobileView.setEnabled(false);
         mSureView.setEnabled(false);
+
+        mBackView.setBackgroundResource(R.drawable.selector_back);
     }
 
     @Override

@@ -20,7 +20,7 @@
             android:layout_marginLeft="@dimen/camera_album_margin_l"
             android:layout_centerVertical="true"
             android:scaleType="centerCrop"
-            android:background="#ff0000"/>
+            android:src="@drawable/album_default"/>
 
         <ImageView
             android:id="@+id/iv_takepicture"
@@ -36,7 +36,7 @@
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/camera_delete_icon_margin_r"
-            android:background="@color/color_00cccc"/>
+            android:background="@drawable/selector_close"/>
     </RelativeLayout>
 
 </FrameLayout>

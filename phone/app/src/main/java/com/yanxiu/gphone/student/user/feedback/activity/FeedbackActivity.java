@@ -88,6 +88,8 @@ public class FeedbackActivity extends YanxiuBaseActivity implements View.OnClick
         mTitleView.setTextColor(ContextCompat.getColor(mContext, R.color.color_666666));
 
         mSendView.setEnabled(false);
+
+        mBackView.setBackgroundResource(R.drawable.selector_back);
     }
 
     @Override

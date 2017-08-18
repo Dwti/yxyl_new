@@ -83,7 +83,7 @@
             android:layout_height="@dimen/common_button_height"
             android:background="@drawable/selector_setting_button_bg"
             android:gravity="center"
-            android:text="@string/ok"
+            android:text="@string/next"
             android:textColor="@color/color_ffffff"
             android:textSize="@dimen/login_edit_default_textsize" />
 

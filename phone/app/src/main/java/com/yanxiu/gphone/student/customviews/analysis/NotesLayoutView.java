@@ -164,13 +164,13 @@ public class NotesLayoutView extends LinearLayout implements View.OnClickListene
             case R.id.iv_left:
                 PhotoActivity.LaunchActivity(mContext, mPhotoPath, 0, mContext.hashCode(), PhotoActivity.DELETE_CANNOT);
                 break;
-            case R.id.iv_right:
+            case R.id.iv_center_left:
                 PhotoActivity.LaunchActivity(mContext, mPhotoPath, 1, mContext.hashCode(), PhotoActivity.DELETE_CANNOT);
                 break;
-            case R.id.iv_center_left:
+            case R.id.iv_center_right:
                 PhotoActivity.LaunchActivity(mContext, mPhotoPath, 2, mContext.hashCode(), PhotoActivity.DELETE_CANNOT);
                 break;
-            case R.id.iv_center_right:
+            case R.id.iv_right:
                 PhotoActivity.LaunchActivity(mContext, mPhotoPath, 3, mContext.hashCode(), PhotoActivity.DELETE_CANNOT);
                 break;
         }

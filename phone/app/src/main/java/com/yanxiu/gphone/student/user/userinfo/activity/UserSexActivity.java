@@ -97,6 +97,8 @@ public class UserSexActivity extends YanxiuBaseActivity implements View.OnClickL
 
         mChooseSexView.setData(getList());
         mChooseSexView.setTextLocation(PickerView.DEFAULT_CENTER);
+
+        mBackView.setBackgroundResource(R.drawable.selector_back);
         setDefaultSexData();
     }
 

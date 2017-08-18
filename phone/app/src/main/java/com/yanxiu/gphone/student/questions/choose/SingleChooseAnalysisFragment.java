@@ -110,7 +110,7 @@ public class SingleChooseAnalysisFragment extends AnalysisSimpleExerciseBaseFrag
                         selectViewHolder.mQuestionContentView.setTextColor(ContextCompat.getColor(getContext(), R.color.color_ff7a05));
                         selectViewHolder.mQuestionIdView.setBackground(ContextCompat.getDrawable(getContext(),R.drawable.choose_wrong));
                         selectViewHolder.mQuestionIdView.setTextColor(ContextCompat.getColor(getContext(),R.color.color_ffffff));
-                        selectViewHolder.mQuestionSelectView.setBackground(ContextCompat.getDrawable(getContext(),R.mipmap.ic_launcher));
+                        selectViewHolder.mQuestionSelectView.setBackground(ContextCompat.getDrawable(getContext(),R.drawable.single_select_wrong));
 
                         answerViewHolder.mQuestionContentView.setTextColor(ContextCompat.getColor(getContext(), R.color.color_89e00d));
                         answerViewHolder.mQuestionIdView.setBackground(ContextCompat.getDrawable(getContext(),R.drawable.choose_right));

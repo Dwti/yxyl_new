@@ -113,6 +113,8 @@ public class BindMobileActivity extends YanxiuBaseActivity implements View.OnCli
         mTitleView.setTextColor(ContextCompat.getColor(mContext, R.color.color_666666));
 
         mSureView.setEnabled(false);
+
+        mBackView.setBackgroundResource(R.drawable.selector_back);
     }
 
     @Override

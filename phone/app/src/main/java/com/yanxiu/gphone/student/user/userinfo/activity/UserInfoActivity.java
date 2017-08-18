@@ -1,4 +1,4 @@
-package com.yanxiu.gphone.student.user.userinfo.activity;
+ package com.yanxiu.gphone.student.user.userinfo.activity;
 
 import android.Manifest;
 import android.content.Context;
@@ -117,6 +117,8 @@ public class UserInfoActivity extends YanxiuBaseActivity implements View.OnClick
                 mUserSchoolView.setData(LoginInfo.getSchoolName());
             }
         });
+
+        mBackView.setBackgroundResource(R.drawable.selector_back);
     }
 
     private void setHeadImg(String url) {

@@ -114,7 +114,7 @@ public class CropImageView extends android.support.v7.widget.AppCompatImageView 
     @Override
     public void setImageBitmap(Bitmap bm) {
         isShowCropBox=true;
-        drawable = new ListenDrawable(bm, DEFAULT_PADDING);
+        drawable = new ListenDrawable(getContext(),bm, DEFAULT_PADDING);
         setBackgroundDrawable(drawable);
     }
 

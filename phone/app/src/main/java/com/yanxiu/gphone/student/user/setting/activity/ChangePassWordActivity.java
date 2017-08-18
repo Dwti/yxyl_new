@@ -113,6 +113,8 @@ public class ChangePassWordActivity extends YanxiuBaseActivity implements View.O
         mTitleView.setText(R.string.setting_change_password);
         mTitleView.setTextColor(ContextCompat.getColor(mContext, R.color.color_666666));
 
+        mBackView.setBackgroundResource(R.drawable.selector_back);
+
         mSureView.setEnabled(false);
     }
 

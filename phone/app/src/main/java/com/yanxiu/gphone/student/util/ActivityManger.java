@@ -3,6 +3,7 @@ package com.yanxiu.gphone.student.util;
 import android.app.Activity;
 
 import com.yanxiu.gphone.student.homepage.MainActivity;
+import com.yanxiu.gphone.student.user.setting.activity.SettingActivity;
 import com.yanxiu.gphone.student.userevent.UserEventManager;
 
 import java.util.ArrayList;
@@ -14,7 +15,6 @@ import java.util.ArrayList;
 public class ActivityManger {
 
     protected static ArrayList<Activity> activityList = new ArrayList<Activity>();
-
     /**
      * 每个activity在oncreate()里，必须调用该方法
      * @param activity
@@ -43,6 +43,25 @@ public class ActivityManger {
                 activity.finish();
             }
             activityList.clear();
+        }
+    }
+
+
+    public static void LogOut(){
+        Activity activitys = null;
+        UserEventManager.getInstense().whenExitApp();
+        if (activityList != null && activityList.size() > 0) {
+            for (Activity activity : activityList) {
+                if (activity instanceof SettingActivity) {
+                    activitys=activity;
+                }else {
+                    activity.finish();
+                }
+            }
+            activityList.clear();
+        }
+        if (activitys!=null) {
+            activityList.add(activitys);
         }
     }
 

@@ -17,6 +17,7 @@ import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.login.activity.LoginActivity;
 import com.yanxiu.gphone.student.login.response.UserMessageBean;
 import com.yanxiu.gphone.student.user.setting.bean.BindMobileMessage;
+import com.yanxiu.gphone.student.util.ActivityManger;
 import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.UpdateUtil;
 
@@ -88,6 +89,8 @@ public class SettingActivity extends YanxiuBaseActivity implements View.OnClickL
             mBindMobileLayout.setVisibility(View.GONE);
             mChangePassWordLayout.setVisibility(View.GONE);
         }
+
+        mBackView.setBackgroundResource(R.drawable.selector_back);
     }
 
     public void onEventMainThread(BindMobileMessage message) {
@@ -122,6 +125,7 @@ public class SettingActivity extends YanxiuBaseActivity implements View.OnClickL
             case R.id.wl_login_out:
                 PushManager.getInstance().unBindAlias(this.getApplicationContext(), String.valueOf(LoginInfo.getUID()), true);
                 LoginInfo.LogOut();
+                ActivityManger.LogOut();
                 LoginActivity.LaunchActivity(mContext);
                 break;
         }

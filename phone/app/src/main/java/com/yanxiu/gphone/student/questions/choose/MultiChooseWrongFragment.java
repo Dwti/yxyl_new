@@ -94,7 +94,7 @@ public class MultiChooseWrongFragment extends WrongSimpleExerciseBaseFragment {
                     selectViewHolder.mQuestionIdView.setTextColor(ContextCompat.getColor(getContext(), R.color.color_ffffff));
                     selectViewHolder.mQuestionIdView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.choose_wrong));
                     selectViewHolder.mQuestionContentView.setTextColor(ContextCompat.getColor(getContext(), R.color.color_ff7a05));
-                    selectViewHolder.mQuestionSelectView.setBackground(ContextCompat.getDrawable(getContext(), R.mipmap.ic_launcher));
+                    selectViewHolder.mQuestionSelectView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.multi_select_wrong));
                 }
             }
         }

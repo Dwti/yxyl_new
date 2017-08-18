@@ -21,8 +21,9 @@
             android:id="@+id/iv_checked"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_gravity="right"
-            android:background="@color/color_7dbb24" />
+            android:layout_gravity="end"
+            android:contentDescription="@null"
+            android:background="@drawable/album_choose" />
     </FrameLayout>
 
     <TextView

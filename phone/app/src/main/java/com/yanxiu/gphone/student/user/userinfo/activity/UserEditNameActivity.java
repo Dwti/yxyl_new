@@ -100,6 +100,8 @@ public class UserEditNameActivity extends YanxiuBaseActivity implements View.OnC
         if (!TextUtils.isEmpty(LoginInfo.getRealName())) {
             mEditNameView.setSelection(mEditNameView.length());
         }
+
+        mBackView.setBackgroundResource(R.drawable.selector_back);
     }
 
     @Override

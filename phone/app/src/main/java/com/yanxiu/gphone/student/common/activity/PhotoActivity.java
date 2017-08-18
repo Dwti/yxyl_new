@@ -122,6 +122,8 @@ public class PhotoActivity extends YanxiuBaseActivity implements ViewPager.OnPag
         mAdapter.setData(list,zoomImageViews);
         mImagePhotoView.setCurrentItem(mSelectPosition);
         mTitleView.setText((mSelectPosition+1)+"/"+mTotalNum);
+        mBackView.setBackgroundResource(R.drawable.selector_white_back);
+        mDeleteView.setBackgroundResource(R.drawable.selector_large_delete);
     }
 
     @Override

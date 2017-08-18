@@ -1,5 +1,6 @@
 package com.yanxiu.gphone.student.customviews;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
@@ -7,10 +8,14 @@ import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
+
+import com.yanxiu.gphone.student.R;
 
 /**
  * Created by Canghaixiao.
@@ -19,14 +24,26 @@ import android.support.annotation.Nullable;
  */
 class ListenDrawable extends Drawable {
 
+    private int mStartDown= R.drawable.listener_start_press;
+    private int mStartUp=R.drawable.listener_start_normal;
+
+    private int mEndDown=R.drawable.listener_end_press;
+    private int mEndUp=R.drawable.listener_end_normal;
+
+    public static final int TYPE_START=0x000;
+    public static final int TYPE_END=0x001;
+
     private boolean isZoom=false;
 
+    private Context mContext;
     private Paint mPaint;
     private Bitmap mBitmap;
     private RectF mRectF;
     private int mPadding;
+    private int mType=TYPE_START;
 
-    ListenDrawable(Bitmap bitmap, int padding){
+    ListenDrawable(Context context,Bitmap bitmap, int padding){
+        this.mContext=context;
         this.mBitmap=bitmap;
         this.mPadding=padding;
         mPaint=new Paint();
@@ -80,5 +97,44 @@ class ListenDrawable extends Drawable {
 
     Bitmap getBitmap(){
         return mBitmap;
+    }
+
+    public void setType(int type){
+        this.mType=type;
+        Drawable drawable=null;
+        if (mType==TYPE_END){
+            drawable = ContextCompat.getDrawable(mContext, mEndUp);
+        }else if (mType==TYPE_START){
+            drawable = ContextCompat.getDrawable(mContext, mStartUp);
+        }
+        if (drawable!=null) {
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+            mBitmap = bitmapDrawable.getBitmap();
+            zoomBitmap(mRectF.width()-mPadding*2, mRectF.height()-mPadding*2);
+            invalidateSelf();
+        }
+    }
+
+    public void setEvent(boolean isDown){
+        Drawable drawable=null;
+        if (mType==TYPE_END){
+            if (isDown){
+                drawable = ContextCompat.getDrawable(mContext, mEndDown);
+            }else {
+                drawable = ContextCompat.getDrawable(mContext, mEndUp);
+            }
+        }else {
+            if (isDown){
+                drawable=ContextCompat.getDrawable(mContext, mStartDown);
+            }else {
+                drawable=ContextCompat.getDrawable(mContext, mStartUp);
+            }
+        }
+        if (drawable!=null) {
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+            mBitmap = bitmapDrawable.getBitmap();
+            zoomBitmap(mRectF.width()-mPadding*2, mRectF.height()-mPadding*2);
+            invalidateSelf();
+        }
     }
 }

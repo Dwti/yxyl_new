@@ -2,11 +2,13 @@ package com.yanxiu.gphone.student.user.mistake.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -44,6 +46,7 @@ public class MistakeClassifyActivity extends YanxiuBaseActivity implements Radio
     private RadioButton mKongledgeView;
     private ImageView mBackView;
     private TextView mTitleView;
+    private View mTopView;
     private String mTitle;
     private String mSubjectId;
     private int mWrongNum;
@@ -78,6 +81,7 @@ public class MistakeClassifyActivity extends YanxiuBaseActivity implements Radio
     }
 
     private void initView() {
+        mTopView=findViewById(R.id.include_top);
         mBackView = (ImageView) findViewById(R.id.iv_left);
         mTitleView = (TextView) findViewById(R.id.tv_title);
 
@@ -131,6 +135,10 @@ public class MistakeClassifyActivity extends YanxiuBaseActivity implements Radio
         mTitleView.setText(mTitle);
         mBackView.setVisibility(View.VISIBLE);
         mAllView.setChecked(true);
+        mTopView.setBackgroundColor(Color.WHITE);
+
+        mTitleView.setTextColor(ContextCompat.getColor(this,R.color.color_666666));
+        mBackView.setBackgroundResource(R.drawable.selector_back);
     }
 
     @Override

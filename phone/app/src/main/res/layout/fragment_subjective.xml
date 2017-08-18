@@ -35,13 +35,13 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="120dp"
                 android:background="@color/color_fafafa">
 
                 <com.yanxiu.gphone.student.customviews.AlbumGridView
                     android:id="@+id/ag_image"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp" />
+                    android:layout_height="wrap_content" />
 
                 <TextView
                     android:id="@+id/no_picture"

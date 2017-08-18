@@ -3,6 +3,7 @@ package com.yanxiu.gphone.student.common.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -40,6 +41,7 @@ public class AlbumActivity extends YanxiuBaseActivity implements View.OnClickLis
     public static final String COME_FROM_OTHER="other";
 
     private Context mContext;
+    private View mTopView;
     private ImageView mBackView;
     private TextView mTitleView;
     private LinearLayout mTitleTypeAlbumView;
@@ -87,6 +89,7 @@ public class AlbumActivity extends YanxiuBaseActivity implements View.OnClickLis
     }
 
     private void initView() {
+        mTopView=findViewById(R.id.include_top);
         mBackView= (ImageView) findViewById(R.id.iv_left);
         mTitleView= (TextView) findViewById(R.id.tv_title);
         mTitleTypeAlbumView= (LinearLayout) findViewById(R.id.ll_title_type2);
@@ -106,6 +109,8 @@ public class AlbumActivity extends YanxiuBaseActivity implements View.OnClickLis
         mTitleView.setVisibility(View.GONE);
         mTitleTypeAlbumView.setVisibility(View.VISIBLE);
         mTitleAlbumView.setText(R.string.camera_film);
+        mTopView.setBackgroundResource(R.color.color_ffffff);
+        mTitleAlbumView.setTextColor(ContextCompat.getColor(mContext, R.color.color_666666));
 
         mAlbumView.setLayoutManager(new GridLayoutManager(mContext,3));
         mImageAdapter=new AlbumImageAdapter(mContext);
@@ -118,6 +123,9 @@ public class AlbumActivity extends YanxiuBaseActivity implements View.OnClickLis
         mAlbumParentNameView.setAdapter(mParentNameAdapter);
 
         mAlbumUtils.findAllPicture(AlbumActivity.this);
+
+        mBackView.setBackgroundResource(R.drawable.selector_back);
+        mArrowView.setBackgroundResource(R.drawable.selector_album_open);
     }
 
     @Override
@@ -128,8 +136,16 @@ public class AlbumActivity extends YanxiuBaseActivity implements View.OnClickLis
                 break;
             case R.id.ll_title_type2:
                 if (mNameList!=null&&mNameList.size()>0){
-                    mParentNameAdapter.setData(mNameList);
-                    mAlbumParentNameView.setVisibility(View.VISIBLE);
+                    if (mAlbumParentNameView.getVisibility()==View.VISIBLE){
+                        mAlbumParentNameView.setVisibility(View.GONE);
+                        mArrowView.setBackgroundResource(R.drawable.selector_album_open);
+                    }else {
+                        if (mParentNameAdapter.getItemCount()==0) {
+                            mParentNameAdapter.setData(mNameList);
+                        }
+                        mAlbumParentNameView.setVisibility(View.VISIBLE);
+                        mArrowView.setBackgroundResource(R.drawable.selector_album_close);
+                    }
                 }
                 break;
         }

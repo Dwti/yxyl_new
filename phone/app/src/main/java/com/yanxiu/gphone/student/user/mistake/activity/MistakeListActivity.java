@@ -81,6 +81,7 @@ public class MistakeListActivity extends YanxiuBaseActivity implements View.OnCl
         mBackView.setVisibility(View.VISIBLE);
         mTitleView.setText(R.string.my_mistake);
         mTitleView.setTextColor(ContextCompat.getColor(mContext,R.color.color_666666));
+        mBackView.setBackgroundResource(R.drawable.selector_back);
 
         requestData();
     }

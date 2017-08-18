@@ -84,7 +84,7 @@ public class PrivacyActivity extends YanxiuBaseActivity implements View.OnClickL
         mBackView.setVisibility(View.VISIBLE);
         mTitleView.setText(R.string.setting_about);
         mTitleView.setTextColor(ContextCompat.getColor(mContext, R.color.color_666666));
-
+        mBackView.setBackgroundResource(R.drawable.selector_back);
         mTitleView.setText(getText(R.string.privacy_policy_txt));
 
         mWebView.getSettings().setUseWideViewPort(true);

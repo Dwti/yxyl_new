@@ -21,6 +21,7 @@ public class AboutActivity extends YanxiuBaseActivity implements View.OnClickLis
     private Context mContext;
     private ImageView mBackView;
     private TextView mTitleView;
+    private ImageView mTopView;
 
     public static void LaunchActivity(Context context){
         Intent intent=new Intent(context,AboutActivity.class);
@@ -40,6 +41,7 @@ public class AboutActivity extends YanxiuBaseActivity implements View.OnClickLis
     private void initView() {
         mBackView = (ImageView) findViewById(R.id.iv_left);
         mTitleView = (TextView) findViewById(R.id.tv_title);
+        mTopView= (ImageView) findViewById(R.id.iv_top);
     }
 
     private void listener() {
@@ -50,6 +52,8 @@ public class AboutActivity extends YanxiuBaseActivity implements View.OnClickLis
         mBackView.setVisibility(View.VISIBLE);
 //        mTitleView.setText(R.string.setting_about);
         mTitleView.setText("");
+        mBackView.setBackgroundResource(R.drawable.selector_white_back);
+        mTopView.setBackgroundResource(R.drawable.about_top);
     }
 
     @Override

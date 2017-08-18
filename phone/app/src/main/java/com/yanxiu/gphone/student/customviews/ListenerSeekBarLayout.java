@@ -73,6 +73,7 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
     private String mUrl;
 //        private String mUrl="http://data.5sing.kgimg.com/G034/M05/16/17/ApQEAFXsgeqIXl7gAAVVd-n31lcAABOogKzlD4ABVWP363.mp3";
     private long mMoveDown;
+    private ListenDrawable listenDrawable;
 
     public ListenerSeekBarLayout(Context context) {
         this(context, null);
@@ -103,9 +104,9 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
 
     private void initData() {
         mTouchSlop = ViewConfiguration.get(mContext).getScaledTouchSlop();
-        Drawable drawable = ContextCompat.getDrawable(mContext, R.mipmap.ic_launcher);
+        Drawable drawable = ContextCompat.getDrawable(mContext, R.drawable.listener_start_normal);
         BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
-        ListenDrawable listenDrawable = new ListenDrawable(bitmapDrawable.getBitmap(),0);
+        listenDrawable = new ListenDrawable(mContext,bitmapDrawable.getBitmap(),0);
         listenDrawable.setBounds(0, 0, THUMB_WIDTH, THUMB_HEIGHT);
         mSeekBarView.setThumb(listenDrawable);
         mSeekBarView.setThumbOffset(mSeekBarView.getPaddingLeft());
@@ -135,12 +136,18 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getAction()==MotionEvent.ACTION_DOWN){
+            listenDrawable.setEvent(true);
+        }else if (ev.getAction()==MotionEvent.ACTION_UP||ev.getAction()==MotionEvent.ACTION_CANCEL){
+            listenDrawable.setEvent(false);
+        }
         if (!isPlaying) {
             switch (ev.getAction()) {
                 case MotionEvent.ACTION_UP:
                     Logger.d("view_ID",ListenerSeekBarLayout.this.hashCode()+"");
                     if (checkIsInternal(ev)&&isCanClick) {
                         mMediaPlayerUtil.start(mUrl);
+                        setStartIcon();
                     }
                     isCanClick=false;
                     break;
@@ -218,13 +225,31 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
     private void setPlayerPause() {
         Logger.d(TAG, "pause");
         mMediaPlayerUtil.pause();
-//        mSeekBarView.setThumb();
+        setEndIcon();
     }
 
     private void setPlayerResume() {
         Logger.d(TAG, "resume");
         mMediaPlayerUtil.resume();
-//        mSeekBarView.setThumb();
+        setStartIcon();
+    }
+
+    private void setStartIcon(){
+//        Drawable drawable = ContextCompat.getDrawable(mContext, R.drawable.selector_listener_start);
+//        BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+//        ListenDrawable listenDrawable = new ListenDrawable(bitmapDrawable.getBitmap(),0);
+//        listenDrawable.setBounds(0, 0, THUMB_WIDTH, THUMB_HEIGHT);
+//        mSeekBarView.setThumb(listenDrawable);
+        listenDrawable.setType(ListenDrawable.TYPE_END);
+    }
+
+    private void setEndIcon(){
+//        Drawable drawable = ContextCompat.getDrawable(mContext, R.drawable.selector_listener_end);
+//        BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+//        ListenDrawable listenDrawable = new ListenDrawable(bitmapDrawable.getBitmap(),0);
+//        listenDrawable.setBounds(0, 0, THUMB_WIDTH, THUMB_HEIGHT);
+//        mSeekBarView.setThumb(listenDrawable);
+        listenDrawable.setType(ListenDrawable.TYPE_START);
     }
 
     public int getProgress(){
@@ -251,6 +276,7 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
         mSeekBarView.setMax(total);
         mSeekBarView.setProgress(progress);
         mMediaPlayerUtil.start(mUrl);
+        setStartIcon();
     }
 
     public void setPauseToProgress(int progress,int total){
@@ -261,6 +287,7 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
         mSeekBarView.setMax(total);
         mSeekBarView.setProgress(progress);
         mMediaPlayerUtil.start(mUrl);
+        setEndIcon();
     }
 
     public void setUrl(String url) {
@@ -276,6 +303,7 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
             Logger.d(TAG,"setPause"+" isplaying");
             mMediaPlayerUtil.pause();
             isPause = true;
+            setEndIcon();
         }
     }
 
@@ -285,6 +313,7 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
             Logger.d(TAG,"setResume"+"isplaying");
             mMediaPlayerUtil.resume();
             isPause = false;
+            setStartIcon();
         }
     }
 
@@ -361,6 +390,7 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
 
         String nowTime = transferFormat(0);
         mNowTimeView.setText(nowTime);
+        setEndIcon();
     }
 
     @Override
@@ -372,6 +402,7 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
         mSeekBarView.setProgress(0);
         String nowTime = transferFormat(0);
         mNowTimeView.setText(nowTime);
+        setEndIcon();
         if (NetWorkUtils.isNetAvailable()) {
 //            ToastManager.showMsg(R.string.voice_url_error);
         }else {

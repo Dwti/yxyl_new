@@ -19,6 +19,7 @@ import android.hardware.camera2.CaptureFailure;
 import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.TotalCaptureResult;
 import android.hardware.camera2.params.StreamConfigurationMap;
+import android.media.ExifInterface;
 import android.media.Image;
 import android.media.ImageReader;
 import android.net.Uri;
@@ -39,9 +40,14 @@ import com.yanxiu.gphone.student.util.FileUtil;
 import com.yanxiu.gphone.student.util.ScreenUtils;
 import com.yanxiu.gphone.student.util.ToastManager;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.Collections;
@@ -350,16 +356,25 @@ public class CameraTextureView extends TextureView implements TextureView.Surfac
             byte[] data = new byte[buffer.remaining()];
             buffer.get(data);
 
+            String filePath=save(data);
+
             if (CAMERA_FACING_FRONT.equals(mCameraId)){
+                int degree=readPictureDegree(filePath);
                 Bitmap bitmap = ScreenUtils.decodeBitmap(data, ScreenUtils.getScreenWidth(mContext), ScreenUtils.getScreenHeight(mContext));
                 Matrix matrix = new Matrix();
-                matrix.postRotate(-90);
+                matrix.postRotate(degree);
                 bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
                 data=baos.toByteArray();
+                filePath=save(data);
             }
 
+            image.close();
+            return filePath;
+        }
+
+        private String save(byte[] data){
             String filePath = FileUtil.getSavePicturePath(System.currentTimeMillis() + ".jpg");
             File file = new File(filePath);
             try {
@@ -369,8 +384,6 @@ public class CameraTextureView extends TextureView implements TextureView.Surfac
             } catch (Exception e) {
                 filePath = null;
                 e.printStackTrace();
-            } finally {
-                image.close();
             }
             return filePath;
         }
@@ -387,6 +400,29 @@ public class CameraTextureView extends TextureView implements TextureView.Surfac
                 mTakePictureFinishedListener.onFinish(s);
             }
         }
-    }
 
+        private int readPictureDegree(String path) {
+            int degree = 0;
+            try {
+                ExifInterface exifInterface = new ExifInterface(path);
+                int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+                switch (orientation) {
+                    case ExifInterface.ORIENTATION_ROTATE_90:
+                        degree = 270;
+                        break;
+                    case ExifInterface.ORIENTATION_NORMAL:
+                        degree = 180;
+                        break;
+                    case ExifInterface.ORIENTATION_ROTATE_270:
+                        degree = 90;
+                        break;
+                    default:
+                        break;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return degree;
+        }
+    }
 }

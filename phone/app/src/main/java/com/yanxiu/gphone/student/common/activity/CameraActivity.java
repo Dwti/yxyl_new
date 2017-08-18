@@ -132,7 +132,7 @@ public class CameraActivity extends YanxiuBaseActivity implements View.OnClickLi
     @Override
     public void onFinished(List<AlbumUtils.PictureMessage> list) {
         if (list!=null&&list.size()>0) {
-            Glide.with(mContext).load(list.get(0).path).asBitmap().into(new CircleImageTarget(mAlbumView));
+            Glide.with(mContext).load(list.get(0).path).asBitmap().placeholder(R.drawable.album_default).into(new CircleImageTarget(mAlbumView));
         }
     }
 
