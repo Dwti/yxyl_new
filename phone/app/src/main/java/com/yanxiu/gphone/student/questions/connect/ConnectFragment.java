@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -17,6 +19,7 @@ import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
+import com.yanxiu.gphone.student.util.HtmlImageGetter;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -136,7 +139,13 @@ public class ConnectFragment extends AnswerSimpleExerciseBaseFragment {
 
     private void initData() {
 
-        mTextStem.setText(mQuestion.getStem());
+        mTextStem.post(new Runnable() {
+            @Override
+            public void run() {
+                Spanned spanned = Html.fromHtml(mQuestion.getStem(),new HtmlImageGetter(mTextStem),null);
+                mTextStem.setText(spanned);
+            }
+        });
 
         List<String> leftTexts = mQuestion.getLeftChoices();
         List<String> rightTexts = mQuestion.getRightChoices();
