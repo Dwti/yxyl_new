@@ -23,6 +23,7 @@ import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
+import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.customviews.ChapterSwitchBar;
 import com.yanxiu.gphone.student.customviews.LoadingView;
 import com.yanxiu.gphone.student.exercise.adapter.PopListAdapter;
@@ -53,7 +54,7 @@ import java.util.List;
  * Created by sp on 17-8-2.
  */
 
-public class ExerciseHistoryActivity extends Activity {
+public class ExerciseHistoryActivity extends YanxiuBaseActivity {
 
     public static final String EXTRA_SUBJECT_ID = "SUBJECT_ID";
     public static final String EXTRA_SUBJECT_NAME = "SUBJECT_NAME";

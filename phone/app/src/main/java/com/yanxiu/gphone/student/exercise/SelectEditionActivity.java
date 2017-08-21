@@ -14,6 +14,7 @@ import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
+import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.customviews.PickerViewEx;
 import com.yanxiu.gphone.student.exercise.bean.EditionBeanEx;
 import com.yanxiu.gphone.student.exercise.request.EditionRequest;
@@ -32,7 +33,7 @@ import de.greenrobot.event.EventBus;
  * Created by sp on 17-7-26.
  */
 
-public class SelectEditionActivity extends Activity {
+public class SelectEditionActivity extends YanxiuBaseActivity {
 
     private TextView mTips, mSubject,mDes;
     private View mTipsView, mContent;
@@ -63,7 +64,7 @@ public class SelectEditionActivity extends Activity {
     }
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (ScreenUtils.getScreenHeight(this) < 900) {
             setContentView(R.layout.activity_select_edition_small);

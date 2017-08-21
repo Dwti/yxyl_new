@@ -20,6 +20,7 @@ import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
+import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.exercise.bean.SubjectBean;
 import com.yanxiu.gphone.student.exercise.request.SubjectHistoryRequest;
 import com.yanxiu.gphone.student.exercise.response.SubjectHistoryResponse;
@@ -32,7 +33,7 @@ import java.util.List;
  * Created by sp on 17-8-2.
  */
 
-public class SubjectHistoryActivity extends Activity {
+public class SubjectHistoryActivity extends YanxiuBaseActivity {
 
     private SubjectAdapter mAdapter;
     private View mTipsView,mBack;
@@ -47,7 +48,7 @@ public class SubjectHistoryActivity extends Activity {
     }
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subject_history);
         initView();

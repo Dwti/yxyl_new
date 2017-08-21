@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.srt.refresh.EXueELianRefreshLayout;
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.customviews.LoadingView;
 import com.yanxiu.gphone.student.homework.response.HomeworkDetailBean;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnalysisQuestionActivity;
@@ -30,7 +31,7 @@ import java.util.List;
  * Created by sp on 17-5-18.
  */
 
-public class HomeworkDetailActivity extends Activity implements HomeworkDetailContract.View{
+public class HomeworkDetailActivity extends YanxiuBaseActivity implements HomeworkDetailContract.View{
     public static final String EXTRA_SUBJECT_ID = "SUBJECT_ID";
     public static final String EXTRA_SUBJECT_NAME = "SUBJECT_NAME";
 
