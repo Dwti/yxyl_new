@@ -106,7 +106,7 @@ public class YesNoFragment extends AnswerSimpleExerciseBaseFragment implements C
     @Override
     public void onClick(int position, boolean isSelected) {
         if (isSelected) {
-            mData.setIsAnswer(true);
+            mData.setHasAnswered(true);
             mData.getAnswerList().clear();
             switch (position){
                 case 0:
@@ -118,7 +118,7 @@ public class YesNoFragment extends AnswerSimpleExerciseBaseFragment implements C
             }
 
         } else {
-            mData.setIsAnswer(false);
+            mData.setHasAnswered(false);
             mData.getAnswerList().remove(0);
         }
         saveAnswer(mData);

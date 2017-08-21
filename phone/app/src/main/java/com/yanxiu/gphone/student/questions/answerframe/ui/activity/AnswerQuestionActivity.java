@@ -474,8 +474,12 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
                 nextQuestion();
                 break;
             case R.id.backview:
-                SpManager.setCompleteQuestionCount(mPaper.getId(),QuestionUtil.calculateCompleteCount(mQuestions));
-                finish();
+                if(Constants.MAINAVTIVITY_FROMTYPE_EXERCISE.equals(mFromType)){ // 练习
+                    quitSubmmitDialog();
+                }else {
+                    SpManager.setCompleteQuestionCount(mPaper.getId(),QuestionUtil.calculateCompleteCount(mQuestions));
+                    finish();
+                }
                 break;
             case R.id.answercardview:
                 showAnswerCardFragment();
@@ -584,6 +588,11 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
 
     @Override
     public void onBackPressed() {
+        if(mAnswerCardFragment != null && mAnswerCardFragment.isAdded()){
+            getSupportFragmentManager().beginTransaction().remove(mAnswerCardFragment).commit();
+            controlListenView(false);
+            return;
+        }
         if(Constants.MAINAVTIVITY_FROMTYPE_EXERCISE.equals(mFromType)){ // 练习
             quitSubmmitDialog();
         }else{
@@ -609,12 +618,8 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
      * 如果是练习，退出时，需要提交练习答案
      */
     private void quitSubmmitDialog(){
-        if (checkQuestionHasAnswerd()) {
-            mDialog.setData(mQuestions);
-            mDialog.showExerciseConfirmView();
-        }else{
-            finish();
-        }
+        mDialog.setData(mQuestions);
+        mDialog.showExerciseConfirmView();
     }
 
     /**
@@ -627,7 +632,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         String endtime = String.valueOf(System.currentTimeMillis());
         mPaper.getPaperStatus().setEndtime(endtime);
         mPaper.getPaperStatus().setCosttime(getmTotalTime() + "");
-        mSubmitQuesitonTask = new SubmitQuesitonTask(YanxiuApplication.getContext(), mPaper, mSubmitQuesitonTask.SUBMIT_CODE, new SubmitAnswerCallback() {
+        mSubmitQuesitonTask = new SubmitQuesitonTask(YanxiuApplication.getContext(), mPaper, mSubmitQuesitonTask.LIVE_CODE, new SubmitAnswerCallback() {
 
             @Override
             public void onSuccess() {
@@ -679,7 +684,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
      */
     private boolean checkQuestionHasAnswerd(){
         for (int i = 0; i < mQuestions.size(); i++) {
-            if (mQuestions.get(i).getIsAnswer()) { //有已经答的
+            if (!mQuestions.get(i).getHasAnswered()) { //只要有一个没作答的就弹框
                 return true;
             }
         }

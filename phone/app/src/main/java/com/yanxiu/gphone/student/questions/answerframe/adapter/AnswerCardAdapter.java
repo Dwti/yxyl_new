@@ -79,7 +79,7 @@ public class AnswerCardAdapter extends RecyclerView.Adapter<AnswerCardAdapter.An
             holder.mLine.setVisibility(View.VISIBLE);
         }
 
-        if (question.getIsAnswer()) {
+        if (question.getHasAnswered()) {
             holder.mQuestion_number.setBackgroundResource(R.drawable.selector_answer_card_item);
             holder.mWavesLayout.setWaveColor(WavesLayout.DEFAULT_COLOR);
             ColorStateList csl = mContext.getResources().getColorStateList(R.color.selector_answercard_item_text_color_ansewred);

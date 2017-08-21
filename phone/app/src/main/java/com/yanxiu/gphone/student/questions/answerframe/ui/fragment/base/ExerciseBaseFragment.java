@@ -25,7 +25,6 @@ import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.An
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.wrongbase.WrongComplexExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.util.FragmentUserVisibleController;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionUtil;
-import com.yanxiu.gphone.student.util.StringUtil;
 import com.yanxiu.gphone.student.util.TextTypefaceUtil;
 
 import java.util.ArrayList;
@@ -289,7 +288,7 @@ public abstract class ExerciseBaseFragment extends YanxiuBaseFragment implements
                 AnswerBean bean = new AnswerBean();
                 bean.setAid(SaveAnswerDBHelper.makeId(question));
                 bean.setAnswerJson(json);
-                bean.setAnswerd(question.getIsAnswer());
+                bean.setAnswerd(question.getHasAnswered());
                 bean.setCostTime(question.getCosttime());
 //                bean.setStartTime(question.get);
 //                bean.setEndTime();
@@ -314,7 +313,7 @@ public abstract class ExerciseBaseFragment extends YanxiuBaseFragment implements
             for (int i = 0; i < quesitonList.size(); i++) { //遍历大题
                 ArrayList<BaseQuestion> childrenList = quesitonList.get(i).getChildren();//小题集合
                 if (childrenList == null || childrenList.size() < 1) { //单题型
-                    if (quesitonList.get(i).getIsAnswer())
+                    if (quesitonList.get(i).getHasAnswered())
                         answeredCount++;
                 }else{ //复合题
                     if(childrenList == null || childrenList.size() < 1){
@@ -322,7 +321,7 @@ public abstract class ExerciseBaseFragment extends YanxiuBaseFragment implements
                         return;
                     }else{ //遍历小题
                         for(int j = 0;j < childrenList.size(); j++){
-                            if(childrenList.get(j).getIsAnswer())
+                            if(childrenList.get(j).getHasAnswered())
                                 answeredCount++;
                         }
                     }

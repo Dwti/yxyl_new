@@ -12,7 +12,6 @@ import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.common.Bean.CropCallbackMessage;
 import com.yanxiu.gphone.student.common.Bean.PhotoDeleteBean;
 import com.yanxiu.gphone.student.common.activity.CameraActivity;
-import com.yanxiu.gphone.student.common.activity.CropImageActivity;
 import com.yanxiu.gphone.student.common.activity.PhotoActivity;
 import com.yanxiu.gphone.student.customviews.AlbumGridView;
 import com.yanxiu.gphone.student.customviews.spantextview.SubjectClozeTextView;
@@ -112,9 +111,9 @@ public class SubjectiveFragment extends AnswerSimpleExerciseBaseFragment impleme
             mData.answerList.addAll(paths);
         }
         if (mData.answerList.size() > 0) {
-            mData.setIsAnswer(true);
+            mData.setHasAnswered(true);
         } else {
-            mData.setIsAnswer(false);
+            mData.setHasAnswered(false);
         }
         saveAnswer(mData);
         updateProgress();

@@ -229,7 +229,7 @@ public class FillBlankFragment extends AnswerSimpleExerciseBaseFragment implemen
                 break;
             }
         }
-        mQuestion.setIsAnswer(hasAnswer);
+        mQuestion.setHasAnswered(hasAnswer);
         super.saveAnswer(question);
     }
 
