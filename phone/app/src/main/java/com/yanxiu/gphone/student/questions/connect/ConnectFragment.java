@@ -136,6 +136,8 @@ public class ConnectFragment extends AnswerSimpleExerciseBaseFragment {
 
     private void initData() {
 
+        mTextStem.setText(mQuestion.getStem());
+
         List<String> leftTexts = mQuestion.getLeftChoices();
         List<String> rightTexts = mQuestion.getRightChoices();
 
