@@ -1,5 +1,6 @@
 package com.yanxiu.gphone.student.util;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Formatter;
@@ -87,4 +88,30 @@ public class TimeUtils {
         return dateString;
     }
 
+    public static String getExerciseDate(String source){
+        String buildTime = source.trim();
+        if(buildTime.contains(" ")){
+            int index = buildTime.indexOf(" ");
+            buildTime = buildTime.substring(0,index);
+
+        }
+        SimpleDateFormat formatter1,formatter2;
+        if(buildTime.length() == 5){
+            formatter1= new SimpleDateFormat("MM-dd");
+            formatter2= new SimpleDateFormat("M月d日");
+        }else {
+            formatter1 = new SimpleDateFormat("yyyy-MM-dd");
+            formatter2 = new SimpleDateFormat("yyyy年M月d日");
+        }
+        Date date = null;
+        try {
+            date = formatter1.parse(buildTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if(date != null){
+            buildTime = formatter2.format(date);
+        }
+        return buildTime;
+    }
 }
