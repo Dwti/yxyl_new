@@ -301,28 +301,32 @@ public class ConnectFragment extends AnswerSimpleExerciseBaseFragment {
 
     @Override
     public void saveAnswer(BaseQuestion question) {
-        List<String> answers = new ArrayList<>();
+        List<String> serverFilledAnswers = new ArrayList<>();
+        List<String> localFilledAnswers = new ArrayList<>();
         for (ConnectedBean bean : mConnectedList) {
             int leftPos = bean.getLeftItem().getOriginPosition();
             int rightPos = bean.getRightItem().getOriginPosition();
-            rightPos += mQuestion.getChoices().size() / 2;
 
-            answers.add(leftPos + "," + rightPos);
+            localFilledAnswers.add(leftPos + "," + rightPos);
+
+            rightPos += mQuestion.getChoices().size() / 2;
+            serverFilledAnswers.add(leftPos + "," + rightPos);
         }
-        if (answers.size() < mQuestion.getChoices().size() / 2) {
-            int count = mQuestion.getChoices().size() / 2 - answers.size();
+        if (serverFilledAnswers.size() < mQuestion.getChoices().size() / 2) {
+            int count = mQuestion.getChoices().size() / 2 - serverFilledAnswers.size();
             for (int i = 0; i < count; i++) {
-                answers.add("");
+                serverFilledAnswers.add("");
             }
         }
 
-        mQuestion.setServerFilledAnswers(answers);
+        mQuestion.setFilledAnswers(localFilledAnswers);
+        mQuestion.setServerFilledAnswers(serverFilledAnswers);
 
         boolean hasAnswered = true;
-        if (answers.size() == 0) {
+        if (serverFilledAnswers.size() == 0) {
             hasAnswered = false;
         } else {
-            for (String s : answers) {
+            for (String s : serverFilledAnswers) {
                 if (TextUtils.isEmpty(s)) {
                     hasAnswered = false;
                     break;
