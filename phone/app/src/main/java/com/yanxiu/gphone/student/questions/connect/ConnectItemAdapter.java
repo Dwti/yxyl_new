@@ -105,6 +105,8 @@ public class ConnectItemAdapter extends RecyclerView.Adapter<ConnectItemAdapter.
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if(itemView.isSelected())
+                        return;
                     mLastSelectedPos = getLayoutPosition();
                     if (mLastSelectedItem != null)
                         mLastSelectedItem.setSelected(false);
