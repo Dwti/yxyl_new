@@ -32,7 +32,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:paddingTop="3dp"
-                    android:text="新版本更新"
+                    android:text="@string/version_updata"
                     android:textColor="@color/color_336600"
                     android:textSize="23dp" />
 
@@ -68,7 +68,7 @@
                             android:layout_height="match_parent"
                             android:background="@drawable/shape_updata_no_bg"
                             android:gravity="center"
-                            android:text="以后再说"
+                            android:text="@string/updata_after"
                             android:textColor="@drawable/selector_answercard_no_text_color"
                             android:textSize="@dimen/answer_card_submitbutton_textsize" />
                     </com.yanxiu.gphone.student.customviews.WavesLayout>
@@ -94,7 +94,7 @@
                             android:layout_height="match_parent"
                             android:background="@drawable/shape_common_button_bg_normal"
                             android:gravity="center"
-                            android:text="立即更新"
+                            android:text="@string/updata_now"
                             android:textColor="@drawable/selector_answercard_no_text_color"
                             android:textSize="@dimen/answer_card_submitbutton_textsize" />
                     </com.yanxiu.gphone.student.customviews.WavesLayout>

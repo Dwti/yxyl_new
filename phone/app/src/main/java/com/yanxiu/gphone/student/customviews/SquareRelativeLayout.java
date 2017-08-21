@@ -25,8 +25,11 @@ public class SquareRelativeLayout extends RelativeLayout {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        getLayoutParams().width=w;
-        getLayoutParams().height=w;
-        setLayoutParams(getLayoutParams());
+        if (w!=h) {
+            getLayoutParams().width = w;
+            getLayoutParams().height = w;
+            setLayoutParams(getLayoutParams());
+        }
     }
+
 }

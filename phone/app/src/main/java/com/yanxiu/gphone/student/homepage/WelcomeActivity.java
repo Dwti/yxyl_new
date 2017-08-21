@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
+import com.yanxiu.gphone.student.customviews.WavesLayout;
 import com.yanxiu.gphone.student.db.SpManager;
 import com.yanxiu.gphone.student.login.activity.LoginActivity;
 import com.yanxiu.gphone.student.util.LoginInfo;
@@ -63,9 +64,12 @@ public class WelcomeActivity extends YanxiuBaseActivity implements View.OnClickL
     private void initViewPager() {
         LayoutInflater inflater = LayoutInflater.from(this);
         mViews = new ArrayList<>();
-        mViews.add(inflater.inflate(R.layout.guide_view_one, null));
-        mViews.add(inflater.inflate(R.layout.guide_view_two, null));
-        mViews.add(inflater.inflate(R.layout.guide_view_three, null));
+        View view=inflater.inflate(R.layout.guide_view_one, null);
+        WavesLayout enterView= (WavesLayout) view.findViewById(R.id.wl_enter);
+        enterView.setOnClickListener(this);
+        mViews.add(view);
+//        mViews.add(inflater.inflate(R.layout.guide_view_two, null));
+//        mViews.add(inflater.inflate(R.layout.guide_view_three, null));
 
         mViewpager = (ViewPager) findViewById(R.id.wel_vp);
         mAdapter = new MyViewPagerAdapter();
@@ -80,7 +84,7 @@ public class WelcomeActivity extends YanxiuBaseActivity implements View.OnClickL
                     case MotionEvent.ACTION_MOVE:
                         if ((mLastX - event.getX()) > 100 && (mViewpager.getCurrentItem() == mViews.size() - 1) && !isLoading) {
                             isLoading = true;
-                            checkUserStatus();
+//                            checkUserStatus();
                         }
                         break;
                     case MotionEvent.ACTION_UP:
@@ -192,7 +196,11 @@ public class WelcomeActivity extends YanxiuBaseActivity implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-
+        switch (v.getId()){
+            case R.id.wl_enter:
+                checkUserStatus();
+                break;
+        }
     }
 
     @Override

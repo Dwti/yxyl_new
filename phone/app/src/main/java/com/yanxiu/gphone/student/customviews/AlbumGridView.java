@@ -319,12 +319,13 @@ public class AlbumGridView extends RelativeLayout {
                 holder = new ViewHolder();
                 if (path.equals(DEFAULT_PATH)) {
                     convertView = mInflater.inflate(R.layout.adapter_gridview_default, parent, false);
+                    holder.mSiBgView= (ImageView) convertView.findViewById(R.id.si_bg);
                 } else {
                     convertView = mInflater.inflate(R.layout.adapter_gridview, parent, false);
                     holder.mDeleteView = (ImageView) convertView.findViewById(R.id.iv_delete);
                     holder.mStrokeView = (ImageView) convertView.findViewById(R.id.iv_bg);
+                    holder.mPictureView = (ImageView) convertView.findViewById(R.id.iv_picture);
                 }
-                holder.mPictureView = (ImageView) convertView.findViewById(R.id.iv_picture);
                 convertView.setTag(holder);
             } else {
                 holder = (ViewHolder) convertView.getTag();
@@ -351,6 +352,8 @@ public class AlbumGridView extends RelativeLayout {
                 } else {
                     holder.mStrokeView.setBackground(ContextCompat.getDrawable(mInflater.getContext(), R.drawable.shape_rectangle_color_fafafa));
                 }
+            }else {
+                Glide.with(mInflater.getContext()).load(R.drawable.add_picture).into(holder.mSiBgView);
             }
 
             convertView.setOnClickListener(new OnClickListener() {
@@ -390,6 +393,7 @@ public class AlbumGridView extends RelativeLayout {
             ImageView mStrokeView;
             ImageView mPictureView;
             ImageView mDeleteView;
+            ImageView mSiBgView;
         }
     }
 

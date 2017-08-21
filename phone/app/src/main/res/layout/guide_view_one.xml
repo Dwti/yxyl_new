@@ -1,14 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/color_89e00d"
+    android:orientation="vertical">
 
     <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:adjustViewBounds="false"
+        android:layout_weight="1"
+        android:background="@drawable/welcome"
+        android:focusable="true"
+        android:contentDescription="@null"
+        android:scaleType="centerCrop" />
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:adjustViewBounds="false"
-            android:focusable="true"
-            android:scaleType="centerCrop"
-            android:background="@color/color_00cccc"/>
-</RelativeLayout>
+            android:layout_height="247dp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="39dp"
+                android:layout_marginTop="16dp"
+                android:textColor="@color/color_336600"
+                android:gravity="center_horizontal"
+                android:text="@string/new_project"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="17dp"
+                android:textColor="@color/color_69ad0a"
+                android:textSize="17dp"
+                android:gravity="center_horizontal"
+                android:text="@string/new_project_name"/>
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <com.yanxiu.gphone.student.customviews.WavesLayout
+                android:id="@+id/wl_enter"
+                android:layout_width="170dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="40dp"
+                app:waves_animend_alpha="102"
+                app:waves_radius="@dimen/wavesRadius">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/shape_common_button_bg_normal"
+                    android:gravity="center"
+                    android:text="@string/experience"
+                    android:textColor="@drawable/selector_answercard_no_text_color"
+                    android:textSize="@dimen/answer_card_submitbutton_textsize" />
+            </com.yanxiu.gphone.student.customviews.WavesLayout>
+
+        </LinearLayout>
+
+</LinearLayout>

@@ -49,13 +49,12 @@ public class ActivityManger {
 
     public static void LogOut(){
         Activity activitys = null;
-        UserEventManager.getInstense().whenExitApp();
         if (activityList != null && activityList.size() > 0) {
-            for (Activity activity : activityList) {
-                if (activity instanceof SettingActivity) {
-                    activitys=activity;
+            for (int i=0;i<activityList.size();i++){
+                if (i==activityList.size()-1){
+                    activitys=activityList.get(i);
                 }else {
-                    activity.finish();
+                    activityList.get(i).finish();
                 }
             }
             activityList.clear();

@@ -6,12 +6,20 @@
     android:paddingStart="4dp"
     android:paddingEnd="4dp">
 
-    <com.yanxiu.gphone.student.customviews.SquareRelativeLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_margin="4dp"
         android:layout_centerInParent="true">
+
+        <com.yanxiu.gphone.student.customviews.SquareImageView
+            android:id="@+id/si_bg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:visibility="invisible"
+            android:layout_margin="5dp"/>
 
         <com.yanxiu.gphone.student.customviews.SquareRelativeLayout
             android:layout_width="match_parent"
@@ -24,7 +32,9 @@
                 android:layout_width="@dimen/subject_grid_item_add_icon_w_h"
                 android:layout_height="@dimen/subject_grid_item_add_icon_w_h"
                 android:layout_centerInParent="true"
+                android:contentDescription="@null"
                 android:background="@drawable/add_picture" />
         </com.yanxiu.gphone.student.customviews.SquareRelativeLayout>
-    </com.yanxiu.gphone.student.customviews.SquareRelativeLayout>
+
+    </RelativeLayout>
 </RelativeLayout>

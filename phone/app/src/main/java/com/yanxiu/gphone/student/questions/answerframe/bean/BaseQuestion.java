@@ -657,6 +657,8 @@ public abstract class BaseQuestion implements Serializable {
                 node.parentType_id = type_id;
                 retNodes.addAll(node.allNodesThatHasNumber());
             }
+        }else if(!TextUtils.isEmpty(type_id_complexToSimple)){ //复合题转单题
+            parentType_id = type_id_complexToSimple;
         }
 
         return retNodes;

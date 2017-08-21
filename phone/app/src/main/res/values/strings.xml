@@ -313,4 +313,12 @@
     <string name="input_old_password">请输入原密码</string>
 
     <string name="no_wrong_data">真棒!还没有错题哦</string>
+
+    <string name="new_project">全新界面</string>
+    <string name="new_project_name">轻松做题,让学习拥有美好的体验</string>
+    <string name="experience">立即体验</string>
+
+    <string name="version_updata">新版本更新</string>
+    <string name="updata_after">以后再说</string>
+    <string name="updata_now">立即更新</string>
 </resources>
