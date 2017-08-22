@@ -17,8 +17,8 @@
         android:id="@+id/nav_icon"
         android:layout_width="@dimen/nav_icon_width"
         android:layout_height="@dimen/nav_icon_width"
-        android:background="@color/color_00cccc"
-        android:scaleType="centerInside"/>
+        android:src="@drawable/selector_exercise"
+        android:scaleType="centerCrop"/>
 
     <TextView
         android:id="@+id/nav_txt"

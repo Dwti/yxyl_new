@@ -16,7 +16,6 @@ public class SoundManger {
     private static final int MAX_MUSIC_NUM=2;
     private static final int NOW_MUSIC_NUM=2;
 
-
     private int MUSIC_TAB;
     private int MUSIC_SUBMIT;
 
@@ -25,6 +24,7 @@ public class SoundManger {
 
     private int loadNum=0;
     private boolean isLoadComplete=false;
+    private boolean isCanPlay=false;
 
     public static SoundManger getInstence(){
         if (mSoundManger==null){
@@ -60,14 +60,18 @@ public class SoundManger {
         }
     }
 
+    public void setCanPlay(boolean isCanPlay){
+        this.isCanPlay=isCanPlay;
+    }
+
     public void playTabMusic(){
-        if (mSoundPool!=null&&isLoadComplete){
+        if (mSoundPool!=null&&isLoadComplete&&isCanPlay){
             mSoundPool.play(MUSIC_TAB,1,1,0,0,1);
         }
     }
 
     public void playSubmitMusic(){
-        if (mSoundPool!=null&&isLoadComplete){
+        if (mSoundPool!=null&&isLoadComplete&&isCanPlay){
             mSoundPool.play(MUSIC_SUBMIT,1,1,0,0,1);
         }
     }

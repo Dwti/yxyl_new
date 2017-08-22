@@ -182,9 +182,9 @@
     <dimen name="answer_card_progress_marginleft">36dp</dimen>
     <dimen name="answer_card_progress_pincil_marginleft">28dp</dimen>
 
-    <dimen name="crop_view_margin">25dp</dimen>
+    <dimen name="crop_view_margin">15dp</dimen>
     <dimen name="crop_botom_h">45dp</dimen>
-    <dimen name="crop_button_w_h">22dp</dimen>
+    <dimen name="crop_button_w_h">30dp</dimen>
     <dimen name="crop_button_margin_l_r">50dp</dimen>
     <dimen name="crop_reset_text_w">50dp</dimen>
     <dimen name="crop_reset_text_h">35dp</dimen>

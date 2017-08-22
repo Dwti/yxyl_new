@@ -20,13 +20,13 @@
         <!--android:paddingTop="@dimen/home_bottom_bar_paddingtop"-->
         <include
             android:id="@+id/navi_homework"
-            layout="@layout/home_nav_bar_item_layout"/>
+            layout="@layout/home_nav_bar_homework_layout"/>
         <include
             android:id="@+id/navi_exercise"
-            layout="@layout/home_nav_bar_item_layout"/>
+            layout="@layout/home_nav_bar_exercise_layout"/>
         <include
             android:id="@+id/navi_my"
-            layout="@layout/home_nav_bar_item_layout"/>
+            layout="@layout/home_nav_bar_my_layout"/>
     </LinearLayout>
     <FrameLayout
         android:id="@+id/content_main"

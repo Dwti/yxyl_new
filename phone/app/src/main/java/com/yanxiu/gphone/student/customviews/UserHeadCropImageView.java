@@ -31,8 +31,8 @@ public class UserHeadCropImageView extends android.support.v7.widget.AppCompatIm
 
     private static final int DEFAULT_LINE_STROKEWIDTH = 4;
 
-    public static final int mWidth = 650;
-    public static final int mHeight = 650;
+    public static int mWidth = 650;
+    public static int mHeight = 650;
     private RectF mDrawRect;
 
     private Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -88,8 +88,16 @@ public class UserHeadCropImageView extends android.support.v7.widget.AppCompatIm
     }
 
     @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+        mHeight=mWidth=right-left;
+    }
+
+    @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
+        mWidth=w;
+        mHeight=w;
         mDrawRect = new RectF(getWidth() / 2 - mWidth / 2, getHeight() / 2 - mHeight / 2, getWidth() / 2 + mWidth / 2, getHeight() / 2 + mHeight / 2);
     }
 

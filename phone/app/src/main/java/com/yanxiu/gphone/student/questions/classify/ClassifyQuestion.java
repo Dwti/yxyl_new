@@ -13,8 +13,10 @@ import com.yanxiu.gphone.student.questions.bean.PaperTestBean;
 import com.yanxiu.gphone.student.questions.bean.PointBean;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -72,11 +74,10 @@ public class ClassifyQuestion extends BaseQuestion {
             String jsonString = bean.getQuestions().getPad().getAnswer();
             JSONArray array = new JSONArray(jsonString);
             for (int i = 0; i < array.length(); i++) {
-                JSONArray childArray = array.getJSONArray(i);
-                ArrayList<String> childList = new ArrayList();
-                for (int j = 0; j < childArray.length(); j++) {
-                    childList.add(childArray.get(j).toString());
-                }
+                String string=array.getString(i);
+                String[] strings=string.split(",");
+                ArrayList<String> childList = new ArrayList<>();
+                Collections.addAll(childList, strings);
                 answerList.add(childList);
             }
         } catch (Exception e) {

@@ -133,6 +133,7 @@ public class MyFragment extends HomePageBaseFragment implements View.OnClickList
         mTeaching_material_version.setOnClickListener(this);
         mFeedback.setOnClickListener(this);
         mSetting.setOnClickListener(this);
+        mUser_icon.setOnClickListener(this);
     }
 
     /**
@@ -163,6 +164,7 @@ public class MyFragment extends HomePageBaseFragment implements View.OnClickList
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.user_icon:
             case R.id.user_edit_userinfo:
                 UserInfoActivity.LaunchActivity(getContext());
                 break;

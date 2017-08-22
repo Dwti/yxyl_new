@@ -99,17 +99,16 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
     @Override
     protected void onResume() {
         super.onResume();
-        // Todo 移除icon背景色 后期美工出切图后，这行代码可以去掉
-        mNavIconViews[2].setBackground(null);
-
-        Glide.with(this).load(LoginInfo.getHeadIcon()).asBitmap().into(new BitmapImageViewTarget(mNavIconViews[2]){
-            @Override
-            protected void setResource(Bitmap resource) {
-                RoundedBitmapDrawable bitmapDrawable= RoundedBitmapDrawableFactory.create(view.getContext().getResources(),resource);
-                bitmapDrawable.setCircular(true);
-                view.setImageDrawable(bitmapDrawable);
-            }
-        });
+        if (!TextUtils.isEmpty(LoginInfo.getHeadIcon())) {
+            Glide.with(this).load(LoginInfo.getHeadIcon()).asBitmap().into(new BitmapImageViewTarget(mNavIconViews[2]) {
+                @Override
+                protected void setResource(Bitmap resource) {
+                    RoundedBitmapDrawable bitmapDrawable = RoundedBitmapDrawableFactory.create(view.getContext().getResources(), resource);
+                    bitmapDrawable.setCircular(true);
+                    view.setImageDrawable(bitmapDrawable);
+                }
+            });
+        }
     }
 
     @Override

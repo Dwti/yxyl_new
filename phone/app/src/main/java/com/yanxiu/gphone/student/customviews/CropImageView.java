@@ -15,6 +15,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 import com.yanxiu.gphone.student.util.FileUtil;
+import com.yanxiu.gphone.student.util.ScreenUtils;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -37,6 +38,14 @@ public class CropImageView extends android.support.v7.widget.AppCompatImageView 
     private static final int DEFAULT_SHARP_STROKEWIDTH = 4;
     private static final int DEFAULT_SHARP_LENG = 44;
     private static final int DEFAULT_PADDING = DEFAULT_LINE_STROKEWIDTH + DEFAULT_SHARP_STROKEWIDTH;
+    /**
+     * 正比
+     * */
+    private static final int TYPE_SCALE_W_H=DEFAULT_PADDING*8;
+    /**
+     * 反比
+     * */
+    private static final int TYPE_MOVE_W_H=DEFAULT_PADDING*3;
 
     private static final String DEFAULT_BACKGROUNDCOLOR="#4d000000";
     private static final int DEFAULT_LINECOLOR=Color.parseColor("#89e00d");
@@ -74,7 +83,7 @@ public class CropImageView extends android.support.v7.widget.AppCompatImageView 
 
     public CropImageView(Context context) {
         super(context);
-        init();
+        init(context);
     }
 
     public CropImageView(Context context, @Nullable AttributeSet attrs) {
@@ -83,17 +92,12 @@ public class CropImageView extends android.support.v7.widget.AppCompatImageView 
 
     public CropImageView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
+        init(context);
     }
 
-    private void init() {
+    private void init(Context context) {
         initPaint();
         setPadding(0, 0, 0, 0);
-    }
-
-    @Override
-    public void setPadding(@Px int left, @Px int top, @Px int right, @Px int bottom) {
-        super.setPadding(DEFAULT_PADDING, DEFAULT_PADDING, DEFAULT_PADDING, DEFAULT_PADDING);
     }
 
     private void initPaint() {
@@ -114,7 +118,7 @@ public class CropImageView extends android.support.v7.widget.AppCompatImageView 
     @Override
     public void setImageBitmap(Bitmap bm) {
         isShowCropBox=true;
-        drawable = new ListenDrawable(getContext(),bm, DEFAULT_PADDING);
+        drawable = new ListenDrawable(getContext(),bm, TYPE_SCALE_W_H);
         setBackgroundDrawable(drawable);
     }
 
@@ -124,9 +128,9 @@ public class CropImageView extends android.support.v7.widget.AppCompatImageView 
     }
 
     public void setReset(){
-        mCropRect = new Rect(DEFAULT_PADDING, DEFAULT_PADDING, mWidth - DEFAULT_PADDING, mHeight - DEFAULT_PADDING);
-        mTypeScaleRect = new Rect(mCropRect.left - DEFAULT_PADDING*2, mCropRect.top - DEFAULT_PADDING*2, mCropRect.right + DEFAULT_PADDING*2, mCropRect.bottom + DEFAULT_PADDING*2);
-        mTypeMoveRect = new Rect(mCropRect.left + DEFAULT_PADDING*2, mCropRect.top + DEFAULT_PADDING*2, mCropRect.right - DEFAULT_PADDING*2, mCropRect.bottom - DEFAULT_PADDING*2);
+        mCropRect = new Rect(TYPE_SCALE_W_H, TYPE_SCALE_W_H, mWidth - TYPE_SCALE_W_H, mHeight - TYPE_SCALE_W_H);
+        mTypeScaleRect = new Rect(mCropRect.left - TYPE_SCALE_W_H, mCropRect.top - TYPE_SCALE_W_H, mCropRect.right + TYPE_SCALE_W_H, mCropRect.bottom + TYPE_SCALE_W_H);
+        mTypeMoveRect = new Rect(mCropRect.left + TYPE_MOVE_W_H, mCropRect.top + TYPE_MOVE_W_H, mCropRect.right - TYPE_MOVE_W_H, mCropRect.bottom - TYPE_MOVE_W_H);
         invalidate();
     }
 
@@ -135,9 +139,9 @@ public class CropImageView extends android.support.v7.widget.AppCompatImageView 
         super.onSizeChanged(w, h, oldw, oldh);
         this.mWidth = w;
         this.mHeight = h;
-        mCropRect = new Rect(DEFAULT_PADDING, DEFAULT_PADDING, w - DEFAULT_PADDING, h - DEFAULT_PADDING);
-        mTypeScaleRect = new Rect(mCropRect.left - DEFAULT_PADDING*2, mCropRect.top - DEFAULT_PADDING*2, mCropRect.right + DEFAULT_PADDING*2, mCropRect.bottom + DEFAULT_PADDING*2);
-        mTypeMoveRect = new Rect(mCropRect.left + DEFAULT_PADDING*2, mCropRect.top + DEFAULT_PADDING*2, mCropRect.right - DEFAULT_PADDING*2, mCropRect.bottom - DEFAULT_PADDING*2);
+        mCropRect = new Rect(TYPE_SCALE_W_H, TYPE_SCALE_W_H, mWidth - TYPE_SCALE_W_H, mHeight - TYPE_SCALE_W_H);
+        mTypeScaleRect = new Rect(mCropRect.left - TYPE_SCALE_W_H, mCropRect.top - TYPE_SCALE_W_H, mCropRect.right + TYPE_SCALE_W_H, mCropRect.bottom + TYPE_SCALE_W_H);
+        mTypeMoveRect = new Rect(mCropRect.left + TYPE_MOVE_W_H, mCropRect.top + TYPE_MOVE_W_H, mCropRect.right - TYPE_MOVE_W_H, mCropRect.bottom - TYPE_MOVE_W_H);
     }
 
     @Override
@@ -146,7 +150,7 @@ public class CropImageView extends android.support.v7.widget.AppCompatImageView 
         if (isShowCropBox) {
             int layerId = canvas.saveLayer(0, 0, canvas.getWidth(), canvas.getHeight(), null, Canvas.ALL_SAVE_FLAG);
             mConverPaint.setColor(Color.parseColor(DEFAULT_BACKGROUNDCOLOR));
-            canvas.drawRect(DEFAULT_PADDING, DEFAULT_PADDING, mWidth - DEFAULT_PADDING, mHeight - DEFAULT_PADDING, mConverPaint);
+            canvas.drawRect(TYPE_SCALE_W_H, TYPE_SCALE_W_H, mWidth - TYPE_SCALE_W_H, mHeight - TYPE_SCALE_W_H, mConverPaint);
             mConverPaint.setXfermode(mXfermode);
             mConverPaint.setColor(Color.TRANSPARENT);
             canvas.drawRect(mCropRect, mConverPaint);
@@ -290,14 +294,14 @@ public class CropImageView extends android.support.v7.widget.AppCompatImageView 
                 end_bottom = start_bottom;
                 end_right = start_right;
                 end_left = start_left + changeX;
-                if (end_left < DEFAULT_PADDING) {
-                    end_left = DEFAULT_PADDING;
+                if (end_left < TYPE_SCALE_W_H) {
+                    end_left = TYPE_SCALE_W_H;
                 }
                 if (end_right - end_left < DEFAULT_SHARP_LENG * 2-DEFAULT_PADDING*2) {
                     end_right = end_left + DEFAULT_SHARP_LENG * 2-DEFAULT_PADDING*2;
                 }
-                if (end_right > mWidth - DEFAULT_PADDING) {
-                    end_right = mWidth - DEFAULT_PADDING;
+                if (end_right > mWidth - TYPE_SCALE_W_H) {
+                    end_right = mWidth - TYPE_SCALE_W_H;
                     end_left = end_right - (DEFAULT_SHARP_LENG * 2-DEFAULT_PADDING*2);
                 }
                 break;
@@ -306,14 +310,14 @@ public class CropImageView extends android.support.v7.widget.AppCompatImageView 
                 end_right = start_right;
                 end_bottom = start_bottom;
                 end_top = start_top + changeY;
-                if (end_top < DEFAULT_PADDING) {
-                    end_top = DEFAULT_PADDING;
+                if (end_top < TYPE_SCALE_W_H) {
+                    end_top = TYPE_SCALE_W_H;
                 }
                 if (end_bottom - end_top < DEFAULT_SHARP_LENG * 2-DEFAULT_PADDING*2) {
                     end_bottom = end_top + DEFAULT_SHARP_LENG * 2-DEFAULT_PADDING*2;
                 }
-                if (end_bottom > mHeight - DEFAULT_PADDING) {
-                    end_bottom = mHeight - DEFAULT_PADDING;
+                if (end_bottom > mHeight - TYPE_SCALE_W_H) {
+                    end_bottom = mHeight - TYPE_SCALE_W_H;
                     end_top = end_bottom - (DEFAULT_SHARP_LENG * 2-DEFAULT_PADDING*2);
                 }
                 break;
@@ -322,14 +326,14 @@ public class CropImageView extends android.support.v7.widget.AppCompatImageView 
                 end_bottom = start_bottom;
                 end_left = start_left;
                 end_right = start_right + changeX;
-                if (end_right > mWidth - DEFAULT_PADDING) {
-                    end_right = mWidth - DEFAULT_PADDING;
+                if (end_right > mWidth - TYPE_SCALE_W_H) {
+                    end_right = mWidth - TYPE_SCALE_W_H;
                 }
                 if (end_right - end_left < DEFAULT_SHARP_LENG * 2-DEFAULT_PADDING*2) {
                     end_left = end_right - (DEFAULT_SHARP_LENG * 2-DEFAULT_PADDING*2);
                 }
-                if (end_left < DEFAULT_PADDING) {
-                    end_left = DEFAULT_PADDING;
+                if (end_left < TYPE_SCALE_W_H) {
+                    end_left = TYPE_SCALE_W_H;
                     end_right = end_left + DEFAULT_SHARP_LENG * 2-DEFAULT_PADDING*2;
                 }
                 break;
@@ -338,14 +342,14 @@ public class CropImageView extends android.support.v7.widget.AppCompatImageView 
                 end_right = start_right;
                 end_top = start_top;
                 end_bottom = start_bottom + changeY;
-                if (end_bottom > mHeight - DEFAULT_PADDING) {
-                    end_bottom = mHeight - DEFAULT_PADDING;
+                if (end_bottom > mHeight - TYPE_SCALE_W_H) {
+                    end_bottom = mHeight - TYPE_SCALE_W_H;
                 }
                 if (end_bottom - end_top < DEFAULT_SHARP_LENG * 2-DEFAULT_PADDING*2) {
                     end_top = end_bottom - (DEFAULT_SHARP_LENG * 2-DEFAULT_PADDING*2);
                 }
-                if (end_top < DEFAULT_PADDING) {
-                    end_top = DEFAULT_PADDING;
+                if (end_top < TYPE_SCALE_W_H) {
+                    end_top = TYPE_SCALE_W_H;
                     end_bottom = end_top + DEFAULT_SHARP_LENG * 2-DEFAULT_PADDING*2;
                 }
                 break;
@@ -354,24 +358,24 @@ public class CropImageView extends android.support.v7.widget.AppCompatImageView 
                 end_bottom = start_bottom;
                 end_left = start_left + changeX;
                 end_top = start_top + changeY;
-                if (end_left < DEFAULT_PADDING) {
-                    end_left = DEFAULT_PADDING;
+                if (end_left < TYPE_SCALE_W_H) {
+                    end_left = TYPE_SCALE_W_H;
                 }
                 if (end_right - end_left < DEFAULT_SHARP_LENG * 2-DEFAULT_PADDING*2) {
                     end_right = end_left + DEFAULT_SHARP_LENG * 2-DEFAULT_PADDING*2;
                 }
-                if (end_right > mWidth - DEFAULT_PADDING) {
-                    end_right = mWidth - DEFAULT_PADDING;
+                if (end_right > mWidth - TYPE_SCALE_W_H) {
+                    end_right = mWidth - TYPE_SCALE_W_H;
                     end_left = end_right - (DEFAULT_SHARP_LENG * 2-DEFAULT_PADDING*2);
                 }
-                if (end_top < DEFAULT_PADDING) {
-                    end_top = DEFAULT_PADDING;
+                if (end_top < TYPE_SCALE_W_H) {
+                    end_top = TYPE_SCALE_W_H;
                 }
                 if (end_bottom - end_top < DEFAULT_SHARP_LENG * 2-DEFAULT_PADDING*2) {
                     end_bottom = end_top + DEFAULT_SHARP_LENG * 2-DEFAULT_PADDING*2;
                 }
-                if (end_bottom > mHeight - DEFAULT_PADDING) {
-                    end_bottom = mHeight - DEFAULT_PADDING;
+                if (end_bottom > mHeight - TYPE_SCALE_W_H) {
+                    end_bottom = mHeight - TYPE_SCALE_W_H;
                     end_top = end_bottom - (DEFAULT_SHARP_LENG * 2-DEFAULT_PADDING*2);
                 }
                 break;
@@ -380,24 +384,24 @@ public class CropImageView extends android.support.v7.widget.AppCompatImageView 
                 end_bottom = start_bottom;
                 end_right = start_right + changeX;
                 end_top = start_top + changeY;
-                if (end_right > mWidth - DEFAULT_PADDING) {
-                    end_right = mWidth - DEFAULT_PADDING;
+                if (end_right > mWidth - TYPE_SCALE_W_H) {
+                    end_right = mWidth - TYPE_SCALE_W_H;
                 }
                 if (end_right - end_left < DEFAULT_SHARP_LENG * 2-DEFAULT_PADDING*2) {
                     end_left = end_right - (DEFAULT_SHARP_LENG * 2-DEFAULT_PADDING*2);
                 }
-                if (end_left < DEFAULT_PADDING) {
-                    end_left = DEFAULT_PADDING;
+                if (end_left < TYPE_SCALE_W_H) {
+                    end_left = TYPE_SCALE_W_H;
                     end_right = end_left + DEFAULT_SHARP_LENG * 2-DEFAULT_PADDING*2;
                 }
-                if (end_top < DEFAULT_PADDING) {
-                    end_top = DEFAULT_PADDING;
+                if (end_top < TYPE_SCALE_W_H) {
+                    end_top = TYPE_SCALE_W_H;
                 }
                 if (end_bottom - end_top < DEFAULT_SHARP_LENG * 2-DEFAULT_PADDING*2) {
                     end_bottom = end_top + DEFAULT_SHARP_LENG * 2-DEFAULT_PADDING*2;
                 }
-                if (end_bottom > mHeight - DEFAULT_PADDING) {
-                    end_bottom = mHeight - DEFAULT_PADDING;
+                if (end_bottom > mHeight - TYPE_SCALE_W_H) {
+                    end_bottom = mHeight - TYPE_SCALE_W_H;
                     end_top = end_bottom - (DEFAULT_SHARP_LENG * 2-DEFAULT_PADDING*2);
                 }
                 break;
@@ -406,24 +410,24 @@ public class CropImageView extends android.support.v7.widget.AppCompatImageView 
                 end_top = start_top;
                 end_left = start_left + changeX;
                 end_bottom = start_bottom + changeY;
-                if (end_left < DEFAULT_PADDING) {
-                    end_left = DEFAULT_PADDING;
+                if (end_left < TYPE_SCALE_W_H) {
+                    end_left = TYPE_SCALE_W_H;
                 }
                 if (end_right - end_left < DEFAULT_SHARP_LENG * 2-DEFAULT_PADDING*2) {
                     end_right = end_left + DEFAULT_SHARP_LENG * 2-DEFAULT_PADDING*2;
                 }
-                if (end_right > mWidth - DEFAULT_PADDING) {
-                    end_right = mWidth - DEFAULT_PADDING;
+                if (end_right > mWidth - TYPE_SCALE_W_H) {
+                    end_right = mWidth - TYPE_SCALE_W_H;
                     end_left = end_right - (DEFAULT_SHARP_LENG * 2-DEFAULT_PADDING*2);
                 }
-                if (end_bottom > mHeight - DEFAULT_PADDING) {
-                    end_bottom = mHeight - DEFAULT_PADDING;
+                if (end_bottom > mHeight - TYPE_SCALE_W_H) {
+                    end_bottom = mHeight - TYPE_SCALE_W_H;
                 }
                 if (end_bottom - end_top < DEFAULT_SHARP_LENG * 2-DEFAULT_PADDING*2) {
                     end_top = end_bottom - (DEFAULT_SHARP_LENG * 2-DEFAULT_PADDING*2);
                 }
-                if (end_top < DEFAULT_PADDING) {
-                    end_top = DEFAULT_PADDING;
+                if (end_top < TYPE_SCALE_W_H) {
+                    end_top = TYPE_SCALE_W_H;
                     end_bottom = end_top + DEFAULT_SHARP_LENG * 2-DEFAULT_PADDING*2;
                 }
                 break;
@@ -432,31 +436,31 @@ public class CropImageView extends android.support.v7.widget.AppCompatImageView 
                 end_top = start_top;
                 end_right = start_right + changeX;
                 end_bottom = start_bottom + changeY;
-                if (end_right > mWidth - DEFAULT_PADDING) {
-                    end_right = mWidth - DEFAULT_PADDING;
+                if (end_right > mWidth - TYPE_SCALE_W_H) {
+                    end_right = mWidth - TYPE_SCALE_W_H;
                 }
                 if (end_right - end_left < DEFAULT_SHARP_LENG * 2-DEFAULT_PADDING*2) {
                     end_left = end_right - (DEFAULT_SHARP_LENG * 2-DEFAULT_PADDING*2);
                 }
-                if (end_left < DEFAULT_PADDING) {
-                    end_left = DEFAULT_PADDING;
+                if (end_left < TYPE_SCALE_W_H) {
+                    end_left = TYPE_SCALE_W_H;
                     end_right = end_left + DEFAULT_SHARP_LENG * 2-DEFAULT_PADDING*2;
                 }
-                if (end_bottom > mHeight - DEFAULT_PADDING) {
-                    end_bottom = mHeight - DEFAULT_PADDING;
+                if (end_bottom > mHeight - TYPE_SCALE_W_H) {
+                    end_bottom = mHeight - TYPE_SCALE_W_H;
                 }
                 if (end_bottom - end_top < DEFAULT_SHARP_LENG * 2-DEFAULT_PADDING*2) {
                     end_top = end_bottom - (DEFAULT_SHARP_LENG * 2-DEFAULT_PADDING*2);
                 }
-                if (end_top < DEFAULT_PADDING) {
-                    end_top = DEFAULT_PADDING;
+                if (end_top < TYPE_SCALE_W_H) {
+                    end_top = TYPE_SCALE_W_H;
                     end_bottom = end_top + DEFAULT_SHARP_LENG * 2-DEFAULT_PADDING*2;
                 }
                 break;
         }
         mCropRect=new Rect(end_left,end_top,end_right,end_bottom);
-        mTypeScaleRect = new Rect(mCropRect.left - DEFAULT_PADDING*2, mCropRect.top - DEFAULT_PADDING*2, mCropRect.right + DEFAULT_PADDING*2, mCropRect.bottom + DEFAULT_PADDING*2);
-        mTypeMoveRect = new Rect(mCropRect.left + DEFAULT_PADDING*2, mCropRect.top + DEFAULT_PADDING*2, mCropRect.right - DEFAULT_PADDING*2, mCropRect.bottom - DEFAULT_PADDING*2);
+        mTypeScaleRect = new Rect(mCropRect.left - TYPE_SCALE_W_H, mCropRect.top - TYPE_SCALE_W_H, mCropRect.right + TYPE_SCALE_W_H, mCropRect.bottom + TYPE_SCALE_W_H);
+        mTypeMoveRect = new Rect(mCropRect.left + TYPE_MOVE_W_H, mCropRect.top + TYPE_MOVE_W_H, mCropRect.right - TYPE_MOVE_W_H, mCropRect.bottom - TYPE_MOVE_W_H);
     }
 
     private void setMoveRect(final int changeX, final int changeY) {
@@ -473,25 +477,25 @@ public class CropImageView extends android.support.v7.widget.AppCompatImageView 
         int end_right = start_right+changeX;
         int end_bottom = start_bottom+changeY;
 
-        if (end_left<DEFAULT_PADDING){
-            end_left=DEFAULT_PADDING;
+        if (end_left<TYPE_SCALE_W_H){
+            end_left=TYPE_SCALE_W_H;
             end_right=end_left+width;
         }
-        if (end_right>mWidth-DEFAULT_PADDING){
-            end_right=mWidth-DEFAULT_PADDING;
+        if (end_right>mWidth-TYPE_SCALE_W_H){
+            end_right=mWidth-TYPE_SCALE_W_H;
             end_left=end_right-width;
         }
-        if (end_top<DEFAULT_PADDING){
-            end_top=DEFAULT_PADDING;
+        if (end_top<TYPE_SCALE_W_H){
+            end_top=TYPE_SCALE_W_H;
             end_bottom=end_top+height;
         }
-        if (end_bottom>mHeight-DEFAULT_PADDING){
-            end_bottom=mHeight-DEFAULT_PADDING;
+        if (end_bottom>mHeight-TYPE_SCALE_W_H){
+            end_bottom=mHeight-TYPE_SCALE_W_H;
             end_top=end_bottom-height;
         }
         mCropRect=new Rect(end_left,end_top,end_right,end_bottom);
-        mTypeScaleRect = new Rect(mCropRect.left - DEFAULT_PADDING*2, mCropRect.top - DEFAULT_PADDING*2, mCropRect.right + DEFAULT_PADDING*2, mCropRect.bottom + DEFAULT_PADDING*2);
-        mTypeMoveRect = new Rect(mCropRect.left + DEFAULT_PADDING*2, mCropRect.top + DEFAULT_PADDING*2, mCropRect.right - DEFAULT_PADDING*2, mCropRect.bottom - DEFAULT_PADDING*2);
+        mTypeScaleRect = new Rect(mCropRect.left - TYPE_SCALE_W_H, mCropRect.top - TYPE_SCALE_W_H, mCropRect.right + TYPE_SCALE_W_H, mCropRect.bottom + TYPE_SCALE_W_H);
+        mTypeMoveRect = new Rect(mCropRect.left + TYPE_MOVE_W_H, mCropRect.top + TYPE_MOVE_W_H, mCropRect.right - TYPE_MOVE_W_H, mCropRect.bottom - TYPE_MOVE_W_H);
     }
 
     private class SaveBitmapTask extends AsyncTask<Bitmap,Integer,String>{
@@ -506,7 +510,7 @@ public class CropImageView extends android.support.v7.widget.AppCompatImageView 
 
         @Override
         protected String doInBackground(Bitmap... params) {
-            Bitmap bitmap=Bitmap.createBitmap(params[0],mRect.left-DEFAULT_PADDING,mRect.top-DEFAULT_PADDING,mRect.width(),mRect.height());
+            Bitmap bitmap=Bitmap.createBitmap(params[0],mRect.left-TYPE_SCALE_W_H,mRect.top-TYPE_SCALE_W_H,mRect.width(),mRect.height());
             String filePath = FileUtil.getSavePicturePath(System.currentTimeMillis() + ".jpg");
             File file = new File(filePath);
             BufferedOutputStream bos = null;

@@ -178,7 +178,7 @@
     <string name="analysis_error_tag1">题干有误</string>
     <string name="analysis_error_tag2">答案有误</string>
     <string name="analysis_error_tag3">解析有误</string>
-    <string name="analysis_error_tag4">章节内容有误</string>
+    <string name="analysis_error_tag4">章节信息有误</string>
     <string name="analysis_error_tag5">知识点有误</string>
     <string name="analysis_error_tag6">其他有误</string>
     <string name="analysis_error_content">请输入错误详情(200字以内)</string>

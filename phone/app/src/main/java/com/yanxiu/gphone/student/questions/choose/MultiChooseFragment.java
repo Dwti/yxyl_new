@@ -95,7 +95,7 @@ public class MultiChooseFragment extends AnswerSimpleExerciseBaseFragment implem
     public void onClick(int position, boolean isSelected) {
         if (isSelected) {
             mData.getAnswerList().add(String.valueOf(position));
-        } else {
+         } else {
             mData.getAnswerList().remove(String.valueOf(position));
         }
         if (mData.getAnswerList().size()>0){

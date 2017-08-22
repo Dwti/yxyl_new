@@ -6,8 +6,9 @@
     <com.yanxiu.gphone.student.customviews.UserHeadCropImageView
         android:id="@+id/civ_crop"
         android:layout_above="@+id/rl_bottom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="matrix"/>
 
     <RelativeLayout
         android:id="@+id/rl_bottom"
@@ -19,19 +20,21 @@
             android:id="@+id/iv_back"
             android:layout_width="@dimen/crop_button_w_h"
             android:layout_height="@dimen/crop_button_w_h"
+            android:paddingTop="4dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/crop_button_margin_l_r"
-            android:background="@drawable/selector_back"
+            android:src="@drawable/selector_back"
             android:onClick="onClick" />
 
         <ImageView
             android:id="@+id/iv_ok"
             android:layout_width="@dimen/crop_button_w_h"
             android:layout_height="@dimen/crop_button_w_h"
+            android:padding="4dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/crop_button_margin_l_r"
-            android:background="@drawable/selector_crop"
+            android:src="@drawable/selector_crop"
             android:onClick="onClick" />
     </RelativeLayout>
 

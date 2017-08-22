@@ -350,6 +350,23 @@ public class SubmitQuesitonTask extends AsyncTask {
 
                         BaseQuestion childQuestionBean = childQuestionList.get(j); //子题
                         Object childAnsewr = childQuestionBean.getAnswer(); //子题答案
+
+                        if (childQuestionBean.getTemplate().equals(QuestionTemplate.CLASSIFY)){
+                            List<String> answerList=new ArrayList<>();
+                            List<List<String>> listList= (List<List<String>>) childAnsewr;
+                            for (List<String> stringList:listList){
+                                String answerString="";
+                                for (String s:stringList){
+                                    answerString+=s+",";
+                                }
+                                if (!TextUtils.isEmpty(answerString)) {
+                                    answerString = answerString.substring(0, answerString.length() - 1);
+                                }
+                                answerList.add(answerString);
+                            }
+                            childAnsewr=answerList;
+                        }
+
                         Gson gson = new Gson();
                         String answerJson = "";
                         if (null != childAnsewr) {
@@ -385,6 +402,23 @@ public class SubmitQuesitonTask extends AsyncTask {
 
                     BaseQuestion childQuestionBean = outerQuestionBean; //子题就是本身
                     Object childAnsewr = childQuestionBean.getAnswer(); //子题答案
+
+                    if (childQuestionBean.getTemplate().equals(QuestionTemplate.CLASSIFY)){
+                        List<String> answerList=new ArrayList<>();
+                        List<List<String>> listList= (List<List<String>>) childAnsewr;
+                        for (List<String> stringList:listList){
+                            String answerString="";
+                            for (String s:stringList){
+                                answerString+=s+",";
+                            }
+                            if (!TextUtils.isEmpty(answerString)) {
+                                answerString = answerString.substring(0, answerString.length() - 1);
+                            }
+                            answerList.add(answerString);
+                        }
+                        childAnsewr=answerList;
+                    }
+
                     Gson gson = new Gson();
                     String answerJson = "";
                     if (null != childAnsewr) {
@@ -414,11 +448,29 @@ public class SubmitQuesitonTask extends AsyncTask {
 
                 } else { //单题
                     Object ansewr = outerQuestionBean.getAnswer(); //答案
-                    Gson gson = new Gson();
+
+                    if (outerQuestionBean.getTemplate().equals(QuestionTemplate.CLASSIFY)){
+                        List<String> answerList=new ArrayList<>();
+                        List<List<String>> listList= (List<List<String>>) ansewr;
+                        for (List<String> stringList:listList){
+                            String answerString="";
+                            for (String s:stringList){
+                                answerString+=s+",";
+                            }
+                            if (!TextUtils.isEmpty(answerString)) {
+                                answerString = answerString.substring(0, answerString.length() - 1);
+                            }
+                            answerList.add(answerString);
+                        }
+                        ansewr=answerList;
+                    }
+
                     String answerJson = "";
+                    Gson gson = new Gson();
                     if (null != ansewr) {
                         answerJson = gson.toJson(ansewr);//转化成json
                     }
+
                     JSONArray answers = new JSONArray(answerJson);
                     outQuestionObject.put("answer", answers);
                     outQuestionObject.put("children", "");

@@ -71,6 +71,10 @@ public class NotesLayoutView extends LinearLayout implements View.OnClickListene
 
     private void listenr() {
         mNoteLayout.setOnClickListener(NotesLayoutView.this);
+        mImgLeftView.setOnClickListener(NotesLayoutView.this);
+        mImgCenterLeftView.setOnClickListener(NotesLayoutView.this);
+        mImgCenterRightView.setOnClickListener(NotesLayoutView.this);
+        mImgRightView.setOnClickListener(NotesLayoutView.this);
     }
 
     public void setData(JsonNoteBean jsonNoteBean){
@@ -86,34 +90,27 @@ public class NotesLayoutView extends LinearLayout implements View.OnClickListene
     }
 
     private void setNoteImg(ArrayList<String> paths){
-        mImgCenterLeftView.setImageBitmap(null);
-        mImgCenterLeftView.setOnClickListener(null);
-
-        mImgCenterRightView.setImageBitmap(null);
-        mImgCenterRightView.setOnClickListener(null);
-
-        mImgLeftView.setImageBitmap(null);
-        mImgLeftView.setOnClickListener(null);
-
-        mImgRightView.setImageBitmap(null);
-        mImgRightView.setOnClickListener(null);
+        mImgCenterLeftView.setVisibility(GONE);
+        mImgCenterRightView.setVisibility(GONE);
+        mImgLeftView.setVisibility(GONE);
+        mImgRightView.setVisibility(GONE);
         for (int i=0;i<paths.size();i++){
             switch (i){
                 case 0:
                     Glide.with(mContext).load(paths.get(0)).asBitmap().into(new CornersImageTarget(mImgLeftView));
-                    mImgLeftView.setOnClickListener(NotesLayoutView.this);
+                    mImgLeftView.setVisibility(VISIBLE);
                     break;
                 case 1:
                     Glide.with(mContext).load(paths.get(1)).asBitmap().into(new CornersImageTarget(mImgCenterLeftView));
-                    mImgCenterLeftView.setOnClickListener(NotesLayoutView.this);
+                    mImgCenterLeftView.setVisibility(VISIBLE);
                     break;
                 case 2:
                     Glide.with(mContext).load(paths.get(2)).asBitmap().into(new CornersImageTarget(mImgCenterRightView));
-                    mImgCenterRightView.setOnClickListener(NotesLayoutView.this);
+                    mImgCenterRightView.setVisibility(VISIBLE);
                     break;
                 case 3:
                     Glide.with(mContext).load(paths.get(3)).asBitmap().into(new CornersImageTarget(mImgRightView));
-                    mImgRightView.setOnClickListener(NotesLayoutView.this);
+                    mImgRightView.setVisibility(VISIBLE);
                     break;
             }
         }
