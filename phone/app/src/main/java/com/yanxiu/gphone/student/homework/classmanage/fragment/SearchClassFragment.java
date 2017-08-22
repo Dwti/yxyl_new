@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.base.YanxiuBaseFragment;
 import com.yanxiu.gphone.student.customviews.CharacterSeparatedEditLayout;
 import com.yanxiu.gphone.student.customviews.WavesLayout;
 import com.yanxiu.gphone.student.homework.classmanage.activity.HowToJoinClassActivity;
@@ -28,7 +29,7 @@ import com.yanxiu.gphone.student.util.ToastManager;
  * Created by sp on 17-5-15.
  */
 
-public class SearchClassFragment extends Fragment {
+public class SearchClassFragment extends YanxiuBaseFragment {
 
     private static final int REQUEST_JOIN_CLASS = 0x01;
 

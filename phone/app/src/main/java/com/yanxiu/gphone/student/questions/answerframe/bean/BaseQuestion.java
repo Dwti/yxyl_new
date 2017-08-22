@@ -11,7 +11,6 @@ import com.yanxiu.gphone.student.questions.bean.JsonNoteBean;
 import com.yanxiu.gphone.student.questions.bean.PadBean;
 import com.yanxiu.gphone.student.questions.bean.PaperTestBean;
 import com.yanxiu.gphone.student.questions.bean.PointBean;
-import com.yanxiu.gphone.student.util.StringUtil;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -60,7 +59,7 @@ public abstract class BaseQuestion implements Serializable {
     private String ptid_ComplexToSimple;//只有一个子题的复合题的大题的上传答案时的ptid(复合题转成单题，提交答案时使用)
     private String qid_ComplexToSimple;//只有一个子题的复合题的大题的上传答案时的qid(复合题转成单题，提交答案时使用)
 
-    protected boolean isAnswer;
+    protected boolean hasAnswered; //是否作答，每种题型的判断逻辑可能不一样，依据具体提醒而定
     protected long costtime;//答题时间
 
     protected int status = 3;// 题目状态 0 回答正确， 1 回答错误，  2 半对   3 未作答案  4 标示主观题 已作答
@@ -138,7 +137,7 @@ public abstract class BaseQuestion implements Serializable {
             if(!TextUtils.isEmpty(answerJson))
                 bean.getQuestions().getPad().setAnswer(answerJson);
             boolean isAnswered = SaveAnswerDBHelper.getIsAnswered(SaveAnswerDBHelper.makeId(this));
-            isAnswer = isAnswered;
+            hasAnswered = isAnswered;
         }
         this.pad = bean.getQuestions().getPad();
         try{
@@ -383,12 +382,12 @@ public abstract class BaseQuestion implements Serializable {
         this.showType = showType;
     }
 
-    public boolean getIsAnswer() {
-        return isAnswer;
+    public boolean getHasAnswered() {
+        return hasAnswered;
     }
 
-    public void setIsAnswer(boolean answer) {
-        isAnswer = answer;
+    public void setHasAnswered(boolean answer) {
+        hasAnswered = answer;
     }
 
     public String getStem_complexToSimple() {

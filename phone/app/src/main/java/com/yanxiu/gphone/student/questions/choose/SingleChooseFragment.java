@@ -130,12 +130,12 @@ public class SingleChooseFragment extends AnswerSimpleExerciseBaseFragment imple
     public void onClick(int position, boolean isSelected) {
         mMessage.hascode=getClozeAnsweHashCode();
         if(isSelected){
-            mData.setIsAnswer(true);
+            mData.setHasAnswered(true);
             mData.getAnswerList().clear();
             mData.getAnswerList().add(String.valueOf(position));
             mMessage.answer=mData.getChoice().get(position);
         }else{
-            mData.setIsAnswer(false);
+            mData.setHasAnswered(false);
             mData.getAnswerList().remove(0);
             mMessage.answer="";
         }

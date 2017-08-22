@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.homework.classmanage.ClassStatus;
 import com.yanxiu.gphone.student.homework.response.CancelApplyClassResponse;
 import com.yanxiu.gphone.student.homework.request.CancelApplyClassRequest;
@@ -24,14 +25,14 @@ import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
  * Created by sp on 17-5-18.
  */
 
-public class ClassInfoActivity extends Activity {
+public class ClassInfoActivity extends YanxiuBaseActivity {
     public static final String EXTRA_CLASS_INFO = "CLASS_INFO";
     public static final String EXTRA_STATUS = "CLASS_STATUS";
     private String mClassId;
     private int mStatus = -1;
     private boolean isRequesting = false;
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_class_info);
         ClassBean classInfo = (ClassBean) getIntent().getSerializableExtra(EXTRA_CLASS_INFO);

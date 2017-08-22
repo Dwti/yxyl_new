@@ -3,7 +3,6 @@ package com.yanxiu.gphone.student.questions.answerframe.ui.fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -41,7 +40,6 @@ import com.yanxiu.gphone.student.questions.answerframe.util.QuestionUtil;
 import com.yanxiu.gphone.student.userevent.UserEventManager;
 import com.yanxiu.gphone.student.util.DESBodyDealer;
 import com.yanxiu.gphone.student.util.DataFetcher;
-import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.ScreenUtils;
 import com.yanxiu.gphone.student.util.SoundManger;
 import com.yanxiu.gphone.student.util.ToastManager;
@@ -187,13 +185,13 @@ public class AnswerCardFragment extends YanxiuBaseFragment implements View.OnCli
     private AnswerCardSubmitDialog.SubmitState checkAnswerState() {
         AnswerCardSubmitDialog.SubmitState state;
         for (int i = 0; i < mQuestions.size(); i++) {
-            if (!mQuestions.get(i).getIsAnswer()) { //有未作答的
+            if (!mQuestions.get(i).getHasAnswered()) { //有未作答的
                 state = AnswerCardSubmitDialog.SubmitState.STATE_HAS_NO_ANSWERED;
                 return state;
             }
         }
         for (int i = 0; i < mQuestions.size(); i++) {
-            if (QuestionTemplate.ANSWER.equals(mQuestions.get(i).getTemplate()) && mQuestions.get(i).getIsAnswer()) { //主观题且回答了，有图片
+            if (QuestionTemplate.ANSWER.equals(mQuestions.get(i).getTemplate()) && mQuestions.get(i).getHasAnswered()) { //主观题且回答了，有图片
                 state = STATE_PROGRESS;
                 return state;
             }
@@ -204,7 +202,7 @@ public class AnswerCardFragment extends YanxiuBaseFragment implements View.OnCli
     private AnswerCardSubmitDialog.SubmitState checkHasImgState() {
         AnswerCardSubmitDialog.SubmitState state;
         for (int i = 0; i < mQuestions.size(); i++) {
-            if (QuestionTemplate.ANSWER.equals(mQuestions.get(i).getTemplate()) && mQuestions.get(i).getIsAnswer()) { //主观题且回答了，有图片
+            if (QuestionTemplate.ANSWER.equals(mQuestions.get(i).getTemplate()) && mQuestions.get(i).getHasAnswered()) { //主观题且回答了，有图片
                 state = STATE_PROGRESS;
                 return state;
             }
@@ -382,7 +380,7 @@ public class AnswerCardFragment extends YanxiuBaseFragment implements View.OnCli
         int count =0;
         StringBuffer sb = new StringBuffer("[");
         for (int i = 0; i < mQuestions.size(); i++) {
-            if (mQuestions.get(i).getIsAnswer()) { //作答的
+            if (mQuestions.get(i).getHasAnswered()) { //作答的
                 count++;
                 sb.append(mQuestions.get(i).getQid()+",");
             }

@@ -15,6 +15,7 @@ import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
+import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.exercise.bean.SubjectBean;
 import com.yanxiu.gphone.student.exercise.request.SubjectsRequest;
 import com.yanxiu.gphone.student.exercise.response.SubjectsResponse;
@@ -28,7 +29,7 @@ import de.greenrobot.event.EventBus;
  * Created by sp on 17-7-26.
  */
 
-public class SelectSubjectActivity extends Activity {
+public class SelectSubjectActivity extends YanxiuBaseActivity {
 
     private TextView mTips;
     private View mTipsView,mBack;
@@ -42,7 +43,7 @@ public class SelectSubjectActivity extends Activity {
     }
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_subject);
         EventBus.getDefault().register(this);

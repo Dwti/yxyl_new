@@ -8,9 +8,17 @@ import com.yanxiu.gphone.student.util.LoginInfo;
  */
 
 public class SubjectsRequest extends EXueELianBaseRequest {
-    protected String stageId = LoginInfo.getStageid();
+    protected String stageId = "";
     @Override
     protected String urlPath() {
         return "common/getSubject.do";
+    }
+
+    public String getStageId() {
+        return stageId;
+    }
+
+    public void setStageId(String stageId) {
+        this.stageId = stageId;
     }
 }

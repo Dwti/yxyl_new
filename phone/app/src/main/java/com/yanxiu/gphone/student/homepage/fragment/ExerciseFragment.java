@@ -23,6 +23,7 @@ import com.yanxiu.gphone.student.exercise.SubjectsAdapter;
 import com.yanxiu.gphone.student.exercise.request.SubjectsRequest;
 import com.yanxiu.gphone.student.exercise.response.SubjectsResponse;
 import com.yanxiu.gphone.student.login.activity.ChooseStageActivity;
+import com.yanxiu.gphone.student.util.LoginInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,11 +52,11 @@ public class ExerciseFragment extends HomePageBaseFragment {
     }
 
     public void onEventMainThread(EditionSelectChangeMessage message){
-        requestSubjects();
+        requestSubjects(LoginInfo.getStageid());
     }
 
     public void onEventMainThread(ChooseStageActivity.StageMessage message){
-        requestSubjects();
+        requestSubjects(message.stageId);
     }
 
     private void initView(View view) {
@@ -69,7 +70,7 @@ public class ExerciseFragment extends HomePageBaseFragment {
         mRefreshBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestSubjects();
+                requestSubjects(LoginInfo.getStageid());
             }
         });
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -94,7 +95,7 @@ public class ExerciseFragment extends HomePageBaseFragment {
     private void initData() {
         mAdapter = new SubjectsAdapter(new ArrayList<SubjectBean>(0));
         mGridView.setAdapter(mAdapter);
-        requestSubjects();
+        requestSubjects(LoginInfo.getStageid());
     }
 
     @Override
@@ -128,8 +129,9 @@ public class ExerciseFragment extends HomePageBaseFragment {
         mAdapter.replaceData(data);
     }
 
-    private void requestSubjects(){
+    private void requestSubjects(String stageId){
         SubjectsRequest request = new SubjectsRequest();
+        request.setStageId(stageId);
         request.startRequest(SubjectsResponse.class,mSubjectsCallback);
     }
 

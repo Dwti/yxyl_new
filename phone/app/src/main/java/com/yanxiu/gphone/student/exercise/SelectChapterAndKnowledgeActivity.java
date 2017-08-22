@@ -20,6 +20,7 @@ import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
+import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.ChapterSwitchBar;
 import com.yanxiu.gphone.student.exercise.adapter.BaseExpandableRecyclerAdapter;
@@ -56,7 +57,7 @@ import java.util.List;
  * Created by sp on 17-7-28.
  */
 
-public class SelectChapterAndKnowledgeActivity extends Activity{
+public class SelectChapterAndKnowledgeActivity extends YanxiuBaseActivity {
 
     private View mBack, mLayoutStage,mRootView,mToolBar,mTipsView;
     private TextView mTitle,mStage,mTips;
@@ -87,7 +88,7 @@ public class SelectChapterAndKnowledgeActivity extends Activity{
     }
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_chapter);
         initView();

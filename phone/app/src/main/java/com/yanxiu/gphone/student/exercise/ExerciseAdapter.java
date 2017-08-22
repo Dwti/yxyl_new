@@ -15,8 +15,13 @@ import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.exercise.bean.ExerciseBean;
 import com.yanxiu.gphone.student.homework.homeworkdetail.HomeworkDetailPresenter;
 import com.yanxiu.gphone.student.homework.response.HomeworkDetailBean;
+import com.yanxiu.gphone.student.util.TimeUtils;
 
 import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -61,10 +66,11 @@ public class ExerciseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
         if(holder instanceof ExerciseViewHolder){
             ExerciseViewHolder viewHolder = (ExerciseViewHolder)holder;
-            String correctRate = NumberFormat.getPercentInstance().format(bean.getCorrectNum() / bean.getQuestionNum());
+            String correctRate = NumberFormat.getPercentInstance().format(bean.getCorrectNum() / (float)bean.getQuestionNum());
             viewHolder.name.setText(bean.getName());
             if(bean.getStatus() == 2){
-                viewHolder.endTime.setText(String.format(viewHolder.endTime.getResources().getString(R.string.exercise_end_time),bean.getBuildTime()));
+                String buildTime = TimeUtils.getExerciseDate(bean.getBuildTime());
+                viewHolder.endTime.setText(String.format(viewHolder.endTime.getResources().getString(R.string.exercise_end_time),buildTime));
                 viewHolder.correctRate.setText(String.format(viewHolder.correctRate.getResources().getString(R.string.exercise_correct_rate),correctRate));
             }else {
                 viewHolder.endTime.setText(viewHolder.endTime.getResources().getString(R.string.exercise_wait_to_finish));

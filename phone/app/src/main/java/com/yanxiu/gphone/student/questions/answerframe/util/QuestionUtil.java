@@ -9,7 +9,6 @@ import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
 import com.yanxiu.gphone.student.questions.answerframe.bean.ReportAnswerBean;
-import com.yanxiu.gphone.student.questions.classify.ClassifyQuestion;
 
 import org.json.JSONArray;
 
@@ -695,11 +694,11 @@ public class QuestionUtil {
             BaseQuestion question = list.get(i);
             String prefixNumber = String.valueOf(question.getAnswerCardPrefixNumber());
             if ("-1".equals(prefixNumber)) { //答题报告逻辑里的单题（除了8，22类型的题）
-                if (question.getIsAnswer())
+                if (question.getHasAnswered())
                     totalCount++;
             } else {
                 if (!map.containsKey(prefixNumber)) {
-                    if (question.getIsAnswer()) {
+                    if (question.getHasAnswered()) {
                         map.put(prefixNumber, 1);
                     } else {
                         map.put(prefixNumber, -10);
@@ -708,7 +707,7 @@ public class QuestionUtil {
                     if (-10 == map.get(prefixNumber)) { //已经有未答题了，那么这个就是未答的，无需再判断
 
                     } else {
-                        if (question.getIsAnswer()) {
+                        if (question.getHasAnswered()) {
                             map.put(prefixNumber, 1);
                         } else {
                             map.put(prefixNumber, -10);

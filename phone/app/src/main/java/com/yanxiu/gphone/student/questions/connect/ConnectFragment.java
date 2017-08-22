@@ -4,8 +4,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
+import android.text.Spanned;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +19,7 @@ import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
-import com.yanxiu.gphone.student.util.ScreenUtils;
+import com.yanxiu.gphone.student.util.HtmlImageGetter;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -137,6 +138,14 @@ public class ConnectFragment extends AnswerSimpleExerciseBaseFragment {
     }
 
     private void initData() {
+
+        mTextStem.post(new Runnable() {
+            @Override
+            public void run() {
+                Spanned spanned = Html.fromHtml(mQuestion.getStem(),new HtmlImageGetter(mTextStem),null);
+                mTextStem.setText(spanned);
+            }
+        });
 
         List<String> leftTexts = mQuestion.getLeftChoices();
         List<String> rightTexts = mQuestion.getRightChoices();
@@ -292,35 +301,39 @@ public class ConnectFragment extends AnswerSimpleExerciseBaseFragment {
 
     @Override
     public void saveAnswer(BaseQuestion question) {
-        List<String> answers = new ArrayList<>();
+        List<String> serverFilledAnswers = new ArrayList<>();
+        List<String> localFilledAnswers = new ArrayList<>();
         for (ConnectedBean bean : mConnectedList) {
             int leftPos = bean.getLeftItem().getOriginPosition();
             int rightPos = bean.getRightItem().getOriginPosition();
-            rightPos += mQuestion.getChoices().size() / 2;
 
-            answers.add(leftPos + "," + rightPos);
+            localFilledAnswers.add(leftPos + "," + rightPos);
+
+            rightPos += mQuestion.getChoices().size() / 2;
+            serverFilledAnswers.add(leftPos + "," + rightPos);
         }
-        if (answers.size() < mQuestion.getChoices().size() / 2) {
-            int count = mQuestion.getChoices().size() / 2 - answers.size();
+        if (serverFilledAnswers.size() < mQuestion.getChoices().size() / 2) {
+            int count = mQuestion.getChoices().size() / 2 - serverFilledAnswers.size();
             for (int i = 0; i < count; i++) {
-                answers.add("");
+                serverFilledAnswers.add("");
             }
         }
 
-        mQuestion.setServerFilledAnswers(answers);
+        mQuestion.setFilledAnswers(localFilledAnswers);
+        mQuestion.setServerFilledAnswers(serverFilledAnswers);
 
         boolean hasAnswered = true;
-        if (answers.size() == 0) {
+        if (serverFilledAnswers.size() == 0) {
             hasAnswered = false;
         } else {
-            for (String s : answers) {
+            for (String s : serverFilledAnswers) {
                 if (TextUtils.isEmpty(s)) {
                     hasAnswered = false;
                     break;
                 }
             }
         }
-        mQuestion.setIsAnswer(hasAnswered);
+        mQuestion.setHasAnswered(hasAnswered);
 
         super.saveAnswer(question);
     }

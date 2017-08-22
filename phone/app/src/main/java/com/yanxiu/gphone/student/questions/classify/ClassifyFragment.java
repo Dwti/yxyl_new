@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -21,7 +20,6 @@ import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.choose.SingleChoiceQuestion;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
-import com.yanxiu.gphone.student.util.ToastManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -280,9 +278,9 @@ public class ClassifyFragment extends AnswerSimpleExerciseBaseFragment implement
         int hasAnswerCount = getAnswerListCount();//已选答案数量
         int totalCount = mChoiceList.size();//所有待选项目内容数量
         if(totalCount == hasAnswerCount){ //都回答完毕
-            mData.setIsAnswer(true);
+            mData.setHasAnswered(true);
         }else{
-            mData.setIsAnswer(false);
+            mData.setHasAnswered(false);
         }
         updateProgress();
     }

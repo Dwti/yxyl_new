@@ -172,6 +172,10 @@ public class ConnectQuestion extends BaseQuestion {
         return filledAnswers;
     }
 
+    public void setFilledAnswers(List<String> answers){
+        filledAnswers = answers;
+    }
+
     public List<String> getServerFilledAnswers() {
         return serverFilledAnswers;
     }

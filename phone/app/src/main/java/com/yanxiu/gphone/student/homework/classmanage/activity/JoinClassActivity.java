@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.customviews.WavesLayout;
 import com.yanxiu.gphone.student.homework.response.ClassBean;
 import com.yanxiu.gphone.student.homework.request.JoinClassRequest;
@@ -31,7 +32,7 @@ import com.yanxiu.gphone.student.util.ToastManager;
  * Created by sp on 17-5-17.
  */
 
-public class JoinClassActivity extends Activity {
+public class JoinClassActivity extends YanxiuBaseActivity {
 
     public static final String EXTRA_CLASS_INFO = "CLASS_INFO";
 
@@ -56,7 +57,7 @@ public class JoinClassActivity extends Activity {
 
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join_class);
         ClassBean classInfo = (ClassBean) getIntent().getSerializableExtra(EXTRA_CLASS_INFO);
