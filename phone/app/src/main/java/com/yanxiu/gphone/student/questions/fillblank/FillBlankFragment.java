@@ -45,7 +45,7 @@ public class FillBlankFragment extends AnswerSimpleExerciseBaseFragment implemen
     private View mRootView,mActivityRootView, mEditLayout, mBottom;
     private ScrollView mScrollView;
     private EditText mEditText;
-    private View mViewWrapper;
+    private View mViewWrapper,mComplexStemLayout;
 
     private KeyboardObserver mKeyboardObserver;
 
@@ -87,6 +87,7 @@ public class FillBlankFragment extends AnswerSimpleExerciseBaseFragment implemen
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_fillblank,container,false);
+        mComplexStemLayout = mRootView.findViewById(R.id.complex_stem_layout);
         mFillBlank = (FillBlankTextView) mRootView.findViewById(R.id.tv_fill_blank);
         mEditLayout = mRootView.findViewById(R.id.ll_edit);
         mSend = (Button) mRootView.findViewById(R.id.btnSend);
@@ -191,8 +192,8 @@ public class FillBlankFragment extends AnswerSimpleExerciseBaseFragment implemen
                             List<BlankView> viewList = mFillBlank.getBlankViews(mFillBlank.getCurrClickSpanStart());
                             if(viewList.size() > 0){
                                 final BlankView blankView = viewList.get(viewList.size() -1);
-                                if(blankView.getBottom() + mViewWrapper.getPaddingTop() > mScrollView.getHeight()){
-                                    mScrollView.scrollTo(0,blankView.getBottom() - mScrollView.getHeight() + mViewWrapper.getPaddingTop());
+                                if(blankView.getBottom() + mViewWrapper.getPaddingTop() + mComplexStemLayout.getHeight()> mScrollView.getHeight()){
+                                    mScrollView.scrollTo(0,blankView.getBottom() - mScrollView.getHeight() + mViewWrapper.getPaddingTop()+ mComplexStemLayout.getHeight());
                                 }
                             }
                         }
