@@ -197,8 +197,26 @@ public class QuestionConvertFactory {
                     questions.add(yesNoQuestion);
                     break;
                 case QuestionTemplate.CONNECT:
+                    ConnectQuestion connectQuestion = new ConnectQuestion(childQuestion,showType,paperStatus);
+                    connectQuestion.setStem_complexToSimple(stem_complex);
+                    connectQuestion.setTemplate_complexToSimple(template);
+                    connectQuestion.setTypeId_complexToSimple(type_id);
+                    connectQuestion.setUrl_listenComplexToSimple(url_complex_listen);
+                    connectQuestion.setPadId_ComplexToSimple(padId_complex);
+                    connectQuestion.setPtid_ComplexToSimple(ptid_complex);
+                    connectQuestion.setQid_ComplexToSimple(qid_complex);
+                    questions.add(connectQuestion);
                     break;
                 case QuestionTemplate.CLASSIFY:
+                    ClassifyQuestion classifyQuestion = new ClassifyQuestion(childQuestion,showType,paperStatus);
+                    classifyQuestion.setStem_complexToSimple(stem_complex);
+                    classifyQuestion.setTemplate_complexToSimple(template);
+                    classifyQuestion.setTypeId_complexToSimple(type_id);
+                    classifyQuestion.setUrl_listenComplexToSimple(url_complex_listen);
+                    classifyQuestion.setPadId_ComplexToSimple(padId_complex);
+                    classifyQuestion.setPtid_ComplexToSimple(ptid_complex);
+                    classifyQuestion.setQid_ComplexToSimple(qid_complex);
+                    questions.add(classifyQuestion);
                     break;
                 case QuestionTemplate.ANSWER:
                     SubjectiveQuestion subjectiveQuestion = new SubjectiveQuestion(childQuestion, showType, paperStatus);
