@@ -19,6 +19,7 @@ import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.exercise.bean.SubjectBean;
 import com.yanxiu.gphone.student.exercise.request.SubjectsRequest;
 import com.yanxiu.gphone.student.exercise.response.SubjectsResponse;
+import com.yanxiu.gphone.student.util.LoginInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -120,6 +121,7 @@ public class SelectSubjectActivity extends YanxiuBaseActivity {
 
     private void requestSubjects() {
         SubjectsRequest request = new SubjectsRequest();
+        request.setStageId(LoginInfo.getStageid());
         request.startRequest(SubjectsResponse.class, mSubjectsCallback);
     }
 

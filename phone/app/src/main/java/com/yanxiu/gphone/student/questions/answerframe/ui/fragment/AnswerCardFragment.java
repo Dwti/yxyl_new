@@ -345,7 +345,11 @@ public class AnswerCardFragment extends YanxiuBaseFragment implements View.OnCli
                                 //练习过来的
                                 AnswerReportActicity.invoke(getActivity(), key,Constants.MAINAVTIVITY_FROMTYPE_EXERCISE,mActivity.getGenQuesequest());
                                 getActivity().finish();
-                            } else {
+                            } else if(Constants.MAINAVTIVITY_FROMTYPE_EXERCISE_HISTORY.equals(mActivity.getFromType())){
+                                //从练习历史过来
+                                AnswerReportActicity.invoke(getActivity(), key,Constants.MAINAVTIVITY_FROMTYPE_EXERCISE_HISTORY,null);
+                                getActivity().finish();
+                            }else {
                                 ToastManager.showMsg("提交成功");
                                 getActivity().finish();
                             }

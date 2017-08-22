@@ -24,6 +24,7 @@ import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
+import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.ChapterSwitchBar;
 import com.yanxiu.gphone.student.customviews.LoadingView;
 import com.yanxiu.gphone.student.exercise.adapter.PopListAdapter;
@@ -80,6 +81,7 @@ public class ExerciseHistoryActivity extends YanxiuBaseActivity {
     private int mKnowTotalPage = 0;
     private boolean mIsChapterMode = true;  //当前选中的是否是章节
     private boolean mNoEditions = true; //第一次进来是否请求Editions数据失败
+    private boolean mEnteredAnswerQueUI = false;
 
 
     public static void invoke(Context context,String subjectId, String subjectName,String editionId){
@@ -96,6 +98,14 @@ public class ExerciseHistoryActivity extends YanxiuBaseActivity {
         initView();
         initListener();
         initData();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(mEnteredAnswerQueUI){
+            loadData();
+        }
     }
 
     private void initView(){
@@ -371,7 +381,8 @@ public class ExerciseHistoryActivity extends YanxiuBaseActivity {
 
 
     public void openAnswerQuestionUI(String key) {
-        AnswerQuestionActivity.invoke(this,key);
+        mEnteredAnswerQueUI = true;
+        AnswerQuestionActivity.invoke(this,key, Constants.MAINAVTIVITY_FROMTYPE_EXERCISE_HISTORY,null);
     }
 
     public void openAnswerReportUI(String key) {
@@ -462,6 +473,7 @@ public class ExerciseHistoryActivity extends YanxiuBaseActivity {
         protected void onResponse(RequestBase request, ExerciseHistoryResponse response) {
             if(response.getStatus().getCode() == 0){
                 if(mChapterCurrentPage == 1){
+                    mEnteredAnswerQueUI = false;
                     setLoadingIndicator(false);
                     mChapterTotalPage = response.getPage().getTotalPage();
                     if(response.getData() != null && response.getData().size() > 0){
@@ -513,6 +525,7 @@ public class ExerciseHistoryActivity extends YanxiuBaseActivity {
         protected void onResponse(RequestBase request, ExerciseHistoryResponse response) {
             if(response.getStatus().getCode() == 0){
                 if(mKnowCurrentPage == 1){
+                    mEnteredAnswerQueUI = false;
                     setLoadingIndicator(false);
                     mKnowTotalPage = response.getPage().getTotalPage();
                     if(response.getData() != null && response.getData().size() > 0){

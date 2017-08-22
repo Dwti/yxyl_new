@@ -33,6 +33,11 @@ public class ScreenUtils {
         return dp * context.getResources().getDisplayMetrics().density;
     }
 
+    public static float getScreenDensity(Context context){
+        return context.getResources().getDisplayMetrics().density;
+    }
+
+
     /**
      * dp转px  返回int类型
      *

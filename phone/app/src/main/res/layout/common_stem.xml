@@ -12,7 +12,6 @@
         android:id="@+id/complex_stem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:lineSpacingExtra="@dimen/stem_line_space"
         android:textColor="#333333"
         android:textSize="@dimen/stem_text_size" />
 

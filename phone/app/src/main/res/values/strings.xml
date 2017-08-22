@@ -43,7 +43,7 @@
     <string name="school">学校</string>
     <string name="period">学段</string>
 
-    <string name="what_is_class_1">班级是由老师在“易学易练老师端”中创建，给学生布置批发作业的班级群。</string>
+    <string name="what_is_class_1">班级是由老师在“易学易练老师端”中创建，给学生布置批改作业的班级群。</string>
     <string name="what_is_class_2">每个易学易练班级都有一个8位数班级号码如：“班级号码：12345678”。</string>
     <string name="how_to_join_class_1">第一步：老师在“易学易练教师端”中创建班级，并将班级号码 分享或告知学生们。</string>
     <string name="how_to_join_class_2">第二步：同学们在“易学易练学生端”作业页面，点击“加入班级”输入班级号码，即可加入班级，然后 就可以通过手机来完成来自老师布置的作业了。</string>
