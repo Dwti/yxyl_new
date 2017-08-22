@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -53,6 +54,8 @@ public class JoinClassActivity extends YanxiuBaseActivity {
 
     private EditText mEditName;
 
+    private ImageView mIvEdit;
+
     private boolean isRequesting = false;
 
 
@@ -73,12 +76,14 @@ public class JoinClassActivity extends YanxiuBaseActivity {
         TextView studentNum = (TextView) findViewById(R.id.tv_student_num);
         TextView schoolName = (TextView) findViewById(R.id.tv_school_name);
         mScrollView = (ScrollView) findViewById(R.id.scrollView);
+        mIvEdit = (ImageView) findViewById(R.id.iv_edit_name);
         mEditName = (EditText) findViewById(R.id.et_name);
         mBtnNext = (Button) findViewById(R.id.btn_next);
         mWavesLayout = (WavesLayout)findViewById(R.id.wavesLayout);
         mBack = findViewById(R.id.iv_left);
 
         mBack.setVisibility(View.VISIBLE);
+        mBack.setBackgroundResource(R.drawable.selector_white_back);
         title.setText(R.string.class_info);
         mEditName.setText(LoginInfo.getRealName());
         mEditName.setSelection(LoginInfo.getRealName().length());
@@ -98,6 +103,12 @@ public class JoinClassActivity extends YanxiuBaseActivity {
     }
 
     private void initListener(){
+        mIvEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         mEditName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

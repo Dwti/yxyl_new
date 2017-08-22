@@ -11,7 +11,7 @@
             android:id="@+id/iv_left"
             android:layout_width="26dp"
             android:layout_height="26dp"
-            android:background="@android:color/holo_blue_light"
+            android:background="@drawable/selector_back"
             android:layout_marginLeft="12dp"
             android:layout_centerVertical="true"/>
 
@@ -46,7 +46,7 @@
                     android:layout_width="26dp"
                     android:layout_height="26dp"
                     android:layout_marginLeft="14dp"
-                    android:background="@android:color/holo_blue_light"/>
+                    android:background="@drawable/icon_what_is_class"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -90,7 +90,7 @@
                     android:layout_width="26dp"
                     android:layout_height="26dp"
                     android:layout_marginLeft="14dp"
-                    android:background="@android:color/holo_blue_light"/>
+                    android:background="@drawable/icon_how_to_join"/>
 
                 <TextView
                     android:layout_width="wrap_content"

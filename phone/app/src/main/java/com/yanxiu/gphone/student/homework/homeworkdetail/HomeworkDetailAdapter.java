@@ -61,8 +61,8 @@ public class HomeworkDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         if(holder instanceof HomeworkDetailViewHolder){
             HomeworkDetailViewHolder viewHolder = (HomeworkDetailViewHolder)holder;
             viewHolder.mName.setText(bean.getName());
-            //TODO 根据状态设置icon
             if(bean.getPaperStatus().getStatus() == HomeworkDetailPresenter.STATUS_TODO){   //待完成
+                viewHolder.mIcon.setImageResource(R.drawable.icon_hwk_todo);
                 viewHolder.mState1.setText(mContext.getString(R.string.homework_done_num) + SpManager.getCompleteQuestionCount(bean.getId()) + "/" + bean.getQuesnum());
                 if(bean.getIsEnd() == 0){  //未截止
                     viewHolder.mState2.setText(mContext.getString(R.string.homework_remain_time)+ bean.getRemaindertimeStr());
@@ -71,10 +71,12 @@ public class HomeworkDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 }
                 viewHolder.mCommentLayout.setVisibility(View.GONE);
             }else if(bean.getPaperStatus().getStatus() ==HomeworkDetailPresenter.STATUS_UNSUBMMIT){ // 未完成
+                viewHolder.mIcon.setImageResource(R.drawable.icon_hwk_deadline);
                 viewHolder.mState1.setText(R.string.over_deadline);
                 viewHolder.mState2.setText("");
                 viewHolder.mCommentLayout.setVisibility(View.GONE);
             }else if(bean.getPaperStatus().getStatus() == HomeworkDetailPresenter.STATUS_FINISHED){//已完成
+                viewHolder.mIcon.setImageResource(R.drawable.icon_hwk_finished);
                 if("1".equals(bean.getPaperStatus().getCheckStatus())) {
                     viewHolder.mState1.setText(R.string.homework_checked);
                     viewHolder.mState2.setText(mContext.getString(R.string.score_rate) + NumberFormat.getPercentInstance().format(bean.getPaperStatus().getScoreRate()));

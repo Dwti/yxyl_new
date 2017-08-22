@@ -28,6 +28,6 @@
         android:ellipsize="end"
         android:textSize="13dp"
         android:textColor="#999999"
-        android:text="请选择教材"/>
+        android:text="  "/>
 
 </LinearLayout>

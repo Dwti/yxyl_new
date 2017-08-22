@@ -17,7 +17,7 @@
                 android:id="@+id/iv_join_class"
                 android:layout_width="38dp"
                 android:layout_height="38dp"
-                android:background="@android:color/holo_blue_light"
+                android:background="@drawable/selector_class_info"
                 android:layout_marginRight="11dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"/>

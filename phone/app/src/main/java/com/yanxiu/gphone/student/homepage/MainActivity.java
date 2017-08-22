@@ -154,6 +154,9 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
         mNavTextViews[1].setText(R.string.exercises);
         mNavTextViews[2].setText(R.string.navi_tbm_my);
 
+        mNavIconViews[0].setBackgroundResource(R.drawable.selector_homework);
+        mNavIconViews[1].setBackgroundResource(R.drawable.selector_exercise);
+
     }
 
     @Override
