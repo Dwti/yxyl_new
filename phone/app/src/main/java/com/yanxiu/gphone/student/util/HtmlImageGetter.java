@@ -40,14 +40,16 @@ public class HtmlImageGetter implements Html.ImageGetter {
                         float width = resource.getIntrinsicWidth();
                         float height = resource.getIntrinsicHeight();
                         int maxWidth = mTextView.getWidth() - mTextView.getPaddingLeft() - mTextView.getPaddingRight();
-                        if(width > maxWidth){
-                            float scale = maxWidth / width;
-                            height = height * scale;
-                            width = maxWidth;
+                        float scaledWidth = width * ScreenUtils.getScreenDensity(mTextView.getContext());
+                        float scaledHeight = height * ScreenUtils.getScreenDensity(mTextView.getContext());
+                        if(scaledWidth > maxWidth){
+                            float scale = maxWidth / scaledWidth;
+                            scaledHeight = scaledHeight * scale;
+                            scaledWidth = maxWidth;
                         }
-                        drawable.setBounds(0, 0, Math.round(width), Math.round(height));
+                        drawable.setBounds(0, 0, Math.round(scaledWidth), Math.round(scaledHeight));
                         drawable.drawable = resource;
-                        drawable.drawable.setBounds(0, 0, Math.round(width), Math.round(height));
+                        drawable.drawable.setBounds(0, 0, Math.round(scaledWidth), Math.round(scaledHeight));
                         mTextView.setText(mTextView.getText());
                     }
                 });
