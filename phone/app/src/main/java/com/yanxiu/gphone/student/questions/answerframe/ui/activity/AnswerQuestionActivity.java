@@ -116,7 +116,12 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
      */
     private void initExerciseData(){
         if(Constants.MAINAVTIVITY_FROMTYPE_EXERCISE.equals(mFromType)){
+            //从练习页面过来
             mGenQuesequest = (GenQuesRequest)getIntent().getSerializableExtra(Constants.EXTRA_REQUEST);
+            initDialog();
+        }else if(Constants.MAINAVTIVITY_FROMTYPE_EXERCISE_HISTORY.equals(mFromType)){
+            //从练习历史页面过来
+            mGenQuesequest = null;
             initDialog();
         }
     }
@@ -476,6 +481,9 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
             case R.id.backview:
                 if(Constants.MAINAVTIVITY_FROMTYPE_EXERCISE.equals(mFromType)){ // 练习
                     quitSubmmitDialog();
+                }else if(Constants.MAINAVTIVITY_FROMTYPE_EXERCISE_HISTORY.equals(mFromType)){
+                    mDialog.showLoadingView();
+                    requestSubmmit();
                 }else {
                     SpManager.setCompleteQuestionCount(mPaper.getId(),QuestionUtil.calculateCompleteCount(mQuestions));
                     finish();
@@ -595,6 +603,9 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         }
         if(Constants.MAINAVTIVITY_FROMTYPE_EXERCISE.equals(mFromType)){ // 练习
             quitSubmmitDialog();
+        }else if(Constants.MAINAVTIVITY_FROMTYPE_EXERCISE_HISTORY.equals(mFromType)){
+            mDialog.showLoadingView();
+            requestSubmmit();
         }else{
             SpManager.setCompleteQuestionCount(mPaper.getId(),QuestionUtil.calculateCompleteCount(mQuestions));
             super.onBackPressed();
