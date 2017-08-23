@@ -148,6 +148,7 @@ public class FillBlankFragment extends AnswerSimpleExerciseBaseFragment implemen
         mSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mSend.setClickable(false);
                 //找出当前输入的span的位置
                 int currPos = mFillBlank.getCurrentEditBlankPosition();
                 //更新答案的内容
@@ -161,6 +162,7 @@ public class FillBlankFragment extends AnswerSimpleExerciseBaseFragment implemen
                 //保存答案
                 saveAnswer(mQuestion);
                 updateProgress();
+                mSend.setClickable(true);
             }
         });
 
