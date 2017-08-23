@@ -176,7 +176,10 @@ public class FillBlankFragment extends AnswerSimpleExerciseBaseFragment implemen
                     mFillBlank.setBlankTransparent(spanStart,false);
                 }
                 if(!mIsKeyboardShowing){
-                    imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT,0);
+                    mBottom.setVisibility(View.GONE);
+                    mEditLayout.setVisibility(View.VISIBLE);
+                    mEditText.requestFocus();
+                    imm.showSoftInput(mEditText,InputMethodManager.SHOW_FORCED);
                 }
                 mEditText.setText(filledContent);
                 mEditText.setSelection(filledContent.length());
@@ -211,9 +214,6 @@ public class FillBlankFragment extends AnswerSimpleExerciseBaseFragment implemen
         mIsKeyboardShowing = isShow;
         if(isShow){
             setTopLayoutMinHeight();
-            mBottom.setVisibility(View.GONE);
-            mEditLayout.setVisibility(View.VISIBLE);
-            mEditText.requestFocus();
         }else {
             mBottom.setVisibility(View.VISIBLE);
             mEditLayout.setVisibility(View.GONE);
