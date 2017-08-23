@@ -61,6 +61,7 @@ public class MediaPlayerUtil {
             mPlayer.setOnBufferingUpdateListener(bufferingUpdateListener);
             mPlayer.prepareAsync();
         } catch (Exception e) {
+            Logger.d(TAG, e.toString());
             e.printStackTrace();
         }
     }

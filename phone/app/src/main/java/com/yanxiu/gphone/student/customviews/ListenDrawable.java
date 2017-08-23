@@ -24,14 +24,14 @@ import com.yanxiu.gphone.student.R;
  */
 class ListenDrawable extends Drawable {
 
-    private int mStartDown= R.drawable.listener_start_press;
-    private int mStartUp=R.drawable.listener_start_normal;
+    private static final int mStartDown= R.drawable.listener_start_press;
+    private static final int mStartUp=R.drawable.listener_start_normal;
 
-    private int mEndDown=R.drawable.listener_end_press;
-    private int mEndUp=R.drawable.listener_end_normal;
+    private static final int mEndDown=R.drawable.listener_end_press;
+    private static final int mEndUp=R.drawable.listener_end_normal;
 
-    public static final int TYPE_START=0x000;
-    public static final int TYPE_END=0x001;
+    static final int TYPE_START=0x000;
+    static final int TYPE_END=0x001;
 
     private boolean isZoom=false;
 
@@ -116,7 +116,7 @@ class ListenDrawable extends Drawable {
     }
 
     public void setEvent(boolean isDown){
-        Drawable drawable=null;
+        Drawable drawable;
         if (mType==TYPE_END){
             if (isDown){
                 drawable = ContextCompat.getDrawable(mContext, mEndDown);

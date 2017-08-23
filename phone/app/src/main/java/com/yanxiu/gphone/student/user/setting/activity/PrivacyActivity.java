@@ -147,7 +147,7 @@ public class PrivacyActivity extends YanxiuBaseActivity implements View.OnClickL
             super.onPageFinished(view, url);
             String title = view.getTitle();
             if (title.equals("- no title specified")){
-                    mTitleView.setText(R.string.privacy_policy_txt);
+                mTitleView.setText(getText(R.string.about_privacy));
             }else {
 //                mTitleView.setText(title);
             }
