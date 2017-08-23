@@ -51,6 +51,7 @@ public class ClassInfoActivity extends YanxiuBaseActivity {
         ImageView back = (ImageView) findViewById(R.id.iv_left);
 
         back.setVisibility(View.VISIBLE);
+        back.setBackgroundResource(R.drawable.selector_white_back);
         title.setText(R.string.class_info);
 
         if(classInfo != null){

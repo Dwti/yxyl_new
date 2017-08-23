@@ -21,8 +21,7 @@
             android:layout_width="21dp"
             android:layout_height="21dp"
             android:layout_marginLeft="13dp"
-            android:layout_marginTop="14.5dp"
-            android:background="@android:color/holo_blue_light" />
+            android:layout_marginTop="14.5dp" />
 
         <TextView
             android:id="@+id/tv_name"

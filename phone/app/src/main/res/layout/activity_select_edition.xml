@@ -16,7 +16,7 @@
             android:layout_width="26dp"
             android:layout_height="26dp"
             android:layout_marginLeft="12dp"
-            android:background="@android:color/holo_red_light"
+            android:background="@drawable/selector_white_back"
             android:layout_centerVertical="true"/>
 
         <TextView
