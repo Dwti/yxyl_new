@@ -39,6 +39,7 @@ public class SelectEditionActivity extends YanxiuBaseActivity {
     private View mTipsView, mContent;
     private Button mRefreshBtn;
     private ImageView mIcon, mBack;
+    private ImageView mTipsImg;
     private PickerViewEx mPickerView;
     private Button mBtnOk;
     private String mSubjectId = "",mSubjectName;
@@ -80,6 +81,7 @@ public class SelectEditionActivity extends YanxiuBaseActivity {
         mContent = findViewById(R.id.ll_content);
         mTipsView = findViewById(R.id.tips_layout);
         mRefreshBtn = (Button) findViewById(R.id.btn_refresh);
+        mTipsImg = (ImageView) findViewById(R.id.iv_tips);
         mTips = (TextView) findViewById(R.id.tv_tips);
         mSubject = (TextView) findViewById(R.id.subject);
         mIcon = (ImageView) findViewById(R.id.icon);
@@ -142,6 +144,7 @@ public class SelectEditionActivity extends YanxiuBaseActivity {
     private void showDataErrorView() {
         mContent.setVisibility(View.GONE);
         mTipsView.setVisibility(View.VISIBLE);
+        mTipsImg.setImageResource(R.drawable.net_error);
         mTips.setText(R.string.load_failed);
         mRefreshBtn.setText(R.string.click_to_retry);
     }

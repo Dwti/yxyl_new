@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -71,6 +72,7 @@ public class ExerciseHistoryActivity extends YanxiuBaseActivity {
     private View mRootView,mTipsView, mBack,mLayoutStage,mToolBar;
     private String mSubjectId,mEditionId,mVolume;
     private TextView mTitle, mTips,mStage;
+    private ImageView mTipsImg;
     private Button mRefreshBtn;
     private List<EditionChildBean> mEditionChildBeanList;
     private ChapterSwitchBar mSwitchBar;
@@ -121,6 +123,7 @@ public class ExerciseHistoryActivity extends YanxiuBaseActivity {
         mRefreshLayout = (EXueELianRefreshLayout) findViewById(R.id.refreshLayout);
         mLoadingView = (LoadingView) findViewById(R.id.loading);
         mTipsView = findViewById(R.id.tips_layout);
+        mTipsImg = (ImageView) findViewById(R.id.iv_tips);
         mTips = (TextView) findViewById(R.id.tv_tips);
         mStage = (TextView) findViewById(R.id.tv_stage);
         mRefreshBtn = (Button) findViewById(R.id.btn_refresh);
@@ -425,6 +428,7 @@ public class ExerciseHistoryActivity extends YanxiuBaseActivity {
         }
         mRefreshLayout.setVisibility(View.GONE);
         mTipsView.setVisibility(View.VISIBLE);
+        mTipsImg.setImageResource(R.drawable.no_exercise_history);
         mTips.setText(R.string.no_exercise);
         mRefreshBtn.setText(R.string.click_to_refresh);
     }
@@ -435,6 +439,7 @@ public class ExerciseHistoryActivity extends YanxiuBaseActivity {
         }
         mRefreshLayout.setVisibility(View.GONE);
         mTipsView.setVisibility(View.VISIBLE);
+        mTipsImg.setImageResource(R.drawable.net_error);
         mTips.setText(R.string.load_failed);
         mRefreshBtn.setText(R.string.click_to_retry);
     }

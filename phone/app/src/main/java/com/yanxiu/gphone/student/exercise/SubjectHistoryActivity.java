@@ -37,6 +37,7 @@ public class SubjectHistoryActivity extends YanxiuBaseActivity {
 
     private SubjectAdapter mAdapter;
     private View mTipsView,mBack;
+    private ImageView mTipsImg;
     private TextView mTips;
     private Button mRefreshBtn;
     private ListView mListView;
@@ -60,6 +61,7 @@ public class SubjectHistoryActivity extends YanxiuBaseActivity {
         mBack = findViewById(R.id.iv_back);
         mListView = (ListView) findViewById(R.id.list_view);
         mTipsView = findViewById(R.id.tips_layout);
+        mTipsImg = (ImageView) findViewById(R.id.iv_tips);
         mTips = (TextView) findViewById(R.id.tv_tips);
         mRefreshBtn = (Button) findViewById(R.id.btn_refresh);
         mAdapter = new SubjectAdapter(new ArrayList<SubjectBean>(0));
@@ -139,6 +141,7 @@ public class SubjectHistoryActivity extends YanxiuBaseActivity {
     private void showDataEmptyView(){
         mListView.setVisibility(View.GONE);
         mTipsView.setVisibility(View.VISIBLE);
+        mTipsImg.setImageResource(R.drawable.no_exercise_history);
         mTips.setText(R.string.no_exercise);
         mRefreshBtn.setText(R.string.click_to_refresh);
     }
@@ -147,6 +150,7 @@ public class SubjectHistoryActivity extends YanxiuBaseActivity {
     private void showDataErrorView(){
         mListView.setVisibility(View.GONE);
         mTipsView.setVisibility(View.VISIBLE);
+        mTipsImg.setImageResource(R.drawable.net_error);
         mTips.setText(R.string.load_failed);
         mRefreshBtn.setText(R.string.click_to_retry);
     }

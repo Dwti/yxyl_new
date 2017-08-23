@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -62,6 +63,7 @@ public class SelectChapterAndKnowledgeActivity extends YanxiuBaseActivity {
 
     private View mBack, mLayoutStage,mRootView,mToolBar,mTipsView;
     private TextView mTitle,mStage,mTips;
+    private ImageView mTipsImg;
     private RecyclerView mRecyclerView;
     private ChapterAdapter mChapterAdapter;
     private KnowledgePointAdapter mKnowledgePointAdapter;
@@ -209,6 +211,7 @@ public class SelectChapterAndKnowledgeActivity extends YanxiuBaseActivity {
         mLayoutStage = findViewById(R.id.ll_stage);
         mRootView = findViewById(R.id.root);
         mTitle = (TextView) findViewById(R.id.title);
+        mTipsImg = (ImageView) findViewById(R.id.iv_tips);
         mTipsView = findViewById(R.id.tips_layout);
         mTips = (TextView) findViewById(R.id.tv_tips);
         mRefreshBtn = (Button) findViewById(R.id.btn_refresh);
@@ -352,6 +355,7 @@ public class SelectChapterAndKnowledgeActivity extends YanxiuBaseActivity {
         }
         mRecyclerView.setVisibility(View.GONE);
         mTipsView.setVisibility(View.VISIBLE);
+        mTipsImg.setImageResource(R.drawable.net_error);
         mTips.setText(R.string.load_failed);
         mRefreshBtn.setText(R.string.click_to_retry);
     }

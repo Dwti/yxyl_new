@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.test.yanxiu.network.HttpCallback;
@@ -36,6 +37,7 @@ public class SelectSubjectActivity extends YanxiuBaseActivity {
     private View mTipsView,mBack;
     private Button mRefreshBtn;
     private GridView mGridView;
+    private ImageView mTipsImg;
     private SubjectsAdapter mAdapter;
 
     public static void invoke(Context context) {
@@ -61,6 +63,7 @@ public class SelectSubjectActivity extends YanxiuBaseActivity {
         mGridView = (GridView) findViewById(R.id.gridView);
         mTipsView = findViewById(R.id.tips_layout);
         mRefreshBtn = (Button) findViewById(R.id.btn_refresh);
+        mTipsImg = (ImageView) findViewById(R.id.iv_tips);
         mTips = (TextView) findViewById(R.id.tv_tips);
         mBack = findViewById(R.id.back);
     }
@@ -109,6 +112,7 @@ public class SelectSubjectActivity extends YanxiuBaseActivity {
     private void showDataErrorView() {
         mGridView.setVisibility(View.GONE);
         mTipsView.setVisibility(View.VISIBLE);
+        mTipsImg.setImageResource(R.drawable.net_error);
         mTips.setText(R.string.load_failed);
         mRefreshBtn.setText(R.string.click_to_retry);
     }

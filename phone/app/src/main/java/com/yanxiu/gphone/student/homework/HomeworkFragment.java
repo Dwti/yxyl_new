@@ -56,6 +56,8 @@ public class HomeworkFragment extends HomePageBaseFragment implements SearchClas
 
     private View mTipsView;
 
+    private ImageView mTipsImg;
+
     private TextView mTitle, mTips;
 
     private Button mRefreshBtn;
@@ -78,6 +80,7 @@ public class HomeworkFragment extends HomePageBaseFragment implements SearchClas
         mLoadingView = (LoadingView) root.findViewById(R.id.loading);
         mListView = (ListView) root.findViewById(R.id.list_view);
         mTipsView = root.findViewById(R.id.tips_layout);
+        mTipsImg = (ImageView) root.findViewById(R.id.iv_tips);
         mTips = (TextView) root.findViewById(R.id.tv_tips);
         mRefreshBtn = (Button) root.findViewById(R.id.btn_refresh);
         mRefreshLayout = (EXueELianRefreshLayout) root.findViewById(R.id.refreshLayout);
@@ -239,6 +242,7 @@ public class HomeworkFragment extends HomePageBaseFragment implements SearchClas
     private void showDataEmptyView(){
         mRefreshLayout.setVisibility(View.GONE);
         mTipsView.setVisibility(View.VISIBLE);
+        mTipsImg.setImageResource(R.drawable.has_not_publish_hwk);
         mTips.setText(R.string.class_no_homework);
         mRefreshBtn.setText(R.string.click_to_refresh);
     }
@@ -246,6 +250,7 @@ public class HomeworkFragment extends HomePageBaseFragment implements SearchClas
     private void showClassApplyView(){
         mRefreshLayout.setVisibility(View.GONE);
         mTipsView.setVisibility(View.VISIBLE);
+        mTipsImg.setImageResource(R.drawable.checking);
         mTips.setText(R.string.apply_for_class_checking);
         mRefreshBtn.setText(R.string.click_to_refresh);
     }
@@ -253,6 +258,7 @@ public class HomeworkFragment extends HomePageBaseFragment implements SearchClas
     private void showDataErrorView(){
         mRefreshLayout.setVisibility(View.GONE);
         mTipsView.setVisibility(View.VISIBLE);
+        mTipsImg.setImageResource(R.drawable.net_error);
         mTips.setText(R.string.load_failed);
         mRefreshBtn.setText(R.string.click_to_retry);
     }
