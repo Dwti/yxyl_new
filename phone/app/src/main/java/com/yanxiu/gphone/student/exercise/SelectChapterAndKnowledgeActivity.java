@@ -23,6 +23,7 @@ import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.ChapterSwitchBar;
+import com.yanxiu.gphone.student.customviews.PickerViewEx;
 import com.yanxiu.gphone.student.exercise.adapter.BaseExpandableRecyclerAdapter;
 import com.yanxiu.gphone.student.exercise.adapter.ChapterAdapter;
 import com.yanxiu.gphone.student.exercise.adapter.KnowledgePointAdapter;
@@ -70,6 +71,7 @@ public class SelectChapterAndKnowledgeActivity extends YanxiuBaseActivity {
     private Button mRefreshBtn;
     private List<EditionChildBean> mEditionChildBeanList;
     private int mLastSelectedPos = 0;
+    private int mCurrSelectedPos = 0;
     private boolean mIsChapterMode = true;  //当前选中的是否是章节
     private boolean mNoEditions = true; //第一次进来是否请求Editions数据失败
 
@@ -130,11 +132,7 @@ public class SelectChapterAndKnowledgeActivity extends YanxiuBaseActivity {
         mLayoutStage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(popupWindow ==null || (popupWindow != null && !popupWindow.isShowing())){
-                    showPop(mEditionChildBeanList);
-                }else {
-                    dismissPop();
-                }
+                showPop();
             }
         });
 
@@ -241,65 +239,71 @@ public class SelectChapterAndKnowledgeActivity extends YanxiuBaseActivity {
             getKnowledgePointList(mSubjectId);
         }
     }
-    private void showPop(final List<EditionChildBean> data){
-        if(data == null || data.size() == 0)
+    private void showPop(){
+        if(mEditionChildBeanList == null || mEditionChildBeanList.size() == 0)
             return;
         if(popupWindow == null){
             View view = LayoutInflater.from(this).inflate(R.layout.popwindow_stage,null);
             popupWindow = new PopupWindow(view,ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
 
-            View stage = view.findViewById(R.id.ll_stage_pop);
-            final TextView tvPop = (TextView) view.findViewById(R.id.tv_pop);
-            data.get(0).setSelected(true);
-            tvPop.setText(data.get(0).getName());
+            final PickerViewEx picker = (PickerViewEx) view.findViewById(R.id.picker_view);
+            picker.setTextLocation(PickerViewEx.DEFAULT_CENTER);
+            View tvOk = view.findViewById(R.id.tv_ok);
+            View tvCancel = view.findViewById(R.id.tv_cancel);
+            picker.setData(getEditionStrs(mEditionChildBeanList));
+            picker.setSelected(0);
+            mLastSelectedPos = 0;
+            mCurrSelectedPos = 0;
 
-            ListView listView = (ListView) view.findViewById(R.id.list_view);
-            final PopListAdapter adapter = new PopListAdapter(data);
-            listView.setAdapter(adapter);
-
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            picker.setOnSelectListener(new PickerViewEx.onSelectListener() {
                 @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    if(position != mLastSelectedPos){
-                        tvPop.setText(data.get(position).getName());
-                        mStage.setText(data.get(position).getName());
-                        mVolumeId = data.get(position).getId();
-                        data.get(position).setSelected(true);
-                        data.get(mLastSelectedPos).setSelected(false);
-                        mLastSelectedPos = position;
-                        adapter.notifyDataSetChanged();
-
-                        dismissPop();
-                        getChapterList(mSubjectId,mEditionId, mVolumeId);
-                    }
-
+                public void onSelect(View view, String text, int selectId) {
+                    mCurrSelectedPos = selectId;
                 }
             });
 
-            stage.setOnClickListener(new View.OnClickListener() {
+            tvOk.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(mLastSelectedPos != mCurrSelectedPos){
+                        mLastSelectedPos = mCurrSelectedPos;
+                        mVolumeId = mEditionChildBeanList.get(mCurrSelectedPos).getId();
+                        mStage.setText(mEditionChildBeanList.get(mCurrSelectedPos).getName());
+                        dismissPop();
+                        getChapterList(mSubjectId,mEditionId, mVolumeId);
+                    }else {
+                        dismissPop();
+                    }
+                }
+            });
+
+            tvCancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     dismissPop();
                 }
             });
 
-            if(data.size() > 6){
-                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) listView.getLayoutParams();
-                layoutParams.height = ScreenUtils.dpToPxInt(this,51 * 6);
-                listView.setLayoutParams(layoutParams);
-            }
-
             popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
                 @Override
                 public void onDismiss() {
-                    mLayoutStage.setVisibility(View.VISIBLE);
+                    mCurrSelectedPos = mLastSelectedPos;
+                    picker.setSelected(mCurrSelectedPos);
                 }
             });
+
             popupWindow.setFocusable(true);
         }
-        mLayoutStage.setVisibility(View.INVISIBLE);
         popupWindow.showAsDropDown(mRootView);
 
+    }
+
+    private List<String> getEditionStrs(List<EditionChildBean> list){
+        List<String> result = new ArrayList<>();
+        for(EditionChildBean bean : list){
+            result.add(bean.getName());
+        }
+        return result;
     }
 
     protected void openAnswerQuestionUI(String key,GenQuesRequest request){
@@ -376,6 +380,7 @@ public class SelectChapterAndKnowledgeActivity extends YanxiuBaseActivity {
         String volume = "";
         for(EditionBeanEx bean : list){
             if(editionId.equals(bean.getId())){
+                mEditionChildBeanList = bean.getChildren();
                 if(bean.getChildren() != null && bean.getChildren().size() > 0){
                     volume = bean.getChildren().get(0).getId();
                 }
@@ -399,7 +404,6 @@ public class SelectChapterAndKnowledgeActivity extends YanxiuBaseActivity {
         protected void onResponse(RequestBase request, EditionResponse response) {
             if(response.getStatus().getCode() == 0){
                 mNoEditions = false;
-                mEditionChildBeanList = response.getData().get(0).getChildren();
                 mVolumeId = getVolume(response.getData(),mEditionId);
                 showContentView();
                 mStage.setText(response.getData().get(0).getChildren().get(0).getName());
