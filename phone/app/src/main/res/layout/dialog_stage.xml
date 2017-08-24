@@ -72,7 +72,7 @@
                 android:layout_width="135dp"
                 android:layout_height="50dp"
                 android:background="@drawable/selector_answercard_yes_button_bg"
-                android:text="@string/stage_change_text"
+                android:text="@string/ok"
                 android:textColor="@drawable/selector_answercard_no_text_color"
                 android:textSize="@dimen/answer_card_submitbutton_textsize" />
         </com.yanxiu.gphone.student.customviews.WavesLayout>

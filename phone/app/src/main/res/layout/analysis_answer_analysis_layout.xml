@@ -17,10 +17,11 @@
         android:layout_marginLeft="@dimen/analysis_view_paddingbottom"
         android:layout_marginRight="@dimen/analysis_view_paddingbottom"
         android:lineSpacingExtra="@dimen/analysis_answer_analysis_SpacingExtra"
+        android:lineSpacingMultiplier="1"
         android:textColor="@color/color_336600"
         android:textSize="@dimen/analysis_answer_analysis_textsize"
         tools:text="正确答案为A，聂答案为B" />
-
+    <!--android:lineSpacingExtra="@dimen/analysis_answer_analysis_SpacingExtra"-->
 
     <View
         android:layout_width="match_parent"

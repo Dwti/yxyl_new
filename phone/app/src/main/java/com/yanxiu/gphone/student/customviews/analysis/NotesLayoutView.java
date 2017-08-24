@@ -126,7 +126,7 @@ public class NotesLayoutView extends LinearLayout implements View.OnClickListene
         protected void setResource(Bitmap resource) {
             RoundedBitmapDrawable cornersBitmapDrawable = RoundedBitmapDrawableFactory.create(view.getContext().getResources(), resource);
             cornersBitmapDrawable.setCornerRadius(12);
-            view.setImageDrawable(cornersBitmapDrawable);
+            view.setBackground(cornersBitmapDrawable);
         }
     }
 

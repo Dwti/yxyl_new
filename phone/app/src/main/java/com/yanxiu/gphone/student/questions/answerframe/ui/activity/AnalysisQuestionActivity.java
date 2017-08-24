@@ -102,7 +102,7 @@ public class AnalysisQuestionActivity extends YanxiuBaseActivity implements View
                         // 2, 跳转
                         int index = levelPositions.get(0);
                         FragmentStatePagerAdapter a1 = (FragmentStatePagerAdapter) mViewPager.getAdapter();
-                        mViewPager.setCurrentItem(index);
+                        mViewPager.setCurrentItem(index,false);
                         ExerciseBaseFragment currentFragment = (ExerciseBaseFragment) a1.instantiateItem(mViewPager, index);
                         currentFragment.setUserVisibleHin2(true);
 

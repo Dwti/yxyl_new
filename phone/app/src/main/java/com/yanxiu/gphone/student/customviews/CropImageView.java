@@ -123,8 +123,12 @@ public class CropImageView extends android.support.v7.widget.AppCompatImageView 
     }
 
     public void startCrop(onCropFinishedListener cropFinishedListener){
-        SaveBitmapTask saveBitmapTask=new SaveBitmapTask(mCropRect,cropFinishedListener);
-        saveBitmapTask.execute(drawable.getBitmap());
+        try {
+            SaveBitmapTask saveBitmapTask=new SaveBitmapTask(mCropRect,cropFinishedListener);
+            saveBitmapTask.execute(drawable.getBitmap());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public void setReset(){

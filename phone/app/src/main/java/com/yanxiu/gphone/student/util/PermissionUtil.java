@@ -32,23 +32,10 @@ public class PermissionUtil {
      */
     public static boolean cameraIsCanUse() {
         boolean isCanUse = true;
-        Camera mCamera = null;
-        try {
-            mCamera = Camera.open();
-            Camera.Parameters mParameters = mCamera.getParameters();
-            mCamera.setParameters(mParameters);
-        } catch (Exception e) {
-            isCanUse = false;
-        }finally {
-            if (mCamera != null) {
-                try {
-                    mCamera.release();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+        Camera mCamera = CameraManager.getInstence().getCamera();
+        if (mCamera==null){
+            isCanUse=false;
         }
-
         return isCanUse;
     }
 

@@ -46,7 +46,7 @@ public class CameraView extends FrameLayout {
     }
 
     private void initView(Context context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             TYPE=TYPE_LOLLIPOP;
             mTextureView=new CameraTextureView(context);
             this.addView(mTextureView);

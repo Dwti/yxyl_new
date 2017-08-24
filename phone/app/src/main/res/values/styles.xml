@@ -73,7 +73,6 @@
         <item name="android:layout_marginTop">@dimen/question_fragment_a_margin_t</item>
         <item name="android:layout_marginBottom">@dimen/question_fragment_a_margin_t</item>
         <item name="android:textColor">@color/color_333333</item>
-        <item name="android:textStyle">bold</item>
         <item name="android:textSize">@dimen/choose_fragment_item_content_text_size</item>
         <item name="android:lineSpacingExtra">@dimen/question_fragment_q_line_space</item>
         <item name="android:lineSpacingMultiplier">1</item>

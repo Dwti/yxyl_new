@@ -14,6 +14,8 @@
             android:id="@+id/tv_question"
             android:layout_width="match_parent"
             android:layout_marginTop="@dimen/question_fragment_a_margin_t"
+            android:textSize="@dimen/choose_fragment_item_content_text_size"
+            android:textColor="@color/color_333333"
             android:layout_height="wrap_content" />
 
         <com.yanxiu.gphone.student.customviews.ListenerSeekBarLayout

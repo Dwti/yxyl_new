@@ -16,6 +16,7 @@ import android.view.SurfaceView;
 import android.widget.FrameLayout;
 
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.util.CameraManager;
 import com.yanxiu.gphone.student.util.FileUtil;
 import com.yanxiu.gphone.student.util.ScreenUtils;
 import com.yanxiu.gphone.student.util.ToastManager;
@@ -44,6 +45,8 @@ public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Call
     private int mScreenWidth;
     private int mScreenHeight;
     private CameraView.onTakePictureFinishedListener mTakePictureFinishedListener;
+
+    private boolean isFirst=true;
 
     private interface onSaveFinishedListener {
         void onFinished(String path);
@@ -120,7 +123,12 @@ public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Call
     private void cameraOpen(int cameraId) {
         try {
             if (mCamera == null) {
-                mCamera = Camera.open(cameraId);
+                if (isFirst) {
+                    mCamera= CameraManager.getInstence().getCamera();
+                    isFirst=false;
+                }else {
+                    mCamera = Camera.open(cameraId);
+                }
                 if (mSurfaceHolder != null) {
                     startPreview();
                 }
@@ -222,6 +230,7 @@ public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Call
 
     private void release() {
         if (mCamera != null) {
+            CameraManager.getInstence().releaseCamera();
             mCamera.stopPreview();
             mCamera.release();
             mCamera = null;
