@@ -12,6 +12,7 @@ import android.text.Layout;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -87,6 +88,7 @@ public abstract class ReplacementSpanTextView<T extends View> extends FrameLayou
 //        mExtraLineSpacing = ScreenUtils.dpToPxInt(context,2);
 //        mTextView.setLineSpacing(mExtraLineSpacing,1);
 //        mTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP,17);
+        mTextView.setTextColor(getResources().getColor(R.color.color_333333));
         mTextView.setOnDrawFinishedListener(this);
     }
 
