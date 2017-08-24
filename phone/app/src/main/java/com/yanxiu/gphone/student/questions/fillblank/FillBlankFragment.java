@@ -148,6 +148,7 @@ public class FillBlankFragment extends AnswerSimpleExerciseBaseFragment implemen
         mSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mSend.setClickable(false);
                 //找出当前输入的span的位置
                 int currPos = mFillBlank.getCurrentEditBlankPosition();
                 //更新答案的内容
@@ -161,6 +162,7 @@ public class FillBlankFragment extends AnswerSimpleExerciseBaseFragment implemen
                 //保存答案
                 saveAnswer(mQuestion);
                 updateProgress();
+                mSend.setClickable(true);
             }
         });
 
@@ -174,7 +176,10 @@ public class FillBlankFragment extends AnswerSimpleExerciseBaseFragment implemen
                     mFillBlank.setBlankTransparent(spanStart,false);
                 }
                 if(!mIsKeyboardShowing){
-                    imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT,0);
+                    mBottom.setVisibility(View.GONE);
+                    mEditLayout.setVisibility(View.VISIBLE);
+                    mEditText.requestFocus();
+                    imm.showSoftInput(mEditText,InputMethodManager.SHOW_FORCED);
                 }
                 mEditText.setText(filledContent);
                 mEditText.setSelection(filledContent.length());
@@ -209,9 +214,6 @@ public class FillBlankFragment extends AnswerSimpleExerciseBaseFragment implemen
         mIsKeyboardShowing = isShow;
         if(isShow){
             setTopLayoutMinHeight();
-            mBottom.setVisibility(View.GONE);
-            mEditLayout.setVisibility(View.VISIBLE);
-            mEditText.requestFocus();
         }else {
             mBottom.setVisibility(View.VISIBLE);
             mEditLayout.setVisibility(View.GONE);

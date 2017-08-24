@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.srt.refresh.EXueELianRefreshLayout;
@@ -45,6 +46,8 @@ public class HomeworkDetailActivity extends YanxiuBaseActivity implements Homewo
 
     private LoadingView mLoadingView;
 
+    private ImageView mTipsImg;
+
     private View mTipsView, mBack;
 
     private TextView mTitle, mTips;
@@ -67,6 +70,7 @@ public class HomeworkDetailActivity extends YanxiuBaseActivity implements Homewo
         mLoadingView = (LoadingView) findViewById(R.id.loading);
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         mRefreshLayout = (EXueELianRefreshLayout) findViewById(R.id.refreshLayout);
+        mTipsImg = (ImageView) findViewById(R.id.iv_tips);
         mTipsView = findViewById(R.id.tips_layout);
         mTips = (TextView) findViewById(R.id.tv_tips);
         mRefreshBtn = (Button) findViewById(R.id.btn_refresh);
@@ -229,6 +233,7 @@ public class HomeworkDetailActivity extends YanxiuBaseActivity implements Homewo
     private void showDataEmptyView(){
         mRefreshLayout.setVisibility(View.GONE);
         mTipsView.setVisibility(View.VISIBLE);
+        mTipsImg.setImageResource(R.drawable.has_not_publish_hwk);
         mTips.setText(R.string.class_no_homework);
         mRefreshBtn.setText(R.string.click_to_refresh);
     }
@@ -236,6 +241,7 @@ public class HomeworkDetailActivity extends YanxiuBaseActivity implements Homewo
     private void showDataErrorView(){
         mRefreshLayout.setVisibility(View.GONE);
         mTipsView.setVisibility(View.VISIBLE);
+        mTipsImg.setImageResource(R.drawable.net_error);
         mTips.setText(R.string.load_failed);
         mRefreshBtn.setText(R.string.click_to_retry);
     }
