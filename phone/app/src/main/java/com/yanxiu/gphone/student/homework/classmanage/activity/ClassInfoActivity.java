@@ -31,6 +31,8 @@ public class ClassInfoActivity extends YanxiuBaseActivity {
     private String mClassId;
     private int mStatus = -1;
     private boolean isRequesting = false;
+    private ImageView mTipsImg;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +51,9 @@ public class ClassInfoActivity extends YanxiuBaseActivity {
         TextView schoolName = (TextView) findViewById(R.id.tv_school_name);
         Button btnCancel = (Button) findViewById(R.id.btn_cancel);
         ImageView back = (ImageView) findViewById(R.id.iv_left);
+        mTipsImg = (ImageView) findViewById(R.id.iv_tips);
+
+        mTipsImg.setImageResource(R.drawable.icon_class_info);
 
         back.setVisibility(View.VISIBLE);
         back.setBackgroundResource(R.drawable.selector_white_back);
