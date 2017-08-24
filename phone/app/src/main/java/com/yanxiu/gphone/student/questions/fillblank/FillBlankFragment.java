@@ -146,11 +146,18 @@ public class FillBlankFragment extends AnswerSimpleExerciseBaseFragment implemen
         });
 
         mSend.setOnClickListener(new View.OnClickListener() {
+            boolean isOnClick = false;
             @Override
             public void onClick(View v) {
-                mSend.setClickable(false);
+                if(isOnClick)
+                    return;
+                isOnClick = true;
                 //找出当前输入的span的位置
                 int currPos = mFillBlank.getCurrentEditBlankPosition();
+                if(currPos < 0 ){
+                    isOnClick = false;
+                    return;
+                }
                 //更新答案的内容
                 mAnswers.set(currPos,mEditText.getText().toString().trim());
                 //重新初始化题干
@@ -162,7 +169,7 @@ public class FillBlankFragment extends AnswerSimpleExerciseBaseFragment implemen
                 //保存答案
                 saveAnswer(mQuestion);
                 updateProgress();
-                mSend.setClickable(true);
+                isOnClick = false;
             }
         });
 

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.test.yanxiu.network.HttpCallback;
@@ -37,6 +38,7 @@ public class ExerciseFragment extends HomePageBaseFragment {
     private final static String TAG = ExerciseFragment.class.getSimpleName();
     private TextView mTips;
     private View mTipsView;
+    private ImageView mTipsImg;
     private Button mRefreshBtn;
     private GridView mGridView;
     private SubjectsAdapter mAdapter;
@@ -52,16 +54,17 @@ public class ExerciseFragment extends HomePageBaseFragment {
     }
 
     public void onEventMainThread(EditionSelectChangeMessage message){
-        requestSubjects(LoginInfo.getStageid());
+//        requestSubjects(LoginInfo.getStageid());
     }
 
     public void onEventMainThread(ChooseStageActivity.StageMessage message){
-        requestSubjects(message.stageId);
+//        requestSubjects(message.stageId);
     }
 
     private void initView(View view) {
         mGridView = (GridView) view.findViewById(R.id.gridView);
         mTipsView = view.findViewById(R.id.tips_layout);
+        mTipsImg = (ImageView) view.findViewById(R.id.iv_tips);
         mRefreshBtn = (Button) view.findViewById(R.id.btn_refresh);
         mTips = (TextView) view.findViewById(R.id.tv_tips);
     }
@@ -95,12 +98,12 @@ public class ExerciseFragment extends HomePageBaseFragment {
     private void initData() {
         mAdapter = new SubjectsAdapter(new ArrayList<SubjectBean>(0));
         mGridView.setAdapter(mAdapter);
-        requestSubjects(LoginInfo.getStageid());
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        requestSubjects(LoginInfo.getStageid());
     }
 
     @Override
@@ -119,6 +122,7 @@ public class ExerciseFragment extends HomePageBaseFragment {
     private void showDataErrorView(){
         mGridView.setVisibility(View.GONE);
         mTipsView.setVisibility(View.VISIBLE);
+        mTipsImg.setImageResource(R.drawable.net_error);
         mTips.setText(R.string.load_failed);
         mRefreshBtn.setText(R.string.click_to_retry);
     }

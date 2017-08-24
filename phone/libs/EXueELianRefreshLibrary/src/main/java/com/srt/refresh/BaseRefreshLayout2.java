@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
@@ -48,6 +49,8 @@ public class BaseRefreshLayout2 extends FrameLayout {
     //自动收回headView的动画
     public ObjectAnimator pullReleasingOA;
 
+    private static int MOVE_DISTANCE_LIMIT;  //被认为是滑动的最小距离
+
 
     public BaseRefreshLayout2(Context context) {
         this(context, null, 0);
@@ -68,6 +71,7 @@ public class BaseRefreshLayout2 extends FrameLayout {
     private void init(Context context) {
         mContext = context;
         //使用isInEditMode解决可视化编辑器无法识别自定义控件的问题
+        MOVE_DISTANCE_LIMIT = ViewConfiguration.get(context).getScaledTouchSlop();
         if (isInEditMode()) {
             return;
         }
@@ -142,7 +146,7 @@ public class BaseRefreshLayout2 extends FrameLayout {
             case MotionEvent.ACTION_MOVE:
                 float currentY = ev.getY();
                 float dy = currentY - mTouchY;
-                if (dy > 0 && !canChildScrollUp()) {
+                if (dy > MOVE_DISTANCE_LIMIT && !canChildScrollUp()) {
                     return true;
                 }
                 break;
