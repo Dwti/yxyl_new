@@ -39,16 +39,16 @@ public class PermissionUtil {
             mCamera.setParameters(mParameters);
         } catch (Exception e) {
             isCanUse = false;
-        }
-
-        if (mCamera != null) {
-            try {
-                mCamera.release();
-            } catch (Exception e) {
-                e.printStackTrace();
-                return isCanUse;
+        }finally {
+            if (mCamera != null) {
+                try {
+                    mCamera.release();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
+
         return isCanUse;
     }
 
