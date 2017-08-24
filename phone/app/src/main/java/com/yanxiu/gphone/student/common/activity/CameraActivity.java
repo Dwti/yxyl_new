@@ -90,8 +90,8 @@ public class CameraActivity extends YanxiuBaseActivity implements View.OnClickLi
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onStop() {
+        super.onStop();
         mCameraView.onPause();
     }
 

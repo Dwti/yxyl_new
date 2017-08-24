@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
@@ -27,6 +28,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
@@ -361,8 +363,8 @@ public class CameraTextureView extends TextureView implements TextureView.Surfac
 
             if (CAMERA_FACING_FRONT.equals(mCameraId)){
                 int degree=readPictureDegree(filePath);
-                Bitmap bitmap = BitmapFactory.decodeFile(filePath);
-//                Bitmap bitmap = ScreenUtils.decodeBitmap(data, ScreenUtils.getScreenWidth(mContext), ScreenUtils.getScreenHeight(mContext));
+//                Bitmap bitmap = BitmapFactory.decodeFile(filePath);
+                Bitmap bitmap = ScreenUtils.decodeBitmap(data, ScreenUtils.getScreenWidth(mContext), ScreenUtils.getScreenHeight(mContext));
                 Matrix matrix = new Matrix();
                 matrix.postRotate(degree);
                 bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
@@ -408,7 +410,7 @@ public class CameraTextureView extends TextureView implements TextureView.Surfac
             int degree = 0;
             try {
                 ExifInterface exifInterface = new ExifInterface(path);
-                int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+                int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
                 switch (orientation) {
                     case ExifInterface.ORIENTATION_ROTATE_90:
                         degree = 270;
@@ -419,10 +421,13 @@ public class CameraTextureView extends TextureView implements TextureView.Surfac
                     case ExifInterface.ORIENTATION_ROTATE_270:
                         degree = 90;
                         break;
+                    case ExifInterface.ORIENTATION_UNDEFINED:
+                        degree = 180;
+                        break;
                     default:
                         break;
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             return degree;

@@ -86,8 +86,8 @@ public class UserHeadCameraActivity extends YanxiuBaseActivity implements View.O
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onStop() {
+        super.onStop();
         mCameraView.onPause();
     }
 

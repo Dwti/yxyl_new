@@ -87,9 +87,9 @@ public class ClassifyAdapter extends RecyclerView.Adapter<ClassifyAdapter.Answer
         holder.classify_basket.setText(name);
         int lineCount=holder.classify_basket.getLineCount();
         if (lineCount>2){
-            holder.classify_basket.setTextSize(13, TypedValue.COMPLEX_UNIT_DIP);
+            holder.classify_basket.setTextSize(TypedValue.COMPLEX_UNIT_DIP,13);
         }else {
-            holder.classify_basket.setTextSize(17, TypedValue.COMPLEX_UNIT_DIP);
+            holder.classify_basket.setTextSize(TypedValue.COMPLEX_UNIT_DIP,17);
         }
         holder.classify_item_count.setText(count + "");
     }
