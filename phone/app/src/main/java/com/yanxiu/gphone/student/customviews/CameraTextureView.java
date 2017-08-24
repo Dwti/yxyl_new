@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
 import android.graphics.Matrix;
 import android.graphics.SurfaceTexture;
@@ -360,7 +361,8 @@ public class CameraTextureView extends TextureView implements TextureView.Surfac
 
             if (CAMERA_FACING_FRONT.equals(mCameraId)){
                 int degree=readPictureDegree(filePath);
-                Bitmap bitmap = ScreenUtils.decodeBitmap(data, ScreenUtils.getScreenWidth(mContext), ScreenUtils.getScreenHeight(mContext));
+                Bitmap bitmap = BitmapFactory.decodeFile(filePath);
+//                Bitmap bitmap = ScreenUtils.decodeBitmap(data, ScreenUtils.getScreenWidth(mContext), ScreenUtils.getScreenHeight(mContext));
                 Matrix matrix = new Matrix();
                 matrix.postRotate(degree);
                 bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
@@ -368,6 +370,7 @@ public class CameraTextureView extends TextureView implements TextureView.Surfac
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
                 data=baos.toByteArray();
                 filePath=save(data);
+                bitmap.recycle();
             }
 
             image.close();

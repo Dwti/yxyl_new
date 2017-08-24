@@ -8,6 +8,7 @@ import android.graphics.Path;
 import android.graphics.PathMeasure;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,8 +87,9 @@ public class ClassifyAdapter extends RecyclerView.Adapter<ClassifyAdapter.Answer
         holder.classify_basket.setText(name);
         int lineCount=holder.classify_basket.getLineCount();
         if (lineCount>2){
-            // TODO 设置根据文字行数控制字体大小
-//            holder.classify_basket.setTextSize();
+            holder.classify_basket.setTextSize(13, TypedValue.COMPLEX_UNIT_DIP);
+        }else {
+            holder.classify_basket.setTextSize(17, TypedValue.COMPLEX_UNIT_DIP);
         }
         holder.classify_item_count.setText(count + "");
     }

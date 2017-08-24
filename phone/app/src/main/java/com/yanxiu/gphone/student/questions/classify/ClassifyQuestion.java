@@ -56,7 +56,6 @@ public class ClassifyQuestion extends BaseQuestion {
             classifyBasketList.add(name);
         }
 
-
         choice = (ArrayList) bean.getQuestions().getContent().getChoices();
         pointList = bean.getQuestions().getPoint();
         try {
@@ -77,7 +76,11 @@ public class ClassifyQuestion extends BaseQuestion {
                 String string=array.getString(i);
                 String[] strings=string.split(",");
                 ArrayList<String> childList = new ArrayList<>();
-                Collections.addAll(childList, strings);
+                for (String s:strings){
+                    if (!TextUtils.isEmpty(s)){
+                        childList.add(s);
+                    }
+                }
                 answerList.add(childList);
             }
         } catch (Exception e) {

@@ -115,11 +115,11 @@ public class ClassifyFragment extends AnswerSimpleExerciseBaseFragment implement
                         try {
                             id = Integer.parseInt(childList.get(k));//获取id
                             chioce = mChoiceList.get(id);//获取chioce的name
+                            if (mHasChoosedChoiceList.contains(chioce)) {
+                                mHasChoosedChoiceList.set(id, null);
+                            }
                         } catch (Exception e) {
                             e.printStackTrace();
-                        }
-                        if (mHasChoosedChoiceList.contains(chioce)) {
-                            mHasChoosedChoiceList.set(id, null);
                         }
                     }
                 }

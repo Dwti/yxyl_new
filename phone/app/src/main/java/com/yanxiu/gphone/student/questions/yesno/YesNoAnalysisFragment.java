@@ -106,7 +106,7 @@ public class YesNoAnalysisFragment extends AnalysisSimpleExerciseBaseFragment {
 
                         selectViewHolder.mQuestionContentView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.choose_wrong));
                         selectViewHolder.mQuestionContentView.setTextColor(ContextCompat.getColor(getContext(), R.color.color_ffffff));
-                        selectViewHolder.mQuestionSelectView.setBackground(ContextCompat.getDrawable(getContext(), R.mipmap.ic_launcher));
+                        selectViewHolder.mQuestionSelectView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.single_select_wrong));
 
                         answerViewHolder.mQuestionContentView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.choose_right));
                         answerViewHolder.mQuestionContentView.setTextColor(ContextCompat.getColor(getContext(), R.color.color_ffffff));

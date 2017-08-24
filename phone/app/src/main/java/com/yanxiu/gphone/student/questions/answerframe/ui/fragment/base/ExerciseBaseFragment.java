@@ -24,10 +24,12 @@ import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.analysisbase.
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerComplexExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.wrongbase.WrongComplexExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.util.FragmentUserVisibleController;
+import com.yanxiu.gphone.student.questions.answerframe.util.QuestionTemplate;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionUtil;
 import com.yanxiu.gphone.student.util.TextTypefaceUtil;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static android.graphics.Typeface.DEFAULT_BOLD;
 
@@ -68,18 +70,18 @@ public abstract class ExerciseBaseFragment extends YanxiuBaseFragment implements
     }
 
     public void setQaNumber(View v) {
-        try{
+        try {
             mQaNumber = (TextView) v.findViewById(R.id.qa_number);
             String str = mBaseQuestion.numberStringForShow();
             Fragment parentFragment = getParentFragment();
             if (parentFragment instanceof AnswerComplexExerciseBaseFragment || parentFragment instanceof AnalysisComplexExerciseBaseFragment) {
                 mQaNumber.setTextColor(getResources().getColor(R.color.color_999999));
-                TextTypefaceUtil.setViewTypeface(TextTypefaceUtil.TypefaceType.METRO_PLAY,mQaNumber);
-            }else if(parentFragment instanceof WrongComplexExerciseBaseFragment){
+                TextTypefaceUtil.setViewTypeface(TextTypefaceUtil.TypefaceType.METRO_PLAY, mQaNumber);
+            } else if (parentFragment instanceof WrongComplexExerciseBaseFragment) {
                 mQaNumber.setVisibility(View.GONE);
             }
             mQaNumber.setText(str);
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -92,11 +94,11 @@ public abstract class ExerciseBaseFragment extends YanxiuBaseFragment implements
      * @param v
      */
     public void setQaName(View v) {
-        try{
+        try {
             mQaName = (TextView) v.findViewById(R.id.qa_name);
             String templateName = null;
             Fragment parentFragment = getParentFragment();
-            if (parentFragment instanceof AnswerComplexExerciseBaseFragment || parentFragment instanceof AnalysisComplexExerciseBaseFragment) {
+            if (parentFragment instanceof AnswerComplexExerciseBaseFragment || parentFragment instanceof AnalysisComplexExerciseBaseFragment || parentFragment instanceof WrongComplexExerciseBaseFragment) {
                 templateName = getString(R.string.question);
                 TextPaint tp = mQaName.getPaint();
                 tp.setTypeface(DEFAULT_BOLD);
@@ -104,19 +106,19 @@ public abstract class ExerciseBaseFragment extends YanxiuBaseFragment implements
             } else {
 //                templateName = StringUtil.getTemplateName(mBaseQuestion.getTemplate());
                 String type_id_complexToSimple = mBaseQuestion.getTypeId_complexToSimple();
-                if(!TextUtils.isEmpty(type_id_complexToSimple)){ //复合题只有一个子题而转成的单题型
-                    try{
+                if (!TextUtils.isEmpty(type_id_complexToSimple)) { //复合题只有一个子题而转成的单题型
+                    try {
                         int type_id = Integer.parseInt(type_id_complexToSimple);
                         templateName = QuestionUtil.getQuestionTypeNameByParentTypeId(type_id);
-                    }catch(Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
-                }else{
+                } else {
                     templateName = mBaseQuestion.getQaName();
                 }
             }
             mQaName.setText(templateName);
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -235,11 +237,11 @@ public abstract class ExerciseBaseFragment extends YanxiuBaseFragment implements
         if (getActivity() instanceof AnswerQuestionActivity) {
             AnswerQuestionActivity acticity = (AnswerQuestionActivity) getActivity();
             acticity.hiddenSwitchQuestionView();
-        }else if(getActivity() instanceof AnalysisQuestionActivity) {
+        } else if (getActivity() instanceof AnalysisQuestionActivity) {
             AnalysisQuestionActivity acticity = (AnalysisQuestionActivity) getActivity();
             acticity.hiddenSwitchQuestionView();
-        }else if (getActivity() instanceof WrongQuestionActivity){
-            WrongQuestionActivity activity= (WrongQuestionActivity) getActivity();
+        } else if (getActivity() instanceof WrongQuestionActivity) {
+            WrongQuestionActivity activity = (WrongQuestionActivity) getActivity();
             activity.hiddenSwitchQuestionView();
         }
 
@@ -283,7 +285,24 @@ public abstract class ExerciseBaseFragment extends YanxiuBaseFragment implements
             //保存逻辑
             Gson gson = new Gson();
             Object ansewr = question.getAnswer();
-            if(null != ansewr){
+            if (null != ansewr) {
+
+                if (question.getTemplate().equals(QuestionTemplate.CLASSIFY)) {
+                    List<String> answerList = new ArrayList<>();
+                    List<List<String>> listList = (List<List<String>>) ansewr;
+                    for (List<String> stringList : listList) {
+                        String answerString = "";
+                        for (String s : stringList) {
+                            answerString += s + ",";
+                        }
+                        if (!TextUtils.isEmpty(answerString)) {
+                            answerString = answerString.substring(0, answerString.length() - 1);
+                        }
+                        answerList.add(answerString);
+                    }
+                    ansewr = answerList;
+                }
+
                 String json = gson.toJson(ansewr);//转化成json，保存该json
                 AnswerBean bean = new AnswerBean();
                 bean.setAid(SaveAnswerDBHelper.makeId(question));
@@ -292,9 +311,9 @@ public abstract class ExerciseBaseFragment extends YanxiuBaseFragment implements
                 bean.setCostTime(question.getCosttime());
 //                bean.setStartTime(question.get);
 //                bean.setEndTime();
-                Log.e("dyf", "json = " +json);
+                Log.e("dyf", "json = " + json);
                 boolean is = SaveAnswerDBHelper.save(bean);
-                Log.e("dyf", "is = " +is);
+                Log.e("dyf", "is = " + is);
 
             }
 
@@ -315,13 +334,13 @@ public abstract class ExerciseBaseFragment extends YanxiuBaseFragment implements
                 if (childrenList == null || childrenList.size() < 1) { //单题型
                     if (quesitonList.get(i).getHasAnswered())
                         answeredCount++;
-                }else{ //复合题
-                    if(childrenList == null || childrenList.size() < 1){
+                } else { //复合题
+                    if (childrenList == null || childrenList.size() < 1) {
                         //出错，既然是复合题，必须有小题
                         return;
-                    }else{ //遍历小题
-                        for(int j = 0;j < childrenList.size(); j++){
-                            if(childrenList.get(j).getHasAnswered())
+                    } else { //遍历小题
+                        for (int j = 0; j < childrenList.size(); j++) {
+                            if (childrenList.get(j).getHasAnswered())
                                 answeredCount++;
                         }
                     }
@@ -333,9 +352,10 @@ public abstract class ExerciseBaseFragment extends YanxiuBaseFragment implements
 
     /**
      * 答题卡显示或者隐藏时，给页面的回调，用来控制听力复合题和单题型的听力控件
-     * @param isVisibleToUser  true :答题卡显示 false : 答题卡不显示
+     *
+     * @param isVisibleToUser true :答题卡显示 false : 答题卡不显示
      */
-    public void onAnswerCardVisibleToUser(boolean isVisibleToUser){
+    public void onAnswerCardVisibleToUser(boolean isVisibleToUser) {
 
     }
 }

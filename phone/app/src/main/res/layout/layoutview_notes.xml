@@ -47,9 +47,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
         android:layout_marginEnd="@dimen/analysis_view_paddingbottom"
         android:layout_marginStart="@dimen/analysis_view_paddingbottom"
-        android:layout_marginBottom="15dp"
         android:orientation="vertical">
 
         <TextView
@@ -64,48 +64,71 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <com.yanxiu.gphone.student.customviews.SquareImageView
-                android:id="@+id/iv_left"
-                android:layout_width="0dp"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_weight="1"
-                android:visibility="gone"
-                android:contentDescription="@null"
-                android:scaleType="centerCrop" />
+                android:layout_weight="1">
 
-            <com.yanxiu.gphone.student.customviews.SquareImageView
-                android:id="@+id/iv_center_left"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_weight="1"
-                android:layout_marginStart="15dp"
-                android:visibility="gone"
-                android:layout_marginEnd="15dp"
-                android:contentDescription="@null"
-                android:scaleType="centerCrop" />
+                <com.yanxiu.gphone.student.customviews.SquareImageView
+                    android:id="@+id/iv_left"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:contentDescription="@null"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone" />
+            </RelativeLayout>
 
-            <com.yanxiu.gphone.student.customviews.SquareImageView
-                android:id="@+id/iv_center_right"
-                android:layout_width="0dp"
-                android:layout_marginTop="15dp"
-                android:visibility="gone"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:contentDescription="@null"
-                android:layout_marginEnd="15dp"
-                android:scaleType="centerCrop" />
+                android:layout_weight="1">
 
-            <com.yanxiu.gphone.student.customviews.SquareImageView
-                android:id="@+id/iv_right"
-                android:layout_width="0dp"
+                <com.yanxiu.gphone.student.customviews.SquareImageView
+                    android:id="@+id/iv_center_left"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_weight="1"
+                    android:contentDescription="@null"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:visibility="gone"
-                android:layout_marginTop="15dp"
-                android:contentDescription="@null"
-                android:scaleType="centerCrop" />
+                android:layout_weight="1">
+
+                <com.yanxiu.gphone.student.customviews.SquareImageView
+                    android:id="@+id/iv_center_right"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_weight="1"
+                    android:contentDescription="@null"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <com.yanxiu.gphone.student.customviews.SquareImageView
+                    android:id="@+id/iv_right"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_weight="1"
+                    android:contentDescription="@null"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone" />
+            </RelativeLayout>
 
         </LinearLayout>
     </LinearLayout>

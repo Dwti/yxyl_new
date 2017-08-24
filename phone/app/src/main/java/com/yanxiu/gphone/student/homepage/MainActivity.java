@@ -4,8 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.text.TextUtils;
@@ -47,7 +50,7 @@ import com.yanxiu.gphone.student.util.UpdateUtil;
 import static com.yanxiu.gphone.student.constant.Constants.MAINAVTIVITY_PUSHMSGBEAN;
 import static com.yanxiu.gphone.student.constant.Constants.MAINAVTIVITY_REFRESH;
 
-public class MainActivity extends YanxiuBaseActivity implements View.OnClickListener{
+public class MainActivity extends YanxiuBaseActivity implements View.OnClickListener {
 
     private final String TAG = MainActivity.this.getClass().getSimpleName();
     private final String PUSH_TAG = "pushTag";
@@ -82,7 +85,7 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
         mainInstance = this;
         PushManager.getInstance().initialize(this.getApplicationContext(), YanxiuPushService.class);
         initView();
-        UpdateUtil.Initialize(this,false);
+        UpdateUtil.Initialize(this, false);
         judgeToJump(getIntent());
         PushManager.getInstance().bindAlias(this.getApplicationContext(), LoginInfo.getUID());
 //        ToastManager.showMsg(LoginInfo.getUID());
@@ -99,16 +102,22 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
     @Override
     protected void onResume() {
         super.onResume();
-        if (!TextUtils.isEmpty(LoginInfo.getHeadIcon())) {
-            Glide.with(this).load(LoginInfo.getHeadIcon()).asBitmap().into(new BitmapImageViewTarget(mNavIconViews[2]) {
-                @Override
-                protected void setResource(Bitmap resource) {
-                    RoundedBitmapDrawable bitmapDrawable = RoundedBitmapDrawableFactory.create(view.getContext().getResources(), resource);
-                    bitmapDrawable.setCircular(true);
-                    view.setImageDrawable(bitmapDrawable);
-                }
-            });
+        String headImg = LoginInfo.getHeadIcon();
+        if (!TextUtils.isEmpty(headImg)) {
+            String[] strings = headImg.split("/");
+            if (!"file_56a60c9d7cbd4.jpg".equals(strings[strings.length - 1])) {
+                Glide.with(this).load(LoginInfo.getHeadIcon()).asBitmap().into(new BitmapImageViewTarget(mNavIconViews[2]) {
+                    @Override
+                    protected void setResource(Bitmap resource) {
+                        RoundedBitmapDrawable bitmapDrawable = RoundedBitmapDrawableFactory.create(view.getContext().getResources(), resource);
+                        bitmapDrawable.setCircular(true);
+                        view.setImageDrawable(bitmapDrawable);
+                    }
+                });
+                return;
+            }
         }
+        mNavIconViews[2].setImageDrawable(ContextCompat.getDrawable(this, R.drawable.selector_my));
     }
 
     @Override
@@ -154,9 +163,8 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
         mNavTextViews[1].setText(R.string.exercises);
         mNavTextViews[2].setText(R.string.navi_tbm_my);
 
-        mNavIconViews[0].setBackgroundResource(R.drawable.selector_homework);
-        mNavIconViews[1].setBackgroundResource(R.drawable.selector_exercise);
-
+        mNavIconViews[0].setEnabled(false);
+        setColorFilter(2, 0);
     }
 
     @Override
@@ -165,12 +173,24 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
         switch (view.getId()) {
             case R.id.navi_homework:
                 curItem = INDEX_HOMEWORK;
+                mNavIconViews[0].setEnabled(false);
+                mNavIconViews[1].setEnabled(true);
+                mNavIconViews[2].setEnabled(true);
+                setColorFilter(2, 0);
                 break;
             case R.id.navi_exercise:
                 curItem = INDEX_EXERCISE;
+                mNavIconViews[0].setEnabled(true);
+                mNavIconViews[1].setEnabled(false);
+                mNavIconViews[2].setEnabled(true);
+                setColorFilter(2, 0);
                 break;
             case R.id.navi_my:
                 curItem = INDEX_MY;
+                mNavIconViews[0].setEnabled(true);
+                mNavIconViews[1].setEnabled(true);
+                mNavIconViews[2].setEnabled(false);
+                setColorFilter(2, 1);
                 break;
             default:
                 break;
@@ -181,8 +201,22 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
             SoundManger.getInstence().playTabMusic();
         }
     }
-    private void checkBottomBarProcess(int index){
-        if(index>=0 && index<3) {
+
+    private void setColorFilter(int index, float sat) {
+        String headImg = LoginInfo.getHeadIcon();
+        if (!TextUtils.isEmpty(headImg)) {
+            String[] strings = headImg.split("/");
+            if (!"file_56a60c9d7cbd4.jpg".equals(strings[strings.length - 1])) {
+                ColorMatrix matrix = new ColorMatrix();
+                matrix.setSaturation(sat);
+                ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+                mNavIconViews[index].setColorFilter(filter);
+            }
+        }
+    }
+
+    private void checkBottomBarProcess(int index) {
+        if (index >= 0 && index < 3) {
             resetBottomBar();
 //            mNavBarViews[index].setBackgroundResource(R.drawable.home_nav_bar_sel);
             mNavTextViews[index].setTextColor(mSelNavTxtColor);
@@ -200,6 +234,7 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
             }
         }
     }
+
     private void resetBottomBar() {
         for (int i = 0; i < 3; i++) {
 //            mNavBarViews[i].setBackgroundResource(R.drawable.home_nav_bar_nor);
@@ -260,13 +295,14 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
 
     /**
      * 推送跳转逻辑
+     *
      * @param intent
      */
     public void judgeToJump(Intent intent) {
         if (intent != null) {
             int currIndex = mNaviFragmentFactory.getCurrentItem();
             PushMsgBean mPushMsgBean = (PushMsgBean) intent.getSerializableExtra(MAINAVTIVITY_PUSHMSGBEAN);
-            if(mPushMsgBean != null) {
+            if (mPushMsgBean != null) {
                 Log.e(TAG, "-----------MainActivity----push----");
                 msg_type = mPushMsgBean.getMsg_type();//msg_type：0为作业报告，1为学科作业列表，2为作业首页；
                 Log.e(PUSH_TAG, "msg_type =" + msg_type);
@@ -319,9 +355,9 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
      *
      * @param activity
      */
-    public static void invoke(Activity activity,boolean refresh) {
+    public static void invoke(Activity activity, boolean refresh) {
         Intent intent = new Intent(activity, MainActivity.class);
-        intent.putExtra(MAINAVTIVITY_REFRESH,refresh);
+        intent.putExtra(MAINAVTIVITY_REFRESH, refresh);
         activity.startActivity(intent);
     }
 
@@ -345,9 +381,10 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
 
     /**
      * 点击tab时的弹跳动画
+     *
      * @param view
      */
-    private void startTabAnimation(final View view){
+    private void startTabAnimation(final View view) {
         view.setVisibility(View.VISIBLE);
         Animation anim_step1 = AnimationUtils.loadAnimation(this, R.anim.anim_maintab_scale_1);
         final Animation anim_step2 = AnimationUtils.loadAnimation(this, R.anim.anim_maintab_scale_2);
@@ -355,31 +392,37 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
         final Animation anim_step4 = AnimationUtils.loadAnimation(this, R.anim.anim_maintab_scale_4);
         view.startAnimation(anim_step1);
         anim_step1.setAnimationListener(new Animation.AnimationListener() {
-            public void onAnimationStart(Animation animation) {}
+            public void onAnimationStart(Animation animation) {
+            }
 
             public void onAnimationEnd(Animation animation) {
                 view.startAnimation(anim_step2);
             }
 
-            public void onAnimationRepeat(Animation animation) {}
+            public void onAnimationRepeat(Animation animation) {
+            }
         });
         anim_step2.setAnimationListener(new Animation.AnimationListener() {
-            public void onAnimationStart(Animation animation) {}
+            public void onAnimationStart(Animation animation) {
+            }
 
             public void onAnimationEnd(Animation animation) {
                 view.startAnimation(anim_step3);
             }
 
-            public void onAnimationRepeat(Animation animation) {}
+            public void onAnimationRepeat(Animation animation) {
+            }
         });
         anim_step3.setAnimationListener(new Animation.AnimationListener() {
-            public void onAnimationStart(Animation animation) {}
+            public void onAnimationStart(Animation animation) {
+            }
 
             public void onAnimationEnd(Animation animation) {
                 view.startAnimation(anim_step4);
             }
 
-            public void onAnimationRepeat(Animation animation) {}
+            public void onAnimationRepeat(Animation animation) {
+            }
         });
     }
 

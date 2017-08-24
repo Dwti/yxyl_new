@@ -145,11 +145,13 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
             switch (ev.getAction()) {
                 case MotionEvent.ACTION_UP:
                     Logger.d("view_ID",ListenerSeekBarLayout.this.hashCode()+"");
-                    if (checkIsInternal(ev)&&isCanClick) {
-                        mMediaPlayerUtil.start(mUrl);
-                        setStartIcon();
+                    if (checkIsInternal(ev)) {
+                        if (isCanClick) {
+                            mMediaPlayerUtil.start(mUrl);
+                            setStartIcon();
+                        }
+                        isCanClick=false;
                     }
-                    isCanClick=false;
                     break;
             }
             return true;

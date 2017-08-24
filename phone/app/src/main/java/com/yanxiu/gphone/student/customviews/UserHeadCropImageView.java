@@ -31,8 +31,8 @@ public class UserHeadCropImageView extends android.support.v7.widget.AppCompatIm
 
     private static final int DEFAULT_LINE_STROKEWIDTH = 4;
 
-    public static int mWidth = 650;
-    public static int mHeight = 650;
+    public static float mWidth = 650;
+    public static float mHeight = 650;
     private RectF mDrawRect;
 
     private Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -68,9 +68,9 @@ public class UserHeadCropImageView extends android.support.v7.widget.AppCompatIm
 
     @Override
     public void setImageBitmap(Bitmap bm) {
-        int width = bm.getWidth();
-        int height = bm.getHeight();
-        int scale;
+        float width = bm.getWidth();
+        float height = bm.getHeight();
+        float scale;
         if (width < mWidth) {
             scale = mWidth / width;
             width = mWidth;
@@ -81,9 +81,9 @@ public class UserHeadCropImageView extends android.support.v7.widget.AppCompatIm
             height = mHeight;
             width = width * scale;
         }
-        bm = Bitmap.createScaledBitmap(bm, width, height, false);
+        bm = Bitmap.createScaledBitmap(bm, (int) width, (int) height, false);
         drawable = new UserHeadCropImageDrawable(bm);
-        drawable.setLocation(mWidth,mHeight);
+        drawable.setLocation((int) mWidth,(int) mHeight);
         setBackgroundDrawable(drawable);
     }
 
@@ -180,7 +180,7 @@ public class UserHeadCropImageView extends android.support.v7.widget.AppCompatIm
 
         @Override
         protected String doInBackground(Bitmap... params) {
-            Bitmap bitmap=Bitmap.createBitmap(mBitmap,mStartX,mStartY,mWidth,mHeight);
+            Bitmap bitmap=Bitmap.createBitmap(mBitmap,mStartX,mStartY,(int) mWidth,(int) mHeight);
             String filePath = FileUtil.getSavePicturePath(System.currentTimeMillis() + ".jpg");
             File file = new File(filePath);
             BufferedOutputStream bos = null;
