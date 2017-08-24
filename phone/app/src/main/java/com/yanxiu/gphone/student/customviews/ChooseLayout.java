@@ -80,7 +80,7 @@ public class ChooseLayout extends LinearLayout implements View.OnClickListener {
                 @Override
                 public void run() {
                     Spanned string= Html.fromHtml(text,new HtmlImageGetter(holder.mQuestionContentView),null);
-                    holder.mQuestionContentView.setText(string);
+                    holder.mQuestionContentView.setText(string, TextView.BufferType.SPANNABLE);
                 }
             });
             holder.mQuestionSelectView = view.findViewById(R.id.v_question_select);
