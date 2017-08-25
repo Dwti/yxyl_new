@@ -54,11 +54,11 @@ public class ExerciseFragment extends HomePageBaseFragment {
     }
 
     public void onEventMainThread(EditionSelectChangeMessage message){
-//        requestSubjects(LoginInfo.getStageid());
+        requestSubjects(LoginInfo.getStageid());
     }
 
     public void onEventMainThread(ChooseStageActivity.StageMessage message){
-//        requestSubjects(message.stageId);
+        requestSubjects(message.stageId);
     }
 
     private void initView(View view) {
@@ -98,12 +98,12 @@ public class ExerciseFragment extends HomePageBaseFragment {
     private void initData() {
         mAdapter = new SubjectsAdapter(new ArrayList<SubjectBean>(0));
         mGridView.setAdapter(mAdapter);
+        requestSubjects(LoginInfo.getStageid());
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        requestSubjects(LoginInfo.getStageid());
     }
 
     @Override
