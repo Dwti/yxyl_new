@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -321,6 +322,7 @@ public class ExerciseHistoryActivity extends YanxiuBaseActivity {
         if(popupWindow == null){
             View view = LayoutInflater.from(this).inflate(R.layout.popwindow_stage,null);
             popupWindow = new PopupWindow(view,ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
+            popupWindow.setAnimationStyle(R.style.pop_anim);
 
             final PickerViewEx picker = (PickerViewEx) view.findViewById(R.id.picker_view);
             picker.setTextLocation(PickerViewEx.DEFAULT_CENTER);
@@ -368,9 +370,8 @@ public class ExerciseHistoryActivity extends YanxiuBaseActivity {
                 }
             });
 
-            popupWindow.setFocusable(true);
         }
-        popupWindow.showAsDropDown(mRootView);
+        popupWindow.showAtLocation(getWindow().getDecorView(), Gravity.CENTER, 0, 0);
 
     }
 
