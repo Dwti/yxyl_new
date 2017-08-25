@@ -26,7 +26,7 @@
                     android:id="@+id/nopigai_layout"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/report_top_nopigailayout_height"
-                    android:background="@drawable/report_header_no_score"
+                    android:background="@drawable/dengdaipigai"
                     android:visibility="gone"/>
 
                 <RelativeLayout

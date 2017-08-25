@@ -19,8 +19,6 @@
             android:id="@+id/viewWrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
             android:paddingTop="25dp"
             android:paddingBottom="50dp"
             android:orientation="vertical">
@@ -33,7 +31,9 @@
             <com.yanxiu.gphone.student.customviews.spantextview.FillBlankTextView
                 android:id="@+id/tv_fill_blank"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"/>
         </LinearLayout>
 
     </ScrollView>

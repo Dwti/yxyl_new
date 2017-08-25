@@ -62,7 +62,8 @@ public class FillBlankTextView extends FrameLayout {
         mHashMap = new TreeMap<>();
         View view = LayoutInflater.from(context).inflate(R.layout.replaceable_text_view, this, true);
         mTextView = (XTextView) view.findViewById(R.id.textView);
-//        mTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP,17);
+        mTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP,17);
+        mTextView.setTextColor(getResources().getColor(R.color.color_333333));
         mOverLayViewContainer = (RelativeLayout) view.findViewById(R.id.relativeLayout);
         mTextView.setOnDrawFinishedListener(new TextViewOnDrawFinishedListener());
     }

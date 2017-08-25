@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.userevent.UserEventManager;
 import com.yanxiu.gphone.student.util.ActivityManger;
 import com.yanxiu.gphone.student.util.PermissionUtil;
@@ -39,6 +40,7 @@ public class YanxiuBaseActivity extends FragmentActivity implements EasyPermissi
     @Override
     protected void onResume() {
         super.onResume();
+        Log.i(Constants.TAG,this.getClass().getName());
         if (!isActive) {
             isActive = true;
             UserEventManager.getInstense().whenEnterFront();
