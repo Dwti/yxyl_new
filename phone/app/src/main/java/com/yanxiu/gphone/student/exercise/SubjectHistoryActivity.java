@@ -114,7 +114,7 @@ public class SubjectHistoryActivity extends YanxiuBaseActivity {
                     showDataEmptyView();
                 }
             }else {
-                showDataErrorView();
+                showDataEmptyView();
             }
         }
 
