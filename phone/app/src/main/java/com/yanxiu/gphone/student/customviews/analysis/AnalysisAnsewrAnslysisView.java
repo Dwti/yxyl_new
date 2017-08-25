@@ -1,8 +1,11 @@
 package com.yanxiu.gphone.student.customviews.analysis;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.text.Html;
+import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.style.ImageSpan;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,8 +53,19 @@ public class AnalysisAnsewrAnslysisView extends LinearLayout {
      */
     public void setText(String analysis) {
         if (mAnalysis != null) {
-            Spanned string = Html.fromHtml(analysis, new HtmlImageGetter(mAnalysis), null);
-            mAnalysis.setText(string);
+            Spanned spanned = Html.fromHtml(analysis, new HtmlImageGetter(mAnalysis), null);
+            if (spanned instanceof SpannableStringBuilder) {
+                ImageSpan[] imageSpans = spanned.getSpans(0, spanned.length(), ImageSpan.class);
+                for (ImageSpan imageSpan : imageSpans) {
+                    int start = spanned.getSpanStart(imageSpan);
+                    int end = spanned.getSpanEnd(imageSpan);
+                    Drawable d = imageSpan.getDrawable();
+                    ImageSpan newImageSpan = new ImageSpan(d, ImageSpan.ALIGN_BASELINE);
+                    ((SpannableStringBuilder) spanned).setSpan(newImageSpan, start, end, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+                    ((SpannableStringBuilder) spanned).removeSpan(imageSpan);
+                }
+            }
+            mAnalysis.setText(spanned, TextView.BufferType.SPANNABLE);
         }
     }
 }
