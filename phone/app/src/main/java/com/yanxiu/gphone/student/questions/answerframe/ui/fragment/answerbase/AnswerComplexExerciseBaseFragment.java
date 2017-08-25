@@ -160,7 +160,7 @@ public abstract class AnswerComplexExerciseBaseFragment extends AnswerExerciseBa
     public void setChildrenPositionRecursively(ArrayList<Integer> postions) {
         int index = postions.get(0);
         if (mViewPager != null) {
-            mViewPager.setCurrentItem(index);
+            mViewPager.setCurrentItem(index,false);
         } else {
 //            isFromCardSelect = true;
 //            mToIndex = index;

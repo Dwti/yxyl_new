@@ -39,6 +39,7 @@ public class CropImageActivity extends YanxiuBaseActivity implements View.OnClic
 
     private int mFromId;
     private String mImgPath;
+    private boolean isCrop=false;
 
     public static void LaunchActivity(Context context,String imgPath,int fromId){
         Intent intent=new Intent(context,CropImageActivity.class);
@@ -93,7 +94,10 @@ public class CropImageActivity extends YanxiuBaseActivity implements View.OnClic
                 mCropView.setReset();
                 break;
             case R.id.iv_ok:
-                mCropView.startCrop(CropImageActivity.this);
+                if (!isCrop) {
+                    isCrop=true;
+                    mCropView.startCrop(CropImageActivity.this);
+                }
                 break;
             case R.id.tv_picture:
                 SpManager.setCropIsLuanched(true);
@@ -111,6 +115,7 @@ public class CropImageActivity extends YanxiuBaseActivity implements View.OnClic
             EventBus.getDefault().post(message);
             CropImageActivity.this.finish();
         }
+        isCrop=false;
     }
 
 }

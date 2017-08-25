@@ -17,6 +17,9 @@ public class JoinClassResponse extends EXueELianBaseResponse implements Serializ
         public String id;
         public String schoolid;
         public String schoolname;
+        public String areaid;
+        public String cityid;
+        public String provinceid;
         public String teachernum;
         public String periodid;
         public String gradeid;

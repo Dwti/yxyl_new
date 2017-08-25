@@ -321,4 +321,6 @@
     <string name="version_updata">新版本更新</string>
     <string name="updata_after">以后再说</string>
     <string name="updata_now">立即更新</string>
+
+    <string name="thrid">授权成功</string>
 </resources>

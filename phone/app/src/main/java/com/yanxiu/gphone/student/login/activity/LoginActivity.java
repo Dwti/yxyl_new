@@ -326,7 +326,7 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
 
             @Override
             public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
-                ToastManager.showMsg("doOauth "+"onComplete");
+                ToastManager.showMsg(R.string.thrid);
                 mUMShareAPI.getPlatformInfo(LoginActivity.this, platform, new UMAuthListener() {
                         @Override
                         public void onStart(SHARE_MEDIA share_media) {

@@ -156,7 +156,7 @@ public abstract class AnalysisComplexExerciseBaseFragment extends AnalysisExerci
     public void setChildrenPositionRecursively(ArrayList<Integer> postions) {
         int index = postions.get(0);
         if (mViewPager != null) {
-            mViewPager.setCurrentItem(index);
+            mViewPager.setCurrentItem(index,false);
         } else {
 //            isFromCardSelect = true;
 //            mToIndex = index;

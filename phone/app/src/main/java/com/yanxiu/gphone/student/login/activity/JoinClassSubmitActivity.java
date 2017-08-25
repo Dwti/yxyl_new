@@ -174,14 +174,14 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
         rootView.showLoadingView();
         mJoinClassSubmitRequest=new JoinClassSubmitRequest();
         mJoinClassSubmitRequest.realname=userName;
-        mJoinClassSubmitRequest.areaid="";
-        mJoinClassSubmitRequest.cityid="";
+        mJoinClassSubmitRequest.areaid=mData.areaid;
+        mJoinClassSubmitRequest.cityid=mData.cityid;
         mJoinClassSubmitRequest.classId=mData.id;
         mJoinClassSubmitRequest.stageid=mData.stageid;
         mJoinClassSubmitRequest.mobile= LoginInfo.getMobile();
         mJoinClassSubmitRequest.schoolid=mData.schoolid;
         mJoinClassSubmitRequest.schoolName=mData.schoolname;
-        mJoinClassSubmitRequest.provinceid="";
+        mJoinClassSubmitRequest.provinceid=mData.provinceid;
         mJoinClassSubmitRequest.validKey=SysEncryptUtil.getMd5_32(LoginInfo.getMobile() + "&" + "yxylmobile");
         mJoinClassSubmitRequest.startRequest(LoginResponse.class, new EXueELianBaseCallback<LoginResponse>() {
 
@@ -215,13 +215,13 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
         mJoinClassSubmitThridRequest.sex= thridMessageBean.sex;
         mJoinClassSubmitThridRequest.uniqid= thridMessageBean.uniqid;
         mJoinClassSubmitThridRequest.realname=userName;
-        mJoinClassSubmitThridRequest.areaid="";
-        mJoinClassSubmitThridRequest.cityid="";
+        mJoinClassSubmitThridRequest.areaid=mData.areaid;
+        mJoinClassSubmitThridRequest.cityid=mData.cityid;
         mJoinClassSubmitThridRequest.classId=mData.id;
         mJoinClassSubmitThridRequest.stageid=mData.stageid;
         mJoinClassSubmitThridRequest.schoolid=mData.schoolid;
         mJoinClassSubmitThridRequest.schoolName=mData.schoolname;
-        mJoinClassSubmitThridRequest.provinceid="";
+        mJoinClassSubmitThridRequest.provinceid=mData.provinceid;
         mJoinClassSubmitThridRequest.startRequest(LoginResponse.class, new EXueELianBaseCallback<LoginResponse>() {
 
             @Override

@@ -32,6 +32,7 @@ public class UserHeadCropImageActivity extends YanxiuBaseActivity implements Vie
 
     private int mFromId;
     private String mImgPath;
+    private boolean isCrop=false;
 
     public static void LaunchActivity(Context context,String imgPath,int fromId){
         Intent intent=new Intent(context,UserHeadCropImageActivity.class);
@@ -71,7 +72,10 @@ public class UserHeadCropImageActivity extends YanxiuBaseActivity implements Vie
                 this.finish();
                 break;
             case R.id.iv_ok:
-                mCropImageView.startCrop(UserHeadCropImageActivity.this);
+                if (!isCrop) {
+                    isCrop = true;
+                    mCropImageView.startCrop(UserHeadCropImageActivity.this);
+                }
                 break;
         }
     }
@@ -85,5 +89,6 @@ public class UserHeadCropImageActivity extends YanxiuBaseActivity implements Vie
             EventBus.getDefault().post(message);
             UserHeadCropImageActivity.this.finish();
         }
+        isCrop=false;
     }
 }
