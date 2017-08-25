@@ -19,6 +19,7 @@ import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.HomePageBaseFragment;
 import com.yanxiu.gphone.student.customviews.SinglineTextView;
 import com.yanxiu.gphone.student.exercise.SubjectHistoryActivity;
+import com.yanxiu.gphone.student.homework.classmanage.activity.JoinClassActivity;
 import com.yanxiu.gphone.student.login.activity.ChooseStageActivity;
 import com.yanxiu.gphone.student.user.feedback.activity.FeedbackActivity;
 import com.yanxiu.gphone.student.exercise.SelectSubjectActivity;
@@ -159,6 +160,15 @@ public class MyFragment extends HomePageBaseFragment implements View.OnClickList
             LoginInfo.saveStageid(message.stageId);
             LoginInfo.saveStageName(message.stageText);
         }
+    }
+
+    public void onEventMainThread(final JoinClassActivity.UserNameChangeMsg message){
+        mUser_name.post(new Runnable() {
+            @Override
+            public void run() {
+                mUser_name.setData(message.name);
+            }
+        });
     }
 
     @Override

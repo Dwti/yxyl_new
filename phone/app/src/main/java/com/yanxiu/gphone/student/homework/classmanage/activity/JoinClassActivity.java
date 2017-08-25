@@ -29,6 +29,8 @@ import com.yanxiu.gphone.student.userevent.UserEventManager;
 import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.ToastManager;
 
+import de.greenrobot.event.EventBus;
+
 /**
  * Created by sp on 17-5-17.
  */
@@ -166,7 +168,6 @@ public class JoinClassActivity extends YanxiuBaseActivity {
 
     @Override
     protected void onDestroy() {
-//        mScrollView.getViewTreeObserver().removeOnGlobalLayoutListener(mOnGlobalLayoutListener);
         super.onDestroy();
     }
 
@@ -203,6 +204,10 @@ public class JoinClassActivity extends YanxiuBaseActivity {
         @Override
         public void onResponse(RequestBase request, UpdateUserInfoResponse ret) {
             if(ret.getStatus().getCode() == 0 || ret.getStatus().getCode() ==2){
+                LoginInfo.saveRealName(mName);
+                UserNameChangeMsg msg = new UserNameChangeMsg();
+                msg.name = mName;
+                EventBus.getDefault().post(msg);
                 setResult(RESULT_OK);
                 finish();
             }
@@ -213,4 +218,8 @@ public class JoinClassActivity extends YanxiuBaseActivity {
             ToastManager.showMsg(error.getLocalizedMessage());
         }
     };
+
+    public static class UserNameChangeMsg{
+        public String name;
+    }
 }
