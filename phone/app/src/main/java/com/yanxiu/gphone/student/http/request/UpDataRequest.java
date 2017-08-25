@@ -132,8 +132,17 @@ public class UpDataRequest {
         if (mProgressListener != null) {
             mProgressListener.onRequestStart();
         }
-        for (int i = 0; i < fileNumber; i++) {
-            upData(url, i, params, upDatalistener);
+        if (totalCount==0){
+            postMainThread(new Runnable() {
+                @Override
+                public void run() {
+                    mProgressListener.onRequestEnd();
+                }
+            });
+        }else {
+            for (int i = 0; i < fileNumber; i++) {
+                upData(url, i, params, upDatalistener);
+            }
         }
     }
 

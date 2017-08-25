@@ -13,7 +13,7 @@
         android:id="@+id/notesContent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="200dp"
+        android:maxHeight="200dp"
         android:background="@color/color_ffffff"
         android:hint="@string/note_desc"
         android:gravity="top"

@@ -44,7 +44,7 @@ import java.util.Map;
  */
 public class SubmitQuesitonTask extends AsyncTask {
 
-    private interface OnPictureUploadFinish{
+    private interface OnPictureUploadFinish {
         void onFinish();
     }
 
@@ -58,7 +58,7 @@ public class SubmitQuesitonTask extends AsyncTask {
     private String ppid;
     private int mTotalCount;
     private SubmitAnswerRequest request;
-
+    private boolean isError = false;
     private Handler mHandler = new Handler();
 
     public SubmitQuesitonTask(Context context, Paper paper, int status, SubmitAnswerCallback callBack) {
@@ -74,25 +74,25 @@ public class SubmitQuesitonTask extends AsyncTask {
         final ArrayList<ArrayList<SubjectiveUpLoadImgBean>> imgList = getSubjecttiveImgAnswer();
         if (null != imgList && imgList.size() > 0) {
 //            final int totalCount = imgList.size() + 1;//上传总的数量= 图片数量 + 1（最后上传答案的请求算作一个计数）；
-            startUpload(imgList,0);
+            startUpload(imgList, 0);
         } else { //没有图片，直接提交答案
             requestSumbmit();
         }
         return null;
     }
 
-    private void startUpload(final ArrayList<ArrayList<SubjectiveUpLoadImgBean>> imgList, final int index){
-        if (index<mTotalCount) {
+    private void startUpload(final ArrayList<ArrayList<SubjectiveUpLoadImgBean>> imgList, final int index) {
+        if (index < mTotalCount) {
             uploadPicture(imgList.get(index), index + 1, new OnPictureUploadFinish() {
                 @Override
                 public void onFinish() {
-                    startUpload(imgList,index+1);
+                    startUpload(imgList, index + 1);
                 }
             });
         }
     }
 
-    private void uploadPicture(final ArrayList<SubjectiveUpLoadImgBean> imgList, final int nowIndex, final OnPictureUploadFinish uploadFinish){
+    private void uploadPicture(final ArrayList<SubjectiveUpLoadImgBean> imgList, final int nowIndex, final OnPictureUploadFinish uploadFinish) {
         UpDataRequest.getInstense().setConstantParams(new UpDataRequest.findConstantParams() {
             @NonNull
             @Override
@@ -125,11 +125,12 @@ public class SubmitQuesitonTask extends AsyncTask {
         }).setProgressListener(new UpDataRequest.onProgressListener() {
             @Override
             public void onRequestStart() {
+                isError = false;
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
                         Log.e(TAG, "开始上传");
-                        mCallBack.onUpdate(mTotalCount, nowIndex-1);
+                        mCallBack.onUpdate(mTotalCount, nowIndex - 1);
                     }
                 });
             }
@@ -147,15 +148,22 @@ public class SubmitQuesitonTask extends AsyncTask {
             @Override
             public void onRequestEnd() {
                 //回调给UI线程
-                uploadFinish.onFinish();
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (nowIndex==mTotalCount) {
-                            requestSumbmit(); //图片传完了，提交答案
+                Log.e(TAG, "结束上传");
+                if (isError) {
+                    Log.e(TAG, "上传失败");
+                    mCallBack.onFail();
+                } else {
+                    Log.e(TAG, "上传成功");
+                    uploadFinish.onFinish();
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (nowIndex == mTotalCount) {
+                                requestSumbmit(); //图片传完了，提交答案
+                            }
                         }
-                    }
-                });
+                    });
+                }
             }
         }).setListener(new onUpDatalistener() {
             @Override
@@ -167,19 +175,20 @@ public class SubmitQuesitonTask extends AsyncTask {
             public void onUpDataSuccess(final int position, final Object tag, final String jsonString) {
                 //这需要保存服务服端返回的url
                 String imgUrl = parseJson(jsonString);
-                Log.e(TAG, "imgUrl" + imgUrl);
+                Log.e(TAG, "imgUrl   " + imgUrl);
                 saveAnswer((SubjectiveUpLoadImgBean) tag, imgUrl);
             }
 
             @Override
             public void onUpDataFailed(int position, Object tag, String failMsg) {
-                Log.e(TAG, "onUpDataFailed" + failMsg);
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mCallBack.onFail();
-                    }
-                });
+                Log.e(TAG, "onUpDataFailed   " + failMsg);
+                isError = true;
+//                mHandler.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        mCallBack.onFail();
+//                    }
+//                });
             }
 
             @Override
@@ -238,7 +247,7 @@ public class SubmitQuesitonTask extends AsyncTask {
      * 获取主观题图片路径
      */
     private ArrayList<ArrayList<SubjectiveUpLoadImgBean>> getSubjecttiveImgAnswer() {
-        ArrayList<ArrayList<SubjectiveUpLoadImgBean>> arrayLists=new ArrayList<>();
+        ArrayList<ArrayList<SubjectiveUpLoadImgBean>> arrayLists = new ArrayList<>();
         if (paper == null)
             return null;
         ArrayList<BaseQuestion> questions = paper.getQuestions();
@@ -256,16 +265,16 @@ public class SubmitQuesitonTask extends AsyncTask {
                         BaseQuestion childQuestion = childQuestions.get(j);
                         if (QuestionTemplate.ANSWER.equals(childQuestion.getTemplate())) {
                             ArrayList<SubjectiveUpLoadImgBean> imgList = new ArrayList<>();
-                            boolean isShouldSetTotalCount=true;
+                            boolean isShouldSetTotalCount = true;
                             Object answer = childQuestion.getAnswer();
                             ArrayList<String> answerList = null;
                             if (null != answer) {
                                 answerList = (ArrayList) answer;
                                 if (answerList != null && answerList.size() > 0) {
                                     for (int k = 0; k < answerList.size(); k++) {
-                                        if (isShouldSetTotalCount){
+                                        if (isShouldSetTotalCount) {
                                             mTotalCount++;
-                                            isShouldSetTotalCount=false;
+                                            isShouldSetTotalCount = false;
                                         }
                                         String path = answerList.get(k);
                                         if (!TextUtils.isEmpty(path) && !path.startsWith("http")) {
@@ -276,7 +285,7 @@ public class SubmitQuesitonTask extends AsyncTask {
                                         }
                                     }
                                 }
-                                if (!isShouldSetTotalCount){
+                                if (!isShouldSetTotalCount) {
                                     arrayLists.add(imgList);
                                 }
                             }
@@ -287,7 +296,7 @@ public class SubmitQuesitonTask extends AsyncTask {
             } else if (QuestionTemplate.ANSWER.equals(outQuestion.getTemplate())) {
                 Object answer = outQuestion.getAnswer();
                 ArrayList<String> answerList = null;
-                boolean isShouldSetTotalCount=true;
+                boolean isShouldSetTotalCount = true;
                 if (null != answer) {
                     answerList = (ArrayList) answer;
                     if (answerList != null && answerList.size() > 0) {
@@ -295,9 +304,9 @@ public class SubmitQuesitonTask extends AsyncTask {
                         for (int k = 0; k < answerList.size(); k++) {
                             String path = answerList.get(k);
                             if (!TextUtils.isEmpty(path) && !path.startsWith("http")) {
-                                if (isShouldSetTotalCount){
+                                if (isShouldSetTotalCount) {
                                     mTotalCount++;
-                                    isShouldSetTotalCount=false;
+                                    isShouldSetTotalCount = false;
                                 }
                                 SubjectiveUpLoadImgBean bean = new SubjectiveUpLoadImgBean();
                                 bean.setLevelPositions(outQuestion.getLevelPositions());
@@ -305,7 +314,7 @@ public class SubmitQuesitonTask extends AsyncTask {
                                 imgList.add(bean);
                             }
                         }
-                        if (!isShouldSetTotalCount){
+                        if (!isShouldSetTotalCount) {
                             arrayLists.add(imgList);
                         }
                     }
@@ -351,20 +360,20 @@ public class SubmitQuesitonTask extends AsyncTask {
                         BaseQuestion childQuestionBean = childQuestionList.get(j); //子题
                         Object childAnsewr = childQuestionBean.getAnswer(); //子题答案
 
-                        if (childQuestionBean.getTemplate().equals(QuestionTemplate.CLASSIFY)){
-                            List<String> answerList=new ArrayList<>();
-                            List<List<String>> listList= (List<List<String>>) childAnsewr;
-                            for (List<String> stringList:listList){
-                                String answerString="";
-                                for (String s:stringList){
-                                    answerString+=s+",";
+                        if (childQuestionBean.getTemplate().equals(QuestionTemplate.CLASSIFY)) {
+                            List<String> answerList = new ArrayList<>();
+                            List<List<String>> listList = (List<List<String>>) childAnsewr;
+                            for (List<String> stringList : listList) {
+                                String answerString = "";
+                                for (String s : stringList) {
+                                    answerString += s + ",";
                                 }
                                 if (!TextUtils.isEmpty(answerString)) {
                                     answerString = answerString.substring(0, answerString.length() - 1);
                                 }
                                 answerList.add(answerString);
                             }
-                            childAnsewr=answerList;
+                            childAnsewr = answerList;
                         }
 
                         Gson gson = new Gson();
@@ -403,20 +412,20 @@ public class SubmitQuesitonTask extends AsyncTask {
                     BaseQuestion childQuestionBean = outerQuestionBean; //子题就是本身
                     Object childAnsewr = childQuestionBean.getAnswer(); //子题答案
 
-                    if (childQuestionBean.getTemplate().equals(QuestionTemplate.CLASSIFY)){
-                        List<String> answerList=new ArrayList<>();
-                        List<List<String>> listList= (List<List<String>>) childAnsewr;
-                        for (List<String> stringList:listList){
-                            String answerString="";
-                            for (String s:stringList){
-                                answerString+=s+",";
+                    if (childQuestionBean.getTemplate().equals(QuestionTemplate.CLASSIFY)) {
+                        List<String> answerList = new ArrayList<>();
+                        List<List<String>> listList = (List<List<String>>) childAnsewr;
+                        for (List<String> stringList : listList) {
+                            String answerString = "";
+                            for (String s : stringList) {
+                                answerString += s + ",";
                             }
                             if (!TextUtils.isEmpty(answerString)) {
                                 answerString = answerString.substring(0, answerString.length() - 1);
                             }
                             answerList.add(answerString);
                         }
-                        childAnsewr=answerList;
+                        childAnsewr = answerList;
                     }
 
                     Gson gson = new Gson();
@@ -449,20 +458,20 @@ public class SubmitQuesitonTask extends AsyncTask {
                 } else { //单题
                     Object ansewr = outerQuestionBean.getAnswer(); //答案
 
-                    if (outerQuestionBean.getTemplate().equals(QuestionTemplate.CLASSIFY)){
-                        List<String> answerList=new ArrayList<>();
-                        List<List<String>> listList= (List<List<String>>) ansewr;
-                        for (List<String> stringList:listList){
-                            String answerString="";
-                            for (String s:stringList){
-                                answerString+=s+",";
+                    if (outerQuestionBean.getTemplate().equals(QuestionTemplate.CLASSIFY)) {
+                        List<String> answerList = new ArrayList<>();
+                        List<List<String>> listList = (List<List<String>>) ansewr;
+                        for (List<String> stringList : listList) {
+                            String answerString = "";
+                            for (String s : stringList) {
+                                answerString += s + ",";
                             }
                             if (!TextUtils.isEmpty(answerString)) {
                                 answerString = answerString.substring(0, answerString.length() - 1);
                             }
                             answerList.add(answerString);
                         }
-                        ansewr=answerList;
+                        ansewr = answerList;
                     }
 
                     String answerJson = "";

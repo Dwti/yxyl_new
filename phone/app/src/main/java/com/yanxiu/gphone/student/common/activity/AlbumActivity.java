@@ -188,6 +188,7 @@ public class AlbumActivity extends YanxiuBaseActivity implements View.OnClickLis
         List<AlbumUtils.PictureMessage> list=mHashMap.get(message.name);
         mImageAdapter.setData(list);
         mAlbumParentNameView.setVisibility(View.GONE);
+        mArrowView.setBackgroundResource(R.drawable.selector_album_open);
         mTitleAlbumView.setText(message.name);
     }
 
