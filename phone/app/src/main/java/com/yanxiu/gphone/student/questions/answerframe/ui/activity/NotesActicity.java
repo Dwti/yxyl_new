@@ -147,6 +147,8 @@ public class NotesActicity extends YanxiuBaseActivity implements View.OnClickLis
             mNotesEditText.setText(mContent);
             mNotesEditText.setSelection(mContent.length());
         }
+
+        mBackView.setBackgroundResource(R.drawable.selector_back);
     }
 
     @Override
@@ -157,6 +159,7 @@ public class NotesActicity extends YanxiuBaseActivity implements View.OnClickLis
                 NotesActicity.this.finish();
                 break;
             case R.id.tv_right:
+                rootView.showLoadingView();
                 String notesContent = mNotesEditText.getText().toString();
                 uploadPicture(mAdapter.getData(),notesContent);
                 break;
@@ -164,7 +167,6 @@ public class NotesActicity extends YanxiuBaseActivity implements View.OnClickLis
     }
 
     private void uploadPicture(final ArrayList<String> paths, final String content) {
-        rootView.showLoadingView();
         final ArrayList<PictureMessage> data = new ArrayList<>();
         for (int i = 0; i < paths.size(); i++) {
             String path = paths.get(i);
@@ -219,7 +221,9 @@ public class NotesActicity extends YanxiuBaseActivity implements View.OnClickLis
             public void onProgress(int index,int position) {}
             @Override
             public void onRequestEnd() {
-                uploadData(paths, content);
+                //针对某张图片上传失败重新上传
+                uploadPicture(paths,content);
+//                uploadData(paths, content);
             }
         }).setListener(new UpDataRequest.onUpDatalistener() {
             @Override
@@ -236,12 +240,14 @@ public class NotesActicity extends YanxiuBaseActivity implements View.OnClickLis
                     e.printStackTrace();
                 }
                 if (imgBean!=null&&imgBean.getData().size()>0) {
-                    paths.set(position, imgBean.getData().get(0));
+                    PictureMessage message= (PictureMessage) tag;
+                    paths.set(message.index, imgBean.getData().get(0));
                 }
             }
             @Override
             public void onUpDataFailed(int position, Object tag, String failMsg) {
-
+//                rootView.hiddenLoadingView();
+//                ToastManager.showMsg(failMsg);
             }
             @Override
             public void onError(String errorMsg) {}

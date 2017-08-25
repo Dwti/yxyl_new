@@ -1,6 +1,7 @@
 package com.yanxiu.gphone.student.util;
 
 import android.app.Activity;
+import android.text.TextUtils;
 
 import com.yanxiu.gphone.student.homepage.MainActivity;
 import com.yanxiu.gphone.student.user.setting.activity.SettingActivity;
@@ -15,8 +16,10 @@ import java.util.ArrayList;
 public class ActivityManger {
 
     protected static ArrayList<Activity> activityList = new ArrayList<Activity>();
+
     /**
      * 每个activity在oncreate()里，必须调用该方法
+     *
      * @param activity
      */
     public static void addActicity(Activity activity) {
@@ -24,8 +27,10 @@ public class ActivityManger {
             activityList.add(activity);
         }
     }
+
     /**
      * 每个activity在onDestory()里，必须调用该方法
+     *
      * @param activity
      */
     public static void destoryActivity(Activity activity) {
@@ -33,6 +38,7 @@ public class ActivityManger {
             activityList.remove(activity);
         }
     }
+
     /**
      * 在退出程序时，必须调用该方法
      */
@@ -47,19 +53,19 @@ public class ActivityManger {
     }
 
 
-    public static void LogOut(){
+    public static void LogOut(String... isMain) {
         Activity activitys = null;
         if (activityList != null && activityList.size() > 0) {
-            for (int i=0;i<activityList.size();i++){
-                if (i==activityList.size()-1){
-                    activitys=activityList.get(i);
-                }else {
+            for (int i = 0; i < activityList.size(); i++) {
+                if ((i == activityList.size() - 1) && isMain == null) {
+                    activitys = activityList.get(i);
+                } else {
                     activityList.get(i).finish();
                 }
             }
             activityList.clear();
         }
-        if (activitys!=null) {
+        if (activitys != null) {
             activityList.add(activitys);
         }
     }
@@ -67,10 +73,10 @@ public class ActivityManger {
     /**
      * finish掉除了MainActivity之外的所有Activity
      */
-    public static void destoryAllActivity(){
-        if(activityList!=null && activityList.size() > 0){
-            for(Activity activity : activityList){
-                if(!(activity instanceof MainActivity)){
+    public static void destoryAllActivity() {
+        if (activityList != null && activityList.size() > 0) {
+            for (Activity activity : activityList) {
+                if (!(activity instanceof MainActivity)) {
                     activity.finish();
                 }
             }
@@ -79,9 +85,10 @@ public class ActivityManger {
 
     /**
      * 获取当前Activity
+     *
      * @return
      */
-    public static Activity getTopActivity(){
+    public static Activity getTopActivity() {
         if (activityList != null && activityList.size() > 0) {
             return activityList.get(activityList.size() - 1);
         }

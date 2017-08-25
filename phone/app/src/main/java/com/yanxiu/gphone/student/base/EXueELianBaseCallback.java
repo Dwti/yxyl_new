@@ -9,8 +9,11 @@ import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.YanxiuApplication;
 import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.login.activity.LoginActivity;
+import com.yanxiu.gphone.student.questions.answerframe.bean.AnswerBean;
 import com.yanxiu.gphone.student.util.ActivityManger;
 import com.yanxiu.gphone.student.util.LoginInfo;
+
+import org.litepal.crud.DataSupport;
 
 
 /**
@@ -24,7 +27,8 @@ public abstract class EXueELianBaseCallback<T extends EXueELianBaseResponse> imp
         if(ret != null && ret.getStatus().getCode() == Constants.NOT_LOGGED_IN){
             PushManager.getInstance().unBindAlias(YanxiuApplication.getContext(), String.valueOf(LoginInfo.getUID()), true);
             LoginInfo.LogOut();
-            ActivityManger.LogOut();
+            DataSupport.deleteAll(AnswerBean.class);
+            ActivityManger.LogOut("2");
             Context context = YanxiuApplication.getContext();
             Intent intent=new Intent(context,LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

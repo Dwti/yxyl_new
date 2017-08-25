@@ -42,6 +42,7 @@ import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.util.ActivityManger;
 import com.yanxiu.gphone.student.util.DESBodyDealer;
 import com.yanxiu.gphone.student.util.DataFetcher;
+import com.yanxiu.gphone.student.util.Logger;
 import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.SoundManger;
 import com.yanxiu.gphone.student.util.ToastManager;
@@ -133,6 +134,7 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
             mRequest = null;
         }
         super.onDestroy();
+        Logger.d(TAG,"ondestroy");
         mainInstance = null;
     }
 

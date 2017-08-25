@@ -222,7 +222,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         // 2, 跳转
         int index = item.getLevelPositions().get(0);
         FragmentStatePagerAdapter a1 = (FragmentStatePagerAdapter) mViewPager.getAdapter();
-        mViewPager.setCurrentItem(index);
+        mViewPager.setCurrentItem(index,false);
         ExerciseBaseFragment currentFragment = (ExerciseBaseFragment) a1.instantiateItem(mViewPager, index);
         currentFragment.setUserVisibleHin2(true);
 

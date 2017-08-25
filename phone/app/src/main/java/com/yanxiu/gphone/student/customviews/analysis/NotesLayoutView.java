@@ -91,9 +91,17 @@ public class NotesLayoutView extends LinearLayout implements View.OnClickListene
 
     private void setNoteImg(ArrayList<String> paths){
         mImgCenterLeftView.setVisibility(GONE);
+        mImgCenterLeftView.setImageBitmap(null);
+
         mImgCenterRightView.setVisibility(GONE);
+        mImgCenterRightView.setImageBitmap(null);
+
         mImgLeftView.setVisibility(GONE);
+        mImgLeftView.setImageBitmap(null);
+
         mImgRightView.setVisibility(GONE);
+        mImgRightView.setImageBitmap(null);
+
         for (int i=0;i<paths.size();i++){
             switch (i){
                 case 0:

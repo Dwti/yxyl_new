@@ -18,7 +18,7 @@
         android:layout_marginBottom="@dimen/analysis_bottom"
         android:layout_marginLeft="@dimen/analysis_view_paddingbottom"
         android:layout_marginRight="@dimen/analysis_view_paddingbottom"
-        android:lineSpacingExtra="@dimen/analysis_view_line_space" />
+        android:lineSpacingExtra="@dimen/analysis_answer_analysis_SpacingExtra" />
 
     <!--<LinearLayout-->
         <!--android:layout_width="match_parent"-->

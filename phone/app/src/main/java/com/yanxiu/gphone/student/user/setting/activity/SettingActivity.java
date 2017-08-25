@@ -16,10 +16,13 @@ import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.login.activity.LoginActivity;
 import com.yanxiu.gphone.student.login.response.UserMessageBean;
+import com.yanxiu.gphone.student.questions.answerframe.bean.AnswerBean;
 import com.yanxiu.gphone.student.user.setting.bean.BindMobileMessage;
 import com.yanxiu.gphone.student.util.ActivityManger;
 import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.UpdateUtil;
+
+import org.litepal.crud.DataSupport;
 
 import de.greenrobot.event.EventBus;
 
@@ -124,6 +127,7 @@ public class SettingActivity extends YanxiuBaseActivity implements View.OnClickL
                 break;
             case R.id.wl_login_out:
                 PushManager.getInstance().unBindAlias(this.getApplicationContext(), String.valueOf(LoginInfo.getUID()), true);
+                DataSupport.deleteAll(AnswerBean.class);
                 LoginInfo.LogOut();
                 ActivityManger.LogOut();
                 LoginActivity.LaunchActivity(mContext);
