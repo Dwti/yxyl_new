@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.igexin.sdk.PushManager;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
+import com.yanxiu.gphone.student.db.SpManager;
 import com.yanxiu.gphone.student.login.activity.LoginActivity;
 import com.yanxiu.gphone.student.login.response.UserMessageBean;
 import com.yanxiu.gphone.student.questions.answerframe.bean.AnswerBean;
@@ -127,6 +128,8 @@ public class SettingActivity extends YanxiuBaseActivity implements View.OnClickL
                 break;
             case R.id.wl_login_out:
                 PushManager.getInstance().unBindAlias(this.getApplicationContext(), String.valueOf(LoginInfo.getUID()), true);
+                SpManager.clearAnswerTime();
+                SpManager.clearCompleteQuestionCount();
                 DataSupport.deleteAll(AnswerBean.class);
                 LoginInfo.LogOut();
                 ActivityManger.LogOut();
