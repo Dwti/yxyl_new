@@ -388,6 +388,7 @@ public class SelectChapterAndKnowledgeActivity extends YanxiuBaseActivity {
                 mEditionChildBeanList = bean.getChildren();
                 if(bean.getChildren() != null && bean.getChildren().size() > 0){
                     volume = bean.getChildren().get(0).getId();
+                    mStage.setText(bean.getChildren().get(0).getName());
                 }
                 break;
             }
@@ -411,7 +412,6 @@ public class SelectChapterAndKnowledgeActivity extends YanxiuBaseActivity {
                 mNoEditions = false;
                 mVolumeId = getVolume(response.getData(),mEditionId);
                 showContentView();
-                mStage.setText(response.getData().get(0).getChildren().get(0).getName());
                 getChapterList(mSubjectId,mEditionId, mVolumeId);
             }else {
                 showDataErrorView(true);

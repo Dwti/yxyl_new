@@ -261,6 +261,7 @@ public class ExerciseHistoryActivity extends YanxiuBaseActivity {
                 mEditionChildBeanList = bean.getChildren();
                 if(bean.getChildren() != null && bean.getChildren().size() > 0){
                     volume = bean.getChildren().get(0).getId();
+                    mStage.setText(bean.getChildren().get(0).getName());
                 }
                 break;
             }
@@ -633,7 +634,6 @@ public class ExerciseHistoryActivity extends YanxiuBaseActivity {
             if(response.getStatus().getCode() == 0){
                 mNoEditions = false;
                 mVolume = getVolume(response.getData(),mEditionId);
-                mStage.setText(response.getData().get(0).getChildren().get(0).getName());
                 getExercisesByChapter(1);
             }else {
                 showDataErrorView(true);
