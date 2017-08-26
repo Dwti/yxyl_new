@@ -50,6 +50,8 @@ public class SubjectsAdapter extends BaseAdapter {
         subjectName.setText(mSubjects.get(position).getName());
         if(mSubjects.get(position).getData() != null){
             editionName.setText(mSubjects.get(position).getData().getEditionName());
+        }else {
+            editionName.setText("");
         }
         return convertView;
     }
