@@ -84,8 +84,6 @@ public class MistakeListActivity extends YanxiuBaseActivity implements View.OnCl
         mBackView.setBackgroundResource(R.drawable.selector_back);
 
         requestData();
-
-        rootView.showOtherErrorView();
     }
 
     private void requestData(){
