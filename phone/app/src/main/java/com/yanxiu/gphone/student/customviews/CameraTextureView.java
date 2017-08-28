@@ -99,7 +99,7 @@ public class CameraTextureView extends TextureView implements TextureView.Surfac
     }
 
     public void changeDirection() {
-        onPause();
+        onStop();
         if (CAMERA_FACING_BACK.equals(mCameraId)) {
             mCameraId = CAMERA_FACING_FRONT;
         } else if (CAMERA_FACING_FRONT.equals(mCameraId)) {
@@ -108,7 +108,7 @@ public class CameraTextureView extends TextureView implements TextureView.Surfac
         onResume();
     }
 
-    public void onPause() {
+    public void onStop() {
         if (cameraDevice != null) {
             release();
         }

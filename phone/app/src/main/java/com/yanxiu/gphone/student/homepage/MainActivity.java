@@ -107,7 +107,7 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
         if (!TextUtils.isEmpty(headImg)) {
             String[] strings = headImg.split("/");
             if (!"file_56a60c9d7cbd4.jpg".equals(strings[strings.length - 1])) {
-                Glide.with(this).load(LoginInfo.getHeadIcon()).asBitmap().into(new BitmapImageViewTarget(mNavIconViews[2]) {
+                Glide.with(this).load(LoginInfo.getHeadIcon()).asBitmap().placeholder(R.drawable.selector_my).into(new BitmapImageViewTarget(mNavIconViews[2]) {
                     @Override
                     protected void setResource(Bitmap resource) {
                         RoundedBitmapDrawable bitmapDrawable = RoundedBitmapDrawableFactory.create(view.getContext().getResources(), resource);
@@ -115,7 +115,7 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
                         view.setImageDrawable(bitmapDrawable);
                     }
                 });
-                return;
+                 return;
             }
         }
         mNavIconViews[2].setImageDrawable(ContextCompat.getDrawable(this, R.drawable.selector_my));

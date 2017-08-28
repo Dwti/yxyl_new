@@ -88,7 +88,7 @@ public class UserHeadCameraActivity extends YanxiuBaseActivity implements View.O
     @Override
     protected void onStop() {
         super.onStop();
-        mCameraView.onPause();
+        mCameraView.onStop();
     }
 
     @Override
@@ -111,9 +111,9 @@ public class UserHeadCameraActivity extends YanxiuBaseActivity implements View.O
         if (isSuccess){
             UserHeadCropImageActivity.LaunchActivity(mContext,path,mFromId);
         }else {
+            isTakePicture=false;
             ToastManager.showMsg(R.string.no_storage_permissions);
         }
-        isTakePicture=false;
     }
 
     public void onEventMainThread(CropCallbackMessage message){

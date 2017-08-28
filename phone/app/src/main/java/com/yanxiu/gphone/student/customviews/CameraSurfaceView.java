@@ -94,14 +94,14 @@ public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Call
         cameraOpen(mCameraId);
     }
 
-    public void onPause() {
+    public void onStop() {
         if (mCamera != null) {
             release();
         }
     }
 
     public void changeDirection() {
-        onPause();
+        onStop();
 //        int cameraCount=Camera.getNumberOfCameras();
 //        Camera.CameraInfo cameraInfo=new Camera.CameraInfo();
 //        for (int i=0;i<cameraCount;i++){

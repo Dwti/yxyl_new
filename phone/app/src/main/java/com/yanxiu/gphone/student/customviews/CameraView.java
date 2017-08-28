@@ -16,7 +16,7 @@ import android.widget.FrameLayout;
 public class CameraView extends FrameLayout {
 
     private static final String TYPE_DEFAULT="api_2";
-    private static final String TYPE_LOLLIPOP="api_21";
+    private static final String TYPE_M="api_23";
 
     private CameraSurfaceView mSurfaceView;
     private CameraTextureView mTextureView;
@@ -47,7 +47,7 @@ public class CameraView extends FrameLayout {
 
     private void initView(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            TYPE=TYPE_LOLLIPOP;
+            TYPE=TYPE_M;
             mTextureView=new CameraTextureView(context);
             this.addView(mTextureView);
         }else {
@@ -61,18 +61,18 @@ public class CameraView extends FrameLayout {
         if (TYPE.equals(TYPE_DEFAULT)) {
             mSurfaceView.onResume();
         }else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 mTextureView.onResume();
             }
         }
     }
 
-    public void onPause() {
+    public void onStop() {
         if (TYPE.equals(TYPE_DEFAULT)) {
-            mSurfaceView.onPause();
+            mSurfaceView.onStop();
         }else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                mTextureView.onPause();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                mTextureView.onStop();
             }
         }
     }
@@ -81,7 +81,7 @@ public class CameraView extends FrameLayout {
         if (TYPE.equals(TYPE_DEFAULT)) {
             mSurfaceView.changeDirection();
         }else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 mTextureView.changeDirection();
             }
         }
@@ -92,7 +92,7 @@ public class CameraView extends FrameLayout {
         if (TYPE.equals(TYPE_DEFAULT)) {
             mSurfaceView.takePicture(takePictureFinishedListener);
         }else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 mTextureView.takePicture(takePictureFinishedListener);
             }
         }
