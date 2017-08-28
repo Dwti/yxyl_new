@@ -82,6 +82,7 @@ public class UserHeadCameraActivity extends YanxiuBaseActivity implements View.O
     @Override
     protected void onResume() {
         super.onResume();
+        isTakePicture=false;
         mCameraView.onResume();
     }
 

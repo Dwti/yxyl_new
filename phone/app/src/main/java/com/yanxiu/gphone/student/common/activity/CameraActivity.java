@@ -85,6 +85,7 @@ public class CameraActivity extends YanxiuBaseActivity implements View.OnClickLi
     @Override
     protected void onResume() {
         super.onResume();
+        isTakePicture=false;
         mCameraView.onResume();
         AlbumUtils.getInstence().findFirstPicture(CameraActivity.this);
     }
