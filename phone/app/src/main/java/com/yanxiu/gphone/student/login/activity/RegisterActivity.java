@@ -102,7 +102,7 @@ public class RegisterActivity extends YanxiuBaseActivity implements View.OnClick
         mClearView.setEnabled(false);
         mSendVerCodeView.setEnabled(false);
         mRegisterView.setEnabled(false);
-        Glide.with(mContext).load(R.drawable.register_top).into(mTopImageView);
+        Glide.with(mContext).load(R.drawable.register_top).asBitmap().into(mTopImageView);
         mBackView.setBackgroundResource(R.drawable.selector_close);
     }
 

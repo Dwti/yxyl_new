@@ -109,7 +109,7 @@ public class ForgetPassWordActivity extends YanxiuBaseActivity implements View.O
         if (mobile.length() > 0) {
             mMobileView.setSelection(mobile.length());
         }
-        Glide.with(mContext).load(R.drawable.forgetpassword_top).into(mTopImageView);
+        Glide.with(mContext).load(R.drawable.forgetpassword_top).asBitmap().into(mTopImageView);
         mBackView.setBackgroundResource(R.drawable.selector_close);
     }
 

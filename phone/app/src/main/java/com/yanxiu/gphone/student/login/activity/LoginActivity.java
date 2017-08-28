@@ -130,7 +130,7 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
         mTitleView.setVisibility(View.INVISIBLE);
         mClearView.setEnabled(false);
         mLoginView.setEnabled(false);
-        Glide.with(mContext).load(R.drawable.login_top).into(mTopImageView);
+        Glide.with(mContext).load(R.drawable.login_top).asBitmap().into(mTopImageView);
     }
 
     private void listener() {

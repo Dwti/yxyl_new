@@ -99,7 +99,7 @@ public class ResetPassWordActivity extends YanxiuBaseActivity implements View.On
         mTitleView.setText(getText(R.string.resetpassword));
         mWavesView.setCanShowWave(false);
         mResetPassWordView.setEnabled(false);
-        Glide.with(mContext).load(R.drawable.resetpassword_top).into(mTopImageView);
+        Glide.with(mContext).load(R.drawable.resetpassword_top).asBitmap().into(mTopImageView);
         mBackView.setBackgroundResource(R.drawable.selector_white_back);
     }
 

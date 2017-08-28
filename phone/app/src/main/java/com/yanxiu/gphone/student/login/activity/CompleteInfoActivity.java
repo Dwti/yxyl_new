@@ -131,7 +131,7 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
         mSubmitView.setEnabled(false);
         mTitleView.setText(R.string.complete_message);
         mBackView.setVisibility(View.VISIBLE);
-        Glide.with(mContext).load(R.drawable.completeinfo_top).into(mTopImageView);
+        Glide.with(mContext).load(R.drawable.completeinfo_top).asBitmap().into(mTopImageView);
         mBackView.setBackgroundResource(R.drawable.selector_white_back);
     }
 

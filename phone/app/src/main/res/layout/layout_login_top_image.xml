@@ -8,7 +8,6 @@
         android:id="@+id/iv_top"
         android:layout_width="match_parent"
         android:layout_height="@dimen/login_top_img_height"
-        android:scaleType="fitXY"
         android:contentDescription="@null" />
 
 </LinearLayout>
