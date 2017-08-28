@@ -75,7 +75,7 @@
             android:background="@color/color_edf0ee"
             android:gravity="center">
 
-            <android.support.v7.widget.RecyclerView
+            <com.yanxiu.gphone.student.customviews.ClassifyRecycleView
                 android:id="@+id/classify_recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
