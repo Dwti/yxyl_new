@@ -85,7 +85,6 @@ public class MistakeListActivity extends YanxiuBaseActivity implements View.OnCl
 
         requestData();
 
-        rootView.showOtherErrorView();
     }
 
     private void requestData(){
