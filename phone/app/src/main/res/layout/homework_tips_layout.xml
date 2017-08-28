@@ -13,8 +13,7 @@
         <ImageView
             android:id="@+id/iv_tips"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:background="#1D81CD"/>
+            android:layout_height="250dp"/>
 
         <TextView
             android:id="@+id/tv_tips"
