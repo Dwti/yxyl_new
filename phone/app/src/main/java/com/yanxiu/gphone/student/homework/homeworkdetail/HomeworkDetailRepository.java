@@ -48,9 +48,14 @@ public class HomeworkDetailRepository implements HomeworkDetailDataSource {
             public void onResponse(RequestBase request, HomeworkDetailResponse ret) {
                 if(ret.getStatus().getCode() == 0 ){
                     mPageIndex = 1;
-                    mTotalPage = ret.getPage().getTotalPage();
+                    if(ret.getPage() != null){
+                        mTotalPage = ret.getPage().getTotalPage();
+                    }else {
+                        loadHomeworkDetailCallback.onDataEmpty();
+                        return;
+                    }
                     mHomeworkDetails = ret.getData();
-                    if(ret.getData().size() == 0){
+                    if(ret.getData() == null || ret.getData().size() == 0){
                         loadHomeworkDetailCallback.onDataEmpty();
                     }else {
                         loadHomeworkDetailCallback.onHomeworkDetailLoaded(mHomeworkDetails);
