@@ -3,7 +3,7 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_ffffff">
+    android:background="@color/color_edf0ee">
 
     <ImageView
         android:id="@+id/empty_top"
@@ -15,7 +15,7 @@
         android:id="@+id/empty_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/top"
+        android:layout_below="@+id/empty_top"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/net_error_layout_margintop"
         android:text="@string/no_wrong_data"

@@ -30,6 +30,10 @@
         android:id="@+id/iv_delete"
         android:layout_width="@dimen/subject_grid_item_delete_icon_w_h"
         android:layout_height="@dimen/subject_grid_item_delete_icon_w_h"
-        android:layout_alignParentRight="true"
-        android:background="@drawable/selector_samll_delete" />
+        android:layout_alignParentEnd="true"
+        android:paddingStart="8dp"
+        android:paddingEnd="0dp"
+        android:paddingBottom="8dp"
+        android:contentDescription="@null"
+        android:src="@drawable/selector_samll_delete"/>
 </RelativeLayout>

@@ -20,7 +20,7 @@
             android:id="@+id/iv_back"
             android:layout_width="@dimen/crop_button_w_h"
             android:layout_height="@dimen/crop_button_w_h"
-            android:paddingTop="4dp"
+            android:padding="4dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/crop_button_margin_l_r"
             android:src="@drawable/selector_back"
