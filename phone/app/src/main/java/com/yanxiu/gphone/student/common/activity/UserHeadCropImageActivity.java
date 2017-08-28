@@ -88,7 +88,8 @@ public class UserHeadCropImageActivity extends YanxiuBaseActivity implements Vie
             message.path=path;
             EventBus.getDefault().post(message);
             UserHeadCropImageActivity.this.finish();
+        }else {
+            isCrop = false;
         }
-        isCrop=false;
     }
 }

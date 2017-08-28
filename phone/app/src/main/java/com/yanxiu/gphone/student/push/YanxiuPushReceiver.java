@@ -118,7 +118,7 @@ public class YanxiuPushReceiver extends BroadcastReceiver {
                 .getSystemService(Context.NOTIFICATION_SERVICE);
         Notification actNotification = null;
         RemoteViews contentView = new RemoteViews(context.getPackageName(), R.layout.yanxiu_notification_layout);
-        contentView.setImageViewResource(R.id.notifi_icon, R.mipmap.app_icon);
+        contentView.setImageViewResource(R.id.notifi_icon, R.mipmap.ic_launcher);
         contentView.setTextViewText(R.id.notifi_title, appName);
         contentView.setTextViewText(R.id.notifi_content, mPushMsgBean.getMsg_title());
         contentView.setTextViewText(R.id.notifi_time, TimeUtils.getNowHMDate());
@@ -129,7 +129,7 @@ public class YanxiuPushReceiver extends BroadcastReceiver {
                     .setContentText("describe")
                     .setContentIntent(actPendingIntent)
                     .setDefaults(Notification.DEFAULT_SOUND)
-                    .setSmallIcon(R.mipmap.app_icon)
+                    .setSmallIcon(R.mipmap.ic_launcher)
                     .setWhen(System.currentTimeMillis())
                     .setOngoing(true);
             actNotification = builder.getNotification();
@@ -141,13 +141,13 @@ public class YanxiuPushReceiver extends BroadcastReceiver {
                     .setContentText("describe")
                     .setContentIntent(actPendingIntent)
                     .setDefaults(Notification.DEFAULT_SOUND)
-                    .setSmallIcon(R.mipmap.app_icon)
+                    .setSmallIcon(R.mipmap.ic_launcher)
                     .setWhen(System.currentTimeMillis())
                     .build();
             actNotification.contentView = contentView;
         } else {
             actNotification = new Notification();
-            actNotification.icon = R.mipmap.app_icon;
+            actNotification.icon = R.mipmap.ic_launcher;
             actNotification.tickerText = content;
             actNotification.flags = Notification.FLAG_AUTO_CANCEL;
             actNotification.defaults |= Notification.DEFAULT_SOUND;

@@ -114,8 +114,9 @@ public class CropImageActivity extends YanxiuBaseActivity implements View.OnClic
             message.path=path;
             EventBus.getDefault().post(message);
             CropImageActivity.this.finish();
+        }else {
+            isCrop = false;
         }
-        isCrop=false;
     }
 
 }
