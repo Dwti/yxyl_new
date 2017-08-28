@@ -49,6 +49,7 @@ public class HomeworkDetailPresenter implements HomeworkDetailContract.Presenter
                 }
                 mHomeworkDetailView.showHomework(homeworkDetails);
                 mHomeworkDetailView.setLoadingIndicator(false);
+                mHomeworkDetailView.setLoadMoreEnable(true);
             }
 
             @Override
@@ -78,6 +79,7 @@ public class HomeworkDetailPresenter implements HomeworkDetailContract.Presenter
         if(!mHomeworkRepository.canLoadMore()){
             mHomeworkDetailView.setLoadingMoreIndicator(false);
             mHomeworkDetailView.showNoMoreData();
+            mHomeworkDetailView.setLoadMoreEnable(false);
             return;
         }
         mHomeworkRepository.getMoreHomeworkDetails(mHomeworkId, new HomeworkDetailDataSource.LoadHomeworkDetailCallback() {

@@ -166,6 +166,7 @@ public class ExerciseHistoryActivity extends YanxiuBaseActivity {
                     showContentView();
                     mLayoutStage.setVisibility(View.VISIBLE);
                     mRecyclerView.setAdapter(mChapterAdapter);
+                    setLoadMoreEnable(canLoadMore(mIsChapterMode));
                     if(mChapterAdapter.getItemCount() == 0){
                         if(mEditionChildBeanList == null || mEditionChildBeanList.size() == 0){
                             getEditionList(mSubjectId);
@@ -178,6 +179,7 @@ public class ExerciseHistoryActivity extends YanxiuBaseActivity {
                     showContentView();
                     mLayoutStage.setVisibility(View.GONE);
                     mRecyclerView.setAdapter(mKnowAdapter);
+                    setLoadMoreEnable(canLoadMore(mIsChapterMode));
                     if(mKnowAdapter.getItemCount() == 0){
                         getExercisesByKnow(1);
                     }
@@ -261,6 +263,7 @@ public class ExerciseHistoryActivity extends YanxiuBaseActivity {
                 mEditionChildBeanList = bean.getChildren();
                 if(bean.getChildren() != null && bean.getChildren().size() > 0){
                     volume = bean.getChildren().get(0).getId();
+                    mStage.setText(bean.getChildren().get(0).getName());
                 }
                 break;
             }
@@ -279,6 +282,7 @@ public class ExerciseHistoryActivity extends YanxiuBaseActivity {
     private void loadMoreData(){
         if(!canLoadMore(mIsChapterMode)){
             mRefreshLayout.finishLoadMore();
+            setLoadMoreEnable(false);
             return;
         }
         if(mIsChapterMode){
@@ -295,6 +299,10 @@ public class ExerciseHistoryActivity extends YanxiuBaseActivity {
             mLoadingView.hiddenLoadingView();
             mRefreshLayout.finishRefreshing();
         }
+    }
+
+    public void setLoadMoreEnable(boolean enable){
+        mRefreshLayout.setLoadMoreEnable(enable);
     }
 
     public void setLoadingMoreIndicator(boolean active) {
@@ -485,6 +493,7 @@ public class ExerciseHistoryActivity extends YanxiuBaseActivity {
                 if(mChapterCurrentPage == 1){
                     mEnteredAnswerQueUI = false;
                     setLoadingIndicator(false);
+                    setLoadMoreEnable(true);
                     mChapterTotalPage = response.getPage().getTotalPage();
                     if(response.getData() != null && response.getData().size() > 0){
                         mExerciseListChapter.clear();
@@ -537,6 +546,7 @@ public class ExerciseHistoryActivity extends YanxiuBaseActivity {
                 if(mKnowCurrentPage == 1){
                     mEnteredAnswerQueUI = false;
                     setLoadingIndicator(false);
+                    setLoadMoreEnable(true);
                     mKnowTotalPage = response.getPage().getTotalPage();
                     if(response.getData() != null && response.getData().size() > 0){
                         mExerciseListKnow.clear();
@@ -633,7 +643,6 @@ public class ExerciseHistoryActivity extends YanxiuBaseActivity {
             if(response.getStatus().getCode() == 0){
                 mNoEditions = false;
                 mVolume = getVolume(response.getData(),mEditionId);
-                mStage.setText(response.getData().get(0).getChildren().get(0).getName());
                 getExercisesByChapter(1);
             }else {
                 showDataErrorView(true);

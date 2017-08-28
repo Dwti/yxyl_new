@@ -92,7 +92,7 @@ public class SpManager {
      * 清空答题时间数据
      */
     public static void clearAnswerTime(){
-        myAnswerTimeSharedPreferences.edit().clear();
+        myAnswerTimeSharedPreferences.edit().clear().commit();
     }
 
     /**
@@ -105,6 +105,9 @@ public class SpManager {
         editor.commit();
     }
 
+    public static void clearCompleteQuestionCount(){
+        myCompeleteAnswerSharedPreferences.edit().clear().commit();
+    }
     /**
      * 已经完成的题目数
      * @return 0 ：没记录

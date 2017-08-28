@@ -32,6 +32,8 @@ public interface HomeworkDetailContract {
 
         void showNoMoreData();
 
+        void setLoadMoreEnable(boolean enable);
+
         void showCanNotViewReport(String msg);
 
         void showLoadMoreDataError(String msg);

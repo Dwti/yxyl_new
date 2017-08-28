@@ -79,7 +79,7 @@ public class HomeworkDetailActivity extends YanxiuBaseActivity implements Homewo
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mHomeworkDetailAdapter);
 
-        mRefreshLayout.setLoadMoreEnable(true);
+        setLoadMoreEnable(true);
 
         String subjectId = getIntent().getStringExtra(EXTRA_SUBJECT_ID);
         String subjectName = getIntent().getStringExtra(EXTRA_SUBJECT_NAME);
@@ -178,6 +178,12 @@ public class HomeworkDetailActivity extends YanxiuBaseActivity implements Homewo
     public void showNoMoreData() {
         //TODO
     }
+
+    @Override
+    public void setLoadMoreEnable(boolean enable) {
+        mRefreshLayout.setLoadMoreEnable(enable);
+    }
+
 
     @Override
     public void showCanNotViewReport(String msg) {
