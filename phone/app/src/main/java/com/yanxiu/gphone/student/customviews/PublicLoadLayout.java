@@ -27,7 +27,7 @@ public class PublicLoadLayout extends FrameLayout{
     private RelativeLayout mNetErrorLayoutContainer;//错误页面容器，默认网络错误页面
     private RelativeLayout mOtherErrorLayoutContainer;//其他错误页面容器，默认网络错误页面
 //    private View mNetErrorLayout;//错误页面容器，默认网络错误页面
-    private Button mRetry_button;//重试按钮
+    private TextView mRetry_button;//重试按钮
     private View mLoadingLayout;//loadingLayout
     private ImageView mLoadingView;// loadingView
     private Animation mLoadingAnim;//loadingView动画
@@ -73,7 +73,7 @@ public class PublicLoadLayout extends FrameLayout{
     private void initDefaultLayout() {
 //        mNetErrorLayout = inflate(mContext, R.layout.net_error_layout, mNetErrorLayoutContainer);
         inflate(mContext, R.layout.net_error_layout, mNetErrorLayoutContainer);
-        mRetry_button = (Button) findViewById(R.id.retry_button);
+        mRetry_button = (TextView) findViewById(R.id.retry_button);
     }
 
     /**

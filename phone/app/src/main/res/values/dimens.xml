@@ -204,7 +204,7 @@
     <dimen name="analysis_result_img_width">33dp</dimen>
     <dimen name="analysis_answer_analysis_textsize">19dp</dimen>
     <dimen name="analysis_answer_result_textsize">17dp</dimen>
-    <dimen name="analysis_answer_result_SpacingExtra">21dp</dimen>
+    <dimen name="analysis_answer_result_SpacingExtra">7dp</dimen>
     <dimen name="analysis_answer_analysis_SpacingExtra">9dp</dimen>
     <dimen name="analysis_line_height">1dp</dimen>
     <dimen name="analysis_score_height">120dp</dimen>

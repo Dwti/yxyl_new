@@ -10,12 +10,10 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.support.annotation.Nullable;
-import android.support.annotation.Px;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 import com.yanxiu.gphone.student.util.FileUtil;
-import com.yanxiu.gphone.student.util.ScreenUtils;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -41,7 +39,7 @@ public class CropImageView extends android.support.v7.widget.AppCompatImageView 
     /**
      * 正比
      * */
-    private static final int TYPE_SCALE_W_H=DEFAULT_PADDING*8;
+    private static final int TYPE_SCALE_W_H=DEFAULT_PADDING*5;
     /**
      * 反比
      * */
@@ -83,7 +81,7 @@ public class CropImageView extends android.support.v7.widget.AppCompatImageView 
 
     public CropImageView(Context context) {
         super(context);
-        init(context);
+        init();
     }
 
     public CropImageView(Context context, @Nullable AttributeSet attrs) {
@@ -92,10 +90,10 @@ public class CropImageView extends android.support.v7.widget.AppCompatImageView 
 
     public CropImageView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context);
+        init();
     }
 
-    private void init(Context context) {
+    private void init() {
         initPaint();
         setPadding(0, 0, 0, 0);
     }

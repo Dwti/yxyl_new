@@ -68,12 +68,12 @@ class ListenDrawable extends Drawable {
 
     @Override
     public int getIntrinsicWidth() {
-        return mRectF!=null?(int) mRectF.width():mBitmap.getWidth();
+        return mRectF!=null?(int) mRectF.width():mBitmap.getWidth()+mPadding*2;
     }
 
     @Override
     public int getIntrinsicHeight() {
-        return mRectF!=null?(int) mRectF.height():mBitmap.getHeight();
+        return mRectF!=null?(int) mRectF.height():mBitmap.getHeight()+mPadding*2;
     }
 
     @Override

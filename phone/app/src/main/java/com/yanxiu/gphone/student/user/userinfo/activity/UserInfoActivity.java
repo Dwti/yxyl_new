@@ -263,8 +263,9 @@ public class UserInfoActivity extends YanxiuBaseActivity implements View.OnClick
                             String path = response.getData().get(0).getHead();
                             LoginInfo.saveHeadIcon(path);
                             setHeadImg(message.path);
+                            ToastManager.showMsg(R.string.updata_headimg_success);
                         } else {
-                            ToastManager.showMsg(response.getStatus().getDesc());
+                            ToastManager.showMsg(R.string.updata_headimg_fails);
                         }
                     }
                 }
@@ -272,13 +273,13 @@ public class UserInfoActivity extends YanxiuBaseActivity implements View.OnClick
                 @Override
                 public void onUpDataFailed(int position, Object tag, String failMsg) {
                     rootView.hiddenLoadingView();
-                    ToastManager.showMsg(failMsg);
+                    ToastManager.showMsg(R.string.updata_headimg_fails);
                 }
 
                 @Override
                 public void onError(String errorMsg) {
                     rootView.hiddenLoadingView();
-                    ToastManager.showMsg(errorMsg);
+                    ToastManager.showMsg(R.string.updata_headimg_fails);
                 }
             });
         }

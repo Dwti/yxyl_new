@@ -323,4 +323,7 @@
     <string name="updata_now">立即更新</string>
 
     <string name="thrid">授权成功</string>
+
+    <string name="updata_headimg_success">上传成功</string>
+    <string name="updata_headimg_fails">上传失败</string>
 </resources>
