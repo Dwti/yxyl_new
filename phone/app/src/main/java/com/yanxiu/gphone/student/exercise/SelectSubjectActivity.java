@@ -1,6 +1,5 @@
 package com.yanxiu.gphone.student.exercise;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.test.yanxiu.network.HttpCallback;
@@ -36,9 +36,9 @@ public class SelectSubjectActivity extends YanxiuBaseActivity {
     private TextView mTips;
     private View mTipsView,mBack;
     private Button mRefreshBtn;
-    private GridView mGridView;
+    private ListView mListView;
     private ImageView mTipsImg;
-    private SubjectsAdapter mAdapter;
+    private SelectSubjectAdapter mAdapter;
 
     public static void invoke(Context context) {
         Intent intent = new Intent(context, SelectSubjectActivity.class);
@@ -60,7 +60,7 @@ public class SelectSubjectActivity extends YanxiuBaseActivity {
     }
 
     private void initView() {
-        mGridView = (GridView) findViewById(R.id.gridView);
+        mListView = (ListView) findViewById(R.id.listView);
         mTipsView = findViewById(R.id.tips_layout);
         mRefreshBtn = (Button) findViewById(R.id.btn_refresh);
         mTipsImg = (ImageView) findViewById(R.id.iv_tips);
@@ -75,7 +75,7 @@ public class SelectSubjectActivity extends YanxiuBaseActivity {
                 requestSubjects();
             }
         });
-        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 SubjectBean bean = (SubjectBean) mAdapter.getItem(position);
@@ -97,20 +97,20 @@ public class SelectSubjectActivity extends YanxiuBaseActivity {
     }
 
     private void initData() {
-        mAdapter = new SubjectsAdapter(new ArrayList<SubjectBean>(0));
-        mGridView.setAdapter(mAdapter);
+        mAdapter = new SelectSubjectAdapter(new ArrayList<SubjectBean>(0));
+        mListView.setAdapter(mAdapter);
         requestSubjects();
     }
 
     private void showDataEmptyView() {
-        mGridView.setVisibility(View.GONE);
+        mListView.setVisibility(View.GONE);
         mTipsView.setVisibility(View.VISIBLE);
         mTips.setText(R.string.data_empty);
         mRefreshBtn.setText(R.string.click_to_retry);
     }
 
     private void showDataErrorView() {
-        mGridView.setVisibility(View.GONE);
+        mListView.setVisibility(View.GONE);
         mTipsView.setVisibility(View.VISIBLE);
         mTipsImg.setImageResource(R.drawable.net_error);
         mTips.setText(R.string.load_failed);
@@ -118,7 +118,7 @@ public class SelectSubjectActivity extends YanxiuBaseActivity {
     }
 
     private void showSubjects(List<SubjectBean> data) {
-        mGridView.setVisibility(View.VISIBLE);
+        mListView.setVisibility(View.VISIBLE);
         mTipsView.setVisibility(View.GONE);
         mAdapter.replaceData(data);
     }

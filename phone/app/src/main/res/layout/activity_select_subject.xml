@@ -27,30 +27,18 @@
             android:layout_centerInParent="true"/>
     </RelativeLayout>
 
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="none"
-        android:background="#edf0ee">
-
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="#edf0ee">
 
-            <com.yanxiu.gphone.student.customviews.UnMoveGridView
-                android:id="@+id/gridView"
+            <ListView
+                android:id="@+id/listView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:layout_marginTop="30dp"
-                android:paddingBottom="30dp"
-                android:verticalSpacing="15dp"
-                android:listSelector="@android:color/transparent"
-                android:numColumns="3"
-                android:columnWidth="87dp"
-                android:stretchMode="spacingWidth"
+                android:layout_marginTop="10dp"
+                android:divider="@color/color_edf0ee"
+                android:dividerHeight="1dp"
                 android:scrollbars="none"/>
 
             <include
@@ -58,9 +46,5 @@
                 layout="@layout/homework_tips_layout"
                 android:visibility="gone" />
         </FrameLayout>
-
-
-
-    </ScrollView>
 
 </LinearLayout>
