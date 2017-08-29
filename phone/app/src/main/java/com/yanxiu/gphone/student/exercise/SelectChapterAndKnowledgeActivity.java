@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.test.yanxiu.network.HttpCallback;
@@ -329,6 +330,10 @@ public class SelectChapterAndKnowledgeActivity extends YanxiuBaseActivity {
             case "1109":
             case "1110":
                 mSwitchBar.setVisibility(View.GONE);
+                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mLayoutStage.getLayoutParams();
+                params.removeRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+                params.addRule(RelativeLayout.CENTER_IN_PARENT);
+                mLayoutStage.setLayoutParams(params);
                 break;
             default:
                 break;
