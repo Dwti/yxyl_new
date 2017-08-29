@@ -32,6 +32,7 @@
             android:textSize="21dp"
             android:maxLength="16"
             android:textColor="@color/color_333333"
+            android:textCursorDrawable="@drawable/shape_yxyl_cursor"
             android:text="asd"
             android:gravity="center_vertical"
             android:textStyle="bold"/>

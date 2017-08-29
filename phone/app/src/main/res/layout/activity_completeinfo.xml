@@ -47,6 +47,7 @@
                         android:ellipsize="end"
                         android:maxLength="16"
                         android:singleLine="true"
+                        android:textCursorDrawable="@drawable/shape_yxyl_cursor"
                         android:textColor="@color/color_ffffff" />
                         <View
                             android:layout_width="@dimen/edit_margin_text"

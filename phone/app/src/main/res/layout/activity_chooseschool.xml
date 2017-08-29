@@ -40,6 +40,7 @@
                 android:singleLine="true"
                 android:textColor="@color/color_333333"
                 android:textColorHint="@color/color_999999"
+                android:textCursorDrawable="@drawable/shape_yxyl_cursor"
                 android:textSize="@dimen/login_edit_default_textsize" />
 
             <View

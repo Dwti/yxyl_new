@@ -38,6 +38,7 @@
                     style="@style/LoginEdit"
                     android:hint="@string/register_input_mobile"
                     android:inputType="number"
+                    android:textCursorDrawable="@drawable/shape_yxyl_cursor"
                     android:maxLength="11" />
 
                 <ImageView
@@ -65,6 +66,7 @@
                     style="@style/LoginEdit"
                     android:hint="@string/input_verCode"
                     android:inputType="number"
+                    android:textCursorDrawable="@drawable/shape_yxyl_cursor"
                     android:maxLength="4" />
 
                 <View
@@ -96,6 +98,7 @@
                     style="@style/LoginEdit"
                     android:hint="@string/register_password"
                     android:inputType="textPassword"
+                    android:textCursorDrawable="@drawable/shape_yxyl_cursor"
                     android:maxLength="18" />
 
                 <ImageView

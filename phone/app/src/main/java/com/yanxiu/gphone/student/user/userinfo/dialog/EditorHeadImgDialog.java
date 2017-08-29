@@ -23,8 +23,6 @@ public class EditorHeadImgDialog extends Dialog implements View.OnClickListener 
 
     private View mAnimView;
     private Context mContext;
-    private int mTranslationY=800;
-    private int mAnimTime=200;
     private View mAnimBgview;
 
     public interface OnViewClickListener{
@@ -59,6 +57,20 @@ public class EditorHeadImgDialog extends Dialog implements View.OnClickListener 
         TranslationYAnimUtil.getInstence().setAnimViewHeight(mContext,R.dimen.userinfo_dialog_h).setBgGradation(mAnimBgview,0f,0.7f).setStartAnim(mAnimView);
     }
 
+    @Override
+    public void dismiss() {
+        super.dismiss();
+    }
+
+    private void setDismiss(){
+        TranslationYAnimUtil.getInstence().setAnimViewHeight(mContext,R.dimen.userinfo_dialog_h).setBgGradation(mAnimBgview,0.7f,0f).setCloseAnim(mAnimView, new TranslationYAnimUtil.onCloseFinishedListener() {
+            @Override
+            public void onFinished() {
+                dismiss();
+            }
+        });
+    }
+
     public void setClickListener(OnViewClickListener onViewClickListener){
         this.mOnViewClickListener=onViewClickListener;
     }
@@ -70,17 +82,17 @@ public class EditorHeadImgDialog extends Dialog implements View.OnClickListener 
                 if (mOnViewClickListener!=null){
                     mOnViewClickListener.onAlbumClick();
                 }
-                this.dismiss();
+                setDismiss();
                 break;
             case R.id.ll_camera:
                 if (mOnViewClickListener!=null){
                     mOnViewClickListener.onCameraClick();
                 }
-                this.dismiss();
+                setDismiss();
                 break;
             case R.id.rl_conver:
             case R.id.tv_cancle:
-                this.dismiss();
+                setDismiss();
                 break;
         }
     }

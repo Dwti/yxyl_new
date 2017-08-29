@@ -7,6 +7,7 @@ import android.support.v4.view.ViewPropertyAnimatorListener;
 import android.support.v4.view.ViewPropertyAnimatorUpdateListener;
 import android.view.View;
 
+import com.yanxiu.gphone.student.util.Logger;
 import com.yanxiu.gphone.student.util.ScreenUtils;
 
 /**
@@ -65,10 +66,22 @@ public class TranslationYAnimUtil {
                 .setListener(translationAnim);
     }
 
+    public void setCloseAnim(View view,onCloseFinishedListener listener){
+        ViewCompat.setTranslationY(view, 0);
+        translationAnim.setListener(listener);
+        translationAnimUpdata.setListener(listener);
+        ViewCompat.animate(view)
+                .translationY(mTranslationY)
+                .setDuration(mDuration)
+                .setUpdateListener(translationAnimUpdata)
+                .setListener(translationAnim);
+    }
+
     private static class TranslationAnim implements ViewPropertyAnimatorListener {
 
         private View mWindowView;
         private TranslationAnimUpdata mAnimUpdata;
+        private onCloseFinishedListener mListener;
         private float mStart;
         private float mEnd;
 
@@ -84,9 +97,14 @@ public class TranslationYAnimUtil {
         }
 
         public void clear() {
+            this.mListener=null;
             this.mWindowView = null;
             this.mStart = 0f;
             this.mEnd = 0f;
+        }
+
+        public void setListener(onCloseFinishedListener listener){
+            this.mListener=listener;
         }
 
         @Override
@@ -100,6 +118,9 @@ public class TranslationYAnimUtil {
         public void onAnimationEnd(View view) {
             if (mWindowView != null) {
                 mWindowView.setAlpha(mEnd);
+            }
+            if (mListener!=null){
+                mListener.onFinished();
             }
             clear();
             mAnimUpdata.clear();
@@ -115,6 +136,7 @@ public class TranslationYAnimUtil {
     private static class TranslationAnimUpdata implements ViewPropertyAnimatorUpdateListener {
 
         private View mWindowView;
+        private onCloseFinishedListener mListener;
         private float mStart;
         private float mEnd;
         private int mTranslationY;
@@ -131,10 +153,15 @@ public class TranslationYAnimUtil {
         }
 
         public void clear() {
+            this.mListener=null;
             this.mWindowView = null;
             this.mStart = 0f;
             this.mEnd = 0f;
             this.mTranslationY = 0;
+        }
+
+        public void setListener(onCloseFinishedListener listener){
+            this.mListener=listener;
         }
 
         @Override
@@ -142,11 +169,19 @@ public class TranslationYAnimUtil {
             if (mWindowView != null) {
                 int translationY = (int) view.getTranslationY();
 //                        Logger.d("anim",translationY+"");
-                float ratio = ((float) Math.abs(mTranslationY) - (float) Math.abs(translationY)) / (float) Math.abs(mTranslationY);
-//                        Logger.d("anim",(mEnd - mStart) * ratio + mStart+"");
-                mWindowView.setAlpha((mEnd - mStart) * ratio + mStart);
+                if (mListener!=null){
+                    float ratio=((float) Math.abs(mTranslationY) - (float) Math.abs(translationY))/ (float) Math.abs(mTranslationY);
+                    mWindowView.setAlpha((mStart - mEnd) * ratio + mEnd);
+                        Logger.d("anim",(mEnd - mStart) * ratio + mStart+"");
+                }else {
+                    float ratio = ((float) Math.abs(mTranslationY) - (float) Math.abs(translationY)) / (float) Math.abs(mTranslationY);
+                    mWindowView.setAlpha((mEnd - mStart) * ratio + mStart);
+                }
             }
         }
     }
 
+    public interface onCloseFinishedListener{
+        void onFinished();
+    }
 }

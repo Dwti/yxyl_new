@@ -22,6 +22,7 @@
             style="@style/CheckMobileText"
             android:hint="@string/register_input_mobile"
             android:inputType="number"
+            android:textCursorDrawable="@drawable/shape_yxyl_cursor"
             android:maxLength="13" />
 
         <ImageView
@@ -51,6 +52,7 @@
             style="@style/CheckMobileText"
             android:hint="@string/input_verCode"
             android:inputType="number"
+            android:textCursorDrawable="@drawable/shape_yxyl_cursor"
             android:maxLength="4" />
 
         <View
