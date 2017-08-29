@@ -56,7 +56,7 @@ public class EditorHeadImgDialog extends Dialog implements View.OnClickListener 
     @Override
     public void show() {
         super.show();
-        TranslationYAnimUtil.getInstence().setViewHeight(mContext,R.dimen.userinfo_dialog_h).setBgGradation(mAnimBgview,0f,0.7f).setStartAnim(mAnimView);
+        TranslationYAnimUtil.getInstence().setAnimViewHeight(mContext,R.dimen.userinfo_dialog_h).setBgGradation(mAnimBgview,0f,0.7f).setStartAnim(mAnimView);
     }
 
     public void setClickListener(OnViewClickListener onViewClickListener){

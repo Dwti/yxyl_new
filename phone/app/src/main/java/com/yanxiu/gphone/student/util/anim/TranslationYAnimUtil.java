@@ -34,7 +34,7 @@ public class TranslationYAnimUtil {
         return translationYAnimUtil;
     }
 
-    public TranslationYAnimUtil setViewHeight(Context context, @DimenRes int resId) {
+    public TranslationYAnimUtil setAnimViewHeight(Context context, @DimenRes int resId) {
         mTranslationY = context.getResources().getDimensionPixelSize(resId);
         int windowHeight = ScreenUtils.getScreenHeight(context);
         mDuration = DEFAULT_DURATION;
