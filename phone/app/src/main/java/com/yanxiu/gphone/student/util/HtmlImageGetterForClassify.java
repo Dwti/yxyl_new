@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.yanxiu.gphone.student.R;
 
 import java.util.HashMap;
 
@@ -35,32 +36,50 @@ public class HtmlImageGetterForClassify implements Html.ImageGetter {
         mMap.put(source, drawable);
         drawable.setBounds(0, 0, 0, 0);
         Glide.with(mTextView.getContext())
-                .load(source)
+                .load(source).error(R.drawable.image_load_failed)
                 .into(new SimpleTarget<GlideDrawable>() {
                     @Override
                     public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
                         UrlDrawable drawable = mMap.get(source);
-                        float width = resource.getIntrinsicWidth();
-                        float height = resource.getIntrinsicHeight();
-                        int maxWidth = mMaxAvaliableWidth - mTextView.getPaddingLeft() - mTextView.getPaddingRight();
-                        int maxHeight = mMaxAvaliableHeight - mTextView.getPaddingTop() - mTextView.getPaddingBottom();
-                        if(width > maxWidth){
-                            float scale = maxWidth / width;
-                            height = height * scale;
-                            width = maxWidth;
-                        }
-                        if(height > maxHeight){
-                            float scale = maxHeight / height;
-                            width = width * scale;
-                            height = maxHeight;
-                        }
-                        drawable.setBounds(0, 0, Math.round(width), Math.round(height));
-                        drawable.drawable = resource;
-                        drawable.drawable.setBounds(0, 0, Math.round(width), Math.round(height));
-                        mTextView.setText(mTextView.getText());
+                        setDrawable(drawable,resource,true);
+                    }
+
+                    @Override
+                    public void onLoadFailed(Exception e, Drawable errorDrawable) {
+                        UrlDrawable drawable = mMap.get(source);
+                        setDrawable(drawable,errorDrawable,false);
                     }
                 });
         return drawable;
+    }
+
+    public void setDrawable(UrlDrawable urlDrawable,Drawable resource,boolean scaleByDensity){
+        float width = resource.getIntrinsicWidth();
+        float height = resource.getIntrinsicHeight();
+        int maxWidth = mMaxAvaliableWidth - mTextView.getPaddingLeft() - mTextView.getPaddingRight();
+        int maxHeight = mMaxAvaliableHeight - mTextView.getPaddingTop() - mTextView.getPaddingBottom();
+
+        float scaleRatio = 1.0f;
+        if(scaleByDensity){
+            scaleRatio = ScreenUtils.getScreenDensity(mTextView.getContext());
+        }
+        width = width * scaleRatio;
+        height = height * scaleRatio;
+
+        if(width > maxWidth){
+            float scale = maxWidth / width;
+            height = height * scale;
+            width = maxWidth;
+        }
+        if(height > maxHeight){
+            float scale = maxHeight / height;
+            width = width * scale;
+            height = maxHeight;
+        }
+        urlDrawable.setBounds(0, 0, Math.round(width), Math.round(height));
+        urlDrawable.drawable = resource;
+        urlDrawable.drawable.setBounds(0, 0, Math.round(width), Math.round(height));
+        mTextView.setText(mTextView.getText());
     }
 
     public class UrlDrawable extends BitmapDrawable {
