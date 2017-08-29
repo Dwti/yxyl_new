@@ -2,13 +2,22 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/rl_conver"
-    android:background="@color/color_a6000000">
+    android:id="@+id/rl_conver">
+
+    <!--android:background="@color/color_a6000000"-->
+
+    <View
+        android:id="@+id/gradation"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#000000"/>
 
     <RelativeLayout
+        android:id="@+id/rl_headimg"
         android:layout_width="match_parent"
         android:layout_height="@dimen/userinfo_dialog_h"
         android:layout_alignParentBottom="true"
+        android:translationY="@dimen/userinfo_dialog_h"
         android:background="@drawable/shape_user_info_dialog_bg"
         android:paddingTop="@dimen/userinfo_dialog_icon_margin_t">
 
