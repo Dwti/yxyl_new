@@ -345,6 +345,7 @@ public class SelectChapterAndKnowledgeActivity extends YanxiuBaseActivity {
                 break;
         }
     }
+
     private void showContentView(){
         mToolBar.setVisibility(View.VISIBLE);
         mRecyclerView.setVisibility(View.VISIBLE);
@@ -414,6 +415,7 @@ public class SelectChapterAndKnowledgeActivity extends YanxiuBaseActivity {
             popupWindow.dismiss();
             popupWindow = null;
         }
+        mOverlay.clearAnimation();
     }
 
     HttpCallback<EditionResponse> mEditionCallback = new EXueELianBaseCallback<EditionResponse>() {
