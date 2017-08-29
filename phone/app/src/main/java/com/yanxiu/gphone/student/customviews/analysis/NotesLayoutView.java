@@ -105,19 +105,19 @@ public class NotesLayoutView extends LinearLayout implements View.OnClickListene
         for (int i=0;i<paths.size();i++){
             switch (i){
                 case 0:
-                    Glide.with(mContext).load(paths.get(0)).asBitmap().into(new CornersImageTarget(mImgLeftView));
+                    Glide.with(mContext).load(paths.get(0)).asBitmap().error(R.drawable.image_load_failed).into(new CornersImageTarget(mImgLeftView));
                     mImgLeftView.setVisibility(VISIBLE);
                     break;
                 case 1:
-                    Glide.with(mContext).load(paths.get(1)).asBitmap().into(new CornersImageTarget(mImgCenterLeftView));
+                    Glide.with(mContext).load(paths.get(1)).asBitmap().error(R.drawable.image_load_failed).into(new CornersImageTarget(mImgCenterLeftView));
                     mImgCenterLeftView.setVisibility(VISIBLE);
                     break;
                 case 2:
-                    Glide.with(mContext).load(paths.get(2)).asBitmap().into(new CornersImageTarget(mImgCenterRightView));
+                    Glide.with(mContext).load(paths.get(2)).asBitmap().error(R.drawable.image_load_failed).into(new CornersImageTarget(mImgCenterRightView));
                     mImgCenterRightView.setVisibility(VISIBLE);
                     break;
                 case 3:
-                    Glide.with(mContext).load(paths.get(3)).asBitmap().into(new CornersImageTarget(mImgRightView));
+                    Glide.with(mContext).load(paths.get(3)).asBitmap().error(R.drawable.image_load_failed).into(new CornersImageTarget(mImgRightView));
                     mImgRightView.setVisibility(VISIBLE);
                     break;
             }

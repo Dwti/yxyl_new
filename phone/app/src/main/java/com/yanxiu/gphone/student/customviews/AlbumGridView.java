@@ -332,7 +332,7 @@ public class AlbumGridView extends RelativeLayout {
             }
 
             if (!path.equals(DEFAULT_PATH)) {
-                Glide.with(mInflater.getContext()).load(path).into(holder.mPictureView);
+                Glide.with(mInflater.getContext()).load(path).error(R.drawable.image_load_failed).into(holder.mPictureView);
                 if (model.equals(MODEL_LONGPRESS) && model_position == position) {
                     holder.mDeleteView.setVisibility(VISIBLE);
                 } else {
