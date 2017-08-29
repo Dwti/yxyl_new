@@ -53,6 +53,7 @@
     </LinearLayout>
 
     <View
+        android:id="@+id/bottom_line"
         android:layout_width="match_parent"
         android:layout_height="@dimen/choose_fragment_line_h"
         android:layout_alignLeft="@+id/ll_content"

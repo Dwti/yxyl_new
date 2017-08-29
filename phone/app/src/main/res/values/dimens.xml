@@ -127,7 +127,7 @@
     <dimen name="question_bottom_shadow">2dp</dimen>
 
     <dimen name="choose_stage_text_max_size">25dp</dimen>
-    <dimen name="choose_stage_text_min_size">22dp</dimen>
+    <dimen name="choose_stage_text_min_size">20dp</dimen>
     <dimen name="choose_stage_w">120dp</dimen>
 
     <dimen name="update_margin">10dp</dimen>

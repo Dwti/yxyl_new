@@ -75,6 +75,12 @@ public class ChooseLayout extends LinearLayout implements View.OnClickListener {
             holder.mQuestionIdView = (TextView) view.findViewById(R.id.tv_question_id);
             holder.mQuestionIdView.setText(getEmsByNum(i));
             holder.mQuestionContentView = (TextView) view.findViewById(R.id.tv_question_content);
+
+            if (i==list.size()-1){
+                View bottomView=view.findViewById(R.id.bottom_line);
+                bottomView.setVisibility(GONE);
+            }
+
             final String text = list.get(i);
             post(new Runnable() {
                 @Override
@@ -104,6 +110,12 @@ public class ChooseLayout extends LinearLayout implements View.OnClickListener {
             holder.mQuestionIdView = (TextView) view.findViewById(R.id.tv_question_id);
             holder.mQuestionIdView.setText(getEmsByNum(i));
             holder.mQuestionContentView = (TextView) view.findViewById(R.id.tv_question_content);
+
+            if (i==list.size()-1){
+                View bottomView=view.findViewById(R.id.bottom_line);
+                bottomView.setVisibility(GONE);
+            }
+
             LinearLayout.LayoutParams  lp = (LinearLayout.LayoutParams)holder.mQuestionContentView.getLayoutParams();
             lp.width = getResources().getDimensionPixelSize(R.dimen.choose_fragment_item_content_width_yesno);
             lp.height = getResources().getDimensionPixelSize(R.dimen.choose_fragment_item_content_width_yesno);

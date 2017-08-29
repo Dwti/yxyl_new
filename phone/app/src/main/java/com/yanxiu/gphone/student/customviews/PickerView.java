@@ -15,6 +15,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.util.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -250,6 +251,7 @@ public class PickerView extends View {
     private void drawData(Canvas canvas) {
         // 先绘制选中的text再往上往下绘制其余的text
         float scale = parabola(mViewHeight / 4.0f, mMoveLen);
+        Logger.d("ondraw",scale+"");
         float size = (mMaxTextSize - mMinTextSize) * scale + mMinTextSize;
         mPaint.setTextSize(size);
         mPaint.setAlpha((int) ((mMaxTextAlpha - mMinTextAlpha) * scale + mMinTextAlpha));
@@ -310,7 +312,7 @@ public class PickerView extends View {
     private void drawOtherText(Canvas canvas, int position, int type) {
         float d = (float) (MARGIN_ALPHA * mMinTextSize * position + type
                 * mMoveLen);
-        float scale = parabola(mViewHeight / 4.0f, d);
+        float scale = parabola(mViewHeight / 8.0f, d);
         float size = (mMaxTextSize - mMinTextSize) * scale + mMinTextSize;
         nPaint.setTextSize(size);
         nPaint.setAlpha((int) ((mMaxTextAlpha - mMinTextAlpha) * scale + mMinTextAlpha));

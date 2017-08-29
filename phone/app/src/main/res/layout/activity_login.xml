@@ -40,6 +40,7 @@
                     android:id="@+id/ed_user_name"
                     style="@style/LoginEdit"
                     android:hint="@string/input_account"
+                    android:textCursorDrawable="@drawable/shape_yxyl_cursor"
                     android:maxLength="16" />
 
                 <ImageView
@@ -66,6 +67,7 @@
                     style="@style/LoginEdit"
                     android:hint="@string/input_password"
                     android:inputType="textPassword"
+                    android:textCursorDrawable="@drawable/shape_yxyl_cursor"
                     android:maxLength="18" />
 
                 <ImageView
