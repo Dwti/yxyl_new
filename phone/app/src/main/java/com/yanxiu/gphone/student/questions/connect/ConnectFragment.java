@@ -17,9 +17,11 @@ import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
+import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerQuestionActivity;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
+import com.yanxiu.gphone.student.util.anim.AlphaAnimationUtil;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -265,10 +267,14 @@ public class ConnectFragment extends AnswerSimpleExerciseBaseFragment {
 
     private void showResult() {
         initPopWindow();
+        ((AnswerQuestionActivity)getActivity()).getOverlayView().setVisibility(View.VISIBLE);
+        AlphaAnimationUtil.startPopBgAnimIn(((AnswerQuestionActivity)getActivity()).getOverlayView());
         mPopWindow.showAtLocation(getActivity().getWindow().getDecorView(), Gravity.CENTER, 0, 0);
     }
 
     private void dismissResult() {
+        AlphaAnimationUtil.startPopBgAnimExit(((AnswerQuestionActivity)getActivity()).getOverlayView());
+        ((AnswerQuestionActivity)getActivity()).getOverlayView().setVisibility(View.GONE);
         if (mPopWindow.isShowing())
             mPopWindow.dismiss();
     }
