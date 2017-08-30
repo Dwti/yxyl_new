@@ -51,6 +51,7 @@ import com.yanxiu.gphone.student.util.DESBodyDealer;
 import com.yanxiu.gphone.student.util.DataFetcher;
 import com.yanxiu.gphone.student.util.ScreenUtils;
 import com.yanxiu.gphone.student.util.ToastManager;
+import com.yanxiu.gphone.student.util.anim.AlphaAnimationUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,7 +72,7 @@ public class ExerciseHistoryActivity extends YanxiuBaseActivity {
     private RecyclerView mRecyclerView;
     private EXueELianRefreshLayout mRefreshLayout;
     private LoadingView mLoadingView;
-    private View mRootView,mTipsView, mBack,mLayoutStage,mToolBar;
+    private View mRootView,mTipsView, mBack,mLayoutStage,mToolBar,mOverlay;
     private String mSubjectId,mEditionId,mVolume;
     private TextView mTitle, mTips,mStage;
     private ImageView mTipsImg;
@@ -115,6 +116,7 @@ public class ExerciseHistoryActivity extends YanxiuBaseActivity {
     }
 
     private void initView(){
+        mOverlay = findViewById(R.id.overlay);
         mRootView = findViewById(R.id.root);
         mTitle = (TextView) findViewById(R.id.tv_title);
         mBack = findViewById(R.id.iv_back);
@@ -380,11 +382,16 @@ public class ExerciseHistoryActivity extends YanxiuBaseActivity {
             });
 
         }
+
+        mOverlay.setVisibility(View.VISIBLE);
+        AlphaAnimationUtil.startPopBgAnimIn(mOverlay);
         popupWindow.showAtLocation(getWindow().getDecorView(), Gravity.CENTER, 0, 0);
 
     }
 
     private void dismissPop(){
+        AlphaAnimationUtil.startPopBgAnimExit(mOverlay);
+        mOverlay.setVisibility(View.GONE);
         if(popupWindow != null && popupWindow.isShowing())
             popupWindow.dismiss();
     }
@@ -452,6 +459,12 @@ public class ExerciseHistoryActivity extends YanxiuBaseActivity {
         mTipsImg.setImageResource(R.drawable.net_error);
         mTips.setText(R.string.load_failed);
         mRefreshBtn.setText(R.string.click_to_retry);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mOverlay.clearAnimation();
     }
 
     private void setSwitchBarVisibility(String subjectId) {
