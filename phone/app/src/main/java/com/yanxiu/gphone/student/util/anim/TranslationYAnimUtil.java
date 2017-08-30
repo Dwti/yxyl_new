@@ -5,7 +5,9 @@ import android.support.annotation.DimenRes;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPropertyAnimatorListener;
 import android.support.v4.view.ViewPropertyAnimatorUpdateListener;
+import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 
 import com.yanxiu.gphone.student.util.Logger;
 import com.yanxiu.gphone.student.util.ScreenUtils;
@@ -39,7 +41,7 @@ public class TranslationYAnimUtil {
         mTranslationY = context.getResources().getDimensionPixelSize(resId);
         int windowHeight = ScreenUtils.getScreenHeight(context);
         mDuration = DEFAULT_DURATION;
-        mDuration = mDuration * (windowHeight / mTranslationY);
+//        mDuration = mDuration * (windowHeight / mTranslationY);
         return translationYAnimUtil;
     }
 
@@ -60,6 +62,7 @@ public class TranslationYAnimUtil {
         ViewCompat.setTranslationY(view, mTranslationY);
 
         ViewCompat.animate(view)
+                .setInterpolator(new LinearInterpolator())
                 .translationY(0)
                 .setDuration(mDuration)
                 .setUpdateListener(translationAnimUpdata)
@@ -71,6 +74,7 @@ public class TranslationYAnimUtil {
         translationAnim.setListener(listener);
         translationAnimUpdata.setListener(listener);
         ViewCompat.animate(view)
+                .setInterpolator(new LinearInterpolator())
                 .translationY(mTranslationY)
                 .setDuration(mDuration)
                 .setUpdateListener(translationAnimUpdata)

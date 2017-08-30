@@ -4,14 +4,10 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.v4.view.ViewCompat;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.BounceInterpolator;
 
 import com.yanxiu.gphone.student.R;
-import com.yanxiu.gphone.student.util.ScreenUtils;
-import com.yanxiu.gphone.student.util.anim.JumpAnimManager;
 import com.yanxiu.gphone.student.util.anim.TranslationYAnimUtil;
 
 /**
@@ -60,6 +56,11 @@ public class EditorHeadImgDialog extends Dialog implements View.OnClickListener 
     @Override
     public void dismiss() {
         super.dismiss();
+    }
+
+    @Override
+    public void onBackPressed() {
+        setDismiss();
     }
 
     private void setDismiss(){
