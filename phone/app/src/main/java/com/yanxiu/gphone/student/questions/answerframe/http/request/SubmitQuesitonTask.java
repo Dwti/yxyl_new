@@ -81,6 +81,11 @@ public class SubmitQuesitonTask extends AsyncTask {
         return null;
     }
 
+    /**
+     * 图片分题上传
+     *
+     * cwq
+     * */
     private void startUpload(final ArrayList<ArrayList<SubjectiveUpLoadImgBean>> imgList, final int index) {
         if (index < mTotalCount) {
             uploadPicture(imgList.get(index), index + 1, new OnPictureUploadFinish() {
