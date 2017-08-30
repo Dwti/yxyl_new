@@ -114,8 +114,8 @@ public class ClozeWrongComplexTopFragment extends TopBaseFragment {
      */
     private void setCurrentItem(int index) {
         Fragment fragment = getParentFragment();
-        if (null != fragment && fragment instanceof ClozeAnalysisComplexFragment) {
-            ClozeAnalysisComplexFragment parentFragment = (ClozeAnalysisComplexFragment) fragment;
+        if (null != fragment && fragment instanceof ClozeWrongComplexFragment) {
+            ClozeWrongComplexFragment parentFragment = (ClozeWrongComplexFragment) fragment;
             ViewPager viewPager = parentFragment.getmViewPager();
             if (viewPager != null) {
                 viewPager.setCurrentItem(index);
@@ -128,8 +128,8 @@ public class ClozeWrongComplexTopFragment extends TopBaseFragment {
      */
     private void setOnPageChangeListener() {
         Fragment fragment = getParentFragment();
-        if (null != fragment && fragment instanceof ClozeAnalysisComplexFragment) {
-            ClozeAnalysisComplexFragment parentFragment = (ClozeAnalysisComplexFragment) fragment;
+        if (null != fragment && fragment instanceof ClozeWrongComplexFragment) {
+            ClozeWrongComplexFragment parentFragment = (ClozeWrongComplexFragment) fragment;
             ViewPager viewPager = parentFragment.getmViewPager();
             if (viewPager != null) {
                 viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
