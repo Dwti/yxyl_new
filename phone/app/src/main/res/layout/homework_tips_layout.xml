@@ -40,6 +40,7 @@
                 android:layout_height="40dp"
                 android:background="@drawable/selector_refresh_button_bg"
                 android:text="@string/click_to_refresh"
+                style="?android:attr/borderlessButtonStyle"
                 android:textColor="@drawable/selector_refresh_text_color" />
         </com.yanxiu.gphone.student.customviews.WavesLayout>
 
