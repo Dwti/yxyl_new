@@ -192,7 +192,7 @@
         <RelativeLayout
             android:layout_width="327dp"
             android:layout_height="222dp"
-            android:layout_marginTop="45dp"
+            android:layout_marginTop="77dp"
             android:background="@drawable/answercard_submit_state_bg">
 
             <TextView
@@ -249,11 +249,10 @@
 
         <ImageView
             android:id="@+id/sueecss_topimg"
-            android:layout_width="90dp"
-            android:layout_height="90dp"
+            android:layout_width="250dp"
+            android:layout_height="130dp"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/submit_answer_success"
-            android:background="@color/color_33ffff" />
+            android:background="@drawable/icon_warning"/>
 
     </RelativeLayout>
 

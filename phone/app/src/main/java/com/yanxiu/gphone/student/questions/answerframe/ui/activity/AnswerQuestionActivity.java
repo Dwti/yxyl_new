@@ -71,7 +71,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
     private TextView mNext_text;//下一题textview
     private ImageView mBackView;//返回按钮
     private ImageView mShowAnswerCardView;//显示答题卡
-    private View mRootView;
+    private View mRootView,mOverlay;
 
     private InputMethodManager mInputMethodManager;
 
@@ -129,6 +129,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
     private void initView() {
         mInputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         mRootView = findViewById(R.id.fl_qa);
+        mOverlay = findViewById(R.id.overlay);
         mTimer = (QuestionTimeTextView) findViewById(R.id.timer);
         mProgressView = (QuestionProgressView) findViewById(R.id.progressBar);
         mProgressView.setMaxCount(mTotalQuestion);
@@ -363,6 +364,10 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         }
     }
 
+    public View getOverlayView(){
+        return mOverlay;
+    }
+
     /**
      * 当处在第一题和最后一题时，隐藏相应切换题目按钮
      */
@@ -566,6 +571,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         mHandler.removeCallbacksAndMessages(null);
         mHandler = null;
         mKeyboardObserver.destroy();
+        mOverlay.clearAnimation();
         super.onDestroy();
     }
 

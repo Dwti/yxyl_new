@@ -53,6 +53,7 @@ import com.yanxiu.gphone.student.util.DESBodyDealer;
 import com.yanxiu.gphone.student.util.DataFetcher;
 import com.yanxiu.gphone.student.util.ScreenUtils;
 import com.yanxiu.gphone.student.util.ToastManager;
+import com.yanxiu.gphone.student.util.anim.AlphaAnimationUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +64,7 @@ import java.util.List;
 
 public class SelectChapterAndKnowledgeActivity extends YanxiuBaseActivity {
 
-    private View mBack, mLayoutStage,mRootView,mToolBar,mTipsView;
+    private View mBack, mLayoutStage,mRootView,mToolBar,mTipsView,mOverlay;
     private TextView mTitle,mStage,mTips;
     private ImageView mTipsImg;
     private RecyclerView mRecyclerView;
@@ -206,6 +207,7 @@ public class SelectChapterAndKnowledgeActivity extends YanxiuBaseActivity {
     }
 
     private void initView() {
+        mOverlay = findViewById(R.id.overlay);
         mSwitchBar = (ChapterSwitchBar) findViewById(R.id.switchBar);
         mBack = findViewById(R.id.back);
         mToolBar = findViewById(R.id.rl_tool_bar);
@@ -299,6 +301,8 @@ public class SelectChapterAndKnowledgeActivity extends YanxiuBaseActivity {
             });
 
         }
+        mOverlay.setVisibility(View.VISIBLE);
+        AlphaAnimationUtil.startPopBgAnimIn(mOverlay);
         popupWindow.showAtLocation(getWindow().getDecorView(), Gravity.CENTER, 0, 0);
 
     }
@@ -317,6 +321,8 @@ public class SelectChapterAndKnowledgeActivity extends YanxiuBaseActivity {
     }
 
     private void dismissPop(){
+        AlphaAnimationUtil.startPopBgAnimExit(mOverlay);
+        mOverlay.setVisibility(View.GONE);
         if(popupWindow != null && popupWindow.isShowing())
             popupWindow.dismiss();
     }
@@ -339,6 +345,7 @@ public class SelectChapterAndKnowledgeActivity extends YanxiuBaseActivity {
                 break;
         }
     }
+
     private void showContentView(){
         mToolBar.setVisibility(View.VISIBLE);
         mRecyclerView.setVisibility(View.VISIBLE);
@@ -408,6 +415,7 @@ public class SelectChapterAndKnowledgeActivity extends YanxiuBaseActivity {
             popupWindow.dismiss();
             popupWindow = null;
         }
+        mOverlay.clearAnimation();
     }
 
     HttpCallback<EditionResponse> mEditionCallback = new EXueELianBaseCallback<EditionResponse>() {
