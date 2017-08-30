@@ -3,6 +3,7 @@ package com.yanxiu.gphone.student.db;
 
 import com.yanxiu.gphone.student.questions.answerframe.bean.AnswerBean;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
+import com.yanxiu.gphone.student.util.LoginInfo;
 
 import org.litepal.crud.DataSupport;
 
@@ -51,9 +52,10 @@ public class SaveAnswerDBHelper {
     }
 
     public static String makeId(BaseQuestion question) {
+        String userId = LoginInfo.getUID();
         String id = null;
         try {
-            id = question.getId() + question.getPid() + question.getQid();
+            id = userId + question.getId() + question.getPid() + question.getQid();
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -38,7 +38,7 @@ public class PickerViewEx extends View {
     /**
      * text之间间距和minTextSize之比
      */
-    public static final float MARGIN_ALPHA = 2.8f;
+    public static final float MARGIN_ALPHA = 3.5f;
     /**
      * 自动回滚到中间的速度
      */
@@ -62,7 +62,7 @@ public class PickerViewEx extends View {
     private int mViewHeight;
     private int mViewWidth;
 
-    private int locationType=DEFAULT_CENTER;
+    private int locationType = DEFAULT_CENTER;
 
     private float mLastDownY;
     /**
@@ -116,7 +116,7 @@ public class PickerViewEx extends View {
 
     private void performSelect() {
         if (mSelectListener != null)
-            mSelectListener.onSelect(PickerViewEx.this,mDataList.get(mCurrentSelected),mCurrentSelected);
+            mSelectListener.onSelect(PickerViewEx.this, mDataList.get(mCurrentSelected), mCurrentSelected);
     }
 
     public void setData(List<String> datas) {
@@ -161,7 +161,7 @@ public class PickerViewEx extends View {
             }
     }
 
-    public int getSelectedIndex(){
+    public int getSelectedIndex() {
         return mCurrentSelected;
     }
 
@@ -248,9 +248,9 @@ public class PickerViewEx extends View {
         // 根据index绘制view
         if (isInit)
             drawLines(canvas);
-            if (mDataList.size()>0) {
-                drawData(canvas);
-            }
+        if (mDataList.size() > 0) {
+            drawData(canvas);
+        }
     }
 
     private void drawData(Canvas canvas) {
@@ -283,13 +283,13 @@ public class PickerViewEx extends View {
 
     private String shearString(String text, int max_width, Paint paint) {
         int width = (int) paint.measureText(text + "...");
-        if (width>max_width) {
+        if (width > max_width) {
             while (width >= max_width) {
                 text = text.substring(0, text.length() - 1);
                 width = (int) paint.measureText(text + "...");
             }
             return text + "...";
-        }else {
+        } else {
             return text;
         }
     }
@@ -303,9 +303,10 @@ public class PickerViewEx extends View {
         nPaint.setTextSize(mMinTextSize);
         Paint.FontMetrics metrics = nPaint.getFontMetrics();
         float text_height = metrics.descent - metrics.ascent;
+        float extra = mMinTextSize / 2;
 
-        RectF rect = new RectF(0+2,mViewHeight / 2 - (int)text_height - 5,mViewWidth-2,mViewHeight / 2 + (int)text_height + 5);
-        canvas.drawRoundRect(rect,6,6,nPaint);
+        RectF rect = new RectF(0 + 2 + extra, mViewHeight / 2 - (int) text_height - 5 - extra, mViewWidth - 2 - extra, mViewHeight / 2 + (int) text_height + 5 + extra);
+        canvas.drawRoundRect(rect, 6, 6, nPaint);
     }
 
     /**
@@ -317,7 +318,7 @@ public class PickerViewEx extends View {
         float d = (float) (MARGIN_ALPHA * mMinTextSize * position + type
                 * mMoveLen);
         float scale = parabola(mViewHeight / 4.0f, d);
-        float size = (mMaxTextSize - mMinTextSize) * scale + mMinTextSize + (3-position) * 5 ;
+        float size = (mMaxTextSize - mMinTextSize) * scale + mMinTextSize + (3 - position) * 5;
         nPaint.setTextSize(size);
         nPaint.setAlpha((int) ((mMaxTextAlpha - mMinTextAlpha) * scale + mMinTextAlpha));
         float y = (float) (mViewHeight / 2.0 + type * d - type * (position - 1) * 30);
