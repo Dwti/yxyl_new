@@ -128,9 +128,9 @@ public class SettingActivity extends YanxiuBaseActivity implements View.OnClickL
                 break;
             case R.id.wl_login_out:
                 PushManager.getInstance().unBindAlias(this.getApplicationContext(), String.valueOf(LoginInfo.getUID()), true);
-                SpManager.clearAnswerTime();
-                SpManager.clearCompleteQuestionCount();
-                DataSupport.deleteAll(AnswerBean.class);
+//                SpManager.clearAnswerTime();
+//                SpManager.clearCompleteQuestionCount();
+//                DataSupport.deleteAll(AnswerBean.class);
                 LoginInfo.LogOut();
                 ActivityManger.LogOut();
                 LoginActivity.LaunchActivity(mContext);
