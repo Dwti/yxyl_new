@@ -27,6 +27,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/common_button_height</item>
         <item name="android:background">@drawable/selector_common_button_bg</item>
+        <item name="android:textSize">@dimen/login_edit_default_textsize</item>
     </style>
 
     <style name="LoginInfoText">
