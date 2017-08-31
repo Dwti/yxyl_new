@@ -233,7 +233,7 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
         mCompleteInfoThridRequest.areaid=message.areaId;
         mCompleteInfoThridRequest.schoolid=message.schoolId;
         mCompleteInfoThridRequest.stageid=stageId;
-        mCompleteInfoThridRequest.schoolName=message.schoolName;
+        mCompleteInfoThridRequest.schoolname=message.schoolName;
         mCompleteInfoThridRequest.startRequest(LoginResponse.class, new EXueELianBaseCallback<LoginResponse>() {
 
             @Override

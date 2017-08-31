@@ -3,6 +3,7 @@ package com.yanxiu.gphone.student.user.setting.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -53,7 +54,7 @@ public class AboutActivity extends YanxiuBaseActivity implements View.OnClickLis
 //        mTitleView.setText(R.string.setting_about);
         mTitleView.setText("");
         mBackView.setBackgroundResource(R.drawable.selector_white_back);
-        mTopView.setBackgroundResource(R.drawable.about_top);
+        mTopView.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.about_top));
     }
 
     @Override

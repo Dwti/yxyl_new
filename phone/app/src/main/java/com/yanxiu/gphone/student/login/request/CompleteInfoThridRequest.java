@@ -21,7 +21,7 @@ public class CompleteInfoThridRequest extends EXueELianBaseRequest {
     public String areaid;
     public String schoolid;
     public String stageid;
-    public String schoolName;
+    public String schoolname;
     public String deviceId= Constants.deviceId;
 
     @Override
