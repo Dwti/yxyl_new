@@ -22,6 +22,7 @@ import com.yanxiu.gphone.student.login.request.CompleteInfoRequest;
 import com.yanxiu.gphone.student.login.request.CompleteInfoThridRequest;
 import com.yanxiu.gphone.student.login.response.LoginResponse;
 import com.yanxiu.gphone.student.login.response.ThridMessageBean;
+import com.yanxiu.gphone.student.login.response.UserMessageBean;
 import com.yanxiu.gphone.student.util.EditTextManger;
 import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.SysEncryptUtil;
@@ -202,6 +203,7 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
                 rootView.hiddenLoadingView();
                 if (response.getStatus().getCode()==0&&response.data!=null){
                     LoginInfo.saveCacheData(response.data.get(0));
+                    LoginInfo.saveLoginType(UserMessageBean.LOGIN_ACCOUNT);
                     MainActivity.invoke(CompleteInfoActivity.this,true);
                     CompleteInfoActivity.this.finish();
                 }else {
@@ -239,6 +241,11 @@ public class CompleteInfoActivity extends YanxiuBaseActivity implements View.OnC
                 rootView.hiddenLoadingView();
                 if (response.getStatus().getCode()==0&&response.data!=null){
                     LoginInfo.saveCacheData(response.data.get(0));
+                    if (ThridMessageBean.TYPE_QQ.equals(thridMessageBean.getType())) {
+                        LoginInfo.saveLoginType(UserMessageBean.LOGIN_QQ);
+                    }else {
+                        LoginInfo.saveLoginType(UserMessageBean.LOGIN_WX);
+                    }
                     MainActivity.invoke(CompleteInfoActivity.this,true);
                     CompleteInfoActivity.this.finish();
                 }else {

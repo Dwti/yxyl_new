@@ -340,10 +340,11 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
                             String openid=map.get("openid");
                             String platform="";
                             if (share_media.toString().endsWith(SHARE_MEDIA.QQ.toString())){
-                                platform="qq";
+                                platform=ThridMessageBean.TYPE_QQ;
                             }else if (share_media.toString().endsWith(SHARE_MEDIA.WEIXIN.toString())){
-                                platform="weixin";
+                                platform=ThridMessageBean.TYPE_WX;
                             }
+                            mThridMessageBean.setType(platform);
                             String uniqid="";
                             mThridMessageBean.openid=openid;
                             mThridMessageBean.platform=platform;
@@ -396,7 +397,7 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
                 rootView.hiddenLoadingView();
                 if (response.getStatus().getCode()==0){
                     LoginInfo.saveCacheData(response.data.get(0));
-                    if (platform.equals("qq")){
+                    if (platform.equals(ThridMessageBean.TYPE_QQ)){
                         LoginInfo.saveLoginType(UserMessageBean.LOGIN_QQ);
                     }else {
                         LoginInfo.saveLoginType(UserMessageBean.LOGIN_WX);

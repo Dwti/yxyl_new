@@ -20,6 +20,7 @@ import com.yanxiu.gphone.student.login.request.JoinClassSubmitThridRequest;
 import com.yanxiu.gphone.student.login.response.JoinClassResponse;
 import com.yanxiu.gphone.student.login.response.LoginResponse;
 import com.yanxiu.gphone.student.login.response.ThridMessageBean;
+import com.yanxiu.gphone.student.login.response.UserMessageBean;
 import com.yanxiu.gphone.student.userevent.UserEventManager;
 import com.yanxiu.gphone.student.util.EditTextManger;
 import com.yanxiu.gphone.student.util.LoginInfo;
@@ -190,6 +191,7 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
                 rootView.hiddenLoadingView();
                 if (response.getStatus().getCode()==0){
                     LoginInfo.saveCacheData(response.data.get(0));
+                    LoginInfo.saveLoginType(UserMessageBean.LOGIN_ACCOUNT);
                     MainActivity.invoke(JoinClassSubmitActivity.this,true);
                     UserEventManager.getInstense().whenEnterClass();
                     JoinClassSubmitActivity.this.finish();
@@ -229,6 +231,11 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
                 rootView.hiddenLoadingView();
                 if (response.getStatus().getCode()==0){
                     LoginInfo.saveCacheData(response.data.get(0));
+                    if (ThridMessageBean.TYPE_QQ.equals(thridMessageBean.getType())) {
+                        LoginInfo.saveLoginType(UserMessageBean.LOGIN_QQ);
+                    }else {
+                        LoginInfo.saveLoginType(UserMessageBean.LOGIN_WX);
+                    }
                     MainActivity.invoke(JoinClassSubmitActivity.this,true);
                     JoinClassSubmitActivity.this.finish();
                 }else {

@@ -8,11 +8,25 @@ import java.io.Serializable;
  * Function :
  */
 public class ThridMessageBean implements Serializable {
+
+    public static final String TYPE_QQ="qq";
+    public static final String TYPE_WX="weixin";
+
+    public String type;
+
     public String openid;
     public String platform;
     public String uniqid;
     public String sex;
     public String head;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public String getOpenid() {
         return openid;
