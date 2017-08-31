@@ -21,7 +21,7 @@ public class JoinClassSubmitThridRequest extends EXueELianBaseRequest {
     public String cityid;
     public String realname;
     public String schoolid;
-    public String schoolName;
+    public String schoolname;
     public String provinceid;
     public String deviceId= Constants.deviceId;
 

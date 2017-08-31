@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Paint;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -55,19 +56,23 @@ public class SinglineEditText extends EditText {
     }
 
     private void setTextHint(String hint){
-        Paint paint=getPaint();
-        int count=paint.breakText(hint,true,width,null);
-        String sureText=hint;
-        if (count<hint.length()) {
-            sureText = hint.substring(0, count - 1) + "...";
-            int measure_width = (int) paint.measureText(sureText);
-            while (measure_width > width) {
-                count -= 1;
+        if (!TextUtils.isEmpty(hint)) {
+            Paint paint = getPaint();
+            int count = paint.breakText(hint, true, width, null);
+            String sureText = hint;
+            if (count < hint.length()) {
                 sureText = hint.substring(0, count - 1) + "...";
-                measure_width = (int) paint.measureText(sureText);
+                int measure_width = (int) paint.measureText(sureText);
+                while (measure_width > width) {
+                    count -= 1;
+                    sureText = hint.substring(0, count - 1) + "...";
+                    measure_width = (int) paint.measureText(sureText);
+                }
             }
+            setHint(sureText);
+        }else {
+            setText("");
         }
-        setHint(sureText);
     }
 
 }

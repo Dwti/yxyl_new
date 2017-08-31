@@ -222,7 +222,7 @@ public class JoinClassSubmitActivity extends YanxiuBaseActivity implements View.
         mJoinClassSubmitThridRequest.classId=mData.id;
         mJoinClassSubmitThridRequest.stageid=mData.stageid;
         mJoinClassSubmitThridRequest.schoolid=mData.schoolid;
-        mJoinClassSubmitThridRequest.schoolName=mData.schoolname;
+        mJoinClassSubmitThridRequest.schoolname=mData.schoolname;
         mJoinClassSubmitThridRequest.provinceid=mData.provinceid;
         mJoinClassSubmitThridRequest.startRequest(LoginResponse.class, new EXueELianBaseCallback<LoginResponse>() {
 
