@@ -106,19 +106,27 @@ public class ConnectAnalysisFragment extends AnalysisSimpleExerciseBaseFragment 
             showPointView(mQuestion.getPointList());
         }else{ //逾期未提交的作业 题目解析展示“难度”、“答案”、“题目解析”、“知识点”
             showDifficultyview(mQuestion.getStarCount());
-            String answer="";
-            if (mQuestion.getServer_answer()!=null){
-                for (int i = 0; i < mQuestion.getCorrectAnswer().size(); i++) {
-                    if(i < mQuestion.getCorrectAnswer().size() -1){// 不是最后一个
-                        answer += mQuestion.getCorrectAnswer().get(i) + ",";
-                    }else{
-                        answer += mQuestion.getCorrectAnswer().get(i);
-                    }
-                }
-            }
+            String answer=initCorrectAnswer(mQuestion.getCorrectAnswer());
             showAnswerView(answer);
             showAnalysisview(mQuestion.getQuestionAnalysis());
             showPointView(mQuestion.getPointList());
         }
+    }
+
+    private String initCorrectAnswer(List<String> correctAnswers){
+        StringBuilder result =  new StringBuilder();
+        for(String answer: correctAnswers){
+            if(answer.contains(",")){
+                String[] strs = answer.split(",");
+                int leftPos = Integer.parseInt(strs[0]) + 1;
+                int rightPos = Integer.parseInt(strs[1]) + 1;
+                String r = "左" + String.valueOf(leftPos) + "连右" + String.valueOf(rightPos) + ",";
+                result.append(r);
+            }
+        }
+        if(result.lastIndexOf(",") == result.length() - 1){
+            result.deleteCharAt(result.length() - 1);
+        }
+        return result.toString();
     }
 }
