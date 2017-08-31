@@ -21,7 +21,9 @@ import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
+import com.yanxiu.gphone.student.base.OnPermissionCallback;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
+import com.yanxiu.gphone.student.common.activity.CameraActivity;
 import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
 import com.yanxiu.gphone.student.homepage.MainActivity;
 import com.yanxiu.gphone.student.login.request.LoginThridRequest;
@@ -29,6 +31,7 @@ import com.yanxiu.gphone.student.login.response.LoginResponse;
 import com.yanxiu.gphone.student.login.request.LoginRequest;
 import com.yanxiu.gphone.student.login.response.ThridMessageBean;
 import com.yanxiu.gphone.student.login.response.UserMessageBean;
+import com.yanxiu.gphone.student.questions.subjective.SubjectiveFragment;
 import com.yanxiu.gphone.student.util.ActivityManger;
 import com.yanxiu.gphone.student.util.EditTextManger;
 import com.yanxiu.gphone.student.util.LoginInfo;
@@ -37,6 +40,7 @@ import com.yanxiu.gphone.student.util.ToastManager;
 import com.yanxiu.gphone.student.customviews.WavesLayout;
 import com.yanxiu.gphone.student.util.UpdateUtil;
 
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 @SuppressWarnings("all")
@@ -46,7 +50,7 @@ import java.util.regex.Pattern;
  * Function :
  */
 
-public class LoginActivity extends YanxiuBaseActivity implements View.OnClickListener, EditTextManger.onTextLengthChangedListener {
+public class LoginActivity extends YanxiuBaseActivity implements View.OnClickListener, EditTextManger.onTextLengthChangedListener, OnPermissionCallback {
 
     public static final String THRID_LOGIN="thrid";
     public static final String TYPE="type";
@@ -101,13 +105,25 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
         mContext=LoginActivity.this;
         rootView=new PublicLoadLayout(mContext);
         rootView.setContentView(R.layout.activity_login);
-        setContentView(rootView);
         UpdateUtil.Initialize(mContext,false);
+        setContentView(rootView);
         mUMShareAPI=UMShareAPI.get(mContext);
         initView();
         listener();
         initData();
     }
+
+    private OnPermissionCallback callback=new OnPermissionCallback() {
+        @Override
+        public void onPermissionsGranted(List<String> deniedPermissions) {
+            UpdateUtil.Initialize(mContext,false);
+        }
+
+        @Override
+        public void onPermissionsDenied(@Nullable List<String> deniedPermissions) {
+//            ToastManager.showMsg(R.string.no_storage_permissions);
+        }
+    };
 
     private void initView() {
         mTopImageView= (ImageView) findViewById(R.id.iv_top);
@@ -168,6 +184,7 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
     protected void onResume() {
         super.onResume();
         checkInstallThridSystem();
+//        YanxiuBaseActivity.requestWriteAndReadPermission(LoginActivity.this);
     }
 
     private void checkInstallThridSystem(){
@@ -442,5 +459,15 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
             }
         }
         setButtonFocusChange(isUserNameReady&&isPassWordReady);
+    }
+
+    @Override
+    public void onPermissionsGranted(@Nullable List<String> deniedPermissions) {
+        UpdateUtil.Initialize(mContext,false);
+    }
+
+    @Override
+    public void onPermissionsDenied(@Nullable List<String> deniedPermissions) {
+
     }
 }

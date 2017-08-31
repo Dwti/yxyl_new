@@ -177,12 +177,16 @@ public class ClassifyAnalysisFragment extends AnalysisSimpleExerciseBaseFragment
             showPointView(mData.getPointList());
         } else { //逾期未提交的作业 题目解析展示“难度”、“答案”、“题目解析”、“知识点”
             showDifficultyview(mData.getStarCount());
-//            showAnswerView(mData.getClassifyAnswer());
+            showAnswerView(mData.getAnalysisviewAnswer());
             showAnalysisview(mData.getQuestionAnalysis());
             showPointView(mData.getPointList());
         }
 
     }
+
+
+
+
 
     /**
      * 当Fragment对用户的可见性发生了改变的时候就会回调此方法

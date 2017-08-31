@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.RemoteViews;
@@ -13,6 +14,8 @@ import android.widget.RemoteViews;
 import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.base.OnPermissionCallback;
+import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.db.SpManager;
 import com.yanxiu.gphone.student.http.request.DownLoadRequest;
@@ -20,6 +23,7 @@ import com.yanxiu.gphone.student.http.request.InitializeRequest;
 import com.yanxiu.gphone.student.http.response.InitializeReponse;
 
 import java.io.File;
+import java.util.List;
 
 import static com.yanxiu.gphone.student.constant.Constants.NOTIFICATION_ID;
 import static com.yanxiu.gphone.student.constant.Constants.STUDENT_UPLOAD;
@@ -108,6 +112,31 @@ public class UpdateUtil {
         });
     }
 
+    private static class MyPermission implements OnPermissionCallback{
+
+        Context context;
+        InitializeReponse.Data data;
+        OnUpgradeCallBack callBack;
+
+        public MyPermission(Context context,InitializeReponse.Data data,OnUpgradeCallBack callBack){
+            this.context=context;
+            this.data=data;
+            this.callBack=callBack;
+        }
+
+        @Override
+        public void onPermissionsGranted(@Nullable List<String> deniedPermissions) {
+            mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            mNotification = new Notification();
+            downloadApk(context, data.fileURL, callBack);
+        }
+
+        @Override
+        public void onPermissionsDenied(@Nullable List<String> deniedPermissions) {
+
+        }
+    }
+
     private static void showUpdateDialog(final Context context, final InitializeReponse.Data data, final OnUpgradeCallBack callBack) {
         if (mUpdateDialog != null) {
             mUpdateDialog.dismiss();
@@ -116,9 +145,7 @@ public class UpdateUtil {
         mUpdateDialog = new UpdateDialog(context, data.upgradetype, new UpdateDialog.UpdateDialogCallBack() {
             @Override
             public void update() {
-                mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-                mNotification = new Notification();
-                downloadApk(context, data.fileURL, callBack);
+                YanxiuBaseActivity.requestWriteAndReadPermission(new MyPermission(context, data, callBack));
             }
 
             @Override

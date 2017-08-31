@@ -89,6 +89,19 @@ public class ClassifyQuestion extends BaseQuestion {
         }
     }
 
+    public String getAnalysisviewAnswer(){
+        String answer="";
+        for (int i=0;i<classifyBasketList.size();i++){
+            answer+=classifyBasketList.get(i)+":";
+            List<String> list=classifyAnswer.get(i);
+            for (String s:list){
+                int index=Integer.parseInt(s);
+                answer+=choice.get(index)+" ";
+            }
+        }
+        return answer;
+    }
+
     public String getAnswerCompare() {
         return answerCompare;
     }
