@@ -2,6 +2,7 @@ package com.yanxiu.gphone.student.util;
 
 import android.hardware.Camera;
 import android.os.Environment;
+import android.text.TextUtils;
 
 import com.yanxiu.gphone.student.constant.Constants;
 
@@ -18,12 +19,12 @@ import java.io.InputStreamReader;
 
 public class PermissionUtil {
     public static final String ROOT_DIRECTORY_NAME = "yanxiu";
-    public static final String SDCARD_DIR = Environment.getExternalStorageDirectory().getPath() + Constants.PICTUREDIR;
+    public static final String SDCARD_DIR = Environment.getExternalStorageDirectory().getPath() + Constants.DIR_ROOT;
 //    public static final String OUT_SDCARD_DIR = "/storage/extSdCard" + File.separator + ROOT_DIRECTORY_NAME + File.separator;
 //    public static final String OUT_SDCARD_DIR2 = "/mnt/external_sd" + File.separator + ROOT_DIRECTORY_NAME + File.separator;
 //    public static final String OUT_SDCARD_DIR3 = "/mnt/sdcard2" + File.separator + ROOT_DIRECTORY_NAME + File.separator;
 //    public static final String OUT_SDCARD_DIR4 = YanxiuApplication.getInstance().getFilesDir() + File.separator + ROOT_DIRECTORY_NAME + File.separator;
-    public static final String TESTFILE_NAME = "testPermission.txt";
+    public static final String TESTFILE_NAME = "/testPermission.txt";
 
     /**
      * 通过尝试打开相机的方式判断有无拍照权限（在6.0以下使用拥有root权限的管理软件可以管理权限）
@@ -40,16 +41,33 @@ public class PermissionUtil {
     }
 
     /**
+     * 创建file
+     * 为了解决6.0一下某些机型创建file失败
+     * @return
+     */
+    private static File createFile(){
+        File dir = new File(SDCARD_DIR);
+        if(!dir.exists()){
+            dir.mkdirs();
+        }
+        File dirApp = new File(SDCARD_DIR+Constants.DIR_APP);
+        if(!dirApp.exists()){
+            dirApp.mkdirs();
+        }
+        File file = new File(SDCARD_DIR+Constants.DIR_APP+Constants.DIR_IMAGE);
+        if(!file.exists()){
+            file.mkdirs();
+        }
+        return file;
+    }
+    /**
      * 检测读取权限
      *
      * @return
      */
     public static boolean checkReadPermission() {
         boolean result;
-        File dir = new File(SDCARD_DIR);
-        if(!dir.exists()){
-            dir.mkdirs();
-        }
+        File dir = createFile();
         FileInputStream fis = null;
         try {
             File file = new File(dir.getAbsolutePath() + TESTFILE_NAME);
@@ -79,10 +97,7 @@ public class PermissionUtil {
      */
     public static boolean checkWritePermission() {
         boolean result;
-        File dir = new File(SDCARD_DIR);
-        if(!dir.exists()){
-            dir.mkdirs();
-        }
+        File dir = createFile();
         FileOutputStream fos = null;
         try {
             File file = new File(dir.getAbsolutePath() + TESTFILE_NAME);
