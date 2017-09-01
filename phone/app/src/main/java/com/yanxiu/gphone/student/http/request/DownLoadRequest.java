@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -29,7 +30,10 @@ public class DownLoadRequest {
     }
 
     private DownLoadRequest() {
-        okHttpClient = new OkHttpClient();
+        okHttpClient = new OkHttpClient.Builder()
+                .connectTimeout(5*60, TimeUnit.SECONDS)
+                .readTimeout(5*60,TimeUnit.SECONDS)
+                .writeTimeout(5*60,TimeUnit.SECONDS).build();
     }
 
     public void download(final String url, final String saveDir, final OnDownloadListener listener) {
@@ -48,7 +52,7 @@ public class DownLoadRequest {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 InputStream is = null;
-                byte[] buf = new byte[2048];
+                byte[] buf = new byte[1024*300];
                 int len;
                 FileOutputStream fos = null;
                 try {
