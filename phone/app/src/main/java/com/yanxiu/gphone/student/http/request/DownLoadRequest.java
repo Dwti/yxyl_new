@@ -48,7 +48,7 @@ public class DownLoadRequest {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 InputStream is = null;
-                byte[] buf = new byte[2048];
+                byte[] buf = new byte[1024*300];
                 int len;
                 FileOutputStream fos = null;
                 try {
