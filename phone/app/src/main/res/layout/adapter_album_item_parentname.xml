@@ -17,13 +17,20 @@
             android:layout_height="match_parent"
             android:scaleType="centerCrop" />
 
-        <ImageView
+        <RelativeLayout
             android:id="@+id/iv_checked"
             android:layout_width="20dp"
-            android:layout_height="20dp"
             android:layout_gravity="end"
-            android:contentDescription="@null"
-            android:background="@drawable/album_choose" />
+            android:background="@drawable/shape_round_green"
+            android:layout_height="20dp">
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:contentDescription="@null"
+                android:layout_centerInParent="true"
+                android:background="@drawable/album_choose" />
+        </RelativeLayout>
+
     </FrameLayout>
 
     <TextView

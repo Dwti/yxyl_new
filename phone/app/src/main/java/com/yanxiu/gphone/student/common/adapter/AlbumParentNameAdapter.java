@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -95,14 +96,14 @@ public class AlbumParentNameAdapter extends RecyclerView.Adapter<AlbumParentName
     class AlbumParentNameViewHolder extends RecyclerView.ViewHolder {
 
         ImageView mPictureView;
-        ImageView mCheckedView;
+        RelativeLayout mCheckedView;
         TextView mParentNameView;
         TextView mParentNumView;
 
         AlbumParentNameViewHolder(final View itemView) {
             super(itemView);
             mPictureView = (ImageView) itemView.findViewById(R.id.iv_picture);
-            mCheckedView = (ImageView) itemView.findViewById(R.id.iv_checked);
+            mCheckedView = (RelativeLayout) itemView.findViewById(R.id.iv_checked);
             mParentNameView = (TextView) itemView.findViewById(R.id.tv_name);
             mParentNumView = (TextView) itemView.findViewById(R.id.tv_number);
             TextTypefaceUtil.setViewTypeface(TextTypefaceUtil.TypefaceType.METRO_PLAY,mParentNumView);

@@ -22,7 +22,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/mistake_content_margin_t"
             android:contentDescription="@null"
-            android:src="@color/color_00cccc"
+            android:src="@drawable/user_info_headimg_default"
             app:text="@string/editor_head"
             app:textBgColor="@color/color_f289e00d"
             app:textSize="@dimen/userinfo_editor_head_textsize"

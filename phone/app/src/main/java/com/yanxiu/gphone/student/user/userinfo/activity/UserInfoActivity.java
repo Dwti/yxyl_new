@@ -1,4 +1,4 @@
- package com.yanxiu.gphone.student.user.userinfo.activity;
+package com.yanxiu.gphone.student.user.userinfo.activity;
 
 import android.Manifest;
 import android.content.Context;
@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -122,7 +123,12 @@ public class UserInfoActivity extends YanxiuBaseActivity implements View.OnClick
     }
 
     private void setHeadImg(String url) {
-        Glide.with(mContext).load(url).asBitmap().placeholder(R.drawable.user_info_headimg_default).into(mUserHeadImgView);
+        if (!TextUtils.isEmpty(url)) {
+            String[] strings = url.split("/");
+            if (!"file_56a60c9d7cbd4.jpg".equals(strings[strings.length - 1])) {
+                Glide.with(mContext).load(url).asBitmap().placeholder(R.drawable.user_info_headimg_default).into(mUserHeadImgView);
+            }
+        }
     }
 
     private void setSexText(int sexId) {
@@ -161,7 +167,7 @@ public class UserInfoActivity extends YanxiuBaseActivity implements View.OnClick
     }
 
     private void showDialog() {
-            mEditorHeadImgDialog=null;
+        mEditorHeadImgDialog = null;
         if (mEditorHeadImgDialog == null) {
             mEditorHeadImgDialog = new EditorHeadImgDialog(mContext);
             mEditorHeadImgDialog.setClickListener(new EditorHeadImgDialog.OnViewClickListener() {
@@ -203,7 +209,7 @@ public class UserInfoActivity extends YanxiuBaseActivity implements View.OnClick
             if (deniedPermissions.get(0).equals(Manifest.permission.CAMERA)) {
                 UserHeadCameraActivity.LaunchActivity(mContext, mContext.hashCode());
             } else if (deniedPermissions.get(0).equals(Manifest.permission.READ_EXTERNAL_STORAGE) || deniedPermissions.get(0).equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                AlbumActivity.LaunchActivity(mContext, mContext.hashCode(),AlbumActivity.COME_FROM_USERINFO);
+                AlbumActivity.LaunchActivity(mContext, mContext.hashCode(), AlbumActivity.COME_FROM_USERINFO);
             }
         }
     }
@@ -225,7 +231,7 @@ public class UserInfoActivity extends YanxiuBaseActivity implements View.OnClick
                 @NonNull
                 @Override
                 public String findUpdataUrl() {
-                    return UrlRepository.getInstance().getServer()+"/common/uploadHeadImg.do?";
+                    return UrlRepository.getInstance().getServer() + "/common/uploadHeadImg.do?";
                 }
 
                 @Override

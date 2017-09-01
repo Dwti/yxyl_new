@@ -20,6 +20,7 @@
         android:paddingStart="15dp"
         android:paddingEnd="15dp"
         android:paddingBottom="25dp"
+        android:textCursorDrawable="@drawable/shape_yxyl_cursor"
         android:textColorHint="@color/color_cccccc"
         android:textColor="@color/color_333333"
         android:textSize="19dp" />
