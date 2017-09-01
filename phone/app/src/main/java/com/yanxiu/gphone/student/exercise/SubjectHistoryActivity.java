@@ -140,6 +140,7 @@ public class SubjectHistoryActivity extends YanxiuBaseActivity {
 
     private void showDataEmptyView(){
         mListView.setVisibility(View.GONE);
+        mRefreshBtn.setVisibility(View.GONE);
         mTipsView.setVisibility(View.VISIBLE);
         mTipsImg.setImageResource(R.drawable.no_exercise_history);
         mTips.setText(R.string.no_exercise);
@@ -149,6 +150,7 @@ public class SubjectHistoryActivity extends YanxiuBaseActivity {
 
     private void showDataErrorView(){
         mListView.setVisibility(View.GONE);
+        mRefreshBtn.setVisibility(View.VISIBLE);
         mTipsView.setVisibility(View.VISIBLE);
         mTipsImg.setImageResource(R.drawable.net_error);
         mTips.setText(R.string.load_failed);

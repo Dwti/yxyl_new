@@ -50,6 +50,9 @@ public class Constants {
     public static final char CHARACTER_SLASH = '/';
     public static final String DOMYBOXDIR = "YanXiu/app/student";
     public static final String PICTUREDIR = "/YanXiu/app/image/";
+    public static final String DIR_ROOT = "/YanXiu";
+    public static final String DIR_APP = "/app";
+    public static final String DIR_IMAGE = "/image";
     public static final int NOTIFICATION_ID = 0x11;
     /**
      * default it is 0,when the loginactivity checks for updata,it is 1,at this time the mainactivity does't to check for updata

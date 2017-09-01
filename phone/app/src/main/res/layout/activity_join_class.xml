@@ -188,6 +188,7 @@
                         android:textColorHint="@color/color_89e00d"
                         android:textSize="16dp"
                         android:textColor="@android:color/white"
+                        android:textCursorDrawable="@color/color_89e00d"
                         android:background="@null"/>
 
                     <ImageView
