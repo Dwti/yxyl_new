@@ -194,6 +194,7 @@ public class ChooseSchoolActivity extends YanxiuBaseActivity implements View.OnC
     private void result(){
         EventBus.getDefault().post(message);
         ChooseSchoolActivity.this.finish();
+        EditTextManger.getManager(mTitleView).hideSoftInput();
     }
 
     private void saveSchoolMessage(){
