@@ -256,12 +256,20 @@ public class SelectChapterAndKnowledgeActivity extends YanxiuBaseActivity {
 
             final PickerViewEx picker = (PickerViewEx) view.findViewById(R.id.picker_view);
             picker.setTextLocation(PickerViewEx.DEFAULT_CENTER);
+            View pop_bg = view.findViewById(R.id.pop_bg);
             View tvOk = view.findViewById(R.id.tv_ok);
             View tvCancel = view.findViewById(R.id.tv_cancel);
             picker.setData(getEditionStrs(mEditionChildBeanList));
             picker.setSelected(0);
             mLastSelectedPos = 0;
             mCurrSelectedPos = 0;
+
+            pop_bg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dismissPop();
+                }
+            });
 
             picker.setOnSelectListener(new PickerViewEx.onSelectListener() {
                 @Override
