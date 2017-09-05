@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -85,7 +84,7 @@ public class SelectSubjectActivity extends YanxiuBaseActivity {
                 if(bean.getData() != null){
                     editionName = bean.getData().getEditionName();
                 }
-                SelectEditionActivity.invoke(SelectSubjectActivity.this, subjectId, subjectName,editionName,SelectEditionActivity.FROM_SUBJECT_SELECT);
+                ModifyEditionActivity.invoke(SelectSubjectActivity.this, subjectId, subjectName,editionName, ModifyEditionActivity.FROM_SUBJECT_SELECT);
             }
         });
         mBack.setOnClickListener(new View.OnClickListener() {

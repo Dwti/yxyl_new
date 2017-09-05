@@ -18,6 +18,7 @@ import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.base.HomePageBaseFragment;
 import com.yanxiu.gphone.student.exercise.EditionSelectChangeMessage;
 import com.yanxiu.gphone.student.exercise.SelectChapterAndKnowledgeActivity;
+import com.yanxiu.gphone.student.exercise.ModifyEditionActivity;
 import com.yanxiu.gphone.student.exercise.SelectEditionActivity;
 import com.yanxiu.gphone.student.exercise.bean.SubjectBean;
 import com.yanxiu.gphone.student.exercise.SubjectsAdapter;
@@ -91,7 +92,7 @@ public class ExerciseFragment extends HomePageBaseFragment {
                     if(bean.getData() != null){
                         editionName = bean.getData().getEditionName();
                     }
-                    SelectEditionActivity.invoke(getActivity(), subjectId, subjectName,editionName,SelectEditionActivity.FROM_EXERCISE);
+                    SelectEditionActivity.invoke(getActivity(), subjectId, subjectName,editionName, ModifyEditionActivity.FROM_EXERCISE);
                 }
             }
         });

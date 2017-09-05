@@ -269,7 +269,14 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />*/
         <activity
+            android:name=".exercise.ModifyEditionActivity"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name=".exercise.SelectEditionActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         
