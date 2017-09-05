@@ -9,7 +9,7 @@
         android:id="@+id/empty_top"
         android:layout_width="match_parent"
         android:layout_height="@dimen/net_error_layout_height"
-        android:background="@drawable/no_wrong_data"/>
+        android:src="@drawable/no_wrong_data"/>
 
     <TextView
         android:id="@+id/empty_content"

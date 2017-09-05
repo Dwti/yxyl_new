@@ -200,6 +200,7 @@
                 android:paddingRight="15dp"
                 android:paddingTop="30dp"
                 android:gravity="top"
+                android:textCursorDrawable="@drawable/shape_yxyl_cursor"
                 android:textColor="@color/color_333333"
                 android:textColorHint="@color/color_cccccc"
                 android:textSize="@dimen/analysis_error_tag_textsize" />
@@ -207,10 +208,9 @@
             <View
                 android:id="@+id/shadow"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/question_bottom_shadow"
+                android:layout_height="1dp"
                 android:layout_below="@id/error_content"
-                android:alpha="0.2"
-                android:background="@color/color_002c0f" />
+                android:background="@color/color_cccccc" />
 
             <com.yanxiu.gphone.student.customviews.WavesLayout
                 android:id="@+id/wavesLayout"

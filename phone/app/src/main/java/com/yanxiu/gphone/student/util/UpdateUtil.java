@@ -6,6 +6,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
@@ -36,10 +38,14 @@ import static com.yanxiu.gphone.student.constant.Constants.STUDENT_UPLOAD;
  */
 public class UpdateUtil {
 
+    private static final String TAG="updata";
+
     private static InitializeRequest mInitializeRequest;
     private static UpdateDialog mUpdateDialog;
     private static NotificationManager mNotificationManager;
     private static Notification mNotification;
+
+    private static Handler mHandler=new Handler(Looper.getMainLooper());
 
     public interface OnUpgradeCallBack {
         void onExit();
@@ -77,7 +83,14 @@ public class UpdateUtil {
 
                                     @Override
                                     public void onDownloadApk(boolean isSuccess) {
-
+//                                        if (!isSuccess){
+//                                            mHandler.post(new Runnable() {
+//                                                @Override
+//                                                public void run() {
+//                                                    ToastManager.showMsg(R.string.update_asynctask_downloading_fail);
+//                                                }
+//                                            });
+//                                        }
                                     }
 
                                     @Override
@@ -198,6 +211,7 @@ public class UpdateUtil {
 
             @Override
             public void onDownloading(int progress) {
+                Logger.d(TAG,"Download"+progress);
                 mUpdateDialog.setProgress((int) progress);
                 mNotification.contentView.setProgressBar(R.id.progress_value, 100, (int) progress, false);
                 mNotification.contentView.setTextViewText(R.id.progress_text, (int) progress + "%");
@@ -206,6 +220,7 @@ public class UpdateUtil {
 
             @Override
             public void onDownloadFailed() {
+                Logger.d(TAG,"onfail");
                 mNotificationManager.cancel(NOTIFICATION_ID);
                 mNotification.icon = R.drawable.notification01;
                 mNotification.tickerText = context.getResources().getString(R.string.update_asynctask_downloading_fail);

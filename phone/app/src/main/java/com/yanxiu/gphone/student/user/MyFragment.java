@@ -53,7 +53,7 @@ public class MyFragment extends HomePageBaseFragment implements View.OnClickList
 
     private BaseRefreshLayout2 mRefreshLayout;
 
-    private View mHead_layout,mFly_icon,mHill_icon;
+    private View mHead_layout, mFly_icon, mHill_icon;
 
 
     @Override
@@ -108,20 +108,26 @@ public class MyFragment extends HomePageBaseFragment implements View.OnClickList
     private void intData() {
         String headIconPath = LoginInfo.getHeadIcon();
         final String userName = LoginInfo.getRealName();
-        String loginName=LoginInfo.getLoginName();
+        String loginName = LoginInfo.getLoginName();
         String stageName = LoginInfo.getStageName();
-        Glide.with(getActivity()).load(headIconPath).asBitmap().placeholder(R.drawable.user_info_headimg_default).into(new CircleImageTarget(mUser_icon));
+        String headImg = LoginInfo.getHeadIcon();
+        if (!TextUtils.isEmpty(headImg)) {
+            String[] strings = headImg.split("/");
+            if (!"file_56a60c9d7cbd4.jpg".equals(strings[strings.length - 1])) {
+                Glide.with(getActivity()).load(headIconPath).asBitmap().placeholder(R.drawable.user_info_headimg_default).into(new CircleImageTarget(mUser_icon));
+            }
+        }
         mUser_name.post(new Runnable() {
             @Override
             public void run() {
                 mUser_name.setData(userName);
             }
         });
-        if (TextUtils.isEmpty(loginName)){
+        if (TextUtils.isEmpty(loginName)) {
             loginName = LoginInfo.getMobile();
         }
         mUser_id.setText(loginName);
-        TextTypefaceUtil.setViewTypeface(TextTypefaceUtil.TypefaceType.METRO_MEDIUM_PLAY,mUser_id);
+        TextTypefaceUtil.setViewTypeface(TextTypefaceUtil.TypefaceType.METRO_MEDIUM_PLAY, mUser_id);
         mStage.setText(stageName);
 
     }
@@ -154,15 +160,15 @@ public class MyFragment extends HomePageBaseFragment implements View.OnClickList
         }
     }
 
-    public void onEventMainThread(ChooseStageActivity.StageMessage message){
-        if (message!=null&&message.requestCode==MyFragment.this.hashCode()){
+    public void onEventMainThread(ChooseStageActivity.StageMessage message) {
+        if (message != null && message.requestCode == MyFragment.this.hashCode()) {
             mStage.setText(message.stageText);
             LoginInfo.saveStageid(message.stageId);
             LoginInfo.saveStageName(message.stageText);
         }
     }
 
-    public void onEventMainThread(final JoinClassActivity.UserNameChangeMsg message){
+    public void onEventMainThread(final JoinClassActivity.UserNameChangeMsg message) {
         mUser_name.post(new Runnable() {
             @Override
             public void run() {
@@ -185,7 +191,7 @@ public class MyFragment extends HomePageBaseFragment implements View.OnClickList
                 SubjectHistoryActivity.invoke(getContext());
                 break;
             case R.id.user_xueduan:
-                ChooseStageActivity.LaunchActivity(getContext(),this.hashCode());
+                ChooseStageActivity.LaunchActivity(getContext(), this.hashCode());
                 break;
             case R.id.user_teaching_material_version:
                 SelectSubjectActivity.invoke(getActivity());
