@@ -204,7 +204,7 @@ public class FillBlankFragment extends AnswerSimpleExerciseBaseFragment implemen
                             List<BlankView> viewList = mFillBlank.getBlankViews(mFillBlank.getCurrClickSpanStart());
                             if(viewList.size() > 0){
                                 final BlankView blankView = viewList.get(viewList.size() -1);
-                                if(blankView.getBottom() + mViewWrapper.getPaddingTop() + mComplexStemLayout.getHeight()> mScrollView.getHeight()){
+                                if(blankView.getBottom() - mScrollView.getScrollY() + mViewWrapper.getPaddingTop() + mComplexStemLayout.getHeight()> mScrollView.getHeight()){
                                     mScrollView.scrollTo(0,blankView.getBottom() - mScrollView.getHeight() + mViewWrapper.getPaddingTop()+ mComplexStemLayout.getHeight());
                                 }
                             }
