@@ -158,8 +158,12 @@ public class FillBlankFragment extends AnswerSimpleExerciseBaseFragment implemen
                     isOnClick = false;
                     return;
                 }
+
+                String answer = mEditText.getText().toString().trim();
+                answer = answer.replaceAll("\\u00A0","");
                 //更新答案的内容
-                mAnswers.set(currPos,mEditText.getText().toString().trim());
+//                mAnswers.set(currPos,mEditText.getText().toString().trim());
+                mAnswers.set(currPos,answer);
                 //重新初始化题干
                 String stem = StemUtil.initFillBlankStem(mStem,mAnswers);
                 //重绘
@@ -188,6 +192,7 @@ public class FillBlankFragment extends AnswerSimpleExerciseBaseFragment implemen
                     mEditText.requestFocus();
                     imm.showSoftInput(mEditText,InputMethodManager.SHOW_FORCED);
                 }
+                filledContent = filledContent.replaceAll("\\u00A0","");
                 mEditText.setText(filledContent);
                 mEditText.setSelection(filledContent.length());
             }
