@@ -43,8 +43,7 @@
 
             <RelativeLayout
                 android:layout_width="250dp"
-                android:layout_height="250dp"
-                android:layout_marginTop="-10dp">
+                android:layout_height="250dp">
 
                 <ImageView
                     android:layout_width="match_parent"
@@ -53,9 +52,10 @@
 
                 <ImageView
                     android:id="@+id/icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"/>
+                    android:layout_width="145dp"
+                    android:layout_height="145dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="38dp"/>
 
                 <TextView
                     android:id="@+id/subject"
@@ -74,7 +74,7 @@
                 android:layout_height="150dp"
                 app:choose_max_textsize="23dp"
                 app:choose_min_textsize="12dp"
-                android:layout_marginTop="5dp"/>
+                android:layout_marginTop="25dp"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
