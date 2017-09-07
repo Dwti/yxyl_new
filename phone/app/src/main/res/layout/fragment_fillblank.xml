@@ -75,7 +75,7 @@
                 android:textSize="15dp"
                 android:textColor="#333333"
                 android:textColorHint="#999999"
-                android:textCursorDrawable="@color/color_89e00d"
+                android:textCursorDrawable="@drawable/shape_yxyl_cursor"
                 android:hint="@string/begin_answer"
                 android:maxLines="4"
                 android:background="@drawable/fillblank_edit_drawable"/>
