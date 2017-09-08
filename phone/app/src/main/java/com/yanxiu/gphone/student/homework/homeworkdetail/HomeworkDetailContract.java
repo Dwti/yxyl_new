@@ -51,6 +51,8 @@ public interface HomeworkDetailContract {
 
         boolean shouldRefresh();
 
+        void resetRefreshState();
+
         void loadHomework();
 
         void loadMoreHomework();
