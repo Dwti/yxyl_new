@@ -78,8 +78,8 @@ public class HomeworkDetailPresenter implements HomeworkDetailContract.Presenter
     public void loadMoreHomework() {
         if(!mHomeworkRepository.canLoadMore()){
             mHomeworkDetailView.setLoadingMoreIndicator(false);
-            mHomeworkDetailView.showNoMoreData();
             mHomeworkDetailView.setLoadMoreEnable(false);
+            mHomeworkDetailView.showNoMoreData();
             return;
         }
         mHomeworkRepository.getMoreHomeworkDetails(mHomeworkId, new HomeworkDetailDataSource.LoadHomeworkDetailCallback() {

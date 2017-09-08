@@ -2,26 +2,17 @@ package com.yanxiu.gphone.student.exercise;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.exercise.bean.ExerciseBean;
-import com.yanxiu.gphone.student.homework.homeworkdetail.HomeworkDetailPresenter;
-import com.yanxiu.gphone.student.homework.response.HomeworkDetailBean;
 import com.yanxiu.gphone.student.util.TimeUtils;
 
 import java.text.NumberFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -52,7 +43,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if(viewType == TYPE_NORMAL){
             return new ExerciseViewHolder(inflater.inflate(R.layout.item_exercise_history,parent,false));
         }else if(viewType == TYPE_FOOTER){
-            return new FooterViewHolder(inflater.inflate(R.layout.footer_loadmore,parent,false));
+            return new FooterViewHolder(inflater.inflate(R.layout.footer_tips,parent,false));
         }else {
             return new ExerciseViewHolder(inflater.inflate(R.layout.item_exercise_history,parent,false));
         }
