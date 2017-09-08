@@ -22,7 +22,7 @@
 
     <dimen name="login_other_login_textsize">14dp</dimen>
     <dimen name="login_other_login">12dp</dimen>
-    <dimen name="login_thrid_margin_top">75dp</dimen>
+    <dimen name="login_thrid_margin_top">65dp</dimen>
     <dimen name="login_thrid_icon_margin_top">23dp</dimen>
     <dimen name="login_thrid_margin_bottom">50dp</dimen>
 

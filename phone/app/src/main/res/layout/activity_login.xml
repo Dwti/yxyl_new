@@ -17,7 +17,9 @@
 
             <include
                 android:id="@+id/include_top"
-                layout="@layout/main_public_top_layout" />
+                layout="@layout/main_public_top_layout"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"/>
 
             <include layout="@layout/layout_login_top_image" />
         </LinearLayout>
