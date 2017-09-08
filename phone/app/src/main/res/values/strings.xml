@@ -80,7 +80,7 @@
     <string name="next_question">下一题</string>
 
     <string name="score_rate">正确率</string>
-    <string name="text_loading">正在加载...</string>
+    <string name="text_loading">这回真没了</string>
     <string name="text_click_to_load_more">点击加载更多</string>
     <string name="click_to_refresh">点击刷新</string>
     <string name="click_to_retry">点击重试</string>

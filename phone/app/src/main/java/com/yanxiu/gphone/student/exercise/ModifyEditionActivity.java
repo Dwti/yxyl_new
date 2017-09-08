@@ -33,7 +33,7 @@ import de.greenrobot.event.EventBus;
  * Created by sp on 17-7-26.
  */
 
-public class SelectEditionActivity extends YanxiuBaseActivity {
+public class ModifyEditionActivity extends YanxiuBaseActivity {
 
     private TextView mTips, mSubject,mDes;
     private View mTipsView, mContent;
@@ -55,15 +55,12 @@ public class SelectEditionActivity extends YanxiuBaseActivity {
     public static final int FROM_SUBJECT_SELECT = 0x02;
 
     public static void invoke(Activity activity, String subjectId, String subjectName, String editionName, int comeFrom) {
-        Intent intent = new Intent(activity, SelectEditionActivity.class);
+        Intent intent = new Intent(activity, ModifyEditionActivity.class);
         intent.putExtra(SUBJECT_ID, subjectId);
         intent.putExtra(SUBJECT_NAME, subjectName);
         intent.putExtra(COME_FROM, comeFrom);
         intent.putExtra(EDITION_NAME,editionName);
         activity.startActivity(intent);
-        if(comeFrom == FROM_EXERCISE){
-            activity.overridePendingTransition(R.anim.pop_in,0);
-        }
     }
 
     @Override
@@ -101,7 +98,7 @@ public class SelectEditionActivity extends YanxiuBaseActivity {
         mSubject.setText(mSubjectName);
         if (mIcon != null)
             setIcon(mIcon, mSubjectId);
-        mBack.setBackgroundResource(R.drawable.selector_close);
+        mDes.setVisibility(View.INVISIBLE);
         requestEditions(mSubjectId);
     }
 
@@ -131,12 +128,6 @@ public class SelectEditionActivity extends YanxiuBaseActivity {
                 finish();
             }
         });
-    }
-
-    @Override
-    public void finish() {
-        super.finish();
-        overridePendingTransition(0,R.anim.pop_exit);
     }
 
     private void showDataEmptyView() {
@@ -236,8 +227,6 @@ public class SelectEditionActivity extends YanxiuBaseActivity {
                 mSelectedIndex = mPickerView.getSelectedIndex();
                 ToastManager.showMsg(response.getStatus().getDesc());
                 sendEditionChangeMsg();
-                String editionId = editions.get(mPickerView.getSelectedIndex()).getId();
-                SelectChapterAndKnowledgeActivity.invoke(SelectEditionActivity.this,mSubjectId,mSubjectName,editionId);
                 finish();
             } else {
                 ToastManager.showMsg(response.getStatus().getDesc());

@@ -176,7 +176,11 @@ public class HomeworkDetailActivity extends YanxiuBaseActivity implements Homewo
 
     @Override
     public void showNoMoreData() {
-        //TODO
+        LinearLayoutManager layoutManager = (LinearLayoutManager) mRecyclerView.getLayoutManager();
+        int firstPos = layoutManager.findFirstCompletelyVisibleItemPosition();
+        if(firstPos != 0 ){
+            mHomeworkDetailAdapter.addFooterView();
+        }
     }
 
     @Override

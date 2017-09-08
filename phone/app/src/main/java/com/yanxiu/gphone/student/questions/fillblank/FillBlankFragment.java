@@ -158,8 +158,12 @@ public class FillBlankFragment extends AnswerSimpleExerciseBaseFragment implemen
                     isOnClick = false;
                     return;
                 }
+
+                String answer = mEditText.getText().toString().trim();
+                answer = answer.replaceAll("\\u00A0","");
                 //更新答案的内容
-                mAnswers.set(currPos,mEditText.getText().toString().trim());
+//                mAnswers.set(currPos,mEditText.getText().toString().trim());
+                mAnswers.set(currPos,answer);
                 //重新初始化题干
                 String stem = StemUtil.initFillBlankStem(mStem,mAnswers);
                 //重绘
@@ -188,6 +192,7 @@ public class FillBlankFragment extends AnswerSimpleExerciseBaseFragment implemen
                     mEditText.requestFocus();
                     imm.showSoftInput(mEditText,InputMethodManager.SHOW_FORCED);
                 }
+                filledContent = filledContent.replaceAll("\\u00A0","");
                 mEditText.setText(filledContent);
                 mEditText.setSelection(filledContent.length());
             }
@@ -204,7 +209,7 @@ public class FillBlankFragment extends AnswerSimpleExerciseBaseFragment implemen
                             List<BlankView> viewList = mFillBlank.getBlankViews(mFillBlank.getCurrClickSpanStart());
                             if(viewList.size() > 0){
                                 final BlankView blankView = viewList.get(viewList.size() -1);
-                                if(blankView.getBottom() + mViewWrapper.getPaddingTop() + mComplexStemLayout.getHeight()> mScrollView.getHeight()){
+                                if(blankView.getBottom() - mScrollView.getScrollY() + mViewWrapper.getPaddingTop() + mComplexStemLayout.getHeight()> mScrollView.getHeight()){
                                     mScrollView.scrollTo(0,blankView.getBottom() - mScrollView.getHeight() + mViewWrapper.getPaddingTop()+ mComplexStemLayout.getHeight());
                                 }
                             }

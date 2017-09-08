@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
@@ -46,7 +45,7 @@ public class HomeworkDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         if(viewType == TYPE_NORMAL){
             return new HomeworkDetailViewHolder(inflater.inflate(R.layout.item_homework_detail,parent,false));
         }else if(viewType == TYPE_FOOTER){
-            return new FooterViewHolder(inflater.inflate(R.layout.footer_loadmore,parent,false));
+            return new FooterViewHolder(inflater.inflate(R.layout.footer_tips,parent,false));
         }else {
             return new HomeworkDetailViewHolder(inflater.inflate(R.layout.item_homework_detail,parent,false));
         }
@@ -94,17 +93,6 @@ public class HomeworkDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     viewHolder.mState2.setText("");
                 }
             }
-        }else if(holder instanceof FooterViewHolder){
-            FooterViewHolder viewHolder = (FooterViewHolder) holder;
-            if(mIsLoadingMore){
-                viewHolder.mItemVIew.setVisibility(View.VISIBLE);
-                viewHolder.mProgressBar.setVisibility(View.VISIBLE);
-                viewHolder.mLoadingText.setText(((FooterViewHolder) holder).mLoadingText.getContext().getResources().getString(R.string.text_loading));
-            }else {
-                viewHolder.mItemVIew.setVisibility(View.GONE);
-                viewHolder.mProgressBar.setVisibility(View.GONE);
-                viewHolder.mLoadingText.setText(((FooterViewHolder) holder).mLoadingText.getContext().getResources().getString(R.string.text_click_to_load_more));
-            }
         }
     }
 
@@ -116,12 +104,11 @@ public class HomeworkDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public int getItemViewType(int position) {
-        return TYPE_NORMAL;
-//        if(position == getItemCount() -1){
-//            return TYPE_FOOTER;
-//        }else {
-//            return TYPE_NORMAL;
-//        }
+        if(TextUtils.isEmpty(mData.get(position).getId())){
+            return TYPE_FOOTER;
+        }else {
+            return TYPE_NORMAL;
+        }
     }
 
     public HomeworkDetailBean getItem(int position){
@@ -144,13 +131,13 @@ public class HomeworkDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     public void addFooterView(){
-        mIsLoadingMore = true;
-        notifyDataSetChanged();
+        mData.add(new HomeworkDetailBean());
+        notifyItemInserted(mData.size() - 1);
     }
 
     public void removeFooterView(){
-        mIsLoadingMore = false;
-        notifyDataSetChanged();
+        mData.remove(mData.size() - 1);
+        notifyItemRemoved(mData.size() - 1);
     }
 
     class HomeworkDetailViewHolder extends RecyclerView.ViewHolder{
@@ -178,13 +165,11 @@ public class HomeworkDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     class FooterViewHolder extends RecyclerView.ViewHolder{
 
-        ProgressBar mProgressBar;
         TextView mLoadingText;
         View mItemVIew;
         public FooterViewHolder(View itemView) {
             super(itemView);
             mItemVIew = itemView;
-            mProgressBar = (ProgressBar) itemView.findViewById(R.id.progressBar);
             mLoadingText = (TextView) itemView.findViewById(R.id.loadingText);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

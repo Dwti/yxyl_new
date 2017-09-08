@@ -485,7 +485,11 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
                 break;
             case R.id.backview:
                 if(Constants.MAINAVTIVITY_FROMTYPE_EXERCISE.equals(mFromType)){ // 练习
-                    quitSubmmitDialog();
+                    if(checkQuestionHasAnswerd()){
+                        quitSubmmitDialog();
+                    }else {
+                        finish();
+                    }
                 }else if(Constants.MAINAVTIVITY_FROMTYPE_EXERCISE_HISTORY.equals(mFromType)){
                     mDialog.showLoadingView();
                     requestSubmmit();
@@ -608,7 +612,11 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
             return;
         }
         if(Constants.MAINAVTIVITY_FROMTYPE_EXERCISE.equals(mFromType)){ // 练习
-            quitSubmmitDialog();
+            if(checkQuestionHasAnswerd()){
+                quitSubmmitDialog();
+            }else {
+                finish();
+            }
         }else if(Constants.MAINAVTIVITY_FROMTYPE_EXERCISE_HISTORY.equals(mFromType)){
             mDialog.showLoadingView();
             requestSubmmit();
@@ -701,7 +709,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
      */
     private boolean checkQuestionHasAnswerd(){
         for (int i = 0; i < mQuestions.size(); i++) {
-            if (!mQuestions.get(i).getHasAnswered()) { //只要有一个没作答的就弹框
+            if (mQuestions.get(i).getHasAnswered()) { //只要有一个作答的就弹框
                 return true;
             }
         }

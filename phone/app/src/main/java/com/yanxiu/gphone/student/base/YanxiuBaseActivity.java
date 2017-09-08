@@ -34,7 +34,7 @@ public class YanxiuBaseActivity extends FragmentActivity implements EasyPermissi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ;ActivityManger.addActicity(this);
+        ActivityManger.addActicity(this);
     }
 
     @Override

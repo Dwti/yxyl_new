@@ -218,6 +218,7 @@ public class ConnectFragment extends AnswerSimpleExerciseBaseFragment {
             View contentView = LayoutInflater.from(getContext()).inflate(R.layout.popwindow_connect_result, null);
             mPopWindow = new PopupWindow(contentView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             mPopWindow.setAnimationStyle(R.style.pop_anim);
+            View pop_bg = contentView.findViewById(R.id.pop_bg);
             View dismiss = contentView.findViewById(R.id.dismiss);
             View btnClear = contentView.findViewById(R.id.tv_clear);
             FrameLayout animationLayout = (FrameLayout) contentView.findViewById(R.id.animation_layout);
@@ -228,6 +229,13 @@ public class ConnectFragment extends AnswerSimpleExerciseBaseFragment {
             mRecyclerViewResult.setAdapter(mResultAdapter);
 
             mResultAdapter.setAnimationLayout(animationLayout);
+
+            pop_bg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dismissResult();
+                }
+            });
 
             btnClear.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -262,6 +270,13 @@ public class ConnectFragment extends AnswerSimpleExerciseBaseFragment {
                     updateProgress();
                 }
             });
+
+//            ((AnswerQuestionActivity)getActivity()).getOverlayView().setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    dismissResult();
+//                }
+//            });
         }
     }
 
