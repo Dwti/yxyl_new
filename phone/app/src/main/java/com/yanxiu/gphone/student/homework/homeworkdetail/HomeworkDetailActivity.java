@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -22,7 +21,6 @@ import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerQuestio
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerReportActicity;
 import com.yanxiu.gphone.student.userevent.UserEventManager;
 import com.yanxiu.gphone.student.userevent.bean.WorkBean;
-import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.ToastManager;
 
 import java.util.ArrayList;
@@ -130,6 +128,10 @@ public class HomeworkDetailActivity extends YanxiuBaseActivity implements Homewo
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        String subjectId = intent.getStringExtra(EXTRA_SUBJECT_ID);
+        String subjectName = intent.getStringExtra(EXTRA_SUBJECT_NAME);
+        mTitle.setText(subjectName);
+        mPresenter.setSubjectId(subjectId);
         mPresenter.resetRefreshState();
         mPresenter.loadHomework();
     }
