@@ -25,7 +25,7 @@
                     android:layout_height="@dimen/common_top_layout_leftimage_wdith"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/common_top_layout_marginLeft"
-                    android:background="@drawable/answerquestion_top_backview_selecter" />
+                    android:src="@drawable/selector_back" />
 
                 <TextView
                     android:id="@+id/title"
@@ -205,12 +205,22 @@
                 android:textColorHint="@color/color_cccccc"
                 android:textSize="@dimen/analysis_error_tag_textsize" />
 
-            <View
+            <LinearLayout
                 android:id="@+id/shadow"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@id/error_content"
-                android:background="@color/color_cccccc" />
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/error_content">
+
+                <include layout="@layout/shadow_view" />
+            </LinearLayout>
+
+
+            <!--<View-->
+                <!--android:id="@+id/shadow"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="1dp"-->
+                <!--android:layout_below="@id/error_content"-->
+                <!--android:background="@color/color_cccccc" />-->
 
             <com.yanxiu.gphone.student.customviews.WavesLayout
                 android:id="@+id/wavesLayout"

@@ -70,8 +70,8 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
     private int mProgress=0;
     private int mSeekProgress=-1;
 
-    private String mUrl;
-//        private String mUrl="http://data.5sing.kgimg.com/G034/M05/16/17/ApQEAFXsgeqIXl7gAAVVd-n31lcAABOogKzlD4ABVWP363.mp3";
+//    private String mUrl;
+        private String mUrl="http://data.5sing.kgimg.com/G034/M05/16/17/ApQEAFXsgeqIXl7gAAVVd-n31lcAABOogKzlD4ABVWP363.mp3";
     private long mMoveDown;
     private ListenDrawable listenDrawable;
 
@@ -136,9 +136,9 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (ev.getAction()==MotionEvent.ACTION_DOWN){
+        if (checkIsInternal(ev)&&ev.getAction()==MotionEvent.ACTION_DOWN){
             listenDrawable.setEvent(true);
-        }else if (ev.getAction()==MotionEvent.ACTION_UP||ev.getAction()==MotionEvent.ACTION_CANCEL){
+        }else if (checkIsInternal(ev)&&ev.getAction()==MotionEvent.ACTION_UP||ev.getAction()==MotionEvent.ACTION_CANCEL){
             listenDrawable.setEvent(false);
         }
         if (!isPlaying) {
@@ -296,7 +296,7 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
         if (TextUtils.isEmpty(url)) {
             return;
         }
-        this.mUrl = url;
+//        this.mUrl = url;
     }
 
     public void setPause() {
@@ -367,7 +367,7 @@ public class ListenerSeekBarLayout extends LinearLayout implements SeekBar.OnSee
 
     @Override
     public void onProgress(MediaPlayerUtil mu, int progress) {
-        Logger.d(TAG, "progress" + progress);
+//        Logger.d(TAG, "progress" + progress);
         this.mProgress=progress;
         if (progress>mSeekBarView.getProgress()) {
             mSeekBarView.setProgress(progress);

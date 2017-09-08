@@ -93,7 +93,6 @@ public class MyFragment extends HomePageBaseFragment implements View.OnClickList
         mTeaching_material_version = mRootView.findViewById(R.id.user_teaching_material_version);
         mFeedback = mRootView.findViewById(R.id.user_feedback);
         mSetting = mRootView.findViewById(R.id.user_seeting);
-        initListener();
 
         mRefreshLayout = (BaseRefreshLayout2) mRootView.findViewById(R.id.refreshLayout);
         mHead_layout = mRootView.findViewById(R.id.head_layout);
@@ -103,6 +102,8 @@ public class MyFragment extends HomePageBaseFragment implements View.OnClickList
         mRefreshLayout.setFlyView(mFly_icon);
         mRefreshLayout.setHillView(mHill_icon);
         mRefreshLayout.setHeaderHeight(200);
+        initListener();
+
     }
 
     private void intData() {
@@ -141,6 +142,7 @@ public class MyFragment extends HomePageBaseFragment implements View.OnClickList
         mFeedback.setOnClickListener(this);
         mSetting.setOnClickListener(this);
         mUser_icon.setOnClickListener(this);
+        mHead_layout.setOnClickListener(this);
     }
 
     /**
@@ -180,6 +182,7 @@ public class MyFragment extends HomePageBaseFragment implements View.OnClickList
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.head_layout:
             case R.id.user_icon:
             case R.id.user_edit_userinfo:
                 UserInfoActivity.LaunchActivity(getContext());

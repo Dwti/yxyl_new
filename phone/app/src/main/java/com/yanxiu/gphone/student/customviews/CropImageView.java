@@ -12,7 +12,9 @@ import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.widget.RelativeLayout;
 
+import com.yanxiu.gphone.student.common.interfaces.onCropFinishedListener;
 import com.yanxiu.gphone.student.util.FileUtil;
 
 import java.io.BufferedOutputStream;
@@ -27,10 +29,6 @@ import java.io.IOException;
  * Function :
  */
 public class CropImageView extends android.support.v7.widget.AppCompatImageView {
-
-    public interface onCropFinishedListener{
-        void onFinished(String path);
-    }
 
     private static final int DEFAULT_LINE_STROKEWIDTH = 2;
     private static final int DEFAULT_SHARP_STROKEWIDTH = 4;
@@ -77,7 +75,7 @@ public class CropImageView extends android.support.v7.widget.AppCompatImageView 
     private Rect mCropRect;
     private Rect mTypeScaleRect;
     private Rect mTypeMoveRect;
-    private ListenDrawable drawable;
+    private CropDrawable drawable;
 
     public CropImageView(Context context) {
         super(context);
@@ -116,7 +114,18 @@ public class CropImageView extends android.support.v7.widget.AppCompatImageView 
     @Override
     public void setImageBitmap(Bitmap bm) {
         isShowCropBox=true;
-        drawable = new ListenDrawable(getContext(),bm, TYPE_SCALE_W_H);
+        drawable = new CropDrawable(bm, TYPE_SCALE_W_H, new CropDrawable.onBoundsFinishedListener() {
+            @Override
+            public void onBoundsFisished(int width, int height) {
+                RelativeLayout.LayoutParams params= (RelativeLayout.LayoutParams) getLayoutParams();
+                if (params.width!=width||params.height!=height) {
+                    params.width = width;
+                    params.height = height;
+                    params.addRule(RelativeLayout.CENTER_IN_PARENT);
+                    setLayoutParams(params);
+                }
+            }
+        });
         setBackgroundDrawable(drawable);
     }
 

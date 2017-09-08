@@ -79,6 +79,9 @@ public class Constants {
     public static final int ANSWER_STATUS_NOANSWERED = 3;// 题目状态 3 未作答案
     public static final int ANSWER_STATUS_YSUBJECT_ANSWERED = 4;// 题目状态 4 标示主观题 已作答
 
+    public static final String SIGNATURE_01="01";
+    public static final String SIGNATURE_02="02";
+
     public static final class SubjectId {
         public static final int CHINESE = 1102;
         public static final int MATH = 1103;
@@ -106,6 +109,9 @@ public class Constants {
     public static final int NOTIFICATION_ACTION_JOIN_THE_CLASS = 2;//班级加入成功||班级审核未通过
     public static final int NOTIFICATION_ACTION_OPEN_WEBVIEW = 3;//调用内置webView
 
+    /**
+     * 上报相关
+     * */
     public static final class UserEvent {
         public static final String EVENT_ID = "eventID";
         public static final String UID = "uid";

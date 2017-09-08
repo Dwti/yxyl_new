@@ -2,11 +2,13 @@ package com.yanxiu.gphone.student.questions.classify;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
+import android.graphics.Color;
 import android.graphics.Path;
 import android.graphics.PathMeasure;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
@@ -76,7 +78,6 @@ public class ClassifyAnimationUtil {
                 int endLoc[] = new int[2];
                 basketView.getLocationInWindow(endLoc);
 
-
 //        三、正式开始计算动画开始/结束的坐标
                 //开始掉落的商品的起始点：商品起始点-父布局起始点+该商品图片的一半
 //        float startX = startLoc[0] - parentLocation[0] + choiceView.getWidth() / 2;
@@ -86,7 +87,7 @@ public class ClassifyAnimationUtil {
                  * change start location
                  * cwq
                  * */
-                float startX = startLoc[0] -parentLocation[0];
+                float startX = startLoc[0] -parentLocation[0]+chioceView.getWidth()/2;
                 float startY = startLoc[1] -parentLocation[1];
 
                 //商品掉落后的终点坐标：购物车起始点-父布局起始点+购物车图片的1/5
@@ -94,8 +95,9 @@ public class ClassifyAnimationUtil {
                  * change end location
                  * cwq
                  * */
-                float toX = endLoc[0] - parentLocation[0] ;
-                float toY = endLoc[1] - parentLocation[1];
+                float toX = endLoc[0] - parentLocation[0]+basketView.getWidth()/2;
+                float toY = endLoc[1] - parentLocation[1]+basketView.getHeight()/2-chioceView.getHeight()/2;
+
 //        float toX = endLoc[0]  + basketView.getWidth() / 5;
 //        float toY = endLoc[1];
 
@@ -128,8 +130,18 @@ public class ClassifyAnimationUtil {
                         // 离的坐标点和切线，pos会自动填充上坐标，这个方法很重要。
                         mPathMeasure.getPosTan(value, mCurrentPosition, null);//mCurrentPosition此时就是中间距离点的坐标值
                         // 移动的商品图片（动画图片）的坐标设置为该中间点的坐标
-                        chioceView.setTranslationX(mCurrentPosition[0]);
+
+                        int width=chioceView.getWidth();
+
+                        chioceView.setTranslationX(mCurrentPosition[0]-width/2);
                         chioceView.setTranslationY(mCurrentPosition[1]);
+
+//                        RelativeLayout.LayoutParams Params = new RelativeLayout.LayoutParams(50, 50);
+//                        Params.setMargins((int) mCurrentPosition[0],(int) mCurrentPosition[1],0,0);
+//                        ImageView imageView=new ImageView(chioceView.getContext());
+//                        imageView.setBackgroundColor(Color.BLUE);
+//                        rl.addView(imageView,Params);
+
 //                choiceView.getLayoutParams().height = (int)();
 //                choiceView.getLayoutParams().width = (int)((1.0-value / mPathMeasure.getLength()) * mWidth);
                         chioceView.setScaleX((1.0f - value / mPathMeasure.getLength()) + 0.1f);

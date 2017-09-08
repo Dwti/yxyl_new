@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DecodeFormat;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.OnPermissionCallback;
@@ -126,7 +127,7 @@ public class UserInfoActivity extends YanxiuBaseActivity implements View.OnClick
         if (!TextUtils.isEmpty(url)) {
             String[] strings = url.split("/");
             if (!"file_56a60c9d7cbd4.jpg".equals(strings[strings.length - 1])) {
-                Glide.with(mContext).load(url).asBitmap().placeholder(R.drawable.user_info_headimg_default).into(mUserHeadImgView);
+                Glide.with(mContext).load(url).asBitmap().placeholder(R.drawable.user_info_headimg_default).format(DecodeFormat.PREFER_ARGB_8888).into(mUserHeadImgView);
             }
         }
     }

@@ -266,6 +266,7 @@ public class ClassifyChoice extends ViewGroup {
             view.post(new Runnable() {
                 @Override
                 public void run() {
+//                    Spanned spanned = Html.fromHtml(content+"hafuj,dnbjndkjsjdfskudfsfsdjbskjfkshdfkusddnjsskffbffhsjss", new HtmlImageGetterForClassify(view,mWidth,mHeight), null);
                     Spanned spanned = Html.fromHtml(content, new HtmlImageGetterForClassify(view,mWidth,mHeight), null);
                     view.setText(spanned);
                 }

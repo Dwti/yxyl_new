@@ -53,13 +53,23 @@
         android:layout_height="@dimen/classify_scroll_paddingbottom"
         android:background="@color/color_ffffff" />
 
-    <View
+    <LinearLayout
         android:id="@+id/shadow"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/question_bottom_shadow"
-        android:layout_below="@+id/view_line"
-        android:alpha="0.2"
-        android:background="@color/color_002c0f" />
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/view_line">
+
+        <include layout="@layout/shadow_view" />
+    </LinearLayout>
+
+
+    <!--<View-->
+        <!--android:id="@+id/shadow"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="@dimen/question_bottom_shadow"-->
+        <!--android:layout_below="@+id/view_line"-->
+        <!--android:alpha="0.2"-->
+        <!--android:background="@color/color_002c0f" />-->
 
     <include
         android:id="@+id/bottompadding_layout"

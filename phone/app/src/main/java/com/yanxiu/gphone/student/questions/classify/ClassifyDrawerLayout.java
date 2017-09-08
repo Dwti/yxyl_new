@@ -54,11 +54,15 @@ public class ClassifyDrawerLayout extends FrameLayout implements OnClickListener
 
     private void initView() {
         mRootLayout = (RelativeLayout) mInflater.inflate(R.layout.classify_drawer_layout, null);
+        View mFlQa= mRootLayout.findViewById(R.id.v_click);
+        RelativeLayout mChioceContainer= (RelativeLayout) mRootLayout.findViewById(R.id.chioce_container);
         mClassify_choice = (ClassifyChoice) mRootLayout.findViewById(R.id.classify_choice);
         mCircle_icon = (ImageView) mRootLayout.findViewById(R.id.circle_icon);
         mTitle = (TextView) mRootLayout.findViewById(R.id.classfy_drawer_title);
         mNoAnswer = (TextView) mRootLayout.findViewById(R.id.classfy_drawer_nodata);
         mCircle_icon.setOnClickListener(this);
+        mFlQa.setOnClickListener(this);
+        mChioceContainer.setOnClickListener(this);
         addView(mRootLayout);
         setBackgroundResource(R.color.color_66000000);
     }
@@ -107,8 +111,10 @@ public class ClassifyDrawerLayout extends FrameLayout implements OnClickListener
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.v_click:
             case R.id.circle_icon:
                 collapse();
+                break;
         }
     }
 

@@ -30,6 +30,12 @@ import java.util.List;
 
 public class WelcomeActivity extends YanxiuBaseActivity implements View.OnClickListener {
 
+    /**
+     * add LOAD_TIME and change time
+     * cwq
+     * */
+    private static final int LOAD_TIME=400;
+
     private RelativeLayout mRootView;
 
     //viewpager相关
@@ -106,21 +112,21 @@ public class WelcomeActivity extends YanxiuBaseActivity implements View.OnClickL
         int version = SystemUtil.getVersionCode();
         if (SpManager.isFristStartUp()) {
             //第一次启动，展示引导页
-            mHander.sendEmptyMessageDelayed(GO_GUIDE_PAGE, 2000);
+            mHander.sendEmptyMessageDelayed(GO_GUIDE_PAGE, LOAD_TIME);
             SpManager.setFristStartUp(false);
             SpManager.setAppVersionCode(version);
         } else if (version > lastVersion) {
             //当前版本大于上次记录的版本，认为是升级后首次启动，展示引导页
-            mHander.sendEmptyMessageDelayed(GO_GUIDE_PAGE, 2000);
+            mHander.sendEmptyMessageDelayed(GO_GUIDE_PAGE, LOAD_TIME);
             SpManager.setAppVersionCode(version);
         } else {
             //
             if (!LoginInfo.isLogIn()) {
                 //TODO 用户信息不完整,跳转登录页
-                mHander.sendEmptyMessageDelayed(GO_LOGIN, 1000);
+                mHander.sendEmptyMessageDelayed(GO_LOGIN, LOAD_TIME);
             } else {
                 //TODO 用户信息完整，跳转首页
-                mHander.sendEmptyMessageDelayed(GO_MAIN, 2000);
+                mHander.sendEmptyMessageDelayed(GO_MAIN, LOAD_TIME);
             }
         }
     }

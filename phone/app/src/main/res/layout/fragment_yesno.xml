@@ -45,13 +45,23 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/view" />
 
-            <View
+            <LinearLayout
                 android:id="@+id/shadow"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/choose_fragment_line_h"
-                android:layout_below="@+id/cl_answer"
-                android:alpha="0.2"
-                android:background="@color/color_002c0f" />
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/cl_answer">
+
+                <include layout="@layout/shadow_view" />
+            </LinearLayout>
+
+
+            <!--<View-->
+                <!--android:id="@+id/shadow"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="@dimen/choose_fragment_line_h"-->
+                <!--android:layout_below="@+id/cl_answer"-->
+                <!--android:alpha="0.2"-->
+                <!--android:background="@color/color_002c0f" />-->
             <include
                 android:id="@+id/bottompadding_layout"
                 layout="@layout/simplequestion_bottom_padding"

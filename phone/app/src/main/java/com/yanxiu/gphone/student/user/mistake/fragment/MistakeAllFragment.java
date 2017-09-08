@@ -111,6 +111,7 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
                             mMistakeAllAdapter.addData(response.getData().get(0));
                         }
                         if (mWrongNum == mMistakeAllAdapter.getItemCount()) {
+                            ToastManager.showMsg(R.string.mistake_no_data);
                             mRefreshView.setLoadMoreEnable(false);
                         } else if (mWrongNum != mMistakeAllAdapter.getItemCount()) {
                             mRefreshView.setLoadMoreEnable(true);

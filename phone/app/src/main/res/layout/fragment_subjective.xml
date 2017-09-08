@@ -53,13 +53,20 @@
                     android:textSize="19dp"
                     android:visibility="gone" />
             </FrameLayout>
+            <LinearLayout
+                android:id="@+id/shadow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <include layout="@layout/shadow_view" />
+            </LinearLayout>
+
 
             <include
                 android:id="@+id/bottompadding_layout"
                 layout="@layout/simplequestion_bottom_padding"
                 android:layout_height="@dimen/question_bottom_layout_height"
-                android:layout_width="match_parent"
-                android:layout_below="@+id/shadow"/>
+                android:layout_width="match_parent"/>
 
         </LinearLayout>
     </ScrollView>

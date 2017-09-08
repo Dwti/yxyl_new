@@ -197,6 +197,7 @@ public class AlbumActivity extends YanxiuBaseActivity implements View.OnClickLis
         if (mComeFrom.equals(COME_FROM_OTHER)) {
             CropImageActivity.LaunchActivity(mContext, message.path, mFromId);
             AlbumActivity.this.finish();
+//            TestActivity.LaunchActivity(mContext,message.path);
         }else if (mComeFrom.equals(COME_FROM_USERINFO)){
             UserHeadCropImageActivity.LaunchActivity(mContext, message.path, mFromId);
         }

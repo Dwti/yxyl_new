@@ -9,13 +9,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DecodeFormat;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.signature.StringSignature;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.common.Bean.CropCallbackMessage;
+import com.yanxiu.gphone.student.common.interfaces.onCropFinishedListener;
+import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.CropImageView;
 import com.yanxiu.gphone.student.db.SpManager;
-
-import java.io.Serializable;
 
 import de.greenrobot.event.EventBus;
 
@@ -26,7 +29,7 @@ import static com.yanxiu.gphone.student.common.activity.CameraActivity.RESULTCOD
  * Time : 2017/6/23 15:53.
  * Function :
  */
-public class CropImageActivity extends YanxiuBaseActivity implements View.OnClickListener, CropImageView.onCropFinishedListener {
+public class CropImageActivity extends YanxiuBaseActivity implements View.OnClickListener, onCropFinishedListener {
 
     private static final String IMGPATH="img";
 
@@ -76,7 +79,7 @@ public class CropImageActivity extends YanxiuBaseActivity implements View.OnClic
     }
 
     private void initData() {
-        Glide.with(mContext).load(mImgPath).asBitmap().into(mCropView);
+        Glide.with(mContext).load(mImgPath).asBitmap().signature(new StringSignature(Constants.SIGNATURE_01)).diskCacheStrategy(DiskCacheStrategy.SOURCE).format(DecodeFormat.PREFER_ARGB_8888).into(mCropView);
 //        if (SpManager.getCropIsLuanched()){
             mGuidePictureView.setVisibility(View.GONE);
 //        }else {

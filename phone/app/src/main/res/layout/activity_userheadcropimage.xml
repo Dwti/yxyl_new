@@ -3,39 +3,45 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.yanxiu.gphone.student.customviews.UserHeadCropImageView
-        android:id="@+id/civ_crop"
-        android:layout_above="@+id/rl_bottom"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="matrix"/>
+        android:layout_above="@+id/rl_bottom">
+
+        <com.yanxiu.gphone.student.customviews.UserHeadCropImageView
+            android:id="@+id/civ_crop"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_margin="5dp" />
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/rl_bottom"
-        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/crop_botom_h">
+        android:layout_height="@dimen/crop_botom_h"
+        android:layout_alignParentBottom="true">
 
         <ImageView
             android:id="@+id/iv_back"
             android:layout_width="@dimen/crop_button_w_h"
             android:layout_height="@dimen/crop_button_w_h"
-            android:padding="4dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/crop_button_margin_l_r"
-            android:src="@drawable/selector_back"
-            android:onClick="onClick" />
+            android:onClick="onClick"
+            android:padding="4dp"
+            android:src="@drawable/selector_back" />
 
         <ImageView
             android:id="@+id/iv_ok"
             android:layout_width="@dimen/crop_button_w_h"
             android:layout_height="@dimen/crop_button_w_h"
-            android:padding="4dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/crop_button_margin_l_r"
-            android:src="@drawable/selector_crop"
-            android:onClick="onClick" />
+            android:onClick="onClick"
+            android:padding="4dp"
+            android:src="@drawable/selector_crop" />
     </RelativeLayout>
 
 </RelativeLayout>

@@ -4,12 +4,17 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Paint;
 import android.support.annotation.Nullable;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.SpannedString;
 import android.text.TextUtils;
+import android.text.style.AbsoluteSizeSpan;
 import android.util.AttributeSet;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.util.ScreenUtils;
 
 /**
  * Created by Canghaixiao.
@@ -20,6 +25,7 @@ public class SinglineEditText extends EditText {
 
     private int width;
     private String hint;
+    private int hintTextSize=0;
 
     public SinglineEditText(Context context) {
         super(context);
@@ -45,6 +51,7 @@ public class SinglineEditText extends EditText {
     private void init(Context context, AttributeSet attrs){
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.SinglineEditText);
         hint=typedArray.getString(R.styleable.SinglineEditText_hint);
+        hintTextSize=typedArray.getDimensionPixelSize(R.styleable.SinglineEditText_hintTestSize, (int) getTextSize());
         typedArray.recycle();
     }
 
@@ -58,6 +65,8 @@ public class SinglineEditText extends EditText {
     private void setTextHint(String hint){
         if (!TextUtils.isEmpty(hint)) {
             Paint paint = getPaint();
+            float testSize=paint.getTextSize();
+            paint.setTextSize(hintTextSize);
             int count = paint.breakText(hint, true, width, null);
             String sureText = hint;
             if (count < hint.length()) {
@@ -69,9 +78,14 @@ public class SinglineEditText extends EditText {
                     measure_width = (int) paint.measureText(sureText);
                 }
             }
-            setHint(sureText);
+            SpannableString ss = new SpannableString(sureText);
+            AbsoluteSizeSpan ass = new AbsoluteSizeSpan(hintTextSize,false);
+            ss.setSpan(ass, 0, ss.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            setHint(new SpannedString(ss));
+            paint.setTextSize(testSize);
+//            setHint(sureText);
         }else {
-            setText("");
+            setHint("");
         }
     }
 

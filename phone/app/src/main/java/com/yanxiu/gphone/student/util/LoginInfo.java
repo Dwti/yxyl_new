@@ -296,4 +296,34 @@ public class LoginInfo {
         bean.setSex(sex);
         Save();
     }
+
+    /**
+     * 获得省份名称
+     * */
+    public static String getProvinceName(){
+        if (!isLogIn()){
+            return "";
+        }
+        return bean.getProvinceName();
+    }
+
+    /**
+     * 获得城市名称
+     * */
+    public static String getCityName(){
+        if (!isLogIn()){
+            return "";
+        }
+        return bean.getCityName();
+    }
+
+    /**
+     * 获得区域名称
+     * */
+    public static String getAreaName(){
+        if (!isLogIn()){
+            return "";
+        }
+        return bean.getAreaName();
+    }
 }

@@ -66,7 +66,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/join_class_submit_edit_margin_l"
+                        android:layout_marginStart="15dp"
                         android:text="@string/class_id"
                         android:textColor="@color/color_336600"
                         android:textSize="@dimen/complete_info_textsize" />
@@ -75,7 +75,7 @@
                         android:id="@+id/tv_class_id"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/join_class_submit_edit_margin_l"
+                        android:layout_marginStart="15dp"
                         android:textColor="@android:color/white"
                         android:textSize="@dimen/login_edit_default_textsize" />
 
@@ -92,7 +92,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/join_class_submit_edit_margin_l"
+                        android:layout_marginStart="15dp"
                         android:text="@string/teacher_name"
                         android:textColor="@color/color_336600"
                         android:textSize="@dimen/complete_info_textsize" />
@@ -101,7 +101,7 @@
                         android:id="@+id/tv_teacher_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/join_class_submit_edit_margin_l"
+                        android:layout_marginStart="15dp"
                         android:ellipsize="end"
                         android:maxLines="1"
                         android:textColor="@android:color/white"
@@ -120,7 +120,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/join_class_submit_edit_margin_l"
+                        android:layout_marginStart="15dp"
                         android:text="@string/student_number"
                         android:textColor="@color/color_336600"
                         android:textSize="@dimen/complete_info_textsize" />
@@ -129,7 +129,7 @@
                         android:id="@+id/tv_student_number"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/join_class_submit_edit_margin_l"
+                        android:layout_marginStart="15dp"
                         android:ellipsize="end"
                         android:maxLines="1"
                         android:textColor="@android:color/white"
@@ -148,7 +148,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/join_class_submit_edit_margin_l"
+                        android:layout_marginStart="15dp"
                         android:text="@string/school_name"
                         android:textColor="@color/color_336600"
                         android:textSize="@dimen/complete_info_textsize" />
@@ -157,7 +157,7 @@
                         android:id="@+id/tv_school_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/join_class_submit_edit_margin_l"
+                        android:layout_marginStart="15dp"
                         android:ellipsize="end"
                         android:maxLines="1"
                         android:textColor="@android:color/white"
@@ -176,7 +176,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/join_class_submit_edit_margin_l"
+                        android:layout_marginStart="15dp"
                         android:text="@string/input_user_name"
                         android:textColor="@color/color_336600"
                         android:textSize="@dimen/complete_info_textsize" />
@@ -185,11 +185,12 @@
                         android:id="@+id/et_name"
                         android:layout_width="@dimen/login_default_width"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/join_class_submit_edit_margin_l"
+                        android:layout_marginStart="15dp"
                         android:layout_weight="1"
                         android:background="@null"
                         android:ellipsize="end"
                         app:hint="@string/input_user_true_name"
+                        app:hintTestSize="15dp"
                         android:inputType="text"
                         android:maxLines="1"
                         android:maxLength="16"
@@ -202,8 +203,8 @@
                         android:id="@+id/iv_clear"
                         android:layout_width="@dimen/login_edit_icon_w_h"
                         android:layout_height="@dimen/login_edit_icon_w_h"
-                        android:layout_marginLeft="@dimen/login_edit_icon_w_h"
-                        android:layout_marginRight="@dimen/login_edit_icon_w_h"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
                         android:background="@drawable/selector_input_white_delete"
                         android:contentDescription="@null" />
 

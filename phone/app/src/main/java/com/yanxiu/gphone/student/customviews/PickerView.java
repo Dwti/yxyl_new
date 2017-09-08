@@ -156,6 +156,8 @@ public class PickerView extends View {
         for (int i = 0; i < mDataList.size(); i++)
             if (mDataList.get(i).equals(mSelectItem)) {
                 setSelected(i);
+                if (mSelectListener != null)
+                    mSelectListener.onSelect(PickerView.this,mDataList.get(i),i);
                 break;
             }
     }

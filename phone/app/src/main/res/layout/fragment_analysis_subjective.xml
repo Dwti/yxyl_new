@@ -53,12 +53,19 @@
                     android:textSize="19dp"
                     android:visibility="gone" />
             </FrameLayout>
+            <LinearLayout
+                android:id="@+id/shadow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <include layout="@layout/shadow_view" />
+            </LinearLayout>
+
             <View
                 android:id="@+id/bottompadding_layout"
                 android:layout_height="@dimen/analysis_line_h"
                 android:layout_width="match_parent"
-                android:background="@android:color/transparent"
-                android:layout_below="@+id/shadow"/>
+                android:background="@android:color/transparent"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

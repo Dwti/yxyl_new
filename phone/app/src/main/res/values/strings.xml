@@ -326,4 +326,7 @@
 
     <string name="updata_headimg_success">上传成功</string>
     <string name="updata_headimg_fails">上传失败</string>
+
+    <string name="mistake_no_data">这回真没了</string>
+
 </resources>

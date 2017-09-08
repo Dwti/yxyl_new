@@ -28,6 +28,7 @@
 
     <declare-styleable name="SinglineEditText">
         <attr name="hint" format="string"/>
+        <attr name="hintTestSize" format="dimension"/>
     </declare-styleable>
 
     <declare-styleable name="UserInfoHeadImageView">
