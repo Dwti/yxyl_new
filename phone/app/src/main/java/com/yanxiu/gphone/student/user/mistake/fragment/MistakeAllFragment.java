@@ -10,6 +10,7 @@ import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.base.EXueELianBaseResponse;
 import com.yanxiu.gphone.student.homework.response.PaperResponse;
+import com.yanxiu.gphone.student.questions.bean.PaperTestBean;
 import com.yanxiu.gphone.student.user.mistake.activity.MistakeClassifyActivity;
 import com.yanxiu.gphone.student.user.mistake.adapter.MistakeAllAdapter;
 import com.yanxiu.gphone.student.user.mistake.request.MistakeAllRequest;
@@ -111,11 +112,12 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
                             mMistakeAllAdapter.addData(response.getData().get(0));
                         }
                         if (mWrongNum == mMistakeAllAdapter.getItemCount()) {
-                            ToastManager.showMsg(R.string.mistake_no_data);
+                            mMistakeAllAdapter.loadMoreNo();
                             mRefreshView.setLoadMoreEnable(false);
                         } else if (mWrongNum != mMistakeAllAdapter.getItemCount()) {
                             mRefreshView.setLoadMoreEnable(true);
                         }
+
                     }else {
                         if (currentId.equals("0")) {
                             rootView.showOtherErrorView();

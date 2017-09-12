@@ -168,7 +168,6 @@ public class UserInfoActivity extends YanxiuBaseActivity implements View.OnClick
     }
 
     private void showDialog() {
-        mEditorHeadImgDialog = null;
         if (mEditorHeadImgDialog == null) {
             mEditorHeadImgDialog = new EditorHeadImgDialog(mContext);
             mEditorHeadImgDialog.setClickListener(new EditorHeadImgDialog.OnViewClickListener() {

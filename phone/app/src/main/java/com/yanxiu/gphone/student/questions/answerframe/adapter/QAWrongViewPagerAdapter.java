@@ -3,6 +3,7 @@ package com.yanxiu.gphone.student.questions.answerframe.adapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.text.TextUtils;
 import android.view.ViewGroup;
 
 import com.yanxiu.gphone.student.user.mistake.response.MistakeDeleteMessage;
@@ -58,9 +59,13 @@ public class QAWrongViewPagerAdapter extends FragmentStatePagerAdapter {
     public String getQidByPosition(int position) {
         if (position > -1 && position < mDatas.size()) {
             BaseQuestion baseQuestion = mDatas.get(position);
-            return baseQuestion.getQid();
+            if (!TextUtils.isEmpty(baseQuestion.getTypeId_complexToSimple())){
+                return  baseQuestion.getQid_ComplexToSimple();
+            }else {
+                return baseQuestion.getQid();
+            }
         }
-        return null;
+        return "";
     }
 
     public String getLastItemWqid() {
@@ -73,7 +78,11 @@ public class QAWrongViewPagerAdapter extends FragmentStatePagerAdapter {
             BaseQuestion baseQuestion = mDatas.get(position);
             MistakeDeleteMessage deleteMessage = new MistakeDeleteMessage();
             deleteMessage.position = position;
-            deleteMessage.questionId = baseQuestion.getQid();
+            if (!TextUtils.isEmpty(baseQuestion.getTypeId_complexToSimple())){
+                deleteMessage.questionId = baseQuestion.getQid_ComplexToSimple();
+            }else {
+                deleteMessage.questionId = baseQuestion.getQid();
+            }
             deleteMessage.wrongNum=wrongNum;
             deleteMessage.subjectId=mSubjectId;
             EventBus.getDefault().post(deleteMessage);

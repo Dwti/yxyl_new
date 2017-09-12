@@ -28,8 +28,10 @@ import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.wrongbase.WrongExercisbaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.questions.answerframe.view.QAViewPager;
+import com.yanxiu.gphone.student.user.mistake.response.MistakeDeleteMessage;
 import com.yanxiu.gphone.student.util.DESBodyDealer;
 import com.yanxiu.gphone.student.util.DataFetcher;
+import com.yanxiu.gphone.student.util.Logger;
 import com.yanxiu.gphone.student.util.ToastManager;
 
 import de.greenrobot.event.EventBus;
@@ -64,7 +66,6 @@ public class WrongQuestionActivity extends YanxiuBaseActivity implements View.On
     private int mWrongNum;
 
     private boolean isOnLoadMore = false;
-
     private MistakeDeleteQuestionRequest mDeleteQuestionRequest;
     private MistakeAllRequest mCompleteRequest;
 
@@ -85,6 +86,7 @@ public class WrongQuestionActivity extends YanxiuBaseActivity implements View.On
         rootView = new PublicLoadLayout(mContext);
         rootView.setContentView(R.layout.activity_wrongquestion);
         setContentView(rootView);
+        EventBus.getDefault().register(mContext);
         initView();
         listener();
         initData();
@@ -106,6 +108,7 @@ public class WrongQuestionActivity extends YanxiuBaseActivity implements View.On
     protected void onDestroy() {
         super.onDestroy();
         setRequestCancle();
+        EventBus.getDefault().unregister(mContext);
         unregisterReceiver(mHomeKeyEventBroadCastReceiver);
     }
 
@@ -165,11 +168,31 @@ public class WrongQuestionActivity extends YanxiuBaseActivity implements View.On
                 this.finish();
                 break;
             case R.id.tv_delete:
-                setDeleteQuestion();
+                if (!isOnLoadMore) {
+                    setDeleteQuestion();
+                }
 //                int index = mQaView.getCurrentItem();
 //                mWrongNum -= 1;
 //                mQaAdapter.deleteItem(index, mWrongNum);
                 break;
+        }
+    }
+
+    public void onEventMainThread(MistakeDeleteMessage message) {
+        if (message == null) {
+            return;
+        }
+        int totalNum = mQaAdapter.getCount();
+        if (totalNum < mWrongNum) {
+            Logger.d("onPageSelected", "totalNum   " + totalNum + "");
+            Logger.d("onPageSelected", "mWrongNum   " + mWrongNum + "");
+            if (mQaView.getCurrentItem() + 1 > totalNum - 3 && !isOnLoadMore) {
+                Logger.d("onPageSelected", "getCurrentItem   " + mQaView.getCurrentItem() + "");
+                String wqid = mQaAdapter.getLastItemWqid();
+                Logger.d("onPageSelected", "getLastItemWqid   " + wqid + "");
+                requestData(wqid);
+            }
+            Logger.d("onPageSelected", "");
         }
     }
 
@@ -201,17 +224,21 @@ public class WrongQuestionActivity extends YanxiuBaseActivity implements View.On
         rootView.showLoadingView();
         final int index = mQaView.getCurrentItem();
         String qid = mQaAdapter.getQidByPosition(index);
+        if (TextUtils.isEmpty(qid)) {
+            rootView.hiddenLoadingView();
+            return;
+        }
         mDeleteQuestionRequest = new MistakeDeleteQuestionRequest();
         mDeleteQuestionRequest.questionId = qid;
         mDeleteQuestionRequest.startRequest(EXueELianBaseResponse.class, new EXueELianBaseCallback<EXueELianBaseResponse>() {
             @Override
             protected void onResponse(RequestBase request, EXueELianBaseResponse response) {
-                rootView.hiddenLoadingView();
                 mWrongNum -= 1;
                 mQaAdapter.deleteItem(index, mWrongNum);
-                if (mWrongNum==0){
+                if (mWrongNum == 0) {
                     WrongQuestionActivity.this.finish();
                 }
+                rootView.hiddenLoadingView();
             }
 
             @Override
@@ -223,7 +250,7 @@ public class WrongQuestionActivity extends YanxiuBaseActivity implements View.On
     }
 
     public void hiddenSwitchQuestionView() {
-        if (mWrongNum!=1) {
+        if (mWrongNum != 1) {
             int index = mQaView.getCurrentItem();
             WrongExercisbaseFragment currentFramgent = (WrongExercisbaseFragment) mQaAdapter.instantiateItem(mQaView, index);
             if (index == 0) {
@@ -241,7 +268,7 @@ public class WrongQuestionActivity extends YanxiuBaseActivity implements View.On
             }
             mLastQuestionView.setVisibility(View.VISIBLE);
             mNextQuestionView.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             mLastQuestionView.setVisibility(View.GONE);
             mNextQuestionView.setVisibility(View.GONE);
         }
@@ -256,10 +283,15 @@ public class WrongQuestionActivity extends YanxiuBaseActivity implements View.On
     public void onPageSelected(int position) {
         int totalNum = mQaAdapter.getCount();
         if (totalNum < mWrongNum) {
+            Logger.d("onPageSelected", "totalNum   " + totalNum + "");
+            Logger.d("onPageSelected", "mWrongNum   " + mWrongNum + "");
             if (mQaView.getCurrentItem() + 1 > totalNum - 3 && !isOnLoadMore) {
+                Logger.d("onPageSelected", "getCurrentItem   " + mQaView.getCurrentItem() + "");
                 String wqid = mQaAdapter.getLastItemWqid();
+                Logger.d("onPageSelected", "getLastItemWqid   " + wqid + "");
                 requestData(wqid);
             }
+            Logger.d("onPageSelected", "");
         }
     }
 
@@ -276,13 +308,13 @@ public class WrongQuestionActivity extends YanxiuBaseActivity implements View.On
         mCompleteRequest.startRequest(PaperResponse.class, new EXueELianBaseCallback<PaperResponse>() {
             @Override
             protected void onResponse(RequestBase request, PaperResponse response) {
-                isOnLoadMore = false;
                 if (response.getStatus().getCode() == 0) {
                     Paper paper = new Paper(response.getData().get(0), QuestionShowType.MISTAKE_ANALYSIS);
                     mQaAdapter.addData(paper.getQuestions(), mWrongNum);
                 } else {
                     ToastManager.showMsg(response.getStatus().getDesc());
                 }
+                isOnLoadMore = false;
             }
 
             @Override

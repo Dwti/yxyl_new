@@ -14,6 +14,7 @@ import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionUtil;
 import com.yanxiu.gphone.student.questions.bean.PaperBean;
 import com.yanxiu.gphone.student.questions.bean.PaperTestBean;
+import com.yanxiu.gphone.student.questions.bean.QuestionBean;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
 
 import java.util.ArrayList;
@@ -26,7 +27,10 @@ import de.greenrobot.event.EventBus;
  * Time : 2017/7/17 10:22.
  * Function :
  */
-public class MistakeAllAdapter extends RecyclerView.Adapter<MistakeAllAdapter.MistakeCompleteViewHolder> {
+public class MistakeAllAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+    private static final int DEFAULT=0x000;
+    private static final int BOTTOM=0x001;
 
     public interface onItemClickListener {
         void onItemClick(View view, PaperBean paperBean, int position);
@@ -34,7 +38,7 @@ public class MistakeAllAdapter extends RecyclerView.Adapter<MistakeAllAdapter.Mi
 
     private LayoutInflater mInflater;
     private PaperBean mPaperBean;
-    private List<PaperTestBean> mData = new ArrayList<>();
+    private ArrayList<PaperTestBean> mData = new ArrayList<>();
     private onItemClickListener mItemClickListener;
 
     public MistakeAllAdapter(Context context) {
@@ -59,24 +63,37 @@ public class MistakeAllAdapter extends RecyclerView.Adapter<MistakeAllAdapter.Mi
         this.notifyDataSetChanged();
     }
 
+    public void loadMoreNo(){
+        mData.add(new PaperTestBean());
+        this.notifyDataSetChanged();
+    }
+
     public void clear(){
         mData.clear();
         this.notifyDataSetChanged();
     }
 
     public String getLastItemWqid() {
-        if (mData.size() > 0) {
-            return String.valueOf(mData.get(mData.size() - 1).getWqid());
+        try {
+            if (mData.size() > 0) {
+                return String.valueOf(mData.get(mData.size() - 1).getWqid());
+            }
+        }catch (Exception e){
+            e.toString();
         }
         return "0";
     }
 
     public void deleteItem(int position, String id) {
-        if (position < mData.size()) {
-            if (mData.get(position).getQid().equals(id)) {
-                this.mData.remove(position);
-                this.notifyDataSetChanged();
+        try {
+            if (position < mData.size()) {
+                if (mData.get(position).getQid().equals(id)) {
+                    this.mData.remove(position);
+                    this.notifyDataSetChanged();
+                }
             }
+        }catch (Exception e){
+            e.toString();
         }
     }
 
@@ -85,17 +102,34 @@ public class MistakeAllAdapter extends RecyclerView.Adapter<MistakeAllAdapter.Mi
     }
 
     @Override
-    public MistakeCompleteViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.adapter_mistakeall, parent, false);
-        return new MistakeCompleteViewHolder(view);
+    public int getItemViewType(int position) {
+        QuestionBean bean=mData.get(position).getQuestions();
+        if (bean==null){
+            return BOTTOM;
+        }
+        return DEFAULT;
     }
 
     @Override
-    public void onBindViewHolder(MistakeCompleteViewHolder holder, int position) {
-        PaperTestBean paperTestBean = mData.get(position);
-        Spanned string = Html.fromHtml(paperTestBean.getQuestions().getStem(), new HtmlImageGetter(holder.mContentView), null);
-        holder.mContentView.setText(string);
-        holder.mSubjectNameView.setText(QuestionUtil.getQuestionTypeNameByParentTypeId(Integer.parseInt(paperTestBean.getTypeid())));
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (viewType==DEFAULT) {
+            View view = mInflater.inflate(R.layout.adapter_mistakeall, parent, false);
+            return new MistakeCompleteViewHolder(view);
+        }else {
+            View view=mInflater.inflate(R.layout.footer_tips,parent,false);
+            return new BottomViewHolder(view);
+        }
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof MistakeCompleteViewHolder) {
+            MistakeCompleteViewHolder mistakeCompleteViewHolder= (MistakeCompleteViewHolder) holder;
+            PaperTestBean paperTestBean = mData.get(position);
+            Spanned string = Html.fromHtml(paperTestBean.getQuestions().getStem(), new HtmlImageGetter(mistakeCompleteViewHolder.mContentView), null);
+            mistakeCompleteViewHolder.mContentView.setText(string);
+            mistakeCompleteViewHolder.mSubjectNameView.setText(QuestionUtil.getQuestionTypeNameByParentTypeId(Integer.parseInt(paperTestBean.getTypeid())));
+        }
     }
 
     @Override
@@ -103,7 +137,7 @@ public class MistakeAllAdapter extends RecyclerView.Adapter<MistakeAllAdapter.Mi
         return mData != null ? mData.size() : 0;
     }
 
-    class MistakeCompleteViewHolder extends RecyclerView.ViewHolder {
+    private class MistakeCompleteViewHolder extends RecyclerView.ViewHolder {
 
         TextView mSubjectNameView;
         ImageView mDeleteView;
@@ -118,7 +152,12 @@ public class MistakeAllAdapter extends RecyclerView.Adapter<MistakeAllAdapter.Mi
                 @Override
                 public void onClick(View v) {
                     if (mItemClickListener != null && mPaperBean != null) {
-                        mPaperBean.setPaperTest(mData);
+                        ArrayList<PaperTestBean> paperTestBeanList= (ArrayList<PaperTestBean>) mData.clone();
+                        PaperTestBean testBean=paperTestBeanList.get(paperTestBeanList.size()-1);
+                        if (testBean.getQuestions()==null){
+                            paperTestBeanList.remove(testBean);
+                        }
+                        mPaperBean.setPaperTest(paperTestBeanList);
                         mItemClickListener.onItemClick(itemView, mPaperBean, getLayoutPosition());
                     }
                 }
@@ -132,6 +171,13 @@ public class MistakeAllAdapter extends RecyclerView.Adapter<MistakeAllAdapter.Mi
                     EventBus.getDefault().post(itemDelete);
                 }
             });
+        }
+    }
+
+    private class BottomViewHolder extends RecyclerView.ViewHolder{
+
+        BottomViewHolder(View itemView) {
+            super(itemView);
         }
     }
 
