@@ -39,6 +39,11 @@ public class HomeworkDetailPresenter implements HomeworkDetailContract.Presenter
     }
 
     @Override
+    public void resetRefreshState() {
+        mShouldRefreshData = false;
+    }
+
+    @Override
     public void loadHomework() {
         mHomeworkRepository.getHomeworkDetails(mHomeworkId, new HomeworkDetailDataSource.LoadHomeworkDetailCallback() {
             @Override

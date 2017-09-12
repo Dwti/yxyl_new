@@ -128,6 +128,13 @@ public class HomeworkDetailActivity extends YanxiuBaseActivity implements Homewo
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        mPresenter.resetRefreshState();
+        mPresenter.loadHomework();
+    }
+
+    @Override
     public void setLoadingIndicator(boolean active) {
         if(!active){
             mLoadingView.hiddenLoadingView();
