@@ -10,11 +10,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -30,7 +27,6 @@ import com.yanxiu.gphone.student.customviews.PickerViewEx;
 import com.yanxiu.gphone.student.exercise.adapter.BaseExpandableRecyclerAdapter;
 import com.yanxiu.gphone.student.exercise.adapter.ChapterAdapter;
 import com.yanxiu.gphone.student.exercise.adapter.KnowledgePointAdapter;
-import com.yanxiu.gphone.student.exercise.adapter.PopListAdapter;
 import com.yanxiu.gphone.student.exercise.bean.ChapterBean;
 import com.yanxiu.gphone.student.exercise.bean.EditionBeanEx;
 import com.yanxiu.gphone.student.exercise.bean.EditionChildBean;
@@ -40,10 +36,14 @@ import com.yanxiu.gphone.student.exercise.request.ChapterListRequest;
 import com.yanxiu.gphone.student.exercise.request.GenQuesByChapterRequest;
 import com.yanxiu.gphone.student.exercise.request.GenQuesByKnpointRequest;
 import com.yanxiu.gphone.student.exercise.request.GenQuesRequest;
+import com.yanxiu.gphone.student.exercise.request.GetVolumesRequest;
 import com.yanxiu.gphone.student.exercise.request.KnowledgePointRequest;
+import com.yanxiu.gphone.student.exercise.request.SaveVolumeRequest;
 import com.yanxiu.gphone.student.exercise.response.ChapterListResponse;
 import com.yanxiu.gphone.student.exercise.response.EditionResponse;
+import com.yanxiu.gphone.student.exercise.response.GetVolumeResponse;
 import com.yanxiu.gphone.student.exercise.response.KnowledgePointResponse;
+import com.yanxiu.gphone.student.exercise.response.SaveVolumeResponse;
 import com.yanxiu.gphone.student.homework.response.PaperResponse;
 import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerQuestionActivity;
@@ -51,7 +51,6 @@ import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.userevent.UserEventManager;
 import com.yanxiu.gphone.student.util.DESBodyDealer;
 import com.yanxiu.gphone.student.util.DataFetcher;
-import com.yanxiu.gphone.student.util.ScreenUtils;
 import com.yanxiu.gphone.student.util.ToastManager;
 import com.yanxiu.gphone.student.util.anim.AlphaAnimationUtil;
 
@@ -77,6 +76,7 @@ public class SelectChapterAndKnowledgeActivity extends YanxiuBaseActivity {
     private List<EditionChildBean> mEditionChildBeanList;
     private int mLastSelectedPos = 0;
     private int mCurrSelectedPos = 0;
+    private int mDefaultVolumeIndex = 0;
     private boolean mIsChapterMode = true;  //当前选中的是否是章节
     private boolean mNoEditions = true; //第一次进来是否请求Editions数据失败
 
@@ -120,7 +120,8 @@ public class SelectChapterAndKnowledgeActivity extends YanxiuBaseActivity {
                     mLayoutStage.setVisibility(View.VISIBLE);
                     mRecyclerView.setAdapter(mChapterAdapter);
                     if(mChapterAdapter.getItemCount() == 0){
-                        getEditionList(mSubjectId);
+//                        getEditionList(mSubjectId);
+                        getVolumeList();
                     }
                 }else {
                     mIsChapterMode = false;
@@ -151,7 +152,8 @@ public class SelectChapterAndKnowledgeActivity extends YanxiuBaseActivity {
                 }
                 showContentView();
                 if(mNoEditions){
-                    getEditionList(mSubjectId);
+//                    getEditionList(mSubjectId);
+                    getVolumeList();
                 }else {
                     loadData();
                 }
@@ -236,7 +238,8 @@ public class SelectChapterAndKnowledgeActivity extends YanxiuBaseActivity {
 
         setSwitchBarVisibility(mSubjectId);
 
-        getEditionList(mSubjectId);
+//        getEditionList(mSubjectId);
+        getVolumeList();
     }
 
     private void loadData(){
@@ -260,9 +263,9 @@ public class SelectChapterAndKnowledgeActivity extends YanxiuBaseActivity {
             View tvOk = view.findViewById(R.id.tv_ok);
             View tvCancel = view.findViewById(R.id.tv_cancel);
             picker.setData(getEditionStrs(mEditionChildBeanList));
-            picker.setSelected(0);
-            mLastSelectedPos = 0;
-            mCurrSelectedPos = 0;
+            picker.setSelected(mDefaultVolumeIndex);
+            mLastSelectedPos = mDefaultVolumeIndex;
+            mCurrSelectedPos = mDefaultVolumeIndex;
 
             pop_bg.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -286,6 +289,7 @@ public class SelectChapterAndKnowledgeActivity extends YanxiuBaseActivity {
                         mVolumeId = mEditionChildBeanList.get(mCurrSelectedPos).getId();
                         mStage.setText(mEditionChildBeanList.get(mCurrSelectedPos).getName());
                         dismissPop();
+                        saveVolume(mVolumeId);
                         getChapterList(mSubjectId,mEditionId, mVolumeId);
                     }else {
                         dismissPop();
@@ -401,6 +405,19 @@ public class SelectChapterAndKnowledgeActivity extends YanxiuBaseActivity {
         request.startRequest(EditionResponse.class,mEditionCallback);
     }
 
+    private void getVolumeList(){
+        GetVolumesRequest request = new GetVolumesRequest();
+        request.setSubjectId(mSubjectId);
+        request.setEditionId(mEditionId);
+        request.startRequest(GetVolumeResponse.class,mGetVolumeCallback);
+    }
+    private void saveVolume(String volumeId){
+        SaveVolumeRequest request = new SaveVolumeRequest();
+        request.setSubjectId(mSubjectId);
+        request.setVolumeId(volumeId);
+        request.startRequest(SaveVolumeResponse.class, mSaveVolumeCallback);
+    }
+
     private String getVolume(List<EditionBeanEx> list,String editionId){
         String volume = "";
         for(EditionBeanEx bean : list){
@@ -414,6 +431,22 @@ public class SelectChapterAndKnowledgeActivity extends YanxiuBaseActivity {
             }
         }
         return volume;
+    }
+
+    private void initVolumeId(List<EditionChildBean> list){
+        EditionChildBean bean;
+        for(int i = 0; i < list.size(); i ++){
+            bean = list.get(i);
+            if("1".equals(bean.getSelected())){
+                mDefaultVolumeIndex = i ;
+                mVolumeId = bean.getId();
+                mStage.setText(bean.getName());
+                return;
+            }
+        }
+        mDefaultVolumeIndex = 0;
+        mVolumeId = list.get(0).getId();
+        mStage.setText(list.get(0).getName());
     }
 
     @Override
@@ -507,6 +540,38 @@ public class SelectChapterAndKnowledgeActivity extends YanxiuBaseActivity {
             }else {
                 ToastManager.showMsg(ret.getStatus().getDesc());
             }
+        }
+
+        @Override
+        public void onFail(RequestBase request, Error error) {
+            ToastManager.showMsg(error.getLocalizedMessage());
+        }
+    };
+
+    HttpCallback<GetVolumeResponse> mGetVolumeCallback = new HttpCallback<GetVolumeResponse>() {
+        @Override
+        public void onSuccess(RequestBase request, GetVolumeResponse ret) {
+            if(ret.getStatus().getCode() == 0){
+                mNoEditions = false;
+                mEditionChildBeanList = ret.getData();
+                initVolumeId(mEditionChildBeanList);
+                showContentView();
+                getChapterList(mSubjectId,mEditionId, mVolumeId);
+            }else {
+                showDataErrorView(true);
+            }
+        }
+
+        @Override
+        public void onFail(RequestBase request, Error error) {
+            showDataErrorView(true);
+        }
+    };
+
+    HttpCallback<SaveVolumeResponse> mSaveVolumeCallback = new HttpCallback<SaveVolumeResponse>() {
+        @Override
+        public void onSuccess(RequestBase request, SaveVolumeResponse ret) {
+            ToastManager.showMsg("volume" + ret.getStatus().getDesc());
         }
 
         @Override

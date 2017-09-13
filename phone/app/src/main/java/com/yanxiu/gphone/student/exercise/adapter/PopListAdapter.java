@@ -50,8 +50,8 @@ public class PopListAdapter extends BaseAdapter {
         TextView textView = (TextView) convertView.findViewById(R.id.text);
         ImageView icon = (ImageView) convertView.findViewById(R.id.icon);
         textView.setText(mData.get(position).getName());
-        textView.setSelected(mData.get(position).isSelected());
-        if(mData.get(position).isSelected()){
+        textView.setSelected("1".equals(mData.get(position).getSelected()));
+        if("1".equals(mData.get(position).getSelected())){
             icon.setVisibility(View.VISIBLE);
         }else {
             icon.setVisibility(View.GONE);
