@@ -33,6 +33,7 @@ import com.yanxiu.gphone.student.login.response.UserMessageBean;
 import com.yanxiu.gphone.student.util.ActivityManger;
 import com.yanxiu.gphone.student.util.EditTextManger;
 import com.yanxiu.gphone.student.util.LoginInfo;
+import com.yanxiu.gphone.student.util.SysEncryptUtil;
 import com.yanxiu.gphone.student.util.SystemUtil;
 import com.yanxiu.gphone.student.util.ToastManager;
 import com.yanxiu.gphone.student.customviews.WavesLayout;
@@ -289,8 +290,8 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
     private void LoginByAccount(final String user_name, final String pass_word) {
         rootView.showLoadingView();
         mLoginRequest = new LoginRequest();
-        mLoginRequest.mobile=user_name;
-        mLoginRequest.password=pass_word;
+        mLoginRequest.mobile= user_name;
+        mLoginRequest.password=SysEncryptUtil.getMd5_32(pass_word);
         mLoginRequest.startRequest(LoginResponse.class, new EXueELianBaseCallback<LoginResponse>() {
 
             @Override

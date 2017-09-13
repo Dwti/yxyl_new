@@ -21,6 +21,7 @@ import com.yanxiu.gphone.student.user.setting.request.ChangePassWordRequest;
 import com.yanxiu.gphone.student.user.setting.response.ChangePassWordResponse;
 import com.yanxiu.gphone.student.util.EditTextManger;
 import com.yanxiu.gphone.student.util.LoginInfo;
+import com.yanxiu.gphone.student.util.SysEncryptUtil;
 import com.yanxiu.gphone.student.util.ToastManager;
 
 /**
@@ -167,8 +168,8 @@ public class ChangePassWordActivity extends YanxiuBaseActivity implements View.O
         }else {
             mChangePassWordRequest.loginName="";
         }
-        mChangePassWordRequest.oldPass=passWord;
-        mChangePassWordRequest.newPass=passWordNew;
+        mChangePassWordRequest.oldPass= SysEncryptUtil.getMd5_32(passWord);
+        mChangePassWordRequest.newPass=SysEncryptUtil.getMd5_32(passWordNew);
         mChangePassWordRequest.startRequest(ChangePassWordResponse.class, new EXueELianBaseCallback<ChangePassWordResponse>() {
             @Override
             protected void onResponse(RequestBase request, ChangePassWordResponse response) {

@@ -17,6 +17,6 @@ public class ChangePassWordRequest extends EXueELianBaseRequest {
 
     @Override
     protected String urlPath() {
-        return "/user/modifyPassword.do";
+        return "/user/modifyPasswordNew.do";
     }
 }

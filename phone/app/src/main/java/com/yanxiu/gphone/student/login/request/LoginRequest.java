@@ -16,7 +16,7 @@ public class LoginRequest extends EXueELianBaseRequest {
 
     @Override
     protected String urlPath() {
-        return "/user/login.do";
+        return "/user/loginNew.do";
     }
 
     @Override

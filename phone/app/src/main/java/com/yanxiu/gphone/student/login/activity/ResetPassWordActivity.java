@@ -21,6 +21,7 @@ import com.yanxiu.gphone.student.login.response.ResetPassWordResponse;
 import com.yanxiu.gphone.student.login.request.ResetPassWordRequest;
 import com.yanxiu.gphone.student.util.EditTextManger;
 import com.yanxiu.gphone.student.util.LoginInfo;
+import com.yanxiu.gphone.student.util.SysEncryptUtil;
 import com.yanxiu.gphone.student.util.ToastManager;
 import com.yanxiu.gphone.student.customviews.WavesLayout;
 @SuppressWarnings("all")
@@ -162,7 +163,7 @@ public class ResetPassWordActivity extends YanxiuBaseActivity implements View.On
         rootView.showLoadingView();
         mResetPassWordRequest=new ResetPassWordRequest();
         mResetPassWordRequest.mobile= LoginInfo.getMobile();
-        mResetPassWordRequest.password=passWord;
+        mResetPassWordRequest.password= SysEncryptUtil.getMd5_32(passWord);
         mResetPassWordRequest.startRequest(ResetPassWordResponse.class, new EXueELianBaseCallback<ResetPassWordResponse>() {
 
             @Override
