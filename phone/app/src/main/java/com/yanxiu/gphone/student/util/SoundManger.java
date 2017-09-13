@@ -5,6 +5,7 @@ import android.media.AudioManager;
 import android.media.SoundPool;
 
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.db.SpManager;
 
 /**
  * Created by Canghaixiao.
@@ -28,7 +29,10 @@ public class SoundManger {
 
     public static SoundManger getInstence(){
         if (mSoundManger==null){
-            mSoundManger=new SoundManger();
+            synchronized (SoundManger.class){
+                if(mSoundManger == null)
+                    mSoundManger=new SoundManger();
+            }
         }
         return mSoundManger;
     }
@@ -38,6 +42,7 @@ public class SoundManger {
     }
 
     private void init(){
+        isCanPlay = SpManager.isSoundOn();
         mSoundPool=new SoundPool(MAX_MUSIC_NUM, AudioManager.STREAM_SYSTEM,0);
         mSoundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
             @Override

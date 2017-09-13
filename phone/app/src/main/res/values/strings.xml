@@ -244,6 +244,7 @@
     <string name="setting_change_password">修改密码</string>
     <string name="setting_check_updata">检查更新</string>
     <string name="setting_about">关于</string>
+    <string name="setting_sound">声音</string>
     <string name="setting_login_out">退出登录</string>
 
     <string name="check_mobile">手机号码验证</string>

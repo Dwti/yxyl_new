@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.SwitchCompat;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,6 +23,7 @@ import com.yanxiu.gphone.student.questions.answerframe.bean.AnswerBean;
 import com.yanxiu.gphone.student.user.setting.bean.BindMobileMessage;
 import com.yanxiu.gphone.student.util.ActivityManger;
 import com.yanxiu.gphone.student.util.LoginInfo;
+import com.yanxiu.gphone.student.util.SoundManger;
 import com.yanxiu.gphone.student.util.UpdateUtil;
 
 import org.litepal.crud.DataSupport;
@@ -41,6 +44,7 @@ public class SettingActivity extends YanxiuBaseActivity implements View.OnClickL
     private TextView mMobileCodeView;
     private LinearLayout mBindMobileLayout;
     private LinearLayout mChangePassWordLayout;
+    private SwitchCompat mSoundSwitch;
 
     public static void LaunchActivity(Context context) {
         Intent intent = new Intent(context, SettingActivity.class);
@@ -71,10 +75,26 @@ public class SettingActivity extends YanxiuBaseActivity implements View.OnClickL
         mMobileCodeView = (TextView) findViewById(R.id.tv_mobile_code);
         mBindMobileLayout= (LinearLayout) findViewById(R.id.ll_bind_mobile);
         mChangePassWordLayout= (LinearLayout) findViewById(R.id.ll_change_password);
+        mSoundSwitch = (SwitchCompat) findViewById(R.id.switch_sound);
+
+        mSoundSwitch.setChecked(SpManager.isSoundOn());
     }
 
     private void listener() {
         mBackView.setOnClickListener(SettingActivity.this);
+
+        mSoundSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    SoundManger.getInstence().setCanPlay(true);
+                    SpManager.setSoundOn(true);
+                }else {
+                    SpManager.setSoundOn(false);
+                    SoundManger.getInstence().setCanPlay(false);
+                }
+            }
+        });
     }
 
     private void initData() {

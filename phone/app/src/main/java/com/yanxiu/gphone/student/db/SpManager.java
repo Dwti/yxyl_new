@@ -35,6 +35,8 @@ public class SpManager {
      */
     private static final String FRIST_START_LUANCH_CROPIMAGE="frist_start_luanch_crop";
 
+    private static final String SOUND_ON = "sound_on"; //声音开关
+
     public static void setFristStartUp(boolean isFristStartUp) {
         SharedPreferences.Editor editor = mySharedPreferences.edit();
         editor.putBoolean(FRIST_START_UP, isFristStartUp);
@@ -68,6 +70,16 @@ public class SpManager {
      */
     public static int getAppVersionCode() {
         return mySharedPreferences.getInt(APP_VERSION_CODE, -1);
+    }
+
+    public static boolean isSoundOn(){
+        return mySharedPreferences.getBoolean(SOUND_ON,false);
+    }
+
+    public static void setSoundOn(boolean on){
+        SharedPreferences.Editor editor = mySharedPreferences.edit();
+        editor.putBoolean(SOUND_ON, on);
+        editor.commit();
     }
 
     /**
