@@ -571,12 +571,11 @@ public class SelectChapterAndKnowledgeActivity extends YanxiuBaseActivity {
     HttpCallback<SaveVolumeResponse> mSaveVolumeCallback = new HttpCallback<SaveVolumeResponse>() {
         @Override
         public void onSuccess(RequestBase request, SaveVolumeResponse ret) {
-            ToastManager.showMsg("volume" + ret.getStatus().getDesc());
+
         }
 
         @Override
         public void onFail(RequestBase request, Error error) {
-            ToastManager.showMsg(error.getLocalizedMessage());
         }
     };
 }
