@@ -16,11 +16,12 @@
             android:layout_height="match_parent"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:background="@color/color_ffffff">
+            android:background="@color/color_edf0ee">
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <RelativeLayout
                     android:id="@+id/head_layout"
@@ -108,14 +109,12 @@
                     android:id="@+id/line1"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/user_line_height"
-                    android:layout_below="@+id/head_layout"
                     android:background="@color/color_edf0ee" />
 
                 <RelativeLayout
                     android:id="@+id/user_my_mistake"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/user_item_height"
-                    android:layout_below="@id/line1"
                     android:background="@drawable/selector_user_fragment_item"
                     android:paddingLeft="@dimen/user_item_marginleft"
                     android:paddingRight="@dimen/user_item_marginright">
@@ -150,14 +149,12 @@
                     android:id="@+id/line2"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/user_smallline_height"
-                    android:layout_below="@+id/user_my_mistake"
                     android:background="@color/color_edf0ee" />
 
                 <RelativeLayout
                     android:id="@+id/user_exrcise_history"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/user_item_height"
-                    android:layout_below="@id/line2"
                     android:background="@drawable/selector_user_fragment_item"
                     android:paddingLeft="@dimen/user_item_marginleft"
                     android:paddingRight="@dimen/user_item_marginright">
@@ -192,15 +189,12 @@
                     android:id="@+id/line3"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/user_line_height"
-                    android:layout_below="@+id/user_exrcise_history"
                     android:background="@color/color_edf0ee" />
 
                 <RelativeLayout
                     android:id="@+id/user_xueduan"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/user_item_height"
-                    android:layout_alignParentStart="true"
-                    android:layout_below="@+id/line3"
                     android:background="@drawable/selector_user_fragment_item"
                     android:paddingLeft="@dimen/user_item_marginleft"
                     android:paddingRight="@dimen/user_item_marginright">
@@ -248,14 +242,12 @@
                     android:id="@+id/line4"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/user_smallline_height"
-                    android:layout_below="@+id/user_xueduan"
                     android:background="@color/color_edf0ee" />
 
                 <RelativeLayout
                     android:id="@+id/user_teaching_material_version"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/user_item_height"
-                    android:layout_below="@id/line4"
                     android:background="@drawable/selector_user_fragment_item"
                     android:paddingLeft="@dimen/user_item_marginleft"
                     android:paddingRight="@dimen/user_item_marginright">
@@ -290,14 +282,12 @@
                     android:id="@+id/line5"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/user_line_height"
-                    android:layout_below="@+id/user_teaching_material_version"
                     android:background="@color/color_edf0ee" />
 
                 <RelativeLayout
                     android:id="@+id/user_feedback"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/user_item_height"
-                    android:layout_below="@id/line5"
                     android:background="@drawable/selector_user_fragment_item"
                     android:paddingLeft="@dimen/user_item_marginleft"
                     android:paddingRight="@dimen/user_item_marginright">
@@ -332,14 +322,12 @@
                     android:id="@+id/line6"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/user_smallline_height"
-                    android:layout_below="@+id/user_feedback"
                     android:background="@color/color_edf0ee" />
 
                 <RelativeLayout
                     android:id="@+id/user_seeting"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/user_item_height"
-                    android:layout_below="@id/line6"
                     android:background="@drawable/selector_user_fragment_item"
                     android:paddingLeft="@dimen/user_item_marginleft"
                     android:paddingRight="@dimen/user_item_marginright">
@@ -373,11 +361,11 @@
                 <View
                     android:id="@+id/shadow"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/question_bottom_shadow"
+                    android:layout_height="200dp"
                     android:layout_below="@+id/user_seeting"
-                    android:alpha="0.2"
-                    android:background="@color/color_002c0f" />
-            </RelativeLayout>
+                    android:background="@color/color_edf0ee"
+                    android:visibility="gone"/>
+            </LinearLayout>
         </ScrollView>
 
     </com.srt.refresh.BaseRefreshLayout2>
