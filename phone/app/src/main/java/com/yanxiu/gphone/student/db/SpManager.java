@@ -73,7 +73,7 @@ public class SpManager {
     }
 
     public static boolean isSoundOn(){
-        return mySharedPreferences.getBoolean(SOUND_ON,false);
+        return mySharedPreferences.getBoolean(SOUND_ON,true);
     }
 
     public static void setSoundOn(boolean on){
