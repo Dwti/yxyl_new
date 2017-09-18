@@ -301,10 +301,10 @@ public class PickerView extends View {
         nPaint.setTextSize(mMinTextSize);
         Paint.FontMetrics metrics = nPaint.getFontMetrics();
         float text_height = metrics.descent - metrics.ascent;
-        int left=getPaddingLeft();
-        int right=getPaddingRight();
-        canvas.drawLine(left, mViewHeight / 2 + text_height, mViewWidth-left-right, mViewHeight / 2 + text_height, nPaint);
-        canvas.drawLine(left, mViewHeight / 2 - text_height, mViewWidth-left-right, mViewHeight / 2 - text_height, nPaint);
+        int marginLeft=getPaddingLeft();
+        int marginRight=getPaddingRight();
+        canvas.drawLine(marginLeft, mViewHeight / 2 + text_height, mViewWidth-marginRight, mViewHeight / 2 + text_height, nPaint);
+        canvas.drawLine(marginLeft, mViewHeight / 2 - text_height, mViewWidth-marginRight, mViewHeight / 2 - text_height, nPaint);
     }
 
     /**
