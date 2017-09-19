@@ -7,6 +7,7 @@ import com.yanxiu.gphone.student.util.LoginInfo;
 
 import org.litepal.crud.DataSupport;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -47,8 +48,11 @@ public class SaveAnswerDBHelper {
         return isAnswered;
     }
 
-    public static void deleteAllAnswer() {
-        DataSupport.deleteAll(AnswerBean.class);
+    public static void deleteAllAnswer(List<BaseQuestion> list) {
+        for(BaseQuestion question : list){
+            DataSupport.deleteAll(AnswerBean.class, "aid = ?", makeId(question));
+        }
+
     }
 
     public static String makeId(BaseQuestion question) {
