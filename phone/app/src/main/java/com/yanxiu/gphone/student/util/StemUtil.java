@@ -45,7 +45,7 @@ public class StemUtil {
                 String replace;
                 float answerWidth = StringUtil.computeStringWidth(filledAnswers.get(i), textPaint);
                 if (answerWidth + placeHolderWidth < defaultWidth) {
-                    int holderCount = Math.round((defaultWidth - answerWidth) / placeHolderWidth);
+                    int holderCount = (int) Math.floor((defaultWidth - answerWidth) / placeHolderWidth);
                     PlaceHolderGravity holderGravity = isFrontChar ? PlaceHolderGravity.LEFT : PlaceHolderGravity.CENTER;
                     replace = generateSpaces(filledAnswers.get(i), holderCount, holderGravity);
                 } else {
@@ -122,11 +122,12 @@ public class StemUtil {
                 source += space;
             }
         } else {
-            if (count % 2 != 0) {
-                count += 1;
-            }
-            for (int i = 0; i < count; i += 2) {
-                source = space + source + space;
+            for (int i = 0; i < count; i ++) {
+                if(i % 2 == 0){
+                    source+=space;
+                }else {
+                    source = space + source;
+                }
             }
         }
 
