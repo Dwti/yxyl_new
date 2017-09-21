@@ -68,48 +68,33 @@ public class UpdateUtil {
             @Override
             public void onSuccess(RequestBase request, InitializeReponse ret) {
                 if (ret.data != null && ret.data.size() > 0) {
-                    boolean isUpgrade = checkIsShouldUpdate(Constants.versionName, ret.data.get(0).version);
-                    if (isUpgrade) {
-                        if (!TextUtils.isEmpty(ret.data.get(0).fileURL)) {
-                            String[] str = ret.data.get(0).fileURL.split("\\.");
-                            if (str.length>1&&"apk".equals(str[str.length-1])) {
-                                showUpdateDialog(context, ret.data.get(0), new OnUpgradeCallBack() {
-                                    @Override
-                                    public void onExit() {
-                                        ActivityManger.destoryAll();
-                                        android.os.Process.killProcess(android.os.Process.myPid());
-                                        System.exit(-1);
-                                    }
+                    if (!TextUtils.isEmpty(ret.data.get(0).fileURL)) {
+                        String[] str = ret.data.get(0).fileURL.split("\\.");
+                        if (str.length > 1 && "apk".equals(str[str.length - 1])) {
+                            showUpdateDialog(context, ret.data.get(0), new OnUpgradeCallBack() {
+                                @Override
+                                public void onExit() {
+                                    ActivityManger.destoryAll();
+                                    android.os.Process.killProcess(android.os.Process.myPid());
+                                    System.exit(-1);
+                                }
 
-                                    @Override
-                                    public void onDownloadApk(boolean isSuccess) {
-//                                        if (!isSuccess){
-//                                            mHandler.post(new Runnable() {
-//                                                @Override
-//                                                public void run() {
-//                                                    ToastManager.showMsg(R.string.update_asynctask_downloading_fail);
-//                                                }
-//                                            });
-//                                        }
-                                    }
+                                @Override
+                                public void onDownloadApk(boolean isSuccess) {
+                                }
 
-                                    @Override
-                                    public void onInstallApk(boolean isSuccess) {
+                                @Override
+                                public void onInstallApk(boolean isSuccess) {
 
-                                    }
-                                });
-                            }else {
-                                ToastManager.showMsgOnDebug("这是版本更新接口提示,测试同学,你们辛苦了,请按照正常的作业流程走,不要乱跑,谢谢合作,此条消息只在debug环境下出现");
-                            }
-                        }else {
+                                }
+                            });
+                        } else {
                             ToastManager.showMsgOnDebug("这是版本更新接口提示,测试同学,你们辛苦了,请按照正常的作业流程走,不要乱跑,谢谢合作,此条消息只在debug环境下出现");
                         }
                     } else {
-                        if (isFromUser) {
-                            ToastManager.showMsg(R.string.update_new);
-                        }
+                        ToastManager.showMsgOnDebug("这是版本更新接口提示,测试同学,你们辛苦了,请按照正常的作业流程走,不要乱跑,谢谢合作,此条消息只在debug环境下出现");
                     }
-                }else {
+                } else {
                     if (isFromUser) {
                         ToastManager.showMsg(R.string.update_new);
                     }
