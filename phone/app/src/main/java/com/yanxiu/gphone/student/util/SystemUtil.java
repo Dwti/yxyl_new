@@ -31,6 +31,18 @@ public class SystemUtil {
         return version;
     }
 
+    public static String getVersionName() {
+        String version = "";
+        try {
+            PackageManager manager = YanxiuApplication.getInstance().getPackageManager();
+            PackageInfo info = manager.getPackageInfo(YanxiuApplication.getInstance().getPackageName(), 0);
+            version = info.versionName;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return version;
+    }
+
     public static boolean checkBrowser(Context context, String packageName) {
         boolean isInstalled = false;
         try {

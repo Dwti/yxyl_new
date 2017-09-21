@@ -68,7 +68,7 @@ public class UpdateUtil {
             @Override
             public void onSuccess(RequestBase request, InitializeReponse ret) {
                 if (ret.data != null && ret.data.size() > 0) {
-                    boolean isUpgrade = checkIsShouldUpdate(Constants.version, ret.data.get(0).version);
+                    boolean isUpgrade = checkIsShouldUpdate(Constants.versionName, ret.data.get(0).version);
                     if (isUpgrade) {
                         if (!TextUtils.isEmpty(ret.data.get(0).fileURL)) {
                             String[] str = ret.data.get(0).fileURL.split("\\.");
