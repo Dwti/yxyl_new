@@ -2,10 +2,13 @@ package com.yanxiu.gphone.student.customviews;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
+import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
@@ -63,6 +66,7 @@ class ListenDrawable extends Drawable {
     @Override
     public void draw(@NonNull Canvas canvas) {
         Rect rect=getBounds();
+        canvas.drawColor(Color.parseColor("#00000000"), PorterDuff.Mode.DST);
         canvas.drawBitmap(mBitmap,rect.left+mPadding,rect.top+mPadding,mPaint);
     }
 
@@ -92,6 +96,7 @@ class ListenDrawable extends Drawable {
     }
 
     private void zoomBitmap(float width, float height) {
+        this.mBitmap=Bitmap.createBitmap(mBitmap,8,0,mBitmap.getWidth()-8,mBitmap.getHeight());
         this.mBitmap=Bitmap.createScaledBitmap(mBitmap,(int) width,(int) height,false);
     }
 
