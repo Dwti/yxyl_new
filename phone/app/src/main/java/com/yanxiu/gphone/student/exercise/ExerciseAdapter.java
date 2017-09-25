@@ -57,7 +57,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
         if(holder instanceof ExerciseViewHolder){
             ExerciseViewHolder viewHolder = (ExerciseViewHolder)holder;
-            String correctRate = NumberFormat.getPercentInstance().format(bean.getCorrectNum() / (float)bean.getQuestionNum());
+            String correctRate = NumberFormat.getPercentInstance().format(bean.getCorrectNum() / (float)bean.getQuestionNum() + 0.005);
             viewHolder.name.setText(bean.getName());
             if(bean.getStatus() == 2){
                 String buildTime = TimeUtils.getExerciseDate(bean.getBuildTime());
