@@ -222,18 +222,17 @@ public class UpdateUtil {
     private static void installApk(Context context, String filePath) {
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_VIEW);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         SpManager.setFristStartUp(true);
         String type = "application/vnd.android.package-archive";
         File file = new File(filePath);
         Uri uri;
         //判断是否是AndroidN以及更高的版本
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             uri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".fileProvider", file);
         } else {
             uri = Uri.fromFile(file);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         }
         intent.setDataAndType(uri, type);
         context.startActivity(intent);
