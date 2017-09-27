@@ -39,6 +39,16 @@
             android:name="UMENG_APPKEY"
             android:value="5927f282f43e487b97000e80"></meta-data>
 
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.yanxiu.gphone.student.fileProvider"
+            android:grantUriPermissions="true"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
         <activity
             android:name=".homepage.WelcomeActivity"
             android:screenOrientation="portrait"
