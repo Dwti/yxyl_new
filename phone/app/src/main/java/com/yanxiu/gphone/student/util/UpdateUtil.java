@@ -8,13 +8,16 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Build;
 import android.support.annotation.Nullable;
+import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.RemoteViews;
 
 import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
+import com.yanxiu.gphone.student.BuildConfig;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.OnPermissionCallback;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
@@ -219,11 +222,20 @@ public class UpdateUtil {
     private static void installApk(Context context, String filePath) {
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_VIEW);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         SpManager.setFristStartUp(true);
         String type = "application/vnd.android.package-archive";
         File file = new File(filePath);
-        intent.setDataAndType(Uri.fromFile(file), type);
+        Uri uri;
+        //判断是否是AndroidN以及更高的版本
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            uri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".fileProvider", file);
+        } else {
+            uri = Uri.fromFile(file);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        }
+        intent.setDataAndType(uri, type);
         context.startActivity(intent);
     }
 
