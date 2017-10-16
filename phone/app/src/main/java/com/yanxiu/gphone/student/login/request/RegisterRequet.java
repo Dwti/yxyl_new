@@ -21,6 +21,7 @@ public class RegisterRequet extends EXueELianBaseRequest {
 
     @Override
     protected String urlPath() {
-        return "/user/firstStepCommitV2.do";
+//        return "/user/firstStepCommitV2.do";
+        return "/user/firstStepCommitNew.do";
     }
 }

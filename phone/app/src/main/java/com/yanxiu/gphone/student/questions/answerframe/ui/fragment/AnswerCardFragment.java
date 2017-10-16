@@ -226,6 +226,7 @@ public class AnswerCardFragment extends YanxiuBaseFragment implements View.OnCli
             public void onSuccess() {
                 //提交答案成功，直接请求答题报告
                 questReportData();
+                SaveAnswerDBHelper.deleteAllAnswer(mQuestions);
                 SoundManger.getInstence().playSubmitMusic();
             }
 
@@ -318,7 +319,6 @@ public class AnswerCardFragment extends YanxiuBaseFragment implements View.OnCli
                     if (response.getData().size() > 0) {
                         mPaper_report = new Paper(response.getData().get(0), QuestionShowType.ANALYSIS);
                         if (mPaper_report != null && mPaper_report.getQuestions() != null && mPaper_report.getQuestions().size() > 0) {
-                            SaveAnswerDBHelper.deleteAllAnswer();
                             SpManager.clearAnswerTime();
                             String key = this.hashCode() + mPaper.getId();
                             DataFetcher.getInstance().save(key, mPaper_report);

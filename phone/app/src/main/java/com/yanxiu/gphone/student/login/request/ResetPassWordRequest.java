@@ -18,6 +18,6 @@ public class ResetPassWordRequest extends EXueELianBaseRequest {
 
     @Override
     protected String urlPath() {
-        return "/user/resetPassword.do";
+        return "/user/resetPasswordNew.do";
     }
 }

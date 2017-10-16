@@ -31,11 +31,7 @@ public class UploadUserEventRequest extends RequestBase {
 
     @Override
     protected String urlServer() {
-        if (UrlBean.RELEASE.equals(UrlRepository.getInstance().getMode())) {
-            return "http://boss.shangruitong.com/logup";
-        } else {
-            return "http://boss.shangruitong.com/upfile";
-        }
+        return "http://boss.shangruitong.com/logup";
     }
 
     @Override

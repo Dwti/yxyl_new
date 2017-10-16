@@ -53,6 +53,8 @@ public interface HomeworkDetailContract {
 
         void resetRefreshState();
 
+        void setSubjectId(String subjectId);
+
         void loadHomework();
 
         void loadMoreHomework();

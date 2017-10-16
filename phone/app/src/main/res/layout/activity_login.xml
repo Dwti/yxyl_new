@@ -9,26 +9,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:id="@+id/ll_top"
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/iv_top"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <include
-                android:id="@+id/include_top"
-                layout="@layout/main_public_top_layout"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"/>
-
-            <include layout="@layout/layout_login_top_image" />
-        </LinearLayout>
+            android:src="@drawable/login_top"
+            android:layout_marginTop="30dp"/>
 
         <RelativeLayout
             android:id="@+id/rl_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/ll_top"
+            android:layout_below="@+id/iv_top"
             android:layout_marginTop="@dimen/login_margin_top_img">
 
             <LinearLayout
@@ -103,6 +95,7 @@
         </RelativeLayout>
 
         <LinearLayout
+            android:id="@+id/ll_pwd_register"
             style="@style/LoginLayoutButton"
             android:layout_height="wrap_content"
             android:layout_below="@+id/rl_login"
@@ -139,8 +132,8 @@
             android:id="@+id/ll_thrid_login"
             style="@style/LoginLayoutButton"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/rl_login"
-            android:layout_marginTop="@dimen/login_thrid_margin_top"
+            android:layout_below="@+id/ll_pwd_register"
+            android:layout_marginTop="10dp"
             android:background="@null"
             android:layout_marginBottom="@dimen/login_thrid_margin_bottom"
             android:orientation="vertical">
@@ -180,7 +173,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/login_thrid_icon_margin_top"
+                android:layout_marginTop="20dp"
                 android:orientation="horizontal">
 
                 <ImageView

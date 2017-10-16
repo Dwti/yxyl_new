@@ -7,7 +7,7 @@ package com.yanxiu.gphone.student.exercise.bean;
 public class EditionChildBean {
     private String id;
     private String name;
-    private boolean selected = false;
+    private String selected = "0";  // 0，未选中；  1：选中
 
     public String getId() {
         return id;
@@ -25,11 +25,11 @@ public class EditionChildBean {
         this.name = name;
     }
 
-    public boolean isSelected() {
+    public String getSelected() {
         return selected;
     }
 
-    public void setSelected(boolean selected) {
+    public void setSelected(String selected) {
         this.selected = selected;
     }
 }

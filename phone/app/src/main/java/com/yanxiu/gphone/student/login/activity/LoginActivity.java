@@ -33,6 +33,7 @@ import com.yanxiu.gphone.student.login.response.UserMessageBean;
 import com.yanxiu.gphone.student.util.ActivityManger;
 import com.yanxiu.gphone.student.util.EditTextManger;
 import com.yanxiu.gphone.student.util.LoginInfo;
+import com.yanxiu.gphone.student.util.SysEncryptUtil;
 import com.yanxiu.gphone.student.util.SystemUtil;
 import com.yanxiu.gphone.student.util.ToastManager;
 import com.yanxiu.gphone.student.customviews.WavesLayout;
@@ -66,7 +67,6 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
     private TextView mFastRegisteredView;
     private ImageView mThirdQQView;
     private ImageView mThirdWXView;
-    private RelativeLayout mTitleView;
     private WavesLayout mWavesView;
 
     /**
@@ -89,7 +89,6 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
     private ThridMessageBean mThridMessageBean;
     private LoginThridRequest mLoginThridRequest;
     private LinearLayout mThridLoginView;
-    private ImageView mTopImageView;
 
     public static void LaunchActivity(Context context){
         Intent intent=new Intent(context,LoginActivity.class);
@@ -124,7 +123,6 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
     };
 
     private void initView() {
-        mTopImageView= (ImageView) findViewById(R.id.iv_top);
         mUserNameView = (EditText) findViewById(R.id.ed_user_name);
         mClearView = (ImageView) findViewById(R.id.iv_clear);
         mPassWordView = (EditText) findViewById(R.id.ed_pass_word);
@@ -134,17 +132,14 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
         mFastRegisteredView = (TextView) findViewById(R.id.tv_fast_registered);
         mThirdQQView = (ImageView) findViewById(R.id.iv_third_qq);
         mThirdWXView = (ImageView) findViewById(R.id.iv_third_wx);
-        mTitleView= (RelativeLayout) findViewById(R.id.include_top);
         mWavesView= (WavesLayout) findViewById(R.id.wl_login_waves);
         mThridLoginView= (LinearLayout) findViewById(R.id.ll_thrid_login);
         checkInstallThridSystem();
     }
 
     private void initData() {
-        mTitleView.setVisibility(View.INVISIBLE);
         mClearView.setEnabled(false);
         mLoginView.setEnabled(false);
-        Glide.with(mContext).load(R.drawable.login_top).asBitmap().into(mTopImageView);
     }
 
     private void listener() {
@@ -289,8 +284,8 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
     private void LoginByAccount(final String user_name, final String pass_word) {
         rootView.showLoadingView();
         mLoginRequest = new LoginRequest();
-        mLoginRequest.mobile=user_name;
-        mLoginRequest.password=pass_word;
+        mLoginRequest.mobile= user_name;
+        mLoginRequest.password=SysEncryptUtil.getMd5_32(pass_word);
         mLoginRequest.startRequest(LoginResponse.class, new EXueELianBaseCallback<LoginResponse>() {
 
             @Override

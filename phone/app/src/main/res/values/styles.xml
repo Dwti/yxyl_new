@@ -12,6 +12,18 @@
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowNoTitle">true</item>
     </style>
+
+    <style name="SCBSwitch" parent="Theme.AppCompat.Light">
+
+        <!-- active thumb & track color (30% transparency) -->
+        <item name="colorControlActivated">#89e00d</item>
+
+        <!-- inactive thumb color -->
+        <!--<item name="colorSwitchThumbNormal">#89e00d</item>-->
+
+        <!-- inactive track color (30% transparency) -->
+        <!--<item name="android:colorForeground">#42221f1f</item>-->
+    </style>
     
     <style name="LoginLayoutButton">
         <item name="android:layout_width">match_parent</item>

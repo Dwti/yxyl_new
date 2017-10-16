@@ -22,6 +22,7 @@ import com.yanxiu.gphone.student.login.response.VerCodeResponse;
 import com.yanxiu.gphone.student.login.request.RegisterRequet;
 import com.yanxiu.gphone.student.login.request.SendVerCodeRequest;
 import com.yanxiu.gphone.student.util.LoginInfo;
+import com.yanxiu.gphone.student.util.SysEncryptUtil;
 import com.yanxiu.gphone.student.util.ToastManager;
 import com.yanxiu.gphone.student.util.time.CountDownManager;
 import com.yanxiu.gphone.student.util.EditTextManger;
@@ -207,7 +208,7 @@ public class RegisterActivity extends YanxiuBaseActivity implements View.OnClick
         mRegisterRequet = new RegisterRequet();
         mRegisterRequet.mobile = mobile;
         mRegisterRequet.code = verCode;
-        mRegisterRequet.password = passWord;
+        mRegisterRequet.password = SysEncryptUtil.getMd5_32(passWord);
         mRegisterRequet.startRequest(RegisterResponse.class, new EXueELianBaseCallback<RegisterResponse>() {
 
             @Override

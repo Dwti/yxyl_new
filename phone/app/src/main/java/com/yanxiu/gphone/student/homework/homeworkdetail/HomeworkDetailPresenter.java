@@ -19,10 +19,10 @@ public class HomeworkDetailPresenter implements HomeworkDetailContract.Presenter
     public static final int STATUS_FINISHED = 2;  //已完成
 
     private boolean mShouldRefreshData = false;  //进入答题界面之后回来需要刷新数据
-    private String mHomeworkId;
+    private String mSubjectId;
 
     public HomeworkDetailPresenter(String homeworkId, HomeworkDetailRepository mHomeworkRepository, HomeworkDetailContract.View mHomeworkDetailView) {
-        this.mHomeworkId = homeworkId;
+        this.mSubjectId = homeworkId;
         this.mHomeworkRepository = mHomeworkRepository;
         this.mHomeworkDetailView = mHomeworkDetailView;
     }
@@ -44,8 +44,13 @@ public class HomeworkDetailPresenter implements HomeworkDetailContract.Presenter
     }
 
     @Override
+    public void setSubjectId(String subjectId) {
+        this.mSubjectId = subjectId;
+    }
+
+    @Override
     public void loadHomework() {
-        mHomeworkRepository.getHomeworkDetails(mHomeworkId, new HomeworkDetailDataSource.LoadHomeworkDetailCallback() {
+        mHomeworkRepository.getHomeworkDetails(mSubjectId, new HomeworkDetailDataSource.LoadHomeworkDetailCallback() {
             @Override
             public void onHomeworkDetailLoaded(List<HomeworkDetailBean> homeworkDetails) {
                 mShouldRefreshData = false;
@@ -87,7 +92,7 @@ public class HomeworkDetailPresenter implements HomeworkDetailContract.Presenter
             mHomeworkDetailView.showNoMoreData();
             return;
         }
-        mHomeworkRepository.getMoreHomeworkDetails(mHomeworkId, new HomeworkDetailDataSource.LoadHomeworkDetailCallback() {
+        mHomeworkRepository.getMoreHomeworkDetails(mSubjectId, new HomeworkDetailDataSource.LoadHomeworkDetailCallback() {
             @Override
             public void onHomeworkDetailLoaded(List<HomeworkDetailBean> homeworkDetails) {
                 if(!mHomeworkDetailView.isActive()){

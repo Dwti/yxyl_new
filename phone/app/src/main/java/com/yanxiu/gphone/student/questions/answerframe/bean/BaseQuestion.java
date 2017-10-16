@@ -141,7 +141,7 @@ public abstract class BaseQuestion implements Serializable {
         }
         this.pad = bean.getQuestions().getPad();
         try{
-            int type_id = Integer.parseInt(bean.getTypeid());
+            int type_id = Integer.parseInt(this.type_id);
             qaName = QuestionUtil.getQuestionTypeNameByParentTypeId(type_id);
         }catch(Exception e){
             e.printStackTrace();

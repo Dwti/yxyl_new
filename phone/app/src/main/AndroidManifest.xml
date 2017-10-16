@@ -134,7 +134,7 @@
 
         <activity
             android:name=".homework.homeworkdetail.HomeworkDetailActivity"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".questions.answerframe.ui.activity.AnswerQuestionActivity"

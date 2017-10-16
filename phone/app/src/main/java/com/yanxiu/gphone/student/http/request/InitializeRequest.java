@@ -19,7 +19,7 @@ public class InitializeRequest extends RequestBase {
     public String os=Constants.OS;
     public String debugtoken="";
     public String trace_uid= LoginInfo.getUID();
-    public String appVersion=Constants.version;
+    public String appVersion=Constants.versionName;
     public String osVer=Constants.version;
     public String mode=UrlRepository.getInstance().getMode()!=null?UrlRepository.getInstance().getMode():"test";
     public String operType=Constants.OPERTYPE;

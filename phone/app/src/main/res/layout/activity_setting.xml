@@ -25,13 +25,14 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/mistake_list_item_padding_l"
             android:background="@drawable/bind_mobile"
-            android:contentDescription="@null" />
+            android:contentDescription="@null"
+            android:visibility="gone"/>
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/mistake_list_item_text_margin_icon"
+            android:layout_marginStart="15dp"
             android:layout_weight="1"
             android:text="@string/setting_bind_mobile"
             android:textColor="@color/color_333333"
@@ -75,13 +76,14 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/mistake_list_item_padding_l"
             android:background="@drawable/change_password"
-            android:contentDescription="@null" />
+            android:contentDescription="@null"
+            android:visibility="gone"/>
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/mistake_list_item_text_margin_icon"
+            android:layout_marginStart="15dp"
             android:layout_weight="1"
             android:text="@string/setting_change_password"
             android:textColor="@color/color_333333"
@@ -116,13 +118,14 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/mistake_list_item_padding_l"
             android:background="@drawable/check_updata"
-            android:contentDescription="@null" />
+            android:contentDescription="@null"
+            android:visibility="gone"/>
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/mistake_list_item_text_margin_icon"
+            android:layout_marginStart="15dp"
             android:layout_weight="1"
             android:text="@string/setting_check_updata"
             android:textColor="@color/color_333333"
@@ -157,13 +160,14 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/mistake_list_item_padding_l"
             android:background="@drawable/about"
-            android:contentDescription="@null" />
+            android:contentDescription="@null"
+            android:visibility="gone"/>
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/mistake_list_item_text_margin_icon"
+            android:layout_marginStart="15dp"
             android:layout_weight="1"
             android:text="@string/setting_about"
             android:textColor="@color/color_333333"
@@ -181,8 +185,36 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_height="11dp"
+        android:background="@color/color_edf0ee" />
+
+    <LinearLayout
+        android:id="@+id/ll_sound"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/mistake_list_item_h"
+        android:onClick="onClick"
+        android:orientation="horizontal"
+        android:background="@color/color_ffffff">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="15dp"
+            android:layout_weight="1"
+            android:text="@string/setting_sound"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/mistake_list_item_text_size"
+            android:textStyle="bold" />
+
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/switch_sound"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="@dimen/mistake_list_item_padding_r"
+            android:theme="@style/SCBSwitch"/>
+    </LinearLayout>
 
     <com.yanxiu.gphone.student.customviews.WavesLayout
         android:id="@+id/wl_login_out"

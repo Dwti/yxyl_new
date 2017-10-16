@@ -1,22 +1,17 @@
 package com.yanxiu.gphone.student.exercise;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -31,15 +26,16 @@ import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.ChapterSwitchBar;
 import com.yanxiu.gphone.student.customviews.LoadingView;
 import com.yanxiu.gphone.student.customviews.PickerViewEx;
-import com.yanxiu.gphone.student.exercise.adapter.PopListAdapter;
 import com.yanxiu.gphone.student.exercise.bean.EditionBeanEx;
 import com.yanxiu.gphone.student.exercise.bean.EditionChildBean;
 import com.yanxiu.gphone.student.exercise.bean.ExerciseBean;
 import com.yanxiu.gphone.student.exercise.request.EditionRequest;
 import com.yanxiu.gphone.student.exercise.request.ExerciseHistoryByChapterRequest;
 import com.yanxiu.gphone.student.exercise.request.ExerciseHistoryByKnowRequest;
+import com.yanxiu.gphone.student.exercise.request.GetVolumesRequest;
 import com.yanxiu.gphone.student.exercise.response.EditionResponse;
 import com.yanxiu.gphone.student.exercise.response.ExerciseHistoryResponse;
+import com.yanxiu.gphone.student.exercise.response.GetVolumeResponse;
 import com.yanxiu.gphone.student.homework.request.HomeworkReportRequest;
 import com.yanxiu.gphone.student.homework.request.PaperRequest;
 import com.yanxiu.gphone.student.homework.response.PaperResponse;
@@ -49,7 +45,6 @@ import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerReportA
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.util.DESBodyDealer;
 import com.yanxiu.gphone.student.util.DataFetcher;
-import com.yanxiu.gphone.student.util.ScreenUtils;
 import com.yanxiu.gphone.student.util.ToastManager;
 import com.yanxiu.gphone.student.util.anim.AlphaAnimationUtil;
 
@@ -73,13 +68,14 @@ public class ExerciseHistoryActivity extends YanxiuBaseActivity {
     private EXueELianRefreshLayout mRefreshLayout;
     private LoadingView mLoadingView;
     private View mRootView,mTipsView, mBack,mLayoutStage,mToolBar,mOverlay;
-    private String mSubjectId,mEditionId,mVolume;
+    private String mSubjectId,mEditionId, mVolumeId;
     private TextView mTitle, mTips,mStage;
     private ImageView mTipsImg;
     private Button mRefreshBtn;
     private List<EditionChildBean> mEditionChildBeanList;
     private ChapterSwitchBar mSwitchBar;
     private PopupWindow popupWindow;
+    private int mDefaultVolumeIndex = 0;
     private int mLastSelectedPos = 0;
     private int mCurrSelectedPos = 0;
     private int mChapterCurrentPage =1;
@@ -150,7 +146,8 @@ public class ExerciseHistoryActivity extends YanxiuBaseActivity {
 
         setSwitchBarVisibility(mSubjectId);
 
-        getEditionList(mSubjectId);
+//        getEditionList(mSubjectId);
+        getVolumeList();
     }
 
     private void initListener(){
@@ -172,7 +169,8 @@ public class ExerciseHistoryActivity extends YanxiuBaseActivity {
                     setLoadMoreEnable(canLoadMore(mIsChapterMode));
                     if(mChapterAdapter.getItemCount() == 0){
                         if(mEditionChildBeanList == null || mEditionChildBeanList.size() == 0){
-                            getEditionList(mSubjectId);
+//                            getEditionList(mSubjectId);
+                            getVolumeList();
                         }else {
                             getExercisesByChapter(1);
                         }
@@ -213,7 +211,8 @@ public class ExerciseHistoryActivity extends YanxiuBaseActivity {
             public void onClick(View v) {
                mLoadingView.showLoadingView();
                 if(mNoEditions){
-                    getEditionList(mSubjectId);
+//                    getEditionList(mSubjectId);
+                    getVolumeList();
                 }else {
                     loadData();
                 }
@@ -227,12 +226,18 @@ public class ExerciseHistoryActivity extends YanxiuBaseActivity {
         request.startRequest(EditionResponse.class,mEditionCallback);
     }
 
+    private void getVolumeList(){
+        GetVolumesRequest request = new GetVolumesRequest();
+        request.setSubjectId(mSubjectId);
+        request.setEditionId(mEditionId);
+        request.startRequest(GetVolumeResponse.class,mGetVolumeCallback);
+    }
     private void getExercisesByChapter(int nextPage){
         mChapterCurrentPage = nextPage;
         ExerciseHistoryByChapterRequest request = new ExerciseHistoryByChapterRequest();
         request.setSubjectId(mSubjectId);
         request.setBeditionId(mEditionId);
-        request.setVolume(mVolume);
+        request.setVolume(mVolumeId);
         request.setNextPage(String.valueOf(nextPage));
         request.startRequest(ExerciseHistoryResponse.class,mExerciseByChapter);
     }
@@ -341,9 +346,9 @@ public class ExerciseHistoryActivity extends YanxiuBaseActivity {
             View tvOk = view.findViewById(R.id.tv_ok);
             View tvCancel = view.findViewById(R.id.tv_cancel);
             picker.setData(getEditionStrs(mEditionChildBeanList));
-            picker.setSelected(0);
-            mLastSelectedPos = 0;
-            mCurrSelectedPos = 0;
+            picker.setSelected(mDefaultVolumeIndex);
+            mLastSelectedPos = mDefaultVolumeIndex;
+            mCurrSelectedPos = mDefaultVolumeIndex;
 
             pop_bg.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -363,7 +368,7 @@ public class ExerciseHistoryActivity extends YanxiuBaseActivity {
                 public void onClick(View v) {
                     if(mLastSelectedPos != mCurrSelectedPos){
                         mLastSelectedPos = mCurrSelectedPos;
-                        mVolume = mEditionChildBeanList.get(mCurrSelectedPos).getId();
+                        mVolumeId = mEditionChildBeanList.get(mCurrSelectedPos).getId();
                         mStage.setText(mEditionChildBeanList.get(mCurrSelectedPos).getName());
                         dismissPop();
                         getExercisesByChapter(1);
@@ -409,6 +414,22 @@ public class ExerciseHistoryActivity extends YanxiuBaseActivity {
             result.add(bean.getName());
         }
         return result;
+    }
+
+    private void initVolumeId(List<EditionChildBean> list){
+        EditionChildBean bean;
+        for(int i = 0; i < list.size(); i ++){
+            bean = list.get(i);
+            if("1".equals(bean.getSelected())){
+                mDefaultVolumeIndex = i ;
+                mVolumeId = bean.getId();
+                mStage.setText(bean.getName());
+                return;
+            }
+        }
+        mDefaultVolumeIndex = 0;
+        mVolumeId = list.get(0).getId();
+        mStage.setText(list.get(0).getName());
     }
 
     public void openAnswerQuestionUI(String key) {
@@ -508,6 +529,25 @@ public class ExerciseHistoryActivity extends YanxiuBaseActivity {
             if(!((ExerciseAdapter)mRecyclerView.getAdapter()).isLoadingMore()){
                 loadMoreData();
             }
+        }
+    };
+
+    HttpCallback<GetVolumeResponse> mGetVolumeCallback = new HttpCallback<GetVolumeResponse>() {
+        @Override
+        public void onSuccess(RequestBase request, GetVolumeResponse ret) {
+            if(ret.getStatus().getCode() == 0){
+                mNoEditions = false;
+                mEditionChildBeanList = ret.getData();
+                initVolumeId(mEditionChildBeanList);
+                getExercisesByChapter(1);
+            }else {
+                showDataErrorView(true);
+            }
+        }
+
+        @Override
+        public void onFail(RequestBase request, Error error) {
+            showDataErrorView(true);
         }
     };
 
@@ -667,7 +707,7 @@ public class ExerciseHistoryActivity extends YanxiuBaseActivity {
         protected void onResponse(RequestBase request, EditionResponse response) {
             if(response.getStatus().getCode() == 0){
                 mNoEditions = false;
-                mVolume = getVolume(response.getData(),mEditionId);
+                mVolumeId = getVolume(response.getData(),mEditionId);
                 getExercisesByChapter(1);
             }else {
                 showDataErrorView(true);

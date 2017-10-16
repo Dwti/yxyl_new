@@ -128,7 +128,7 @@ public class MistakeAllAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             PaperTestBean paperTestBean = mData.get(position);
             Spanned string = Html.fromHtml(paperTestBean.getQuestions().getStem(), new HtmlImageGetter(mistakeCompleteViewHolder.mContentView), null);
             mistakeCompleteViewHolder.mContentView.setText(string);
-            mistakeCompleteViewHolder.mSubjectNameView.setText(QuestionUtil.getQuestionTypeNameByParentTypeId(Integer.parseInt(paperTestBean.getTypeid())));
+            mistakeCompleteViewHolder.mSubjectNameView.setText(QuestionUtil.getQuestionTypeNameByParentTypeId(Integer.parseInt(paperTestBean.getQuestions().getType_id())));
         }
     }
 
