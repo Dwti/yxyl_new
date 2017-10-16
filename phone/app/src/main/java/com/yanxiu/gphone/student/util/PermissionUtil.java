@@ -76,7 +76,7 @@ public class PermissionUtil {
             String result1 = br.readLine();
             result = true;
         } catch (Exception e) {
-            // TODO 失败
+            //  失败
             e.printStackTrace();
             result = false;
         } finally {
@@ -106,7 +106,6 @@ public class PermissionUtil {
             fos.close();
             result = true;
         } catch (Exception e) {
-            // TODO
             e.printStackTrace();
             result = false;
         } finally {

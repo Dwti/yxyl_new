@@ -203,7 +203,7 @@ public abstract class ExerciseBaseFragment extends YanxiuBaseFragment implements
      */
     public void calculateExerciseTime() {
         long exerciseTime = mEndTime - mStartTime;
-        //Todo 计算时间及保存
+        // 计算时间及保存
         mTotalTime += exerciseTime;
         mBaseQuestion.setCosttime(mTotalTime);
 

@@ -10,6 +10,7 @@ import com.yanxiu.gphone.student.questions.listencomplex.ListenComplexQuestion;
 import com.yanxiu.gphone.student.questions.readingcomplex.ReadingComplexQuestion;
 import com.yanxiu.gphone.student.questions.choose.SingleChoiceQuestion;
 import com.yanxiu.gphone.student.questions.bean.PaperTestBean;
+import com.yanxiu.gphone.student.questions.spoken.SpokenQuestion;
 import com.yanxiu.gphone.student.questions.subjective.SubjectiveFragment;
 import com.yanxiu.gphone.student.questions.subjective.SubjectiveQuestion;
 import com.yanxiu.gphone.student.questions.yesno.YesNoQuestion;
@@ -106,6 +107,10 @@ public class QuestionConvertFactory {
                 case QuestionTemplate.LISTEN:
                     //复合题需要判断子题数量
                     convertQuestionComplesToSimple(questions, paperTestBean, showType, paperStatus);
+                    break;
+                case QuestionTemplate.SPOKEN:
+                    SpokenQuestion spokenQuestion=new SpokenQuestion(paperTestBean,showType,paperStatus);
+                    questions.add(spokenQuestion);
                     break;
                 default:
                     break;
@@ -228,6 +233,17 @@ public class QuestionConvertFactory {
                     subjectiveQuestion.setPtid_ComplexToSimple(ptid_complex);
                     subjectiveQuestion.setQid_ComplexToSimple(qid_complex);
                     questions.add(subjectiveQuestion);
+                    break;
+                case QuestionTemplate.SPOKEN:
+                    SpokenQuestion spokenQuestion = new SpokenQuestion(childQuestion, showType, paperStatus);
+                    spokenQuestion.setStem_complexToSimple(stem_complex);
+                    spokenQuestion.setTemplate_complexToSimple(template);
+                    spokenQuestion.setTypeId_complexToSimple(type_id);
+                    spokenQuestion.setUrl_listenComplexToSimple(url_complex_listen);
+                    spokenQuestion.setPadId_ComplexToSimple(padId_complex);
+                    spokenQuestion.setPtid_ComplexToSimple(ptid_complex);
+                    spokenQuestion.setQid_ComplexToSimple(qid_complex);
+                    questions.add(spokenQuestion);
                     break;
                 default:
                     break;

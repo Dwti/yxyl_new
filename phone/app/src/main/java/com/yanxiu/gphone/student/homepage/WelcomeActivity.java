@@ -122,10 +122,10 @@ public class WelcomeActivity extends YanxiuBaseActivity implements View.OnClickL
         } else {
             //
             if (!LoginInfo.isLogIn()) {
-                //TODO 用户信息不完整,跳转登录页
+                // 用户信息不完整,跳转登录页
                 mHander.sendEmptyMessageDelayed(GO_LOGIN, LOAD_TIME);
             } else {
-                //TODO 用户信息完整，跳转首页
+                // 用户信息完整，跳转首页
                 mHander.sendEmptyMessageDelayed(GO_MAIN, LOAD_TIME);
             }
         }
@@ -171,12 +171,12 @@ public class WelcomeActivity extends YanxiuBaseActivity implements View.OnClickL
 
             switch (msg.what) {
                 case GO_LOGIN:
-                    //TODO 登录页
+                    // 登录页
                     LoginActivity.LaunchActivity(activity);
                     activity.finish();
                     break;
                 case GO_MAIN:
-                    //TODO 进入首页
+                    // 进入首页
                     MainActivity.invoke(activity);
                     activity.finish();
                     break;
@@ -193,7 +193,7 @@ public class WelcomeActivity extends YanxiuBaseActivity implements View.OnClickL
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            //Todo 退出程序
+            // 退出程序
             finish();
             return true;
         }
@@ -213,6 +213,6 @@ public class WelcomeActivity extends YanxiuBaseActivity implements View.OnClickL
     protected void onDestroy() {
         mHander.removeCallbacksAndMessages(null);
         super.onDestroy();
-        //TODO 相应操作
+        // 相应操作
     }
 }

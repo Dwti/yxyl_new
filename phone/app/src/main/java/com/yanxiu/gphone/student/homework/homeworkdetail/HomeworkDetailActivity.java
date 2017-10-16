@@ -203,7 +203,6 @@ public class HomeworkDetailActivity extends YanxiuBaseActivity implements Homewo
 
     @Override
     public void showLoadMoreDataError(String msg) {
-        //TODO
     }
 
     private void uploadUserEvent(List<HomeworkDetailBean> list){

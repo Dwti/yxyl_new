@@ -279,7 +279,7 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
                 && event.getAction() == KeyEvent.ACTION_DOWN) {
 
             if (System.currentTimeMillis() - mBackTimestamp <= 2000) {
-                //Todo 退出程序
+                // 退出程序
                 ActivityManger.destoryAll();
             } else {
                 mBackTimestamp = System.currentTimeMillis();

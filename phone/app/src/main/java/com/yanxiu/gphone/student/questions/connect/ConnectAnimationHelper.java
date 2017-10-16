@@ -98,7 +98,7 @@ public class ConnectAnimationHelper {
 
             @Override
             public void onAnimationRepeat(Animation animation) {
-                // TODO Auto-generated method stub
+                //  Auto-generated method stub
             }
 
             // 动画的结束
