@@ -309,6 +309,14 @@
         <activity android:name=".common.activity.UserHeadCropImageActivity"
             android:screenOrientation="portrait" />
 
+        <activity android:name=".bcresource.BCActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".bcresource.TopicActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
+
         /**
         * 个推相关开始
         */
