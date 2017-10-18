@@ -100,5 +100,4 @@ android {
         // Dependencies for local unit tests
         testCompile "junit:junit:$rootProject.ext.junitVersion"
     }
-    buildToolsVersion '26.0.2'
 }

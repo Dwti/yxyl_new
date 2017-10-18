@@ -1,5 +1,7 @@
 package com.yanxiu.gphone.student.bcresource;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -8,15 +10,18 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.srt.refresh.EXueELianRefreshLayout;
+import com.test.yanxiu.network.HttpCallback;
+import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.bcresource.adapter.BCListAdapter;
 import com.yanxiu.gphone.student.bcresource.bean.BCBean;
+import com.yanxiu.gphone.student.bcresource.bean.BCWrapperBean;
+import com.yanxiu.gphone.student.bcresource.request.TopicTreeRequest;
+import com.yanxiu.gphone.student.bcresource.response.TopicTreeResponse;
 import com.yanxiu.gphone.student.customviews.LoadingView;
-import com.yanxiu.gphone.student.homework.homeworkdetail.HomeworkDetailAdapter;
-import com.yanxiu.gphone.student.homework.homeworkdetail.HomeworkDetailPresenter;
-import com.yanxiu.gphone.student.homework.homeworkdetail.HomeworkDetailRepository;
+import com.yanxiu.gphone.student.util.ToastManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +31,6 @@ import java.util.List;
  */
 
 public class BCActivity extends YanxiuBaseActivity {
-
-    private EXueELianRefreshLayout mRefreshLayout;
 
     private RecyclerView mRecyclerView;
 
@@ -45,12 +48,18 @@ public class BCActivity extends YanxiuBaseActivity {
 
     private List<BCBean> mData = new ArrayList<>();
 
+    public static void invoke(Activity activity){
+        Intent intent = new Intent(activity,BCActivity.class);
+        activity.startActivity(intent);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bc);
         initView();
         initListener();
+        initData();
     }
 
     private void initView(){
@@ -58,7 +67,6 @@ public class BCActivity extends YanxiuBaseActivity {
         mBack = findViewById(R.id.iv_back);
         mLoadingView = (LoadingView) findViewById(R.id.loading);
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        mRefreshLayout = (EXueELianRefreshLayout) findViewById(R.id.refreshLayout);
         mTipsImg = (ImageView) findViewById(R.id.iv_tips);
         mTipsView = findViewById(R.id.tips_layout);
         mTips = (TextView) findViewById(R.id.tv_tips);
@@ -68,7 +76,6 @@ public class BCActivity extends YanxiuBaseActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter);
 
-        setLoadMoreEnable(true);
     }
 
     private void initListener(){
@@ -79,57 +86,70 @@ public class BCActivity extends YanxiuBaseActivity {
             }
         });
 
-        mRefreshLayout.setRefreshListener(new EXueELianRefreshLayout.RefreshListener() {
-            @Override
-            public void onRefresh(EXueELianRefreshLayout refreshLayout) {
-                refreshBCData();
-            }
-
-            @Override
-            public void onLoadMore(EXueELianRefreshLayout refreshLayout) {
-                loadMoreBCData();
-            }
-        });
         mRefreshBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mLoadingView.showLoadingView();
-                refreshBCData();
+                initData();
             }
         });
     }
 
-    public void setLoadMoreEnable(boolean enable) {
-        mRefreshLayout.setLoadMoreEnable(enable);
+    private void initData(){
+        TopicTreeRequest request = new TopicTreeRequest();
+        request.startRequest(TopicTreeResponse.class,topicTreeCallback);
     }
 
-    private void refreshBCData(){
+    HttpCallback<TopicTreeResponse> topicTreeCallback = new EXueELianBaseCallback<TopicTreeResponse>() {
+        @Override
+        protected void onResponse(RequestBase request, TopicTreeResponse response) {
+            if(response.getStatus().getCode() == 0){
+                if(response.getData().size() > 0){
+                    showBCData(sortTopicData(response));
+                }else {
+                    showDataEmptyView();
+                }
+            }else {
+                showDataErrorView();
+            }
+        }
 
+        @Override
+        public void onFail(RequestBase request, Error error) {
+            showDataErrorView();
+        }
+    };
+
+    private List<BCBean> sortTopicData(TopicTreeResponse response){
+        List<BCBean> result = new ArrayList<>();
+        if(response == null || response.getData() == null || response.getData().size() == 0 )
+            return result;
+        for(BCWrapperBean wrapperBean: response.getData()){
+            BCBean bcBean = new BCBean();
+            bcBean.setName(wrapperBean.getName());
+            bcBean.setId(wrapperBean.getId());
+            bcBean.setResource_num(wrapperBean.getResource_num());
+            bcBean.setQuestion_num(wrapperBean.getQuestion_num());
+            bcBean.setType(BCBean.TYPE_PARENT);
+
+            result.add(bcBean);
+            result.addAll(wrapperBean.getChildren());
+        }
+        return result;
     }
 
-    private void loadMoreBCData(){
-
-    }
-
-    public void showHomework(List<BCBean> list) {
+    public void showBCData(List<BCBean> list) {
         showContentView();
         mAdapter.replaceData(list);
     }
 
-    public void showDataEmpty() {
-        showDataEmptyView();
-    }
-
-    public void showDataError() {
-        showDataErrorView();
-    }
     private void showContentView(){
-        mRefreshLayout.setVisibility(View.VISIBLE);
+        mRecyclerView.setVisibility(View.VISIBLE);
         mTipsView.setVisibility(View.GONE);
     }
 
     private void showDataEmptyView(){
-        mRefreshLayout.setVisibility(View.GONE);
+        mRecyclerView.setVisibility(View.GONE);
         mTipsView.setVisibility(View.VISIBLE);
         //TODO 图片替换
         mTipsImg.setImageResource(R.drawable.has_not_publish_hwk);
@@ -138,19 +158,11 @@ public class BCActivity extends YanxiuBaseActivity {
     }
 
     private void showDataErrorView(){
-        mRefreshLayout.setVisibility(View.GONE);
+        mRecyclerView.setVisibility(View.GONE);
         mTipsView.setVisibility(View.VISIBLE);
         mTipsImg.setImageResource(R.drawable.net_error);
         mTips.setText(R.string.load_failed);
         mRefreshBtn.setText(R.string.click_to_retry);
-    }
-
-    public void showNoMoreData() {
-        LinearLayoutManager layoutManager = (LinearLayoutManager) mRecyclerView.getLayoutManager();
-        int firstPos = layoutManager.findFirstCompletelyVisibleItemPosition();
-        if(firstPos != 0 ){
-            mAdapter.addFooterView();
-        }
     }
 
     BCListAdapter.OnItemClickListener mOnItemClickListener = new BCListAdapter.OnItemClickListener() {

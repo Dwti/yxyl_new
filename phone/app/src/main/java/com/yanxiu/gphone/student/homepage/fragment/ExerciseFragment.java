@@ -16,6 +16,7 @@ import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.base.HomePageBaseFragment;
+import com.yanxiu.gphone.student.bcresource.BCActivity;
 import com.yanxiu.gphone.student.exercise.EditionSelectChangeMessage;
 import com.yanxiu.gphone.student.exercise.SelectChapterAndKnowledgeActivity;
 import com.yanxiu.gphone.student.exercise.ModifyEditionActivity;
@@ -86,13 +87,18 @@ public class ExerciseFragment extends HomePageBaseFragment {
                 if(bean.getData() != null){
                     SelectChapterAndKnowledgeActivity.invoke(getActivity(),bean.getId(),bean.getName(),bean.getData().getEditionId());
                 }else {
-                    String subjectId = bean.getId();
-                    String subjectName = bean.getName();
-                    String editionName = null;
-                    if(bean.getData() != null){
-                        editionName = bean.getData().getEditionName();
+                    if("9600".equals(bean.getId())){
+                        //bc资源
+                        BCActivity.invoke(getActivity());
+                    }else {
+                        String subjectId = bean.getId();
+                        String subjectName = bean.getName();
+                        String editionName = null;
+                        if(bean.getData() != null){
+                            editionName = bean.getData().getEditionName();
+                        }
+                        SelectEditionActivity.invoke(getActivity(), subjectId, subjectName,editionName, ModifyEditionActivity.FROM_EXERCISE);
                     }
-                    SelectEditionActivity.invoke(getActivity(), subjectId, subjectName,editionName, ModifyEditionActivity.FROM_EXERCISE);
                 }
             }
         });
@@ -148,6 +154,10 @@ public class ExerciseFragment extends HomePageBaseFragment {
         protected void onResponse(RequestBase request, SubjectsResponse response) {
             if(response.getStatus().getCode() == 0){
                 if(response.getData().size() > 0){
+                    SubjectBean bean = new SubjectBean();
+                    bean.setName("BC资源");
+                    bean.setId("9600");
+                    response.getData().add(bean);
                     showSubjects(response.getData());
                 }else {
                     showDataEmptyView();

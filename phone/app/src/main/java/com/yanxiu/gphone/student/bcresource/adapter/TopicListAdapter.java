@@ -1,9 +1,11 @@
 package com.yanxiu.gphone.student.bcresource.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.bcresource.bean.TopicBean;
 
 import java.util.List;
@@ -12,7 +14,7 @@ import java.util.List;
  * Created by sunpeng on 2017/10/16.
  */
 
-public class TopicListAdapter extends RecyclerView.Adapter<TopicListAdapter.TopicHolder> {
+public class TopicListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<TopicBean> mData;
     private OnItemClickListener listener;
@@ -23,12 +25,12 @@ public class TopicListAdapter extends RecyclerView.Adapter<TopicListAdapter.Topi
     }
 
     @Override
-    public TopicHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return null;
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new FooterHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.footer_tips,parent,false));
     }
 
     @Override
-    public void onBindViewHolder(TopicHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
     }
 
@@ -53,6 +55,14 @@ public class TopicListAdapter extends RecyclerView.Adapter<TopicListAdapter.Topi
             super(itemView);
         }
     }
+
+    class FooterHolder extends RecyclerView.ViewHolder{
+
+        public FooterHolder(View itemView) {
+            super(itemView);
+        }
+    }
+
 
     public interface OnItemClickListener{
         void onClick(TopicBean bean, int position);

@@ -537,7 +537,7 @@ public abstract class BaseQuestion implements Serializable {
      * @param levelPosition
      */
     public void markLevelAndPosition(int level, int position, ArrayList<Integer> levelPosition) {
-//        this.level = level;
+//        this.type = type;
 //        this.position = position;
         if (levelPosition != null) {
             this.levelPositions.addAll(levelPosition);
@@ -701,7 +701,7 @@ public abstract class BaseQuestion implements Serializable {
     }
 
     protected void clearAllNumberData() {
-//        level = 0;
+//        type = 0;
 //        position = 0;
         levelPositions.clear();
         prefixNumber = 0;

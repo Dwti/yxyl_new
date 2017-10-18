@@ -34,16 +34,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.srt.refresh.EXueELianRefreshLayout
-            android:id="@+id/refreshLayout"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </com.srt.refresh.EXueELianRefreshLayout>
+            android:layout_height="match_parent" />
 
         <include
             android:id="@+id/tips_layout"

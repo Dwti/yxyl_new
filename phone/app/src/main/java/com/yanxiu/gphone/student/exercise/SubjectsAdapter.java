@@ -85,6 +85,9 @@ public class SubjectsAdapter extends BaseAdapter {
             case "1110":
                 imageView.setImageResource(R.drawable.lishi);
                 break;
+            case "9600":
+                imageView.setImageResource(R.drawable.icon_bc);
+                break;
             default:
                 break;
         }
