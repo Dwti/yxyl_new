@@ -2,6 +2,7 @@ package com.yanxiu.gphone.student.homepage.fragment;
 
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.base.HomePageBaseFragment;
 import com.yanxiu.gphone.student.bcresource.BCActivity;
+import com.yanxiu.gphone.student.bcresource.response.TopicTreeResponse;
 import com.yanxiu.gphone.student.exercise.EditionSelectChangeMessage;
 import com.yanxiu.gphone.student.exercise.SelectChapterAndKnowledgeActivity;
 import com.yanxiu.gphone.student.exercise.ModifyEditionActivity;
@@ -24,7 +26,9 @@ import com.yanxiu.gphone.student.exercise.SelectEditionActivity;
 import com.yanxiu.gphone.student.exercise.bean.SubjectBean;
 import com.yanxiu.gphone.student.exercise.SubjectsAdapter;
 import com.yanxiu.gphone.student.exercise.request.SubjectsRequest;
+import com.yanxiu.gphone.student.exercise.request.TopicRequest;
 import com.yanxiu.gphone.student.exercise.response.SubjectsResponse;
+import com.yanxiu.gphone.student.exercise.response.TopicResponse;
 import com.yanxiu.gphone.student.login.activity.ChooseStageActivity;
 import com.yanxiu.gphone.student.util.LoginInfo;
 
@@ -87,9 +91,9 @@ public class ExerciseFragment extends HomePageBaseFragment {
                 if(bean.getData() != null){
                     SelectChapterAndKnowledgeActivity.invoke(getActivity(),bean.getId(),bean.getName(),bean.getData().getEditionId());
                 }else {
-                    if("9600".equals(bean.getId())){
+                    if(!TextUtils.isEmpty(bean.getType())){
                         //bc资源
-                        BCActivity.invoke(getActivity());
+                        BCActivity.invoke(getActivity(),bean.getType(),bean.getId());
                     }else {
                         String subjectId = bean.getId();
                         String subjectName = bean.getName();
@@ -143,10 +147,22 @@ public class ExerciseFragment extends HomePageBaseFragment {
         mAdapter.replaceData(data);
     }
 
+    private void addTopic(List<SubjectBean> topics){
+        if(mAdapter !=null && !mAdapter.isEmpty()){
+            mAdapter.addData(topics);
+        }
+    }
+
     private void requestSubjects(String stageId){
         SubjectsRequest request = new SubjectsRequest();
         request.setStageId(stageId);
         request.startRequest(SubjectsResponse.class,mSubjectsCallback);
+    }
+
+    private void requestTopic(){
+        TopicRequest request = new TopicRequest();
+        request.setStageId(mStageId);
+        request.startRequest(TopicResponse.class,mTopicCallback);
     }
 
     HttpCallback<SubjectsResponse> mSubjectsCallback = new EXueELianBaseCallback<SubjectsResponse>() {
@@ -154,13 +170,28 @@ public class ExerciseFragment extends HomePageBaseFragment {
         protected void onResponse(RequestBase request, SubjectsResponse response) {
             if(response.getStatus().getCode() == 0){
                 if(response.getData().size() > 0){
-                    SubjectBean bean = new SubjectBean();
-                    bean.setName("BC资源");
-                    bean.setId("9600");
-                    response.getData().add(bean);
                     showSubjects(response.getData());
+                    requestTopic();
                 }else {
                     showDataEmptyView();
+                }
+            }else {
+                showDataErrorView();
+            }
+        }
+
+        @Override
+        public void onFail(RequestBase request, Error error) {
+            showDataErrorView();
+        }
+    };
+
+    HttpCallback<TopicResponse> mTopicCallback = new EXueELianBaseCallback<TopicResponse>() {
+        @Override
+        protected void onResponse(RequestBase request, TopicResponse response) {
+            if(response.getStatus().getCode() == 0 ){
+                if(!response.getData().isEmpty()){
+                    addTopic(response.getData());
                 }
             }else {
                 showDataErrorView();

@@ -97,6 +97,16 @@ public class SubjectsAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    public void addData(SubjectBean bean){
+        mSubjects.add(bean);
+        notifyDataSetChanged();
+    }
+
+    public void addData(List<SubjectBean> data){
+        mSubjects.addAll(data);
+        notifyDataSetChanged();
+    }
+
     public void clearData(){
         mSubjects.clear();
         notifyDataSetChanged();

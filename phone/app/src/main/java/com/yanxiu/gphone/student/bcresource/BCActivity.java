@@ -46,10 +46,17 @@ public class BCActivity extends YanxiuBaseActivity {
 
     private BCListAdapter mAdapter;
 
+    private String mType,mId;
+
     private List<BCBean> mData = new ArrayList<>();
 
-    public static void invoke(Activity activity){
+    public static final String BC_TYPE = "BC_TYPE";
+    public static final String BC_ID = "BC_ID";
+
+    public static void invoke(Activity activity,String type,String id){
         Intent intent = new Intent(activity,BCActivity.class);
+        intent.putExtra(BC_TYPE,type);
+        intent.putExtra(BC_ID,id);
         activity.startActivity(intent);
     }
 
@@ -96,7 +103,11 @@ public class BCActivity extends YanxiuBaseActivity {
     }
 
     private void initData(){
+        mType = getIntent().getStringExtra(BC_TYPE);
+        mId = getIntent().getStringExtra(BC_ID);
         TopicTreeRequest request = new TopicTreeRequest();
+        request.setId(mId);
+        request.setType(mType);
         request.startRequest(TopicTreeResponse.class,topicTreeCallback);
     }
 

@@ -8,8 +8,8 @@ import com.yanxiu.gphone.student.base.EXueELianBaseRequest;
  */
 
 public class TopicTreeRequest extends EXueELianBaseRequest {
-    protected String type="0";
-    protected String id="9600";
+    protected String type;
+    protected String id;
 
     @Override
     protected String urlPath() {
