@@ -2,12 +2,18 @@ package com.yanxiu.gphone.student.bcresource;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.srt.refresh.EXueELianRefreshLayout;
@@ -39,11 +45,11 @@ public class TopicActivity extends YanxiuBaseActivity{
 
     private LoadingView mLoadingView;
 
-    private ImageView mTipsImg, iv_up, iv_down, iv_expand;
+    private ImageView mTipsImg, iv_up, iv_down, iv_expand, iv_item0, iv_item1, iv_item2;
 
-    private View mTipsView, mBack;
+    private View mTipsView, mBack, mFilterBar, mContentView, mLlFilterLetter,mLlFilterScope;
 
-    private TextView mTitle, mTips, tv_filter_letter, tv_filter_pop, tv_filter_scope;
+    private TextView mTitle, mTips, tv_filter_letter, tv_filter_pop, tv_filter_scope, tv_item0, tv_item1, tv_item2;
 
     private Button mRefreshBtn;
 
@@ -56,6 +62,8 @@ public class TopicActivity extends YanxiuBaseActivity{
     private int mCurrentPage = 1, mOrder = 0, mScope = 0, mTotalPage;
 
     private RequestBase mLastRequest;
+
+    private PopupWindow mPopWindow;
 
 
     public static void invoke(Activity activity, String type, String id, String name){
@@ -76,8 +84,13 @@ public class TopicActivity extends YanxiuBaseActivity{
     }
 
     private void initView(){
+        mContentView = findViewById(R.id.content);
         mTitle = (TextView) findViewById(R.id.tv_title);
         mBack = findViewById(R.id.iv_back);
+        mFilterBar = findViewById(R.id.filter_bar);
+
+        mLlFilterLetter = findViewById(R.id.ll_filter_letter);
+        mLlFilterScope = findViewById(R.id.ll_filter_scope);
 
         tv_filter_letter = (TextView) findViewById(R.id.tv_filter_letter);
         tv_filter_pop = (TextView) findViewById(R.id.tv_filter_pop);
@@ -105,9 +118,10 @@ public class TopicActivity extends YanxiuBaseActivity{
     }
 
     private void initListener(){
-        tv_filter_letter.setOnClickListener(new View.OnClickListener() {
+        mLlFilterLetter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dismissPopWindow();
                 if(tv_filter_pop.isSelected()){
                     tv_filter_pop.setSelected(false);
                     tv_filter_letter.setSelected(true);
@@ -127,6 +141,7 @@ public class TopicActivity extends YanxiuBaseActivity{
         tv_filter_pop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dismissPopWindow();
                 if(!tv_filter_pop.isSelected()){
                     tv_filter_letter.setSelected(false);
                     iv_up.setSelected(false);
@@ -139,6 +154,19 @@ public class TopicActivity extends YanxiuBaseActivity{
                 }
             }
         });
+
+        mLlFilterScope.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mPopWindow != null && mPopWindow.isShowing()){
+                    dismissPopWindow();
+                }else {
+                    showPopWindow();
+                    iv_expand.setImageResource(R.drawable.up_pressed);
+                }
+            }
+        });
+
         mBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -166,6 +194,22 @@ public class TopicActivity extends YanxiuBaseActivity{
         });
     }
 
+    private void setScopeAreaState(){
+        if(mScope == 0){
+            iv_expand.setImageResource(R.drawable.down_normal);
+            tv_filter_scope.setTextColor(Color.parseColor("#666666"));
+            tv_filter_scope.setText("全部");
+        }else {
+            iv_expand.setImageResource(R.drawable.down_pressed);
+            tv_filter_scope.setTextColor(Color.parseColor("#89e00d"));
+            if(mScope == 1){
+                tv_filter_scope.setText("已作答");
+            }else if(mScope == 2){
+                tv_filter_scope.setText("未作答");
+            }
+        }
+    }
+
     private void initData(){
         mType = getIntent().getStringExtra(BCActivity.BC_TYPE);
         mId = getIntent().getStringExtra(BCActivity.BC_ID);
@@ -188,6 +232,114 @@ public class TopicActivity extends YanxiuBaseActivity{
         request.startRequest(TopicPaperResponse.class, mTopicPaperCallback);
     }
 
+    private void showPopWindow(){
+        if(mPopWindow == null){
+            View view = LayoutInflater.from(this).inflate(R.layout.topic_filter_pop,null);
+            mPopWindow = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT,mContentView.getHeight());
+            View bg = view.findViewById(R.id.bg);
+
+            View item0 = view.findViewById(R.id.item0);
+            iv_item0 = (ImageView) view.findViewById(R.id.iv0);
+            tv_item0 = (TextView) view.findViewById(R.id.tv0);
+
+            View item1 = view.findViewById(R.id.item1);
+            tv_item1 = (TextView) view.findViewById(R.id.tv1);
+            iv_item1 = (ImageView) view.findViewById(R.id.iv1);
+
+            View item2 = view.findViewById(R.id.item2);
+            tv_item2 = (TextView) view.findViewById(R.id.tv2);
+            iv_item2 = (ImageView) view.findViewById(R.id.iv2);
+
+            setScopeItemSelected();
+
+            item0.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(tv_item0.isSelected())
+                        return;
+                    mScope = 0;
+                    setScopeItemSelected();
+                    mCurrentPage=1;
+                    getTopicPaper(1);
+                    dismissPopWindow();
+                }
+            });
+
+            item1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(tv_item1.isSelected())
+                        return;
+                    mScope = 1;
+                    setScopeItemSelected();
+
+                    mCurrentPage=1;
+                    getTopicPaper(1);
+                    dismissPopWindow();
+                }
+            });
+
+            item2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(tv_item2.isSelected())
+                        return;
+                    mScope = 2;
+                    setScopeItemSelected();
+
+                    mCurrentPage=1;
+                    getTopicPaper(1);
+                    dismissPopWindow();
+                }
+            });
+
+            bg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dismissPopWindow();
+                }
+            });
+
+            mPopWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    setScopeAreaState();
+                }
+            });
+        }
+
+        mPopWindow.showAsDropDown(mFilterBar);
+    }
+
+    private void dismissPopWindow(){
+        if(mPopWindow != null && mPopWindow.isShowing())
+            mPopWindow.dismiss();
+    }
+    
+    private void setScopeItemSelected(){
+        if(mScope == 0){
+            tv_item0.setSelected(true);
+            iv_item0.setVisibility(View.VISIBLE);
+            tv_item1.setSelected(false);
+            iv_item1.setVisibility(View.GONE);
+            tv_item2.setSelected(false);
+            iv_item2.setVisibility(View.GONE);
+        }else if(mScope == 1){
+            tv_item1.setSelected(true);
+            iv_item1.setVisibility(View.VISIBLE);
+            tv_item0.setSelected(false);
+            iv_item0.setVisibility(View.GONE);
+            tv_item2.setSelected(false);
+            iv_item2.setVisibility(View.GONE);
+        }else if(mScope == 2){
+            tv_item2.setSelected(true);
+            iv_item2.setVisibility(View.VISIBLE);
+            tv_item0.setSelected(false);
+            iv_item0.setVisibility(View.GONE);
+            tv_item1.setSelected(false);
+            iv_item1.setVisibility(View.GONE);
+        }
+    }
     public void setLoadMoreEnable(boolean enable) {
         mRefreshLayout.setLoadMoreEnable(enable);
     }
