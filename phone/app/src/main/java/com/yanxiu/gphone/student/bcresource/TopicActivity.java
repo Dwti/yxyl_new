@@ -1,5 +1,7 @@
 package com.yanxiu.gphone.student.bcresource;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,14 +11,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.srt.refresh.EXueELianRefreshLayout;
+import com.test.yanxiu.network.HttpCallback;
+import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.bcresource.adapter.TopicListAdapter;
 import com.yanxiu.gphone.student.bcresource.bean.TopicBean;
+import com.yanxiu.gphone.student.bcresource.request.TopicPaperRequest;
+import com.yanxiu.gphone.student.bcresource.response.TopicPaperResponse;
 import com.yanxiu.gphone.student.customviews.LoadingView;
+import com.yanxiu.gphone.student.util.ToastManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by sunpeng on 2017/10/16.
@@ -30,17 +39,32 @@ public class TopicActivity extends YanxiuBaseActivity{
 
     private LoadingView mLoadingView;
 
-    private ImageView mTipsImg;
+    private ImageView mTipsImg, iv_up, iv_down, iv_expand;
 
     private View mTipsView, mBack;
 
-    private TextView mTitle, mTips;
+    private TextView mTitle, mTips, tv_filter_letter, tv_filter_pop, tv_filter_scope;
 
     private Button mRefreshBtn;
 
     private TopicListAdapter mAdapter;
 
-    private List<TopicBean> mData = new ArrayList<>();
+    private List<TopicBean> mTopicList = new ArrayList<>();
+
+    private String mType, mId, mName;
+
+    private int mCurrentPage = 1, mOrder = 0, mScope = 0, mTotalPage;
+
+    private RequestBase mLastRequest;
+
+
+    public static void invoke(Activity activity, String type, String id, String name){
+        Intent intent = new Intent(activity,TopicActivity.class);
+        intent.putExtra(BCActivity.BC_TYPE,type);
+        intent.putExtra(BCActivity.BC_ID,id);
+        intent.putExtra(BCActivity.BC_NAME,name);
+        activity.startActivity(intent);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,11 +72,20 @@ public class TopicActivity extends YanxiuBaseActivity{
         setContentView(R.layout.activity_topic);
         initView();
         initListener();
+        initData();
     }
 
     private void initView(){
         mTitle = (TextView) findViewById(R.id.tv_title);
         mBack = findViewById(R.id.iv_back);
+
+        tv_filter_letter = (TextView) findViewById(R.id.tv_filter_letter);
+        tv_filter_pop = (TextView) findViewById(R.id.tv_filter_pop);
+        tv_filter_scope = (TextView) findViewById(R.id.tv_filter_scope);
+        iv_up = (ImageView) findViewById(R.id.iv_up);
+        iv_down = (ImageView) findViewById(R.id.iv_down);
+        iv_expand = (ImageView) findViewById(R.id.iv_expand);
+
         mLoadingView = (LoadingView) findViewById(R.id.loading);
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         mRefreshLayout = (EXueELianRefreshLayout) findViewById(R.id.refreshLayout);
@@ -61,14 +94,51 @@ public class TopicActivity extends YanxiuBaseActivity{
         mTips = (TextView) findViewById(R.id.tv_tips);
         mRefreshBtn = (Button) findViewById(R.id.btn_refresh);
 
-        mAdapter = new TopicListAdapter(mData,mOnItemClickListener);
+        mAdapter = new TopicListAdapter(mTopicList,mOnItemClickListener);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter);
 
         setLoadMoreEnable(true);
+
+        tv_filter_letter.setSelected(true);
+        iv_down.setSelected(true);
     }
 
     private void initListener(){
+        tv_filter_letter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(tv_filter_pop.isSelected()){
+                    tv_filter_pop.setSelected(false);
+                    tv_filter_letter.setSelected(true);
+                    iv_down.setSelected(true);
+                    mOrder = 0 ;
+                }else {
+                    mOrder = (mOrder + 1 ) % 2 ;
+                    iv_up.setSelected(mOrder==1);
+                    iv_down.setSelected(mOrder == 0);
+                }
+
+                mCurrentPage = 1;
+                getTopicPaper(1);
+            }
+        });
+
+        tv_filter_pop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!tv_filter_pop.isSelected()){
+                    tv_filter_letter.setSelected(false);
+                    iv_up.setSelected(false);
+                    iv_down.setSelected(false);
+                    tv_filter_pop.setSelected(true);
+
+                    mOrder = 10;
+                    mCurrentPage = 1;
+                    getTopicPaper(1);
+                }
+            }
+        });
         mBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,58 +149,88 @@ public class TopicActivity extends YanxiuBaseActivity{
         mRefreshLayout.setRefreshListener(new EXueELianRefreshLayout.RefreshListener() {
             @Override
             public void onRefresh(EXueELianRefreshLayout refreshLayout) {
-                refreshBCData();
+                refreshData();
             }
 
             @Override
             public void onLoadMore(EXueELianRefreshLayout refreshLayout) {
-                loadMoreBCData();
+                loadMoreData();
             }
         });
         mRefreshBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mLoadingView.showLoadingView();
-                refreshBCData();
+                refreshData();
             }
         });
+    }
+
+    private void initData(){
+        mType = getIntent().getStringExtra(BCActivity.BC_TYPE);
+        mId = getIntent().getStringExtra(BCActivity.BC_ID);
+        mName = getIntent().getStringExtra(BCActivity.BC_NAME);
+
+        mTitle.setText(mName);
+
+        getTopicPaper(1);
+    }
+
+    private void getTopicPaper(int page){
+        TopicPaperRequest request = new TopicPaperRequest();
+        request.setType(mType);
+        request.setId(mId);
+        request.setPage(String.valueOf(page));
+        request.setOrder(String.valueOf(mOrder));
+        request.setScope(String.valueOf(mScope));
+
+        mLastRequest = request;
+        request.startRequest(TopicPaperResponse.class, mTopicPaperCallback);
     }
 
     public void setLoadMoreEnable(boolean enable) {
         mRefreshLayout.setLoadMoreEnable(enable);
     }
 
-    private void refreshBCData(){
-
+    private void refreshData(){
+        mCurrentPage = 1;
+        getTopicPaper(1);
     }
 
-    private void loadMoreBCData(){
-
+    private void loadMoreData(){
+        if(canLoadMore()){
+            getTopicPaper(++mCurrentPage);
+        }else {
+            finishLoadingMoireIndicator();
+            setLoadMoreEnable(false);
+            showNoMoreData();
+        }
     }
 
-    public void showHomework(List<TopicBean> list) {
-        showContentView();
-        mAdapter.replaceData(list);
+    private boolean canLoadMore(){
+        return mCurrentPage < mTotalPage;
     }
 
-    public void showDataEmpty() {
-        showDataEmptyView();
+    private void finishRefreshIndicator(){
+        mLoadingView.hiddenLoadingView();
+        mRefreshLayout.finishRefreshing();
     }
 
-    public void showDataError() {
-        showDataErrorView();
+    private void finishLoadingMoireIndicator(){
+        mRefreshLayout.finishLoadMore();
     }
-    private void showContentView(){
+
+    private void showContentView(List<TopicBean> list){
         mRefreshLayout.setVisibility(View.VISIBLE);
         mTipsView.setVisibility(View.GONE);
+        mAdapter.replaceData(list);
     }
 
     private void showDataEmptyView(){
         mRefreshLayout.setVisibility(View.GONE);
         mTipsView.setVisibility(View.VISIBLE);
-        //TODO 图片替换
-        mTipsImg.setImageResource(R.drawable.has_not_publish_hwk);
-        mTips.setText(R.string.class_no_homework);
+        mTipsImg.setImageResource(R.drawable.data_empty);
+        mTips.setText(R.string.no_topic);
         mRefreshBtn.setText(R.string.click_to_refresh);
     }
 
@@ -149,6 +249,65 @@ public class TopicActivity extends YanxiuBaseActivity{
             mAdapter.addFooterView();
         }
     }
+
+    private void showLoadMoreErrorMsg(String msg){
+        ToastManager.showMsg(msg);
+    }
+
+    HttpCallback<TopicPaperResponse> mTopicPaperCallback = new EXueELianBaseCallback<TopicPaperResponse>() {
+        @Override
+        protected void onResponse(RequestBase request, TopicPaperResponse response) {
+            if(mLastRequest !=null && !mLastRequest.equals(request))
+                return;
+            if(response.getStatus().getCode() == 0){
+                if(mCurrentPage == 1){
+                    finishRefreshIndicator();
+                    setLoadMoreEnable(true);
+                    mTotalPage = response.getPage().getTotalPage();
+                    if(response.getData() != null && response.getData().size() > 0){
+                        mTopicList = response.getData();
+                        showContentView(mTopicList);
+                    }else {
+                        mAdapter.clearData();
+                        showDataEmptyView();
+                    }
+                }else if (mCurrentPage > 1){
+                    finishLoadingMoireIndicator();
+                    if(response.getData() !=null && response.getData().size() > 0){
+                        mTopicList.addAll(response.getData());
+                        showContentView(mTopicList);
+                    }else {
+                        showNoMoreData();
+                    }
+                }else {}
+            }else {
+                if(mCurrentPage == 1){
+                    finishRefreshIndicator();
+                    setLoadMoreEnable(true);
+                    mAdapter.clearData();
+                    showDataErrorView();
+                }else if(mCurrentPage > 1){
+                    finishLoadingMoireIndicator();
+                    showLoadMoreErrorMsg(response.getStatus().getDesc());
+                }
+            }
+        }
+
+        @Override
+        public void onFail(RequestBase request, Error error) {
+            if(mLastRequest !=null && !mLastRequest.equals(request))
+                return;
+            if(mCurrentPage == 1){
+                finishRefreshIndicator();
+                setLoadMoreEnable(true);
+                mAdapter.clearData();
+                showDataErrorView();
+            }else if(mCurrentPage > 1){
+                finishLoadingMoireIndicator();
+                showLoadMoreErrorMsg(error.getLocalizedMessage());
+            }
+        }
+    };
 
     TopicListAdapter.OnItemClickListener mOnItemClickListener = new TopicListAdapter.OnItemClickListener() {
         @Override

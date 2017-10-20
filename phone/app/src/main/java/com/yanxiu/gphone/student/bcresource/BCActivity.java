@@ -52,6 +52,7 @@ public class BCActivity extends YanxiuBaseActivity {
 
     public static final String BC_TYPE = "BC_TYPE";
     public static final String BC_ID = "BC_ID";
+    public static final String BC_NAME = "BC_NAME";
 
     public static void invoke(Activity activity,String type,String id){
         Intent intent = new Intent(activity,BCActivity.class);
@@ -163,8 +164,8 @@ public class BCActivity extends YanxiuBaseActivity {
         mRecyclerView.setVisibility(View.GONE);
         mTipsView.setVisibility(View.VISIBLE);
         //TODO 图片替换
-        mTipsImg.setImageResource(R.drawable.has_not_publish_hwk);
-        mTips.setText(R.string.class_no_homework);
+        mTipsImg.setImageResource(R.drawable.data_empty);
+        mTips.setText(R.string.no_bc);
         mRefreshBtn.setText(R.string.click_to_refresh);
     }
 
@@ -179,7 +180,7 @@ public class BCActivity extends YanxiuBaseActivity {
     BCListAdapter.OnItemClickListener mOnItemClickListener = new BCListAdapter.OnItemClickListener() {
         @Override
         public void onClick(BCBean bean, int position) {
-
+            TopicActivity.invoke(BCActivity.this,mType,bean.getId(),bean.getName());
         }
     };
 }

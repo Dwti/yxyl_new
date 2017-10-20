@@ -1,13 +1,16 @@
 package com.yanxiu.gphone.student.bcresource.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.bcresource.bean.TopicBean;
 
+import java.text.NumberFormat;
 import java.util.List;
 
 /**
@@ -17,30 +20,64 @@ import java.util.List;
 public class TopicListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<TopicBean> mData;
-    private OnItemClickListener listener;
+    private OnItemClickListener mListener;
+
+    private static final int TYPE_NORMAL = 0;
+    private static final int TYPE_FOOTER = 1;
 
     public TopicListAdapter(List<TopicBean> mData, OnItemClickListener listener) {
         this.mData = mData;
-        this.listener = listener;
+        this.mListener = listener;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new FooterHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.footer_tips,parent,false));
+        if(viewType == TYPE_NORMAL){
+            return new TopicHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_topic,parent,false));
+        }else {
+            return new FooterHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.footer_tips,parent,false));
+        }
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if(holder instanceof TopicHolder){
+            ((TopicHolder)holder).name.setText(mData.get(position).getName());
+            ((TopicHolder)holder).popValue.setText(String.format(holder.itemView.getContext().getString(R.string.topic_pop_value),mData.get(position).getViewnum()));
+            if(mData.get(position).getPaperStatus() != null){
+                if(mData.get(position).getPaperStatus().getStatus() == 1){
+                    ((TopicHolder)holder).status.setText("作答中...");
+                }else {
+                    ((TopicHolder)holder).status.setText(String.format(holder.itemView.getContext().getString(R.string.topic_correct_rate),NumberFormat.getPercentInstance().format(mData.get(position).getPaperStatus().getScoreRate())));
+                }
+            }else {
+                ((TopicHolder)holder).status.setText("");
+            }
 
+        }
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return mData.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if(TextUtils.isEmpty(mData.get(position).getId())){
+            return TYPE_FOOTER;
+        }else {
+            return TYPE_NORMAL;
+        }
     }
 
     public void replaceData(List<TopicBean> data){
         this.mData = data;
+        notifyDataSetChanged();
+    }
+
+    public void clearData(){
+        mData.clear();
         notifyDataSetChanged();
     }
 
@@ -51,8 +88,22 @@ public class TopicListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     class TopicHolder extends RecyclerView.ViewHolder{
 
+        private TextView name, popValue, status;
+
         public TopicHolder(View itemView) {
             super(itemView);
+            name = (TextView) itemView.findViewById(R.id.tv_name);
+            popValue = (TextView) itemView.findViewById(R.id.tv_pop_value);
+            status = (TextView) itemView.findViewById(R.id.tv_status);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(mListener != null){
+                        mListener.onClick(mData.get(getLayoutPosition()),getLayoutPosition());
+                    }
+                }
+            });
         }
     }
 

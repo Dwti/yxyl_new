@@ -297,6 +297,8 @@
     <string name="editor_camera">拍照</string>
     <string name="exercise_end_time">完成时间 %s</string>
     <string name="exercise_correct_rate">正确率 %s</string>
+    <string name="topic_correct_rate">正确率%s</string>
+    <string name="topic_pop_value">人气值 %s</string>
     <string name="exercise_wait_to_finish">待完成</string>
     <string name="no_exercise">这里还没有练习历史哦</string>
 
@@ -329,5 +331,7 @@
     <string name="updata_headimg_fails">上传失败</string>
 
     <string name="mistake_no_data">这回真没了</string>
+    <string name="no_bc">还没有BC资源哦</string>
+    <string name="no_topic">还没有话题哦</string>
 
 </resources>
