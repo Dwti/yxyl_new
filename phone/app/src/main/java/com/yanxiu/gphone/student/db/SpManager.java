@@ -37,6 +37,8 @@ public class SpManager {
 
     private static final String SOUND_ON = "sound_on"; //声音开关
 
+    private static final String FRIST_ENTER_SPOKEN_QUESTION="spoken_question";
+
     public static void setFristStartUp(boolean isFristStartUp) {
         SharedPreferences.Editor editor = mySharedPreferences.edit();
         editor.putBoolean(FRIST_START_UP, isFristStartUp);
@@ -50,6 +52,21 @@ public class SpManager {
      */
     public static boolean isFristStartUp() {
         return mySharedPreferences.getBoolean(FRIST_START_UP, true);
+    }
+
+    public static void setFristEnterSpokenQuestion(boolean isFristStartUp) {
+        SharedPreferences.Editor editor = mySharedPreferences.edit();
+        editor.putBoolean(FRIST_ENTER_SPOKEN_QUESTION, isFristStartUp);
+        editor.commit();
+    }
+
+    /**
+     * 是否第一次进入口语题
+     *
+     * @return true ： 第一次
+     */
+    public static boolean isFristEnterSpokenQuestion() {
+        return mySharedPreferences.getBoolean(FRIST_ENTER_SPOKEN_QUESTION, true);
     }
 
     /**

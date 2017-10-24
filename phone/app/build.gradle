@@ -55,7 +55,7 @@ android {
         ]
 
         ndk {
-            abiFilters "armeabi", "armeabi-v7a", "arm64-v8a", "mips", "mips64", "x86", "x86_64"
+            abiFilters "armeabi", "armeabi-v7a", "mips", "x86_64"
         }
 
 
@@ -95,6 +95,8 @@ android {
         compile files('libs/umeng_social_net.jar')
         compile files('libs/umeng_social_tool.jar')
 
+        compile files('libs/oraleval-android-sdk.jar')
+        compile files('libs/usc.jar')
         // Dependencies for local unit tests
         testCompile "junit:junit:$rootProject.ext.junitVersion"
     }

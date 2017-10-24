@@ -193,6 +193,7 @@ public class MediaPlayerUtil {
      * Destruction of data
      */
     public void destory() {
+        Logger.d(TAG,"destory");
         finish();
         this.isPlaying=false;
         this.mCallBack = null;

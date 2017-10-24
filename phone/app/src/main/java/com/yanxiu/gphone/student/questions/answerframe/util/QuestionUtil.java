@@ -162,6 +162,18 @@ public class QuestionUtil {
             case 21:
                 name = "听力题";
                 break;
+            case 26:
+                name="朗读题";
+                break;
+            case 27:
+                name="跟读题";
+                break;
+            case 28:
+                name="情景问答题";
+                break;
+            case 29:
+                name="口语作文题";
+                break;
             default:
                 break;
 
@@ -270,6 +282,7 @@ public class QuestionUtil {
      * @param paper
      */
     public static void initDataWithAnswer(Paper paper) {
+        //TODO spoken
         if (paper != null && paper.getQuestions() != null && !paper.getQuestions().isEmpty()) {
             List<BaseQuestion> questionsList = paper.getQuestions();
 
