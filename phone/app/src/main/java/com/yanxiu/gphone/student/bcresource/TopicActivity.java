@@ -28,6 +28,7 @@ import com.yanxiu.gphone.student.bcresource.request.TopicPaperRequest;
 import com.yanxiu.gphone.student.bcresource.response.TopicPaperResponse;
 import com.yanxiu.gphone.student.customviews.LoadingView;
 import com.yanxiu.gphone.student.util.ToastManager;
+import com.yanxiu.gphone.student.videoplay.VideoActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -464,7 +465,8 @@ public class TopicActivity extends YanxiuBaseActivity{
     TopicListAdapter.OnItemClickListener mOnItemClickListener = new TopicListAdapter.OnItemClickListener() {
         @Override
         public void onClick(TopicBean bean, int position) {
-
+            Intent intent = new Intent(TopicActivity.this, VideoActivity.class);
+            startActivity(intent);
         }
     };
 }
