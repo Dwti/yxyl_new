@@ -226,9 +226,13 @@ public class SpokenUtils {
     }
 
     public void cancel() {
-        if (mIOralEvalSDK != null)
-            mIOralEvalSDK.cancel();
-        mIOralEvalSDK = null;
+        try {
+            if (mIOralEvalSDK != null)
+                mIOralEvalSDK.cancel();
+            mIOralEvalSDK = null;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public void playClear(){

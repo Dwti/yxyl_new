@@ -123,12 +123,12 @@ public class SpokenQuestion extends BaseQuestion {
         return status;
     }
 
-    public SpokenResponse getBeanFromJson(String json){
+    public static SpokenResponse getBeanFromJson(String json){
         Gson gson=new Gson();
         return gson.fromJson(json,SpokenResponse.class);
     }
 
-    public int getScore(int score){
+    public static int getScore(int score){
         if (score<30){
             return 0;
         }else if (score>=30&&score<60){

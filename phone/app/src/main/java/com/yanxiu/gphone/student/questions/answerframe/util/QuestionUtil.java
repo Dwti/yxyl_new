@@ -9,6 +9,8 @@ import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
 import com.yanxiu.gphone.student.questions.answerframe.bean.ReportAnswerBean;
+import com.yanxiu.gphone.student.questions.spoken.SpokenQuestion;
+import com.yanxiu.gphone.student.questions.spoken.SpokenResponse;
 
 import org.json.JSONArray;
 
@@ -282,7 +284,6 @@ public class QuestionUtil {
      * @param paper
      */
     public static void initDataWithAnswer(Paper paper) {
-        //TODO spoken
         if (paper != null && paper.getQuestions() != null && !paper.getQuestions().isEmpty()) {
             List<BaseQuestion> questionsList = paper.getQuestions();
 
@@ -360,47 +361,24 @@ public class QuestionUtil {
                                                     reportAnswerBean.setIsRight(false);
                                                 }
                                             }
-                                        } else if (QuestionTemplate.CONNECT.equals(childTemplate)) {
-//                                            try {
-//                                                JSONArray array=new JSONArray(childJsonAnswer);
-//                                                for (int k=0;k<array.length();k++){
-//                                                    String arrayJSONArray[]= array.getString(k).split(",");
-//                                                    ArrayList<String> list=new ArrayList<String>();
-//                                                    for (int l=0;l<arrayJSONArray.length;l++){
-//                                                        if (!TextUtils.isEmpty(arrayJSONArray[l])) {
-//                                                            list.add(arrayJSONArray[l]);
-//                                                        }
-//                                                    }
-//                                                    reportAnswerBean.getConnect_classfy_answer().add(list);
-//                                                }
-//
-//
-//
-//                                                if (reportAnswerBean.getConnect_classfy_answer().size()>0 ){
-//                                                    int num = 0;
-//                                                    for (ArrayList<String> listStr:reportAnswerBean.getConnect_classfy_answer()) {
-//                                                        num = num + listStr.size();
-//                                                    }
-//                                                    if (QuestionTemplate.CLASSIFY.equals(childTemplate)) {
-////                                                    if (QuestionTemplate.CLASSIFY.equals(childTemplate) && num < childQuestion.getContent().getChoices().size()) {
-//                                                        reportAnswerBean.setIsFinish(false);
-//                                                        reportAnswerBean.setIsRight(false);
-//                                                    }else if (QuestionTemplate.CONNECT.equals(childTemplate) &&reportAnswerBean.getConnect_classfy_answer().size()<childQuestion.getServer_answer().size()){
-//                                                        reportAnswerBean.setIsFinish(false);
-//                                                        reportAnswerBean.setIsRight(false);
-//                                                    }else {
-//                                                        reportAnswerBean.setIsFinish(true);
-//                                                        List<String> list = childQuestion.getServer_answer();
-//                                                        reportAnswerBean.setIsRight(CheckConnect_classfy_answer(list, reportAnswerBean.getConnect_classfy_answer(), childTemplate));
-//                                                    }
-//                                                }else {
-//                                                    reportAnswerBean.setIsFinish(false);
-//                                                    reportAnswerBean.setIsRight(false);
-//                                                }
-//                                            }catch (Exception e){
-//
-//                                            }
-                                        } else {
+                                        }else if (QuestionTemplate.SPOKEN.equals(childTemplate)){
+                                            reportAnswerBean.setSelectType(answerChildList.get(0));
+                                            SpokenResponse response=SpokenQuestion.getBeanFromJson(answerChildList.get(0));
+                                            int score=SpokenQuestion.getScore((int) response.lines.get(0).score);
+                                            switch (score){
+                                                case 0:
+                                                case 1:
+                                                    reportAnswerBean.setIsRight(false);
+                                                    break;
+                                                case 2:
+                                                case 3:
+                                                    reportAnswerBean.setIsRight(true);
+                                                    break;
+                                                default:
+                                                    reportAnswerBean.setIsRight(false);
+                                                    break;
+                                            }
+                                        }else {
                                             List<String> rightAnswerStr = new ArrayList<>();
                                             for (Object o : rightAnswer) {
                                                 rightAnswerStr.add(String.valueOf(o));
@@ -476,6 +454,8 @@ public class QuestionUtil {
                                         answerBean.setSelectType(answerList.get(0));
                                     } else if (QuestionTemplate.FILL.equals(template)) {
                                         answerBean.setFillAnswers((ArrayList<String>) answerList);
+                                    }else if (QuestionTemplate.SPOKEN.equals(template)){
+                                        answerBean.setSelectType(answerList.get(0));
                                     }
                                     //如果是填空题，需要再次确认一下是不是所有的空全填完了（没填完的空是""）
                                     if (QuestionTemplate.FILL.equals(template)) {

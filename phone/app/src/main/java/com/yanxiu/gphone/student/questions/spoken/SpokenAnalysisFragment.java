@@ -8,9 +8,9 @@ import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.customviews.SpokenSpanTextView;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.analysisbase.AnalysisSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.subjective.SubjectiveQuestion;
@@ -23,11 +23,11 @@ import com.yanxiu.gphone.student.util.ToastManager;
  * Time : 2017/10/16 9:47.
  * Function :
  */
-public class SpokenAnalysisFragment extends AnalysisSimpleExerciseBaseFragment implements ClickableImageSpan.onSpanClickListener {
+public class SpokenAnalysisFragment extends AnalysisSimpleExerciseBaseFragment implements ClickableImageSpan.onSpanClickListener, MediaPlayerUtil.MediaPlayerCallBack {
 
     private SpokenQuestion mData;
     private View mAnswerView;
-    private TextView mQuestionView;
+    private SpokenSpanTextView mQuestionView;
     private AudioTagHandler mAudioTagHandler;
 
     private MediaPlayerUtil mPlayerUtil=MediaPlayerUtil.create();
@@ -60,11 +60,11 @@ public class SpokenAnalysisFragment extends AnalysisSimpleExerciseBaseFragment i
     }
 
     private void initView(){
-        mQuestionView= (TextView) mAnswerView.findViewById(R.id.tv_question);
+        mQuestionView= (SpokenSpanTextView) mAnswerView.findViewById(R.id.tv_question);
     }
 
     private void listener(){
-
+        mPlayerUtil.addMediaPlayerCallBack(this);
     }
 
     private void initData(){
@@ -73,42 +73,25 @@ public class SpokenAnalysisFragment extends AnalysisSimpleExerciseBaseFragment i
         mQuestionView.setText(string);
         mQuestionView.setHighlightColor(ContextCompat.getColor(getContext(),android.R.color.transparent));
         mQuestionView.setMovementMethod(SpokenLinkMovementMethod.getInstance());
-
-        setScore(0);
     }
 
-    private void setScore(int num){
-        switch (num){
-            case 0:
-                mAnswerView.findViewById(R.id.ll_hand).setVisibility(View.GONE);
-                break;
-            case 1:
-                mAnswerView.findViewById(R.id.ll_hand).setVisibility(View.VISIBLE);
-                mAnswerView.findViewById(R.id.iv_hand1).setVisibility(View.VISIBLE);
-                mAnswerView.findViewById(R.id.iv_hand2).setVisibility(View.GONE);
-                mAnswerView.findViewById(R.id.iv_hand3).setVisibility(View.GONE);
-                break;
-            case 2:
-                mAnswerView.findViewById(R.id.ll_hand).setVisibility(View.VISIBLE);
-                mAnswerView.findViewById(R.id.iv_hand1).setVisibility(View.VISIBLE);
-                mAnswerView.findViewById(R.id.iv_hand2).setVisibility(View.VISIBLE);
-                mAnswerView.findViewById(R.id.iv_hand3).setVisibility(View.GONE);
-                break;
-            case 3:
-                mAnswerView.findViewById(R.id.ll_hand).setVisibility(View.VISIBLE);
-                mAnswerView.findViewById(R.id.iv_hand1).setVisibility(View.VISIBLE);
-                mAnswerView.findViewById(R.id.iv_hand2).setVisibility(View.VISIBLE);
-                mAnswerView.findViewById(R.id.iv_hand3).setVisibility(View.VISIBLE);
-                break;
-            default:
-                mAnswerView.findViewById(R.id.ll_hand).setVisibility(View.GONE);
-                break;
+    @Override
+    public void onVisibilityChangedToUser(boolean isVisibleToUser, boolean invokeInResumeOrPause) {
+        super.onVisibilityChangedToUser(isVisibleToUser, invokeInResumeOrPause);
+        if (!isVisibleToUser){
+            mPlayerUtil.playFinish();
+            mAudioTagHandler.stop();
         }
     }
 
     @Override
     public void initAnalysisView() {
-//        showAnswerResultView();
+        if (mData.getAnswerList()!=null&&!mData.getAnswerList().isEmpty()) {
+            SpokenResponse response = SpokenQuestion.getBeanFromJson(mData.getAnswerList().get(0));
+            showAnswerSpokenResultView(SpokenQuestion.getScore((int) response.lines.get(0).score));
+        }else {
+            showAnswerSpokenResultView(-1);
+        }
         showDifficultyview(mData.getStarCount());
         showAnalysisview(mData.getQuestionAnalysis());
         showPointView(mData.getPointList());
@@ -116,29 +99,28 @@ public class SpokenAnalysisFragment extends AnalysisSimpleExerciseBaseFragment i
 
     @Override
     public void onClick(String url) {
-        mPlayerUtil.addMediaPlayerCallBack(new MediaPlayerUtil.MediaPlayerCallBack() {
-            @Override
-            public void onStart(MediaPlayerUtil mpu, int duration) {
-                mAudioTagHandler.start();
-            }
-
-            @Override
-            public void onProgress(MediaPlayerUtil mu, int progress) {
-
-            }
-
-            @Override
-            public void onCompletion(MediaPlayerUtil mu) {
-                mAudioTagHandler.stop();
-            }
-
-            @Override
-            public void onError(MediaPlayerUtil mu) {
-                mAudioTagHandler.stop();
-                ToastManager.showMsg(R.string.net_null);
-            }
-        });
         mPlayerUtil.start(url);
 //        mPlayerUtil.start("http://data.5sing.kgimg.com/G034/M05/16/17/ApQEAFXsgeqIXl7gAAVVd-n31lcAABOogKzlD4ABVWP363.mp3");
+    }
+
+    @Override
+    public void onStart(MediaPlayerUtil mpu, int duration) {
+        mAudioTagHandler.start();
+    }
+
+    @Override
+    public void onProgress(MediaPlayerUtil mu, int progress) {
+
+    }
+
+    @Override
+    public void onCompletion(MediaPlayerUtil mu) {
+        mAudioTagHandler.stop();
+    }
+
+    @Override
+    public void onError(MediaPlayerUtil mu) {
+        mAudioTagHandler.stop();
+        ToastManager.showMsg(R.string.net_null);
     }
 }

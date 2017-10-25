@@ -13,7 +13,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
-import com.google.gson.Gson;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.customviews.SpokenSpanTextView;
 import com.yanxiu.gphone.student.customviews.SpokenWaveView;
@@ -43,8 +42,8 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
     private AudioTagHandler mAudioTagHandler;
     private String mFilePath;
 
-    private boolean isCanPlayQuestionViedio=true;
-    private boolean isFirstPlay=false;
+    private boolean isCanPlayQuestionViedio = true;
+    private boolean isFirstPlay = false;
 
     private SpokenResultDialog mResultDialog;
     private SpokenErrorDialog mErrorDialog;
@@ -55,7 +54,7 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
     @Override
     public void setData(BaseQuestion node) {
         super.setData(node);
-        mData= (SpokenQuestion) node;
+        mData = (SpokenQuestion) node;
     }
 
     @Override
@@ -69,11 +68,11 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.fragment_spoken,container,false);
-        mResultDialog= SpokenResultDialog.create(getContext());
-        mPlayerUtil=MediaPlayerUtil.create();
-        mErrorDialog=new SpokenErrorDialog(getContext());
-        mSpokenUtils=SpokenUtils.create();
+        View view = inflater.inflate(R.layout.fragment_spoken, container, false);
+        mResultDialog = SpokenResultDialog.create(getContext());
+        mPlayerUtil = MediaPlayerUtil.create();
+        mErrorDialog = new SpokenErrorDialog(getContext());
+        mSpokenUtils = SpokenUtils.create();
         setQaNumber(view);
         setQaName(view);
         initComplexStem(view, mData);
@@ -86,16 +85,17 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        mSpokenUtils.cancel();
         mPlayerUtil.destory();
     }
 
     private void initView(View view) {
-        this.rootView=view;
-        mQuestionView= (SpokenSpanTextView) view.findViewById(R.id.tv_question);
-        mRecordView= (ImageView) view.findViewById(R.id.iv_record);
-        mPlayOrStopView= (ImageView) view.findViewById(R.id.iv_play_stop);
-        mSpokenWaveView= (SpokenWaveView) view.findViewById(R.id.sw_wave);
-        mRecordAnimView= (ImageView) view.findViewById(R.id.iv_record_anim);
+        this.rootView = view;
+        mQuestionView = (SpokenSpanTextView) view.findViewById(R.id.tv_question);
+        mRecordView = (ImageView) view.findViewById(R.id.iv_record);
+        mPlayOrStopView = (ImageView) view.findViewById(R.id.iv_play_stop);
+        mSpokenWaveView = (SpokenWaveView) view.findViewById(R.id.sw_wave);
+        mRecordAnimView = (ImageView) view.findViewById(R.id.iv_record_anim);
     }
 
     private void listener() {
@@ -105,45 +105,34 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
     }
 
     private void initData() {
-        mAudioTagHandler=new AudioTagHandler(getContext(),mQuestionView,SpokenFragment.this);
-        Spanned string= Html.fromHtml(mData.getStem(),new HtmlImageGetter(mQuestionView),mAudioTagHandler);
+        mAudioTagHandler = new AudioTagHandler(getContext(), mQuestionView, SpokenFragment.this);
+        Spanned string = Html.fromHtml(mData.getStem(), new HtmlImageGetter(mQuestionView), mAudioTagHandler);
         mQuestionView.setData(string);
-        mQuestionView.setHighlightColor(ContextCompat.getColor(getContext(),android.R.color.transparent));
+        mQuestionView.setHighlightColor(ContextCompat.getColor(getContext(), android.R.color.transparent));
         mQuestionView.setMovementMethod(SpokenLinkMovementMethod.getInstance());
 
-        if ("27".equals(mData.getType_id())||"28".equals(mData.getType_id())) {
+//        mQuestionView.setText("akskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksa");
+
+        if ("27".equals(mData.getType_id()) || "28".equals(mData.getType_id())) {
             mSpokenWaveView.setVisibility(View.GONE);
             mRecordView.setEnabled(false);
             mRecordAnimView.setVisibility(View.GONE);
-        }else {
+        } else {
             mSpokenWaveView.setVisibility(View.VISIBLE);
             mRecordView.setEnabled(true);
             mRecordAnimView.setVisibility(View.VISIBLE);
-        }
-
-        if (mData.getAnswerList()!=null&&!mData.getAnswerList().isEmpty()){
-            SpokenResponse response=mData.getBeanFromJson(mData.getAnswerList().get(0));
-            setScore(mData.getScore((int) response.lines.get(0).score));
-
-            mSpokenWaveView.setVisibility(View.VISIBLE);
-            mRecordView.setEnabled(true);
-            mRecordAnimView.setVisibility(View.VISIBLE);
-            mPlayOrStopView.setVisibility(View.VISIBLE);
-        }else {
-            mPlayOrStopView.setVisibility(View.GONE);
-            setScore(-1);
         }
     }
 
     @Override
     public void onVisibilityChangedToUser(boolean isVisibleToUser, boolean invokeInResumeOrPause) {
         super.onVisibilityChangedToUser(isVisibleToUser, invokeInResumeOrPause);
-        if (isVisibleToUser){
-            isCanPlayQuestionViedio=true;
-            if (mData.getAnswerList()==null||mData.getAnswerList().isEmpty()){
+        if (isVisibleToUser) {
+            isCanPlayQuestionViedio = true;
+            if (mData.getAnswerList() == null || mData.getAnswerList().isEmpty()) {
                 mQuestionView.setClick();
             }
-            if ("26".equals(mData.getType_id())||"29".equals(mData.getType_id())) {
+            if ("26".equals(mData.getType_id()) || "29".equals(mData.getType_id())) {
                 if (SpManager.isFristEnterSpokenQuestion()) {
                     if (mFirstEnterDialog == null) {
                         mFirstEnterDialog = new SpokenFirstEnterDialog(getContext());
@@ -152,39 +141,54 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
                     SpManager.setFristEnterSpokenQuestion(false);
                 }
             }
-        }else {
+            if (mData.getAnswerList() != null && !mData.getAnswerList().isEmpty()) {
+                SpokenResponse response = SpokenQuestion.getBeanFromJson(mData.getAnswerList().get(0));
+                setScore(SpokenQuestion.getScore((int) response.lines.get(0).score));
+
+                mSpokenWaveView.setVisibility(View.VISIBLE);
+                mRecordView.setEnabled(true);
+                mRecordAnimView.setVisibility(View.VISIBLE);
+                mPlayOrStopView.setVisibility(View.VISIBLE);
+            } else {
+                mPlayOrStopView.setVisibility(View.GONE);
+                setScore(-1);
+            }
+        } else {
             mPlayerUtil.playFinish();
-            mAudioTagHandler.stop();
+            if (mAudioTagHandler != null) {
+                mAudioTagHandler.stop();
+            }
             mSpokenUtils.playClear();
             mPlayOrStopView.setImageResource(R.drawable.spoken_play_vedio);
+            mSpokenUtils.cancel();
         }
     }
 
-    private void setScore(int num){
-        switch (num){
+    private void setScore(int num) {
+        switch (num) {
             case 0:
                 rootView.findViewById(R.id.ll_hand).setVisibility(View.VISIBLE);
-                ((ImageView)rootView.findViewById(R.id.iv_hand1)).setImageResource(R.drawable.spoken_like_gry);
-                ((ImageView)rootView.findViewById(R.id.iv_hand2)).setImageResource(R.drawable.spoken_like_gry);
-                ((ImageView)rootView.findViewById(R.id.iv_hand3)).setImageResource(R.drawable.spoken_like_gry);
+                ((ImageView) rootView.findViewById(R.id.iv_hand1)).setImageResource(R.drawable.spoken_like_gry);
+                ((ImageView) rootView.findViewById(R.id.iv_hand2)).setImageResource(R.drawable.spoken_like_gry);
+                ((ImageView) rootView.findViewById(R.id.iv_hand3)).setImageResource(R.drawable.spoken_like_gry);
                 break;
             case 1:
                 rootView.findViewById(R.id.ll_hand).setVisibility(View.VISIBLE);
-                ((ImageView)rootView.findViewById(R.id.iv_hand1)).setImageResource(R.drawable.spoken_like_red);
-                ((ImageView)rootView.findViewById(R.id.iv_hand2)).setImageResource(R.drawable.spoken_like_gry);
-                ((ImageView)rootView.findViewById(R.id.iv_hand3)).setImageResource(R.drawable.spoken_like_gry);
+                ((ImageView) rootView.findViewById(R.id.iv_hand1)).setImageResource(R.drawable.spoken_like_red);
+                ((ImageView) rootView.findViewById(R.id.iv_hand2)).setImageResource(R.drawable.spoken_like_gry);
+                ((ImageView) rootView.findViewById(R.id.iv_hand3)).setImageResource(R.drawable.spoken_like_gry);
                 break;
             case 2:
                 rootView.findViewById(R.id.ll_hand).setVisibility(View.VISIBLE);
-                ((ImageView)rootView.findViewById(R.id.iv_hand1)).setImageResource(R.drawable.spoken_like_red);
-                ((ImageView)rootView.findViewById(R.id.iv_hand2)).setImageResource(R.drawable.spoken_like_red);
-                ((ImageView)rootView.findViewById(R.id.iv_hand3)).setImageResource(R.drawable.spoken_like_gry);
+                ((ImageView) rootView.findViewById(R.id.iv_hand1)).setImageResource(R.drawable.spoken_like_red);
+                ((ImageView) rootView.findViewById(R.id.iv_hand2)).setImageResource(R.drawable.spoken_like_red);
+                ((ImageView) rootView.findViewById(R.id.iv_hand3)).setImageResource(R.drawable.spoken_like_gry);
                 break;
             case 3:
                 rootView.findViewById(R.id.ll_hand).setVisibility(View.VISIBLE);
-                ((ImageView)rootView.findViewById(R.id.iv_hand1)).setImageResource(R.drawable.spoken_like_red);
-                ((ImageView)rootView.findViewById(R.id.iv_hand2)).setImageResource(R.drawable.spoken_like_red);
-                ((ImageView)rootView.findViewById(R.id.iv_hand3)).setImageResource(R.drawable.spoken_like_red);
+                ((ImageView) rootView.findViewById(R.id.iv_hand1)).setImageResource(R.drawable.spoken_like_red);
+                ((ImageView) rootView.findViewById(R.id.iv_hand2)).setImageResource(R.drawable.spoken_like_red);
+                ((ImageView) rootView.findViewById(R.id.iv_hand3)).setImageResource(R.drawable.spoken_like_red);
                 break;
             default:
                 rootView.findViewById(R.id.ll_hand).setVisibility(View.GONE);
@@ -198,22 +202,26 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
         outState.putSerializable(KEY_NODE, mData);
     }
 
-    private View.OnTouchListener mTouchListener=new View.OnTouchListener() {
+    private View.OnTouchListener mTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
-            switch (event.getAction()){
+            switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     mPlayerUtil.playFinish();
-                    mAudioTagHandler.stop();
+                    if (mAudioTagHandler != null) {
+                        mAudioTagHandler.stop();
+                    }
                     mSpokenUtils.playClear();
                     mPlayOrStopView.setImageResource(R.drawable.spoken_play_vedio);
+                    mPlayOrStopView.setEnabled(false);
                     mRecordView.setImageResource(R.drawable.spoken_record_press);
-                    isCanPlayQuestionViedio=false;
-                    mSpokenUtils.start(getContext(),mData.getSpokenAnswer(),SpokenFragment.this);
+                    isCanPlayQuestionViedio = false;
+                    mSpokenUtils.start(getContext(), mData.getSpokenAnswer(), SpokenFragment.this);
                     break;
                 case MotionEvent.ACTION_CANCEL:
                 case MotionEvent.ACTION_UP:
                     mRecordView.setImageResource(R.drawable.spoken_record_normal);
+                    mPlayOrStopView.setEnabled(true);
                     mSpokenUtils.stop();
                     break;
             }
@@ -223,17 +231,19 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.iv_play_stop:
                 playLocationVideo(false);
                 break;
         }
     }
 
-    private void playLocationVideo(final boolean canShowDialog){
-        isCanPlayQuestionViedio=false;
+    private void playLocationVideo(final boolean canShowDialog) {
+        isCanPlayQuestionViedio = false;
         mPlayerUtil.playFinish();
-        mAudioTagHandler.stop();
+        if (mAudioTagHandler != null) {
+            mAudioTagHandler.stop();
+        }
         mSpokenUtils.play(getContext(), mFilePath, new SpokenUtils.onPlayCallback() {
             @Override
             public void onStart() {
@@ -242,11 +252,11 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
 
             @Override
             public void onEnd() {
-                if (canShowDialog||isFirstPlay){
+                if (canShowDialog || isFirstPlay) {
                     mResultDialog.show();
                 }
-                isFirstPlay=false;
-                isCanPlayQuestionViedio=true;
+                isFirstPlay = false;
+                isCanPlayQuestionViedio = true;
                 mPlayOrStopView.setImageResource(R.drawable.spoken_play_vedio);
             }
         });
@@ -254,7 +264,7 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
 
     @Override
     public void onClick(String url) {
-        if (!isCanPlayQuestionViedio){
+        if (!isCanPlayQuestionViedio) {
             return;
         }
         mSpokenUtils.playClear();
@@ -262,7 +272,9 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
         mPlayerUtil.addMediaPlayerCallBack(new MediaPlayerUtil.MediaPlayerCallBack() {
             @Override
             public void onStart(MediaPlayerUtil mpu, int duration) {
-                mAudioTagHandler.start();
+                if (mAudioTagHandler != null) {
+                    mAudioTagHandler.start();
+                }
             }
 
             @Override
@@ -272,7 +284,9 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
 
             @Override
             public void onCompletion(MediaPlayerUtil mu) {
-                mAudioTagHandler.stop();
+                if (mAudioTagHandler != null) {
+                    mAudioTagHandler.stop();
+                }
                 mRecordView.setEnabled(true);
                 mRecordAnimView.setVisibility(View.VISIBLE);
                 if (SpManager.isFristEnterSpokenQuestion()) {
@@ -286,7 +300,9 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
 
             @Override
             public void onError(MediaPlayerUtil mu) {
-                mAudioTagHandler.stop();
+                if (mAudioTagHandler != null) {
+                    mAudioTagHandler.stop();
+                }
                 ToastManager.showMsg(R.string.net_null);
             }
         });
@@ -296,9 +312,9 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
 
     @Override
     public void onStartRecord(String filePath) {
-        this.mFilePath=filePath;
+        this.mFilePath = filePath;
         mSpokenWaveView.start();
-        Animation animation=AnimationUtils.loadAnimation(getContext(),R.anim.anim_spoken_record);
+        Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.anim_spoken_record);
         mRecordAnimView.startAnimation(animation);
         mSpokenWaveView.setVisibility(View.VISIBLE);
     }
@@ -326,8 +342,8 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
 
     @Override
     public void onResult(String result) {
-        SpokenResponse response=mData.getBeanFromJson(result);
-        mResultDialog.setScore(mData.getScore((int) response.lines.get(0).score));
+        SpokenResponse response = SpokenQuestion.getBeanFromJson(result);
+        mResultDialog.setScore(SpokenQuestion.getScore((int) response.lines.get(0).score));
         mData.getAnswerList().clear();
         mData.getAnswerList().add(result);
         mData.setHasAnswered(true);
@@ -341,27 +357,27 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
     }
 
     @Override
-    public void onNoPermission(String text){
+    public void onNoPermission(String text) {
         mSpokenWaveView.setVisibility(View.GONE);
-        isCanPlayQuestionViedio=true;
+        isCanPlayQuestionViedio = true;
         ToastManager.showMsg(text);
     }
 
     @Override
     public void onError(String result) {
         mSpokenWaveView.setVisibility(View.GONE);
-        isCanPlayQuestionViedio=true;
-        if (mErrorDialog==null){
-            mErrorDialog=new SpokenErrorDialog(getContext());
+        isCanPlayQuestionViedio = true;
+        if (mErrorDialog == null) {
+            mErrorDialog = new SpokenErrorDialog(getContext());
         }
         mErrorDialog.show();
     }
 
     @Override
     public void disMissCallback() {
-        if (mData.getAnswerList()!=null&&!mData.getAnswerList().isEmpty()) {
-            SpokenResponse response = mData.getBeanFromJson(mData.getAnswerList().get(0));
-            setScore(mData.getScore((int) response.lines.get(0).score));
+        if (mData.getAnswerList() != null && !mData.getAnswerList().isEmpty()) {
+            SpokenResponse response = SpokenQuestion.getBeanFromJson(mData.getAnswerList().get(0));
+            setScore(SpokenQuestion.getScore((int) response.lines.get(0).score));
         }
     }
 }

@@ -40,6 +40,7 @@ public class SpokenResultDialog {
         mDialog.setContentView(view,layoutParams);
         mDialog.setOnDismissListener(mDismissListener);
         mDialog.setCanceledOnTouchOutside(false);
+        mDialog.setCancelable(false);
     }
 
     public static SpokenResultDialog create(Context context){

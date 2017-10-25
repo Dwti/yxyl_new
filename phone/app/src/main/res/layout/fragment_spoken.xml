@@ -7,132 +7,138 @@
 
     <include layout="@layout/answerquestion_common_number" />
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+    <include
+        android:id="@+id/complex_stem_layout"
+        layout="@layout/common_stem"
+        android:visibility="gone" />
 
-        <LinearLayout
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <include
-                android:id="@+id/complex_stem_layout"
-                layout="@layout/common_stem"
-                android:visibility="gone" />
+            android:fillViewport="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/color_ffffff"
-                android:orientation="vertical"
-                android:paddingBottom="25dp"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:paddingTop="25dp">
-
-                <com.yanxiu.gphone.student.customviews.SpokenSpanTextView
-                    android:id="@+id/tv_question"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/choose_fragment_item_content_text_size"
-                    android:textColor="@color/color_333333"/>
+                android:orientation="vertical">
 
                 <LinearLayout
-                    android:id="@+id/ll_hand"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:orientation="horizontal"
-                    android:visibility="gone"
-                    android:paddingTop="20dp">
+                    android:layout_marginBottom="157dp"
+                    android:background="@color/color_ffffff"
+                    android:orientation="vertical"
+                    android:paddingBottom="25dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingTop="25dp">
 
-                    <ImageView
-                        android:id="@+id/iv_hand1"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp" />
+                    <com.yanxiu.gphone.student.customviews.SpokenSpanTextView
+                        android:id="@+id/tv_question"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/color_333333"
+                        android:textSize="@dimen/choose_fragment_item_content_text_size" />
 
-                    <ImageView
-                        android:id="@+id/iv_hand2"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_marginLeft="3dp" />
+                    <LinearLayout
+                        android:id="@+id/ll_hand"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:orientation="horizontal"
+                        android:paddingTop="20dp"
+                        android:visibility="gone">
 
-                    <ImageView
-                        android:id="@+id/iv_hand3"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_marginLeft="3dp" />
+                        <ImageView
+                            android:id="@+id/iv_hand1"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp" />
+
+                        <ImageView
+                            android:id="@+id/iv_hand2"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginLeft="3dp" />
+
+                        <ImageView
+                            android:id="@+id/iv_hand3"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginLeft="3dp" />
+                    </LinearLayout>
+
                 </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/shadow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <include layout="@layout/shadow_view" />
+                </LinearLayout>
+
+                <include
+                    android:id="@+id/bottompadding_layout"
+                    layout="@layout/simplequestion_bottom_padding"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/question_bottom_layout_height" />
+
             </LinearLayout>
+
+        </ScrollView>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:paddingBottom="86dp">
+
+            <com.yanxiu.gphone.student.customviews.SpokenWaveView
+                android:id="@+id/sw_wave"
+                android:layout_width="match_parent"
+                android:layout_height="117dp"
+                android:layout_centerVertical="true" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:paddingBottom="40dp">
-
-                <com.yanxiu.gphone.student.customviews.SpokenWaveView
-                    android:id="@+id/sw_wave"
-                    android:layout_width="match_parent"
-                    android:layout_height="117dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerVertical="true" />
+                android:layout_height="wrap_content">
 
                 <RelativeLayout
-                    android:layout_width="match_parent"
+                    android:id="@+id/rl_record"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true">
-
-                    <RelativeLayout
-                        android:id="@+id/rl_record"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true">
-
-                        <ImageView
-                            android:id="@+id/iv_record"
-                            android:layout_width="117dp"
-                            android:layout_height="117dp"
-                            android:src="@drawable/selector_spoken_record" />
-
-                        <ImageView
-                            android:id="@+id/iv_record_anim"
-                            android:layout_width="117dp"
-                            android:layout_height="117dp"
-                            android:visibility="gone"
-                            android:src="@drawable/spoken_record_anim"/>
-                    </RelativeLayout>
+                    android:layout_centerInParent="true">
 
                     <ImageView
-                        android:id="@+id/iv_play_stop"
-                        android:layout_width="56dp"
-                        android:layout_height="56dp"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="25dp"
-                        android:layout_toRightOf="@+id/rl_record"
-                        android:src="@drawable/spoken_play_vedio"
+                        android:id="@+id/iv_record"
+                        android:layout_width="117dp"
+                        android:layout_height="117dp"
+                        android:src="@drawable/selector_spoken_record" />
+
+                    <ImageView
+                        android:id="@+id/iv_record_anim"
+                        android:layout_width="117dp"
+                        android:layout_height="117dp"
+                        android:src="@drawable/spoken_record_anim"
                         android:visibility="gone" />
                 </RelativeLayout>
 
+                <ImageView
+                    android:id="@+id/iv_play_stop"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="25dp"
+                    android:layout_toRightOf="@+id/rl_record"
+                    android:src="@drawable/spoken_play_vedio"
+                    android:visibility="gone" />
             </RelativeLayout>
 
-            <LinearLayout
-                android:id="@+id/shadow"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+        </RelativeLayout>
 
-                <include layout="@layout/shadow_view" />
-            </LinearLayout>
-
-            <include
-                android:id="@+id/bottompadding_layout"
-                layout="@layout/simplequestion_bottom_padding"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/question_bottom_layout_height" />
-        </LinearLayout>
-    </ScrollView>
-
+    </RelativeLayout>
 </LinearLayout>

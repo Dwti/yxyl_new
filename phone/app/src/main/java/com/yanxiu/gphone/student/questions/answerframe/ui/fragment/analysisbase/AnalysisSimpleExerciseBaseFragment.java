@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.customviews.ListenerSeekBarLayout;
 import com.yanxiu.gphone.student.customviews.analysis.AnalysisAnsewrAnslysisView;
+import com.yanxiu.gphone.student.customviews.analysis.AnalysisQuestionSpokenResultView;
 import com.yanxiu.gphone.student.customviews.analysis.AnswerLayoutView;
 import com.yanxiu.gphone.student.customviews.analysis.PointLayoutView;
 import com.yanxiu.gphone.student.customviews.analysis.AnalysisDifficultyView;
@@ -48,6 +49,7 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
 
     public View mRootView;
     public LinearLayout mAnsewr_container, mAnalysis_container;
+    private AnalysisQuestionSpokenResultView mAnswerSpokenResultView;
     public AnalysisQuestionResultView mAnswerResultView;//答题结果view
     public ImageView mYesno_img;//答题结果对应的对错img，一定要和mAnswerResultView成对出现或隐藏
     public AnalysisScoreView mScoreView;//评分view
@@ -84,6 +86,8 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
     private void initView(LayoutInflater inflater, @Nullable ViewGroup container) {
         mAnsewr_container = (LinearLayout) mRootView.findViewById(R.id.ansewr_container);
         mAnalysis_container = (LinearLayout) mRootView.findViewById(R.id.analysis_container);
+
+        mAnswerSpokenResultView= (AnalysisQuestionSpokenResultView) mRootView.findViewById(R.id.answerSpokenResult);
 
         mAnswerResultView = (AnalysisQuestionResultView) mRootView.findViewById(R.id.answerResult);
         mYesno_img = (ImageView) mRootView.findViewById(R.id.yesno_img);
@@ -185,6 +189,14 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
      * 显示解析view
      */
     public abstract void initAnalysisView();
+
+    /**
+     * 仅限于口语作答结果
+     * */
+    public void showAnswerSpokenResultView(int score){
+        mAnswerSpokenResultView.setVisibility(View.VISIBLE);
+        mAnswerSpokenResultView.setData(score);
+    }
 
     /**
      * 答题结果view

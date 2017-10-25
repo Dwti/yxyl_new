@@ -30,38 +30,12 @@
                 android:paddingRight="15dp"
                 android:paddingTop="25dp">
 
-                <TextView
+                <com.yanxiu.gphone.student.customviews.SpokenSpanTextView
                     android:id="@+id/tv_question"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/choose_fragment_item_content_text_size"
                     android:textColor="@color/color_333333"/>
-
-                <LinearLayout
-                    android:id="@+id/ll_hand"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:orientation="horizontal"
-                    android:paddingTop="20dp">
-
-                    <ImageView
-                        android:id="@+id/iv_hand1"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp" />
-
-                    <ImageView
-                        android:id="@+id/iv_hand2"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_marginLeft="3dp" />
-
-                    <ImageView
-                        android:id="@+id/iv_hand3"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_marginLeft="3dp" />
-                </LinearLayout>
 
             </LinearLayout>
 
