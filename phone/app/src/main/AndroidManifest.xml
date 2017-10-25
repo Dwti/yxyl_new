@@ -152,6 +152,7 @@
             android:name=".questions.answerframe.ui.activity.AnswerQuestionActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:configChanges="orientation|screenSize|keyboard"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".questions.answerframe.ui.activity.AnalysisQuestionActivity"

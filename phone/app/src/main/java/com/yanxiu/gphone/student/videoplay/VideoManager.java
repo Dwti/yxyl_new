@@ -157,6 +157,9 @@ public class VideoManager {
         this.state = state;
         playerView.setVideoState(state);
 
+        if(playerView.getPlayer() == null)
+            return;
+
         if ((state != VideoState.Normal) && (state != VideoState.Loading)) {
             playerView.getPlayer().setPlayWhenReady(false);
         }
@@ -295,6 +298,10 @@ public class VideoManager {
         if ((listener != null) && (isHeadFinished)) {
             listener.onHeadFinish();
         }
+    }
+
+    public void setBodyPlayWhenReady(boolean play){
+        bodyPlayer.setPlayWhenReady(play);
     }
 
     private void stopAndRecoverCurrentVideo(boolean considerFourG) {

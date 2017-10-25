@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#99000000">
+
+    <LinearLayout
+        android:layout_width="330dp"
+        android:layout_height="400dp"
+        android:background="@android:color/holo_blue_light"
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        android:padding="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/color_89e00d"
+            android:gravity="center_horizontal">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="182dp">
+
+                <ImageView
+                    android:id="@+id/tips_cover"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/cover" />
+
+                <ImageView
+                    android:id="@+id/tips_play"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/bg_play_video" />
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:textColor="#336600"
+                android:textSize="19dp"
+                android:text="请先看一段视频"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#336600"
+                android:textSize="19dp"
+                android:text="再做后面的题目"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#69ad0a"
+                android:textSize="13dp"
+                android:text="答题中也可以继续观看视频"
+                android:layout_marginTop="15dp"/>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <com.yanxiu.gphone.student.customviews.WavesLayout
+                android:id="@+id/wavesLayout"
+                android:layout_width="250dp"
+                android:layout_height="50dp"
+                android:layout_marginBottom="30dp"
+                app:waves_radius="@dimen/wavesRadius"
+                app:waves_animend_alpha="102">
+
+                <Button
+                    android:id="@+id/btn_skip"
+                    style="@style/CommonWavesLayout"
+                    android:text="跳过，开始作答"
+                    android:textColor="@color/color_89e00d"/>
+            </com.yanxiu.gphone.student.customviews.WavesLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+</RelativeLayout>
+
