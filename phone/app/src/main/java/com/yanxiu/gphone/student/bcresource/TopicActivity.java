@@ -9,10 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -38,11 +36,9 @@ import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.util.DESBodyDealer;
 import com.yanxiu.gphone.student.util.DataFetcher;
 import com.yanxiu.gphone.student.util.ToastManager;
-import com.yanxiu.gphone.student.videoplay.VideoActivity;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by sunpeng on 2017/10/16.
@@ -76,6 +72,8 @@ public class TopicActivity extends YanxiuBaseActivity{
 
     private PopupWindow mPopWindow;
 
+    private boolean shouldRefreshWhenResume = false;
+
 
     public static void invoke(Activity activity, String type, String id, String name){
         Intent intent = new Intent(activity,TopicActivity.class);
@@ -92,6 +90,15 @@ public class TopicActivity extends YanxiuBaseActivity{
         initView();
         initListener();
         initData();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(shouldRefreshWhenResume){
+            getTopicPaper(1);
+            shouldRefreshWhenResume = false;
+        }
     }
 
     private void initView(){
@@ -493,6 +500,7 @@ public class TopicActivity extends YanxiuBaseActivity{
 
     private void openAnswerReportUI(String paperId){
         AnswerReportActicity.invoke(this,paperId,Constants.FROM_BC_RESOURCE);
+        shouldRefreshWhenResume = true;
     }
 
     HttpCallback<PaperResponse> mReportCallback = new HttpCallback<PaperResponse>() {
@@ -527,6 +535,7 @@ public class TopicActivity extends YanxiuBaseActivity{
 
     private void openAnswerQuestionUI(String paperId){
         AnswerQuestionActivity.invoke(this,paperId,Constants.FROM_BC_RESOURCE);
+        shouldRefreshWhenResume =true;
     }
 
     HttpCallback<PaperResponse> mPaperCallback = new EXueELianBaseCallback<PaperResponse>() {
