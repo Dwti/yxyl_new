@@ -26,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.YanxiuApplication;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
@@ -33,6 +34,7 @@ import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.AnswerCardSubmitDialog;
 import com.yanxiu.gphone.student.customviews.QuestionProgressView;
 import com.yanxiu.gphone.student.customviews.QuestionTimeTextView;
+import com.yanxiu.gphone.student.db.SaveAnswerDBHelper;
 import com.yanxiu.gphone.student.db.SpManager;
 import com.yanxiu.gphone.student.exercise.request.GenQuesRequest;
 import com.yanxiu.gphone.student.questions.answerframe.adapter.QAViewPagerAdapter;
@@ -109,7 +111,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
 
 
     private Button btn_skip_video;
-    private ImageView video_float, video_collapse, video_play, video_cover, tips_play;
+    private ImageView video_float, video_collapse, video_play, video_cover, tips_play, tips_cover;
     private View layout_cover,video_tips;
 
     private PlayerView mPlayerView;
@@ -155,6 +157,8 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         mPaper.getPaperStatus().setBegintime(mStartTime+"");
         mTitleString = mPaper.getName();
 
+        mHasShowVideoGuide = SaveAnswerDBHelper.isHasShowVideTips(mPaper.getId());
+
         for(int i =0; i < mPaper.getQuestions().size(); i++){
             if(i%2==0){
                 mPaper.getQuestions().get(i).setHasVideo(false);
@@ -194,6 +198,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
 
         video_tips = findViewById(R.id.video_tips);
         tips_play  = (ImageView) findViewById(R.id.tips_play);
+        tips_cover = (ImageView) findViewById(R.id.tips_cover);
         btn_skip_video = (Button) findViewById(R.id.btn_skip);
         layout_cover = findViewById(R.id.video_cover);
         video_float = (ImageView) findViewById(R.id.iv_float_play);
@@ -204,9 +209,17 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
 
         if(mPaper.getQuestions().get(0).isHasVideo()){
             video_float.setVisibility(View.VISIBLE);
-            video_tips.setVisibility(View.VISIBLE);
-            mHasShowVideoGuide = true;
+            if(!mHasShowVideoGuide){
+                video_tips.setVisibility(View.VISIBLE);
+                mHasShowVideoGuide = true;
+                SaveAnswerDBHelper.setHasShowVideoTips(mPaper.getId(),true);
+            }
         }
+
+//        if(Constants.FROM_BC_RESOURCE.equals(mFromType)){
+//            Glide.with(this).load(mPaper.getCover()).asBitmap().into(video_cover);
+//            Glide.with(this).load(mPaper.getCover()).asBitmap().into(tips_cover);
+//        }
 
         initViewPager();
         setListener();
@@ -236,12 +249,15 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
 
             @Override
             public void onPageSelected(int position) {
+                if(!Constants.FROM_BC_RESOURCE.equals(mFromType))
+                    return;
                 collapseVideo();
                 if(mPaper.getQuestions().get(position).isHasVideo()){
                     video_float.setVisibility(View.VISIBLE);
                     if(!mHasShowVideoGuide){
                         video_tips.setVisibility(View.VISIBLE);
                         mHasShowVideoGuide = true;
+                        SaveAnswerDBHelper.setHasShowVideoTips(mPaper.getId(),true);
                     }
                 }else {
                     video_float.setVisibility(View.GONE);
@@ -735,9 +751,16 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
      *
      * @param activity
      */
-    public static void invoke(Activity activity, String key) {
+    public static void invoke(Activity activity, String paperId) {
         Intent intent = new Intent(activity, AnswerQuestionActivity.class);
-        intent.putExtra(Constants.EXTRA_PAPER, key);
+        intent.putExtra(Constants.EXTRA_PAPER, paperId);
+        activity.startActivity(intent);
+    }
+
+    public static void invoke(Activity activity, String paperId, String fromType) {
+        Intent intent = new Intent(activity, AnswerQuestionActivity.class);
+        intent.putExtra(Constants.EXTRA_PAPER, paperId);
+        intent.putExtra(Constants.EXTRA_FROMTYPE, fromType);
         activity.startActivity(intent);
     }
 
@@ -747,9 +770,9 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
      * @param activity
      * @param fromType  练习页面 ：Constants.MAINAVTIVITY_FROMTYPE_EXERCISE
      */
-    public static void invoke(Activity activity, String key, String fromType, GenQuesRequest request) {
+    public static void invoke(Activity activity, String paperId, String fromType, GenQuesRequest request) {
         Intent intent = new Intent(activity, AnswerQuestionActivity.class);
-        intent.putExtra(Constants.EXTRA_PAPER, key);
+        intent.putExtra(Constants.EXTRA_PAPER, paperId);
         intent.putExtra(Constants.EXTRA_FROMTYPE, fromType);
         intent.putExtra(Constants.EXTRA_REQUEST,request);
         activity.startActivity(intent);

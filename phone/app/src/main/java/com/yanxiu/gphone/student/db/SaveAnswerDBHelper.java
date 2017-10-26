@@ -4,6 +4,7 @@ package com.yanxiu.gphone.student.db;
 import com.yanxiu.gphone.student.questions.answerframe.bean.AnswerBean;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.util.LoginInfo;
+import com.yanxiu.gphone.student.videoplay.VideoConfigBean;
 
 import org.litepal.crud.DataSupport;
 
@@ -55,6 +56,21 @@ public class SaveAnswerDBHelper {
 
     }
 
+    public static boolean isHasShowVideTips(String paperId){
+        boolean hasShow = false;
+        List<VideoConfigBean> result = DataSupport.where("paperId = ?", paperId).find(VideoConfigBean.class);
+        if(result != null && result.size() > 0){
+            hasShow = result.get(0).isHasShowVideoTips();
+        }
+        return hasShow;
+    }
+
+    public static void setHasShowVideoTips(String paperId, boolean show){
+        VideoConfigBean bean = new VideoConfigBean();
+        bean.setPaperId(paperId);
+        bean.setHasShowVideoTips(show);
+        bean.save();
+    }
     public static String makeId(BaseQuestion question) {
         String userId = LoginInfo.getUID();
         String id = null;

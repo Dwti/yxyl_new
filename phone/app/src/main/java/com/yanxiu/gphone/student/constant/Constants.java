@@ -47,6 +47,7 @@ public class Constants {
     public static final String MAINAVTIVITY_REFRESH = "mainActivity_refresh";//跳转到首页需要刷新数据
     public static final String MAINAVTIVITY_FROMTYPE_EXERCISE = "mainActivity_fromtype_exxercise";//从练习页跳转到首页标识
     public static final String MAINAVTIVITY_FROMTYPE_EXERCISE_HISTORY = "mainActivity_fromtype_exxercise_history";//从练习页跳转到首页标识
+    public static final String FROM_BC_RESOURCE = "FROM_BC_RESOURCE";//从练习页跳转到首页标识
     public static final String STUDENT_UPLOAD = "student/yanxiustudent.apk";
     public static final char CHARACTER_SLASH = '/';
     public static final String DOMYBOXDIR = "YanXiu/app/student";

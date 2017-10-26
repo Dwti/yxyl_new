@@ -24,9 +24,17 @@ import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.bcresource.adapter.TopicListAdapter;
 import com.yanxiu.gphone.student.bcresource.bean.TopicBean;
+import com.yanxiu.gphone.student.bcresource.request.RMSPaperRequest;
 import com.yanxiu.gphone.student.bcresource.request.TopicPaperRequest;
 import com.yanxiu.gphone.student.bcresource.response.TopicPaperResponse;
+import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.LoadingView;
+import com.yanxiu.gphone.student.homework.response.PaperResponse;
+import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
+import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerQuestionActivity;
+import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
+import com.yanxiu.gphone.student.util.DESBodyDealer;
+import com.yanxiu.gphone.student.util.DataFetcher;
 import com.yanxiu.gphone.student.util.ToastManager;
 import com.yanxiu.gphone.student.videoplay.VideoActivity;
 
@@ -465,8 +473,56 @@ public class TopicActivity extends YanxiuBaseActivity{
     TopicListAdapter.OnItemClickListener mOnItemClickListener = new TopicListAdapter.OnItemClickListener() {
         @Override
         public void onClick(TopicBean bean, int position) {
-            Intent intent = new Intent(TopicActivity.this, VideoActivity.class);
-            startActivity(intent);
+//            Intent intent = new Intent(TopicActivity.this, VideoActivity.class);
+//            startActivity(intent);
+            if(bean.getPaperStatus() != null && bean.getPaperStatus().getStatus() == 2){
+                getReport(bean.getId());
+            }else {
+                getRMSPaper(bean.getId());
+            }
+        }
+    };
+
+    private void getReport(String id){
+
+    }
+
+    private void openAnswerReportUI(){
+
+    }
+
+    private void getRMSPaper(String id){
+        RMSPaperRequest request = new RMSPaperRequest();
+        request.bodyDealer = new DESBodyDealer();
+        request.setRmsPaperId(id);
+        request.setType(mType);
+        request.startRequest(PaperResponse.class,mPaperCallback);
+    }
+
+    private void openAnswerQuestionUI(String paperId){
+        AnswerQuestionActivity.invoke(this,paperId,Constants.FROM_BC_RESOURCE);
+    }
+
+    HttpCallback<PaperResponse> mPaperCallback = new EXueELianBaseCallback<PaperResponse>() {
+        @Override
+        public void onResponse(RequestBase request, PaperResponse ret) {
+            if(ret.getStatus().getCode() == 0){
+                if(ret.getData().size() > 0){
+                    QuestionShowType type = QuestionShowType.ANSWER;
+                    Paper paper = new Paper(ret.getData().get(0), type);
+                    DataFetcher.getInstance().save(paper.getId(),paper);
+                    openAnswerQuestionUI(paper.getId());
+                }else {
+                    ToastManager.showMsg("试卷为空");
+                }
+            }else {
+                ToastManager.showMsg(ret.getStatus().getDesc());
+            }
+        }
+
+        @Override
+        public void onFail(RequestBase request, Error error) {
+            ToastManager.showMsg(error.getLocalizedMessage());
         }
     };
 }
