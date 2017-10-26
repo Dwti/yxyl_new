@@ -14,12 +14,13 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
+import com.yanxiu.gphone.student.bcresource.request.ResetTopicPaperHistoryRequest;
 import com.yanxiu.gphone.student.constant.Constants;
+import com.yanxiu.gphone.student.customviews.AnswerCardSubmitDialog;
 import com.yanxiu.gphone.student.customviews.AnswerReportTitleView;
 import com.yanxiu.gphone.student.customviews.LoadingView;
 import com.yanxiu.gphone.student.customviews.UnMoveGridView;
@@ -67,11 +68,11 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
     private RelativeLayout mNopigai_layout, mPigai_layout;
 
     private GradientEffectImpl mGradientEffect;
-    private View mTitle_bar;
+    private View mTitle_bar, layout_reset_answer;
     private TextView mTitle;
     private ImageView mBackview;
     private View mOnceagainLayout;
-    private Button mOnceagain;//再练一组
+    private Button mOnceagain,mBtnResetAnswer;//再练一组
     //批改view
     private TextView mTextview_correct;//正确率
     private TextView mTextview_correct_shadow;//正确率的阴影
@@ -88,6 +89,8 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
     private int mRightCount;//做对的题数
     private int mTotalCount;//总题数
     private String mCostTime = "0";//用时
+
+    private AnswerCardSubmitDialog mDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -156,8 +159,16 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
         mTotalnumber = (TextView) findViewById(R.id.totalnumber);
         mYesnumber = (TextView) findViewById(R.id.yesnumber);
         mTime = (TextView) findViewById(R.id.time);
+        layout_reset_answer = findViewById(R.id.reset_answer);
+        mBtnResetAnswer = (Button) findViewById(R.id.btn_reset_answer);
+
+        mBtnResetAnswer.setOnClickListener(this);
 
         mCardGrid = (LinearLayout) findViewById(R.id.card_grid);
+
+        if(!Constants.FROM_BC_RESOURCE.equals(mFromType)){
+            layout_reset_answer.setVisibility(View.GONE);
+        }
 
         if ("1".equals(mStatus)) {
             //已经批改
@@ -258,6 +269,13 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
         activity.startActivity(intent);
     }
 
+    public static void invoke(Activity activity, String key, String fromType) {
+        Intent intent = new Intent(activity, AnswerReportActicity.class);
+        intent.putExtra(Constants.EXTRA_PAPER, key);
+        intent.putExtra(Constants.EXTRA_FROMTYPE, fromType);
+        activity.startActivity(intent);
+    }
+
     /**
      * 练习跳转AnswerReportActicity
      *
@@ -311,9 +329,55 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
                     });
                 }
                 break;
+            case R.id.btn_reset_answer:
+                showResetHistoryDialog();
+                break;
         }
     }
 
+    private void openAnswerQuestionUI(String paperId){
+        AnswerQuestionActivity.invoke(this,paperId,Constants.FROM_BC_RESOURCE);
+    }
+
+    private void showResetHistoryDialog(){
+        if(mDialog == null){
+            mDialog = new AnswerCardSubmitDialog(this);
+            mDialog.setCancelable(true);
+            mDialog.setAnswerCardSubmitDialogClickListener(new AnswerCardSubmitDialog.AnswerCardSubmitDialogClickListener() {
+                @Override
+                public void onDialogButtonClick(View v, AnswerCardSubmitDialog.SubmitState state) {
+                    resetTopicPaperHistory();
+                    mDialog.dismiss();
+                }
+            });
+        }
+        mDialog.showResetConfirmView();
+    }
+
+    private void resetTopicPaperHistory(){
+        ResetTopicPaperHistoryRequest request = new ResetTopicPaperHistoryRequest();
+        request.bodyDealer = new DESBodyDealer();
+        request.setPaperId(mKey);
+        request.startRequest(PaperResponse.class, new EXueELianBaseCallback<PaperResponse>() {
+            @Override
+            protected void onResponse(RequestBase request, PaperResponse response) {
+                if(response.getStatus().getCode() == 0){
+                    QuestionShowType type = QuestionShowType.ANSWER;
+                    Paper paper = new Paper(response.getData().get(0), type);
+                    DataFetcher.getInstance().save(paper.getId(),paper);
+                    openAnswerQuestionUI(paper.getId());
+                    finish();
+                }else {
+                    ToastManager.showMsg(response.getStatus().getDesc());
+                }
+            }
+
+            @Override
+            public void onFail(RequestBase request, Error error) {
+                    ToastManager.showMsg(error.getLocalizedMessage());
+            }
+        });
+    }
     @Override
     protected void onDestroy() {
         if (mGradientEffect != null) {

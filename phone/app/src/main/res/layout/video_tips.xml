@@ -78,7 +78,10 @@
 
                 <Button
                     android:id="@+id/btn_skip"
-                    style="@style/CommonWavesLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/selector_common_button_bg"
+                    android:textSize="16dp"
                     android:text="跳过，开始作答"
                     android:textColor="@color/color_89e00d"/>
             </com.yanxiu.gphone.student.customviews.WavesLayout>

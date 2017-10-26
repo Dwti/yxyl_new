@@ -31,7 +31,9 @@ import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.LoadingView;
 import com.yanxiu.gphone.student.homework.response.PaperResponse;
 import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
+import com.yanxiu.gphone.student.questions.answerframe.http.request.AnswerReportRequest;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerQuestionActivity;
+import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerReportActicity;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.util.DESBodyDealer;
 import com.yanxiu.gphone.student.util.DataFetcher;
@@ -476,7 +478,7 @@ public class TopicActivity extends YanxiuBaseActivity{
 //            Intent intent = new Intent(TopicActivity.this, VideoActivity.class);
 //            startActivity(intent);
             if(bean.getPaperStatus() != null && bean.getPaperStatus().getStatus() == 2){
-                getReport(bean.getId());
+                getReport(bean.getPaperStatus().getPpid());
             }else {
                 getRMSPaper(bean.getId());
             }
@@ -484,12 +486,36 @@ public class TopicActivity extends YanxiuBaseActivity{
     };
 
     private void getReport(String id){
-
+        AnswerReportRequest reportRequest = new AnswerReportRequest(id);
+        reportRequest.bodyDealer = new DESBodyDealer();
+        reportRequest.startRequest(PaperResponse.class,mReportCallback);
     }
 
-    private void openAnswerReportUI(){
-
+    private void openAnswerReportUI(String paperId){
+        AnswerReportActicity.invoke(this,paperId,Constants.FROM_BC_RESOURCE);
     }
+
+    HttpCallback<PaperResponse> mReportCallback = new HttpCallback<PaperResponse>() {
+        @Override
+        public void onSuccess(RequestBase request, PaperResponse ret) {
+            if(ret.getStatus().getCode() == 0){
+                if(ret.getData().size() > 0){
+                    Paper paper = new Paper(ret.getData().get(0), QuestionShowType.ANALYSIS);
+                    DataFetcher.getInstance().save(paper.getId(),paper);
+                    openAnswerReportUI(paper.getId());
+                }else {
+                    ToastManager.showMsg("报告为空");
+                }
+            }else {
+                ToastManager.showMsg(ret.getStatus().getDesc());
+            }
+        }
+
+        @Override
+        public void onFail(RequestBase request, Error error) {
+            ToastManager.showMsg(error.getLocalizedMessage());
+        }
+    };
 
     private void getRMSPaper(String id){
         RMSPaperRequest request = new RMSPaperRequest();

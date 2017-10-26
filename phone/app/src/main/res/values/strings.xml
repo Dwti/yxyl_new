@@ -313,6 +313,9 @@
     <string name="submit_exericse_answer">确定要退出答题？</string>
     <string name="homework_delete">当前作业已被老师删除</string>
 
+    <string name="reset_topic_1">进行重新作答，该报告将被清除</string>
+    <string name="reset_topic_2">您确定要重新作答吗?</string>
+
     <string name="input_old_password">请输入原密码</string>
 
     <string name="no_wrong_data">真棒!还没有错题哦</string>

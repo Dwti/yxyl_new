@@ -57,17 +57,23 @@ public class VideoManager {
         FourG,
         SuiTangLian
     }
+
     private VideoState state = VideoState.Normal;
     private boolean userWantPlayWhenReady = true;
     private boolean realPlayWhenReady = true;
 
     public interface OnCourseEventListener {
         void onRotate();
+
         void onHeadFinish();
+
         void onBodyFinish();
+
         void onReplayFromFirstVideo();
     }
+
     private OnCourseEventListener listener;
+
     public void setOnCourseEventListener(OnCourseEventListener listener) {
         this.listener = listener;
     }
@@ -76,6 +82,7 @@ public class VideoManager {
 
     private SimpleExoPlayer headPlayer;
     private SimpleExoPlayer bodyPlayer;
+
     public PlayerView getPlayerView() {
         return playerView;
     }
@@ -157,7 +164,7 @@ public class VideoManager {
         this.state = state;
         playerView.setVideoState(state);
 
-        if(playerView.getPlayer() == null)
+        if (playerView.getPlayer() == null)
             return;
 
         if ((state != VideoState.Normal) && (state != VideoState.Loading)) {
@@ -300,8 +307,9 @@ public class VideoManager {
         }
     }
 
-    public void setBodyPlayWhenReady(boolean play){
-        bodyPlayer.setPlayWhenReady(play);
+    public void setBodyPlayWhenReady(boolean play) {
+        if (bodyPlayer != null)
+            bodyPlayer.setPlayWhenReady(play);
     }
 
     private void stopAndRecoverCurrentVideo(boolean considerFourG) {
@@ -435,6 +443,7 @@ public class VideoManager {
 
     //region 旋转屏
     public boolean isPortrait = true;
+
     public void updatePortraitLandscapeControllerView() {
         boolean isHead = (playerView.getPlayer() == headPlayer ? true : false);
         if (isPortrait && isHead) {
@@ -512,7 +521,6 @@ public class VideoManager {
             handler.postDelayed(updateProgressAction, delayMs);
         }
     }
-
 
 
     //endregion
