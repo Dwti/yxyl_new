@@ -133,4 +133,5 @@ public class PaperTestBean extends BaseBean {
     public void setTypeid(String typeid) {
         this.typeid = typeid;
     }
+
 }

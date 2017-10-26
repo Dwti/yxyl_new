@@ -90,6 +90,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
     private ImageView mBackView;//返回按钮
     private ImageView mShowAnswerCardView;//显示答题卡
     private View mRootView,mOverlay;
+    private boolean mHasShowVideoGuide = false;
 
     private InputMethodManager mInputMethodManager;
 
@@ -153,6 +154,14 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         mStartTime = System.currentTimeMillis();
         mPaper.getPaperStatus().setBegintime(mStartTime+"");
         mTitleString = mPaper.getName();
+
+        for(int i =0; i < mPaper.getQuestions().size(); i++){
+            if(i%2==0){
+                mPaper.getQuestions().get(i).setHasVideo(false);
+            }else {
+                mPaper.getQuestions().get(i).setHasVideo(true);
+            }
+        }
     }
 
     /**
@@ -193,8 +202,11 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         video_cover = (ImageView) findViewById(R.id.iv_cover);
         mPlayerView = (PlayerView) findViewById(R.id.player_view);
 
-        video_float.setVisibility(View.VISIBLE);
-        video_tips.setVisibility(View.VISIBLE);
+        if(mPaper.getQuestions().get(0).isHasVideo()){
+            video_float.setVisibility(View.VISIBLE);
+            video_tips.setVisibility(View.VISIBLE);
+            mHasShowVideoGuide = true;
+        }
 
         initViewPager();
         setListener();
@@ -225,6 +237,16 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
             @Override
             public void onPageSelected(int position) {
                 collapseVideo();
+                if(mPaper.getQuestions().get(position).isHasVideo()){
+                    video_float.setVisibility(View.VISIBLE);
+                    if(!mHasShowVideoGuide){
+                        video_tips.setVisibility(View.VISIBLE);
+                        mHasShowVideoGuide = true;
+                    }
+                }else {
+                    video_float.setVisibility(View.GONE);
+                }
+
             }
 
             @Override
@@ -615,6 +637,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
 
 
     private void collapseVideo(){
+        layout_cover.setVisibility(View.GONE);
         mPlayerView.setVisibility(View.GONE);
         video_collapse.setVisibility(View.GONE);
         destoryVideo();
@@ -734,6 +757,11 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
 
     @Override
     public void onBackPressed() {
+        if(mPlayerView.getVisibility() == View.VISIBLE && !mVideoManager.isPortrait){
+            rotateScreen();
+            collapseVideo();
+            return;
+        }
         if(mAnswerCardFragment != null && mAnswerCardFragment.isAdded()){
             getSupportFragmentManager().beginTransaction().remove(mAnswerCardFragment).commit();
             controlListenView(false);
@@ -870,6 +898,11 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         @Override
         public void onRotate() {
             rotateScreen();
+            if(mVideoManager.isPortrait){
+                video_collapse.setVisibility(View.VISIBLE);
+            }else {
+                video_collapse.setVisibility(View.GONE);
+            }
         }
 
         @Override
@@ -962,11 +995,9 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
     private void rotateScreen() {
         if (mVideoManager.isPortrait) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-            video_collapse.setVisibility(View.GONE);
             setLandscapeStyle();
         } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-            video_collapse.setVisibility(View.VISIBLE);
             setPortraitStyle();
         }
     }
