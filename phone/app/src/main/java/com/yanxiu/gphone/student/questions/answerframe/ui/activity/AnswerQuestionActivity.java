@@ -120,6 +120,8 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
 
     private VideoModel mVideoModel;
 
+    private boolean mHasVideo = false;
+
     private void setupMockData(){
         mVideoModel = new VideoModel();
         mVideoModel.bodyUrl = "http://upload.ugc.yanxiu.com/video/4620490456e684328d4fcf5a920f54a1.mp4";
@@ -135,12 +137,14 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         initData();
         initView();
 
-        mVideoManager = new VideoManager(this, (PlayerView) findViewById(R.id.player_view));
-        mVideoManager.setOnCourseEventListener(mListener);
+        if(mHasVideo){
+            mVideoManager = new VideoManager(this, (PlayerView) findViewById(R.id.player_view));
+            mVideoManager.setOnCourseEventListener(mListener);
 
-        setupMockData();
-        setupRotation();
-        setupNetwork4GWifi();
+            setupMockData();
+            setupRotation();
+            setupNetwork4GWifi();
+        }
     }
 
     private void initData() {
@@ -158,6 +162,8 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         mTitleString = mPaper.getName();
 
         mHasShowVideoGuide = SaveAnswerDBHelper.isHasShowVideTips(mPaper.getId());
+
+        mHasVideo = !TextUtils.isEmpty(mPaper.getVideoUrl());
 
         for(int i =0; i < mPaper.getQuestions().size(); i++){
             if(i%2==0){
@@ -249,7 +255,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
 
             @Override
             public void onPageSelected(int position) {
-                if(!Constants.FROM_BC_RESOURCE.equals(mFromType))
+                if(!mHasVideo)
                     return;
                 collapseVideo();
                 if(mPaper.getQuestions().get(position).isHasVideo()){
@@ -647,18 +653,6 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         }
     }
 
-    private void expandVideo(){
-        layout_cover.setVisibility(View.VISIBLE);
-    }
-
-
-    private void collapseVideo(){
-        layout_cover.setVisibility(View.GONE);
-        mPlayerView.setVisibility(View.GONE);
-        video_collapse.setVisibility(View.GONE);
-        destoryVideo();
-    }
-
     /**
      * 计时用Handler
      */
@@ -742,8 +736,9 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         mKeyboardObserver.destroy();
         mOverlay.clearAnimation();
         super.onDestroy();
-
-        unregisterReceiver(mNotification);
+        if(mHasVideo){
+            unregisterReceiver(mNotification);
+        }
     }
 
     /**
@@ -897,6 +892,19 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
 
 
    //视频播放部分
+
+    private void expandVideo(){
+        layout_cover.setVisibility(View.VISIBLE);
+    }
+
+
+    private void collapseVideo(){
+        layout_cover.setVisibility(View.GONE);
+        mPlayerView.setVisibility(View.GONE);
+        video_collapse.setVisibility(View.GONE);
+        destoryVideo();
+    }
+
     private boolean isPlayerViewVisible(){
         return mPlayerView.getVisibility() == View.VISIBLE;
     }

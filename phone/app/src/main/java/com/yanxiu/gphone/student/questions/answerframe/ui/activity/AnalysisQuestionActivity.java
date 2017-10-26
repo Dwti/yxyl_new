@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -12,14 +13,19 @@ import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.constant.Constants;
+import com.yanxiu.gphone.student.db.SaveAnswerDBHelper;
 import com.yanxiu.gphone.student.questions.answerframe.adapter.QAViewPagerAdapter;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.bean.HomeEventMessage;
@@ -29,10 +35,20 @@ import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.analysisbase.
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.view.QAViewPager;
 import com.yanxiu.gphone.student.util.DataFetcher;
+import com.yanxiu.gphone.student.util.ScreenUtils;
+import com.yanxiu.gphone.student.videoplay.NetworkStateService;
+import com.yanxiu.gphone.student.videoplay.PlayerView;
+import com.yanxiu.gphone.student.videoplay.ScreenOrientationSwitcher;
+import com.yanxiu.gphone.student.videoplay.VideoManager;
+import com.yanxiu.gphone.student.videoplay.VideoModel;
 
 import java.util.ArrayList;
 
 import de.greenrobot.event.EventBus;
+
+import static com.yanxiu.gphone.student.videoplay.VideoManager.VideoState.LastVideoFinished;
+import static com.yanxiu.gphone.student.videoplay.VideoManager.VideoState.Loading;
+import static com.yanxiu.gphone.student.videoplay.VideoManager.VideoState.Normal;
 
 /**
  * 解析页面
@@ -55,6 +71,25 @@ public class AnalysisQuestionActivity extends YanxiuBaseActivity implements View
     private HomeEventMessage mHomeEventMessage=new HomeEventMessage();
     private HomeKeyEventBroadCastReceiver mHomeKeyEventBroadCastReceiver=new HomeKeyEventBroadCastReceiver();
 
+
+    private ImageView video_float, video_collapse, video_play, video_cover;
+    private View layout_cover;
+
+    private PlayerView mPlayerView;
+    private VideoManager mVideoManager;
+    private AnalysisQuestionActivity.EventListener mListener = new AnalysisQuestionActivity.EventListener();
+
+    private VideoModel mVideoModel;
+    private boolean mHasVideo = false;
+
+    private void setupMockData(){
+        mVideoModel = new VideoModel();
+        mVideoModel.bodyUrl = "http://upload.ugc.yanxiu.com/video/4620490456e684328d4fcf5a920f54a1.mp4";
+        mVideoModel.bodyPosition = 0;
+        mVideoModel.isHeadFinished = false;
+
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,12 +98,54 @@ public class AnalysisQuestionActivity extends YanxiuBaseActivity implements View
         initView();
         initReportData();
         registerReceiver(mHomeKeyEventBroadCastReceiver, new IntentFilter(Intent. ACTION_CLOSE_SYSTEM_DIALOGS));
+
+        if(mHasVideo){
+            mVideoManager = new VideoManager(this, (PlayerView) findViewById(R.id.player_view));
+            mVideoManager.setOnCourseEventListener(mListener);
+
+            setupMockData();
+            setupRotation();
+            setupNetwork4GWifi();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(isPlayerViewVisible()){
+            playVideo();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(isPlayerViewVisible()){
+            if (mVideoModel != null) {
+                mVideoManager.recordPlayPauseState();
+                mVideoManager.clearPlayer();
+            }
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(mHomeKeyEventBroadCastReceiver);
+        if(mHasVideo){
+            unregisterReceiver(mNotification);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(mPlayerView.getVisibility() == View.VISIBLE && !mVideoManager.isPortrait){
+            rotateScreen();
+            collapseVideo();
+            return;
+        }else {
+            super.onBackPressed();
+        }
     }
 
     private class HomeKeyEventBroadCastReceiver extends BroadcastReceiver {
@@ -86,6 +163,7 @@ public class AnalysisQuestionActivity extends YanxiuBaseActivity implements View
         mComeFrom = getIntent().getStringExtra(Constants.EXTRA_COME);
         mPaper = DataFetcher.getInstance().getPaper(mKey);
         mQuestions = mPaper.getQuestions();
+        mHasVideo = !TextUtils.isEmpty(mPaper.getVideoUrl());
     }
 
     /**
@@ -130,9 +208,21 @@ public class AnalysisQuestionActivity extends YanxiuBaseActivity implements View
         mBottomLayout = findViewById(R.id.bottom);
         mBottom_line = findViewById(R.id.analysis_bottom_line);
 
-        setListener();
+
+        layout_cover = findViewById(R.id.video_cover);
+        video_float = (ImageView) findViewById(R.id.iv_float_play);
+        video_collapse = (ImageView) findViewById(R.id.iv_collapse);
+        video_play = (ImageView) findViewById(R.id.iv_play);
+        video_cover = (ImageView) findViewById(R.id.iv_cover);
+        mPlayerView = (PlayerView) findViewById(R.id.player_view);
+
+        if(mPaper.getQuestions().get(0).isHasVideo()){
+            video_float.setVisibility(View.VISIBLE);
+        }
+
         initViewPager();
         hiddenBottomLayout();
+        setListener();
     }
 
     private void setListener() {
@@ -140,6 +230,35 @@ public class AnalysisQuestionActivity extends YanxiuBaseActivity implements View
         mNext_question.setOnClickListener(this);
         mBackView.setOnClickListener(this);
         mErrorview.setOnClickListener(this);
+
+        video_float.setOnClickListener(this);
+        video_collapse.setOnClickListener(this);
+        video_play.setOnClickListener(this);
+
+        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if(!mHasVideo)
+                    return;
+                collapseVideo();
+                if(mPaper.getQuestions().get(position).isHasVideo()){
+                    video_float.setVisibility(View.VISIBLE);
+                }else {
+                    video_float.setVisibility(View.GONE);
+                }
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     private void initViewPager() {
@@ -363,6 +482,18 @@ public class AnalysisQuestionActivity extends YanxiuBaseActivity implements View
                     AnswerErrorActicity.invoke(AnalysisQuestionActivity.this,qid);
                 }
                 break;
+            case R.id.iv_float_play:
+                expandVideo();
+                break;
+            case R.id.iv_collapse:
+                collapseVideo();
+                break;
+            case R.id.iv_play:
+                mPlayerView.setVisibility(View.VISIBLE);
+                video_collapse.setVisibility(View.VISIBLE);
+                layout_cover.setVisibility(View.GONE);
+                playVideo();
+                break;
         }
     }
 
@@ -430,5 +561,174 @@ public class AnalysisQuestionActivity extends YanxiuBaseActivity implements View
         intent.putIntegerArrayListExtra(Constants.EXTRA_ANALYSIS_LEVELPOSITION, levelPositions);
         activity.startActivity(intent);
     }
+
+
+
+    //视频播放部分
+
+    private void expandVideo(){
+        layout_cover.setVisibility(View.VISIBLE);
+    }
+
+
+    private void collapseVideo(){
+        layout_cover.setVisibility(View.GONE);
+        mPlayerView.setVisibility(View.GONE);
+        video_collapse.setVisibility(View.GONE);
+        destoryVideo();
+    }
+
+    private boolean isPlayerViewVisible(){
+        return mPlayerView.getVisibility() == View.VISIBLE;
+    }
+
+    private void playVideo(){
+        VideoManager.VideoState lastState = mVideoManager.getState();
+        mVideoManager.setupPlayer();
+        mVideoManager.setModel(mVideoModel);
+
+        if ((lastState != Normal) && (lastState != Loading)) {
+            mVideoManager.setState(lastState);
+        }
+    }
+
+    private void destoryVideo(){
+        mVideoModel.bodyPosition = 0;
+        mVideoManager.clearPlayer();
+        mVideoManager.resetAllState();
+    }
+
+    private final class EventListener implements VideoManager.OnCourseEventListener {
+        @Override
+        public void onRotate() {
+            rotateScreen();
+            if(mVideoManager.isPortrait){
+                video_collapse.setVisibility(View.VISIBLE);
+            }else {
+                video_collapse.setVisibility(View.GONE);
+            }
+        }
+
+        @Override
+        public void onHeadFinish() {
+            mVideoModel.isHeadFinished = true;
+        }
+
+        @Override
+        public void onBodyFinish() {
+            mVideoManager.setState(LastVideoFinished);
+        }
+
+        @Override
+        public void onReplayFromFirstVideo() {
+            goPlay();
+        }
+    }
+
+    private void goPlay() {
+        if (!mVideoModel.isHeadFinished) {
+            mVideoModel.headPosition = 0;
+        }
+
+        mVideoManager.clearPlayer();
+        mVideoManager.setupPlayer();
+        mVideoManager.resetAllState();
+        mVideoManager.setModel(mVideoModel);
+    }
+
+    //region 移动网wifi 相关
+    private void setupNetwork4GWifi() {
+        Intent intent = new Intent(this, NetworkStateService.class);
+        intent.setAction(NetworkStateService.NETWORKSTATE);
+        startService(intent);
+
+        IntentFilter mFilter = new IntentFilter();
+        mFilter.addAction(NetworkStateService.NETWORKSTATE);
+        registerReceiver(mNotification, mFilter);
+    }
+
+    private BroadcastReceiver mNotification = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(NetworkStateService.NETWORKSTATE)) {
+                int state = intent.getIntExtra("networkStatus", -1);
+                // 0 无网
+                // 1 移动网络
+                // 2 wifi
+                if (state == 1) {
+                    // 移动网络
+                    mVideoManager.networkChangeToFourG();
+                }
+            }
+        }
+    };
+    //endregion
+
+    //region 全屏半屏 相关
+    private ScreenOrientationSwitcher orientationSwitcher;
+    private void setupRotation() {
+//        getActionBar().hide();
+        orientationSwitcher = new ScreenOrientationSwitcher(this);
+        orientationSwitcher.setChangeListener(new ScreenOrientationSwitcher.OnChangeListener() {
+            // 重力感应旋转
+            @Override
+            public void onChanged(int requestedOrientation) {
+                if (requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
+                    setRequestedOrientation(requestedOrientation);
+                    video_collapse.setVisibility(View.VISIBLE);
+                    setPortraitStyle();
+                }
+
+                if (requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+                    setRequestedOrientation(requestedOrientation);
+                    video_collapse.setVisibility(View.GONE);
+                    setLandscapeStyle();
+                }
+
+                if (requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE) {
+                    setRequestedOrientation(requestedOrientation);
+                    video_collapse.setVisibility(View.GONE);
+                    setLandscapeStyle();
+                }
+            }
+        });
+        orientationSwitcher.enable();
+    }
+
+    // 主动点击旋转
+    private void rotateScreen() {
+        if (mVideoManager.isPortrait) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            setLandscapeStyle();
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            setPortraitStyle();
+        }
+    }
+
+    private void setPortraitStyle() {
+        mVideoManager.isPortrait = true;
+        mVideoManager.updatePortraitLandscapeControllerView();
+//        findViewById(R.id.play_button).setVisibility(View.VISIBLE);
+
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        //FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Utils.dip2px(this, 250));
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ScreenUtils.dpToPxInt(this, 250));
+        params.topMargin = getResources().getDimensionPixelOffset(R.dimen.question_top_layout_height);
+        mVideoManager.getPlayerView().setLayoutParams(params);
+    }
+
+    private void setLandscapeStyle() {
+        mVideoManager.isPortrait = false;
+        mVideoManager.updatePortraitLandscapeControllerView();
+//        findViewById(R.id.play_button).setVisibility(View.GONE);
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        //FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        params.topMargin = 0;
+        mVideoManager.getPlayerView().setLayoutParams(params);
+    }
+    //endregion
 
 }
