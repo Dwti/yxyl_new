@@ -42,6 +42,7 @@
                 android:src="@drawable/sel_error_play"/>
 
             <TextView
+                android:id="@+id/video_size"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="7dp"

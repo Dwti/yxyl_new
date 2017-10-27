@@ -124,14 +124,14 @@
             android:layout_width="match_parent"
             android:layout_height="216dp"
             android:layout_marginTop="@dimen/question_top_layout_height"
+            android:background="@android:color/black"
             android:visibility="gone">
 
             <ImageView
                 android:id="@+id/iv_cover"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="fitXY"
-                android:src="@drawable/cover"/>
+                android:scaleType="fitXY"/>
 
             <ImageView
                 android:id="@+id/iv_play"

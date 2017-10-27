@@ -40,7 +40,7 @@ public class Paper {
     private String volume;
     private String volumeName;
     private String cover;
-    private int videoSize;
+    private long videoSize;
     private String videoUrl;
 
     public Paper(PaperBean paperBean, QuestionShowType showType) {
@@ -291,11 +291,11 @@ public class Paper {
         this.cover = cover;
     }
 
-    public int getVideoSize() {
+    public long getVideoSize() {
         return videoSize;
     }
 
-    public void setVideoSize(int videoSize) {
+    public void setVideoSize(long videoSize) {
         this.videoSize = videoSize;
     }
 

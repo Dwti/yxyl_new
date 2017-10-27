@@ -10,7 +10,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -56,7 +55,6 @@ import com.yanxiu.gphone.student.util.ToastManager;
 import com.yanxiu.gphone.student.videoplay.NetworkStateService;
 import com.yanxiu.gphone.student.videoplay.PlayerView;
 import com.yanxiu.gphone.student.videoplay.ScreenOrientationSwitcher;
-import com.yanxiu.gphone.student.videoplay.VideoActivity;
 import com.yanxiu.gphone.student.videoplay.VideoManager;
 import com.yanxiu.gphone.student.videoplay.VideoModel;
 
@@ -123,12 +121,17 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
 
     private boolean mHasVideo = false;
 
-    private void setupMockData(){
+    private void setupVideoModel(){
         mVideoModel = new VideoModel();
-        mVideoModel.bodyUrl = "http://upload.ugc.yanxiu.com/video/4620490456e684328d4fcf5a920f54a1.mp4";
+        mVideoModel.cover = mPaper.getCover();
+        mVideoModel.bodyUrl = mPaper.getVideoUrl();
         mVideoModel.bodyPosition = 0;
         mVideoModel.isHeadFinished = false;
+        mVideoModel.videoName = mPaper.getName();
+        mVideoModel.videoSize = mPaper.getVideoSize();
 
+        Glide.with(this).load(mVideoModel.cover).asBitmap().into(video_cover);
+        Glide.with(this).load(mVideoModel.cover).asBitmap().into(tips_cover);
     }
 
     @Override
@@ -142,7 +145,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
             mVideoManager = new VideoManager(this, (PlayerView) findViewById(R.id.player_view));
             mVideoManager.setOnCourseEventListener(mListener);
 
-            setupMockData();
+            setupVideoModel();
             setupRotation();
             setupNetwork4GWifi();
         }
@@ -218,11 +221,6 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
             }
         }
 
-//        if(Constants.FROM_BC_RESOURCE.equals(mFromType)){
-//            Glide.with(this).load(mPaper.getCover()).asBitmap().into(video_cover);
-//            Glide.with(this).load(mPaper.getCover()).asBitmap().into(tips_cover);
-//        }
-
         initViewPager();
         setListener();
         mHandler = new TimingHandler(this);
@@ -237,6 +235,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         mBackView.setOnClickListener(this);
         mShowAnswerCardView.setOnClickListener(this);
 
+        video_tips.setOnClickListener(this);
         tips_play.setOnClickListener(this);
         btn_skip_video.setOnClickListener(this);
         video_float.setOnClickListener(this);
@@ -653,6 +652,9 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
                 layout_cover.setVisibility(View.GONE);
                 playVideo();
                 break;
+            case R.id.video_tips:
+                break;
+
         }
     }
 

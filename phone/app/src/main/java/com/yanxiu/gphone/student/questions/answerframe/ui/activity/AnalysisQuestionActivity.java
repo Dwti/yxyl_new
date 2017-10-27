@@ -16,16 +16,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.constant.Constants;
-import com.yanxiu.gphone.student.db.SaveAnswerDBHelper;
 import com.yanxiu.gphone.student.questions.answerframe.adapter.QAViewPagerAdapter;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.bean.HomeEventMessage;
@@ -82,12 +81,16 @@ public class AnalysisQuestionActivity extends YanxiuBaseActivity implements View
     private VideoModel mVideoModel;
     private boolean mHasVideo = false;
 
-    private void setupMockData(){
+    private void setupVideoModel(){
         mVideoModel = new VideoModel();
-        mVideoModel.bodyUrl = "http://upload.ugc.yanxiu.com/video/4620490456e684328d4fcf5a920f54a1.mp4";
+        mVideoModel.cover = mPaper.getCover();
+        mVideoModel.bodyUrl = mPaper.getVideoUrl();
         mVideoModel.bodyPosition = 0;
         mVideoModel.isHeadFinished = false;
+        mVideoModel.videoName = mPaper.getName();
+        mVideoModel.videoSize = mPaper.getVideoSize();
 
+        Glide.with(this).load(mVideoModel.cover).asBitmap().into(video_cover);
     }
 
     @Override
@@ -103,7 +106,7 @@ public class AnalysisQuestionActivity extends YanxiuBaseActivity implements View
             mVideoManager = new VideoManager(this, (PlayerView) findViewById(R.id.player_view));
             mVideoManager.setOnCourseEventListener(mListener);
 
-            setupMockData();
+            setupVideoModel();
             setupRotation();
             setupNetwork4GWifi();
         }

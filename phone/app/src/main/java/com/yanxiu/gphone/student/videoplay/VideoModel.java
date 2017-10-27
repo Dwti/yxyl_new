@@ -8,6 +8,7 @@ import java.util.List;
  */
 
 public class VideoModel {
+    public String cover;
     public String headUrl;
     public long headPosition;
 

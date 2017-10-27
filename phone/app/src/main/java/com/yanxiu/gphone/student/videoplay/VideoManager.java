@@ -301,11 +301,26 @@ public class VideoManager {
             model.bodyPosition = 0;
         }
         this.model = model;
+        setupVideoProperty(model);
         playWithModel();
 
         stopAndRecoverCurrentVideo(true);
     }
 
+    private void setupVideoProperty(VideoModel model){
+        String text;
+        //传进来的size是以byte为单位
+        if(model.videoSize < 1024){
+            text = model.videoSize + "B";
+        }else if(model.videoSize >= 1024 && model.videoSize < 1024 * 1024){
+            long size = model.videoSize /1024;
+            text = size + "K";
+        }else {
+            long size = model.videoSize / (1024 * 1024);
+            text = size + "M";
+        }
+        ((TextView)playerView.findViewById(R.id.video_size)).setText(text);
+    }
     private void replaceControllerView(PlaybackControllerView controllerView) {
         if (controllerPlaceholderView == null) {
             controllerPlaceholderView = (PlaybackControllerView) playerView.findViewById(R.id.exo_controller_placeholder);

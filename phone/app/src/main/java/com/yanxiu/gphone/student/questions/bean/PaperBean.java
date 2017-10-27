@@ -36,7 +36,7 @@ public class PaperBean extends BaseBean {
     private String volume;
     private String volumeName;
     private String cover;
-    private int videoSize;
+    private long videoSize;
     private String videoUrl;
 
     public String getAuthorid() {
@@ -255,11 +255,11 @@ public class PaperBean extends BaseBean {
         this.cover = cover;
     }
 
-    public int getVideoSize() {
+    public long getVideoSize() {
         return videoSize;
     }
 
-    public void setVideoSize(int videoSize) {
+    public void setVideoSize(long videoSize) {
         this.videoSize = videoSize;
     }
 
