@@ -79,7 +79,7 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
     private TextView mTotalnumber;//总题数
     private TextView mYesnumber;//答对题数
     private TextView mTime;//用时
-
+    private String mRmsPaperId;
     private LinearLayout mCardGrid;
     private int mSpanCount;
     private int mSpacing;
@@ -105,6 +105,9 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
         if (TextUtils.isEmpty(mKey))
             finish();
         mFromType = getIntent().getStringExtra(Constants.EXTRA_FROMTYPE);
+        if(Constants.FROM_BC_RESOURCE.equals(mFromType)){
+            mRmsPaperId = getIntent().getStringExtra(Constants.EXTRA_RMSPAPER);
+        }
         initExerciseData();
         mPaper = DataFetcher.getInstance().getPaper(mKey);
         QuestionUtil.initDataWithAnswer(mPaper);
@@ -269,9 +272,10 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
         activity.startActivity(intent);
     }
 
-    public static void invoke(Activity activity, String key, String fromType) {
+    public static void invoke(Activity activity, String key, String rmsPaperId, String fromType,int flag) {
         Intent intent = new Intent(activity, AnswerReportActicity.class);
         intent.putExtra(Constants.EXTRA_PAPER, key);
+        intent.putExtra(Constants.EXTRA_RMSPAPER,rmsPaperId);
         intent.putExtra(Constants.EXTRA_FROMTYPE, fromType);
         activity.startActivity(intent);
     }
@@ -336,7 +340,7 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
     }
 
     private void openAnswerQuestionUI(String paperId){
-        AnswerQuestionActivity.invoke(this,paperId,Constants.FROM_BC_RESOURCE);
+        AnswerQuestionActivity.invoke(this,paperId,mRmsPaperId,Constants.FROM_BC_RESOURCE,0);
     }
 
     private void showResetHistoryDialog(){

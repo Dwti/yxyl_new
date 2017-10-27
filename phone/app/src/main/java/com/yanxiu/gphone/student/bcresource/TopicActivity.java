@@ -74,6 +74,8 @@ public class TopicActivity extends YanxiuBaseActivity{
 
     private boolean shouldRefreshWhenResume = false;
 
+    private String mClickRmsPaperId;
+
 
     public static void invoke(Activity activity, String type, String id, String name){
         Intent intent = new Intent(activity,TopicActivity.class);
@@ -484,6 +486,7 @@ public class TopicActivity extends YanxiuBaseActivity{
         public void onClick(TopicBean bean, int position) {
 //            Intent intent = new Intent(TopicActivity.this, VideoActivity.class);
 //            startActivity(intent);
+            mClickRmsPaperId = bean.getId();
             if(bean.getPaperStatus() != null && bean.getPaperStatus().getStatus() == 2){
                 getReport(bean.getPaperStatus().getPpid());
             }else {
@@ -499,7 +502,7 @@ public class TopicActivity extends YanxiuBaseActivity{
     }
 
     private void openAnswerReportUI(String paperId){
-        AnswerReportActicity.invoke(this,paperId,Constants.FROM_BC_RESOURCE);
+        AnswerReportActicity.invoke(this,paperId,mClickRmsPaperId,Constants.FROM_BC_RESOURCE,0);
         shouldRefreshWhenResume = true;
     }
 
@@ -534,7 +537,7 @@ public class TopicActivity extends YanxiuBaseActivity{
     }
 
     private void openAnswerQuestionUI(String paperId){
-        AnswerQuestionActivity.invoke(this,paperId,Constants.FROM_BC_RESOURCE);
+        AnswerQuestionActivity.invoke(this,paperId,mClickRmsPaperId,Constants.FROM_BC_RESOURCE,0);
         shouldRefreshWhenResume =true;
     }
 

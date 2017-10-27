@@ -1,5 +1,6 @@
 package com.yanxiu.gphone.student.bcresource.adapter;
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.bcresource.bean.TopicBean;
+import com.yanxiu.gphone.student.db.SaveAnswerDBHelper;
 
 import java.text.NumberFormat;
 import java.util.List;
@@ -45,13 +47,17 @@ public class TopicListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             ((TopicHolder)holder).name.setText(mData.get(position).getName());
             ((TopicHolder)holder).popValue.setText(String.format(holder.itemView.getContext().getString(R.string.topic_pop_value),mData.get(position).getViewnum()));
             if(mData.get(position).getPaperStatus() != null){
-                if(mData.get(position).getPaperStatus().getStatus() == 1){
-                    ((TopicHolder)holder).status.setText("作答中...");
-                }else {
+                if(mData.get(position).getPaperStatus().getStatus() == 2){
+                    ((TopicHolder)holder).status.setTextColor(Color.parseColor("#666666"));
                     ((TopicHolder)holder).status.setText(String.format(holder.itemView.getContext().getString(R.string.topic_correct_rate),NumberFormat.getPercentInstance().format(mData.get(position).getPaperStatus().getScoreRate())));
                 }
             }else {
-                ((TopicHolder)holder).status.setText("");
+                ((TopicHolder)holder).status.setTextColor(Color.parseColor("#89e00d"));
+                if(SaveAnswerDBHelper.isTopicPaperAnswered(mData.get(position).getId())){
+                    ((TopicHolder)holder).status.setText("作答中...");
+                }else {
+                    ((TopicHolder)holder).status.setText("");
+                }
             }
 
         }

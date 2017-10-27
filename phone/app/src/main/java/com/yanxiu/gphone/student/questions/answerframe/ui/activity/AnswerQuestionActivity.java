@@ -78,6 +78,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
     private QAViewPagerAdapter mAdapter;
     private String mKey;//获取数据的key
     private String mFromType;//从哪个页面跳转过来的（练习页面）
+    private String mRmsPaperId;
     private GenQuesRequest mGenQuesequest;//从选择章节只是点进入答题页，章节知识点的请求Request
     private String mTitleString;//试卷的title-答题卡需要
     private Paper mPaper;//试卷数据
@@ -152,6 +153,9 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         if (TextUtils.isEmpty(mKey))
             finish();
         mFromType = getIntent().getStringExtra(Constants.EXTRA_FROMTYPE);
+        if(Constants.FROM_BC_RESOURCE.equals(mFromType)){
+            mRmsPaperId = getIntent().getStringExtra(Constants.EXTRA_RMSPAPER);
+        }
         initExerciseData();
         mPaper = DataFetcher.getInstance().getPaper(mKey);
         mQuestions = mPaper.getQuestions();
@@ -164,14 +168,6 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         mHasShowVideoGuide = SaveAnswerDBHelper.isHasShowVideTips(mPaper.getId());
 
         mHasVideo = !TextUtils.isEmpty(mPaper.getVideoUrl());
-
-        for(int i =0; i < mPaper.getQuestions().size(); i++){
-            if(i%2==0){
-                mPaper.getQuestions().get(i).setHasVideo(false);
-            }else {
-                mPaper.getQuestions().get(i).setHasVideo(true);
-            }
-        }
     }
 
     /**
@@ -619,6 +615,13 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
                 }else if(Constants.MAINAVTIVITY_FROMTYPE_EXERCISE_HISTORY.equals(mFromType)){
                     mDialog.showLoadingView();
                     requestSubmmit();
+                }else if(Constants.FROM_BC_RESOURCE.equals(mFromType)){
+                    if(checkQuestionHasAnswerd()){
+                        SaveAnswerDBHelper.setTopicPaperAnswered(mRmsPaperId,true);
+                    }else {
+                        SaveAnswerDBHelper.setTopicPaperAnswered(mRmsPaperId,false);
+                    }
+                    finish();
                 }else {
                     SpManager.setCompleteQuestionCount(mPaper.getId(),QuestionUtil.calculateCompleteCount(mQuestions));
                     finish();
@@ -752,9 +755,10 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         activity.startActivity(intent);
     }
 
-    public static void invoke(Activity activity, String paperId, String fromType) {
+    public static void invoke(Activity activity, String paperId,String rmsPaperId, String fromType,int flag) {
         Intent intent = new Intent(activity, AnswerQuestionActivity.class);
         intent.putExtra(Constants.EXTRA_PAPER, paperId);
+        intent.putExtra(Constants.EXTRA_RMSPAPER,rmsPaperId);
         intent.putExtra(Constants.EXTRA_FROMTYPE, fromType);
         activity.startActivity(intent);
     }
@@ -791,6 +795,13 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
             }else {
                 finish();
             }
+        }else if(Constants.FROM_BC_RESOURCE.equals(mFromType)){
+            if(checkQuestionHasAnswerd()){
+                SaveAnswerDBHelper.setTopicPaperAnswered(mRmsPaperId,true);
+            }else {
+                SaveAnswerDBHelper.setTopicPaperAnswered(mRmsPaperId,false);
+            }
+            finish();
         }else if(Constants.MAINAVTIVITY_FROMTYPE_EXERCISE_HISTORY.equals(mFromType)){
             mDialog.showLoadingView();
             requestSubmmit();
