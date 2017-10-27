@@ -2,7 +2,6 @@ package com.yanxiu.gphone.student.util.time;
 
 import android.os.CountDownTimer;
 
-import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
 
 /**
@@ -14,8 +13,8 @@ import java.lang.ref.WeakReference;
 @SuppressWarnings("unused")
 public class CountDownManager {
 
-    private static final long DEFAULT_TOTALTIME=45000;
-    private static final long DEFAULT_INTERVATIME=1000;
+    private static final long DEFAULT_TOTALTIME = 45000;
+    private static final long DEFAULT_INTERVATIME = 1000;
     private countDownTimer timer;
 
     public interface ScheduleListener {
@@ -23,37 +22,38 @@ public class CountDownManager {
 
         void onFinish();
     }
+
     /**
      * the countdown total time
-     * */
+     */
     private long totalTime = DEFAULT_TOTALTIME;
     /**
      * the countdown interval time
-     * */
+     */
     private long intervalTime = DEFAULT_INTERVATIME;
     private ScheduleListener listener;
     private static CountDownManager manager;
 
     public static CountDownManager getManager() {
-        if (manager==null){
-            manager=new CountDownManager();
+        if (manager == null) {
+            manager = new CountDownManager();
         }
         return manager;
     }
 
     /**
      * finished callback
-     * */
-    public void setFinished(){
-        this.listener=null;
-        if (timer!=null) {
+     */
+    public void setFinished() {
+        this.listener = null;
+        if (timer != null) {
             this.timer.cancel();
         }
     }
 
     /**
      * the totalTime in milliseconds
-     * */
+     */
     public CountDownManager setTotalTime(long totalTime) {
         this.totalTime = totalTime;
         return this;
@@ -61,20 +61,29 @@ public class CountDownManager {
 
     /**
      * the intervalTime in milliseconds
-     * */
+     */
     public CountDownManager setIntervalTime(long intervalTime) {
         this.intervalTime = intervalTime;
         return this;
     }
 
     public CountDownManager setScheduleListener(ScheduleListener listener) {
-        this.listener=listener;
+        this.listener = listener;
         return this;
     }
 
     public void start() {
         timer = new countDownTimer(totalTime, intervalTime, listener);
         timer.start();
+    }
+
+    public void cancel() {
+        try {
+            timer.clear();
+            timer.cancel();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private class countDownTimer extends CountDownTimer {
@@ -86,6 +95,10 @@ public class CountDownManager {
             if (listener != null) {
                 reference = new WeakReference<>(listener);
             }
+        }
+
+        private void clear() {
+            reference = null;
         }
 
         @Override

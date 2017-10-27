@@ -101,7 +101,8 @@
                 android:id="@+id/sw_wave"
                 android:layout_width="match_parent"
                 android:layout_height="117dp"
-                android:layout_centerVertical="true" />
+                android:visibility="gone"
+                android:layout_centerHorizontal="true" />
 
             <RelativeLayout
                 android:layout_width="match_parent"

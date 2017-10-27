@@ -24,16 +24,25 @@ public class SpokenQuestion extends BaseQuestion {
     private List<PointBean> pointList;
     private int starCount;
     private String questionAnalysis;
-    private String answerCompare;
+    private String objectiveScore;
     private List<String> answerList=new ArrayList<>();
 
     public SpokenQuestion(PaperTestBean bean, QuestionShowType showType, String paperStatus) {
         super(bean, showType, paperStatus);
-        try {
-            spokenAnswer= String.valueOf(bean.getQuestions().getAnswer().get(0));
-        }catch (Exception e){
-            e.printStackTrace();
-            spokenAnswer="sever炸了";
+        if ("26".equals(getType_id())){
+            try {
+                spokenAnswer = String.valueOf(bean.getQuestions().getContent().getAnswer().get(0));
+            } catch (Exception e) {
+                e.printStackTrace();
+                spokenAnswer = "炸了";
+            }
+        }else {
+            try {
+                spokenAnswer = String.valueOf(bean.getQuestions().getAnswer().get(0));
+            } catch (Exception e) {
+                e.printStackTrace();
+                spokenAnswer = "炸了";
+            }
         }
         pointList=bean.getQuestions().getPoint();
         try {
@@ -43,7 +52,7 @@ public class SpokenQuestion extends BaseQuestion {
         }
         questionAnalysis=bean.getQuestions().getAnalysis();
         try {
-            answerCompare=bean.getQuestions().getExtend().getData().getAnswerCompare();
+            objectiveScore=bean.getQuestions().getPad().getObjectiveScore();
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -75,8 +84,8 @@ public class SpokenQuestion extends BaseQuestion {
         return questionAnalysis;
     }
 
-    public String getAnswerCompare() {
-        return answerCompare;
+    public String getObjectiveScore() {
+        return objectiveScore;
     }
 
     public List<String> getAnswerList() {
@@ -101,6 +110,16 @@ public class SpokenQuestion extends BaseQuestion {
     @Override
     public Object getAnswer() {
         return answerList;
+    }
+
+    @Override
+    public int getScore() {
+        if (answerList!=null&&!answerList.isEmpty()) {
+            SpokenResponse response = getBeanFromJson(answerList.get(0));
+            return getScore((int) response.lines.get(0).score);
+        }else {
+            return super.getScore();
+        }
     }
 
     @Override

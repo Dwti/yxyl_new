@@ -402,6 +402,9 @@ public class SubmitQuesitonTask extends AsyncTask {
                         childObject.put("status", childQuestionBean.getStatus());
                         childObject.put("uid", LoginInfo.getUID());
 
+                        if (childQuestionBean.getTemplate().equals(QuestionTemplate.SPOKEN)) {
+                            childObject.put("objectiveScore",childQuestionBean.getScore());
+                        }
 
                         childrenArray.put(childObject);
 
@@ -454,6 +457,9 @@ public class SubmitQuesitonTask extends AsyncTask {
                     childObject.put("status", childQuestionBean.getStatus());
                     childObject.put("uid", LoginInfo.getUID());
 
+                    if (childQuestionBean.getTemplate().equals(QuestionTemplate.SPOKEN)) {
+                        childObject.put("objectiveScore",childQuestionBean.getScore());
+                    }
 
                     childrenArray.put(childObject);
 
@@ -515,6 +521,10 @@ public class SubmitQuesitonTask extends AsyncTask {
 //                outQuestionObject.put("answer", "");
                 outQuestionObject.put("status", outerQuestionBean.getStatus());
                 outQuestionObject.put("uid", LoginInfo.getUID());
+
+                if (outerQuestionBean.getTemplate().equals(QuestionTemplate.SPOKEN)) {
+                    outQuestionObject.put("objectiveScore",outerQuestionBean.getScore());
+                }
 
                 paperDetailsArray.put(outQuestionObject);
 

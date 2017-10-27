@@ -165,16 +165,20 @@ public class QuestionUtil {
                 name = "听力题";
                 break;
             case 26:
-                name="朗读题";
+//                name="朗读题";
+                name="口语题";
                 break;
             case 27:
-                name="跟读题";
+//                name="跟读题";
+                name="口语题";
                 break;
             case 28:
-                name="情景问答题";
+//                name="情景问答题";
+                name="口语题";
                 break;
             case 29:
-                name="口语作文题";
+//                name="口语作文题";
+                name="口语题";
                 break;
             default:
                 break;
@@ -224,55 +228,57 @@ public class QuestionUtil {
     public static int getIntValue(String str) {
         int result = 0;
         switch (str) {
-            case "听力题":
+            case "口语题":
                 result = 1;
                 break;
-            case "单选题":
+            case "听力题":
                 result = 2;
                 break;
-            case "多选题":
+            case "单选题":
                 result = 3;
                 break;
-            case "判断题":
+            case "多选题":
                 result = 4;
                 break;
-            case "连线题":
+            case "判断题":
                 result = 5;
                 break;
-            case "归类题":
+            case "连线题":
                 result = 6;
                 break;
-            case "排序题":
+            case "归类题":
                 result = 7;
                 break;
-            case "完形填空":
+            case "排序题":
                 result = 8;
                 break;
-            case "阅读理解":
+            case "完形填空":
                 result = 9;
                 break;
-            case "填空题":
+            case "阅读理解":
                 result = 10;
                 break;
-            case "改错题":
+            case "填空题":
                 result = 11;
                 break;
-            case "翻译题":
+            case "改错题":
                 result = 12;
                 break;
-            case "计算题":
+            case "翻译题":
                 result = 13;
                 break;
-            case "解答题":
+            case "计算题":
                 result = 14;
                 break;
-            case "问答题":
+            case "解答题":
                 result = 15;
                 break;
-            case "材料阅读":
+            case "问答题":
                 result = 16;
                 break;
-
+            case "材料阅读":
+                result = 17;
+                break;
         }
         return result;
     }

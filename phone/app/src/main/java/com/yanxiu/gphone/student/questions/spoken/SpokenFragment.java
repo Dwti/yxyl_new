@@ -13,13 +13,13 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
+import com.google.gson.Gson;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.customviews.SpokenSpanTextView;
 import com.yanxiu.gphone.student.customviews.SpokenWaveView;
 import com.yanxiu.gphone.student.db.SpManager;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerSimpleExerciseBaseFragment;
-import com.yanxiu.gphone.student.questions.subjective.SubjectiveQuestion;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
 import com.yanxiu.gphone.student.util.MediaPlayerUtil;
 import com.yanxiu.gphone.student.util.ToastManager;
@@ -30,7 +30,7 @@ import com.yanxiu.gphone.student.util.ToastManager;
  * Time : 2017/10/16 9:43.
  * Function :
  */
-public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements View.OnClickListener, ClickableImageSpan.onSpanClickListener, SpokenUtils.onBaseOralEvalCallback, SpokenResultDialog.onDisMissCallback {
+public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements View.OnClickListener, ClickableImageSpan.onSpanClickListener, SpokenUtils.onBaseOralEvalCallback, SpokenResultDialog.onDisMissCallback, SpokenUtils.onOralEvaProgressCallback {
 
     private View rootView;
     private SpokenQuestion mData;
@@ -61,7 +61,7 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null && mData == null) {
-            setData((SubjectiveQuestion) savedInstanceState.getSerializable(KEY_NODE));
+            setData((SpokenQuestion) savedInstanceState.getSerializable(KEY_NODE));
         }
     }
 
@@ -114,11 +114,11 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
 //        mQuestionView.setText("akskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksaakskuksa");
 
         if ("27".equals(mData.getType_id()) || "28".equals(mData.getType_id())) {
-            mSpokenWaveView.setVisibility(View.GONE);
+//            mSpokenWaveView.setVisibility(View.GONE);
             mRecordView.setEnabled(false);
             mRecordAnimView.setVisibility(View.GONE);
         } else {
-            mSpokenWaveView.setVisibility(View.VISIBLE);
+//            mSpokenWaveView.setVisibility(View.VISIBLE);
             mRecordView.setEnabled(true);
             mRecordAnimView.setVisibility(View.VISIBLE);
         }
@@ -143,9 +143,10 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
             }
             if (mData.getAnswerList() != null && !mData.getAnswerList().isEmpty()) {
                 SpokenResponse response = SpokenQuestion.getBeanFromJson(mData.getAnswerList().get(0));
+                mFilePath=response.url;
                 setScore(SpokenQuestion.getScore((int) response.lines.get(0).score));
 
-                mSpokenWaveView.setVisibility(View.VISIBLE);
+//                mSpokenWaveView.setVisibility(View.VISIBLE);
                 mRecordView.setEnabled(true);
                 mRecordAnimView.setVisibility(View.VISIBLE);
                 mPlayOrStopView.setVisibility(View.VISIBLE);
@@ -154,6 +155,20 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
                 setScore(-1);
             }
         } else {
+            mPlayerUtil.playFinish();
+            if (mAudioTagHandler != null) {
+                mAudioTagHandler.stop();
+            }
+            mSpokenUtils.playClear();
+            mPlayOrStopView.setImageResource(R.drawable.spoken_play_vedio);
+            mSpokenUtils.cancel();
+        }
+    }
+
+    @Override
+    public void onAnswerCardVisibleToUser(boolean isVisibleToUser) {
+        super.onAnswerCardVisibleToUser(isVisibleToUser);
+        if (isVisibleToUser){
             mPlayerUtil.playFinish();
             if (mAudioTagHandler != null) {
                 mAudioTagHandler.stop();
@@ -216,7 +231,7 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
                     mPlayOrStopView.setEnabled(false);
                     mRecordView.setImageResource(R.drawable.spoken_record_press);
                     isCanPlayQuestionViedio = false;
-                    mSpokenUtils.start(getContext(), mData.getSpokenAnswer(), SpokenFragment.this);
+                    mSpokenUtils.start(getContext(), mData.getSpokenAnswer(), SpokenFragment.this,SpokenFragment.this);
                     break;
                 case MotionEvent.ACTION_CANCEL:
                 case MotionEvent.ACTION_UP:
@@ -258,6 +273,11 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
                 isFirstPlay = false;
                 isCanPlayQuestionViedio = true;
                 mPlayOrStopView.setImageResource(R.drawable.spoken_play_vedio);
+            }
+
+            @Override
+            public void onError() {
+                ToastManager.showMsg("音频文件无法播放");
             }
         });
     }
@@ -344,15 +364,17 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
     public void onResult(String result) {
         SpokenResponse response = SpokenQuestion.getBeanFromJson(result);
         mResultDialog.setScore(SpokenQuestion.getScore((int) response.lines.get(0).score));
+        response.url=mFilePath;
+        Gson gson=new Gson();
         mData.getAnswerList().clear();
-        mData.getAnswerList().add(result);
+        mData.getAnswerList().add(gson.toJson(response));
         mData.setHasAnswered(true);
         saveAnswer(mData);
         updateProgress();
     }
 
     @Override
-    public void onResultUrl(String url) {
+    public void onResultUrl(String filePath,String url) {
 //        ToastManager.showMsg(url);
     }
 
@@ -379,5 +401,16 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
             SpokenResponse response = SpokenQuestion.getBeanFromJson(mData.getAnswerList().get(0));
             setScore(SpokenQuestion.getScore((int) response.lines.get(0).score));
         }
+    }
+
+    @Override
+    public void onProgress(int progress) {
+
+    }
+
+    @Override
+    public void onFinished() {
+        mSpokenUtils.stop();
+        ToastManager.showMsg("录音不能超过3分钟哦");
     }
 }

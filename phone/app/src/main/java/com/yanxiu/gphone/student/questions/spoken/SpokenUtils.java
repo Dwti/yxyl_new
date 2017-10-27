@@ -12,6 +12,8 @@ import com.unisound.edu.oraleval.sdk.sep15.IOralEvalSDK;
 import com.unisound.edu.oraleval.sdk.sep15.OralEvalSDKFactory;
 import com.unisound.edu.oraleval.sdk.sep15.SDKError;
 import com.yanxiu.gphone.student.constant.Constants;
+import com.yanxiu.gphone.student.util.Logger;
+import com.yanxiu.gphone.student.util.time.CountDownManager;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -25,16 +27,27 @@ import java.io.IOException;
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public class SpokenUtils {
 
+    private static final String TAG = "SpokenUtils";
+
     private static final String FILEPATH = Constants.VOICEDIR;
 
     private IOralEvalSDK mIOralEvalSDK;
-    private MediaPlayer mp;
+    private MediaPlayer mPlay;
     private FileOutputStream mAudioFileOut;
+    private CountDownManager mDownManager;
 
     public interface onPlayCallback {
         void onStart();
 
         void onEnd();
+
+        void onError();
+    }
+
+    public interface onOralEvaProgressCallback {
+        void onProgress(int progress);
+
+        void onFinished();
     }
 
     public interface onBaseOralEvalCallback {
@@ -48,7 +61,7 @@ public class SpokenUtils {
 
         void onResult(String result);
 
-        void onResultUrl(String url);
+        void onResultUrl(String filePath,String url);
 
         void onNoPermission(String text);
 
@@ -73,17 +86,17 @@ public class SpokenUtils {
         return new SpokenUtils();
     }
 
-    public void start(Context context, String text, onBaseOralEvalCallback oralEvalCallback) {
+    public void start(Context context, String text, onBaseOralEvalCallback oralEvalCallback, onOralEvaProgressCallback oralEvaProgressCallback) {
         String dir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + FILEPATH;
         File file = new File(dir);
         if (!file.exists()) {
             file.mkdirs();
         }
         String path = dir + String.valueOf(System.currentTimeMillis()) + ".mp3";
-        start(context, text, path, oralEvalCallback);
+        start(context, text, path, oralEvalCallback, oralEvaProgressCallback);
     }
 
-    public void start(final Context context, String text, final String path, final onBaseOralEvalCallback oralEvalCallback) {
+    public void start(final Context context, String text, final String path, final onBaseOralEvalCallback oralEvalCallback, final onOralEvaProgressCallback oralEvaProgressCallback) {
         OralEvalSDKFactory.StartConfig cfg = getCfg(text, path);
         if (cfg == null) {
             oralEvalCallback.onError("文件地址错误");
@@ -104,6 +117,27 @@ public class SpokenUtils {
                     @Override
                     public void run() {
                         oralEvalCallback.onStartRecord(path);
+                        if (oralEvaProgressCallback != null) {
+                            final int totalTime = 180000;
+                            if (mDownManager!=null){
+                                mDownManager.cancel();
+                                mDownManager=null;
+                            }
+                            mDownManager = CountDownManager.getManager().setTotalTime(totalTime).setScheduleListener(new CountDownManager.ScheduleListener() {
+                                @Override
+                                public void onProgress(long progress) {
+                                    Logger.d(TAG, progress + "");
+                                    int time = (totalTime - ((int) progress)) / 1000;
+                                    oralEvaProgressCallback.onProgress(time);
+                                }
+
+                                @Override
+                                public void onFinish() {
+                                    oralEvaProgressCallback.onFinished();
+                                }
+                            });
+                            mDownManager.start();
+                        }
                     }
                 });
             }
@@ -113,6 +147,10 @@ public class SpokenUtils {
                 runOnUiThread(context, new Runnable() {
                     @Override
                     public void run() {
+                        if (mDownManager!=null) {
+                            mDownManager.cancel();
+                            mDownManager=null;
+                        }
                         int ss = sdkError.errno;
                         if (ss == -1001) {
                             oralEvalCallback.onNoPermission("没有录音权限");
@@ -121,7 +159,7 @@ public class SpokenUtils {
                         }
                         oralEvalCallback.onStopOralEval(true);
                         mIOralEvalSDK = null;
-                        mAudioFileOut=null;
+                        mAudioFileOut = null;
                     }
                 });
             }
@@ -138,14 +176,14 @@ public class SpokenUtils {
                             oralEvalCallback.onError(s);
                             oralEvalCallback.onStopOralEval(true);
                             mIOralEvalSDK = null;
-                            mAudioFileOut=null;
+                            mAudioFileOut = null;
                             return;
                         }
                         oralEvalCallback.onResult(s);
-                        oralEvalCallback.onResultUrl(s1);
+                        oralEvalCallback.onResultUrl(path,s1);
                         oralEvalCallback.onStopOralEval(false);
                         mIOralEvalSDK = null;
-                        mAudioFileOut=null;
+                        mAudioFileOut = null;
                     }
                 });
             }
@@ -200,9 +238,13 @@ public class SpokenUtils {
                 runOnUiThread(context, new Runnable() {
                     @Override
                     public void run() {
+                        if (mDownManager!=null) {
+                            mDownManager.cancel();
+                            mDownManager=null;
+                        }
                         oralEvalCallback.onStopOralEval(true);
                         mIOralEvalSDK = null;
-                        mAudioFileOut=null;
+                        mAudioFileOut = null;
                     }
                 });
             }
@@ -212,6 +254,10 @@ public class SpokenUtils {
                 runOnUiThread(context, new Runnable() {
                     @Override
                     public void run() {
+                        if (mDownManager!=null) {
+                            mDownManager.cancel();
+                            mDownManager=null;
+                        }
                         oralEvalCallback.onStartOralEval();
                     }
                 });
@@ -230,60 +276,61 @@ public class SpokenUtils {
             if (mIOralEvalSDK != null)
                 mIOralEvalSDK.cancel();
             mIOralEvalSDK = null;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void playClear(){
+    public void playClear() {
         try {
-            if (mp!=null){
-                mp.stop();
-                mp.release();
-                mp = null;
+            if (mPlay != null) {
+                mPlay.stop();
+                mPlay.release();
+                mPlay = null;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public void play(Context context, String path, final onPlayCallback playCallback) {
         try {
-            if (mp != null) {
+            if (mPlay != null) {
                 playCallback.onEnd();
-                mp.stop();
-                mp.release();
-                mp = null;
+                mPlay.stop();
+                mPlay.release();
+                mPlay = null;
             } else {
-                mp = MediaPlayer.create(context, Uri.fromFile(new File(path)));
-                mp.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                mPlay = MediaPlayer.create(context, Uri.fromFile(new File(path)));
+                mPlay.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                     @Override
                     public void onPrepared(MediaPlayer mediaPlayer) {
                         playCallback.onStart();
                     }
                 });
-                mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                mPlay.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                     @Override
                     public void onCompletion(MediaPlayer mediaPlayer) {
                         playCallback.onEnd();
-                        mp.release();
-                        mp = null;
+                        mPlay.release();
+                        mPlay = null;
                     }
                 });
-                mp.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+                mPlay.setOnErrorListener(new MediaPlayer.OnErrorListener() {
                     @Override
                     public boolean onError(MediaPlayer mp, int what, int extra) {
+                        playCallback.onError();
                         playCallback.onEnd();
                         mp.release();
-                        mp = null;
+                        mPlay = null;
                         return false;
                     }
                 });
-                mp.start();
+                mPlay.start();
             }
         } catch (Exception ee) {
             ee.printStackTrace();
-            mp = null;
+            mPlay = null;
             playCallback.onEnd();
         }
     }
@@ -308,8 +355,8 @@ public class SpokenUtils {
 //            showToast("正在使用mic正常录音评测");
             cfg.setVadEnable(false);
         }
-        cfg.setBufferLog(true);
-        cfg.setScoreAdjuest(1.0f);
+        cfg.setBufferLog(false);
+        cfg.setScoreAdjuest(1.6f);
         cfg.setServiceType("A");
         cfg.setSocket_timeout(0);
         cfg.setMp3Audio(true);

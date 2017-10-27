@@ -4,8 +4,6 @@ import android.text.Layout;
 import android.text.Selection;
 import android.text.Spannable;
 import android.text.method.LinkMovementMethod;
-import android.text.method.MovementMethod;
-import android.text.style.ClickableSpan;
 import android.view.MotionEvent;
 import android.widget.TextView;
 
@@ -14,7 +12,7 @@ import android.widget.TextView;
  * Time : 2017/10/19 15:47.
  * Function :
  */
-public class SpokenLinkMovementMethod extends LinkMovementMethod {
+class SpokenLinkMovementMethod extends LinkMovementMethod {
 
     private static SpokenLinkMovementMethod sInstance;
 
@@ -26,12 +24,10 @@ public class SpokenLinkMovementMethod extends LinkMovementMethod {
     }
 
     @Override
-    public boolean onTouchEvent(TextView widget, Spannable buffer,
-                                MotionEvent event) {
+    public boolean onTouchEvent(TextView widget, Spannable buffer, MotionEvent event) {
         int action = event.getAction();
 
-        if (action == MotionEvent.ACTION_UP ||
-                action == MotionEvent.ACTION_DOWN) {
+        if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_DOWN) {
             int x = (int) event.getX();
             int y = (int) event.getY();
 
@@ -48,21 +44,21 @@ public class SpokenLinkMovementMethod extends LinkMovementMethod {
             ClickableImageSpan[] link = buffer.getSpans(off, off, ClickableImageSpan.class);
 
             if (link.length != 0) {
-                if (action == MotionEvent.ACTION_UP) {
-                    link[0].up();
-                    link[0].onClick(widget);
-                } else if (action == MotionEvent.ACTION_DOWN) {
-                    link[0].down();
-                    Selection.setSelection(buffer,
-                            buffer.getSpanStart(link[0]),
-                            buffer.getSpanEnd(link[0]));
+                switch (action) {
+                    case MotionEvent.ACTION_UP:
+                        link[0].up();
+                        link[0].onClick(widget);
+                        break;
+                    case MotionEvent.ACTION_DOWN:
+                        link[0].down();
+                        Selection.setSelection(buffer, buffer.getSpanStart(link[0]), buffer.getSpanEnd(link[0]));
+                        break;
                 }
                 return true;
             } else {
                 Selection.removeSelection(buffer);
             }
         }
-
         return super.onTouchEvent(widget, buffer, event);
     }
 

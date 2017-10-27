@@ -423,6 +423,12 @@ public abstract class BaseQuestion implements Serializable {
         return parentNumber;
     }
 
+    /**
+     * 口语题使用
+     * */
+    public int getScore(){
+        return 0;
+    };
 
     public abstract int getStatus();
 

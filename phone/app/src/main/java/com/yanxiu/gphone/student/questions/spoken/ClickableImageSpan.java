@@ -21,7 +21,7 @@ import static com.yanxiu.gphone.student.customviews.SpokenAnimDrawable.TYPE_TOUC
  */
 public class ClickableImageSpan extends ImageSpan {
 
-    public interface onSpanClickListener {
+    interface onSpanClickListener {
         void onClick(String url);
     }
 
@@ -30,7 +30,7 @@ public class ClickableImageSpan extends ImageSpan {
 
     private int mType = TYPE_DEFAULT;
 
-    public ClickableImageSpan(Drawable d, String url, onSpanClickListener spanClickListener) {
+    ClickableImageSpan(Drawable d, String url, onSpanClickListener spanClickListener) {
         super(d);
         this.mUrl = url;
         this.mSpanClickListener = spanClickListener;
@@ -42,7 +42,7 @@ public class ClickableImageSpan extends ImageSpan {
         setAnimStart();
     }
 
-    public void stop() {
+    void stop() {
         mType = TYPE_DEFAULT;
         setTypeToDrawable(mType);
         setAnimStop();
@@ -54,7 +54,7 @@ public class ClickableImageSpan extends ImageSpan {
         }
     }
 
-    public void down() {
+    void down() {
         mType = TYPE_TOUCH;
         setTypeToDrawable(mType);
     }

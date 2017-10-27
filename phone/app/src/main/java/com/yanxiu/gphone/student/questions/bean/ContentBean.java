@@ -9,7 +9,16 @@ import java.util.List;
  */
 
 public class ContentBean extends BaseBean {
+    private List<String> answer;
     private List<String> choices;
+
+    public List<String> getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(List<String> answer) {
+        this.answer = answer;
+    }
 
     public List<String> getChoices() {
         return choices;

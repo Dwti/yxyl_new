@@ -19,7 +19,7 @@ import java.lang.reflect.Field;
  * Time : 2017/10/23 15:04.
  * Function :
  */
-public class AudioTagHandler implements Html.TagHandler {
+class AudioTagHandler implements Html.TagHandler {
 
     private Context mContext;
     private View mView;
@@ -27,19 +27,19 @@ public class AudioTagHandler implements Html.TagHandler {
     private ClickableImageSpan mImageSpan;
     private String url = null;
 
-    public AudioTagHandler(Context context,View view,ClickableImageSpan.onSpanClickListener spanClickListener){
+    AudioTagHandler(Context context,View view,ClickableImageSpan.onSpanClickListener spanClickListener){
         this.mContext=context;
         this.mView=view;
         this.mSpanClickListener=spanClickListener;
     }
 
-    public void start(){
+    void start(){
         if (mImageSpan!=null){
             mImageSpan.start();
         }
     }
 
-    public void stop(){
+    void stop(){
         if (mImageSpan!=null){
             mImageSpan.stop();
         }

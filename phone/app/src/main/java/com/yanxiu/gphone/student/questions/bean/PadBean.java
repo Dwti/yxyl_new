@@ -17,8 +17,17 @@ public class PadBean extends BaseBean {
     private int status;
     private String uid;
     private String audioComment;
+    private String objectiveScore;
     private TeacherCheckBean teachercheck;
     private List<JsonAudioComment> jsonAudioComment;
+
+    public String getObjectiveScore() {
+        return objectiveScore;
+    }
+
+    public void setObjectiveScore(String objectiveScore) {
+        this.objectiveScore = objectiveScore;
+    }
 
     public List<JsonAudioComment> getJsonAudioComment() {
         return jsonAudioComment;

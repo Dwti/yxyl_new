@@ -13,7 +13,6 @@ import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.customviews.SpokenSpanTextView;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.analysisbase.AnalysisSimpleExerciseBaseFragment;
-import com.yanxiu.gphone.student.questions.subjective.SubjectiveQuestion;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
 import com.yanxiu.gphone.student.util.MediaPlayerUtil;
 import com.yanxiu.gphone.student.util.ToastManager;
@@ -30,7 +29,7 @@ public class SpokenAnalysisFragment extends AnalysisSimpleExerciseBaseFragment i
     private SpokenSpanTextView mQuestionView;
     private AudioTagHandler mAudioTagHandler;
 
-    private MediaPlayerUtil mPlayerUtil=MediaPlayerUtil.create();
+    private MediaPlayerUtil mPlayerUtil;
 
     @Override
     public void setData(BaseQuestion data) {
@@ -42,8 +41,15 @@ public class SpokenAnalysisFragment extends AnalysisSimpleExerciseBaseFragment i
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null && mData == null) {
-            setData((SubjectiveQuestion) savedInstanceState.getSerializable(KEY_NODE));
+            setData((SpokenQuestion) savedInstanceState.getSerializable(KEY_NODE));
         }
+        mPlayerUtil=MediaPlayerUtil.create();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mPlayerUtil.destory();
     }
 
     @Override

@@ -74,7 +74,7 @@ public class MediaPlayerUtil {
             this.playerUtil=playerUtil;
         }
 
-        public void setClear(){
+        void setClear(){
             playerUtil=null;
         }
 

@@ -31,7 +31,7 @@ public class SpokenWrongFragment extends WrongSimpleExerciseBaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null && mData == null) {
-            setData((SubjectiveQuestion) savedInstanceState.getSerializable(KEY_NODE));
+            setData((SpokenQuestion) savedInstanceState.getSerializable(KEY_NODE));
         }
     }
 
