@@ -35,7 +35,9 @@ public class PlayerView extends FrameLayout {
     private View notFoundErrorView;
     private View lastVideoFinishedView;
     private View fourGView;
+    private View playErrorControlBack,fourGErrorControlBack,networkErrorControlBack;
     private PlaybackControllerView controllerView;
+    public boolean isPortrait = true;
 
     private Context context;
     private AspectRatioFrameLayout contentFrame;
@@ -80,6 +82,10 @@ public class PlayerView extends FrameLayout {
         notFoundErrorView = findViewById(R.id.not_found_error_view);
         lastVideoFinishedView = findViewById(R.id.last_video_finished_view);
         fourGView = findViewById(R.id.four_g_view);
+
+        playErrorControlBack = findViewById(R.id.play_error_control_back);
+        fourGErrorControlBack = findViewById(R.id.four_g_error_control_back);
+        networkErrorControlBack = findViewById(R.id._network_error_control_back);
     }
 
     public SimpleExoPlayer getPlayer() {
@@ -136,6 +142,11 @@ public class PlayerView extends FrameLayout {
             notFoundErrorView.setVisibility(INVISIBLE);
             lastVideoFinishedView.setVisibility(INVISIBLE);
             fourGView.setVisibility(INVISIBLE);
+            if(isPortrait){
+               networkErrorControlBack.setVisibility(INVISIBLE);
+            }else {
+                networkErrorControlBack.setVisibility(VISIBLE);
+            }
         }
 
         if (state == NotFoundError) {
@@ -144,6 +155,11 @@ public class PlayerView extends FrameLayout {
             notFoundErrorView.setVisibility(VISIBLE);
             lastVideoFinishedView.setVisibility(INVISIBLE);
             fourGView.setVisibility(INVISIBLE);
+            if(isPortrait){
+                playErrorControlBack.setVisibility(INVISIBLE);
+            }else {
+                playErrorControlBack.setVisibility(VISIBLE);
+            }
         }
 
         if (state == LastVideoFinished) {
@@ -160,6 +176,38 @@ public class PlayerView extends FrameLayout {
             notFoundErrorView.setVisibility(INVISIBLE);
             lastVideoFinishedView.setVisibility(INVISIBLE);
             fourGView.setVisibility(VISIBLE);
+            if(isPortrait){
+                fourGErrorControlBack.setVisibility(INVISIBLE);
+            }else {
+                fourGErrorControlBack.setVisibility(VISIBLE);
+            }
+        }
+    }
+
+    public void setControlBackVisibility(){
+
+        if (state == NetworkError) {
+            if(isPortrait){
+                networkErrorControlBack.setVisibility(INVISIBLE);
+            }else {
+                networkErrorControlBack.setVisibility(VISIBLE);
+            }
+        }
+
+        if (state == NotFoundError) {
+            if(isPortrait){
+                playErrorControlBack.setVisibility(INVISIBLE);
+            }else {
+                playErrorControlBack.setVisibility(VISIBLE);
+            }
+        }
+
+        if (state == FourG) {
+            if(isPortrait){
+                fourGErrorControlBack.setVisibility(INVISIBLE);
+            }else {
+                fourGErrorControlBack.setVisibility(VISIBLE);
+            }
         }
     }
 

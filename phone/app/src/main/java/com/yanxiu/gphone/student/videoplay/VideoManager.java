@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
@@ -64,6 +65,8 @@ public class VideoManager {
 
     public interface OnCourseEventListener {
         void onRotate();
+
+        void onBackPressed();
 
         void onHeadFinish();
 
@@ -181,14 +184,14 @@ public class VideoManager {
     }
 
     private void setupVideoStateViewClickListeners() {
-        playerView.findViewById(R.id.network_error_view).setOnClickListener(new View.OnClickListener() {
+        playerView.findViewById(R.id.btn_network_error).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 stopAndRecoverCurrentVideo(true);
             }
         });
 
-        playerView.findViewById(R.id.not_found_error_view).setOnClickListener(new View.OnClickListener() {
+        playerView.findViewById(R.id.btn_play_error).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 stopAndRecoverCurrentVideo(true);
@@ -204,10 +207,64 @@ public class VideoManager {
             }
         });
 
-        playerView.findViewById(R.id.four_g_view).setOnClickListener(new View.OnClickListener() {
+        playerView.findViewById(R.id.btn_four_g).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 stopAndRecoverCurrentVideo(false);
+            }
+        });
+
+        playerView.findViewById(R.id.play_error_rotate_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onRotate();
+                }
+            }
+        });
+
+        playerView.findViewById(R.id.four_g_error_rotate_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onRotate();
+                }
+            }
+        });
+
+        playerView.findViewById(R.id.network_error_rotate_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onRotate();
+                }
+            }
+        });
+
+        playerView.findViewById(R.id.play_error_control_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onBackPressed();
+                }
+            }
+        });
+
+        playerView.findViewById(R.id.four_g_error_control_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onBackPressed();
+                }
+            }
+        });
+
+        playerView.findViewById(R.id._network_error_control_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onBackPressed();
+                }
             }
         });
     }
@@ -263,11 +320,24 @@ public class VideoManager {
         controllerPlaceholderView = controllerView;
         playerView.setControllerView(controllerPlaceholderView);
 
+        if(model != null){
+            ((TextView)controllerView.findViewById(R.id.video_name)).setText(model.videoName);
+        }
+
         controllerView.findViewById(R.id.rotate_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (listener != null) {
                     listener.onRotate();
+                }
+            }
+        });
+
+        controllerView.findViewById(R.id.control_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(listener != null){
+                    listener.onBackPressed();
                 }
             }
         });
@@ -446,6 +516,8 @@ public class VideoManager {
 
     public void updatePortraitLandscapeControllerView() {
         boolean isHead = (playerView.getPlayer() == headPlayer ? true : false);
+        playerView.isPortrait = this.isPortrait;
+        playerView.setControlBackVisibility();
         if (isPortrait && isHead) {
             setupPortraitHeadControllerView();
         }

@@ -87,6 +87,11 @@ public class VideoActivity extends Activity{
         }
 
         @Override
+        public void onBackPressed() {
+            rotateScreen();
+        }
+
+        @Override
         public void onHeadFinish() {
             mVideoModel.isHeadFinished = true;
         }

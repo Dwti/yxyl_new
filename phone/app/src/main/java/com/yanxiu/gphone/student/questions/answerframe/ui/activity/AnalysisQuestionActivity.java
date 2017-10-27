@@ -610,6 +610,12 @@ public class AnalysisQuestionActivity extends YanxiuBaseActivity implements View
         }
 
         @Override
+        public void onBackPressed() {
+            rotateScreen();
+            collapseVideo();
+        }
+
+        @Override
         public void onHeadFinish() {
             mVideoModel.isHeadFinished = true;
         }
@@ -617,6 +623,10 @@ public class AnalysisQuestionActivity extends YanxiuBaseActivity implements View
         @Override
         public void onBodyFinish() {
             mVideoManager.setState(LastVideoFinished);
+            if(!mVideoManager.isPortrait){
+                rotateScreen();
+            }
+            collapseVideo();
         }
 
         @Override
