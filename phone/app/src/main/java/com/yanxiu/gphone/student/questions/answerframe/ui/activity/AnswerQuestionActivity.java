@@ -640,7 +640,9 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
                 }
                 break;
             case R.id.answercardview:
-                mVideoManager.setBodyPlayWhenReady(false);
+                if (mVideoManager!=null) {
+                    mVideoManager.setBodyPlayWhenReady(false);
+                }
                 showAnswerCardFragment();
                 break;
             case R.id.tips_play:
