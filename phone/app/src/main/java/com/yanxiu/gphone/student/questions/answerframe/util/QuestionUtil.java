@@ -228,10 +228,10 @@ public class QuestionUtil {
     public static int getIntValue(String str) {
         int result = 0;
         switch (str) {
-            case "口语题":
+            case "听力题":
                 result = 1;
                 break;
-            case "听力题":
+            case "口语题":
                 result = 2;
                 break;
             case "单选题":
