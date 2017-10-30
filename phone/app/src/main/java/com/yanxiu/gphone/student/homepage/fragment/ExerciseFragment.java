@@ -171,7 +171,10 @@ public class ExerciseFragment extends HomePageBaseFragment {
             if(response.getStatus().getCode() == 0){
                 if(response.getData().size() > 0){
                     showSubjects(response.getData());
-                    requestTopic();
+                    if("1202".equals(mStageId)){
+                        //小学学段才有BC资源
+                        requestTopic();
+                    }
                 }else {
                     showDataEmptyView();
                 }
