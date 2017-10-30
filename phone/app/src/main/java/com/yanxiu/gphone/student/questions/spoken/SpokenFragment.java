@@ -19,6 +19,7 @@ import com.yanxiu.gphone.student.customviews.SpokenSpanTextView;
 import com.yanxiu.gphone.student.customviews.SpokenWaveView;
 import com.yanxiu.gphone.student.db.SpManager;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
+import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerQuestionActivity;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
 import com.yanxiu.gphone.student.util.MediaPlayerUtil;
@@ -232,9 +233,15 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
                     mRecordView.setImageResource(R.drawable.spoken_record_press);
                     isCanPlayQuestionViedio = false;
                     mSpokenUtils.start(getContext(), mData.getSpokenAnswer(), SpokenFragment.this,SpokenFragment.this);
+                    if (getActivity() instanceof AnswerQuestionActivity){
+                        ((AnswerQuestionActivity)getActivity()).setCanClick(false);
+                    }
                     break;
                 case MotionEvent.ACTION_CANCEL:
                 case MotionEvent.ACTION_UP:
+                    if (getActivity() instanceof AnswerQuestionActivity){
+                        ((AnswerQuestionActivity)getActivity()).setCanClick(true);
+                    }
                     mRecordView.setImageResource(R.drawable.spoken_record_normal);
                     mPlayOrStopView.setEnabled(true);
                     mSpokenUtils.stop();

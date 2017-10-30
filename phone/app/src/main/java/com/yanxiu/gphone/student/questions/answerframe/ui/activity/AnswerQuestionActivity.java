@@ -87,11 +87,13 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
      */
     private final int HANDLER_TIME_DELAYED = 1000;
     private int mTotalQuestion;//题目总数量
+    private boolean isCanClick=true;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_answerquestion);
+        isCanClick=true;
         initData();
         initView();
     }
@@ -473,8 +475,19 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         return mGenQuesequest;
     }
 
+    /**
+     * 因口语题需求更改，故通过这个方法来设置当前界面上下题、返回、答题卡等按钮是否可以点击
+     * */
+    public void setCanClick(boolean isCanClick){
+        this.isCanClick=isCanClick;
+    }
+
     @Override
     public void onClick(View v) {
+
+        if (!isCanClick){
+            return;
+        }
 
         switch (v.getId()) {
             case R.id.previous_question:
