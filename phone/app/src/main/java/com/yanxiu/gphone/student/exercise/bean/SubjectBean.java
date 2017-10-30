@@ -10,6 +10,7 @@ public class SubjectBean extends BaseBean {
     private String id;
     private String name;
     private EditionBean data;
+    private String type=""; //给BC资源用
 
     public String getId() {
         return id;
@@ -33,5 +34,13 @@ public class SubjectBean extends BaseBean {
 
     public void setData(EditionBean data) {
         this.data = data;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

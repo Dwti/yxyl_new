@@ -25,6 +25,8 @@ public class QuestionBean extends BaseBean {
     private String template;
     private String type_id;
     private String url;
+    private int has_video = 0;
+
 
     public JsonNoteBean getJsonNote() {
         return jsonNote;
@@ -152,5 +154,13 @@ public class QuestionBean extends BaseBean {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public int getHas_video() {
+        return has_video;
+    }
+
+    public void setHas_video(int has_video) {
+        this.has_video = has_video;
     }
 }

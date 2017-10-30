@@ -37,6 +37,7 @@ public class Constants {
     public static final String EXTRA_COME = "extra_Come";//数据来源
     public static final String COME_REPORT = "come_report";//在解析页标识来源--来自于答题报告
     public static final String EXTRA_PAPER = "extra_Paper";//传递给答题页的paper数据的key
+    public static final String EXTRA_RMSPAPER = "extra_rmsPaper";//传递给答题页的paper数据的key
     public static final String EXTRA_REQUEST = "extra_Request";//从选择章节只是点进入答题页，章节知识点的请求Request
     public static final String EXTRA_QID = "extra_Qid";//传递给报错页的题目的qid
     public static final String EXTRA_FROMTYPE = "extra_fromtype";//答题页的来源
@@ -47,6 +48,7 @@ public class Constants {
     public static final String MAINAVTIVITY_REFRESH = "mainActivity_refresh";//跳转到首页需要刷新数据
     public static final String MAINAVTIVITY_FROMTYPE_EXERCISE = "mainActivity_fromtype_exxercise";//从练习页跳转到首页标识
     public static final String MAINAVTIVITY_FROMTYPE_EXERCISE_HISTORY = "mainActivity_fromtype_exxercise_history";//从练习页跳转到首页标识
+    public static final String FROM_BC_RESOURCE = "FROM_BC_RESOURCE";//从练习页跳转到首页标识
     public static final String STUDENT_UPLOAD = "student/yanxiustudent.apk";
     public static final char CHARACTER_SLASH = '/';
     public static final String DOMYBOXDIR = "YanXiu/app/student";

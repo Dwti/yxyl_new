@@ -262,6 +262,32 @@
             android:background="@drawable/selector_answercard_submit_button_bg"/>
     </com.yanxiu.gphone.student.customviews.WavesLayout>
 
+    <RelativeLayout
+        android:id="@+id/reset_answer"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="#E6FFFFFF"
+        android:layout_alignParentBottom="true">
+
+        <com.yanxiu.gphone.student.customviews.WavesLayout
+            android:layout_width="170dp"
+            android:layout_height="35dp"
+            app:waves_radius="@dimen/wavesRadius"
+            app:waves_animend_alpha="102"
+            android:layout_centerInParent="true">
+
+            <Button
+                android:id="@+id/btn_reset_answer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/selector_common_button_bg_89e00d"
+                android:textSize="16dp"
+                android:textColor="@android:color/white"
+                android:text="重新作答" />
+        </com.yanxiu.gphone.student.customviews.WavesLayout>
+
+    </RelativeLayout>
+
     <com.yanxiu.gphone.student.customviews.LoadingView
         android:id="@+id/loading_view"
         android:layout_width="match_parent"

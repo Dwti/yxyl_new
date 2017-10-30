@@ -85,12 +85,25 @@ public class SubjectsAdapter extends BaseAdapter {
             case "1110":
                 imageView.setImageResource(R.drawable.lishi);
                 break;
+            case "9600":
+                imageView.setImageResource(R.drawable.icon_bc);
+                break;
             default:
                 break;
         }
     }
     public void replaceData(List<SubjectBean> data){
         mSubjects = data;
+        notifyDataSetChanged();
+    }
+
+    public void addData(SubjectBean bean){
+        mSubjects.add(bean);
+        notifyDataSetChanged();
+    }
+
+    public void addData(List<SubjectBean> data){
+        mSubjects.addAll(data);
         notifyDataSetChanged();
     }
 

@@ -1,8 +1,11 @@
 package com.yanxiu.gphone.student.questions.answerframe.ui.activity;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,11 +16,16 @@ import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.YanxiuApplication;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
@@ -25,6 +33,7 @@ import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.AnswerCardSubmitDialog;
 import com.yanxiu.gphone.student.customviews.QuestionProgressView;
 import com.yanxiu.gphone.student.customviews.QuestionTimeTextView;
+import com.yanxiu.gphone.student.db.SaveAnswerDBHelper;
 import com.yanxiu.gphone.student.db.SpManager;
 import com.yanxiu.gphone.student.exercise.request.GenQuesRequest;
 import com.yanxiu.gphone.student.questions.answerframe.adapter.QAViewPagerAdapter;
@@ -41,11 +50,20 @@ import com.yanxiu.gphone.student.questions.answerframe.util.QuestionUtil;
 import com.yanxiu.gphone.student.questions.answerframe.view.QAViewPager;
 import com.yanxiu.gphone.student.util.DataFetcher;
 import com.yanxiu.gphone.student.util.KeyboardObserver;
+import com.yanxiu.gphone.student.util.ScreenUtils;
 import com.yanxiu.gphone.student.util.ToastManager;
+import com.yanxiu.gphone.student.videoplay.NetworkStateService;
+import com.yanxiu.gphone.student.videoplay.PlayerView;
+import com.yanxiu.gphone.student.videoplay.ScreenOrientationSwitcher;
+import com.yanxiu.gphone.student.videoplay.VideoManager;
+import com.yanxiu.gphone.student.videoplay.VideoModel;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
+import static com.yanxiu.gphone.student.videoplay.VideoManager.VideoState.LastVideoFinished;
+import static com.yanxiu.gphone.student.videoplay.VideoManager.VideoState.Loading;
+import static com.yanxiu.gphone.student.videoplay.VideoManager.VideoState.Normal;
 
 
 /**
@@ -58,6 +76,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
     private QAViewPagerAdapter mAdapter;
     private String mKey;//获取数据的key
     private String mFromType;//从哪个页面跳转过来的（练习页面）
+    private String mRmsPaperId;
     private GenQuesRequest mGenQuesequest;//从选择章节只是点进入答题页，章节知识点的请求Request
     private String mTitleString;//试卷的title-答题卡需要
     private Paper mPaper;//试卷数据
@@ -72,6 +91,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
     private ImageView mBackView;//返回按钮
     private ImageView mShowAnswerCardView;//显示答题卡
     private View mRootView,mOverlay;
+    private boolean mHasShowVideoGuide = false;
 
     private InputMethodManager mInputMethodManager;
 
@@ -89,6 +109,32 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
     private int mTotalQuestion;//题目总数量
     private boolean isCanClick=true;
 
+
+    private Button btn_skip_video;
+    private ImageView video_float, video_collapse, video_play, video_cover, tips_play, tips_cover;
+    private View layout_cover,video_tips;
+
+    private PlayerView mPlayerView;
+    private VideoManager mVideoManager;
+    private AnswerQuestionActivity.EventListener mListener = new AnswerQuestionActivity.EventListener();
+
+    private VideoModel mVideoModel;
+
+    private boolean mHasVideo = false;
+
+    private void setupVideoModel(){
+        mVideoModel = new VideoModel();
+        mVideoModel.cover = mPaper.getCover();
+        mVideoModel.bodyUrl = mPaper.getVideoUrl();
+        mVideoModel.bodyPosition = 0;
+        mVideoModel.isHeadFinished = false;
+        mVideoModel.videoName = mPaper.getName();
+        mVideoModel.videoSize = mPaper.getVideoSize();
+
+        Glide.with(this).load(mVideoModel.cover).asBitmap().into(video_cover);
+        Glide.with(this).load(mVideoModel.cover).asBitmap().into(tips_cover);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,6 +142,15 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         isCanClick=true;
         initData();
         initView();
+
+        if(mHasVideo){
+            mVideoManager = new VideoManager(this, (PlayerView) findViewById(R.id.player_view));
+            mVideoManager.setOnCourseEventListener(mListener);
+
+            setupVideoModel();
+            setupRotation();
+            setupNetwork4GWifi();
+        }
     }
 
     private void initData() {
@@ -103,6 +158,9 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         if (TextUtils.isEmpty(mKey))
             finish();
         mFromType = getIntent().getStringExtra(Constants.EXTRA_FROMTYPE);
+        if(Constants.FROM_BC_RESOURCE.equals(mFromType)){
+            mRmsPaperId = getIntent().getStringExtra(Constants.EXTRA_RMSPAPER);
+        }
         initExerciseData();
         mPaper = DataFetcher.getInstance().getPaper(mKey);
         mQuestions = mPaper.getQuestions();
@@ -111,6 +169,10 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         mStartTime = System.currentTimeMillis();
         mPaper.getPaperStatus().setBegintime(mStartTime+"");
         mTitleString = mPaper.getName();
+
+        mHasShowVideoGuide = SaveAnswerDBHelper.isHasShowVideTips(mPaper.getId());
+
+        mHasVideo = !TextUtils.isEmpty(mPaper.getVideoUrl());
     }
 
     /**
@@ -140,10 +202,32 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         mNext_text = (TextView) findViewById(R.id.next_text);
         mBackView = (ImageView) findViewById(R.id.backview);
         mShowAnswerCardView = (ImageView) findViewById(R.id.answercardview);
-        setListener();
+
+        video_tips = findViewById(R.id.video_tips);
+        tips_play  = (ImageView) findViewById(R.id.tips_play);
+        tips_cover = (ImageView) findViewById(R.id.tips_cover);
+        btn_skip_video = (Button) findViewById(R.id.btn_skip);
+        layout_cover = findViewById(R.id.video_cover);
+        video_float = (ImageView) findViewById(R.id.iv_float_play);
+        video_collapse = (ImageView) findViewById(R.id.iv_collapse);
+        video_play = (ImageView) findViewById(R.id.iv_play);
+        video_cover = (ImageView) findViewById(R.id.iv_cover);
+        mPlayerView = (PlayerView) findViewById(R.id.player_view);
+
+        if(mPaper.getQuestions().get(0).isHasVideo()){
+            video_float.setVisibility(View.VISIBLE);
+            if(!mHasShowVideoGuide){
+                video_tips.setVisibility(View.VISIBLE);
+                mHasShowVideoGuide = true;
+                SaveAnswerDBHelper.setHasShowVideoTips(mPaper.getId(),true);
+            }
+        }
+
         initViewPager();
+        setListener();
         mHandler = new TimingHandler(this);
         mTimer.setTime(mTotalTime);
+
     }
 
     private void setListener() {
@@ -152,6 +236,43 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         mNext_question.setOnClickListener(this);
         mBackView.setOnClickListener(this);
         mShowAnswerCardView.setOnClickListener(this);
+
+        video_tips.setOnClickListener(this);
+        tips_play.setOnClickListener(this);
+        btn_skip_video.setOnClickListener(this);
+        video_float.setOnClickListener(this);
+        video_collapse.setOnClickListener(this);
+        video_play.setOnClickListener(this);
+
+        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if(!mHasVideo)
+                    return;
+                collapseVideo();
+                if(mPaper.getQuestions().get(position).isHasVideo()){
+                    video_float.setVisibility(View.VISIBLE);
+                    if(!mHasShowVideoGuide){
+                        video_tips.setVisibility(View.VISIBLE);
+                        mHasShowVideoGuide = true;
+                        SaveAnswerDBHelper.setHasShowVideoTips(mPaper.getId(),true);
+                    }
+                }else {
+                    video_float.setVisibility(View.GONE);
+                }
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     public void addKeyboardVisibleChangeListener(KeyboardObserver.KeyBoardVisibleChangeListener listener){
@@ -506,14 +627,47 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
                 }else if(Constants.MAINAVTIVITY_FROMTYPE_EXERCISE_HISTORY.equals(mFromType)){
                     mDialog.showLoadingView();
                     requestSubmmit();
+                }else if(Constants.FROM_BC_RESOURCE.equals(mFromType)){
+                    if(checkQuestionHasAnswerd()){
+                        SaveAnswerDBHelper.setTopicPaperAnswered(mRmsPaperId,true);
+                    }else {
+                        SaveAnswerDBHelper.setTopicPaperAnswered(mRmsPaperId,false);
+                    }
+                    finish();
                 }else {
                     SpManager.setCompleteQuestionCount(mPaper.getId(),QuestionUtil.calculateCompleteCount(mQuestions));
                     finish();
                 }
                 break;
             case R.id.answercardview:
+                mVideoManager.setBodyPlayWhenReady(false);
                 showAnswerCardFragment();
                 break;
+            case R.id.tips_play:
+                video_tips.setVisibility(View.GONE);
+                mPlayerView.setVisibility(View.VISIBLE);
+                video_collapse.setVisibility(View.VISIBLE);
+                playVideo();
+                rotateScreen();
+                break;
+            case R.id.btn_skip:
+                video_tips.setVisibility(View.GONE);
+                break;
+            case R.id.iv_float_play:
+                expandVideo();
+                break;
+            case R.id.iv_collapse:
+                collapseVideo();
+                break;
+            case R.id.iv_play:
+                mPlayerView.setVisibility(View.VISIBLE);
+                video_collapse.setVisibility(View.VISIBLE);
+                layout_cover.setVisibility(View.GONE);
+                playVideo();
+                break;
+            case R.id.video_tips:
+                break;
+
         }
     }
 
@@ -573,13 +727,23 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
     protected void onResume() {
         super.onResume();
         startTiming();
-    }
 
+        if(isPlayerViewVisible()){
+            playVideo();
+        }
+    }
 
     @Override
     protected void onPause() {
         super.onPause();
         endTiming();
+
+        if(isPlayerViewVisible()){
+            if (mVideoModel != null) {
+                mVideoManager.recordPlayPauseState();
+                mVideoManager.clearPlayer();
+            }
+        }
     }
 
     @Override
@@ -590,6 +754,9 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         mKeyboardObserver.destroy();
         mOverlay.clearAnimation();
         super.onDestroy();
+        if(mHasVideo){
+            unregisterReceiver(mNotification);
+        }
     }
 
     /**
@@ -597,9 +764,17 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
      *
      * @param activity
      */
-    public static void invoke(Activity activity, String key) {
+    public static void invoke(Activity activity, String paperId) {
         Intent intent = new Intent(activity, AnswerQuestionActivity.class);
-        intent.putExtra(Constants.EXTRA_PAPER, key);
+        intent.putExtra(Constants.EXTRA_PAPER, paperId);
+        activity.startActivity(intent);
+    }
+
+    public static void invoke(Activity activity, String paperId,String rmsPaperId, String fromType,int flag) {
+        Intent intent = new Intent(activity, AnswerQuestionActivity.class);
+        intent.putExtra(Constants.EXTRA_PAPER, paperId);
+        intent.putExtra(Constants.EXTRA_RMSPAPER,rmsPaperId);
+        intent.putExtra(Constants.EXTRA_FROMTYPE, fromType);
         activity.startActivity(intent);
     }
 
@@ -609,9 +784,9 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
      * @param activity
      * @param fromType  练习页面 ：Constants.MAINAVTIVITY_FROMTYPE_EXERCISE
      */
-    public static void invoke(Activity activity, String key, String fromType, GenQuesRequest request) {
+    public static void invoke(Activity activity, String paperId, String fromType, GenQuesRequest request) {
         Intent intent = new Intent(activity, AnswerQuestionActivity.class);
-        intent.putExtra(Constants.EXTRA_PAPER, key);
+        intent.putExtra(Constants.EXTRA_PAPER, paperId);
         intent.putExtra(Constants.EXTRA_FROMTYPE, fromType);
         intent.putExtra(Constants.EXTRA_REQUEST,request);
         activity.startActivity(intent);
@@ -619,6 +794,11 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
 
     @Override
     public void onBackPressed() {
+        if(mPlayerView.getVisibility() == View.VISIBLE && !mVideoManager.isPortrait){
+            rotateScreen();
+            collapseVideo();
+            return;
+        }
         if(mAnswerCardFragment != null && mAnswerCardFragment.isAdded()){
             getSupportFragmentManager().beginTransaction().remove(mAnswerCardFragment).commit();
             controlListenView(false);
@@ -630,6 +810,13 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
             }else {
                 finish();
             }
+        }else if(Constants.FROM_BC_RESOURCE.equals(mFromType)){
+            if(checkQuestionHasAnswerd()){
+                SaveAnswerDBHelper.setTopicPaperAnswered(mRmsPaperId,true);
+            }else {
+                SaveAnswerDBHelper.setTopicPaperAnswered(mRmsPaperId,false);
+            }
+            finish();
         }else if(Constants.MAINAVTIVITY_FROMTYPE_EXERCISE_HISTORY.equals(mFromType)){
             mDialog.showLoadingView();
             requestSubmmit();
@@ -728,4 +915,183 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         }
         return false;
     }
+
+
+   //视频播放部分
+
+    private void expandVideo(){
+        layout_cover.setVisibility(View.VISIBLE);
+    }
+
+
+    private void collapseVideo(){
+        layout_cover.setVisibility(View.GONE);
+        mPlayerView.setVisibility(View.GONE);
+        video_collapse.setVisibility(View.GONE);
+        destoryVideo();
+    }
+
+    private boolean isPlayerViewVisible(){
+        return mPlayerView.getVisibility() == View.VISIBLE;
+    }
+
+    private void playVideo(){
+        VideoManager.VideoState lastState = mVideoManager.getState();
+        mVideoManager.setupPlayer();
+        mVideoManager.setModel(mVideoModel);
+
+        if ((lastState != Normal) && (lastState != Loading)) {
+            mVideoManager.setState(lastState);
+        }
+    }
+
+    private void destoryVideo(){
+        mVideoModel.bodyPosition = 0;
+        mVideoManager.clearPlayer();
+        mVideoManager.resetAllState();
+    }
+
+    private final class EventListener implements VideoManager.OnCourseEventListener {
+        @Override
+        public void onRotate() {
+            rotateScreen();
+            if(mVideoManager.isPortrait){
+                video_collapse.setVisibility(View.VISIBLE);
+            }else {
+                video_collapse.setVisibility(View.GONE);
+            }
+        }
+
+        @Override
+        public void onBackPressed() {
+            rotateScreen();
+            collapseVideo();
+        }
+
+        @Override
+        public void onHeadFinish() {
+            mVideoModel.isHeadFinished = true;
+        }
+
+        @Override
+        public void onBodyFinish() {
+            mVideoManager.setState(LastVideoFinished);
+            if(!mVideoManager.isPortrait){
+                rotateScreen();
+            }
+            collapseVideo();
+        }
+
+        @Override
+        public void onReplayFromFirstVideo() {
+            goPlay();
+        }
+    }
+
+    private void goPlay() {
+        if (!mVideoModel.isHeadFinished) {
+            mVideoModel.headPosition = 0;
+        }
+
+        mVideoManager.clearPlayer();
+        mVideoManager.setupPlayer();
+        mVideoManager.resetAllState();
+        mVideoManager.setModel(mVideoModel);
+    }
+
+    //region 移动网wifi 相关
+    private void setupNetwork4GWifi() {
+        Intent intent = new Intent(this, NetworkStateService.class);
+        intent.setAction(NetworkStateService.NETWORKSTATE);
+        startService(intent);
+
+        IntentFilter mFilter = new IntentFilter();
+        mFilter.addAction(NetworkStateService.NETWORKSTATE);
+        registerReceiver(mNotification, mFilter);
+    }
+
+    private BroadcastReceiver mNotification = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(NetworkStateService.NETWORKSTATE)) {
+                int state = intent.getIntExtra("networkStatus", -1);
+                // 0 无网
+                // 1 移动网络
+                // 2 wifi
+                if (state == 1) {
+                    // 移动网络
+                    mVideoManager.networkChangeToFourG();
+                }
+            }
+        }
+    };
+    //endregion
+
+    //region 全屏半屏 相关
+    private ScreenOrientationSwitcher orientationSwitcher;
+    private void setupRotation() {
+//        getActionBar().hide();
+        orientationSwitcher = new ScreenOrientationSwitcher(this);
+        orientationSwitcher.setChangeListener(new ScreenOrientationSwitcher.OnChangeListener() {
+            // 重力感应旋转
+            @Override
+            public void onChanged(int requestedOrientation) {
+                if (requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
+                    setRequestedOrientation(requestedOrientation);
+                    video_collapse.setVisibility(View.VISIBLE);
+                    setPortraitStyle();
+                }
+
+                if (requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+                    setRequestedOrientation(requestedOrientation);
+                    video_collapse.setVisibility(View.GONE);
+                    setLandscapeStyle();
+                }
+
+                if (requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE) {
+                    setRequestedOrientation(requestedOrientation);
+                    video_collapse.setVisibility(View.GONE);
+                    setLandscapeStyle();
+                }
+            }
+        });
+        orientationSwitcher.enable();
+    }
+
+    // 主动点击旋转
+    private void rotateScreen() {
+        if (mVideoManager.isPortrait) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            setLandscapeStyle();
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            setPortraitStyle();
+        }
+    }
+
+    private void setPortraitStyle() {
+        mVideoManager.isPortrait = true;
+        mVideoManager.updatePortraitLandscapeControllerView();
+//        findViewById(R.id.play_button).setVisibility(View.VISIBLE);
+
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        //FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Utils.dip2px(this, 250));
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ScreenUtils.dpToPxInt(this, 250));
+        params.topMargin = getResources().getDimensionPixelOffset(R.dimen.question_top_layout_height);
+        mVideoManager.getPlayerView().setLayoutParams(params);
+    }
+
+    private void setLandscapeStyle() {
+        mVideoManager.isPortrait = false;
+        mVideoManager.updatePortraitLandscapeControllerView();
+//        findViewById(R.id.play_button).setVisibility(View.GONE);
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        //FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        params.topMargin = 0;
+        mVideoManager.getPlayerView().setLayoutParams(params);
+    }
+    //endregion
+
 }

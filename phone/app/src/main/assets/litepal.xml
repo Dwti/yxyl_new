@@ -7,5 +7,7 @@
         <mapping class="com.yanxiu.gphone.student.login.response.PassportBean" />
         <mapping class="com.yanxiu.gphone.student.questions.answerframe.bean.AnswerBean" />
         <mapping class="com.yanxiu.gphone.student.userevent.bean.UserEventBean"/>
+        <mapping class="com.yanxiu.gphone.student.videoplay.VideoConfigBean"/>
+        <mapping class="com.yanxiu.gphone.student.bcresource.bean.TopicPaperStatusBean"/>
     </list>
 </litepal>

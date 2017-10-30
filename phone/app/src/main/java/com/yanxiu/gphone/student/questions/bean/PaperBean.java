@@ -35,6 +35,9 @@ public class PaperBean extends BaseBean {
     private String subquesnum;
     private String volume;
     private String volumeName;
+    private String cover;
+    private long videoSize;
+    private String videoUrl;
 
     public String getAuthorid() {
         return authorid;
@@ -242,5 +245,29 @@ public class PaperBean extends BaseBean {
 
     public void setVolumeName(String volumeName) {
         this.volumeName = volumeName;
+    }
+
+    public String getCover() {
+        return cover;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
+    }
+
+    public long getVideoSize() {
+        return videoSize;
+    }
+
+    public void setVideoSize(long videoSize) {
+        this.videoSize = videoSize;
+    }
+
+    public String getVideoUrl() {
+        return videoUrl;
+    }
+
+    public void setVideoUrl(String videoUrl) {
+        this.videoUrl = videoUrl;
     }
 }

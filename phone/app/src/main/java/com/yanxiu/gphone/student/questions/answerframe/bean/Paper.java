@@ -39,6 +39,9 @@ public class Paper {
     private String subquesnum;
     private String volume;
     private String volumeName;
+    private String cover;
+    private long videoSize;
+    private String videoUrl;
 
     public Paper(PaperBean paperBean, QuestionShowType showType) {
         this.authorid = paperBean.getAuthorid();
@@ -67,6 +70,9 @@ public class Paper {
         this.subquesnum = paperBean.getSubquesnum();
         this.volume = paperBean.getVolume();
         this.volumeName = paperBean.getVolumeName();
+        this.cover = paperBean.getCover();
+        this.videoSize = paperBean.getVideoSize();
+        this.videoUrl = paperBean.getVideoUrl();
     }
 
     public String getAuthorid() {
@@ -275,6 +281,30 @@ public class Paper {
 
     public void setVolumeName(String volumeName) {
         this.volumeName = volumeName;
+    }
+
+    public String getCover() {
+        return cover;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
+    }
+
+    public long getVideoSize() {
+        return videoSize;
+    }
+
+    public void setVideoSize(long videoSize) {
+        this.videoSize = videoSize;
+    }
+
+    public String getVideoUrl() {
+        return videoUrl;
+    }
+
+    public void setVideoUrl(String videoUrl) {
+        this.videoUrl = videoUrl;
     }
 
     /**

@@ -3,6 +3,7 @@ package com.yanxiu.gphone.student.customviews;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -242,6 +243,21 @@ public class AnswerCardSubmitDialog extends Dialog implements View.OnClickListen
         mState_title.setText(mContext.getString(R.string.submit_exericse_answer));
         mState_content.setText(mContext.getString(R.string.question_no_finish_live));
         mButton_yes.setText(mContext.getString(R.string.quite));
+        if(!isShowing())
+            show();
+    }
+
+    /**
+     * 重新作答确认
+     */
+    public void showResetConfirmView() {
+        state = SubmitState.STATE_EXERICSE_CONFIRM;
+        mState_layout.setVisibility(View.VISIBLE);
+        mSubmiting_layout.setVisibility(View.GONE);
+        mState_title.setText(mContext.getString(R.string.reset_topic_1));
+        mState_content.setText(mContext.getString(R.string.reset_topic_2));
+        mButton_yes.setText(mContext.getString(R.string.ok));
+        mState_title.setTextSize(TypedValue.COMPLEX_UNIT_DIP,20);
         if(!isShowing())
             show();
     }

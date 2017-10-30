@@ -1,13 +1,14 @@
 package com.yanxiu.gphone.student.db;
 
 
+import com.yanxiu.gphone.student.bcresource.bean.TopicPaperStatusBean;
 import com.yanxiu.gphone.student.questions.answerframe.bean.AnswerBean;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.util.LoginInfo;
+import com.yanxiu.gphone.student.videoplay.VideoConfigBean;
 
 import org.litepal.crud.DataSupport;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -55,11 +56,59 @@ public class SaveAnswerDBHelper {
 
     }
 
+    public static boolean isHasShowVideTips(String paperId){
+        boolean hasShow = false;
+        List<VideoConfigBean> result = DataSupport.where("paperId = ?", paperId).find(VideoConfigBean.class);
+        if(result != null && result.size() > 0){
+            hasShow = result.get(0).isHasShowVideoTips();
+        }
+        return hasShow;
+    }
+
+    public static void setHasShowVideoTips(String paperId, boolean show){
+        VideoConfigBean bean = new VideoConfigBean();
+        bean.setPaperId(paperId);
+        bean.setHasShowVideoTips(show);
+        bean.save();
+    }
+
+    public static boolean isTopicPaperAnswered(String rmsPaperId){
+        boolean hasAnswered = false;
+        String aid = makeId(rmsPaperId);
+        List<TopicPaperStatusBean> result = DataSupport.where("aid = ?", aid).find(TopicPaperStatusBean.class);
+        if(result != null && result.size() > 0){
+            hasAnswered = result.get(0).isHasAnswered();
+        }
+        return hasAnswered;
+    }
+
+    public static void setTopicPaperAnswered(String rmsPaperId, boolean answered){
+        String aid = makeId(rmsPaperId);
+        DataSupport.deleteAll(TopicPaperStatusBean.class, "aid = ? ", aid);//每次存储前，先把相同id的数据删除
+        if(answered){
+            TopicPaperStatusBean bean = new TopicPaperStatusBean();
+            bean.setAid(aid);
+            bean.setHasAnswered(answered);
+            bean.save();
+        }
+    }
+
     public static String makeId(BaseQuestion question) {
         String userId = LoginInfo.getUID();
         String id = null;
         try {
             id = userId + question.getId() + question.getPid() + question.getQid();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return id;
+    }
+
+    public static String makeId(String rmsPaperId) {
+        String userId = LoginInfo.getUID();
+        String id = null;
+        try {
+            id = userId + rmsPaperId;
         } catch (Exception e) {
             e.printStackTrace();
         }

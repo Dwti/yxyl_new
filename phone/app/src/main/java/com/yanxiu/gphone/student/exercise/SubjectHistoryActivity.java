@@ -1,11 +1,9 @@
 package com.yanxiu.gphone.student.exercise;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +22,6 @@ import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.exercise.bean.SubjectBean;
 import com.yanxiu.gphone.student.exercise.request.SubjectHistoryRequest;
 import com.yanxiu.gphone.student.exercise.response.SubjectHistoryResponse;
-import com.yanxiu.gphone.student.homework.homeworkdetail.HomeworkDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -142,7 +139,7 @@ public class SubjectHistoryActivity extends YanxiuBaseActivity {
         mListView.setVisibility(View.GONE);
         mRefreshBtn.setVisibility(View.GONE);
         mTipsView.setVisibility(View.VISIBLE);
-        mTipsImg.setImageResource(R.drawable.no_exercise_history);
+        mTipsImg.setImageResource(R.drawable.data_empty);
         mTips.setText(R.string.no_exercise);
         mRefreshBtn.setText(R.string.click_to_refresh);
     }

@@ -49,4 +49,16 @@
     <color name="color_ff333333">#ff333333</color>
     <color name="color_ff999999">#ff999999</color>
     <color name="color_66000000">#66000000</color>
+
+    <color name="red">#FFFF0000</color>
+    <color name="green">#FF00FF00</color>
+    <color name="blue">#FF0000FF</color>
+
+    <color name="red22">#22FF0000</color>
+    <color name="green22">#2200FF00</color>
+    <color name="blue22">#220000FF</color>
+
+    <color name="clearColor">#00000000</color>
+
+    <color name="gray22">#22000000</color>
 </resources>

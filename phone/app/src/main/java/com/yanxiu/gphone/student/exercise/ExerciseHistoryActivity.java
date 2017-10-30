@@ -473,7 +473,7 @@ public class ExerciseHistoryActivity extends YanxiuBaseActivity {
         }
         mRefreshLayout.setVisibility(View.GONE);
         mTipsView.setVisibility(View.VISIBLE);
-        mTipsImg.setImageResource(R.drawable.no_exercise_history);
+        mTipsImg.setImageResource(R.drawable.data_empty);
         mTips.setText(R.string.no_exercise);
         mRefreshBtn.setText(R.string.click_to_refresh);
     }

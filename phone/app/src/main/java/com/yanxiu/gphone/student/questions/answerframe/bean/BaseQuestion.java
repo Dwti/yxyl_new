@@ -48,6 +48,7 @@ public abstract class BaseQuestion implements Serializable {
     protected ArrayList<BaseQuestion> children;
     protected QuestionShowType showType;
     protected JsonNoteBean jsonNoteBean;
+    protected boolean hasVideo = false;
 
     private Object ansewr;//已回答的问题
 
@@ -131,6 +132,10 @@ public abstract class BaseQuestion implements Serializable {
         }
 
         this.showType = showType;
+
+        if(bean.getQuestions().getHas_video() == 1){
+            this.hasVideo = true;
+        }
 
         if(showType.equals(QuestionShowType.ANSWER)){ //答题，加载本地数据库答案
             String answerJson = SaveAnswerDBHelper.getAnswerJson(SaveAnswerDBHelper.makeId(this));
@@ -374,6 +379,14 @@ public abstract class BaseQuestion implements Serializable {
         this.children = children;
     }
 
+    public boolean isHasVideo() {
+        return hasVideo;
+    }
+
+    public void setHasVideo(boolean hasVideo) {
+        this.hasVideo = hasVideo;
+    }
+
     public QuestionShowType getShowType() {
         return showType;
     }
@@ -537,7 +550,7 @@ public abstract class BaseQuestion implements Serializable {
      * @param levelPosition
      */
     public void markLevelAndPosition(int level, int position, ArrayList<Integer> levelPosition) {
-//        this.level = level;
+//        this.type = type;
 //        this.position = position;
         if (levelPosition != null) {
             this.levelPositions.addAll(levelPosition);
@@ -701,7 +714,7 @@ public abstract class BaseQuestion implements Serializable {
     }
 
     protected void clearAllNumberData() {
-//        level = 0;
+//        type = 0;
 //        position = 0;
         levelPositions.clear();
         prefixNumber = 0;
