@@ -352,6 +352,8 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
             mPlayOrStopView.setVisibility(View.VISIBLE);
             isFirstPlay = true;
             playLocationVideo(true);
+        }else {
+            closeAnim();
         }
     }
 
@@ -362,9 +364,7 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
 
     @Override
     public void onStartOralEval() {
-        mSpokenWaveView.stop();
-        mRecordAnimView.clearAnimation();
-        mSpokenWaveView.setVisibility(View.GONE);
+        closeAnim();
     }
 
     @Override
@@ -419,5 +419,15 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
     public void onFinished() {
         mSpokenUtils.stop();
         ToastManager.showMsg("录音不能超过3分钟哦");
+    }
+
+    private void closeAnim(){
+        try {
+            mSpokenWaveView.stop();
+            mRecordAnimView.clearAnimation();
+            mSpokenWaveView.setVisibility(View.GONE);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }
