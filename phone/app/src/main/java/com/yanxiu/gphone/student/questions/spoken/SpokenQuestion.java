@@ -30,6 +30,7 @@ public class SpokenQuestion extends BaseQuestion {
     public SpokenQuestion(PaperTestBean bean, QuestionShowType showType, String paperStatus) {
         super(bean, showType, paperStatus);
         if ("26".equals(getType_id())){
+            //朗读题，答案获取方法与另外三种不同
             try {
                 spokenAnswer = String.valueOf(bean.getQuestions().getContent().getAnswer().get(0));
             } catch (Exception e) {

@@ -196,6 +196,19 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
     public void showAnswerSpokenResultView(int score){
         mAnswerSpokenResultView.setVisibility(View.VISIBLE);
         mAnswerSpokenResultView.setData(score);
+        mYesno_img.setVisibility(View.VISIBLE);
+        switch (score){
+            case 0:
+            case 1:
+                mYesno_img.setBackgroundResource(R.drawable.analysis_wrong_img);
+                break;
+            case 2:
+            case 3:
+            default:
+                mYesno_img.setBackgroundResource(R.drawable.analysis_yes_img);
+                break;
+        }
+
     }
 
     /**

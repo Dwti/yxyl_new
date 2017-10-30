@@ -25,7 +25,6 @@ class AudioTagHandler implements Html.TagHandler {
     private View mView;
     private ClickableImageSpan.onSpanClickListener mSpanClickListener;
     private ClickableImageSpan mImageSpan;
-    private String url = null;
 
     AudioTagHandler(Context context,View view,ClickableImageSpan.onSpanClickListener spanClickListener){
         this.mContext=context;
@@ -49,6 +48,7 @@ class AudioTagHandler implements Html.TagHandler {
     public void handleTag(boolean opening, String tag, Editable output, XMLReader xmlReader) {
         if (tag.equalsIgnoreCase("audio")){
             if(opening){
+                String url="";
                 try {
                     Field elementField = xmlReader.getClass().getDeclaredField("theNewElement");
                     elementField.setAccessible(true);
@@ -61,7 +61,6 @@ class AudioTagHandler implements Html.TagHandler {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }else{
                 int len = output.length();
                 output.append("\uFFFC");
                 SpokenAnimDrawable drawable= new SpokenAnimDrawable(mContext);
