@@ -107,7 +107,7 @@ public class AnalysisQuestionActivity extends YanxiuBaseActivity implements View
             mVideoManager.setOnCourseEventListener(mListener);
 
             setupVideoModel();
-            setupRotation();
+//            setupRotation();
             setupNetwork4GWifi();
         }
     }

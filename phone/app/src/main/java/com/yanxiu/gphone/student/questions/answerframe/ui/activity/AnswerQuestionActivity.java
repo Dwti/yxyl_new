@@ -148,7 +148,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
             mVideoManager.setOnCourseEventListener(mListener);
 
             setupVideoModel();
-            setupRotation();
+//            setupRotation();
             setupNetwork4GWifi();
         }
     }
