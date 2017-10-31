@@ -319,11 +319,6 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
 
-        <activity android:name=".videoplay.VideoActivity"
-            android:configChanges="orientation|screenSize|keyboard"
-            android:screenOrientation="portrait">
-        </activity>
-
         <service android:name=".videoplay.NetworkStateService">
             <intent-filter android:priority="1000">
                 <action android:name="com.test.yanxiu.avideoplay.network.state" />

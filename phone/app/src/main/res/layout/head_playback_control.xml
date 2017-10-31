@@ -14,6 +14,14 @@
         android:layoutDirection="ltr"
         android:background="#CC000000"
         android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/control_back"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="12dp"
+            android:src="@drawable/sel_control_back"/>
+
         <TextView android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"

@@ -499,6 +499,9 @@ public class AnalysisQuestionActivity extends YanxiuBaseActivity implements View
             case R.id.iv_play:
                 mPlayerView.setVisibility(View.VISIBLE);
                 layout_cover.setVisibility(View.GONE);
+                if(!mVideoManager.isPortrait){
+                    video_collapse.setVisibility(View.GONE);
+                }
                 playVideo();
                 break;
         }
@@ -610,7 +613,7 @@ public class AnalysisQuestionActivity extends YanxiuBaseActivity implements View
         @Override
         public void onRotate() {
             rotateScreen();
-            if(mVideoManager.isPortrait){
+            if((mVideoManager.isPortrait && mPlayerView.getVisibility() == View.VISIBLE) || (!mVideoManager.isPortrait && layout_cover.getVisibility() == View.VISIBLE)){
                 video_collapse.setVisibility(View.VISIBLE);
             }else {
                 video_collapse.setVisibility(View.GONE);
@@ -693,20 +696,26 @@ public class AnalysisQuestionActivity extends YanxiuBaseActivity implements View
             public void onChanged(int requestedOrientation) {
                 if (requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
                     setRequestedOrientation(requestedOrientation);
-                    video_collapse.setVisibility(View.VISIBLE);
                     setPortraitStyle();
+                    if(mPlayerView.getVisibility() == View.VISIBLE || layout_cover.getVisibility() == View.VISIBLE){
+                        video_collapse.setVisibility(View.VISIBLE);
+                    }
                 }
 
                 if (requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
                     setRequestedOrientation(requestedOrientation);
-                    video_collapse.setVisibility(View.GONE);
                     setLandscapeStyle();
+                    if(layout_cover.getVisibility() != View.VISIBLE){
+                        video_collapse.setVisibility(View.GONE);
+                    }
                 }
 
                 if (requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE) {
                     setRequestedOrientation(requestedOrientation);
-                    video_collapse.setVisibility(View.GONE);
                     setLandscapeStyle();
+                    if(layout_cover.getVisibility() !=View.VISIBLE){
+                        video_collapse.setVisibility(View.GONE);
+                    }
                 }
             }
         });
