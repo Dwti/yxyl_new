@@ -142,18 +142,6 @@
             android:visibility="gone">
         </com.yanxiu.gphone.student.videoplay.PlayerView>
 
-
-
-        <ImageView
-            android:id="@+id/iv_collapse"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="73dp"
-            android:visibility="gone"
-            android:src="@drawable/video_collapse"/>
-
         <RelativeLayout
             android:id="@+id/video_cover"
             android:layout_width="match_parent"
@@ -175,6 +163,17 @@
                 android:src="@drawable/bg_play_video"
                 android:layout_centerInParent="true"/>
         </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/iv_collapse"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="73dp"
+            android:visibility="gone"
+            android:src="@drawable/video_collapse"/>
+
 
     </RelativeLayout>
     <!-- end -->
