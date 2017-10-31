@@ -61,7 +61,7 @@ public class SpokenUtils {
 
         void onResult(String result);
 
-        void onResultUrl(String filePath,String url);
+        void onResultUrl(String filePath, String url);
 
         void onNoPermission(String text);
 
@@ -112,16 +112,16 @@ public class SpokenUtils {
         }
         mIOralEvalSDK = OralEvalSDKFactory.start(context, cfg, new IOralEvalSDK.ICallback() {
             @Override
-            public void onStart(IOralEvalSDK iOralEvalSDK, int i) {
+            public void onStart(IOralEvalSDK iOralEvalSDK, final int i) {
                 runOnUiThread(context, new Runnable() {
                     @Override
                     public void run() {
                         oralEvalCallback.onStartRecord(path);
                         if (oralEvaProgressCallback != null) {
                             final int totalTime = 180000;
-                            if (mDownManager!=null){
+                            if (mDownManager != null) {
                                 mDownManager.cancel();
-                                mDownManager=null;
+                                mDownManager = null;
                             }
                             mDownManager = CountDownManager.getManager().setTotalTime(totalTime).setScheduleListener(new CountDownManager.ScheduleListener() {
                                 @Override
@@ -143,17 +143,23 @@ public class SpokenUtils {
             }
 
             @Override
-            public void onError(IOralEvalSDK iOralEvalSDK, final SDKError sdkError, IOralEvalSDK.OfflineSDKError offlineSDKError) {
+            public void onError(final IOralEvalSDK iOralEvalSDK, final SDKError sdkError, final IOralEvalSDK.OfflineSDKError offlineSDKError) {
                 runOnUiThread(context, new Runnable() {
                     @Override
                     public void run() {
-                        if (mDownManager!=null) {
+                        if (mDownManager != null) {
                             mDownManager.cancel();
-                            mDownManager=null;
+                            mDownManager = null;
                         }
-                        int ss = sdkError.errno;
-                        if (ss == -1001) {
-                            oralEvalCallback.onNoPermission("没有录音权限");
+                        int errorCode = sdkError.errno;
+                        String errorText = sdkError.exp.getMessage();
+                        if (errorCode == -1001) {
+                            //SB云知声,返回码为啥不分开，浪费时间，浪费生命
+                            if ("startRecording() called on an uninitialized AudioRecord.".equals(errorText)) {
+                                oralEvalCallback.onNoPermission("没有录音权限");
+                            } else {
+                                oralEvalCallback.onNoPermission("打开或读取录音设备失败");
+                            }
                         } else {
                             oralEvalCallback.onError(sdkError.toString());
                         }
@@ -180,7 +186,7 @@ public class SpokenUtils {
                             return;
                         }
                         oralEvalCallback.onResult(s);
-                        oralEvalCallback.onResultUrl(path,s1);
+                        oralEvalCallback.onResultUrl(path, s1);
                         oralEvalCallback.onStopOralEval(false);
                         mIOralEvalSDK = null;
                         mAudioFileOut = null;
@@ -238,9 +244,9 @@ public class SpokenUtils {
                 runOnUiThread(context, new Runnable() {
                     @Override
                     public void run() {
-                        if (mDownManager!=null) {
+                        if (mDownManager != null) {
                             mDownManager.cancel();
-                            mDownManager=null;
+                            mDownManager = null;
                         }
                         oralEvalCallback.onStopOralEval(true);
                         mIOralEvalSDK = null;
@@ -254,9 +260,9 @@ public class SpokenUtils {
                 runOnUiThread(context, new Runnable() {
                     @Override
                     public void run() {
-                        if (mDownManager!=null) {
+                        if (mDownManager != null) {
                             mDownManager.cancel();
-                            mDownManager=null;
+                            mDownManager = null;
                         }
                         oralEvalCallback.onStartOralEval();
                     }
