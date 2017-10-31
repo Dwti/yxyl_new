@@ -660,11 +660,15 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
                 expandVideo();
                 break;
             case R.id.iv_collapse:
-                collapseVideo();
+                if(layout_cover.getVisibility() == View.VISIBLE){
+                    layout_cover.setVisibility(View.GONE);
+                    video_collapse.setVisibility(View.GONE);
+                }else {
+                    collapseVideo();
+                }
                 break;
             case R.id.iv_play:
                 mPlayerView.setVisibility(View.VISIBLE);
-                video_collapse.setVisibility(View.VISIBLE);
                 layout_cover.setVisibility(View.GONE);
                 playVideo();
                 break;
@@ -923,6 +927,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
    //视频播放部分
 
     private void expandVideo(){
+        video_collapse.setVisibility(View.VISIBLE);
         layout_cover.setVisibility(View.VISIBLE);
     }
 
