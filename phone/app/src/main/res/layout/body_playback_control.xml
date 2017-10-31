@@ -70,7 +70,7 @@
                 android:layout_height="26dp"
                 app:played_color="#89e00d"
                 app:unplayed_color="#a4a6a4"
-                app:buffered_color="#a4a6a4"
+                app:buffered_color="#ccffcc"
                 app:scrubber_color="@android:color/white"/>
 
             <TextView android:id="@id/exo_position"
