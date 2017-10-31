@@ -601,6 +601,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
      * */
     public void setCanClick(boolean isCanClick){
         this.isCanClick=isCanClick;
+        mViewPager.setScanScroll(isCanClick);
     }
 
     @Override

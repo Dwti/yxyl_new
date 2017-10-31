@@ -2,6 +2,7 @@ package com.yanxiu.gphone.student.questions.spoken;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.text.Spanned;
@@ -20,6 +21,7 @@ import com.yanxiu.gphone.student.customviews.SpokenWaveView;
 import com.yanxiu.gphone.student.db.SpManager;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerQuestionActivity;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerComplexExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
 import com.yanxiu.gphone.student.util.MediaPlayerUtil;
@@ -223,6 +225,7 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
         public boolean onTouch(View v, MotionEvent event) {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
+                    setIsCanClick(false);
                     mPlayerUtil.playFinish();
                     if (mAudioTagHandler != null) {
                         mAudioTagHandler.stop();
@@ -233,15 +236,10 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
                     mRecordView.setImageResource(R.drawable.spoken_record_press);
                     isCanPlayQuestionViedio = false;
                     mSpokenUtils.start(getContext(), mData.getSpokenAnswer(), SpokenFragment.this,SpokenFragment.this);
-                    if (getActivity() instanceof AnswerQuestionActivity){
-                        ((AnswerQuestionActivity)getActivity()).setCanClick(false);
-                    }
                     break;
                 case MotionEvent.ACTION_CANCEL:
                 case MotionEvent.ACTION_UP:
-                    if (getActivity() instanceof AnswerQuestionActivity){
-                        ((AnswerQuestionActivity)getActivity()).setCanClick(true);
-                    }
+                    setIsCanClick(true);
                     mRecordView.setImageResource(R.drawable.spoken_record_normal);
                     mPlayOrStopView.setEnabled(true);
                     mSpokenUtils.stop();
@@ -250,6 +248,16 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
             return true;
         }
     };
+
+    private void setIsCanClick(boolean isCanClick){
+        if (getActivity() instanceof AnswerQuestionActivity){
+            ((AnswerQuestionActivity)getActivity()).setCanClick(isCanClick);
+        }
+        Fragment fragment=getParentFragment();
+        if (fragment!=null&&fragment instanceof AnswerComplexExerciseBaseFragment){
+            ((AnswerComplexExerciseBaseFragment)fragment).setCanScroll(isCanClick);
+        }
+    }
 
     @Override
     public void onClick(View v) {

@@ -14,6 +14,7 @@ import android.view.MotionEvent;
 public class QAViewPager extends ViewPager {
     private float mStartDragX;
     public OnSwipeOutListener mListener;
+    private boolean isCanScroll = true;
 
     public QAViewPager(Context context) {
         super(context);
@@ -27,6 +28,14 @@ public class QAViewPager extends ViewPager {
         mListener = listener;
     }
 
+    /**
+     * 设置其是否能滑动换页
+     * @param isCanScroll false 不能换页， true 可以滑动换页
+     */
+    public void setScanScroll(boolean isCanScroll) {
+        this.isCanScroll = isCanScroll;
+    }
+
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         final int action = ev.getAction();
@@ -34,7 +43,7 @@ public class QAViewPager extends ViewPager {
         if (action == MotionEvent.ACTION_DOWN) {
             mStartDragX = x;
         }
-        return super.onInterceptTouchEvent(ev);
+        return isCanScroll&&super.onInterceptTouchEvent(ev);
     }
 
     @Override
@@ -54,7 +63,7 @@ public class QAViewPager extends ViewPager {
             }
         }
         super.onTouchEvent(ev);
-        return true;
+        return isCanScroll;
     }
 
     public interface OnSwipeOutListener {

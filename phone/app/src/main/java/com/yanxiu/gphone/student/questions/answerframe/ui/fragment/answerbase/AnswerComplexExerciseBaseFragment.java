@@ -153,6 +153,10 @@ public abstract class AnswerComplexExerciseBaseFragment extends AnswerExerciseBa
     abstract protected TopBaseFragment getTopFragment();
     protected void setTopFragment(Fragment fragment){};
 
+    public void setCanScroll(boolean isCanScroll){
+        mViewPager.setScanScroll(isCanScroll);
+    }
+
     /**
      * 递归
      * @param postions
