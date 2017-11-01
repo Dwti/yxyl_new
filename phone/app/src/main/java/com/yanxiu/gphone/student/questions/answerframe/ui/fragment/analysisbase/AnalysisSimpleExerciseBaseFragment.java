@@ -204,8 +204,10 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
                 break;
             case 2:
             case 3:
-            default:
                 mYesno_img.setBackgroundResource(R.drawable.analysis_yes_img);
+                break;
+            default:
+                mYesno_img.setBackgroundResource(R.drawable.analysis_wrong_img);
                 break;
         }
 
