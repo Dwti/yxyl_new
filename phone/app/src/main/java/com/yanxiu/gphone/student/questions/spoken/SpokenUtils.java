@@ -97,18 +97,19 @@ public class SpokenUtils {
     }
 
     public void start(final Context context, String text, final String path, final onBaseOralEvalCallback oralEvalCallback, final onOralEvaProgressCallback oralEvaProgressCallback) {
-        OralEvalSDKFactory.StartConfig cfg = getCfg(text, path);
-        if (cfg == null) {
-            oralEvalCallback.onError("文件地址错误");
-            return;
-        }
         if (mIOralEvalSDK != null) {
+            oralEvalCallback.onNoPermission("您点击太频繁了");
             try {
                 mIOralEvalSDK.stop();
-                mIOralEvalSDK = null;
-            } catch (Exception e) {
+            }catch (Exception e){
                 e.printStackTrace();
             }
+            return;
+        }
+        OralEvalSDKFactory.StartConfig cfg = getCfg(text, path);
+        if (cfg == null) {
+            oralEvalCallback.onNoPermission("文件地址错误");
+            return;
         }
         mIOralEvalSDK = OralEvalSDKFactory.start(context, cfg, new IOralEvalSDK.ICallback() {
             @Override
@@ -272,9 +273,13 @@ public class SpokenUtils {
     }
 
     public void stop() {
-        if (mIOralEvalSDK != null)
-            mIOralEvalSDK.stop();
-        mIOralEvalSDK = null;
+        try {
+            if (mIOralEvalSDK != null)
+                mIOralEvalSDK.stop();
+//            mIOralEvalSDK = null;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public void cancel() {

@@ -96,20 +96,22 @@ public class SpokenWaveView extends View {
     }
 
     public void start(){
-        animator = new ValueAnimator();
-        animator.setFloatValues(0, WAVE_WIDTH*4);
-        animator.setDuration(WAVE_DURATION);
-        animator.setRepeatCount(-1);
-        animator.setInterpolator(new LinearInterpolator());
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                float change = (float) animation.getAnimatedValue();
-                mDx = (int) change;
-                invalidate();
-            }
-        });
-        animator.start();
+        if (animator==null) {
+            animator = new ValueAnimator();
+            animator.setFloatValues(0, WAVE_WIDTH * 4);
+            animator.setDuration(WAVE_DURATION);
+            animator.setRepeatCount(-1);
+            animator.setInterpolator(new LinearInterpolator());
+            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    float change = (float) animation.getAnimatedValue();
+                    mDx = (int) change;
+                    invalidate();
+                }
+            });
+            animator.start();
+        }
     }
 
     public void stop(){

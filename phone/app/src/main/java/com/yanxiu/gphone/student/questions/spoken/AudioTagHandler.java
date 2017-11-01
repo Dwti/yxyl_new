@@ -40,7 +40,11 @@ class AudioTagHandler implements Html.TagHandler {
 
     void stop(){
         if (mImageSpan!=null){
-            mImageSpan.stop();
+            try {
+                mImageSpan.stop();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
     }
 
