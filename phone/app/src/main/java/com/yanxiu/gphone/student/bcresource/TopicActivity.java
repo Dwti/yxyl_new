@@ -397,6 +397,9 @@ public class TopicActivity extends YanxiuBaseActivity{
         mRefreshLayout.setVisibility(View.VISIBLE);
         mTipsView.setVisibility(View.GONE);
         mAdapter.replaceData(list);
+        if(mCurrentPage == 1){
+            mRecyclerView.scrollToPosition(0);
+        }
     }
 
     private void showDataEmptyView(){
