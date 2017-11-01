@@ -1082,6 +1082,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
     // 主动点击旋转
     private void rotateScreen() {
         if (mVideoManager.isPortrait) {
+            mInputMethodManager.hideSoftInputFromWindow(mRootView.getWindowToken(),0);
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             setLandscapeStyle();
         } else {
