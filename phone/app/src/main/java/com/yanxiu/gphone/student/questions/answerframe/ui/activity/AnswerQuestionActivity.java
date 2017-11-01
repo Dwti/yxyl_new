@@ -131,8 +131,8 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         mVideoModel.videoName = mPaper.getName();
         mVideoModel.videoSize = mPaper.getVideoSize();
 
-        Glide.with(this).load(mVideoModel.cover).asBitmap().placeholder(R.drawable.video_cover_default).into(video_cover);
-        Glide.with(this).load(mVideoModel.cover).asBitmap().placeholder(R.drawable.video_cover_default).into(tips_cover);
+        Glide.with(this).load(mVideoModel.cover).asBitmap().placeholder(R.drawable.video_cover_default).error(R.drawable.video_cover_default).into(video_cover);
+        Glide.with(this).load(mVideoModel.cover).asBitmap().placeholder(R.drawable.video_cover_default).error(R.drawable.video_cover_default).into(tips_cover);
     }
 
     @Override
