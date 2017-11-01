@@ -328,16 +328,8 @@ public class AnswerCardFragment extends YanxiuBaseFragment implements View.OnCli
                             if (Constants.NOT_FINISH_STATUS.equals(showna)) {
                                 long groupStartTime = Long.parseLong(mPaper_report.getBegintime());
                                 long groupEndtime = Long.parseLong(mPaper_report.getEndtime());//作业练习截止时间
-
-//                                if (groupEndtime > groupStartTime && ((groupEndtime - System.currentTimeMillis()) >= 3 * 60 * 1000)) { //作业截止时间判断，还未到截止时间不产生作业报告
-//                                    ToastManager.showMsg("提交成功");
                                 mDialog.showSuccessView(groupEndtime);
                                 mDialog.show();
-//                                } else {
-//                                    AnswerReportActicity.invoke(getActivity(), key);
-//                                    getActivity().finish();
-//                                }
-
                             } else if (Constants.HAS_FINISH_CHECK_REPORT.equals(showna)) {
                                 AnswerReportActicity.invoke(getActivity(), key);
                                 getActivity().finish();
@@ -348,6 +340,9 @@ public class AnswerCardFragment extends YanxiuBaseFragment implements View.OnCli
                             } else if(Constants.MAINAVTIVITY_FROMTYPE_EXERCISE_HISTORY.equals(mActivity.getFromType())){
                                 //从练习历史过来
                                 AnswerReportActicity.invoke(getActivity(), key,Constants.MAINAVTIVITY_FROMTYPE_EXERCISE_HISTORY,null);
+                                getActivity().finish();
+                            } else if(Constants.FROM_BC_RESOURCE.equals(mActivity.getFromType())){
+                                AnswerReportActicity.invoke(getActivity(),key,mActivity.getRmsPaperId(),Constants.FROM_BC_RESOURCE,0);
                                 getActivity().finish();
                             }else {
                                 ToastManager.showMsg("提交成功");

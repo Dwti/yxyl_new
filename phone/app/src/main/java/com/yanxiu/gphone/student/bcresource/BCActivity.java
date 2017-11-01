@@ -163,7 +163,6 @@ public class BCActivity extends YanxiuBaseActivity {
     private void showDataEmptyView(){
         mRecyclerView.setVisibility(View.GONE);
         mTipsView.setVisibility(View.VISIBLE);
-        //TODO 图片替换
         mTipsImg.setImageResource(R.drawable.data_empty);
         mTips.setText(R.string.no_bc);
         mRefreshBtn.setText(R.string.click_to_refresh);

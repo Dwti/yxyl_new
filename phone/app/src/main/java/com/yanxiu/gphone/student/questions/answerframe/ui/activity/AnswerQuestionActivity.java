@@ -148,7 +148,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
             mVideoManager.setOnCourseEventListener(mListener);
 
             setupVideoModel();
-            setupRotation();
+//            setupRotation();
             setupNetwork4GWifi();
         }
     }
@@ -592,6 +592,10 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         return mFromType;
     }
 
+    public String getRmsPaperId(){
+        return mRmsPaperId;
+    }
+
     public GenQuesRequest getGenQuesequest() {
         return mGenQuesequest;
     }
@@ -660,12 +664,19 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
                 expandVideo();
                 break;
             case R.id.iv_collapse:
-                collapseVideo();
+                if(layout_cover.getVisibility() == View.VISIBLE){
+                    layout_cover.setVisibility(View.GONE);
+                    video_collapse.setVisibility(View.GONE);
+                }else {
+                    collapseVideo();
+                }
                 break;
             case R.id.iv_play:
                 mPlayerView.setVisibility(View.VISIBLE);
-                video_collapse.setVisibility(View.VISIBLE);
                 layout_cover.setVisibility(View.GONE);
+                if(!mVideoManager.isPortrait){
+                    video_collapse.setVisibility(View.GONE);
+                }
                 playVideo();
                 break;
             case R.id.video_tips:
@@ -923,6 +934,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
    //视频播放部分
 
     private void expandVideo(){
+        video_collapse.setVisibility(View.VISIBLE);
         layout_cover.setVisibility(View.VISIBLE);
     }
 
@@ -958,7 +970,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         @Override
         public void onRotate() {
             rotateScreen();
-            if(mVideoManager.isPortrait){
+            if((mVideoManager.isPortrait && mPlayerView.getVisibility() == View.VISIBLE) || (!mVideoManager.isPortrait && layout_cover.getVisibility() == View.VISIBLE) ){
                 video_collapse.setVisibility(View.VISIBLE);
             }else {
                 video_collapse.setVisibility(View.GONE);
@@ -1041,20 +1053,26 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
             public void onChanged(int requestedOrientation) {
                 if (requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
                     setRequestedOrientation(requestedOrientation);
-                    video_collapse.setVisibility(View.VISIBLE);
                     setPortraitStyle();
+                    if(mPlayerView.getVisibility() == View.VISIBLE || layout_cover.getVisibility() == View.VISIBLE){
+                        video_collapse.setVisibility(View.VISIBLE);
+                    }
                 }
 
                 if (requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
                     setRequestedOrientation(requestedOrientation);
-                    video_collapse.setVisibility(View.GONE);
                     setLandscapeStyle();
+                    if(layout_cover.getVisibility() != View.VISIBLE){
+                        video_collapse.setVisibility(View.GONE);
+                    }
                 }
 
                 if (requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE) {
                     setRequestedOrientation(requestedOrientation);
-                    video_collapse.setVisibility(View.GONE);
                     setLandscapeStyle();
+                    if(layout_cover.getVisibility() != View.VISIBLE){
+                        video_collapse.setVisibility(View.GONE);
+                    }
                 }
             }
         });
@@ -1064,6 +1082,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
     // 主动点击旋转
     private void rotateScreen() {
         if (mVideoManager.isPortrait) {
+            mInputMethodManager.hideSoftInputFromWindow(mRootView.getWindowToken(),0);
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             setLandscapeStyle();
         } else {
