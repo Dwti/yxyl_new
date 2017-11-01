@@ -5,6 +5,7 @@ import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Environment;
+import android.text.TextUtils;
 
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
@@ -104,6 +105,11 @@ public class SpokenUtils {
             }catch (Exception e){
                 e.printStackTrace();
             }
+            mIOralEvalSDK.stop();
+            return;
+        }
+        if (TextUtils.isEmpty(text)){
+            oralEvalCallback.onNoPermission("服务器异常");
             return;
         }
         OralEvalSDKFactory.StartConfig cfg = getCfg(text, path);

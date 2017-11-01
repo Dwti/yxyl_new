@@ -25,6 +25,7 @@ import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.An
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
 import com.yanxiu.gphone.student.util.MediaPlayerUtil;
+import com.yanxiu.gphone.student.util.NetWorkUtils;
 import com.yanxiu.gphone.student.util.ToastManager;
 
 
@@ -292,7 +293,7 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
 
             @Override
             public void onError() {
-                ToastManager.showMsg("音频文件无法播放");
+                ToastManager.showMsg(R.string.voice_url_error);
             }
         });
     }
@@ -338,7 +339,11 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
                 if (mAudioTagHandler != null) {
                     mAudioTagHandler.stop();
                 }
-                ToastManager.showMsg(R.string.net_null);
+                if (NetWorkUtils.isNetAvailable()) {
+                    ToastManager.showMsg(R.string.voice_url_error);
+                }else {
+                    ToastManager.showMsg(R.string.net_null);
+                }
             }
         });
         mPlayerUtil.start(url);
