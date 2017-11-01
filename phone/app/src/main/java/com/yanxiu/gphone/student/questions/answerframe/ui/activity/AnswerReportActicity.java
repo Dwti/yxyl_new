@@ -361,7 +361,7 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
     private void resetTopicPaperHistory(){
         ResetTopicPaperHistoryRequest request = new ResetTopicPaperHistoryRequest();
         request.bodyDealer = new DESBodyDealer();
-        request.setPaperId(mKey);
+        request.setPaperId(mPaper.getId());
         request.startRequest(PaperResponse.class, new EXueELianBaseCallback<PaperResponse>() {
             @Override
             protected void onResponse(RequestBase request, PaperResponse response) {
