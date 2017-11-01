@@ -98,6 +98,7 @@ public class TopicActivity extends YanxiuBaseActivity{
     protected void onResume() {
         super.onResume();
         if(shouldRefreshWhenResume){
+            mCurrentPage = 1;
             getTopicPaper(1);
             shouldRefreshWhenResume = false;
         }
@@ -396,6 +397,9 @@ public class TopicActivity extends YanxiuBaseActivity{
         mRefreshLayout.setVisibility(View.VISIBLE);
         mTipsView.setVisibility(View.GONE);
         mAdapter.replaceData(list);
+        if(mCurrentPage == 1){
+            mRecyclerView.scrollToPosition(0);
+        }
     }
 
     private void showDataEmptyView(){
@@ -457,10 +461,19 @@ public class TopicActivity extends YanxiuBaseActivity{
                     finishRefreshIndicator();
                     setLoadMoreEnable(true);
                     mAdapter.clearData();
-                    showDataErrorView();
+                    //code=3 表示数据为空
+                    if(response.getStatus().getCode() == 3){
+                        showDataEmptyView();
+                    }else {
+                        showDataErrorView();
+                    }
                 }else if(mCurrentPage > 1){
                     finishLoadingMoireIndicator();
-                    showLoadMoreErrorMsg(response.getStatus().getDesc());
+                    if(response.getStatus().getCode() == 3){
+                        showNoMoreData();
+                    }else {
+                        showLoadMoreErrorMsg(response.getStatus().getDesc());
+                    }
                 }
             }
         }
