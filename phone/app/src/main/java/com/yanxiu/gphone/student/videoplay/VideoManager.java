@@ -348,15 +348,17 @@ public class VideoManager {
             }
         });
 
-        controllerView.findViewById(R.id.control_back).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(listener != null){
-                    listener.onBackPressed();
+        View control_back = controllerView.findViewById(R.id.control_back);
+        if(control_back != null){
+            control_back.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(listener != null){
+                        listener.onBackPressed();
+                    }
                 }
-            }
-        });
-
+            });
+        }
         controllerView.setControlDispatcher(new PlaybackControllerView.ControlDispatcher() {
             @Override
             public boolean dispatchSetPlayWhenReady(ExoPlayer player, boolean playWhenReady) {

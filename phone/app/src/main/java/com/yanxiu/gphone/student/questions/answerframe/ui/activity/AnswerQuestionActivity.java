@@ -214,7 +214,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         video_cover = (ImageView) findViewById(R.id.iv_cover);
         mPlayerView = (PlayerView) findViewById(R.id.player_view);
 
-        if(mPaper.getQuestions().get(0).isHasVideo()){
+        if(mHasVideo && mPaper.getQuestions().get(0).isHasVideo()){
             video_float.setVisibility(View.VISIBLE);
             if(!mHasShowVideoGuide){
                 video_tips.setVisibility(View.VISIBLE);
