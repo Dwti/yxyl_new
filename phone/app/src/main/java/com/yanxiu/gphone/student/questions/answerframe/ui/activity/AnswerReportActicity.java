@@ -26,6 +26,7 @@ import com.yanxiu.gphone.student.customviews.LoadingView;
 import com.yanxiu.gphone.student.customviews.UnMoveGridView;
 import com.yanxiu.gphone.student.customviews.vieweffect.GradientEffect;
 import com.yanxiu.gphone.student.customviews.vieweffect.GradientEffectImpl;
+import com.yanxiu.gphone.student.db.SpManager;
 import com.yanxiu.gphone.student.exercise.request.GenQuesRequest;
 import com.yanxiu.gphone.student.homework.response.PaperResponse;
 import com.yanxiu.gphone.student.questions.answerframe.adapter.AnswerReportAdapter;
@@ -366,6 +367,7 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
             @Override
             protected void onResponse(RequestBase request, PaperResponse response) {
                 if(response.getStatus().getCode() == 0){
+                    SpManager.setTotlaTime(mPaper.getId(),-1);
                     QuestionShowType type = QuestionShowType.ANSWER;
                     Paper paper = new Paper(response.getData().get(0), type);
                     DataFetcher.getInstance().save(paper.getId(),paper);
