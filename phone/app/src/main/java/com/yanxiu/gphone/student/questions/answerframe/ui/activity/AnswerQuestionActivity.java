@@ -592,6 +592,10 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         return mFromType;
     }
 
+    public String getRmsPaperId(){
+        return mRmsPaperId;
+    }
+
     public GenQuesRequest getGenQuesequest() {
         return mGenQuesequest;
     }
