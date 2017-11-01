@@ -457,10 +457,19 @@ public class TopicActivity extends YanxiuBaseActivity{
                     finishRefreshIndicator();
                     setLoadMoreEnable(true);
                     mAdapter.clearData();
-                    showDataErrorView();
+                    //code=3 表示数据为空
+                    if(response.getStatus().getCode() == 3){
+                        showDataEmptyView();
+                    }else {
+                        showDataErrorView();
+                    }
                 }else if(mCurrentPage > 1){
                     finishLoadingMoireIndicator();
-                    showLoadMoreErrorMsg(response.getStatus().getDesc());
+                    if(response.getStatus().getCode() == 3){
+                        showNoMoreData();
+                    }else {
+                        showLoadMoreErrorMsg(response.getStatus().getDesc());
+                    }
                 }
             }
         }
