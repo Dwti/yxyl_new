@@ -98,6 +98,7 @@ public class TopicActivity extends YanxiuBaseActivity{
     protected void onResume() {
         super.onResume();
         if(shouldRefreshWhenResume){
+            mCurrentPage = 1;
             getTopicPaper(1);
             shouldRefreshWhenResume = false;
         }
