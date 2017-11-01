@@ -131,8 +131,8 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         mVideoModel.videoName = mPaper.getName();
         mVideoModel.videoSize = mPaper.getVideoSize();
 
-        Glide.with(this).load(mVideoModel.cover).asBitmap().placeholder(R.drawable.video_cover_default).into(video_cover);
-        Glide.with(this).load(mVideoModel.cover).asBitmap().placeholder(R.drawable.video_cover_default).into(tips_cover);
+        Glide.with(this).load(mVideoModel.cover).asBitmap().placeholder(R.drawable.video_cover_default).error(R.drawable.video_cover_default).into(video_cover);
+        Glide.with(this).load(mVideoModel.cover).asBitmap().placeholder(R.drawable.video_cover_default).error(R.drawable.video_cover_default).into(tips_cover);
     }
 
     @Override
@@ -214,7 +214,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         video_cover = (ImageView) findViewById(R.id.iv_cover);
         mPlayerView = (PlayerView) findViewById(R.id.player_view);
 
-        if(mPaper.getQuestions().get(0).isHasVideo()){
+        if(mHasVideo && mPaper.getQuestions().get(0).isHasVideo()){
             video_float.setVisibility(View.VISIBLE);
             if(!mHasShowVideoGuide){
                 video_tips.setVisibility(View.VISIBLE);
