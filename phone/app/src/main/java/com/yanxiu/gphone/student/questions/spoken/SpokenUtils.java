@@ -67,6 +67,8 @@ public class SpokenUtils {
         void onNoPermission(String text);
 
         void onError(String result);
+
+        void onFailed(String text);
     }
 
     public abstract class onOralEvalCallback implements onBaseOralEvalCallback {
@@ -99,7 +101,7 @@ public class SpokenUtils {
 
     public void start(final Context context, String text, final String path, final onBaseOralEvalCallback oralEvalCallback, final onOralEvaProgressCallback oralEvaProgressCallback) {
         if (mIOralEvalSDK != null) {
-            oralEvalCallback.onNoPermission("您点击太频繁了");
+            oralEvalCallback.onFailed("您点击太频繁了");
             try {
                 mIOralEvalSDK.stop();
             }catch (Exception e){
@@ -109,12 +111,12 @@ public class SpokenUtils {
             return;
         }
         if (TextUtils.isEmpty(text)){
-            oralEvalCallback.onNoPermission("服务器异常");
+            oralEvalCallback.onFailed("服务器异常");
             return;
         }
         OralEvalSDKFactory.StartConfig cfg = getCfg(text, path);
         if (cfg == null) {
-            oralEvalCallback.onNoPermission("文件地址错误");
+            oralEvalCallback.onFailed("文件地址错误");
             return;
         }
         mIOralEvalSDK = OralEvalSDKFactory.start(context, cfg, new IOralEvalSDK.ICallback() {
@@ -165,7 +167,7 @@ public class SpokenUtils {
                             if ("startRecording() called on an uninitialized AudioRecord.".equals(errorText)) {
                                 oralEvalCallback.onNoPermission("没有录音权限");
                             } else {
-                                oralEvalCallback.onNoPermission("打开或读取录音设备失败");
+                                oralEvalCallback.onFailed("打开或读取录音设备失败");
                             }
                         } else {
                             oralEvalCallback.onError(sdkError.toString());

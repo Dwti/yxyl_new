@@ -1,5 +1,7 @@
 package com.yanxiu.gphone.student.questions.spoken;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,6 +18,8 @@ import android.widget.ImageView;
 
 import com.google.gson.Gson;
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.base.OnPermissionCallback;
+import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.customviews.SpokenSpanTextView;
 import com.yanxiu.gphone.student.customviews.SpokenWaveView;
 import com.yanxiu.gphone.student.db.SpManager;
@@ -27,6 +31,10 @@ import com.yanxiu.gphone.student.util.HtmlImageGetter;
 import com.yanxiu.gphone.student.util.MediaPlayerUtil;
 import com.yanxiu.gphone.student.util.NetWorkUtils;
 import com.yanxiu.gphone.student.util.ToastManager;
+
+import java.util.List;
+
+import static com.umeng.socialize.utils.ContextUtil.getPackageName;
 
 
 /**
@@ -402,7 +410,23 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
     public void onNoPermission(String text) {
         mSpokenWaveView.setVisibility(View.GONE);
         isCanPlayQuestionViedio = true;
-        ToastManager.showMsg(text);
+//        ToastManager.showMsg(text);
+        /**
+         * 暂时逻辑如此
+         *
+         * 先吃这个不存在的鸡蛋，再去买那个本应该被吃掉的鸡蛋
+         * */
+        YanxiuBaseActivity.requestPermissions(new String[]{"android.permission.RECORD_AUDIO"}, new OnPermissionCallback() {
+            @Override
+            public void onPermissionsGranted(@Nullable List<String> deniedPermissions) {
+
+            }
+
+            @Override
+            public void onPermissionsDenied(@Nullable List<String> deniedPermissions) {
+
+            }
+        });
     }
 
     @Override
@@ -413,6 +437,13 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
             mErrorDialog = new SpokenErrorDialog(getContext());
         }
         mErrorDialog.show();
+    }
+
+    @Override
+    public void onFailed(String text){
+        mSpokenWaveView.setVisibility(View.GONE);
+        isCanPlayQuestionViedio = true;
+        ToastManager.showMsg(text);
     }
 
     @Override
