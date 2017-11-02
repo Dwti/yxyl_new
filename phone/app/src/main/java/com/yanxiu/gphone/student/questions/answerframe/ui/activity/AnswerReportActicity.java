@@ -18,7 +18,7 @@ import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
-import com.yanxiu.gphone.student.bcresource.bean.ResetPaperStatusMessage;
+import com.yanxiu.gphone.student.bcresource.bean.TopicPaperStatusChangeMessage;
 import com.yanxiu.gphone.student.bcresource.request.ResetTopicPaperHistoryRequest;
 import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.AnswerCardSubmitDialog;
@@ -374,7 +374,9 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
                     QuestionShowType type = QuestionShowType.ANSWER;
                     Paper paper = new Paper(response.getData().get(0), type);
                     DataFetcher.getInstance().save(paper.getId(),paper);
-                    EventBus.getDefault().post(new ResetPaperStatusMessage());
+                    TopicPaperStatusChangeMessage msg = new TopicPaperStatusChangeMessage();
+                    msg.setCode(0);
+                    EventBus.getDefault().post(msg);
                     openAnswerQuestionUI(paper.getId());
                     finish();
                 }else {
