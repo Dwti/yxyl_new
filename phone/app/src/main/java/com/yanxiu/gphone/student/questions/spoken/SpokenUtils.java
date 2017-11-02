@@ -195,8 +195,8 @@ public class SpokenUtils {
                             mAudioFileOut = null;
                             return;
                         }
-                        oralEvalCallback.onResult(s);
                         oralEvalCallback.onResultUrl(path, s1);
+                        oralEvalCallback.onResult(s);
                         oralEvalCallback.onStopOralEval(false);
                         mIOralEvalSDK = null;
                         mAudioFileOut = null;

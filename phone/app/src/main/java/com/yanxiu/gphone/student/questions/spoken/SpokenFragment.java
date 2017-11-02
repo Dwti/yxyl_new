@@ -1,7 +1,5 @@
 package com.yanxiu.gphone.student.questions.spoken;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -35,9 +33,6 @@ import com.yanxiu.gphone.student.util.ToastManager;
 
 import java.util.List;
 
-import static com.umeng.socialize.utils.ContextUtil.getPackageName;
-
-
 /**
  * Created by Canghaixiao.
  * Time : 2017/10/16 9:43.
@@ -57,7 +52,7 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
 
     private boolean isCanPlayQuestionViedio = true;
     private boolean isFirstPlay = false;
-    private boolean isHasPermission=false;
+    private boolean isHasAudioPermission=false;
     //仅仅用于标识6.0及以上权限弹窗是否弹出
     private boolean isShowPermissionDialog=false;
 
@@ -89,7 +84,7 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
         mPlayerUtil = MediaPlayerUtil.create();
         mErrorDialog = new SpokenErrorDialog(getContext());
         mSpokenUtils = SpokenUtils.create();
-        isHasPermission=false;
+        isHasAudioPermission=false;
         setQaNumber(view);
         setQaName(view);
         initComplexStem(view, mData);
@@ -266,18 +261,18 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
             if (MotionEvent.ACTION_DOWN==event.getAction()) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     //6.0系统及以上
-                    if (!isHasPermission&&!isShowPermissionDialog) {
+                    if (!isHasAudioPermission&&!isShowPermissionDialog) {
                         isShowPermissionDialog=true;
-                        isHasPermission = YanxiuBaseActivity.requestPermissions(new String[]{"android.permission.RECORD_AUDIO"}, new OnPermissionCallback() {
+                        isHasAudioPermission = YanxiuBaseActivity.requestPermissions(new String[]{"android.permission.RECORD_AUDIO"}, new OnPermissionCallback() {
                             @Override
                             public void onPermissionsGranted(@Nullable List<String> deniedPermissions) {
-                                isHasPermission=true;
+                                isHasAudioPermission=true;
                                 isShowPermissionDialog=false;
                             }
 
                             @Override
                             public void onPermissionsDenied(@Nullable List<String> deniedPermissions) {
-                                isHasPermission=false;
+                                isHasAudioPermission=false;
                                 isShowPermissionDialog=false;
                             }
                         });
@@ -285,12 +280,12 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
                 } else {
                     //6.0系统以下
                     //音频权限较为特殊，6.0以下判断依据为先录制3秒(时间可以自己设置，不一定非得3秒)左右，如果录制的音频文件大小为0K，即为没有权限
-                    isHasPermission = true;
+                    isHasAudioPermission = true;
                 }
             }
 
             //有权限才执行
-            if (isHasPermission) {
+            if (isHasAudioPermission) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         mSpokenUtils.start(getContext(), mData.getSpokenAnswer(), SpokenFragment.this, SpokenFragment.this);
@@ -330,14 +325,20 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
         if (mAudioTagHandler != null) {
             mAudioTagHandler.stop();
         }
-        mSpokenUtils.play(getContext(), mFilePath, new SpokenUtils.onPlayCallback() {
+
+        mPlayerUtil.addMediaPlayerCallBack(new MediaPlayerUtil.MediaPlayerCallBack() {
             @Override
-            public void onStart() {
+            public void onStart(MediaPlayerUtil mpu, int duration) {
                 mPlayOrStopView.setImageResource(R.drawable.spoken_stop_vedio);
             }
 
             @Override
-            public void onEnd() {
+            public void onProgress(MediaPlayerUtil mu, int progress) {
+
+            }
+
+            @Override
+            public void onCompletion(MediaPlayerUtil mu) {
                 if (canShowDialog || isFirstPlay) {
                     mResultDialog.show();
                 }
@@ -347,10 +348,17 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
             }
 
             @Override
-            public void onError() {
+            public void onError(MediaPlayerUtil mu) {
                 ToastManager.showMsg(R.string.voice_url_error);
+                if (canShowDialog || isFirstPlay) {
+                    mResultDialog.show();
+                }
+                isFirstPlay = false;
+                isCanPlayQuestionViedio = true;
+                mPlayOrStopView.setImageResource(R.drawable.spoken_play_vedio);
             }
         });
+        mPlayerUtil.start(mFilePath);
     }
 
     @Override
@@ -451,6 +459,7 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
     @Override
     public void onResultUrl(String filePath,String url) {
 //        ToastManager.showMsg(url);
+        this.mFilePath=url;
     }
 
     @Override

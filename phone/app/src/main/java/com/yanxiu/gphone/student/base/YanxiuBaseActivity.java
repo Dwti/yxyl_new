@@ -101,8 +101,13 @@ public class YanxiuBaseActivity extends FragmentActivity implements EasyPermissi
 
     /**
      * 请求读写权限
+     *
+     * @return flag 代表当前是否有权限(适用于不关心用户对权限的操作,只需要知道当前是否有权限的情况)
+     * @param onPermissionCallback callback回调代表用户对权限的更改(适用于需要根据用户的选择做出不同处理的情况)
+     *
      */
-    public static void requestWriteAndReadPermission(OnPermissionCallback onPermissionCallback) {
+    public static boolean requestWriteAndReadPermission(OnPermissionCallback onPermissionCallback) {
+        boolean flag;
         String[] perms = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         mPermissionCallback = onPermissionCallback;
         ArrayList<String> permsList = new ArrayList<>();
@@ -110,7 +115,8 @@ public class YanxiuBaseActivity extends FragmentActivity implements EasyPermissi
             permsList.add(perms[i]);
         }
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) { //6.0系统以下
-            if (PermissionUtil.checkWritePermission() && PermissionUtil.checkReadPermission()) {
+            flag=PermissionUtil.checkWritePermission() && PermissionUtil.checkReadPermission();
+            if (flag) {
                 if (mPermissionCallback!=null) {
                     mPermissionCallback.onPermissionsGranted(permsList);
                 }
@@ -120,7 +126,8 @@ public class YanxiuBaseActivity extends FragmentActivity implements EasyPermissi
                 }
             }
         } else {
-            if (EasyPermissions.hasPermissions(ActivityManger.getTopActivity(), perms)) {
+            flag=EasyPermissions.hasPermissions(ActivityManger.getTopActivity(), perms);
+            if (flag) {
                 // Have permission, do the thing!
                 if (mPermissionCallback!=null) {
                     mPermissionCallback.onPermissionsGranted(permsList);
@@ -130,6 +137,7 @@ public class YanxiuBaseActivity extends FragmentActivity implements EasyPermissi
                 EasyPermissions.requestPermissions(ActivityManger.getTopActivity(), ActivityManger.getTopActivity().getString(R.string.rationale_write_read), RC_WRITE_READ_PERM, perms);
             }
         }
+        return flag;
     }
 
     /**
