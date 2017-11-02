@@ -19,6 +19,8 @@ import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.YanxiuApplication;
 import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.base.YanxiuBaseFragment;
+import com.yanxiu.gphone.student.bcresource.bean.TopicPaperStatusChangeMessage;
+import com.yanxiu.gphone.student.bcresource.bean.TopicBean;
 import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.AnswerCardSubmitDialog;
 import com.yanxiu.gphone.student.db.SaveAnswerDBHelper;
@@ -45,6 +47,8 @@ import com.yanxiu.gphone.student.util.SoundManger;
 import com.yanxiu.gphone.student.util.ToastManager;
 
 import java.util.ArrayList;
+
+import de.greenrobot.event.EventBus;
 
 import static com.yanxiu.gphone.student.customviews.AnswerCardSubmitDialog.SubmitState.STATE_PROGRESS;
 import static com.yanxiu.gphone.student.customviews.AnswerCardSubmitDialog.SubmitState.STATE_RETRY;
@@ -323,7 +327,6 @@ public class AnswerCardFragment extends YanxiuBaseFragment implements View.OnCli
                             String key = this.hashCode() + mPaper.getId();
                             DataFetcher.getInstance().save(key, mPaper_report);
 
-
                             String showna = mPaper_report.getShowana();
                             if (Constants.NOT_FINISH_STATUS.equals(showna)) {
                                 long groupStartTime = Long.parseLong(mPaper_report.getBegintime());
@@ -342,6 +345,16 @@ public class AnswerCardFragment extends YanxiuBaseFragment implements View.OnCli
                                 AnswerReportActicity.invoke(getActivity(), key,Constants.MAINAVTIVITY_FROMTYPE_EXERCISE_HISTORY,null);
                                 getActivity().finish();
                             } else if(Constants.FROM_BC_RESOURCE.equals(mActivity.getFromType())){
+                                //发送消息告诉话题列表状态改变
+                                TopicPaperStatusChangeMessage msg = new TopicPaperStatusChangeMessage();
+                                msg.setCode(1);
+                                TopicBean.PaperStatusBean paperStatusBean = new TopicBean.PaperStatusBean();
+                                paperStatusBean.setPpid(mPaper_report.getId());
+                                paperStatusBean.setScoreRate(mPaper_report.getPaperStatus().getScoreRate());
+                                paperStatusBean.setStatus(2);
+                                msg.setPaperStatus(paperStatusBean);
+                                EventBus.getDefault().post(msg);
+
                                 AnswerReportActicity.invoke(getActivity(),key,mActivity.getRmsPaperId(),Constants.FROM_BC_RESOURCE,0);
                                 getActivity().finish();
                             }else {

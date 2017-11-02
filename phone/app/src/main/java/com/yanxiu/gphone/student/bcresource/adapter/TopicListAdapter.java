@@ -92,6 +92,12 @@ public class TopicListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         notifyItemInserted(mData.size() - 1);
     }
 
+    public void setPaperStatus(int position, TopicBean.PaperStatusBean paperStatusBean){
+        if(mData != null && position < mData.size()){
+            mData.get(position).setPaperStatus(paperStatusBean);
+        }
+    }
+
     class TopicHolder extends RecyclerView.ViewHolder{
 
         private TextView name, popValue, status;

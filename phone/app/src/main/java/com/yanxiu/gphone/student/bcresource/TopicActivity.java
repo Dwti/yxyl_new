@@ -21,6 +21,7 @@ import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.bcresource.adapter.TopicListAdapter;
+import com.yanxiu.gphone.student.bcresource.bean.TopicPaperStatusChangeMessage;
 import com.yanxiu.gphone.student.bcresource.bean.TopicBean;
 import com.yanxiu.gphone.student.bcresource.request.RMSPaperRequest;
 import com.yanxiu.gphone.student.bcresource.request.TopicPaperRequest;
@@ -39,6 +40,8 @@ import com.yanxiu.gphone.student.util.ToastManager;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by sunpeng on 2017/10/16.
@@ -76,6 +79,8 @@ public class TopicActivity extends YanxiuBaseActivity{
 
     private String mClickRmsPaperId;
 
+    private int mClickPosition = 0;
+
 
     public static void invoke(Activity activity, String type, String id, String name){
         Intent intent = new Intent(activity,TopicActivity.class);
@@ -89,6 +94,7 @@ public class TopicActivity extends YanxiuBaseActivity{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_topic);
+        EventBus.getDefault().register(this);
         initView();
         initListener();
         initData();
@@ -98,10 +104,21 @@ public class TopicActivity extends YanxiuBaseActivity{
     protected void onResume() {
         super.onResume();
         if(shouldRefreshWhenResume){
-            mCurrentPage = 1;
-            getTopicPaper(1);
             shouldRefreshWhenResume = false;
+            if(mClickPosition < mAdapter.getItemCount()){
+                mAdapter.notifyItemChanged(mClickPosition);
+            }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    public void onEventMainThread(TopicPaperStatusChangeMessage message){
+        mAdapter.setPaperStatus(mClickPosition,message.getPaperStatus());
     }
 
     private void initView(){
@@ -499,6 +516,7 @@ public class TopicActivity extends YanxiuBaseActivity{
         public void onClick(TopicBean bean, int position) {
 //            Intent intent = new Intent(TopicActivity.this, VideoActivity.class);
 //            startActivity(intent);
+            mClickPosition = position;
             mClickRmsPaperId = bean.getId();
             if(bean.getPaperStatus() != null && bean.getPaperStatus().getStatus() == 2){
                 getReport(bean.getPaperStatus().getPpid());
