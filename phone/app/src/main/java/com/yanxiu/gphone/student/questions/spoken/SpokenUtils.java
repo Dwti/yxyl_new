@@ -64,7 +64,7 @@ public class SpokenUtils {
 
         void onResultUrl(String filePath, String url);
 
-        void onNoPermission(String text);
+        void onNoPermission();
 
         void onError(String result);
 
@@ -165,7 +165,8 @@ public class SpokenUtils {
                         if (errorCode == -1001) {
                             //SB云知声,返回码为啥不分开，浪费时间，浪费生命
                             if ("startRecording() called on an uninitialized AudioRecord.".equals(errorText)) {
-                                oralEvalCallback.onNoPermission("没有录音权限");
+                                //没有录音权限
+                                oralEvalCallback.onNoPermission();
                             } else {
                                 oralEvalCallback.onFailed("打开或读取录音设备失败");
                             }

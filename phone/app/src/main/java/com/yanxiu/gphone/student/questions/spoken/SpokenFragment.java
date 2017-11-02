@@ -2,6 +2,7 @@ package com.yanxiu.gphone.student.questions.spoken;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -56,6 +57,9 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
 
     private boolean isCanPlayQuestionViedio = true;
     private boolean isFirstPlay = false;
+    private boolean isHasPermission=false;
+    //仅仅用于标识6.0及以上权限弹窗是否弹出
+    private boolean isShowPermissionDialog=false;
 
     private SpokenResultDialog mResultDialog;
     private SpokenErrorDialog mErrorDialog;
@@ -85,6 +89,7 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
         mPlayerUtil = MediaPlayerUtil.create();
         mErrorDialog = new SpokenErrorDialog(getContext());
         mSpokenUtils = SpokenUtils.create();
+        isHasPermission=false;
         setQaNumber(view);
         setQaName(view);
         initComplexStem(view, mData);
@@ -232,27 +237,54 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
     private View.OnTouchListener mTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    setIsCanClick(false);
-                    mPlayerUtil.playFinish();
-                    if (mAudioTagHandler != null) {
-                        mAudioTagHandler.stop();
+            if (MotionEvent.ACTION_DOWN==event.getAction()) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    //6.0系统及以上
+                    if (!isHasPermission&&!isShowPermissionDialog) {
+                        isShowPermissionDialog=true;
+                        isHasPermission = YanxiuBaseActivity.requestPermissions(new String[]{"android.permission.RECORD_AUDIO"}, new OnPermissionCallback() {
+                            @Override
+                            public void onPermissionsGranted(@Nullable List<String> deniedPermissions) {
+                                isHasPermission=true;
+                                isShowPermissionDialog=false;
+                            }
+
+                            @Override
+                            public void onPermissionsDenied(@Nullable List<String> deniedPermissions) {
+                                isHasPermission=false;
+                                isShowPermissionDialog=false;
+                            }
+                        });
                     }
-                    mSpokenUtils.playClear();
-                    mPlayOrStopView.setImageResource(R.drawable.spoken_play_vedio);
-                    mPlayOrStopView.setEnabled(false);
-                    mRecordView.setImageResource(R.drawable.spoken_record_press);
-                    isCanPlayQuestionViedio = false;
-                    mSpokenUtils.start(getContext(), mData.getSpokenAnswer(), SpokenFragment.this,SpokenFragment.this);
-                    break;
-                case MotionEvent.ACTION_CANCEL:
-                case MotionEvent.ACTION_UP:
-                    setIsCanClick(true);
-                    mRecordView.setImageResource(R.drawable.spoken_record_normal);
-                    mPlayOrStopView.setEnabled(true);
-                    mSpokenUtils.stop();
-                    break;
+                } else {
+                    //6.0系统以下
+                    //音频权限较为特殊，6.0以下判断依据为先录制3秒(时间可以自己设置，不一定非得3秒)左右，如果录制的音频文件大小为0K，即为没有权限
+                    isHasPermission = true;
+                }
+            }
+            if (isHasPermission) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        setIsCanClick(false);
+                        mPlayerUtil.playFinish();
+                        if (mAudioTagHandler != null) {
+                            mAudioTagHandler.stop();
+                        }
+                        mSpokenUtils.playClear();
+                        mPlayOrStopView.setImageResource(R.drawable.spoken_play_vedio);
+                        mPlayOrStopView.setEnabled(false);
+                        mRecordView.setImageResource(R.drawable.spoken_record_press);
+                        isCanPlayQuestionViedio = false;
+                        mSpokenUtils.start(getContext(), mData.getSpokenAnswer(), SpokenFragment.this, SpokenFragment.this);
+                        break;
+                    case MotionEvent.ACTION_CANCEL:
+                    case MotionEvent.ACTION_UP:
+                        setIsCanClick(true);
+                        mRecordView.setImageResource(R.drawable.spoken_record_normal);
+                        mPlayOrStopView.setEnabled(true);
+                        mSpokenUtils.stop();
+                        break;
+                }
             }
             return true;
         }
@@ -407,26 +439,11 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
     }
 
     @Override
-    public void onNoPermission(String text) {
+    public void onNoPermission() {
         mSpokenWaveView.setVisibility(View.GONE);
         isCanPlayQuestionViedio = true;
-//        ToastManager.showMsg(text);
-        /**
-         * 暂时逻辑如此
-         *
-         * 先吃这个不存在的鸡蛋，再去买那个本应该被吃掉的鸡蛋
-         * */
-        YanxiuBaseActivity.requestPermissions(new String[]{"android.permission.RECORD_AUDIO"}, new OnPermissionCallback() {
-            @Override
-            public void onPermissionsGranted(@Nullable List<String> deniedPermissions) {
-
-            }
-
-            @Override
-            public void onPermissionsDenied(@Nullable List<String> deniedPermissions) {
-
-            }
-        });
+        SpokenPermissionDialog permissionDialog=SpokenPermissionDialog.creat(getContext());
+        permissionDialog.show();
     }
 
     @Override

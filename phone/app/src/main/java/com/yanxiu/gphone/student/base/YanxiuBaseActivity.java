@@ -78,14 +78,20 @@ public class YanxiuBaseActivity extends FragmentActivity implements EasyPermissi
         permsList.add(Manifest.permission.CAMERA);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) { //6.0系统以下
             if (PermissionUtil.cameraIsCanUse()) {
-                mPermissionCallback.onPermissionsGranted(permsList);
+                if (mPermissionCallback!=null) {
+                    mPermissionCallback.onPermissionsGranted(permsList);
+                }
             } else {
-                mPermissionCallback.onPermissionsDenied(permsList);
+                if (mPermissionCallback!=null) {
+                    mPermissionCallback.onPermissionsDenied(permsList);
+                }
             }
         } else {
             if (EasyPermissions.hasPermissions(ActivityManger.getTopActivity(), Manifest.permission.CAMERA)) {
                 // Have permission, do the thing!
-                mPermissionCallback.onPermissionsGranted(permsList);
+                if (mPermissionCallback!=null) {
+                    mPermissionCallback.onPermissionsGranted(permsList);
+                }
             } else {
                 // Ask for one permission
                 EasyPermissions.requestPermissions(ActivityManger.getTopActivity(), ActivityManger.getTopActivity().getString(R.string.rationale_camera), RC_CAMERA_PERM, Manifest.permission.CAMERA);
@@ -105,14 +111,20 @@ public class YanxiuBaseActivity extends FragmentActivity implements EasyPermissi
         }
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) { //6.0系统以下
             if (PermissionUtil.checkWritePermission() && PermissionUtil.checkReadPermission()) {
-                mPermissionCallback.onPermissionsGranted(permsList);
+                if (mPermissionCallback!=null) {
+                    mPermissionCallback.onPermissionsGranted(permsList);
+                }
             } else {
-                mPermissionCallback.onPermissionsDenied(permsList);
+                if (mPermissionCallback!=null) {
+                    mPermissionCallback.onPermissionsDenied(permsList);
+                }
             }
         } else {
             if (EasyPermissions.hasPermissions(ActivityManger.getTopActivity(), perms)) {
                 // Have permission, do the thing!
-                mPermissionCallback.onPermissionsGranted(permsList);
+                if (mPermissionCallback!=null) {
+                    mPermissionCallback.onPermissionsGranted(permsList);
+                }
             } else {
                 // Ask for one permission
                 EasyPermissions.requestPermissions(ActivityManger.getTopActivity(), ActivityManger.getTopActivity().getString(R.string.rationale_write_read), RC_WRITE_READ_PERM, perms);
@@ -123,21 +135,28 @@ public class YanxiuBaseActivity extends FragmentActivity implements EasyPermissi
     /**
      * 请求权限
      *
+     * @return flag 代表当前是否有权限(适用于不关心用户对权限的操作,只需要知道当前是否有权限的情况)
+     * @param onPermissionCallback callback回调代表用户对权限的更改(适用于需要根据用户的选择做出不同处理的情况)
+     *
      * @param perms {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_CONTACTS};
      */
-    public static void requestPermissions(String[] perms, OnPermissionCallback onPermissionCallback) {
+    public static boolean requestPermissions(String[] perms, OnPermissionCallback onPermissionCallback) {
         mPermissionCallback = onPermissionCallback;
-        if (EasyPermissions.hasPermissions(ActivityManger.getTopActivity(), perms)) {
+        boolean flag=EasyPermissions.hasPermissions(ActivityManger.getTopActivity(), perms);
+        if (flag) {
             // Have permissions, do the thing!
             ArrayList<String> permsList = new ArrayList<>();
             for (int i = 0; i < perms.length; i++) {
                 permsList.add(perms[i]);
             }
-            mPermissionCallback.onPermissionsGranted(permsList);
+            if (mPermissionCallback!=null) {
+                mPermissionCallback.onPermissionsGranted(permsList);
+            }
         } else {
             // Ask for both permissions
             EasyPermissions.requestPermissions(ActivityManger.getTopActivity(), ActivityManger.getTopActivity().getString(R.string.rationale_other), RC_OTHER_PERM, perms);
         }
+        return flag;
     }
 
     @Override
@@ -149,7 +168,9 @@ public class YanxiuBaseActivity extends FragmentActivity implements EasyPermissi
     @Override
     public void onPermissionsGranted(int requestCode, List<String> perms) {
         Log.d(TAG, "onPermissionsGranted:" + requestCode + ":" + perms.size());
-        mPermissionCallback.onPermissionsGranted(perms);
+        if (mPermissionCallback!=null) {
+            mPermissionCallback.onPermissionsGranted(perms);
+        }
     }
 
     @Override
@@ -160,7 +181,9 @@ public class YanxiuBaseActivity extends FragmentActivity implements EasyPermissi
 //        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
 //            new AppSettingsDialog.Builder(this).build().show();
 //        }
-        mPermissionCallback.onPermissionsDenied(perms);
+        if (mPermissionCallback!=null) {
+            mPermissionCallback.onPermissionsDenied(perms);
+        }
     }
 
     public boolean isAppOnForeground() {

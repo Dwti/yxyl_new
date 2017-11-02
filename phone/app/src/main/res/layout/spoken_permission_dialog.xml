@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/state_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0.6"
+            android:background="@android:color/black" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
+
+            <LinearLayout
+                android:layout_width="315dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="77dp"
+                android:background="@drawable/spoken_no_permission_bg"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/state_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="65dp"
+                    android:text="没有录音权限"
+                    android:textColor="@color/color_336600"
+                    android:textSize="23dp" />
+
+                <TextView
+                    android:id="@+id/state_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/state_title"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="没有录音权限 请至手机的【设置】-【应用管理】-【易学易练】-【权限管理】中，点击开启麦克风录音权限。"
+                    android:textColor="@color/color_69ad0a"
+                    android:textSize="16dp" />
+
+                <com.yanxiu.gphone.student.customviews.WavesLayout
+                    android:id="@+id/wave_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginTop="15dp"
+                    app:waves_animend_alpha="102"
+                    app:waves_color="@color/color_E3F8C5"
+                    app:waves_radius="@dimen/wavesRadius">
+
+                    <Button
+                        android:id="@+id/button_no"
+                        android:layout_width="250dp"
+                        android:layout_height="50dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:background="@drawable/selector_spoken_button_bg"
+                        android:text="我知道了"
+                        android:textColor="@drawable/selector_answercard_no_text_color"
+                        android:textSize="@dimen/answer_card_submitbutton_textsize" />
+                </com.yanxiu.gphone.student.customviews.WavesLayout>
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/state_topimg"
+                android:layout_width="250dp"
+                android:layout_height="130dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/icon_warning" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+</LinearLayout>

@@ -29,7 +29,7 @@ public class DataFetcher {
 
     }
 
-    private Map mMap = new HashMap();
+    private static Map mMap = new HashMap();
 
     /**
      * 这个方法需要在调用时传入对象
