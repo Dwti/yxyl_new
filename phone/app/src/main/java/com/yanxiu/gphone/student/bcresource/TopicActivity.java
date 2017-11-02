@@ -21,7 +21,7 @@ import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.bcresource.adapter.TopicListAdapter;
-import com.yanxiu.gphone.student.bcresource.bean.ResetPaperStatusMessage;
+import com.yanxiu.gphone.student.bcresource.bean.TopicPaperStatusChangeMessage;
 import com.yanxiu.gphone.student.bcresource.bean.TopicBean;
 import com.yanxiu.gphone.student.bcresource.request.RMSPaperRequest;
 import com.yanxiu.gphone.student.bcresource.request.TopicPaperRequest;
@@ -117,8 +117,8 @@ public class TopicActivity extends YanxiuBaseActivity{
         EventBus.getDefault().unregister(this);
     }
 
-    public void onEventMainThread(ResetPaperStatusMessage message){
-        mAdapter.resetPaperStatus(mClickPosition);
+    public void onEventMainThread(TopicPaperStatusChangeMessage message){
+        mAdapter.setPaperStatus(mClickPosition,message.getPaperStatus());
     }
 
     private void initView(){
