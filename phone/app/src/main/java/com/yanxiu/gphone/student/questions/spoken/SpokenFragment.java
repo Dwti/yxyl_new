@@ -59,6 +59,7 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
     private SpokenResultDialog mResultDialog;
     private SpokenErrorDialog mErrorDialog;
     private MediaPlayerUtil mPlayerUtil;
+    private MediaPlayerUtil mLocationUtil;
     private SpokenUtils mSpokenUtils;
     private SpokenFirstEnterDialog mFirstEnterDialog;
 
@@ -84,6 +85,7 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
         mPlayerUtil = MediaPlayerUtil.create();
         mErrorDialog = new SpokenErrorDialog(getContext());
         mSpokenUtils = SpokenUtils.create();
+        mLocationUtil=MediaPlayerUtil.create();
         isHasAudioPermission=false;
         setQaNumber(view);
         setQaName(view);
@@ -171,7 +173,8 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
             if (mAudioTagHandler != null) {
                 mAudioTagHandler.stop();
             }
-            mSpokenUtils.playClear();
+//            mSpokenUtils.playClear();
+            mLocationUtil.playFinish();
             mPlayOrStopView.setImageResource(R.drawable.spoken_play_vedio);
             mSpokenUtils.cancel();
         }
@@ -185,7 +188,8 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
             if (mAudioTagHandler != null) {
                 mAudioTagHandler.stop();
             }
-            mSpokenUtils.playClear();
+//            mSpokenUtils.playClear();
+            mLocationUtil.playFinish();
             mPlayOrStopView.setImageResource(R.drawable.spoken_play_vedio);
             mSpokenUtils.cancel();
         }
@@ -243,7 +247,8 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
                     if (mAudioTagHandler != null) {
                         mAudioTagHandler.stop();
                     }
-                    mSpokenUtils.playClear();
+//                    mSpokenUtils.playClear();
+                    mLocationUtil.playFinish();
                     mPlayOrStopView.setImageResource(R.drawable.spoken_play_vedio);
                     mPlayOrStopView.setEnabled(false);
                     mRecordView.setImageResource(R.drawable.spoken_record_press);
@@ -326,7 +331,7 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
             mAudioTagHandler.stop();
         }
 
-        mPlayerUtil.addMediaPlayerCallBack(new MediaPlayerUtil.MediaPlayerCallBack() {
+        mLocationUtil.addMediaPlayerCallBack(new MediaPlayerUtil.MediaPlayerCallBack() {
             @Override
             public void onStart(MediaPlayerUtil mpu, int duration) {
                 mPlayOrStopView.setImageResource(R.drawable.spoken_stop_vedio);
@@ -358,7 +363,7 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
                 mPlayOrStopView.setImageResource(R.drawable.spoken_play_vedio);
             }
         });
-        mPlayerUtil.start(mFilePath);
+        mLocationUtil.start(mFilePath);
     }
 
     @Override
@@ -366,7 +371,8 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
         if (!isCanPlayQuestionViedio) {
             return;
         }
-        mSpokenUtils.playClear();
+//        mSpokenUtils.playClear();
+        mLocationUtil.playFinish();
         mPlayOrStopView.setImageResource(R.drawable.spoken_play_vedio);
         mPlayerUtil.addMediaPlayerCallBack(new MediaPlayerUtil.MediaPlayerCallBack() {
             @Override
