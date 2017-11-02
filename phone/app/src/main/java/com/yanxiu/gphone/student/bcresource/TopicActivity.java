@@ -125,6 +125,9 @@ public class TopicActivity extends YanxiuBaseActivity{
             //已作答
             if(message.getCode() == 0){
                 mAdapter.remove(mClickPosition);
+                if(shouldRemoveFooterView()){
+                    mAdapter.remove(mAdapter.getItemCount() - 1);
+                }
                 if(mAdapter.getItemCount() == 0){
                     showDataEmptyView();
                 }
@@ -133,6 +136,9 @@ public class TopicActivity extends YanxiuBaseActivity{
             //未作答
             if(message.getCode() == 1){
                 mAdapter.remove(mClickPosition);
+                if(shouldRemoveFooterView()){
+                    mAdapter.remove(mAdapter.getItemCount() - 1);
+                }
                 if(mAdapter.getItemCount() == 0){
                     showDataEmptyView();
                 }
@@ -461,6 +467,19 @@ public class TopicActivity extends YanxiuBaseActivity{
             mAdapter.addFooterView();
         }
         setLoadMoreEnable(false);
+    }
+
+    public boolean shouldRemoveFooterView(){
+        if(!mAdapter.isFooterExist()){
+            return false;
+        }else{
+            LinearLayoutManager layoutManager = (LinearLayoutManager) mRecyclerView.getLayoutManager();
+            if(layoutManager.findLastVisibleItemPosition() == mAdapter.getItemCount() - 1){
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private void showLoadMoreErrorMsg(String msg){
