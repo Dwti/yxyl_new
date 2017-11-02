@@ -657,7 +657,6 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
             case R.id.tips_play:
                 video_tips.setVisibility(View.GONE);
                 mPlayerView.setVisibility(View.VISIBLE);
-                video_collapse.setVisibility(View.VISIBLE);
                 playVideo();
                 rotateScreen();
                 break;
