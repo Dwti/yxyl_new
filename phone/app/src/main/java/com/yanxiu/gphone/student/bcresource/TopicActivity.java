@@ -118,7 +118,26 @@ public class TopicActivity extends YanxiuBaseActivity{
     }
 
     public void onEventMainThread(TopicPaperStatusChangeMessage message){
-        mAdapter.setPaperStatus(mClickPosition,message.getPaperStatus());
+        if(mScope == 0){
+            //全部
+            mAdapter.setPaperStatus(mClickPosition,message.getPaperStatus());
+        }else if(mScope == 1){
+            //已作答
+            if(message.getCode() == 0){
+                mAdapter.remove(mClickPosition);
+                if(mAdapter.getItemCount() == 0){
+                    showDataEmptyView();
+                }
+            }
+        }else if(mScope == 2){
+            //未作答
+            if(message.getCode() == 1){
+                mAdapter.remove(mClickPosition);
+                if(mAdapter.getItemCount() == 0){
+                    showDataEmptyView();
+                }
+            }
+        }
     }
 
     private void initView(){
@@ -441,6 +460,7 @@ public class TopicActivity extends YanxiuBaseActivity{
         if(firstPos != 0 ){
             mAdapter.addFooterView();
         }
+        setLoadMoreEnable(false);
     }
 
     private void showLoadMoreErrorMsg(String msg){

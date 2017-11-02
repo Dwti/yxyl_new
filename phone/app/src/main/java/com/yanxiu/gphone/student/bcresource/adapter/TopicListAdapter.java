@@ -92,6 +92,13 @@ public class TopicListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         notifyItemInserted(mData.size() - 1);
     }
 
+    public void remove(int position){
+        if(mData != null && position < mData.size()){
+            mData.remove(position);
+            notifyItemRemoved(position);
+        }
+    }
+
     public void setPaperStatus(int position, TopicBean.PaperStatusBean paperStatusBean){
         if(mData != null && position < mData.size()){
             mData.get(position).setPaperStatus(paperStatusBean);
