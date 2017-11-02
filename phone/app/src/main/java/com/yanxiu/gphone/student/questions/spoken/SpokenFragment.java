@@ -237,6 +237,32 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
     private View.OnTouchListener mTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
+
+            //诡异的逻辑
+
+            //这部分不管是否有权限都执行
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    setIsCanClick(false);
+                    mPlayerUtil.playFinish();
+                    if (mAudioTagHandler != null) {
+                        mAudioTagHandler.stop();
+                    }
+                    mSpokenUtils.playClear();
+                    mPlayOrStopView.setImageResource(R.drawable.spoken_play_vedio);
+                    mPlayOrStopView.setEnabled(false);
+                    mRecordView.setImageResource(R.drawable.spoken_record_press);
+                    isCanPlayQuestionViedio = false;
+                    break;
+                case MotionEvent.ACTION_CANCEL:
+                case MotionEvent.ACTION_UP:
+                    setIsCanClick(true);
+                    mRecordView.setImageResource(R.drawable.spoken_record_normal);
+                    mPlayOrStopView.setEnabled(true);
+                    break;
+            }
+
+            //判断权限
             if (MotionEvent.ACTION_DOWN==event.getAction()) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     //6.0系统及以上
@@ -262,26 +288,15 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
                     isHasPermission = true;
                 }
             }
+
+            //有权限才执行
             if (isHasPermission) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        setIsCanClick(false);
-                        mPlayerUtil.playFinish();
-                        if (mAudioTagHandler != null) {
-                            mAudioTagHandler.stop();
-                        }
-                        mSpokenUtils.playClear();
-                        mPlayOrStopView.setImageResource(R.drawable.spoken_play_vedio);
-                        mPlayOrStopView.setEnabled(false);
-                        mRecordView.setImageResource(R.drawable.spoken_record_press);
-                        isCanPlayQuestionViedio = false;
                         mSpokenUtils.start(getContext(), mData.getSpokenAnswer(), SpokenFragment.this, SpokenFragment.this);
                         break;
                     case MotionEvent.ACTION_CANCEL:
                     case MotionEvent.ACTION_UP:
-                        setIsCanClick(true);
-                        mRecordView.setImageResource(R.drawable.spoken_record_normal);
-                        mPlayOrStopView.setEnabled(true);
                         mSpokenUtils.stop();
                         break;
                 }
