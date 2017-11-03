@@ -498,7 +498,7 @@ public class TopicActivity extends YanxiuBaseActivity{
             return false;
         }else{
             LinearLayoutManager layoutManager = (LinearLayoutManager) mRecyclerView.getLayoutManager();
-            if(layoutManager.findLastVisibleItemPosition() == mAdapter.getItemCount() - 1){
+            if(layoutManager.findLastVisibleItemPosition() >= mAdapter.getItemCount() - 1 && layoutManager.findFirstVisibleItemPosition() == 0){
                 return true;
             }
         }
