@@ -70,6 +70,8 @@ public class TopicListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public int getItemViewType(int position) {
+        if(position < 0 || position >= mData.size())
+            return TYPE_NORMAL;
         if(TextUtils.isEmpty(mData.get(position).getId())){
             return TYPE_FOOTER;
         }else {
