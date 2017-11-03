@@ -29,7 +29,7 @@ public class DataFetcher {
 
     }
 
-    private static Map mMap = new HashMap();
+    private Map mMap = new HashMap();
 
     /**
      * 这个方法需要在调用时传入对象
@@ -60,6 +60,9 @@ public class DataFetcher {
     }
 
     public synchronized <T> void save(String key, T t) {
+        if (mMap==null){
+            mMap=new HashMap();
+        }
         mMap.put(key, t);
     }
 
