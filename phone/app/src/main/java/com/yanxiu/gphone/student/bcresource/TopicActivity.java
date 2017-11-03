@@ -81,6 +81,8 @@ public class TopicActivity extends YanxiuBaseActivity{
 
     private int mClickPosition = 0;
 
+    private int mRemoveItemFlag = 0; //0：表示不需要移除;1:表示resume的时候需要移除；
+
 
     public static void invoke(Activity activity, String type, String id, String name){
         Intent intent = new Intent(activity,TopicActivity.class);
@@ -105,8 +107,19 @@ public class TopicActivity extends YanxiuBaseActivity{
         super.onResume();
         if(shouldRefreshWhenResume){
             shouldRefreshWhenResume = false;
-            if(mClickPosition < mAdapter.getItemCount()){
-                mAdapter.notifyItemChanged(mClickPosition);
+            if(mRemoveItemFlag == 1){
+                mAdapter.remove(mClickPosition);
+                if(shouldRemoveFooterView()){
+                    mAdapter.remove(mAdapter.getItemCount() - 1);
+                }
+                if(mAdapter.getItemCount() == 0){
+                    showDataEmptyView();
+                }
+                mRemoveItemFlag = 0;
+            }else if(mRemoveItemFlag == 0){
+                if(mClickPosition < mAdapter.getItemCount()){
+                    mAdapter.notifyItemChanged(mClickPosition);
+                }
             }
         }
     }
@@ -124,24 +137,35 @@ public class TopicActivity extends YanxiuBaseActivity{
         }else if(mScope == 1){
             //已作答
             if(message.getCode() == 0){
-                mAdapter.remove(mClickPosition);
-                if(shouldRemoveFooterView()){
-                    mAdapter.remove(mAdapter.getItemCount() - 1);
-                }
-                if(mAdapter.getItemCount() == 0){
-                    showDataEmptyView();
-                }
+                //重新作答
+                mRemoveItemFlag = (mRemoveItemFlag + 1) % 2;
+//                mAdapter.remove(mClickPosition);
+//                if(shouldRemoveFooterView()){
+//                    mAdapter.remove(mAdapter.getItemCount() - 1);
+//                }
+//                if(mAdapter.getItemCount() == 0){
+//                    showDataEmptyView();
+//                }
+            }else if(message.getCode() == 1){
+                //提交答案（先重新作答，然后提交答案）
+                mRemoveItemFlag = (mRemoveItemFlag + 1) % 2;
+                mAdapter.setPaperStatus(mClickPosition,message.getPaperStatus());
             }
         }else if(mScope == 2){
             //未作答
             if(message.getCode() == 1){
-                mAdapter.remove(mClickPosition);
-                if(shouldRemoveFooterView()){
-                    mAdapter.remove(mAdapter.getItemCount() - 1);
-                }
-                if(mAdapter.getItemCount() == 0){
-                    showDataEmptyView();
-                }
+                //提交答案
+                mRemoveItemFlag = (mRemoveItemFlag + 1) % 2;
+//                mAdapter.remove(mClickPosition);
+//                if(shouldRemoveFooterView()){
+//                    mAdapter.remove(mAdapter.getItemCount() - 1);
+//                }
+//                if(mAdapter.getItemCount() == 0){
+//                    showDataEmptyView();
+//                }
+            }else if(message.getCode() == 0){
+                //重新作答（先提交答案，然后重新作答）
+                mRemoveItemFlag = (mRemoveItemFlag + 1) % 2;
             }
         }
     }
