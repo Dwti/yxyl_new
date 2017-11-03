@@ -77,6 +77,14 @@ public class TopicListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
     }
 
+    public boolean isFooterExist(){
+        if(getItemViewType(getItemCount() - 1) == TYPE_FOOTER){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
     public void replaceData(List<TopicBean> data){
         this.mData = data;
         notifyDataSetChanged();
