@@ -52,9 +52,9 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
 
     private boolean isCanPlayQuestionViedio = true;
     private boolean isFirstPlay = false;
-    private boolean isHasAudioPermission=false;
+    private boolean isHasAudioPermission = false;
     //仅仅用于标识6.0及以上权限弹窗是否弹出
-    private boolean isShowPermissionDialog=false;
+    private boolean isShowPermissionDialog = false;
 
     private SpokenResultDialog mResultDialog;
     private SpokenErrorDialog mErrorDialog;
@@ -85,8 +85,8 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
         mPlayerUtil = MediaPlayerUtil.create();
         mErrorDialog = new SpokenErrorDialog(getContext());
         mSpokenUtils = SpokenUtils.create();
-        mLocationUtil=MediaPlayerUtil.create();
-        isHasAudioPermission=false;
+        mLocationUtil = MediaPlayerUtil.create();
+        isHasAudioPermission = false;
         setQaNumber(view);
         setQaName(view);
         initComplexStem(view, mData);
@@ -130,7 +130,7 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
         setAudioButtonCanClick();
     }
 
-    private void setAudioButtonCanClick(){
+    private void setAudioButtonCanClick() {
         if ("27".equals(mData.getType_id()) || "28".equals(mData.getType_id())) {
 //            mSpokenWaveView.setVisibility(View.GONE);
             mRecordView.setEnabled(false);
@@ -163,7 +163,7 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
             }
             if (mData.getAnswerList() != null && !mData.getAnswerList().isEmpty()) {
                 SpokenResponse response = SpokenQuestion.getBeanFromJson(mData.getAnswerList().get(0));
-                mFilePath=response.url;
+                mFilePath = response.url;
                 setScore(SpokenQuestion.getScore((int) response.lines.get(0).score));
 
 //                mSpokenWaveView.setVisibility(View.VISIBLE);
@@ -189,7 +189,7 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
     @Override
     public void onAnswerCardVisibleToUser(boolean isVisibleToUser) {
         super.onAnswerCardVisibleToUser(isVisibleToUser);
-        if (isVisibleToUser){
+        if (isVisibleToUser) {
             mPlayerUtil.playFinish();
             if (mAudioTagHandler != null) {
                 mAudioTagHandler.stop();
@@ -269,22 +269,22 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
             }
 
             //判断权限
-            if (MotionEvent.ACTION_DOWN==event.getAction()) {
+            if (MotionEvent.ACTION_DOWN == event.getAction()) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     //6.0系统及以上
-                    if (!isHasAudioPermission&&!isShowPermissionDialog) {
-                        isShowPermissionDialog=true;
+                    if (!isHasAudioPermission && !isShowPermissionDialog) {
+                        isShowPermissionDialog = true;
                         isHasAudioPermission = YanxiuBaseActivity.requestPermissions(new String[]{"android.permission.RECORD_AUDIO"}, new OnPermissionCallback() {
                             @Override
                             public void onPermissionsGranted(@Nullable List<String> deniedPermissions) {
-                                isHasAudioPermission=true;
-                                isShowPermissionDialog=false;
+                                isHasAudioPermission = true;
+                                isShowPermissionDialog = false;
                             }
 
                             @Override
                             public void onPermissionsDenied(@Nullable List<String> deniedPermissions) {
-                                isHasAudioPermission=false;
-                                isShowPermissionDialog=false;
+                                isHasAudioPermission = false;
+                                isShowPermissionDialog = false;
                             }
                         });
                     }
@@ -311,13 +311,13 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
         }
     };
 
-    private void setIsCanClick(boolean isCanClick){
-        if (getActivity() instanceof AnswerQuestionActivity){
-            ((AnswerQuestionActivity)getActivity()).setCanClick(isCanClick);
+    private void setIsCanClick(boolean isCanClick) {
+        if (getActivity() instanceof AnswerQuestionActivity) {
+            ((AnswerQuestionActivity) getActivity()).setCanClick(isCanClick);
         }
-        Fragment fragment=getParentFragment();
-        if (fragment!=null&&fragment instanceof AnswerComplexExerciseBaseFragment){
-            ((AnswerComplexExerciseBaseFragment)fragment).setCanScroll(isCanClick);
+        Fragment fragment = getParentFragment();
+        if (fragment != null && fragment instanceof AnswerComplexExerciseBaseFragment) {
+            ((AnswerComplexExerciseBaseFragment) fragment).setCanScroll(isCanClick);
         }
     }
 
@@ -337,39 +337,49 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
             mAudioTagHandler.stop();
         }
 
-        mLocationUtil.addMediaPlayerCallBack(new MediaPlayerUtil.MediaPlayerCallBack() {
-            @Override
-            public void onStart(MediaPlayerUtil mpu, int duration) {
-                mPlayOrStopView.setImageResource(R.drawable.spoken_stop_vedio);
+        if (mLocationUtil.isPlaying()) {
+            mLocationUtil.playFinish();
+            if (canShowDialog || isFirstPlay) {
+                mResultDialog.show();
             }
-
-            @Override
-            public void onProgress(MediaPlayerUtil mu, int progress) {
-
-            }
-
-            @Override
-            public void onCompletion(MediaPlayerUtil mu) {
-                if (canShowDialog || isFirstPlay) {
-                    mResultDialog.show();
+            isFirstPlay = false;
+            isCanPlayQuestionViedio = true;
+            mPlayOrStopView.setImageResource(R.drawable.spoken_play_vedio);
+        } else {
+            mLocationUtil.addMediaPlayerCallBack(new MediaPlayerUtil.MediaPlayerCallBack() {
+                @Override
+                public void onStart(MediaPlayerUtil mpu, int duration) {
+                    mPlayOrStopView.setImageResource(R.drawable.spoken_stop_vedio);
                 }
-                isFirstPlay = false;
-                isCanPlayQuestionViedio = true;
-                mPlayOrStopView.setImageResource(R.drawable.spoken_play_vedio);
-            }
 
-            @Override
-            public void onError(MediaPlayerUtil mu) {
-                ToastManager.showMsg(R.string.voice_url_error);
-                if (canShowDialog || isFirstPlay) {
-                    mResultDialog.show();
+                @Override
+                public void onProgress(MediaPlayerUtil mu, int progress) {
+
                 }
-                isFirstPlay = false;
-                isCanPlayQuestionViedio = true;
-                mPlayOrStopView.setImageResource(R.drawable.spoken_play_vedio);
-            }
-        });
-        mLocationUtil.start(mFilePath);
+
+                @Override
+                public void onCompletion(MediaPlayerUtil mu) {
+                    if (canShowDialog || isFirstPlay) {
+                        mResultDialog.show();
+                    }
+                    isFirstPlay = false;
+                    isCanPlayQuestionViedio = true;
+                    mPlayOrStopView.setImageResource(R.drawable.spoken_play_vedio);
+                }
+
+                @Override
+                public void onError(MediaPlayerUtil mu) {
+                    ToastManager.showMsg(R.string.voice_url_error);
+                    if (canShowDialog || isFirstPlay) {
+                        mResultDialog.show();
+                    }
+                    isFirstPlay = false;
+                    isCanPlayQuestionViedio = true;
+                    mPlayOrStopView.setImageResource(R.drawable.spoken_play_vedio);
+                }
+            });
+            mLocationUtil.start(mFilePath);
+        }
     }
 
     @Override
@@ -416,7 +426,7 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
                 }
                 if (NetWorkUtils.isNetAvailable()) {
                     ToastManager.showMsg(R.string.voice_url_error);
-                }else {
+                } else {
                     ToastManager.showMsg(R.string.net_null);
                 }
             }
@@ -440,7 +450,7 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
             mPlayOrStopView.setVisibility(View.VISIBLE);
             isFirstPlay = true;
             playLocationVideo(true);
-        }else {
+        } else {
             closeAnim();
         }
     }
@@ -459,8 +469,8 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
     public void onResult(String result) {
         SpokenResponse response = SpokenQuestion.getBeanFromJson(result);
         mResultDialog.setScore(SpokenQuestion.getScore((int) response.lines.get(0).score));
-        response.url=mFilePath;
-        Gson gson=new Gson();
+        response.url = mFilePath;
+        Gson gson = new Gson();
         mData.getAnswerList().clear();
         mData.getAnswerList().add(gson.toJson(response));
         mData.setHasAnswered(true);
@@ -469,16 +479,16 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
     }
 
     @Override
-    public void onResultUrl(String filePath,String url) {
+    public void onResultUrl(String filePath, String url) {
 //        ToastManager.showMsg(url);
-        this.mFilePath=url;
+        this.mFilePath = url;
     }
 
     @Override
     public void onNoPermission() {
         mSpokenWaveView.setVisibility(View.GONE);
         isCanPlayQuestionViedio = true;
-        SpokenPermissionDialog permissionDialog=SpokenPermissionDialog.creat(getContext());
+        SpokenPermissionDialog permissionDialog = SpokenPermissionDialog.creat(getContext());
         permissionDialog.show();
     }
 
@@ -493,7 +503,7 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
     }
 
     @Override
-    public void onFailed(String text){
+    public void onFailed(String text) {
         mSpokenWaveView.setVisibility(View.GONE);
         isCanPlayQuestionViedio = true;
         ToastManager.showMsg(text);
@@ -518,12 +528,12 @@ public class SpokenFragment extends AnswerSimpleExerciseBaseFragment implements 
         ToastManager.showMsg("录音不能超过3分钟哦");
     }
 
-    private void closeAnim(){
+    private void closeAnim() {
         try {
             mSpokenWaveView.stop();
             mRecordAnimView.clearAnimation();
             mSpokenWaveView.setVisibility(View.GONE);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
