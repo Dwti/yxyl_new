@@ -18,12 +18,12 @@ public abstract class AnswerExerciseBaseFragment extends ExerciseBaseFragment {
         Log.e("onVisibilityChanged", "isVisibleToUser = " + isVisibleToUser + "invokeInResumeOrPause = " + invokeInResumeOrPause);
         if (isVisibleToUser) {
             //用户可见，计时开始
-            mStartTime = System.currentTimeMillis();
+            mStartTime = System.currentTimeMillis()/1000l;
             hiddenSwitchQuestionView();
             updateProgress();//进入屏幕，更新进度条
         } else {
             //不可见，计时结束
-            mEndTime = System.currentTimeMillis();
+            mEndTime = System.currentTimeMillis()/1000l;
             calculateExerciseTime();
         }
     }
