@@ -29,22 +29,23 @@ public class SpokenQuestion extends BaseQuestion {
 
     public SpokenQuestion(PaperTestBean bean, QuestionShowType showType, String paperStatus) {
         super(bean, showType, paperStatus);
-        if ("26".equals(getType_id())){
+//        if ("26".equals(getType_id())){
             //朗读题，答案获取方法与另外三种不同
+            //需求更改（sever的锅）
             try {
                 spokenAnswer = String.valueOf(bean.getQuestions().getContent().getAnswer().get(0));
             } catch (Exception e) {
                 e.printStackTrace();
                 spokenAnswer = "炸了";
             }
-        }else {
-            try {
-                spokenAnswer = String.valueOf(bean.getQuestions().getAnswer().get(0));
-            } catch (Exception e) {
-                e.printStackTrace();
-                spokenAnswer = "炸了";
-            }
-        }
+//        }else {
+//            try {
+//                spokenAnswer = String.valueOf(bean.getQuestions().getAnswer().get(0));
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//                spokenAnswer = "炸了";
+//            }
+//        }
         pointList=bean.getQuestions().getPoint();
         try {
             starCount=Integer.parseInt(bean.getQuestions().getDifficulty());
