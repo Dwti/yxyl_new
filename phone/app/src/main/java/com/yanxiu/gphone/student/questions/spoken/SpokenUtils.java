@@ -111,7 +111,7 @@ public class SpokenUtils {
             return;
         }
         if (TextUtils.isEmpty(text)){
-            oralEvalCallback.onFailed("服务器异常");
+            oralEvalCallback.onFailed("题目参数缺失，无法作答！");
             return;
         }
         OralEvalSDKFactory.StartConfig cfg = getCfg(text, path);
