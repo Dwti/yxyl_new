@@ -172,16 +172,19 @@ public class StemUtil {
         StringBuilder sb = new StringBuilder(source);
         int index = source.indexOf("(_)");
         if (index > 0) {
-            if (source.length() > 4) {
+            if (index > 1) {
                 char c1 = sb.charAt(index - 1);
                 char c2 = sb.charAt(index - 2);
                 if (((c1 >= 'a' && c1 <= 'z') || (c1 >= 'A' && c1 <= 'Z')) && !((c2 >= 'a' && c2 <= 'z') || (c2 >= 'A' && c2 <= 'Z'))) {
                     sb.insert(index - 1, markStart);
                     sb.insert(index + markStart.length(), MARK_END);
                 }
-            } else if (source.length() == 4) {
-                sb.insert(0, markStart);
-                sb.insert(markStart.length(), MARK_END);
+            } else if (index == 1) {
+                char c1 = sb.charAt(index - 1);
+                if (((c1 >= 'a' && c1 <= 'z') || (c1 >= 'A' && c1 <= 'Z'))) {
+                    sb.insert(index - 1, markStart);
+                    sb.insert(index + markStart.length(), MARK_END);
+                }
             }
             return sb.toString();
         } else {
@@ -189,19 +192,27 @@ public class StemUtil {
         }
     }
 
+    /**
+     * 判断空前面是否有字符
+     * @param source
+     * @return
+     */
     public static boolean isFrontChar(String source) {
         boolean isFrontChar = false;
         StringBuilder sb = new StringBuilder(source);
         int index = source.indexOf("(_)");
         if (index > 0) {
-            if (source.length() > 4) {
+            if(index == 1){
+                char c1 = sb.charAt(index - 1);
+                if (((c1 >= 'a' && c1 <= 'z') || (c1 >= 'A' && c1 <= 'Z'))) {
+                    isFrontChar = true;
+                }
+            }else if(index > 1){
                 char c1 = sb.charAt(index - 1);
                 char c2 = sb.charAt(index - 2);
                 if (((c1 >= 'a' && c1 <= 'z') || (c1 >= 'A' && c1 <= 'Z')) && !((c2 >= 'a' && c2 <= 'z') || (c2 >= 'A' && c2 <= 'Z'))) {
                     isFrontChar = true;
                 }
-            } else if (source.length() == 4) {
-                isFrontChar = true;
             }
         }
         return isFrontChar;
