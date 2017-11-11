@@ -29,7 +29,7 @@
                 android:background="@drawable/shape_login_edit_top"
                 android:layout_below="@+id/include_img"
                 android:gravity="center_vertical"
-                android:layout_marginTop="@dimen/login_margin_top_img"
+                android:layout_marginTop="20dp"
                 android:orientation="horizontal">
 
                 <TextView

@@ -2,6 +2,8 @@ package com.yanxiu.gphone.student.user.setting.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
@@ -21,7 +23,7 @@ public class AboutActivity extends YanxiuBaseActivity implements View.OnClickLis
 
     private Context mContext;
     private ImageView mBackView;
-    private TextView mTitleView;
+    private TextView mTitleView,mVersion;
     private ImageView mTopView;
 
     public static void LaunchActivity(Context context){
@@ -43,6 +45,7 @@ public class AboutActivity extends YanxiuBaseActivity implements View.OnClickLis
         mBackView = (ImageView) findViewById(R.id.iv_left);
         mTitleView = (TextView) findViewById(R.id.tv_title);
         mTopView= (ImageView) findViewById(R.id.iv_top);
+        mVersion = (TextView) findViewById(R.id.tv_version);
     }
 
     private void listener() {
@@ -50,11 +53,16 @@ public class AboutActivity extends YanxiuBaseActivity implements View.OnClickLis
     }
 
     private void initData() {
+        try {
+            PackageInfo packageInfo = getPackageManager().getPackageInfo(this.getPackageName(), 0);
+            mVersion.setText("学生端-V" + packageInfo.versionName);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            mVersion.setText("版本未知");
+        }
         mBackView.setVisibility(View.VISIBLE);
-//        mTitleView.setText(R.string.setting_about);
         mTitleView.setText("");
         mBackView.setBackgroundResource(R.drawable.selector_white_back);
-        mTopView.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.about_top));
     }
 
     @Override
