@@ -94,7 +94,7 @@ public class ExerciseExpandableAdapter<T extends Node> extends BaseExpandableRec
         }
     }
 
-    class ExpandableViewHolder extends RecyclerView.ViewHolder {
+    protected class ExpandableViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView indicator;
         public TextView text;

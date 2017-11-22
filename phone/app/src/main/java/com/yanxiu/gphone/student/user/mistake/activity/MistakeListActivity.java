@@ -16,6 +16,7 @@ import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
+import com.yanxiu.gphone.student.mistakeredo.WrongQPointActivity;
 import com.yanxiu.gphone.student.user.mistake.adapter.MistakeListAdapter;
 import com.yanxiu.gphone.student.user.mistake.request.MistakeListRequest;
 import com.yanxiu.gphone.student.user.mistake.response.MistakeDeleteMessage;
@@ -162,6 +163,7 @@ public class MistakeListActivity extends YanxiuBaseActivity implements View.OnCl
 
     @Override
     public void onItemClick(View view, MistakeListResponse.Data data, int position) {
-        MistakeClassifyActivity.LaunchActivity(mContext,data.name,String.valueOf(data.id),data.data.wrongNum,String.valueOf(data.data.editionId));
+//        MistakeClassifyActivity.LaunchActivity(mContext,data.name,String.valueOf(data.id),data.data.wrongNum,String.valueOf(data.data.editionId));
+        WrongQPointActivity.invoke(this,String.valueOf(data.id),data.name);
     }
 }
