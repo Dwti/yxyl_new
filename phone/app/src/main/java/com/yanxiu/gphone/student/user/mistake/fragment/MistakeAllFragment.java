@@ -12,17 +12,15 @@ import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.base.EXueELianBaseResponse;
 import com.yanxiu.gphone.student.homework.response.PaperResponse;
 import com.yanxiu.gphone.student.mistakeredo.request.WrongQByQidsRequest;
-import com.yanxiu.gphone.student.questions.bean.PaperTestBean;
 import com.yanxiu.gphone.student.user.mistake.activity.MistakeClassifyActivity;
 import com.yanxiu.gphone.student.user.mistake.adapter.MistakeAllAdapter;
 import com.yanxiu.gphone.student.user.mistake.request.MistakeAllRequest;
 import com.yanxiu.gphone.student.user.mistake.request.MistakeDeleteQuestionRequest;
 import com.yanxiu.gphone.student.user.mistake.response.MistakeDeleteMessage;
 import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
-import com.yanxiu.gphone.student.questions.answerframe.ui.activity.WrongQuestionActivity;
+import com.yanxiu.gphone.student.questions.answerframe.ui.activity.WrongQuestionAnalysisActivity;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.questions.bean.PaperBean;
-import com.yanxiu.gphone.student.util.DESBodyDealer;
 import com.yanxiu.gphone.student.util.DataFetcher;
 import com.yanxiu.gphone.student.util.ToastManager;
 
@@ -43,7 +41,7 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
     private MistakeAllAdapter mMistakeAllAdapter;
     private MistakeAllRequest mCompleteRequest;
     private int mCurrentPos = 0;
-    private int mPageSize = 10;
+    private int mPageSize = 20;
 
     @Override
     protected int getContentViewId() {
@@ -109,6 +107,9 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
                 mRefreshView.finishRefreshing();
                 if (response.getStatus().getCode() == 0) {
                     if (response.getData()!=null&&response.getData().size()>0) {
+                        String qids = ((WrongQByQidsRequest)request).getQids();
+                        int count = qids.split(",").length;
+                        mCurrentPos += count;
                         if (isRefresh) {
                             mMistakeAllAdapter.setData(response.getData().get(0));
                         } else {
@@ -170,6 +171,7 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
                     deleteMessage.position=itemDelete.position;
                     deleteMessage.questionId=itemDelete.questionId;
                     deleteMessage.subjectId=mSubjectId;
+                    mQids.remove(deleteMessage.questionId);
                     EventBus.getDefault().post(deleteMessage);
                 }else {
                     ToastManager.showMsg(response.getStatus().getDesc());
@@ -190,7 +192,10 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
         if(isRefresh){
             mCurrentPos = 0;
         }
-        result = mQids.size() > (mCurrentPos + mPageSize ) ? mQids.subList(mCurrentPos,mCurrentPos + mPageSize) : mQids;
+        if(mCurrentPos == mQids.size() - 1){
+            return mQids.get(mCurrentPos);
+        }
+        result = mQids.size() > (mCurrentPos + mPageSize ) ? mQids.subList(mCurrentPos,mCurrentPos + mPageSize) : mQids.subList(mCurrentPos,mQids.size());
         for(String qid : result){
             if(qids.length() == 0){
                 qids += qid;
@@ -206,7 +211,7 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
     public void onItemClick(View view, PaperBean paperBean, int position) {
         Paper paper = new Paper(paperBean, QuestionShowType.MISTAKE_ANALYSIS);
         DataFetcher.getInstance().save(paper.getId(), paper);
-        WrongQuestionActivity.LuanchActivity(mContext, paper.getId(), mSubjectId, mStageId, mWrongNum, position);
+        WrongQuestionAnalysisActivity.LuanchActivity(mContext, paper.getId(), mSubjectId, mStageId, mWrongNum, position,mQids);
     }
 
     @Override

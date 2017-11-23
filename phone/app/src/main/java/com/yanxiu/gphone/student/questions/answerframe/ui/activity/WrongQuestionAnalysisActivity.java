@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -20,6 +21,7 @@ import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
 import com.yanxiu.gphone.student.homework.response.PaperResponse;
+import com.yanxiu.gphone.student.mistakeredo.request.WrongQByQidsRequest;
 import com.yanxiu.gphone.student.user.mistake.request.MistakeAllRequest;
 import com.yanxiu.gphone.student.user.mistake.request.MistakeDeleteQuestionRequest;
 import com.yanxiu.gphone.student.questions.answerframe.adapter.QAWrongViewPagerAdapter;
@@ -34,19 +36,23 @@ import com.yanxiu.gphone.student.util.DataFetcher;
 import com.yanxiu.gphone.student.util.Logger;
 import com.yanxiu.gphone.student.util.ToastManager;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.greenrobot.event.EventBus;
 
 /**
  * Created by Canghaixiao.
  * Time : 2017/7/18 10:08.
- * Function :
+ * Function :错题解析界面
  */
-public class WrongQuestionActivity extends YanxiuBaseActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
+public class WrongQuestionAnalysisActivity extends YanxiuBaseActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
 
     private static final String SUBJECTID = "subjectId";
     private static final String STAGEID = "stageId";
     private static final String WRONG_NUM = "wrongNum";
     private static final String SELECT_INDEX = "select";
+    private static final String QIDS = "qids";
 
     private Context mContext;
 
@@ -64,25 +70,30 @@ public class WrongQuestionActivity extends YanxiuBaseActivity implements View.On
     private String mStageId;
     private String mSubjectId;
     private int mWrongNum;
+    private ArrayList<String> mQids;
+
+    private int mCurrentPos;
+    private int mPageSize = 20;
 
     private boolean isOnLoadMore = false;
     private MistakeDeleteQuestionRequest mDeleteQuestionRequest;
     private MistakeAllRequest mCompleteRequest;
 
-    public static void LuanchActivity(Context context, String key, String subjectId, String stageId, int wrongNum, int selectIndex) {
-        Intent intent = new Intent(context, WrongQuestionActivity.class);
+    public static void LuanchActivity(Context context, String key, String subjectId, String stageId, int wrongNum, int selectIndex, ArrayList<String> qids) {
+        Intent intent = new Intent(context, WrongQuestionAnalysisActivity.class);
         intent.putExtra(Constants.EXTRA_PAPER, key);
         intent.putExtra(SUBJECTID, subjectId);
         intent.putExtra(STAGEID, stageId);
         intent.putExtra(WRONG_NUM, wrongNum);
         intent.putExtra(SELECT_INDEX, selectIndex);
+        intent.putStringArrayListExtra(QIDS,qids);
         context.startActivity(intent);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mContext = WrongQuestionActivity.this;
+        mContext = WrongQuestionAnalysisActivity.this;
         rootView = new PublicLoadLayout(mContext);
         rootView.setContentView(R.layout.activity_wrongquestion);
         setContentView(rootView);
@@ -134,11 +145,11 @@ public class WrongQuestionActivity extends YanxiuBaseActivity implements View.On
     }
 
     private void listener() {
-        mLastQuestionView.setOnClickListener(WrongQuestionActivity.this);
-        mNextQuestionView.setOnClickListener(WrongQuestionActivity.this);
-        mBackView.setOnClickListener(WrongQuestionActivity.this);
-        mDeleteView.setOnClickListener(WrongQuestionActivity.this);
-        mQaView.addOnPageChangeListener(WrongQuestionActivity.this);
+        mLastQuestionView.setOnClickListener(WrongQuestionAnalysisActivity.this);
+        mNextQuestionView.setOnClickListener(WrongQuestionAnalysisActivity.this);
+        mBackView.setOnClickListener(WrongQuestionAnalysisActivity.this);
+        mDeleteView.setOnClickListener(WrongQuestionAnalysisActivity.this);
+        mQaView.addOnPageChangeListener(WrongQuestionAnalysisActivity.this);
     }
 
     private void initData() {
@@ -147,12 +158,14 @@ public class WrongQuestionActivity extends YanxiuBaseActivity implements View.On
         mStageId = getIntent().getStringExtra(STAGEID);
         mWrongNum = getIntent().getIntExtra(WRONG_NUM, 0);
         int selectIndex = getIntent().getIntExtra(SELECT_INDEX, 0);
+        mQids = getIntent().getStringArrayListExtra(QIDS);
         if (TextUtils.isEmpty(key))
             finish();
         Paper paper = DataFetcher.getInstance().getPaper(key);
         mQaAdapter.setData(paper.getQuestions(), mWrongNum);
         mQaAdapter.setSubjectId(mSubjectId);
         mQaView.setCurrentItem(selectIndex);
+        mCurrentPos = mQaAdapter.getCount();
     }
 
     @Override
@@ -169,11 +182,9 @@ public class WrongQuestionActivity extends YanxiuBaseActivity implements View.On
                 break;
             case R.id.tv_delete:
                 if (!isOnLoadMore) {
+                    //TODO 此处需要记录删除的qid 然后在退出时统一删除
                     setDeleteQuestion();
                 }
-//                int index = mQaView.getCurrentItem();
-//                mWrongNum -= 1;
-//                mQaAdapter.deleteItem(index, mWrongNum);
                 break;
         }
     }
@@ -184,15 +195,9 @@ public class WrongQuestionActivity extends YanxiuBaseActivity implements View.On
         }
         int totalNum = mQaAdapter.getCount();
         if (totalNum < mWrongNum) {
-            Logger.d("onPageSelected", "totalNum   " + totalNum + "");
-            Logger.d("onPageSelected", "mWrongNum   " + mWrongNum + "");
             if (mQaView.getCurrentItem() + 1 > totalNum - 3 && !isOnLoadMore) {
-                Logger.d("onPageSelected", "getCurrentItem   " + mQaView.getCurrentItem() + "");
-                String wqid = mQaAdapter.getLastItemWqid();
-                Logger.d("onPageSelected", "getLastItemWqid   " + wqid + "");
-                requestData(wqid);
+                requestData();
             }
-            Logger.d("onPageSelected", "");
         }
     }
 
@@ -236,7 +241,7 @@ public class WrongQuestionActivity extends YanxiuBaseActivity implements View.On
                 mWrongNum -= 1;
                 mQaAdapter.deleteItem(index, mWrongNum);
                 if (mWrongNum == 0) {
-                    WrongQuestionActivity.this.finish();
+                    WrongQuestionAnalysisActivity.this.finish();
                 }
                 rootView.hiddenLoadingView();
             }
@@ -283,32 +288,27 @@ public class WrongQuestionActivity extends YanxiuBaseActivity implements View.On
     public void onPageSelected(int position) {
         int totalNum = mQaAdapter.getCount();
         if (totalNum < mWrongNum) {
-            Logger.d("onPageSelected", "totalNum   " + totalNum + "");
-            Logger.d("onPageSelected", "mWrongNum   " + mWrongNum + "");
             if (mQaView.getCurrentItem() + 1 > totalNum - 3 && !isOnLoadMore) {
-                Logger.d("onPageSelected", "getCurrentItem   " + mQaView.getCurrentItem() + "");
-                String wqid = mQaAdapter.getLastItemWqid();
-                Logger.d("onPageSelected", "getLastItemWqid   " + wqid + "");
-                requestData(wqid);
+                requestData();
             }
-            Logger.d("onPageSelected", "");
         }
     }
 
     /**
      * load more
      */
-    private void requestData(final String currentId) {
+    private void requestData() {
         isOnLoadMore = true;
-        mCompleteRequest = new MistakeAllRequest();
-        mCompleteRequest.bodyDealer = new DESBodyDealer();
-        mCompleteRequest.currentId = currentId;
-        mCompleteRequest.stageId = mStageId;
-        mCompleteRequest.subjectId = mSubjectId;
-        mCompleteRequest.startRequest(PaperResponse.class, new EXueELianBaseCallback<PaperResponse>() {
+        WrongQByQidsRequest request = new WrongQByQidsRequest();
+        request.setSubjectId(mSubjectId);
+        request.setQids(getQids());
+        request.startRequest(PaperResponse.class, new EXueELianBaseCallback<PaperResponse>() {
             @Override
             protected void onResponse(RequestBase request, PaperResponse response) {
                 if (response.getStatus().getCode() == 0) {
+                    String qids = ((WrongQByQidsRequest)request).getQids();
+                    int count = qids.split(",").length;
+                    mCurrentPos += count;
                     Paper paper = new Paper(response.getData().get(0), QuestionShowType.MISTAKE_ANALYSIS);
                     mQaAdapter.addData(paper.getQuestions(), mWrongNum);
                 } else {
@@ -323,6 +323,23 @@ public class WrongQuestionActivity extends YanxiuBaseActivity implements View.On
                 ToastManager.showMsg(error.getMessage());
             }
         });
+    }
+
+    private String getQids(){
+        String qids = "";
+        List<String> result;
+        if(mCurrentPos == mQids.size() - 1){
+            return mQids.get(mCurrentPos);
+        }
+        result = mQids.size() > (mCurrentPos + mPageSize ) ? mQids.subList(mCurrentPos,mCurrentPos + mPageSize) : mQids.subList(mCurrentPos,mQids.size());
+        for(String qid : result){
+            if(qids.length() == 0){
+                qids += qid;
+            }else {
+                qids = qids + "," + qid;
+            }
+        }
+        return qids;
     }
 
     @Override

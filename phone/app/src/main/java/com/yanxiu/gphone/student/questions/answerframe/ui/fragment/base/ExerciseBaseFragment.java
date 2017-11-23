@@ -19,7 +19,7 @@ import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerQuestio
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
 import com.yanxiu.gphone.student.questions.answerframe.listener.IExercise;
-import com.yanxiu.gphone.student.questions.answerframe.ui.activity.WrongQuestionActivity;
+import com.yanxiu.gphone.student.questions.answerframe.ui.activity.WrongQuestionAnalysisActivity;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.analysisbase.AnalysisComplexExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerComplexExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.wrongbase.WrongComplexExerciseBaseFragment;
@@ -240,8 +240,8 @@ public abstract class ExerciseBaseFragment extends YanxiuBaseFragment implements
         } else if (getActivity() instanceof AnalysisQuestionActivity) {
             AnalysisQuestionActivity acticity = (AnalysisQuestionActivity) getActivity();
             acticity.hiddenSwitchQuestionView();
-        } else if (getActivity() instanceof WrongQuestionActivity) {
-            WrongQuestionActivity activity = (WrongQuestionActivity) getActivity();
+        } else if (getActivity() instanceof WrongQuestionAnalysisActivity) {
+            WrongQuestionAnalysisActivity activity = (WrongQuestionAnalysisActivity) getActivity();
             activity.hiddenSwitchQuestionView();
         }
 

@@ -127,7 +127,7 @@ public class WrongQPointActivity extends YanxiuBaseActivity {
             public void onItemClick(View itemView, int position, WrongQPointBean node) {
                 if(!node.hasChildren()){
                     //进入错题列表
-                    MistakeClassifyActivity.LaunchActivity(WrongQPointActivity.this,mSubjectName,mSubjectId,node.getQids());
+                    MistakeClassifyActivity.LaunchActivity(WrongQPointActivity.this,node.getName(),mSubjectId,node.getQids());
                 }
             }
         });
