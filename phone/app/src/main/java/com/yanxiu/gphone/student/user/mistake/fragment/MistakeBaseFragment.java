@@ -12,6 +12,8 @@ import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
 import com.yanxiu.gphone.student.user.mistake.activity.MistakeClassifyActivity;
 import com.yanxiu.gphone.student.user.mistake.response.MistakeDeleteMessage;
 
+import java.util.ArrayList;
+
 import de.greenrobot.event.EventBus;
 
 /**
@@ -25,6 +27,7 @@ public abstract class MistakeBaseFragment extends YanxiuBaseFragment {
     protected String mSubjectId;
     protected String mEditionId;
     protected int mWrongNum;
+    protected ArrayList<String> mQids;
 
     protected Context mContext;
     protected PublicLoadLayout rootView;
@@ -39,6 +42,7 @@ public abstract class MistakeBaseFragment extends YanxiuBaseFragment {
             mSubjectId = bundle.getString(MistakeClassifyActivity.SUBJECTID, "");
             mEditionId = bundle.getString(MistakeClassifyActivity.EDITIONID, "");
             mWrongNum = bundle.getInt(MistakeClassifyActivity.WRONGNUM, 0);
+            mQids = bundle.getStringArrayList(MistakeClassifyActivity.QIDS);
         }
     }
 

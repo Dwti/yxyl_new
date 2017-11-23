@@ -20,10 +20,13 @@ import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.PickerViewEx;
+import com.yanxiu.gphone.student.exercise.adapter.BaseExpandableRecyclerAdapter;
+import com.yanxiu.gphone.student.exercise.bean.Node;
 import com.yanxiu.gphone.student.mistakeredo.adapter.WrongQPointAdapter;
 import com.yanxiu.gphone.student.mistakeredo.bean.WrongQPointBean;
 import com.yanxiu.gphone.student.mistakeredo.request.WrongQPointRequest;
 import com.yanxiu.gphone.student.mistakeredo.response.WrongQPointResponse;
+import com.yanxiu.gphone.student.user.mistake.activity.MistakeClassifyActivity;
 import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.anim.AlphaAnimationUtil;
 
@@ -115,6 +118,16 @@ public class WrongQPointActivity extends YanxiuBaseActivity {
             public void onClick(View v) {
                 if(popupWindow == null || !popupWindow.isShowing()){
                     showPop();
+                }
+            }
+        });
+
+        mAdapter.setOnItemClickListener(new BaseExpandableRecyclerAdapter.OnItemClickListener<WrongQPointBean>() {
+            @Override
+            public void onItemClick(View itemView, int position, WrongQPointBean node) {
+                if(!node.hasChildren()){
+                    //进入错题列表
+                    MistakeClassifyActivity.LaunchActivity(WrongQPointActivity.this,mSubjectName,mSubjectId,node.getQids());
                 }
             }
         });

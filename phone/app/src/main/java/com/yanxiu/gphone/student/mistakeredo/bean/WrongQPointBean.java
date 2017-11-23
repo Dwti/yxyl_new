@@ -2,6 +2,7 @@ package com.yanxiu.gphone.student.mistakeredo.bean;
 
 import com.yanxiu.gphone.student.exercise.bean.Node;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,7 +13,7 @@ public class WrongQPointBean extends Node<WrongQPointBean> {
     private String id;
     private String name;
     private String question_num;
-    private List<String> qids;
+    private ArrayList<String> qids;
 
     public String getId() {
         return id;
@@ -38,11 +39,11 @@ public class WrongQPointBean extends Node<WrongQPointBean> {
         this.question_num = question_num;
     }
 
-    public List<String> getQids() {
+    public ArrayList<String> getQids() {
         return qids;
     }
 
-    public void setQids(List<String> qids) {
+    public void setQids(ArrayList<String> qids) {
         this.qids = qids;
     }
 }

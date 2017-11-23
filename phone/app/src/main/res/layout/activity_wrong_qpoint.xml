@@ -45,7 +45,8 @@
                 android:background="@drawable/pop_list_bar_bg"
                 android:orientation="horizontal"
                 android:paddingLeft="15dp"
-                android:paddingRight="12dp">
+                android:paddingRight="12dp"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/tv_stage"

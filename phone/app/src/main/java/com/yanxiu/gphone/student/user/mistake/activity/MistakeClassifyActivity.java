@@ -24,6 +24,9 @@ import com.yanxiu.gphone.student.user.mistake.fragment.MistakeAllFragment;
 import com.yanxiu.gphone.student.user.mistake.fragment.MistakeKongledgeFragment;
 import com.yanxiu.gphone.student.util.LoginInfo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Canghaixiao.
  * Time : 2017/7/13 16:04.
@@ -40,6 +43,7 @@ public class MistakeClassifyActivity extends YanxiuBaseActivity implements Radio
     public static final String SUBJECTID = "subjectId";
     public static final String EDITIONID = "editionId";
     public static final String STAGEID = "stageId";
+    public static final String QIDS = "qids";
 
     private RadioGroup mClassifyView;
     private RadioButton mAllView;
@@ -52,14 +56,15 @@ public class MistakeClassifyActivity extends YanxiuBaseActivity implements Radio
     private int mWrongNum;
     private String mEditionId;
     private String mStageId;
+    private ArrayList<String> mQids;
     private FragmentManager mManager = getSupportFragmentManager();
 
-    public static void LaunchActivity(Context context, String title, String subjectId, int wrongNum, String editionId) {
+    public static void LaunchActivity(Context context, String title, String subjectId,ArrayList<String> qids) {
         Intent intent = new Intent(context, MistakeClassifyActivity.class);
         intent.putExtra(TITLE, title);
         intent.putExtra(SUBJECTID, subjectId);
-        intent.putExtra(WRONGNUM, wrongNum);
-        intent.putExtra(EDITIONID, editionId);
+        intent.putExtra(WRONGNUM, qids.size());
+        intent.putStringArrayListExtra(QIDS,qids);
         context.startActivity(intent);
     }
 
@@ -73,6 +78,7 @@ public class MistakeClassifyActivity extends YanxiuBaseActivity implements Radio
         mSubjectId = getIntent().getStringExtra(SUBJECTID);
         mWrongNum = getIntent().getIntExtra(WRONGNUM, 0);
         mEditionId = getIntent().getStringExtra(EDITIONID);
+        mQids = getIntent().getStringArrayListExtra(QIDS);
         mStageId = LoginInfo.getStageid();
         initView();
         initFragment();
@@ -94,8 +100,8 @@ public class MistakeClassifyActivity extends YanxiuBaseActivity implements Radio
         Bundle bundle = new Bundle();
         bundle.putString(STAGEID, mStageId);
         bundle.putString(SUBJECTID, mSubjectId);
-        bundle.putString(EDITIONID, mEditionId);
         bundle.putInt(WRONGNUM, mWrongNum);
+        bundle.putStringArrayList(QIDS,mQids);
 
         FragmentTransaction transaction = mManager.beginTransaction();
         MistakeChapterFragment chapterFragment = new MistakeChapterFragment();
