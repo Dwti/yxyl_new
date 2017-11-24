@@ -21,12 +21,11 @@ import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.PickerViewEx;
 import com.yanxiu.gphone.student.exercise.adapter.BaseExpandableRecyclerAdapter;
-import com.yanxiu.gphone.student.exercise.bean.Node;
 import com.yanxiu.gphone.student.mistakeredo.adapter.WrongQPointAdapter;
 import com.yanxiu.gphone.student.mistakeredo.bean.WrongQPointBean;
 import com.yanxiu.gphone.student.mistakeredo.request.WrongQPointRequest;
 import com.yanxiu.gphone.student.mistakeredo.response.WrongQPointResponse;
-import com.yanxiu.gphone.student.user.mistake.activity.MistakeClassifyActivity;
+import com.yanxiu.gphone.student.user.mistake.activity.MistakeListActivity;
 import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.anim.AlphaAnimationUtil;
 
@@ -34,7 +33,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class WrongQPointActivity extends YanxiuBaseActivity {
+public class MistakePointActivity extends YanxiuBaseActivity {
 
     private View mBack, mLayoutStage,mRootView,mTipsView,mOverlay;
     private TextView mTitle,mStage,mTips;
@@ -53,7 +52,7 @@ public class WrongQPointActivity extends YanxiuBaseActivity {
     private List<String> mStageNames;
 
     public static void invoke(Context context, String subjectId, String subjectName){
-        Intent intent = new Intent(context,WrongQPointActivity.class);
+        Intent intent = new Intent(context,MistakePointActivity.class);
         intent.putExtra(SUBJECT_ID,subjectId);
         intent.putExtra(SUBJECT_NAME,subjectName);
         context.startActivity(intent);
@@ -127,7 +126,7 @@ public class WrongQPointActivity extends YanxiuBaseActivity {
             public void onItemClick(View itemView, int position, WrongQPointBean node) {
                 if(!node.hasChildren()){
                     //进入错题列表
-                    MistakeClassifyActivity.LaunchActivity(WrongQPointActivity.this,node.getName(),mSubjectId,node.getQids());
+                    MistakeListActivity.LaunchActivity(MistakePointActivity.this,node.getName(),mSubjectId,node.getQids());
                 }
             }
         });

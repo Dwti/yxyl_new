@@ -211,10 +211,10 @@
             android:name=".common.activity.CropImageActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".user.mistake.activity.MistakeListActivity"
+            android:name=".user.mistake.activity.MistakeSubjectListActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".user.mistake.activity.MistakeClassifyActivity"
+            android:name=".user.mistake.activity.MistakeListActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".questions.answerframe.ui.activity.MistakeAnalysisActivity"
@@ -329,7 +329,7 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".mistakeredo.WrongQPointActivity"
+            android:name=".mistakeredo.MistakePointActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
     </application>

@@ -12,7 +12,7 @@ import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.base.EXueELianBaseResponse;
 import com.yanxiu.gphone.student.homework.response.PaperResponse;
 import com.yanxiu.gphone.student.mistakeredo.request.WrongQByQidsRequest;
-import com.yanxiu.gphone.student.user.mistake.activity.MistakeClassifyActivity;
+import com.yanxiu.gphone.student.user.mistake.activity.MistakeListActivity;
 import com.yanxiu.gphone.student.user.mistake.adapter.MistakeAllAdapter;
 import com.yanxiu.gphone.student.user.mistake.request.MistakeAllRequest;
 import com.yanxiu.gphone.student.user.mistake.request.MistakeDeleteQuestionRequest;
@@ -86,7 +86,7 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
         if (message != null) {
             this.mWrongNum=message.wrongNum;
             if (mWrongNum==0){
-                ((MistakeClassifyActivity)mContext).finish();
+                ((MistakeListActivity)mContext).finish();
             }else {
                 mMistakeAllAdapter.deleteItem(message.position, message.questionId);
                 if (mMistakeAllAdapter.getItemCount() == 0) {

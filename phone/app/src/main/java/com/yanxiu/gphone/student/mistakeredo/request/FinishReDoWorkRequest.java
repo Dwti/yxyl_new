@@ -10,7 +10,7 @@ import com.yanxiu.gphone.student.util.LoginInfo;
 
 public class FinishReDoWorkRequest extends RequestBase {
     protected String token = LoginInfo.getToken();
-    protected String deleteWqidList ;  //错题重做之后，需要删除的错题的wqid;
+    protected String qids ;  //错题重做之后，需要删除的错题的qid;
 
     @Override
     protected HttpType httpType() {
@@ -33,10 +33,10 @@ public class FinishReDoWorkRequest extends RequestBase {
     }
 
     public String getDeleteWqidList() {
-        return deleteWqidList;
+        return qids;
     }
 
-    public void setDeleteWqidList(String deleteWqidList) {
-        this.deleteWqidList = deleteWqidList;
+    public void setDeleteWqidList(String qids) {
+        this.qids = qids;
     }
 }
