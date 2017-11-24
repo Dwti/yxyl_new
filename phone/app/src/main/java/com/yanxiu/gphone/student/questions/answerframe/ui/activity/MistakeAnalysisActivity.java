@@ -129,6 +129,8 @@ public class MistakeAnalysisActivity extends YanxiuBaseActivity implements View.
     public void onBackPressed() {
         if(!TextUtils.isEmpty(mQidsToRemove)){
             deleteQuestions(mQidsToRemove);
+        }else {
+            super.onBackPressed();
         }
     }
 
