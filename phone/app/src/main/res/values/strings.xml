@@ -336,5 +336,6 @@
     <string name="mistake_no_data">这回真没了</string>
     <string name="no_bc">还没有BC资源哦</string>
     <string name="no_topic">还没有话题哦</string>
+    <string name="question_deleted">本题已被删除</string>
 
 </resources>

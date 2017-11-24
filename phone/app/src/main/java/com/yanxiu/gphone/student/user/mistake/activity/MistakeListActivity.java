@@ -24,8 +24,6 @@ import com.yanxiu.gphone.student.user.mistake.response.MistakeListResponse;
 import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.ToastManager;
 
-import java.util.List;
-
 import de.greenrobot.event.EventBus;
 
 /**
@@ -42,6 +40,8 @@ public class MistakeListActivity extends YanxiuBaseActivity implements View.OnCl
     private MistakeListAdapter mMistakeAdapter;
     private PublicLoadLayout rootView;
     private MistakeListRequest mMistakeListRequest;
+
+    private boolean mShouldRefreshOnResume = false;
 
     public static void LuanchActivity(Context context){
         Intent intent=new Intent(context,MistakeListActivity.class);
@@ -87,6 +87,14 @@ public class MistakeListActivity extends YanxiuBaseActivity implements View.OnCl
         requestData();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(mShouldRefreshOnResume){
+            requestData();
+        }
+    }
+
     private void requestData(){
         rootView.showLoadingView();
         mMistakeListRequest=new MistakeListRequest();
@@ -118,23 +126,7 @@ public class MistakeListActivity extends YanxiuBaseActivity implements View.OnCl
 
     public void onEventMainThread(MistakeDeleteMessage message){
         if (message!=null){
-            List<MistakeListResponse.Data> datas= mMistakeAdapter.getData();
-            for (MistakeListResponse.Data data:datas){
-                if (String.valueOf(data.id).equals(message.subjectId)){
-                    if (message.wrongNum==0){
-                        datas.remove(data);
-                        if (datas.size()>0){
-                            mMistakeAdapter.notifyDataSetChanged();
-                        }else {
-                            MistakeListActivity.this.finish();
-                        }
-                    }else {
-                        data.data.wrongNum=message.wrongNum;
-                        mMistakeAdapter.notifyDataSetChanged();
-                    }
-                    return;
-                }
-            }
+            mShouldRefreshOnResume = true;
         }
     }
 

@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,7 +20,9 @@ import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
 import com.yanxiu.gphone.student.homework.response.PaperResponse;
+import com.yanxiu.gphone.student.mistakeredo.request.FinishReDoWorkRequest;
 import com.yanxiu.gphone.student.mistakeredo.request.WrongQByQidsRequest;
+import com.yanxiu.gphone.student.mistakeredo.response.FinishReDoWorkResponse;
 import com.yanxiu.gphone.student.user.mistake.request.MistakeAllRequest;
 import com.yanxiu.gphone.student.user.mistake.request.MistakeDeleteQuestionRequest;
 import com.yanxiu.gphone.student.questions.answerframe.adapter.QAWrongViewPagerAdapter;
@@ -31,9 +32,7 @@ import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.wrongbase.Wro
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.questions.answerframe.view.QAViewPager;
 import com.yanxiu.gphone.student.user.mistake.response.MistakeDeleteMessage;
-import com.yanxiu.gphone.student.util.DESBodyDealer;
 import com.yanxiu.gphone.student.util.DataFetcher;
-import com.yanxiu.gphone.student.util.Logger;
 import com.yanxiu.gphone.student.util.ToastManager;
 
 import java.util.ArrayList;
@@ -46,7 +45,7 @@ import de.greenrobot.event.EventBus;
  * Time : 2017/7/18 10:08.
  * Function :错题解析界面
  */
-public class WrongQuestionAnalysisActivity extends YanxiuBaseActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
+public class MistakeAnalysisActivity extends YanxiuBaseActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
 
     private static final String SUBJECTID = "subjectId";
     private static final String STAGEID = "stageId";
@@ -71,6 +70,8 @@ public class WrongQuestionAnalysisActivity extends YanxiuBaseActivity implements
     private String mSubjectId;
     private int mWrongNum;
     private ArrayList<String> mQids;
+    private ArrayList<Integer> mDeletedPos = new ArrayList<>();
+    private String mQidsToRemove = "";   //待删除的题
 
     private int mCurrentPos;
     private int mPageSize = 20;
@@ -80,7 +81,7 @@ public class WrongQuestionAnalysisActivity extends YanxiuBaseActivity implements
     private MistakeAllRequest mCompleteRequest;
 
     public static void LuanchActivity(Context context, String key, String subjectId, String stageId, int wrongNum, int selectIndex, ArrayList<String> qids) {
-        Intent intent = new Intent(context, WrongQuestionAnalysisActivity.class);
+        Intent intent = new Intent(context, MistakeAnalysisActivity.class);
         intent.putExtra(Constants.EXTRA_PAPER, key);
         intent.putExtra(SUBJECTID, subjectId);
         intent.putExtra(STAGEID, stageId);
@@ -93,7 +94,7 @@ public class WrongQuestionAnalysisActivity extends YanxiuBaseActivity implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mContext = WrongQuestionAnalysisActivity.this;
+        mContext = MistakeAnalysisActivity.this;
         rootView = new PublicLoadLayout(mContext);
         rootView.setContentView(R.layout.activity_wrongquestion);
         setContentView(rootView);
@@ -121,6 +122,14 @@ public class WrongQuestionAnalysisActivity extends YanxiuBaseActivity implements
         setRequestCancle();
         EventBus.getDefault().unregister(mContext);
         unregisterReceiver(mHomeKeyEventBroadCastReceiver);
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(!TextUtils.isEmpty(mQidsToRemove)){
+            deleteQuestions(mQidsToRemove);
+        }
     }
 
     private class HomeKeyEventBroadCastReceiver extends BroadcastReceiver {
@@ -145,11 +154,11 @@ public class WrongQuestionAnalysisActivity extends YanxiuBaseActivity implements
     }
 
     private void listener() {
-        mLastQuestionView.setOnClickListener(WrongQuestionAnalysisActivity.this);
-        mNextQuestionView.setOnClickListener(WrongQuestionAnalysisActivity.this);
-        mBackView.setOnClickListener(WrongQuestionAnalysisActivity.this);
-        mDeleteView.setOnClickListener(WrongQuestionAnalysisActivity.this);
-        mQaView.addOnPageChangeListener(WrongQuestionAnalysisActivity.this);
+        mLastQuestionView.setOnClickListener(MistakeAnalysisActivity.this);
+        mNextQuestionView.setOnClickListener(MistakeAnalysisActivity.this);
+        mBackView.setOnClickListener(MistakeAnalysisActivity.this);
+        mDeleteView.setOnClickListener(MistakeAnalysisActivity.this);
+        mQaView.addOnPageChangeListener(MistakeAnalysisActivity.this);
     }
 
     private void initData() {
@@ -182,8 +191,17 @@ public class WrongQuestionAnalysisActivity extends YanxiuBaseActivity implements
                 break;
             case R.id.tv_delete:
                 if (!isOnLoadMore) {
-                    //TODO 此处需要记录删除的qid 然后在退出时统一删除
-                    setDeleteQuestion();
+                    //此处需要记录删除的qid 然后在退出时统一删除
+                    ToastManager.showMsg(getString(R.string.question_deleted));
+                    String qid = mQaAdapter.getWQidByPosition(mQaView.getCurrentItem());
+                    if(mQidsToRemove.length() == 0){
+                        mQidsToRemove += qid;
+                    }else {
+                        mQidsToRemove = mQidsToRemove + "," + qid;
+                    }
+
+                    mDeletedPos.add(mQaView.getCurrentItem());
+//                    setDeleteQuestion();
                 }
                 break;
         }
@@ -241,7 +259,7 @@ public class WrongQuestionAnalysisActivity extends YanxiuBaseActivity implements
                 mWrongNum -= 1;
                 mQaAdapter.deleteItem(index, mWrongNum);
                 if (mWrongNum == 0) {
-                    WrongQuestionAnalysisActivity.this.finish();
+                    MistakeAnalysisActivity.this.finish();
                 }
                 rootView.hiddenLoadingView();
             }
@@ -321,6 +339,32 @@ public class WrongQuestionAnalysisActivity extends YanxiuBaseActivity implements
             public void onFail(RequestBase request, Error error) {
                 isOnLoadMore = false;
                 ToastManager.showMsg(error.getMessage());
+            }
+        });
+    }
+
+    private void deleteQuestions(String qids){
+        rootView.showLoadingView();
+        FinishReDoWorkRequest request = new FinishReDoWorkRequest();
+        request.setDeleteWqidList(qids);
+        request.startRequest(FinishReDoWorkResponse.class, new EXueELianBaseCallback<FinishReDoWorkResponse>() {
+            @Override
+            protected void onResponse(RequestBase request, FinishReDoWorkResponse response) {
+                rootView.hiddenLoadingView();
+                if(response.getStatus().getCode() == 0){
+                    for(Integer pos : mDeletedPos){
+                        mWrongNum -= 1;
+                        mQaAdapter.deleteItem(pos, mWrongNum);
+                    }
+                }
+                finish();
+            }
+
+            @Override
+            public void onFail(RequestBase request, Error error) {
+                rootView.hiddenLoadingView();
+                ToastManager.showMsg(error.getMessage());
+                finish();
             }
         });
     }

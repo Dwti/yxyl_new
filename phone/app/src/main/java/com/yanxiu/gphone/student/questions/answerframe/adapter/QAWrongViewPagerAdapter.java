@@ -68,6 +68,14 @@ public class QAWrongViewPagerAdapter extends FragmentStatePagerAdapter {
         return "";
     }
 
+    public String getWQidByPosition(int position) {
+        if (position > -1 && position < mDatas.size()) {
+            BaseQuestion baseQuestion = mDatas.get(position);
+            return String.valueOf(baseQuestion.getWqid());
+        }
+        return "";
+    }
+
     public String getLastItemWqid() {
         BaseQuestion baseQuestion = mDatas.get(mDatas.size() - 1);
         return String.valueOf(baseQuestion.getWqid());

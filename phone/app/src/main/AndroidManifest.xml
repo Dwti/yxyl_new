@@ -217,7 +217,7 @@
             android:name=".user.mistake.activity.MistakeClassifyActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".questions.answerframe.ui.activity.WrongQuestionAnalysisActivity"
+            android:name=".questions.answerframe.ui.activity.MistakeAnalysisActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".user.setting.activity.SettingActivity"

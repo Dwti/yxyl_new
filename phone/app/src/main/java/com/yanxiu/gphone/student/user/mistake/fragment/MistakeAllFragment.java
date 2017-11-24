@@ -18,7 +18,7 @@ import com.yanxiu.gphone.student.user.mistake.request.MistakeAllRequest;
 import com.yanxiu.gphone.student.user.mistake.request.MistakeDeleteQuestionRequest;
 import com.yanxiu.gphone.student.user.mistake.response.MistakeDeleteMessage;
 import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
-import com.yanxiu.gphone.student.questions.answerframe.ui.activity.WrongQuestionAnalysisActivity;
+import com.yanxiu.gphone.student.questions.answerframe.ui.activity.MistakeAnalysisActivity;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.questions.bean.PaperBean;
 import com.yanxiu.gphone.student.util.DataFetcher;
@@ -42,6 +42,8 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
     private MistakeAllRequest mCompleteRequest;
     private int mCurrentPos = 0;
     private int mPageSize = 20;
+
+    private boolean mEnterAnalysis = false; //进入解析之后，又可能删除题目，所以回来的时候需要刷新界面
 
     @Override
     protected int getContentViewId() {
@@ -93,6 +95,15 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
                 }
             }
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+//        if(mEnterAnalysis){
+//            getWrongQByQids(true);
+//            mEnterAnalysis = false;
+//        }
     }
 
     private void getWrongQByQids(final boolean isRefresh){
@@ -211,7 +222,8 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
     public void onItemClick(View view, PaperBean paperBean, int position) {
         Paper paper = new Paper(paperBean, QuestionShowType.MISTAKE_ANALYSIS);
         DataFetcher.getInstance().save(paper.getId(), paper);
-        WrongQuestionAnalysisActivity.LuanchActivity(mContext, paper.getId(), mSubjectId, mStageId, mWrongNum, position,mQids);
+        MistakeAnalysisActivity.LuanchActivity(mContext, paper.getId(), mSubjectId, mStageId, mWrongNum, position,mQids);
+        mEnterAnalysis = true;
     }
 
     @Override
