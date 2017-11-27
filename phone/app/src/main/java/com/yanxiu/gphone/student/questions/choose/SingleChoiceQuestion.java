@@ -94,12 +94,12 @@ public class SingleChoiceQuestion extends BaseQuestion {
 
     @Override
     public ExerciseBaseFragment wrongFragment() {
-        return new SingleChooseRedoFragment();
+        return new SingleChooseWrongFragment();
     }
 
     @Override
     public ExerciseBaseFragment redoFragment() {
-        return null;
+        return new SingleChooseRedoFragment();
     }
 
     @Override

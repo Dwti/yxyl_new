@@ -4,13 +4,16 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 import com.srt.refresh.EXueELianRefreshLayout;
 import com.test.yanxiu.network.RequestBase;
+import com.yanxiu.gphone.student.BuildConfig;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.base.EXueELianBaseResponse;
 import com.yanxiu.gphone.student.homework.response.PaperResponse;
+import com.yanxiu.gphone.student.mistakeredo.MistakeRedoActivity;
 import com.yanxiu.gphone.student.mistakeredo.request.WrongQByQidsRequest;
 import com.yanxiu.gphone.student.user.mistake.activity.MistakeListActivity;
 import com.yanxiu.gphone.student.user.mistake.adapter.MistakeAllAdapter;
@@ -42,6 +45,7 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
     private MistakeAllRequest mCompleteRequest;
     private int mCurrentPos = 0;
     private int mPageSize = 20;
+    private Button btn_redo;
 
     private boolean mEnterAnalysis = false; //进入解析之后，又可能删除题目，所以回来的时候需要刷新界面
 
@@ -57,6 +61,7 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
         mMistakeAllAdapter = new MistakeAllAdapter(mContext);
         completeMistakeView.setAdapter(mMistakeAllAdapter);
         mRefreshView = (EXueELianRefreshLayout) rootView.findViewById(R.id.srl_refresh);
+        btn_redo = (Button) rootView.findViewById(R.id.btn_redo);
     }
 
     @Override
@@ -64,6 +69,7 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
         mMistakeAllAdapter.addItemClickListener(MistakeAllFragment.this);
         mRefreshView.setRefreshListener(MistakeAllFragment.this);
         rootView.setRetryButtonOnclickListener(MistakeAllFragment.this);
+        btn_redo.setOnClickListener(this);
     }
 
     @Override
@@ -226,6 +232,13 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
         mEnterAnalysis = true;
     }
 
+    private void openMistakeRedoUI(PaperBean paperBean){
+        Paper paper = new Paper(paperBean, QuestionShowType.MISTAKE_REDO);
+        DataFetcher.getInstance().save(paper.getId(), paper);
+        MistakeRedoActivity.LuanchActivity(mContext, paper.getId(), mSubjectId, mStageId, mWrongNum,mQids);
+        mEnterAnalysis = true;
+    }
+
     @Override
     public void onRefresh(EXueELianRefreshLayout refreshLayout) {
         getWrongQByQids(true);
@@ -244,6 +257,12 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
                 rootView.showLoadingView();
                 onRefresh(null);
                 break;
+            case R.id.btn_redo:
+                if(mMistakeAllAdapter.getPaperBean() != null){
+                    openMistakeRedoUI(mMistakeAllAdapter.getPaperBean());
+                }
+                break;
+
         }
     }
 }

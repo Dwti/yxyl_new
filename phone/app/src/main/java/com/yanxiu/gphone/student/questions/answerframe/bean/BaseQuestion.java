@@ -623,7 +623,7 @@ public abstract class BaseQuestion implements Serializable {
     }
 
     public String numberStringForShow() {
-        if (!showType.equals(QuestionShowType.MISTAKE_ANALYSIS)&&!isNodeCountForTotal()) {
+        if ((!showType.equals(QuestionShowType.MISTAKE_ANALYSIS) && !showType.equals(QuestionShowType.MISTAKE_REDO))&&!isNodeCountForTotal()) {
             return "";
         }
 

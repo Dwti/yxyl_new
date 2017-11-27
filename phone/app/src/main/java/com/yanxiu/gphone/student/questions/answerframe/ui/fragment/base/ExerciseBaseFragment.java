@@ -25,6 +25,7 @@ import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.analysisbase.
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerComplexExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.wrongbase.WrongComplexExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.util.FragmentUserVisibleController;
+import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionTemplate;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionUtil;
 import com.yanxiu.gphone.student.util.TextTypefaceUtil;
@@ -78,7 +79,8 @@ public abstract class ExerciseBaseFragment extends YanxiuBaseFragment implements
             if (parentFragment instanceof AnswerComplexExerciseBaseFragment || parentFragment instanceof AnalysisComplexExerciseBaseFragment) {
                 mQaNumber.setTextColor(getResources().getColor(R.color.color_999999));
                 TextTypefaceUtil.setViewTypeface(TextTypefaceUtil.TypefaceType.METRO_PLAY, mQaNumber);
-            } else if (parentFragment instanceof WrongComplexExerciseBaseFragment) {
+            } else if (parentFragment != null && (mBaseQuestion.getShowType().equals(QuestionShowType.MISTAKE_ANALYSIS) || mBaseQuestion.getShowType().equals(QuestionShowType.MISTAKE_REDO))) {
+                //错题解析跟错题重做，子题右上角不显示题号
                 mQaNumber.setVisibility(View.GONE);
             }
             mQaNumber.setText(str);

@@ -137,6 +137,18 @@ public class MistakeAllAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         return mData != null ? mData.size() : 0;
     }
 
+    public PaperBean getPaperBean(){
+        if(mData == null || mData.isEmpty())
+            return null;
+        ArrayList<PaperTestBean> paperTestBeanList= (ArrayList<PaperTestBean>) mData.clone();
+        PaperTestBean testBean=paperTestBeanList.get(paperTestBeanList.size()-1);
+        if (testBean.getQuestions()==null){
+            paperTestBeanList.remove(testBean);
+        }
+        mPaperBean.setPaperTest(paperTestBeanList);
+        return mPaperBean;
+    }
+
     private class MistakeCompleteViewHolder extends RecyclerView.ViewHolder {
 
         TextView mSubjectNameView;

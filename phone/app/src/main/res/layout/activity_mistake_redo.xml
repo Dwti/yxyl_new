@@ -93,4 +93,10 @@
         android:background="#99000000"
         android:visibility="gone"/>
 
+    <com.yanxiu.gphone.student.customviews.LoadingView
+        android:id="@+id/loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
+
 </RelativeLayout>
