@@ -337,5 +337,6 @@
     <string name="no_bc">还没有BC资源哦</string>
     <string name="no_topic">还没有话题哦</string>
     <string name="question_deleted">本题已被删除</string>
+    <string name="mistakeredo">错题重做</string>
 
 </resources>

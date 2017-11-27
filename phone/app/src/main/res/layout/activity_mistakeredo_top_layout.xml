@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="55dp">
+
+    <ImageView
+        android:id="@+id/backview"
+        android:layout_width="@dimen/common_top_layout_leftimage_wdith"
+        android:layout_height="@dimen/common_top_layout_leftimage_wdith"
+        android:background="@drawable/selector_back"
+        android:layout_marginLeft="@dimen/common_top_layout_marginLeft"
+        android:layout_centerVertical="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textSize="20dp"
+        android:text="@string/mistakeredo"/>
+
+    <ImageView
+        android:id="@+id/answercardview"
+        android:layout_width="@dimen/question_top_layout_rightimage_width"
+        android:layout_height="@dimen/question_top_layout_rightimage_width"
+        android:background="@drawable/selector_answercard"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/question_top_layout_rightimage_marginRight" />
+
+</RelativeLayout>

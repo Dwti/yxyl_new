@@ -36,6 +36,7 @@ import com.yanxiu.gphone.student.customviews.QuestionTimeTextView;
 import com.yanxiu.gphone.student.db.SaveAnswerDBHelper;
 import com.yanxiu.gphone.student.db.SpManager;
 import com.yanxiu.gphone.student.exercise.request.GenQuesRequest;
+import com.yanxiu.gphone.student.mistakeredo.adapter.QAMistakeRedoAdapter;
 import com.yanxiu.gphone.student.questions.answerframe.adapter.QAViewPagerAdapter;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
@@ -74,7 +75,7 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
         {
     private FragmentManager mFragmentManager;
     private QAViewPager mViewPager;
-    private QAViewPagerAdapter mAdapter;
+    private QAMistakeRedoAdapter mAdapter;
     private String mKey;//获取数据的key
     private String mTitleString;//试卷的title-答题卡需要
     private Paper mPaper;//试卷数据
@@ -82,8 +83,6 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
     private AnswerCardFragment mAnswerCardFragment;
 
     private KeyboardObserver mKeyboardObserver;
-    private QuestionTimeTextView mTimer;//计时
-    private QuestionProgressView mProgressView;//答题进度条
     private LinearLayout mPrevious_question, mNext_question;//上一题，下一题
     private TextView mNext_text;//下一题textview
     private ImageView mBackView;//返回按钮
@@ -92,8 +91,6 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
 
     private InputMethodManager mInputMethodManager;
 
-    private Handler mHandler;
-    private int mTotalTime;//总计时间
     private long mStartTime;//开始答题时间
     /**
      * 刷新计时
@@ -127,9 +124,6 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
             return;
         }
         mQuestions = mPaper.getQuestions();
-        initProgressViewData();
-        mTotalTime = (SpManager.getTotlaTime(mPaper.getId()) != -1) ? SpManager.getTotlaTime(mPaper.getId()) : 0;
-        mStartTime = System.currentTimeMillis();
         mPaper.getPaperStatus().setBegintime(mStartTime+"");
         mTitleString = mPaper.getName();
 
@@ -140,21 +134,14 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
         mInputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         mRootView = findViewById(R.id.fl_qa);
         mOverlay = findViewById(R.id.overlay);
-        mTimer = (QuestionTimeTextView) findViewById(R.id.timer);
-        mProgressView = (QuestionProgressView) findViewById(R.id.progressBar);
-        mProgressView.setMaxCount(mTotalQuestion);
         mPrevious_question = (LinearLayout) findViewById(R.id.previous_question);
         mNext_question = (LinearLayout) findViewById(R.id.next_question);
         mNext_text = (TextView) findViewById(R.id.next_text);
         mBackView = (ImageView) findViewById(R.id.backview);
         mShowAnswerCardView = (ImageView) findViewById(R.id.answercardview);
 
-
         initViewPager();
         setListener();
-        mHandler = new MistakeRedoActivity.TimingHandler(this);
-        mTimer.setTime(mTotalTime);
-
     }
 
     private void setListener() {
@@ -177,8 +164,7 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
         mFragmentManager = getSupportFragmentManager();
         mViewPager = (QAViewPager) findViewById(R.id.vp_viewPager);
         mViewPager.setOffscreenPageLimit(1);
-        mAdapter = new QAViewPagerAdapter(mFragmentManager);
-//        mViewPager.setFragmentManager(fm);
+        mAdapter = new QAMistakeRedoAdapter(mFragmentManager);
         Paper.generateUsedNumbersForNodes(mQuestions);
         mAdapter.setData(mQuestions);
         mViewPager.setAdapter(mAdapter);
@@ -189,27 +175,6 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
                 showAnswerCardFragment();
             }
         });
-    }
-
-    /**
-     * 初始化进度条相关数据
-     */
-    private void initProgressViewData() {
-        for (int i = 0; i < mQuestions.size(); i++) { //遍历大题
-            ArrayList<BaseQuestion> childrenList = mQuestions.get(i).getChildren();//小题集合
-            if (childrenList == null || childrenList.size() < 1) { //单题型
-                mTotalQuestion++;
-            }else{ //复合题
-                if(childrenList == null || childrenList.size() < 1){
-                    //出错，尽然是复合题，必须有小题
-                    return;
-                }else{ //遍历小题
-                    for(int j = 0;j < childrenList.size(); j++){
-                        mTotalQuestion++;
-                    }
-                }
-            }
-        }
     }
 
 
@@ -462,9 +427,6 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
         return mPaper;
     }
 
-    public QuestionProgressView getProgressView() {
-        return mProgressView;
-    }
 
     /**
      * 因口语题需求更改，故通过这个方法来设置当前界面上下题、返回、答题卡等按钮是否可以点击
@@ -499,77 +461,20 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
         }
     }
 
-    /**
-     * 计时用Handler
-     */
-    private static class TimingHandler extends Handler {
-        private WeakReference<MistakeRedoActivity> mActivity;
 
-        public TimingHandler(MistakeRedoActivity activity) {
-            mActivity = new WeakReference<>(activity);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            MistakeRedoActivity activity = mActivity.get();
-
-            if (msg.what == activity.HANDLER_TIME) {
-                activity.mHandler.sendEmptyMessageDelayed(activity.HANDLER_TIME, activity.HANDLER_TIME_DELAYED);
-                activity.updateTime();
-            }
-        }
-    }
-
-    /**
-     * 开始计时
-     */
-    private void startTiming() {
-        if (mHandler != null) {
-            mHandler.removeMessages(HANDLER_TIME);
-            mHandler.sendEmptyMessageDelayed(HANDLER_TIME, HANDLER_TIME_DELAYED);
-        }
-    }
-
-    /**
-     * 结束计时
-     */
-    private void endTiming() {
-        if (mHandler != null) {
-            mHandler.removeMessages(HANDLER_TIME);
-        }
-    }
-
-    /**
-     * 更新计时
-     */
-    private void updateTime() {
-        mTotalTime++;
-        mTimer.setTime(mTotalTime);
-    }
-
-    public int getmTotalTime() {
-        return mTotalTime;
-    }
 
     @Override
     protected void onResume() {
         super.onResume();
-        startTiming();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        endTiming();
     }
 
     @Override
     protected void onDestroy() {
-        if (mPaper!=null) {
-            SpManager.setTotlaTime(mPaper.getId(), mTotalTime);
-        }
-        mHandler.removeCallbacksAndMessages(null);
-        mHandler = null;
         mKeyboardObserver.destroy();
         mOverlay.clearAnimation();
         super.onDestroy();
