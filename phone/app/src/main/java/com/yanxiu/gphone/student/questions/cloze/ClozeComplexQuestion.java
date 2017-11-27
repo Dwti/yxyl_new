@@ -60,6 +60,11 @@ public class ClozeComplexQuestion extends BaseQuestion {
         return new ClozeWrongComplexFragment();
     }
 
+    @Override
+    public ExerciseBaseFragment redoFragment() {
+        return new ClozeRedoFragment();
+    }
+
     public List<String> getCorrectAnswers() {
         return correctAnswers;
     }

@@ -130,6 +130,11 @@ public class ConnectQuestion extends BaseQuestion {
     }
 
     @Override
+    public ExerciseBaseFragment redoFragment() {
+        return new ConnectRedoFragment();
+    }
+
+    @Override
     public Object getAnswer() {
         return serverFilledAnswers;
     }

@@ -38,6 +38,11 @@ public class ListenComplexQuestion extends BaseQuestion {
     }
 
     @Override
+    public ExerciseBaseFragment redoFragment() {
+        return new ListenRedoFragment();
+    }
+
+    @Override
     public Object getAnswer() {
         return null;
     }

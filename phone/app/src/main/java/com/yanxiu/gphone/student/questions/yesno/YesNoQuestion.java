@@ -99,6 +99,11 @@ public class YesNoQuestion extends BaseQuestion {
     }
 
     @Override
+    public ExerciseBaseFragment redoFragment() {
+        return new YesNoRedoFragment();
+    }
+
+    @Override
     public Object getAnswer() {
         return answerList;
     }

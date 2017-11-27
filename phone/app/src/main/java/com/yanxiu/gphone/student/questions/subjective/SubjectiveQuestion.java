@@ -117,6 +117,11 @@ public class SubjectiveQuestion extends BaseQuestion {
     }
 
     @Override
+    public ExerciseBaseFragment redoFragment() {
+        return new SubjectiveRedoFragment();
+    }
+
+    @Override
     public Object getAnswer() {
         return answerList;
     }

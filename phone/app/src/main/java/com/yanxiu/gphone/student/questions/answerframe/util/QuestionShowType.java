@@ -5,5 +5,5 @@ package com.yanxiu.gphone.student.questions.answerframe.util;
  */
 
 public enum QuestionShowType{
-    ANSWER,ANALYSIS,MISTAKE_ANSWER,MISTAKE_ANALYSIS
+    ANSWER,ANALYSIS,MISTAKE_REDO,MISTAKE_ANALYSIS
 }

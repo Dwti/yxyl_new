@@ -146,6 +146,11 @@ public class ClassifyQuestion extends BaseQuestion {
     }
 
     @Override
+    public ExerciseBaseFragment redoFragment() {
+        return new ClassifyRedoFragment();
+    }
+
+    @Override
     public Object getAnswer() {
         return answerList;
     }

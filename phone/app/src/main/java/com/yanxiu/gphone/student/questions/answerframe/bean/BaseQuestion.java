@@ -188,6 +188,10 @@ public abstract class BaseQuestion implements Serializable {
             fm=wrongFragment();
         }
 
+        if(showType.equals(QuestionShowType.MISTAKE_REDO)){
+            fm = redoFragment();
+        }
+
         fm.setData(this);
         return fm;
     }
@@ -197,6 +201,8 @@ public abstract class BaseQuestion implements Serializable {
     public abstract ExerciseBaseFragment analysisFragment();
 
     public abstract ExerciseBaseFragment wrongFragment();
+
+    public abstract ExerciseBaseFragment redoFragment();
 
     /**
      * 获取答案

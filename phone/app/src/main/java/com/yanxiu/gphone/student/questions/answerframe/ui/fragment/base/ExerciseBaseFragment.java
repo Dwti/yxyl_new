@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.YanxiuBaseFragment;
 import com.yanxiu.gphone.student.db.SaveAnswerDBHelper;
+import com.yanxiu.gphone.student.mistakeredo.MistakeRedoActivity;
 import com.yanxiu.gphone.student.questions.answerframe.bean.AnswerBean;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnalysisQuestionActivity;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerQuestionActivity;
@@ -242,6 +243,9 @@ public abstract class ExerciseBaseFragment extends YanxiuBaseFragment implements
             acticity.hiddenSwitchQuestionView();
         } else if (getActivity() instanceof MistakeAnalysisActivity) {
             MistakeAnalysisActivity activity = (MistakeAnalysisActivity) getActivity();
+            activity.hiddenSwitchQuestionView();
+        } else if (getActivity() instanceof MistakeRedoActivity){
+            MistakeRedoActivity activity = (MistakeRedoActivity) getActivity();
             activity.hiddenSwitchQuestionView();
         }
 

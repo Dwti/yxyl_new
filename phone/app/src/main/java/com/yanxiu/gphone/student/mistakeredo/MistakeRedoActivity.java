@@ -91,16 +91,6 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
 
     private InputMethodManager mInputMethodManager;
 
-    private long mStartTime;//开始答题时间
-    /**
-     * 刷新计时
-     */
-    private static final int HANDLER_TIME = 0x100;
-    /**
-     * 一秒
-     */
-    private final int HANDLER_TIME_DELAYED = 1000;
-    private int mTotalQuestion;//题目总数量
     private boolean isCanClick=true;
 
 
@@ -124,7 +114,6 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
             return;
         }
         mQuestions = mPaper.getQuestions();
-        mPaper.getPaperStatus().setBegintime(mStartTime+"");
         mTitleString = mPaper.getName();
 
 
