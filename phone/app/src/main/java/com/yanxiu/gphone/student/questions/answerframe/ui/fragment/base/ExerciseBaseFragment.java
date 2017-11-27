@@ -7,6 +7,7 @@ import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroupOverlay;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -76,12 +77,22 @@ public abstract class ExerciseBaseFragment extends YanxiuBaseFragment implements
             mQaNumber = (TextView) v.findViewById(R.id.qa_number);
             String str = mBaseQuestion.numberStringForShow();
             Fragment parentFragment = getParentFragment();
-            if (parentFragment instanceof AnswerComplexExerciseBaseFragment || parentFragment instanceof AnalysisComplexExerciseBaseFragment) {
-                mQaNumber.setTextColor(getResources().getColor(R.color.color_999999));
-                TextTypefaceUtil.setViewTypeface(TextTypefaceUtil.TypefaceType.METRO_PLAY, mQaNumber);
-            } else if (parentFragment != null && (mBaseQuestion.getShowType().equals(QuestionShowType.MISTAKE_ANALYSIS) || mBaseQuestion.getShowType().equals(QuestionShowType.MISTAKE_REDO))) {
-                //错题解析跟错题重做，子题右上角不显示题号
-                mQaNumber.setVisibility(View.GONE);
+            boolean isChild = parentFragment != null;
+            boolean isComplexQuestion = mBaseQuestion.isComplexQuestion();
+            if(mBaseQuestion.getShowType().equals(QuestionShowType.MISTAKE_ANALYSIS) || mBaseQuestion.getShowType().equals(QuestionShowType.MISTAKE_REDO)){
+                if(isChild){
+                    //错题解析跟错题重做，子题右上角不显示题号
+                    mQaNumber.setVisibility(View.GONE);
+                }
+            }else if(mBaseQuestion.getShowType().equals(QuestionShowType.ANSWER) || mBaseQuestion.getShowType().equals(QuestionShowType.ANALYSIS)){
+                //答题跟解析的复合题不显示题号（复合题的小题显示）
+                if(isComplexQuestion){
+                    mQaNumber.setVisibility(View.GONE);
+                }
+                if(isChild){
+                    mQaNumber.setTextColor(getResources().getColor(R.color.color_999999));
+                    TextTypefaceUtil.setViewTypeface(TextTypefaceUtil.TypefaceType.METRO_PLAY, mQaNumber);
+                }
             }
             mQaNumber.setText(str);
         } catch (Exception e) {
