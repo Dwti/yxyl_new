@@ -48,6 +48,7 @@ import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionUtil;
 import com.yanxiu.gphone.student.questions.answerframe.view.QAViewPager;
+import com.yanxiu.gphone.student.userevent.UserEventManager;
 import com.yanxiu.gphone.student.util.DataFetcher;
 import com.yanxiu.gphone.student.util.KeyboardObserver;
 import com.yanxiu.gphone.student.util.ScreenUtils;
@@ -122,6 +123,11 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
 
     private boolean mHasVideo = false;
 
+    /**
+     * 埋点，BC资源需要时间戳
+     * */
+    private long mDuration;
+
     private void setupVideoModel(){
         mVideoModel = new VideoModel();
         mVideoModel.cover = mPaper.getCover();
@@ -150,6 +156,9 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
             setupVideoModel();
 //            setupRotation();
             setupNetwork4GWifi();
+        }
+        if (Constants.FROM_BC_RESOURCE.equals(mFromType)){
+            mDuration=System.currentTimeMillis();
         }
     }
 
@@ -600,6 +609,10 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         return mRmsPaperId;
     }
 
+    public long getDuration(){
+        return mDuration;
+    }
+
     public GenQuesRequest getGenQuesequest() {
         return mGenQuesequest;
     }
@@ -772,6 +785,10 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
         mHandler = null;
         mKeyboardObserver.destroy();
         mOverlay.clearAnimation();
+        if (Constants.FROM_BC_RESOURCE.equals(mFromType)) {
+            long duration = System.currentTimeMillis() - mDuration;
+            UserEventManager.getInstense().whenExitBcWork(String.valueOf(duration), mRmsPaperId);
+        }
         super.onDestroy();
         if(mHasVideo){
             unregisterReceiver(mNotification);

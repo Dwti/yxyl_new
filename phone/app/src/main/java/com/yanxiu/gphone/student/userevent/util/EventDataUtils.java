@@ -66,8 +66,8 @@ public class EventDataUtils {
      * */
     public static String getSubmitWorkMap(String bedition,String gradeId,String subjectId,String paperType,String questionNum,String questionId){
         HashMap<String,String> map=getEventDataMap();
+        map.put(Constants.UserEvent.EVENT_ID,Constants.UserEvent.UserEventID.SUBMIT_WORK);
         HashMap<String,String> reserved=new HashMap<>();
-        reserved.put(Constants.UserEvent.EVENT_ID,Constants.UserEvent.UserEventID.SUBMIT_WORK);
         reserved.put(Constants.UserEvent.EDITION_ID,bedition);
         reserved.put(Constants.UserEvent.GRADE_ID,gradeId);
         reserved.put(Constants.UserEvent.SUBJECT_ID,subjectId);
@@ -126,6 +126,27 @@ public class EventDataUtils {
     public static String getFirstStartMap(){
         HashMap<String,String> map=getEventDataMap();
         map.put(Constants.UserEvent.EVENT_ID,Constants.UserEvent.UserEventID.FIRST_START);
+        return eventMapToJsonMap(map);
+    }
+
+    public static String getExitBcWorkMap(String duration,String resId){
+        HashMap<String,String> map=getEventDataMap();
+        map.put(Constants.UserEvent.EVENT_ID,Constants.UserEvent.UserEventID.EXIT_BC_WORK);
+        map.put(Constants.UserEvent.RES_ID,resId);
+        HashMap<String,String> reserved=new HashMap<>();
+        reserved.put(Constants.UserEvent.DURATION,duration);
+        map.put(Constants.UserEvent.RESERVED,eventMapToJsonString(reserved));
+        return eventMapToJsonMap(map);
+    }
+
+    public static String getSubmitBcWorkMap(String duration,String accuracy,String resId){
+        HashMap<String,String> map=getEventDataMap();
+        map.put(Constants.UserEvent.EVENT_ID,Constants.UserEvent.UserEventID.SUBMIT_BC_WORK);
+        map.put(Constants.UserEvent.RES_ID,resId);
+        HashMap<String,String> reserved=new HashMap<>();
+        reserved.put(Constants.UserEvent.DURATION,duration);
+        reserved.put(Constants.UserEvent.ACCURACY,accuracy);
+        map.put(Constants.UserEvent.RESERVED,eventMapToJsonString(reserved));
         return eventMapToJsonMap(map);
     }
 

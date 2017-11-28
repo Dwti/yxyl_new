@@ -17,7 +17,7 @@ import java.util.List;
 
 /**
  * 打点
- *
+ * <p>
  * Created by Canghaixiao.
  * Time : 2017/8/7 11:06.
  * Function :
@@ -119,12 +119,26 @@ public class UserEventManager {
         startRequest(EventDataUtils.getFirstStartMap());
     }
 
+    /**
+     * 跳出BC资源
+     */
+    public void whenExitBcWork(String duration, String resId) {
+        startRequest(EventDataUtils.getExitBcWorkMap(duration, resId));
+    }
+
+    /**
+     * 完成BC资源
+     */
+    public void whenSubmitBcWork(String duration, String accuracy, String resId) {
+        startRequest(EventDataUtils.getSubmitBcWorkMap(duration, accuracy, resId));
+    }
+
     private void startRequest(String fileData) {
         startRequest(fileData, null);
     }
 
     private void startRequest(final String fileData, final UserEventBean eventBean) {
-        if (TextUtils.isEmpty(fileData)){
+        if (TextUtils.isEmpty(fileData)) {
             return;
         }
         UploadUserEventRequest userEventRequest = new UploadUserEventRequest();
@@ -154,12 +168,12 @@ public class UserEventManager {
     }
 
     private void saveToDb(String data) {
-        if (data!=null) {
+        if (data != null) {
             try {
                 UserEventBean eventBean = new UserEventBean(data);
-                Logger.d(TAG,data);
+                Logger.d(TAG, data);
                 eventBean.save();
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

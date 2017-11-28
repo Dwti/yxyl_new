@@ -176,8 +176,10 @@ public class AnswerCardFragment extends YanxiuBaseFragment implements View.OnCli
                  * @param questionNum 题目数量
                  * @param questionId  [qid,qid,qid...]
                  */
-                getPvData();
-                UserEventManager.getInstense().whenSubmitWork(mPaper.getBedition(), mPaper.getVolume(), mPaper.getSubjectid(), mPaperType, mQuestionCount, mQuestionQid);
+                if (!Constants.FROM_BC_RESOURCE.equals(mActivity.getFromType())) {
+                    getPvData();
+                    UserEventManager.getInstense().whenSubmitWork(mPaper.getBedition(), mPaper.getVolume(), mPaper.getSubjectid(), mPaperType, mQuestionCount, mQuestionQid);
+                }
                 break;
             case R.id.backview:
                 getActivity().getSupportFragmentManager().beginTransaction().remove(AnswerCardFragment.this).commit();
@@ -354,6 +356,9 @@ public class AnswerCardFragment extends YanxiuBaseFragment implements View.OnCli
                                 paperStatusBean.setStatus(2);
                                 msg.setPaperStatus(paperStatusBean);
                                 EventBus.getDefault().post(msg);
+
+                                long duration = System.currentTimeMillis() - mActivity.getDuration();
+                                UserEventManager.getInstense().whenSubmitBcWork(String.valueOf(duration),String.valueOf(mPaper_report.getPaperStatus().getScoreRate()),mActivity.getRmsPaperId());
 
                                 AnswerReportActicity.invoke(getActivity(),key,mActivity.getRmsPaperId(),Constants.FROM_BC_RESOURCE,0);
                                 getActivity().finish();

@@ -140,6 +140,8 @@ public class Constants {
         public static final String SUBJECT_ID = "subjectID";
         public static final String PAPER_TYPE = "paperType";
         public static final String QUES_Num = "quesNum";
+        public static final String DURATION="duration";
+        public static final String ACCURACY="accuracy";
 
         public static final class UserEventID {
             public static final String REGISTER_SUCCESS = "20:event_1";
@@ -152,6 +154,8 @@ public class Constants {
             public static final String EXIT_APP = "20:event_8";
             public static final String ENTER_CLASS = "20:event_9";
             public static final String FIRST_START = "20:event_10";
+            public static final String EXIT_BC_WORK="20:event_11";
+            public static final String SUBMIT_BC_WORK="20:event_12";
         }
     }
 }
