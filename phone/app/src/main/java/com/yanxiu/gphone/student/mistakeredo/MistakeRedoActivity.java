@@ -1,6 +1,5 @@
 package com.yanxiu.gphone.student.mistakeredo;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,17 +20,14 @@ import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.LoadingView;
 import com.yanxiu.gphone.student.db.SpManager;
-import com.yanxiu.gphone.student.exercise.request.GenQuesRequest;
 import com.yanxiu.gphone.student.homework.response.PaperResponse;
 import com.yanxiu.gphone.student.mistakeredo.adapter.QAMistakeRedoAdapter;
+import com.yanxiu.gphone.student.mistakeredo.adapter.RedoAnswerCardAdapter;
 import com.yanxiu.gphone.student.mistakeredo.request.FinishReDoWorkRequest;
 import com.yanxiu.gphone.student.mistakeredo.request.WrongQByQidsRequest;
 import com.yanxiu.gphone.student.mistakeredo.response.FinishReDoWorkResponse;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
-import com.yanxiu.gphone.student.questions.answerframe.listener.OnAnswerCardItemSelectListener;
-import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerQuestionActivity;
-import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.AnswerCardFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerComplexExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
@@ -43,14 +39,14 @@ import com.yanxiu.gphone.student.util.KeyboardObserver;
 import com.yanxiu.gphone.student.util.ToastManager;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by sp on 17-11-24.
  */
 
-public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnClickListener, OnAnswerCardItemSelectListener {
+public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnClickListener, RedoAnswerCardAdapter.OnItemClickListener {
 
+    private static final String TITLE = "title";
     private static final String SUBJECTID = "subjectId";
     private static final String STAGEID = "stageId";
     private static final String WRONG_NUM = "wrongNum";
@@ -63,7 +59,7 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
     private String mTitleString;//试卷的title-答题卡需要
     private Paper mPaper;//试卷数据
     private ArrayList<BaseQuestion> mQuestions;//题目数据
-    private AnswerCardFragment mAnswerCardFragment;
+    private RedoAnswerCardFragment mAnswerCardFragment;
 
     private KeyboardObserver mKeyboardObserver;
     private LinearLayout mPrevious_question, mNext_question;//上一题，下一题
@@ -73,10 +69,12 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
     private View mRootView, mOverlay;
     private LoadingView mLoadingView;
 
-    private int mCurrentPos;
-    private int mPageSize = 20;
+    private int mNextQidPos;  //下一次请求的qids在mQids中起始的位置
+    private static final int PAGE_SIZE = 5;
+    private int mAnsCardClickPos;
     private String mStageId;
     private String mSubjectId;
+    private String mTitle;
     private int mWrongNum;
     private ArrayList<String> mQids;
     private ArrayList<Integer> mDeletedPos = new ArrayList<>();
@@ -108,8 +106,8 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
             return;
         }
         mQuestions = mPaper.getQuestions();
-        mTitleString = mPaper.getName();
-
+//        mTitleString = mPaper.getName();
+        mTitleString = getIntent().getStringExtra(TITLE);
         mSubjectId = getIntent().getStringExtra(SUBJECTID);
         mStageId = getIntent().getStringExtra(STAGEID);
         mWrongNum = getIntent().getIntExtra(WRONG_NUM, 0);
@@ -157,7 +155,7 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
         mAdapter.setSubjectId(mSubjectId);
         mAdapter.setData(mQuestions,mWrongNum);
         mViewPager.setAdapter(mAdapter);
-        mCurrentPos = mAdapter.getCount();
+        mNextQidPos = mAdapter.getCount();
 
         mViewPager.setOnSwipeOutListener(new QAViewPager.OnSwipeOutListener() {
             @Override
@@ -177,7 +175,7 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
                 int totalNum = mAdapter.getCount();
                 if (totalNum < mWrongNum) {
                     if (mViewPager.getCurrentItem() + 1 > totalNum - 3 && !isOnLoadMore) {
-                        requestData();
+                        requestData(getQids(mNextQidPos, PAGE_SIZE),false);
                     }
                 }
             }
@@ -187,33 +185,6 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
 
             }
         });
-    }
-
-
-    @Override
-    public void onItemSelect(BaseQuestion item) {
-        //答题卡跳转逻辑
-        // 1, 移除 card getFragment
-//        final FragmentManager fm = getSupportFragmentManager();
-        if (mAnswerCardFragment != null) {
-            mFragmentManager.beginTransaction().remove(mAnswerCardFragment).commit();
-        }
-        // 2, 跳转
-        int index = item.getLevelPositions().get(0);
-        FragmentStatePagerAdapter a1 = (FragmentStatePagerAdapter) mViewPager.getAdapter();
-        mViewPager.setCurrentItem(index, false);
-        ExerciseBaseFragment currentFragment = (ExerciseBaseFragment) a1.instantiateItem(mViewPager, index);
-        currentFragment.setUserVisibleHin2(true);
-
-
-        ArrayList<Integer> remainPositions = new ArrayList<>(item.getLevelPositions());
-        remainPositions.remove(0);
-        if (remainPositions.size() > 0) { // 表明这层依然是 复合题
-            FragmentStatePagerAdapter a = (FragmentStatePagerAdapter) mViewPager.getAdapter();
-            AnswerComplexExerciseBaseFragment f = (AnswerComplexExerciseBaseFragment) a.instantiateItem(mViewPager, index);
-            f.setChildrenPositionRecursively(remainPositions);
-        }
-        controlListenView(false);
     }
 
     private void deleteQuestions(String qids){
@@ -244,43 +215,66 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
 
     /**
      * load more
+     * isFromAnswerCard:是否是由点击答题卡跳转产生的数据加载请求
      */
-    private void requestData() {
+    private void requestData(String qids,final boolean isFromAnswerCard) {
+        if(isFromAnswerCard){
+            mLoadingView.showLoadingView();
+        }
         isOnLoadMore = true;
         WrongQByQidsRequest request = new WrongQByQidsRequest();
         request.setSubjectId(mSubjectId);
-        request.setQids(getQids());
+        request.setQids(qids);
         request.startRequest(PaperResponse.class, new EXueELianBaseCallback<PaperResponse>() {
             @Override
             protected void onResponse(RequestBase request, PaperResponse response) {
                 if (response.getStatus().getCode() == 0) {
-                    String qids = ((WrongQByQidsRequest) request).getQids();
-                    int count = qids.split(",").length;
-                    mCurrentPos += count;
                     Paper paper = new Paper(response.getData().get(0), QuestionShowType.MISTAKE_REDO);
                     mAdapter.addData(paper.getQuestions(), mWrongNum);
+                    mNextQidPos = mAdapter.getCount();
                 } else {
                     ToastManager.showMsg(response.getStatus().getDesc());
                 }
                 isOnLoadMore = false;
+                if(isFromAnswerCard){
+                    mLoadingView.hiddenLoadingView();
+                    if (mAnswerCardFragment != null) {
+                        mFragmentManager.beginTransaction().remove(mAnswerCardFragment).commit();
+                    }
+                    if(mAnsCardClickPos < mAdapter.getCount()){
+                        FragmentStatePagerAdapter a1 = (FragmentStatePagerAdapter) mViewPager.getAdapter();
+                        mViewPager.setCurrentItem(mAnsCardClickPos, false);
+                        ExerciseBaseFragment currentFragment = (ExerciseBaseFragment) a1.instantiateItem(mViewPager, mAnsCardClickPos);
+                        currentFragment.setUserVisibleHin2(true);
+                    }
+                }
             }
 
             @Override
             public void onFail(RequestBase request, Error error) {
                 isOnLoadMore = false;
                 ToastManager.showMsg(error.getMessage());
+                if(isFromAnswerCard){
+                    mLoadingView.hiddenLoadingView();
+                    if (mAnswerCardFragment != null) {
+                        mFragmentManager.beginTransaction().remove(mAnswerCardFragment).commit();
+                    }
+                }
             }
         });
     }
 
-    private String getQids(){
+    private String getQids(int fromPosition,int count){
         String qids = "";
-        List<String> result;
-        if(mCurrentPos == mQids.size() - 1){
-            return mQids.get(mCurrentPos);
+        if(fromPosition < 0 || fromPosition > mQids.size() - 1 || count < 1){
+            return qids;
         }
-        result = mQids.size() > (mCurrentPos + mPageSize ) ? mQids.subList(mCurrentPos,mCurrentPos + mPageSize) : mQids.subList(mCurrentPos,mQids.size());
-        for(String qid : result){
+        int boundary = fromPosition + count;
+        if( boundary > mQids.size() -1){
+            boundary = mQids.size() - 1;
+        }
+        for(int i = fromPosition; i <= boundary; i ++){
+            String qid = mQids.get(i);
             if(qids.length() == 0){
                 qids += qid;
             }else {
@@ -301,8 +295,8 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
         mInputMethodManager.hideSoftInputFromWindow(mRootView.getWindowToken(), 0);
         // 可以在这里打个断点，所有Fill Blank的答案均已存入nodes里
         if (mAnswerCardFragment == null) {
-            mAnswerCardFragment = new AnswerCardFragment();
-            mAnswerCardFragment.setData(mPaper, mTitleString);
+            mAnswerCardFragment = new RedoAnswerCardFragment();
+            mAnswerCardFragment.setData(mPaper, mTitleString,mQids.size());
             mAnswerCardFragment.setOnCardItemSelectListener(MistakeRedoActivity.this);
         }
         if (mFragmentManager.findFragmentById(R.id.fragment_answercard) == null) {
@@ -577,9 +571,10 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
     }
 
 
-    public static void LuanchActivity(Context context, String key, String subjectId, String stageId, int wrongNum, ArrayList<String> qids) {
+    public static void LuanchActivity(Context context, String key, String title, String subjectId, String stageId, int wrongNum, ArrayList<String> qids) {
         Intent intent = new Intent(context, MistakeRedoActivity.class);
         intent.putExtra(Constants.EXTRA_PAPER, key);
+        intent.putExtra(TITLE, title);
         intent.putExtra(SUBJECTID, subjectId);
         intent.putExtra(STAGEID, stageId);
         intent.putExtra(WRONG_NUM, wrongNum);
@@ -602,4 +597,34 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
         }
     }
 
+    @Override
+    public void onItemClick(BaseQuestion question, int position) {
+        //答题卡跳转逻辑 以及分页加载逻辑
+        mAnsCardClickPos = position;
+        // 2, 跳转
+        if(question != null){
+            if (mAnswerCardFragment != null) {
+                mFragmentManager.beginTransaction().remove(mAnswerCardFragment).commit();
+            }
+            FragmentStatePagerAdapter a1 = (FragmentStatePagerAdapter) mViewPager.getAdapter();
+            mViewPager.setCurrentItem(position, false);
+            ExerciseBaseFragment currentFragment = (ExerciseBaseFragment) a1.instantiateItem(mViewPager, position);
+            currentFragment.setUserVisibleHin2(true);
+        }else {
+            //分页加载数据
+            requestData(getQids(mNextQidPos,position + 3),true);
+        }
+
+
+
+//        ArrayList<Integer> remainPositions = new ArrayList<>(question.getLevelPositions());
+//        remainPositions.remove(0);
+//        if (remainPositions.size() > 0) { // 表明这层依然是 复合题
+//            FragmentStatePagerAdapter a = (FragmentStatePagerAdapter) mViewPager.getAdapter();
+//            AnswerComplexExerciseBaseFragment f = (AnswerComplexExerciseBaseFragment) a.instantiateItem(mViewPager, index);
+//            f.setChildrenPositionRecursively(remainPositions);
+//        }
+
+        controlListenView(false);
+    }
 }

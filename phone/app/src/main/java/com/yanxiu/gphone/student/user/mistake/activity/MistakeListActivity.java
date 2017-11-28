@@ -37,7 +37,7 @@ public class MistakeListActivity extends YanxiuBaseActivity implements RadioGrou
     private static final String MISTAKE_CHAPTER = "chapter";
     private static final String MISTAKE_KONGLEDGE = "kongledge";
 
-    private static final String TITLE = "title";
+    public static final String TITLE = "title";
     public static final String WRONGNUM = "wrongNum";
     public static final String SUBJECTID = "subjectId";
     public static final String EDITIONID = "editionId";
@@ -101,6 +101,7 @@ public class MistakeListActivity extends YanxiuBaseActivity implements RadioGrou
         bundle.putString(SUBJECTID, mSubjectId);
         bundle.putInt(WRONGNUM, mWrongNum);
         bundle.putStringArrayList(QIDS,mQids);
+        bundle.putString(TITLE,mTitle);
 
         FragmentTransaction transaction = mManager.beginTransaction();
         MistakeChapterFragment chapterFragment = new MistakeChapterFragment();

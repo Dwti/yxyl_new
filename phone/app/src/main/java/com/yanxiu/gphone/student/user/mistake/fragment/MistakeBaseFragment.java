@@ -26,6 +26,7 @@ public abstract class MistakeBaseFragment extends YanxiuBaseFragment {
     protected String mStageId;
     protected String mSubjectId;
     protected String mEditionId;
+    protected String mTitle;
     protected int mWrongNum;
     protected ArrayList<String> mQids;
 
@@ -38,6 +39,7 @@ public abstract class MistakeBaseFragment extends YanxiuBaseFragment {
         EventBus.getDefault().register(MistakeBaseFragment.this);
         Bundle bundle = getArguments();
         if (bundle != null) {
+            mTitle = bundle.getString(MistakeListActivity.TITLE, "");
             mStageId = bundle.getString(MistakeListActivity.STAGEID, "");
             mSubjectId = bundle.getString(MistakeListActivity.SUBJECTID, "");
             mEditionId = bundle.getString(MistakeListActivity.EDITIONID, "");

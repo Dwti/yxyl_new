@@ -228,14 +228,14 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
     public void onItemClick(View view, PaperBean paperBean, int position) {
         Paper paper = new Paper(paperBean, QuestionShowType.MISTAKE_ANALYSIS);
         DataFetcher.getInstance().save(paper.getId(), paper);
-        MistakeAnalysisActivity.LuanchActivity(mContext, paper.getId(), mSubjectId, mStageId, mWrongNum, position,mQids);
+        MistakeAnalysisActivity.LuanchActivity(mContext, paper.getId(), mTitle,mSubjectId, mStageId, mWrongNum, position,mQids);
         mEnterAnalysis = true;
     }
 
     private void openMistakeRedoUI(PaperBean paperBean){
         Paper paper = new Paper(paperBean, QuestionShowType.MISTAKE_REDO);
         DataFetcher.getInstance().save(paper.getId(), paper);
-        MistakeRedoActivity.LuanchActivity(mContext, paper.getId(), mSubjectId, mStageId, mWrongNum,mQids);
+        MistakeRedoActivity.LuanchActivity(mContext, paper.getId(),mTitle, mSubjectId, mStageId, mWrongNum,mQids);
         mEnterAnalysis = true;
     }
 

@@ -47,6 +47,7 @@ import de.greenrobot.event.EventBus;
  */
 public class MistakeAnalysisActivity extends YanxiuBaseActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
 
+    private static final String TITLE = "title";
     private static final String SUBJECTID = "subjectId";
     private static final String STAGEID = "stageId";
     private static final String WRONG_NUM = "wrongNum";
@@ -80,9 +81,10 @@ public class MistakeAnalysisActivity extends YanxiuBaseActivity implements View.
     private MistakeDeleteQuestionRequest mDeleteQuestionRequest;
     private MistakeAllRequest mCompleteRequest;
 
-    public static void LuanchActivity(Context context, String key, String subjectId, String stageId, int wrongNum, int selectIndex, ArrayList<String> qids) {
+    public static void LuanchActivity(Context context, String title,String key, String subjectId, String stageId, int wrongNum, int selectIndex, ArrayList<String> qids) {
         Intent intent = new Intent(context, MistakeAnalysisActivity.class);
         intent.putExtra(Constants.EXTRA_PAPER, key);
+        intent.putExtra(TITLE, title);
         intent.putExtra(SUBJECTID, subjectId);
         intent.putExtra(STAGEID, stageId);
         intent.putExtra(WRONG_NUM, wrongNum);
