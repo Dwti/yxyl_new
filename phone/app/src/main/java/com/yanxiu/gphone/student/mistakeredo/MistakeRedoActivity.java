@@ -160,7 +160,7 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
         mViewPager.setOnSwipeOutListener(new QAViewPager.OnSwipeOutListener() {
             @Override
             public void onSwipeOutAtEnd() {
-                showAnswerCardFragment();
+//                showAnswerCardFragment();
             }
         });
 
