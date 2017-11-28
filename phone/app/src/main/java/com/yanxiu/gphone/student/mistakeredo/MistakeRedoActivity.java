@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -68,6 +69,7 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
     private ImageView mShowAnswerCardView;//显示答题卡
     private View mRootView, mOverlay;
     private LoadingView mLoadingView;
+    private Button btn_submit;
 
     private int mNextQidPos;  //下一次请求的qids在mQids中起始的位置
     private static final int PAGE_SIZE = 5;
@@ -120,6 +122,7 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
         mLoadingView = (LoadingView) findViewById(R.id.loading);
         mRootView = findViewById(R.id.fl_qa);
         mOverlay = findViewById(R.id.overlay);
+        btn_submit = (Button) findViewById(R.id.submit);
         mPrevious_question = (LinearLayout) findViewById(R.id.previous_question);
         mNext_question = (LinearLayout) findViewById(R.id.next_question);
         mNext_text = (TextView) findViewById(R.id.next_text);
@@ -136,6 +139,7 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
         mNext_question.setOnClickListener(this);
         mBackView.setOnClickListener(this);
         mShowAnswerCardView.setOnClickListener(this);
+        btn_submit.setOnClickListener(this);
 
     }
 
@@ -548,6 +552,8 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
                     }
                     mDeletedPos.add(mViewPager.getCurrentItem());
                 }
+                break;
+            case R.id.submit:
                 break;
         }
     }

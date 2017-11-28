@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/fl_qa"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -47,6 +48,27 @@
                 android:textColor="@color/next_question_txt"
                 android:textSize="@dimen/text_size_15" />
         </LinearLayout>
+
+        <com.yanxiu.gphone.student.customviews.WavesLayout
+            android:id="@+id/wavesLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:clickable="true"
+            app:waves_animend_alpha="102"
+            app:waves_radius="@dimen/wavesRadius">
+
+            <Button
+                android:id="@+id/submit"
+                android:layout_width="130dp"
+                android:layout_height="34dp"
+                android:layout_centerHorizontal="true"
+                android:text="@string/submit_homework_button"
+                android:textColor="@color/color_ffffff"
+                android:textSize="14dp"
+                style="?android:attr/borderlessButtonStyle"
+                android:background="@drawable/selector_answercard_submit_button_bg1"/>
+        </com.yanxiu.gphone.student.customviews.WavesLayout>
 
         <LinearLayout
             android:id="@+id/next_question"
