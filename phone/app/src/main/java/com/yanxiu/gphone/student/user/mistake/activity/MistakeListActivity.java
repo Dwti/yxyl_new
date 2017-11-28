@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -49,6 +50,7 @@ public class MistakeListActivity extends YanxiuBaseActivity implements RadioGrou
     private RadioButton mKongledgeView;
     private ImageView mBackView;
     private TextView mTitleView;
+    private Button btn_mistake_redo;
     private View mTopView;
     private String mTitle;
     private String mSubjectId;
@@ -89,6 +91,7 @@ public class MistakeListActivity extends YanxiuBaseActivity implements RadioGrou
         mTopView=findViewById(R.id.include_top);
         mBackView = (ImageView) findViewById(R.id.iv_left);
         mTitleView = (TextView) findViewById(R.id.tv_title);
+        btn_mistake_redo = (Button) findViewById(R.id.btn_mistake_redo);
 
         mClassifyView = (RadioGroup) findViewById(R.id.rg_classify);
         mAllView = (RadioButton) findViewById(R.id.rb_all);
@@ -132,6 +135,7 @@ public class MistakeListActivity extends YanxiuBaseActivity implements RadioGrou
     private void listener() {
         mClassifyView.setOnCheckedChangeListener(MistakeListActivity.this);
         mBackView.setOnClickListener(MistakeListActivity.this);
+        btn_mistake_redo.setOnClickListener(this);
     }
 
     private void initData() {
@@ -196,6 +200,12 @@ public class MistakeListActivity extends YanxiuBaseActivity implements RadioGrou
         switch (v.getId()) {
             case R.id.iv_left:
                 this.finish();
+                break;
+            case R.id.btn_mistake_redo:
+                MistakeAllFragment allFragment = (MistakeAllFragment) mManager.findFragmentByTag(MISTAKE_ALL);
+                if(allFragment != null  && allFragment.isAdded()){
+                    allFragment.redoMistake();
+                }
                 break;
         }
     }

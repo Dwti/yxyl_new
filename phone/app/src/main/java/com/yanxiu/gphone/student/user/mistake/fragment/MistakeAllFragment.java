@@ -45,7 +45,6 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
     private MistakeAllRequest mCompleteRequest;
     private int mCurrentPos = 0;
     private int mPageSize = 20;
-    private Button btn_redo;
 
     private boolean mEnterAnalysis = false; //进入解析之后，又可能删除题目，所以回来的时候需要刷新界面
 
@@ -61,7 +60,6 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
         mMistakeAllAdapter = new MistakeAllAdapter(mContext);
         completeMistakeView.setAdapter(mMistakeAllAdapter);
         mRefreshView = (EXueELianRefreshLayout) rootView.findViewById(R.id.srl_refresh);
-        btn_redo = (Button) rootView.findViewById(R.id.btn_redo);
     }
 
     @Override
@@ -69,7 +67,6 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
         mMistakeAllAdapter.addItemClickListener(MistakeAllFragment.this);
         mRefreshView.setRefreshListener(MistakeAllFragment.this);
         rootView.setRetryButtonOnclickListener(MistakeAllFragment.this);
-        btn_redo.setOnClickListener(this);
     }
 
     @Override
@@ -249,6 +246,12 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
         getWrongQByQids(false);
     }
 
+    public void redoMistake(){
+        if(mMistakeAllAdapter.getPaperBean() != null){
+            openMistakeRedoUI(mMistakeAllAdapter.getPaperBean());
+        }
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -256,11 +259,6 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
                 rootView.hiddenNetErrorView();
                 rootView.showLoadingView();
                 onRefresh(null);
-                break;
-            case R.id.btn_redo:
-                if(mMistakeAllAdapter.getPaperBean() != null){
-                    openMistakeRedoUI(mMistakeAllAdapter.getPaperBean());
-                }
                 break;
 
         }
