@@ -26,8 +26,9 @@ public class EventDataUtils {
     private static final String CLIENT_TYPE="1";//0，iOS，1，android
     private static final String URL="www.yanxiu.com";
 
-    private static HashMap<String,String> getEventDataMap(){
+    private static HashMap<String,String> getEventDataMap(String eventId){
         HashMap<String,String> map=new HashMap<>();
+        map.put(Constants.UserEvent.EVENT_ID,eventId);
         map.put(Constants.UserEvent.UID, LoginInfo.getUID());
         map.put(Constants.UserEvent.APPKEY,APPKEY);
         map.put(Constants.UserEvent.TIME_STAMP,String.valueOf(System.currentTimeMillis()));
@@ -45,14 +46,12 @@ public class EventDataUtils {
     }
 
     public static String getRegistSuccessMap(){
-        HashMap<String,String> map=getEventDataMap();
-        map.put(Constants.UserEvent.EVENT_ID,Constants.UserEvent.UserEventID.REGISTER_SUCCESS);
+        HashMap<String,String> map=getEventDataMap(Constants.UserEvent.UserEventID.REGISTER_SUCCESS);
         return eventMapToJsonMap(map);
     }
 
     public static String getStartAppMap(){
-        HashMap<String,String> map=getEventDataMap();
-        map.put(Constants.UserEvent.EVENT_ID,Constants.UserEvent.UserEventID.START_APP);
+        HashMap<String,String> map=getEventDataMap(Constants.UserEvent.UserEventID.START_APP);
         return eventMapToJsonMap(map);
     }
 
@@ -65,8 +64,7 @@ public class EventDataUtils {
      * @param questionId [qid,qid,qid...]
      * */
     public static String getSubmitWorkMap(String bedition,String gradeId,String subjectId,String paperType,String questionNum,String questionId){
-        HashMap<String,String> map=getEventDataMap();
-        map.put(Constants.UserEvent.EVENT_ID,Constants.UserEvent.UserEventID.SUBMIT_WORK);
+        HashMap<String,String> map=getEventDataMap(Constants.UserEvent.UserEventID.SUBMIT_WORK);
         HashMap<String,String> reserved=new HashMap<>();
         reserved.put(Constants.UserEvent.EDITION_ID,bedition);
         reserved.put(Constants.UserEvent.GRADE_ID,gradeId);
@@ -82,9 +80,8 @@ public class EventDataUtils {
         List<HashMap<String,String>> hashMaps=new ArrayList<>();
         for (int i=0;i<list.size();i++) {
             WorkBean bean=list.get(i);
-            HashMap<String, String> map = getEventDataMap();
+            HashMap<String, String> map = getEventDataMap(Constants.UserEvent.UserEventID.RECEIVE_WORK);
             HashMap<String, String> reserved = new HashMap<>();
-            reserved.put(Constants.UserEvent.EVENT_ID, Constants.UserEvent.UserEventID.RECEIVE_WORK);
             reserved.put(Constants.UserEvent.CLASS_ID, bean.volume);
             reserved.put(Constants.UserEvent.QUES_Num, bean.questionNum);
             map.put(Constants.UserEvent.RESERVED, eventMapToJsonString(reserved));
@@ -94,44 +91,37 @@ public class EventDataUtils {
     }
 
     public static String getEnterWorkMap(){
-        HashMap<String,String> map=getEventDataMap();
-        map.put(Constants.UserEvent.EVENT_ID,Constants.UserEvent.UserEventID.ENTER_WORK);
+        HashMap<String,String> map=getEventDataMap(Constants.UserEvent.UserEventID.ENTER_WORK);
         return eventMapToJsonMap(map);
     }
 
     public static String getEnterBackMap(){
-        HashMap<String,String> map=getEventDataMap();
-        map.put(Constants.UserEvent.EVENT_ID,Constants.UserEvent.UserEventID.ENTER_BACK);
+        HashMap<String,String> map=getEventDataMap(Constants.UserEvent.UserEventID.ENTER_BACK);
         return eventMapToJsonMap(map);
     }
 
     public static String getEnterFrontMap(){
-        HashMap<String,String> map=getEventDataMap();
-        map.put(Constants.UserEvent.EVENT_ID,Constants.UserEvent.UserEventID.ENTER_FRONT);
+        HashMap<String,String> map=getEventDataMap(Constants.UserEvent.UserEventID.ENTER_FRONT);
         return eventMapToJsonMap(map);
     }
 
     public static String getExitAppMap(){
-        HashMap<String,String> map=getEventDataMap();
-        map.put(Constants.UserEvent.EVENT_ID,Constants.UserEvent.UserEventID.EXIT_APP);
+        HashMap<String,String> map=getEventDataMap(Constants.UserEvent.UserEventID.EXIT_APP);
         return eventMapToJsonMap(map);
     }
 
     public static String getEnterClassMap(){
-        HashMap<String,String> map=getEventDataMap();
-        map.put(Constants.UserEvent.EVENT_ID,Constants.UserEvent.UserEventID.ENTER_CLASS);
+        HashMap<String,String> map=getEventDataMap(Constants.UserEvent.UserEventID.ENTER_CLASS);
         return eventMapToJsonMap(map);
     }
 
     public static String getFirstStartMap(){
-        HashMap<String,String> map=getEventDataMap();
-        map.put(Constants.UserEvent.EVENT_ID,Constants.UserEvent.UserEventID.FIRST_START);
+        HashMap<String,String> map=getEventDataMap(Constants.UserEvent.UserEventID.FIRST_START);
         return eventMapToJsonMap(map);
     }
 
     public static String getExitBcWorkMap(String duration,String resId){
-        HashMap<String,String> map=getEventDataMap();
-        map.put(Constants.UserEvent.EVENT_ID,Constants.UserEvent.UserEventID.EXIT_BC_WORK);
+        HashMap<String,String> map=getEventDataMap(Constants.UserEvent.UserEventID.EXIT_BC_WORK);
         map.put(Constants.UserEvent.RES_ID,resId);
         HashMap<String,String> reserved=new HashMap<>();
         reserved.put(Constants.UserEvent.DURATION,duration);
@@ -140,8 +130,7 @@ public class EventDataUtils {
     }
 
     public static String getSubmitBcWorkMap(String duration,String accuracy,String resId){
-        HashMap<String,String> map=getEventDataMap();
-        map.put(Constants.UserEvent.EVENT_ID,Constants.UserEvent.UserEventID.SUBMIT_BC_WORK);
+        HashMap<String,String> map=getEventDataMap(Constants.UserEvent.UserEventID.SUBMIT_BC_WORK);
         map.put(Constants.UserEvent.RES_ID,resId);
         HashMap<String,String> reserved=new HashMap<>();
         reserved.put(Constants.UserEvent.DURATION,duration);
@@ -158,42 +147,42 @@ public class EventDataUtils {
 
     private static String eventMapToJsonMap(List<HashMap<String,String>> list) {
         Map<String,String> contentMap=new HashMap<>();
-        String string = "[";
+        StringBuilder string = new StringBuilder("[");
         for (int i=0; i<list.size(); i++) {
-            string = string + eventMapToJsonString(list.get(i));
-            string += ",";
+            string.append(eventMapToJsonString(list.get(i)));
+            string.append(",");
         }
-        string = string.substring(0, string.lastIndexOf(",")) + "]";
-        contentMap.put(Constants.UserEvent.CONTENT,string);
+        string = new StringBuilder(string.substring(0, string.lastIndexOf(",")) + "]");
+        contentMap.put(Constants.UserEvent.CONTENT, string.toString());
         return setMapToJson(contentMap);
     }
 
     private static String eventMapToJsonString(Map<String,String> map) {
-        String string = "{";
+        StringBuilder string = new StringBuilder("{");
         for (Object o : map.entrySet()) {
             Map.Entry e = (Map.Entry) o;
             if (e.getKey().equals(Constants.UserEvent.RESERVED) || e.getKey().equals(Constants.UserEvent.QUESTION_ID)) {
-                string += "\"" + e.getKey() + "\":";
-                string += "" + e.getValue() + ",";
+                string.append("\"").append(e.getKey()).append("\":");
+                string.append("").append(e.getValue()).append(",");
             } else {
-                string += "\"" + e.getKey() + "\":";
-                string += "\"" + e.getValue() + "\",";
+                string.append("\"").append(e.getKey()).append("\":");
+                string.append("\"").append(e.getValue()).append("\",");
             }
         }
-        string = string.substring(0, string.lastIndexOf(","));
-        string += "}";
-        return string;
+        string = new StringBuilder(string.substring(0, string.lastIndexOf(",")));
+        string.append("}");
+        return string.toString();
     }
 
     private static String setMapToJson(Map<String,String> map) {
-        String string = "{";
+        StringBuilder string = new StringBuilder("{");
         for (Object o : map.entrySet()) {
             Map.Entry e = (Map.Entry) o;
-            string += "\"" + e.getKey() + "\":";
-            string += "" + e.getValue() + ",";
+            string.append("\"").append(e.getKey()).append("\":");
+            string.append("").append(e.getValue()).append(",");
         }
-        string = string.substring(0, string.lastIndexOf(","));
-        string += "}";
-        return string;
+        string = new StringBuilder(string.substring(0, string.lastIndexOf(",")));
+        string.append("}");
+        return string.toString();
     }
 }
