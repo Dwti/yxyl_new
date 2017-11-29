@@ -121,6 +121,9 @@ public class UserEventManager {
 
     /**
      * 跳出BC资源
+     *
+     * @param duration 使用时长
+     * @param resId    资源id
      */
     public void whenExitBcWork(String duration, String resId) {
         startRequest(EventDataUtils.getExitBcWorkMap(duration, resId));
@@ -128,6 +131,10 @@ public class UserEventManager {
 
     /**
      * 完成BC资源
+     *
+     * @param duration 使用时长
+     * @param accuracy 正确率
+     * @param resId    资源id
      */
     public void whenSubmitBcWork(String duration, String accuracy, String resId) {
         startRequest(EventDataUtils.getSubmitBcWorkMap(duration, accuracy, resId));
