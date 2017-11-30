@@ -37,21 +37,28 @@ public class EventDataUtils {
         map.put(Constants.UserEvent.IP,"");
         map.put(Constants.UserEvent.URL,URL);
         map.put(Constants.UserEvent.RES_ID,"");
-        map.put(Constants.UserEvent.MOBILE_MODEL, Build.MODEL);
-        map.put(Constants.UserEvent.BRAND,Build.BRAND);
-        map.put(Constants.UserEvent.SYSTEM,Build.VERSION.RELEASE);
-        map.put(Constants.UserEvent.RESOLUTION, ScreenUtils.getScreenHeight(YanxiuApplication.getInstance())+"*"+ScreenUtils.getScreenWidth(YanxiuApplication.getInstance()));
-        map.put(Constants.UserEvent.NET_MODEL, NetWorkUtils.getNetType());
         return map;
+    }
+
+    private static HashMap<String,String> getReservedMap(){
+        HashMap<String,String> reserved=new HashMap<>();
+        reserved.put(Constants.UserEvent.MOBILE_MODEL, Build.MODEL);
+        reserved.put(Constants.UserEvent.BRAND,Build.BRAND);
+        reserved.put(Constants.UserEvent.SYSTEM,Build.VERSION.RELEASE);
+        reserved.put(Constants.UserEvent.RESOLUTION, ScreenUtils.getScreenHeight(YanxiuApplication.getInstance())+"*"+ScreenUtils.getScreenWidth(YanxiuApplication.getInstance()));
+        reserved.put(Constants.UserEvent.NET_MODEL, NetWorkUtils.getNetType());
+        return reserved;
     }
 
     public static String getRegistSuccessMap(){
         HashMap<String,String> map=getEventDataMap(Constants.UserEvent.UserEventID.REGISTER_SUCCESS);
+        map.put(Constants.UserEvent.RESERVED,eventMapToJsonString(getReservedMap()));
         return eventMapToJsonMap(map);
     }
 
     public static String getStartAppMap(){
         HashMap<String,String> map=getEventDataMap(Constants.UserEvent.UserEventID.START_APP);
+        map.put(Constants.UserEvent.RESERVED,eventMapToJsonString(getReservedMap()));
         return eventMapToJsonMap(map);
     }
 
@@ -65,7 +72,7 @@ public class EventDataUtils {
      * */
     public static String getSubmitWorkMap(String bedition,String gradeId,String subjectId,String paperType,String questionNum,String questionId){
         HashMap<String,String> map=getEventDataMap(Constants.UserEvent.UserEventID.SUBMIT_WORK);
-        HashMap<String,String> reserved=new HashMap<>();
+        HashMap<String,String> reserved=getReservedMap();
         reserved.put(Constants.UserEvent.EDITION_ID,bedition);
         reserved.put(Constants.UserEvent.GRADE_ID,gradeId);
         reserved.put(Constants.UserEvent.SUBJECT_ID,subjectId);
@@ -81,7 +88,7 @@ public class EventDataUtils {
         for (int i=0;i<list.size();i++) {
             WorkBean bean=list.get(i);
             HashMap<String, String> map = getEventDataMap(Constants.UserEvent.UserEventID.RECEIVE_WORK);
-            HashMap<String, String> reserved = new HashMap<>();
+            HashMap<String, String> reserved = getReservedMap();
             reserved.put(Constants.UserEvent.CLASS_ID, bean.volume);
             reserved.put(Constants.UserEvent.QUES_Num, bean.questionNum);
             map.put(Constants.UserEvent.RESERVED, eventMapToJsonString(reserved));
@@ -92,38 +99,44 @@ public class EventDataUtils {
 
     public static String getEnterWorkMap(){
         HashMap<String,String> map=getEventDataMap(Constants.UserEvent.UserEventID.ENTER_WORK);
+        map.put(Constants.UserEvent.RESERVED,eventMapToJsonString(getReservedMap()));
         return eventMapToJsonMap(map);
     }
 
     public static String getEnterBackMap(){
         HashMap<String,String> map=getEventDataMap(Constants.UserEvent.UserEventID.ENTER_BACK);
+        map.put(Constants.UserEvent.RESERVED,eventMapToJsonString(getReservedMap()));
         return eventMapToJsonMap(map);
     }
 
     public static String getEnterFrontMap(){
         HashMap<String,String> map=getEventDataMap(Constants.UserEvent.UserEventID.ENTER_FRONT);
+        map.put(Constants.UserEvent.RESERVED,eventMapToJsonString(getReservedMap()));
         return eventMapToJsonMap(map);
     }
 
     public static String getExitAppMap(){
         HashMap<String,String> map=getEventDataMap(Constants.UserEvent.UserEventID.EXIT_APP);
+        map.put(Constants.UserEvent.RESERVED,eventMapToJsonString(getReservedMap()));
         return eventMapToJsonMap(map);
     }
 
     public static String getEnterClassMap(){
         HashMap<String,String> map=getEventDataMap(Constants.UserEvent.UserEventID.ENTER_CLASS);
+        map.put(Constants.UserEvent.RESERVED,eventMapToJsonString(getReservedMap()));
         return eventMapToJsonMap(map);
     }
 
     public static String getFirstStartMap(){
         HashMap<String,String> map=getEventDataMap(Constants.UserEvent.UserEventID.FIRST_START);
+        map.put(Constants.UserEvent.RESERVED,eventMapToJsonString(getReservedMap()));
         return eventMapToJsonMap(map);
     }
 
     public static String getExitBcWorkMap(String duration,String resId){
         HashMap<String,String> map=getEventDataMap(Constants.UserEvent.UserEventID.EXIT_BC_WORK);
         map.put(Constants.UserEvent.RES_ID,resId);
-        HashMap<String,String> reserved=new HashMap<>();
+        HashMap<String,String> reserved=getReservedMap();
         reserved.put(Constants.UserEvent.DURATION,duration);
         map.put(Constants.UserEvent.RESERVED,eventMapToJsonString(reserved));
         return eventMapToJsonMap(map);
@@ -132,7 +145,7 @@ public class EventDataUtils {
     public static String getSubmitBcWorkMap(String duration,String accuracy,String resId){
         HashMap<String,String> map=getEventDataMap(Constants.UserEvent.UserEventID.SUBMIT_BC_WORK);
         map.put(Constants.UserEvent.RES_ID,resId);
-        HashMap<String,String> reserved=new HashMap<>();
+        HashMap<String,String> reserved=getReservedMap();
         reserved.put(Constants.UserEvent.DURATION,duration);
         reserved.put(Constants.UserEvent.ACCURACY,accuracy);
         map.put(Constants.UserEvent.RESERVED,eventMapToJsonString(reserved));
