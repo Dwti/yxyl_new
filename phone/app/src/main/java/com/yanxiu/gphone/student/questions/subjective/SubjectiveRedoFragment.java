@@ -17,6 +17,7 @@ import com.yanxiu.gphone.student.customviews.AlbumGridView;
 import com.yanxiu.gphone.student.customviews.spantextview.SubjectClozeTextView;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerSimpleExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.RedoSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.util.StemUtil;
 import com.yanxiu.gphone.student.util.ToastManager;
 
@@ -30,7 +31,7 @@ import de.greenrobot.event.EventBus;
  * Time : 2017/6/14 11:02.
  * Function :
  */
-public class SubjectiveRedoFragment extends AnswerSimpleExerciseBaseFragment implements AlbumGridView.onClickListener, AlbumGridView.onItemChangedListener, OnPermissionCallback {
+public class SubjectiveRedoFragment extends RedoSimpleExerciseBaseFragment implements AlbumGridView.onClickListener, AlbumGridView.onItemChangedListener, OnPermissionCallback {
 
     private SubjectiveQuestion mData;
     private SubjectClozeTextView mQuestionView;

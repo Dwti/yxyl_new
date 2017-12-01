@@ -13,6 +13,7 @@ import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.customviews.ChooseLayout;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerSimpleExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.RedoSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
 
 import java.util.List;
@@ -23,7 +24,7 @@ import static android.view.View.GONE;
  * Created by 戴延枫 on 2017/6/7.
  */
 
-public class YesNoRedoFragment extends AnswerSimpleExerciseBaseFragment implements ChooseLayout.onItemClickListener {
+public class YesNoRedoFragment extends RedoSimpleExerciseBaseFragment implements ChooseLayout.onItemClickListener {
     private YesNoQuestion mData;
     private TextView mQuestionView;
     private ChooseLayout mAnswerView;

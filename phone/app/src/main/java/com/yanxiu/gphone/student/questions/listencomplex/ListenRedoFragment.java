@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerComplexExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.RedoComplexExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.TopBaseFragment;
 
 /**
@@ -13,7 +14,7 @@ import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.TopBaseF
  * Time : 2017/6/9 14:47.
  * Function :
  */
-public class ListenRedoFragment extends AnswerComplexExerciseBaseFragment {
+public class ListenRedoFragment extends RedoComplexExerciseBaseFragment {
 
     private ListenComplexQuestion mData;
     private ListenComplexTopFragment topFragment;

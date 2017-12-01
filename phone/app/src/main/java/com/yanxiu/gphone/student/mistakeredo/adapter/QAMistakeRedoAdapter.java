@@ -3,11 +3,18 @@ package com.yanxiu.gphone.student.mistakeredo.adapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
+import com.yanxiu.gphone.student.questions.answerframe.listener.OnAnswerStateChangedListener;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerComplexExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerSimpleExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.RedoComplexExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.RedoSimpleExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
 import com.yanxiu.gphone.student.user.mistake.response.MistakeDeleteMessage;
 
 import java.util.ArrayList;
@@ -22,16 +29,21 @@ import de.greenrobot.event.EventBus;
 public class QAMistakeRedoAdapter extends FragmentStatePagerAdapter {
     private String mSubjectId;
     private ArrayList<BaseQuestion> mDatas = new ArrayList<>();
+    private ViewPager.OnPageChangeListener mOnInnerPageChangeListener;  //Fragment内部的ViewPager滑动改变事件
+    private OnAnswerStateChangedListener mOnAnswerStateChangedListener;
 
-    public QAMistakeRedoAdapter(FragmentManager fragmentManager) {
+    public QAMistakeRedoAdapter(FragmentManager fragmentManager,ViewPager.OnPageChangeListener onInnerPageChangeListener,OnAnswerStateChangedListener onAnswerStateChangedListener) {
         super(fragmentManager);
+        this.mOnInnerPageChangeListener = onInnerPageChangeListener;
+        this.mOnAnswerStateChangedListener = onAnswerStateChangedListener;
     }
 
-    public QAMistakeRedoAdapter(FragmentManager fragmentManager, List<BaseQuestion> datas) {
+    public QAMistakeRedoAdapter(FragmentManager fragmentManager, List<BaseQuestion> datas,ViewPager.OnPageChangeListener onInnerPageChangeListener) {
         super(fragmentManager);
         if (datas != null) {
             this.mDatas.addAll(datas);
         }
+        this.mOnInnerPageChangeListener = onInnerPageChangeListener;
     }
 
     public void setData(ArrayList<BaseQuestion> datas,int wrongNum) {
@@ -66,6 +78,7 @@ public class QAMistakeRedoAdapter extends FragmentStatePagerAdapter {
 
 
     public void deleteItem(int position, int wrongNum) {
+        //TODO 需要考虑删除复合题小题的情况
         if (position > -1 && position < mDatas.size()) {
             BaseQuestion baseQuestion = mDatas.get(position);
             MistakeDeleteMessage deleteMessage = new MistakeDeleteMessage();
@@ -93,10 +106,18 @@ public class QAMistakeRedoAdapter extends FragmentStatePagerAdapter {
     public int getCount() {
         return mDatas == null ? 0 : mDatas.size();
     }
-
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        Object fragment = super.instantiateItem(container, position);
+        ExerciseBaseFragment fragment = (ExerciseBaseFragment) super.instantiateItem(container, position);
+        if(fragment instanceof RedoComplexExerciseBaseFragment && mOnInnerPageChangeListener != null){
+            ((RedoComplexExerciseBaseFragment) fragment).addOnPageSelectedListener(mOnInnerPageChangeListener);
+        }
+        if(fragment instanceof RedoSimpleExerciseBaseFragment && mOnAnswerStateChangedListener != null){
+            ((RedoSimpleExerciseBaseFragment)fragment).setAnswerStateChangedListener(mOnAnswerStateChangedListener);
+        }
+        if(fragment instanceof RedoComplexExerciseBaseFragment && mOnAnswerStateChangedListener != null){
+            ((RedoComplexExerciseBaseFragment) fragment).setOnAnswerStateChangeListener(mOnAnswerStateChangedListener);
+        }
         return fragment;
     }
 

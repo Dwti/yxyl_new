@@ -16,6 +16,7 @@ import com.yanxiu.gphone.student.common.eventbus.SingleChooseMessage;
 import com.yanxiu.gphone.student.customviews.ChooseLayout;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerSimpleExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.RedoSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.cloze.ClozeAnswerComplexFragment;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
 
@@ -27,7 +28,7 @@ import de.greenrobot.event.EventBus;
  * Created by 戴延枫 on 2017/5/5.
  */
 
-public class SingleChooseRedoFragment extends AnswerSimpleExerciseBaseFragment implements ChooseLayout.onItemClickListener {
+public class SingleChooseRedoFragment extends RedoSimpleExerciseBaseFragment implements ChooseLayout.onItemClickListener {
     private SingleChoiceQuestion mData;
     private TextView mQuestionView;
     private ChooseLayout mAnswerView;

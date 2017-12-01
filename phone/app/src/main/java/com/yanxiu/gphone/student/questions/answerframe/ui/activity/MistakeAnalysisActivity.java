@@ -81,7 +81,7 @@ public class MistakeAnalysisActivity extends YanxiuBaseActivity implements View.
     private MistakeDeleteQuestionRequest mDeleteQuestionRequest;
     private MistakeAllRequest mCompleteRequest;
 
-    public static void LuanchActivity(Context context, String title,String key, String subjectId, String stageId, int wrongNum, int selectIndex, ArrayList<String> qids) {
+    public static void LuanchActivity(Context context, String key, String title, String subjectId, String stageId, int wrongNum, int selectIndex, ArrayList<String> qids) {
         Intent intent = new Intent(context, MistakeAnalysisActivity.class);
         intent.putExtra(Constants.EXTRA_PAPER, key);
         intent.putExtra(TITLE, title);

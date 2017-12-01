@@ -27,6 +27,7 @@ import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerQuestionActivity;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerComplexExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerSimpleExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.RedoSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
 import com.yanxiu.gphone.student.util.MediaPlayerUtil;
 import com.yanxiu.gphone.student.util.NetWorkUtils;
@@ -39,7 +40,7 @@ import java.util.List;
  * Time : 2017/10/16 9:43.
  * Function :
  */
-public class SpokenRedoFragment extends AnswerSimpleExerciseBaseFragment implements View.OnClickListener, ClickableImageSpan.onSpanClickListener, SpokenUtils.onBaseOralEvalCallback, SpokenResultDialog.onDisMissCallback, SpokenUtils.onOralEvaProgressCallback {
+public class SpokenRedoFragment extends RedoSimpleExerciseBaseFragment implements View.OnClickListener, ClickableImageSpan.onSpanClickListener, SpokenUtils.onBaseOralEvalCallback, SpokenResultDialog.onDisMissCallback, SpokenUtils.onOralEvaProgressCallback {
 
     private View rootView;
     private SpokenQuestion mData;

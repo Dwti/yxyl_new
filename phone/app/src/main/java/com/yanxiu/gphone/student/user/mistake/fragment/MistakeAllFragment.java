@@ -225,7 +225,7 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
     public void onItemClick(View view, PaperBean paperBean, int position) {
         Paper paper = new Paper(paperBean, QuestionShowType.MISTAKE_ANALYSIS);
         DataFetcher.getInstance().save(paper.getId(), paper);
-        MistakeAnalysisActivity.LuanchActivity(mContext, paper.getId(), mTitle,mSubjectId, mStageId, mWrongNum, position,mQids);
+        MistakeAnalysisActivity.LuanchActivity(mContext, paper.getId(), mTitle, mSubjectId, mStageId, mWrongNum, position,mQids);
         mEnterAnalysis = true;
     }
 

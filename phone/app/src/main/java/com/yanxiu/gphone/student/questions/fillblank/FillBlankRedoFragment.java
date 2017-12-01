@@ -25,6 +25,7 @@ import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerQuestionActivity;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerComplexExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerSimpleExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.RedoSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.util.KeyboardObserver;
@@ -36,7 +37,7 @@ import java.util.List;
  * Created by sunpeng on 2017/6/21.
  */
 
-public class FillBlankRedoFragment extends AnswerSimpleExerciseBaseFragment implements KeyboardObserver.KeyBoardVisibleChangeListener {
+public class FillBlankRedoFragment extends RedoSimpleExerciseBaseFragment implements KeyboardObserver.KeyBoardVisibleChangeListener {
 
     private FillBlankQuestion mQuestion;
 

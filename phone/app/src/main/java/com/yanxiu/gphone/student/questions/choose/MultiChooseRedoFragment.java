@@ -13,6 +13,7 @@ import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.customviews.ChooseLayout;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerSimpleExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.RedoSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
 
 import java.util.List;
@@ -22,7 +23,7 @@ import java.util.List;
  * Time : 2017/5/26 15:32.
  * Function :
  */
-public class MultiChooseRedoFragment extends AnswerSimpleExerciseBaseFragment implements ChooseLayout.onItemClickListener {
+public class MultiChooseRedoFragment extends RedoSimpleExerciseBaseFragment implements ChooseLayout.onItemClickListener {
     private MultiChoiceQuestion mData;
     private TextView mQuestionView;
     private ChooseLayout mAnswerView;

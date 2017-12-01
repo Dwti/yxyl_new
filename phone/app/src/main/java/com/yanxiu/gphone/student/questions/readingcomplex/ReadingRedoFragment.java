@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerComplexExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.RedoComplexExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.TopBaseFragment;
 
 
@@ -13,7 +14,7 @@ import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.TopBaseF
  * Created by 戴延枫 on 2017/5/5.
  */
 
-public class ReadingRedoFragment extends AnswerComplexExerciseBaseFragment {
+public class ReadingRedoFragment extends RedoComplexExerciseBaseFragment {
     private ReadingComplexQuestion mData;
 
     @Override

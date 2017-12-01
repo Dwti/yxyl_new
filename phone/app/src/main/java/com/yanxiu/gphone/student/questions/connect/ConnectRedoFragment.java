@@ -20,6 +20,7 @@ import com.yanxiu.gphone.student.mistakeredo.MistakeRedoActivity;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerQuestionActivity;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerSimpleExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.RedoSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
 import com.yanxiu.gphone.student.util.anim.AlphaAnimationUtil;
@@ -32,7 +33,7 @@ import java.util.List;
  * Created by sunpeng on 2017/7/12.
  */
 
-public class ConnectRedoFragment extends AnswerSimpleExerciseBaseFragment {
+public class ConnectRedoFragment extends RedoSimpleExerciseBaseFragment {
 
     private ConnectQuestion mQuestion;
     private RecyclerView mRecyclerViewLeft, mRecyclerViewRight, mRecyclerViewResult;

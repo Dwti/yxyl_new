@@ -18,6 +18,7 @@ import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.customviews.ClassifyChoice;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerSimpleExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.RedoSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.choose.SingleChoiceQuestion;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
 
@@ -31,7 +32,7 @@ import static android.widget.RelativeLayout.CENTER_HORIZONTAL;
  * Created by 戴延枫 on 2017/5/5.
  */
 
-public class ClassifyRedoFragment extends AnswerSimpleExerciseBaseFragment implements ClassifyAdapter.OnItemClickLitener, ClassifyChoice.OnClassifyChoiceItemLitener {
+public class ClassifyRedoFragment extends RedoSimpleExerciseBaseFragment implements ClassifyAdapter.OnItemClickLitener, ClassifyChoice.OnClassifyChoiceItemLitener {
     private ClassifyQuestion mData;
     private ArrayList<String> mChoiceList;
     private ArrayList<String> mHasChoosedChoiceList;//用户选择后的list，用来刷新choiceView

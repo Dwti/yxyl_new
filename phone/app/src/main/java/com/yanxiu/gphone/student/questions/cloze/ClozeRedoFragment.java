@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerComplexExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.RedoComplexExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.TopBaseFragment;
 
 
@@ -20,7 +21,7 @@ import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.TopBaseF
  * Created by 戴延枫 on 2017/6/14.
  */
 
-public class ClozeRedoFragment extends AnswerComplexExerciseBaseFragment {
+public class ClozeRedoFragment extends RedoComplexExerciseBaseFragment {
     public int mHashCode = this.hashCode();
     private ClozeComplexQuestion mData;
     private int mTopHeight;

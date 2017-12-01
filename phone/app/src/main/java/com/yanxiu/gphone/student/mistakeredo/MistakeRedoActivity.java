@@ -1,5 +1,6 @@
 package com.yanxiu.gphone.student.mistakeredo;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -29,10 +31,12 @@ import com.yanxiu.gphone.student.mistakeredo.request.WrongQByQidsRequest;
 import com.yanxiu.gphone.student.mistakeredo.response.FinishReDoWorkResponse;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
+import com.yanxiu.gphone.student.questions.answerframe.listener.OnAnswerStateChangedListener;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerComplexExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
+import com.yanxiu.gphone.student.questions.answerframe.util.QuestionTemplate;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionUtil;
 import com.yanxiu.gphone.student.questions.answerframe.view.QAViewPager;
 import com.yanxiu.gphone.student.util.DataFetcher;
@@ -40,6 +44,7 @@ import com.yanxiu.gphone.student.util.KeyboardObserver;
 import com.yanxiu.gphone.student.util.ToastManager;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by sp on 17-11-24.
@@ -52,6 +57,12 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
     private static final String STAGEID = "stageId";
     private static final String WRONG_NUM = "wrongNum";
     private static final String QIDS = "qids";
+
+    private static final int SUBMIT_ABLE = 0;
+    private static final int SUBMIT_UNABLE = 1;
+    private static final int DELETE_ABLE = 2;
+    private static final int DELETED = 3;
+    private static final int CHECK_ANALYSIS = 4;
 
     private FragmentManager mFragmentManager;
     private QAViewPager mViewPager;
@@ -70,6 +81,7 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
     private View mRootView, mOverlay;
     private LoadingView mLoadingView;
     private Button btn_submit;
+    private int mBottomBtnState = -1;
 
     private int mNextQidPos;  //下一次请求的qids在mQids中起始的位置
     private static final int PAGE_SIZE = 5;
@@ -155,10 +167,11 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
         mFragmentManager = getSupportFragmentManager();
         mViewPager = (QAViewPager) findViewById(R.id.vp_viewPager);
         mViewPager.setOffscreenPageLimit(1);
-        mAdapter = new QAMistakeRedoAdapter(mFragmentManager);
+        mAdapter = new QAMistakeRedoAdapter(mFragmentManager,mOnInnerPageChangeListener,mOnAnswerStateChangedListener);
         mAdapter.setSubjectId(mSubjectId);
         mAdapter.setData(mQuestions,mWrongNum);
         mViewPager.setAdapter(mAdapter);
+        setCurrentState(mQuestions.get(0));
         mNextQidPos = mAdapter.getCount();
 
         mViewPager.setOnSwipeOutListener(new QAViewPager.OnSwipeOutListener() {
@@ -168,6 +181,7 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
             }
         });
 
+        //外层viewpager
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -182,6 +196,9 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
                         requestData(getQids(mNextQidPos, PAGE_SIZE),false);
                     }
                 }
+                BaseQuestion baseQuestion = ((ExerciseBaseFragment)mAdapter.getItem(position)).mBaseQuestion;
+                setCurrentState(baseQuestion);
+                Log.i("position",String.valueOf(position));
             }
 
             @Override
@@ -189,6 +206,139 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
 
             }
         });
+
+    }
+    //内层的viewpager
+    private ViewPager.OnPageChangeListener mOnInnerPageChangeListener = new ViewPager.OnPageChangeListener() {
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+            BaseQuestion childQuestion = ((ExerciseBaseFragment)mAdapter.getItem(mViewPager.getCurrentItem())).mBaseQuestion.getChildren().get(position);
+            boolean hasAnswered = childQuestion.getHasAnswered();
+            if(childQuestion.getTemplate().equals(QuestionTemplate.ANSWER)){
+                //TODO 需要判断是不是被删除了
+                setBottomButtonState(CHECK_ANALYSIS);
+            }else {
+                if(hasAnswered){
+                    setBottomButtonState(SUBMIT_ABLE);
+                }else {
+                    setBottomButtonState(SUBMIT_UNABLE);
+                }
+            }
+            Log.i("positioninner",String.valueOf(position));
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+
+        }
+    };
+
+    private OnAnswerStateChangedListener mOnAnswerStateChangedListener = new OnAnswerStateChangedListener() {
+        @Override
+        public void onAnswerStateChanged(BaseQuestion baseQuestion) {
+            //此处肯定是个单题,需要先判断外层是不是复合题
+            boolean hasAnswered = true;
+            BaseQuestion question = mAdapter.getDatas().get(mViewPager.getCurrentItem());
+            if(question.isComplexQuestion()){
+                if(question.getTemplate().equals(QuestionTemplate.CLOZE)){
+                    List<BaseQuestion> children = question.getChildren();
+                    for(BaseQuestion q : children){
+                        if(!q.getHasAnswered()){
+                            hasAnswered = false;
+                            break;
+                        }
+                    }
+
+                }else {
+                    hasAnswered = baseQuestion.getHasAnswered();
+                }
+
+            }else {
+                hasAnswered = baseQuestion.getHasAnswered();
+            }
+
+            if(baseQuestion.getTemplate().equals(QuestionTemplate.ANSWER)){
+                //TODO 需要判断是不是被删除了
+                setBottomButtonState(CHECK_ANALYSIS);
+            }else {
+                if(hasAnswered){
+                    setBottomButtonState(SUBMIT_ABLE);
+                }else {
+                    setBottomButtonState(SUBMIT_UNABLE);
+                }
+            }
+        }
+    };
+
+    private void setCurrentState(BaseQuestion baseQuestion){
+        boolean hasAnswered = true;
+        //每次滑动到复合题，都是定位到第一个小题，所以取第一个
+        if(baseQuestion.isComplexQuestion()){
+            if(baseQuestion.getTemplate().equals(QuestionTemplate.CLOZE)){
+                List<BaseQuestion> children = baseQuestion.getChildren();
+                for(BaseQuestion q : children){
+                    if(!q.getHasAnswered()){
+                        hasAnswered = false;
+                        break;
+                    }
+                }
+
+            }else {
+                hasAnswered = baseQuestion.getChildren().get(0).getHasAnswered();
+            }
+
+        }else {
+            hasAnswered = baseQuestion.getHasAnswered();
+        }
+
+        if(baseQuestion.getTemplate().equals(QuestionTemplate.ANSWER)){
+            //TODO 需要判断是不是被删除了
+            setBottomButtonState(CHECK_ANALYSIS);
+        }else {
+            if(hasAnswered){
+                setBottomButtonState(SUBMIT_ABLE);
+            }else {
+                setBottomButtonState(SUBMIT_UNABLE);
+            }
+        }
+    }
+
+    private void setBottomButtonState(int state){
+        if(mBottomBtnState == state)
+            return;
+        mBottomBtnState = state;
+        switch (state){
+            //可提交
+            case SUBMIT_ABLE:
+                btn_submit.setEnabled(true);
+                btn_submit.setText("提交");
+                break;
+            //不可提交
+            case SUBMIT_UNABLE:
+                btn_submit.setEnabled(false);
+                btn_submit.setText("提交");
+                break;
+            //已删除
+            case DELETED:
+                btn_submit.setEnabled(false);
+                btn_submit.setText("本题已被删除");
+                break;
+            //可删除
+            case DELETE_ABLE:
+                btn_submit.setEnabled(true);
+                btn_submit.setText("删除本题");
+                break;
+            //查看解析
+            case CHECK_ANALYSIS:
+                btn_submit.setEnabled(true);
+                btn_submit.setText("查看解析");
+                break;
+        }
     }
 
     private void deleteQuestions(String qids){
@@ -620,8 +770,6 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
             //分页加载数据
             requestData(getQids(mNextQidPos,position + 3),true);
         }
-
-
 
 //        ArrayList<Integer> remainPositions = new ArrayList<>(question.getLevelPositions());
 //        remainPositions.remove(0);
