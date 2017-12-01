@@ -187,11 +187,15 @@ public abstract class RedoComplexExerciseBaseFragment extends AnswerExerciseBase
     }
 
     public void addOnPageSelectedListener(ViewPager.OnPageChangeListener listener){
-        this.mOnPageChangeListener = listener;
+        if(this.mOnPageChangeListener != listener){
+            this.mOnPageChangeListener = listener;
+        }
     }
 
     public void setOnAnswerStateChangeListener(OnAnswerStateChangedListener listener){
-        this.mAnswerStateChangedListener = listener;
+        if(this.mAnswerStateChangedListener != listener){
+            this.mAnswerStateChangedListener = listener;
+        }
     }
 
     @Override

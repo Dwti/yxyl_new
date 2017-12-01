@@ -63,8 +63,10 @@ public class RedoComplexViewPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getItemPosition(Object object) {
-        return super.getItemPosition(object);
+//        return super.getItemPosition(object);
+        return POSITION_NONE;
     }
+
 
 
 //    @Override

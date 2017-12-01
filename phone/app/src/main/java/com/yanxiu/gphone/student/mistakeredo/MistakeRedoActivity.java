@@ -34,6 +34,7 @@ import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
 import com.yanxiu.gphone.student.questions.answerframe.listener.OnAnswerStateChangedListener;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerComplexExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerSimpleExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.RedoComplexExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionTemplate;
@@ -305,6 +306,45 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
             }else {
                 setBottomButtonState(SUBMIT_UNABLE);
             }
+        }
+    }
+
+    private void bottomBtnClick(){
+        switch (mBottomBtnState){
+            //可提交
+            case SUBMIT_ABLE:
+                BaseQuestion question = mAdapter.getDatas().get(mViewPager.getCurrentItem());
+                question.setShowType(QuestionShowType.MISTAKE_ANALYSIS);
+                if(question.isComplexQuestion()){
+                    RedoComplexExerciseBaseFragment parentFragment = (RedoComplexExerciseBaseFragment) mAdapter.instantiateItem(mViewPager,mViewPager.getCurrentItem());
+                    if(question.getTemplate().equals(QuestionTemplate.CLOZE)){
+                        List<BaseQuestion> children = question.getChildren();
+                        for(BaseQuestion childQuestion : children){
+                            childQuestion.setShowType(QuestionShowType.MISTAKE_ANALYSIS);
+                        }
+
+                    }else {
+                        int innerPos = parentFragment.getmViewPager().getCurrentItem();
+                        BaseQuestion childQuestion = question.getChildren().get(innerPos);
+                        childQuestion.setShowType(QuestionShowType.MISTAKE_ANALYSIS);
+                    }
+                    parentFragment.getmViewPager().getAdapter().notifyDataSetChanged();
+                }else {
+                    mAdapter.notifyDataSetChanged();
+                }
+                break;
+            //不可提交
+            case SUBMIT_UNABLE:
+                break;
+            //已删除
+            case DELETED:
+                break;
+            //可删除
+            case DELETE_ABLE:
+                break;
+            //查看解析
+            case CHECK_ANALYSIS:
+                break;
         }
     }
 
@@ -704,6 +744,7 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
                 }
                 break;
             case R.id.submit:
+                bottomBtnClick();
                 break;
         }
     }

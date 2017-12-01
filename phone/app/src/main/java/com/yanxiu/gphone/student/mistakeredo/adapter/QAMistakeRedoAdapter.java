@@ -46,6 +46,7 @@ public class QAMistakeRedoAdapter extends FragmentStatePagerAdapter {
         this.mOnInnerPageChangeListener = onInnerPageChangeListener;
     }
 
+
     public void setData(ArrayList<BaseQuestion> datas,int wrongNum) {
         if(datas == null){
             return;
@@ -128,7 +129,8 @@ public class QAMistakeRedoAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getItemPosition(Object object) {
-        return super.getItemPosition(object);
+//        return super.getItemPosition(object);
+        return POSITION_NONE;
     }
 
 }

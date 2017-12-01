@@ -90,6 +90,7 @@ public abstract class BaseQuestion implements Serializable {
      * */
     public int mProgress=0;
     private String mPaperStatus;//数据来源：paperStatus-status。解析力需要判断paperStatus
+    private PaperTestBean mBean;
 
     public BaseQuestion(PaperTestBean bean,QuestionShowType showType,String paperStatus){
         this.id = bean.getId();
@@ -144,6 +145,10 @@ public abstract class BaseQuestion implements Serializable {
             boolean isAnswered = SaveAnswerDBHelper.getIsAnswered(SaveAnswerDBHelper.makeId(this));
             hasAnswered = isAnswered;
         }
+        if(showType.equals(QuestionShowType.MISTAKE_REDO)){
+            hasAnswered = false;
+            bean.getQuestions().getPad().setAnswer(null);
+        }
         this.pad = bean.getQuestions().getPad();
         try{
             int type_id = Integer.parseInt(this.type_id);
@@ -152,6 +157,7 @@ public abstract class BaseQuestion implements Serializable {
             e.printStackTrace();
         }
         mPaperStatus = paperStatus;
+        mBean = bean;
         initTemplateOfAnswerStem();
     }
 
@@ -191,7 +197,6 @@ public abstract class BaseQuestion implements Serializable {
         if(showType.equals(QuestionShowType.MISTAKE_REDO)){
             fm = redoFragment();
         }
-
         fm.setData(this);
         return fm;
     }
