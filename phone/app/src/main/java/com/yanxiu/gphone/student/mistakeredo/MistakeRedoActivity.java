@@ -35,6 +35,7 @@ import com.yanxiu.gphone.student.questions.answerframe.listener.OnAnswerStateCha
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerComplexExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.RedoComplexExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.RedoSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionTemplate;
@@ -566,8 +567,8 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
         if (adapter == null || index < 0 || size < 1 || mViewPager == null || currentFramgent == null)
             return;
 
-        if (currentFramgent instanceof AnswerComplexExerciseBaseFragment) {
-            AnswerComplexExerciseBaseFragment complexExerciseFragment = (AnswerComplexExerciseBaseFragment) currentFramgent;
+        if (currentFramgent instanceof RedoComplexExerciseBaseFragment) {
+            RedoComplexExerciseBaseFragment complexExerciseFragment = (RedoComplexExerciseBaseFragment) currentFramgent;
             ViewPager innerViewPager = complexExerciseFragment.getmViewPager();
             FragmentStatePagerAdapter innerAdapter = (FragmentStatePagerAdapter) innerViewPager.getAdapter();
             int innerIndex = innerViewPager.getCurrentItem();
@@ -592,7 +593,7 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
                 innerViewPager.setCurrentItem(innerIndex + 1);
             }
 
-        } else if (currentFramgent instanceof AnswerSimpleExerciseBaseFragment) {
+        } else if (currentFramgent instanceof RedoSimpleExerciseBaseFragment) {
             if (index == (size - 1)) {
                 //最后一题,展示答题卡
                 showAnswerCardFragment();
@@ -625,8 +626,8 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
         if (adapter == null || index < 0 || size < 1 || mViewPager == null || currentFramgent == null)
             return;
 
-        if (currentFramgent instanceof AnswerComplexExerciseBaseFragment) {
-            AnswerComplexExerciseBaseFragment complexExerciseFragment = (AnswerComplexExerciseBaseFragment) currentFramgent;
+        if (currentFramgent instanceof RedoComplexExerciseBaseFragment) {
+            RedoComplexExerciseBaseFragment complexExerciseFragment = (RedoComplexExerciseBaseFragment) currentFramgent;
             ViewPager innerViewPager = complexExerciseFragment.getmViewPager();
             FragmentStatePagerAdapter innerAdapter = (FragmentStatePagerAdapter) innerViewPager.getAdapter();
             int innerIndex = innerViewPager.getCurrentItem();
@@ -643,7 +644,7 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
                 mViewPager.setCurrentItem(index - 1);
             }
 
-        } else if (currentFramgent instanceof AnswerSimpleExerciseBaseFragment) {
+        } else if (currentFramgent instanceof RedoSimpleExerciseBaseFragment) {
             if (index >= 1) {
                 //不是第一大题时,有上一题
                 mViewPager.setCurrentItem(index - 1);
@@ -676,8 +677,8 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
         if (adapter == null || index < 0 || size < 1 || mViewPager == null || currentFramgent == null)
             return;
 
-        if (currentFramgent instanceof AnswerComplexExerciseBaseFragment) {
-            AnswerComplexExerciseBaseFragment complexExerciseFragment = (AnswerComplexExerciseBaseFragment) currentFramgent;
+        if (currentFramgent instanceof RedoComplexExerciseBaseFragment) {
+            RedoComplexExerciseBaseFragment complexExerciseFragment = (RedoComplexExerciseBaseFragment) currentFramgent;
             ViewPager innerViewPager = complexExerciseFragment.getmViewPager();
             FragmentStatePagerAdapter innerAdapter = (FragmentStatePagerAdapter) innerViewPager.getAdapter();
             int innerIndex = innerViewPager.getCurrentItem();
@@ -701,7 +702,7 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
                 mPrevious_question.setVisibility(View.VISIBLE);
             }
 
-        } else if (currentFramgent instanceof AnswerSimpleExerciseBaseFragment) {
+        } else if (currentFramgent instanceof RedoSimpleExerciseBaseFragment) {
             if (index == (size - 1)) { //最后一题
                 mNext_text.setText(R.string.complete);
             } else {
