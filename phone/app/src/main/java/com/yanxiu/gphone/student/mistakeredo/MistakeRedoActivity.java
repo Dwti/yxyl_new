@@ -93,6 +93,7 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
     private int mWrongNum;
     private ArrayList<String> mQids;
     private ArrayList<Integer> mDeletedPos = new ArrayList<>();
+    private ArrayList<String> mDeleteQidsList = new ArrayList<>();
     private String mQidsToRemove = "";   //待删除的题
 
     private boolean isOnLoadMore = false;
@@ -199,7 +200,6 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
                 }
                 BaseQuestion baseQuestion = ((ExerciseBaseFragment)mAdapter.getItem(position)).mBaseQuestion;
                 setCurrentState(baseQuestion);
-                Log.i("position",String.valueOf(position));
             }
 
             @Override
@@ -218,19 +218,32 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
 
         @Override
         public void onPageSelected(int position) {
+            BaseQuestion parentQuestion = mAdapter.getDatas().get(mViewPager.getCurrentItem());
+            //此处完形填空是个特例:如果外层是完形填空的话，就以大题为准，不以小题为准,(外层已经处理过)
+            if(parentQuestion.getTemplate().equals(QuestionTemplate.CLOZE)){
+                return;
+            }
+            //这是正常的通用逻辑
             BaseQuestion childQuestion = ((ExerciseBaseFragment)mAdapter.getItem(mViewPager.getCurrentItem())).mBaseQuestion.getChildren().get(position);
             boolean hasAnswered = childQuestion.getHasAnswered();
-            if(childQuestion.getTemplate().equals(QuestionTemplate.ANSWER)){
-                //TODO 需要判断是不是被删除了
-                setBottomButtonState(CHECK_ANALYSIS);
+            if(mDeleteQidsList.contains(childQuestion.getQid())){
+                setBottomButtonState(DELETED);
             }else {
-                if(hasAnswered){
-                    setBottomButtonState(SUBMIT_ABLE);
+                if(childQuestion.getShowType().equals(QuestionShowType.MISTAKE_ANALYSIS)){
+                    setBottomButtonState(DELETE_ABLE);
                 }else {
-                    setBottomButtonState(SUBMIT_UNABLE);
+                    if(childQuestion.getTemplate().equals(QuestionTemplate.ANSWER)){
+                        setBottomButtonState(CHECK_ANALYSIS);
+                    }else {
+                        if(hasAnswered){
+                            setBottomButtonState(SUBMIT_ABLE);
+                        }else {
+                            setBottomButtonState(SUBMIT_UNABLE);
+                        }
+                    }
                 }
+
             }
-            Log.i("positioninner",String.valueOf(position));
         }
 
         @Override
@@ -263,21 +276,18 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
                 hasAnswered = baseQuestion.getHasAnswered();
             }
 
-            if(baseQuestion.getTemplate().equals(QuestionTemplate.ANSWER)){
-                //TODO 需要判断是不是被删除了
-                setBottomButtonState(CHECK_ANALYSIS);
+            if(hasAnswered){
+                setBottomButtonState(SUBMIT_ABLE);
             }else {
-                if(hasAnswered){
-                    setBottomButtonState(SUBMIT_ABLE);
-                }else {
-                    setBottomButtonState(SUBMIT_UNABLE);
-                }
+                setBottomButtonState(SUBMIT_UNABLE);
             }
         }
     };
 
     private void setCurrentState(BaseQuestion baseQuestion){
         boolean hasAnswered = true;
+        boolean hasDeleted = false;
+        BaseQuestion currentQuestion;  //如果是完型填空，表示外层的大题，否则表示当前的小题
         //每次滑动到复合题，都是定位到第一个小题，所以取第一个
         if(baseQuestion.isComplexQuestion()){
             if(baseQuestion.getTemplate().equals(QuestionTemplate.CLOZE)){
@@ -288,41 +298,45 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
                         break;
                     }
                 }
-
+                currentQuestion = baseQuestion;
             }else {
-                hasAnswered = baseQuestion.getChildren().get(0).getHasAnswered();
+                currentQuestion = baseQuestion.getChildren().get(0);
+                hasAnswered = currentQuestion.getHasAnswered();
             }
 
         }else {
-            hasAnswered = baseQuestion.getHasAnswered();
+            currentQuestion = baseQuestion;
+            hasAnswered = currentQuestion.getHasAnswered();
         }
-
-        if(baseQuestion.getTemplate().equals(QuestionTemplate.ANSWER)){
-            //TODO 需要判断是不是被删除了
-            setBottomButtonState(CHECK_ANALYSIS);
+        hasDeleted = mDeleteQidsList.contains(currentQuestion.getQid());
+        if(hasDeleted){
+            setBottomButtonState(DELETED);
         }else {
-            if(hasAnswered){
-                setBottomButtonState(SUBMIT_ABLE);
+            if(currentQuestion.getShowType().equals(QuestionShowType.MISTAKE_ANALYSIS)){
+                setBottomButtonState(DELETE_ABLE);
             }else {
-                setBottomButtonState(SUBMIT_UNABLE);
+                if(currentQuestion.getTemplate().equals(QuestionTemplate.ANSWER)){
+                    setBottomButtonState(CHECK_ANALYSIS);
+                }else {
+                    if(hasAnswered){
+                        setBottomButtonState(SUBMIT_ABLE);
+                    }else {
+                        setBottomButtonState(SUBMIT_UNABLE);
+                    }
+                }
             }
         }
     }
 
     private void bottomBtnClick(){
+        BaseQuestion question = mAdapter.getDatas().get(mViewPager.getCurrentItem());
         switch (mBottomBtnState){
             //可提交
             case SUBMIT_ABLE:
-                BaseQuestion question = mAdapter.getDatas().get(mViewPager.getCurrentItem());
-                question.setShowType(QuestionShowType.MISTAKE_ANALYSIS);
                 if(question.isComplexQuestion()){
                     RedoComplexExerciseBaseFragment parentFragment = (RedoComplexExerciseBaseFragment) mAdapter.instantiateItem(mViewPager,mViewPager.getCurrentItem());
                     if(question.getTemplate().equals(QuestionTemplate.CLOZE)){
-                        List<BaseQuestion> children = question.getChildren();
-                        for(BaseQuestion childQuestion : children){
-                            childQuestion.setShowType(QuestionShowType.MISTAKE_ANALYSIS);
-                        }
-
+                        question.setShowType(QuestionShowType.MISTAKE_ANALYSIS);
                     }else {
                         int innerPos = parentFragment.getmViewPager().getCurrentItem();
                         BaseQuestion childQuestion = question.getChildren().get(innerPos);
@@ -330,8 +344,10 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
                     }
                     parentFragment.getmViewPager().getAdapter().notifyDataSetChanged();
                 }else {
+                    question.setShowType(QuestionShowType.MISTAKE_ANALYSIS);
                     mAdapter.notifyDataSetChanged();
                 }
+                setBottomButtonState(DELETE_ABLE);
                 break;
             //不可提交
             case SUBMIT_UNABLE:
@@ -341,9 +357,39 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
                 break;
             //可删除
             case DELETE_ABLE:
+                if(question.isComplexQuestion()){
+                    RedoComplexExerciseBaseFragment parentFragment = (RedoComplexExerciseBaseFragment) mAdapter.instantiateItem(mViewPager,mViewPager.getCurrentItem());
+                    //完形填空删除整个大题，否则删除单个小题
+                    if(question.getTemplate().equals(QuestionTemplate.CLOZE)){
+                        mDeleteQidsList.add(question.getQid());
+                    }else {
+                        int innerPos = parentFragment.getmViewPager().getCurrentItem();
+                        BaseQuestion childQuestion = question.getChildren().get(innerPos);
+                        mDeleteQidsList.add(childQuestion.getQid());
+                    }
+                    parentFragment.getmViewPager().getAdapter().notifyDataSetChanged();
+                }else {
+                    if(!TextUtils.isEmpty(question.getTypeId_complexToSimple())){
+                        mDeleteQidsList.add(question.getQid_ComplexToSimple());
+                    }else {
+                        mDeleteQidsList.add(question.getQid());
+                    }
+                }
+                setBottomButtonState(DELETED);
                 break;
             //查看解析
             case CHECK_ANALYSIS:
+                question.setShowType(QuestionShowType.MISTAKE_ANALYSIS);
+                if(question.isComplexQuestion()){
+                    RedoComplexExerciseBaseFragment parentFragment = (RedoComplexExerciseBaseFragment) mAdapter.instantiateItem(mViewPager,mViewPager.getCurrentItem());
+                    int innerPos = parentFragment.getmViewPager().getCurrentItem();
+                    BaseQuestion childQuestion = question.getChildren().get(innerPos);
+                    childQuestion.setShowType(QuestionShowType.MISTAKE_ANALYSIS);
+                    parentFragment.getmViewPager().getAdapter().notifyDataSetChanged();
+                }else {
+                    mAdapter.notifyDataSetChanged();
+                }
+                setBottomButtonState(DELETE_ABLE);
                 break;
         }
     }
