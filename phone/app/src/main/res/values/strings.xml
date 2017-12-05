@@ -38,7 +38,6 @@
     <string name="retry">点击重试</string>
 
     <string name="input_true_name">请输入真实姓名</string>
-    <string name="submit">提交</string>
     <string name="user_name">姓名</string>
     <string name="school">学校</string>
     <string name="period">学段</string>
@@ -336,10 +335,11 @@
     <string name="mistake_no_data">这回真没了</string>
     <string name="no_bc">还没有BC资源哦</string>
     <string name="no_topic">还没有话题哦</string>
-    <string name="question_deleted">本题已被删除</string>
     <string name="mistakeredo">错题重做</string>
     <string name="mistake_redo">错题重做</string>
     <string name="check_analysis_tips">本题不支持在线作答，请在纸上作答后自行校对答案</string>
-    <string name="check_analysis">查看解析</string>
+    <string name="delete_question">删除本题</string>
+    <string name="question_deleted">本题已被删除</string>
+    <string name="submit">提交</string>
 
 </resources>

@@ -377,22 +377,22 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
             //可提交
             case SUBMIT_ABLE:
                 btn_submit.setEnabled(true);
-                btn_submit.setText("提交");
+                btn_submit.setText(R.string.submit);
                 break;
             //不可提交
             case SUBMIT_UNABLE:
                 btn_submit.setEnabled(false);
-                btn_submit.setText("提交");
+                btn_submit.setText(R.string.submit);
                 break;
             //已删除
             case DELETED:
                 btn_submit.setEnabled(false);
-                btn_submit.setText("本题已被删除");
+                btn_submit.setText(R.string.question_deleted);
                 break;
             //可删除
             case DELETE_ABLE:
                 btn_submit.setEnabled(true);
-                btn_submit.setText("删除本题");
+                btn_submit.setText(R.string.delete_question);
                 break;
         }
     }
