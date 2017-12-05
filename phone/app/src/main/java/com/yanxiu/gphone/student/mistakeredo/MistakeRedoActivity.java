@@ -781,13 +781,17 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
                 if (!isOnLoadMore) {
                     //此处需要记录删除的qid 然后在退出时统一删除
                     ToastManager.showMsg(getString(R.string.question_deleted));
+                    if(mDeletedPos.contains(mViewPager.getCurrentItem())){
+                        return;
+                    }else {
+                        mDeletedPos.add(mViewPager.getCurrentItem());
+                    }
                     String qid = mAdapter.getQidByPosition(mViewPager.getCurrentItem());
                     if(mQidsToRemove.length() == 0){
                         mQidsToRemove += qid;
                     }else {
                         mQidsToRemove = mQidsToRemove + "," + qid;
                     }
-                    mDeletedPos.add(mViewPager.getCurrentItem());
                 }
                 break;
             case R.id.submit:

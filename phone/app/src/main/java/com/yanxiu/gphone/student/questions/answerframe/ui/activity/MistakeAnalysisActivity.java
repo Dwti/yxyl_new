@@ -197,15 +197,17 @@ public class MistakeAnalysisActivity extends YanxiuBaseActivity implements View.
                 if (!isOnLoadMore) {
                     //此处需要记录删除的qid 然后在退出时统一删除
                     ToastManager.showMsg(getString(R.string.question_deleted));
+                    if(mDeletedPos.contains(mQaView.getCurrentItem())){
+                        return;
+                    }else {
+                        mDeletedPos.add(mQaView.getCurrentItem());
+                    }
                     String qid = mQaAdapter.getQidByPosition(mQaView.getCurrentItem());
                     if(mQidsToRemove.length() == 0){
                         mQidsToRemove += qid;
                     }else {
                         mQidsToRemove = mQidsToRemove + "," + qid;
                     }
-
-                    mDeletedPos.add(mQaView.getCurrentItem());
-//                    setDeleteQuestion();
                 }
                 break;
         }
