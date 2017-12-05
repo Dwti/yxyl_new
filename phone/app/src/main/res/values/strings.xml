@@ -339,5 +339,7 @@
     <string name="question_deleted">本题已被删除</string>
     <string name="mistakeredo">错题重做</string>
     <string name="mistake_redo">错题重做</string>
+    <string name="check_analysis_tips">本题不支持在线作答，请在纸上作答后自行校对答案</string>
+    <string name="check_analysis">查看解析</string>
 
 </resources>

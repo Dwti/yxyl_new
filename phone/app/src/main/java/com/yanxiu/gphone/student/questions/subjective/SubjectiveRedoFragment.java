@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.OnPermissionCallback;
@@ -15,9 +16,12 @@ import com.yanxiu.gphone.student.common.activity.CameraActivity;
 import com.yanxiu.gphone.student.common.activity.PhotoActivity;
 import com.yanxiu.gphone.student.customviews.AlbumGridView;
 import com.yanxiu.gphone.student.customviews.spantextview.SubjectClozeTextView;
+import com.yanxiu.gphone.student.homework.homeworkdetail.HomeworkDetailContract;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.RedoSimpleExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.wrongbase.WrongSimpleExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.util.QuestionUtil;
 import com.yanxiu.gphone.student.util.StemUtil;
 import com.yanxiu.gphone.student.util.ToastManager;
 
@@ -31,11 +35,12 @@ import de.greenrobot.event.EventBus;
  * Time : 2017/6/14 11:02.
  * Function :
  */
-public class SubjectiveRedoFragment extends RedoSimpleExerciseBaseFragment implements AlbumGridView.onClickListener, AlbumGridView.onItemChangedListener, OnPermissionCallback {
-
+public class SubjectiveRedoFragment extends WrongSimpleExerciseBaseFragment implements AlbumGridView.onClickListener {
     private SubjectiveQuestion mData;
     private SubjectClozeTextView mQuestionView;
-    private AlbumGridView mAnswerView;
+    private View mAnswerView,ll_check_analysis,fl_analysis,btnCheck;
+    private AlbumGridView mSubjectView;
+    private TextView mNoPictureView;
 
     @Override
     public void setData(BaseQuestion node) {
@@ -52,112 +57,91 @@ public class SubjectiveRedoFragment extends RedoSimpleExerciseBaseFragment imple
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putSerializable(KEY_NODE, mData);
+    public View addAnswerView(LayoutInflater inflater, @Nullable ViewGroup container) {
+        mAnswerView = inflater.inflate(R.layout.fragment_redo_subjective, container, false);
+        return mAnswerView;
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        EventBus.getDefault().register(SubjectiveRedoFragment.this);
-        View view = inflater.inflate(R.layout.fragment_subjective, container, false);
-        setQaNumber(view);
-        setQaName(view);
-        initView(view);
-        initComplexStem(view, mData);
+    public void initAnswerView(LayoutInflater inflater, @Nullable ViewGroup container) {
+        initView();
         initData();
         listener();
-        return view;
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        EventBus.getDefault().unregister(SubjectiveRedoFragment.this);
+    public void initAnalysisView() {
+        String answer = "";
+        if (mData.getSubjectAnswer() != null) {
+            for (int i = 0; i < mData.getSubjectAnswer().size(); i++) {
+                if(i < mData.getSubjectAnswer().size() -1){// 不是最后一个
+                    answer += mData.getSubjectAnswer().get(i) + ",";
+                }else{
+                    answer += mData.getSubjectAnswer().get(i);
+                }
+            }
+        }
+        if (mData.getTypeId() == QuestionUtil.QUESTION_TYP.QUESTION_FILL_BLANKS.type || mData.getTypeId() == QuestionUtil.QUESTION_TYP.QUESTION_TRANSLATION.type || mData.getTypeId() == QuestionUtil.QUESTION_TYP.QUESTION_SUBJECTSWERE.type) {
+            String result;
+            if (mData.getScore() == 5) {
+                result = getString(R.string.correct);
+                showAnswerResultView(true, null, result);
+            } else {
+                result = getString(R.string.wrong);
+                showAnswerResultView(false, null, result);
+            }
+        } else {
+            showScoreView(String.valueOf(mData.getScore()));
+        }
+        showVoiceScoldedView(mData.getAudioList());
+        showDifficultyview(mData.getStarCount());
+        showAnswerView(answer);
+        showAnalysisview(mData.getQuestionAnalysis());
+        showPointView(mData.getPointList());
+        showNoteView(mData.getJsonNoteBean());
     }
 
-    private void initView(View view) {
-        mQuestionView = (SubjectClozeTextView) view.findViewById(R.id.tv_question);
-        mAnswerView = (AlbumGridView) view.findViewById(R.id.ag_image);
+    private void initView() {
+        mQuestionView = (SubjectClozeTextView) mAnswerView.findViewById(R.id.tv_question);
+        mSubjectView = (AlbumGridView) mAnswerView.findViewById(R.id.ag_image);
+        mNoPictureView = (TextView) mAnswerView.findViewById(R.id.no_picture);
+        ll_check_analysis = mAnswerView.findViewById(R.id.ll_check_analysis);
+        fl_analysis = mAnswerView.findViewById(R.id.fl_analysis);
+        btnCheck = mAnswerView.findViewById(R.id.btn_check);
     }
 
     private void initData() {
-        String string= StemUtil.initClozeStem(mData.getStem());
+        String string = StemUtil.initClozeStem(mData.getStem());
         mQuestionView.setText(string);
-        mAnswerView.setData(mData.answerList);
+        if (mData.answerList.size() > 0) {
+            mNoPictureView.setVisibility(View.GONE);
+            mSubjectView.setData(mData.answerList);
+            mSubjectView.setCanAddItem(false);
+        } else {
+            mNoPictureView.setVisibility(View.VISIBLE);
+            mSubjectView.setVisibility(View.GONE);
+        }
     }
 
     private void listener() {
-        mAnswerView.addClickListener(this);
-        mAnswerView.addItemChangedListener(this);
+        mSubjectView.addClickListener(this);
+        btnCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ll_check_analysis.setVisibility(View.GONE);
+                fl_analysis.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     @Override
     public void onClick(int Type, int position) {
         switch (Type) {
-            case AlbumGridView.TYPE_CAMERA:
-                YanxiuBaseActivity.requestCameraPermission(SubjectiveRedoFragment.this);
-                break;
             case AlbumGridView.TYPE_IMAGE:
-                PhotoActivity.LaunchActivity(getContext(), mData.answerList, position, SubjectiveRedoFragment.this.hashCode(),PhotoActivity.DELETE_CAN);
+                mToVoiceIsIntent = true;
+                PhotoActivity.LaunchActivity(getContext(), mData.answerList, position, SubjectiveRedoFragment.this.hashCode(), PhotoActivity.DELETE_CANNOT);
                 break;
         }
     }
 
-    @Override
-    public void onChanged(ArrayList<String> paths) {
-        mData.answerList.clear();
-        if (paths != null) {
-            mData.answerList.addAll(paths);
-        }
-        if (mData.answerList.size() > 0) {
-            mData.setHasAnswered(true);
-        } else {
-            mData.setHasAnswered(false);
-        }
-        saveAnswer(mData);
-        updateProgress();
-    }
-
-    public void onEventMainThread(CropCallbackMessage message) {
-        if (message != null && message.fromId == SubjectiveRedoFragment.this.hashCode()) {
-            if (message.path != null) {
-                mAnswerView.addData(message.path);
-            }
-        }
-    }
-
-    public void onEventMainThread(PhotoDeleteBean deleteBean) {
-        if (deleteBean != null && deleteBean.formId == SubjectiveRedoFragment.this.hashCode()) {
-            mAnswerView.remove(deleteBean.deleteId);
-        }
-    }
-
-    private  OnPermissionCallback callback=new OnPermissionCallback() {
-        @Override
-        public void onPermissionsGranted(List<String> deniedPermissions) {
-            CameraActivity.LaunchActivity(getContext(), SubjectiveRedoFragment.this.hashCode());
-        }
-
-        @Override
-        public void onPermissionsDenied(@Nullable List<String> deniedPermissions) {
-            ToastManager.showMsg(R.string.no_storage_permissions);
-        }
-    };
-
-    /**
-     * 获取权限
-     *
-     * @param deniedPermissions
-     */
-    @Override
-    public void onPermissionsGranted(List<String> deniedPermissions) {
-        YanxiuBaseActivity.requestWriteAndReadPermission(callback);
-    }
-
-    @Override
-    public void onPermissionsDenied(@Nullable List<String> deniedPermissions) {
-        ToastManager.showMsg(R.string.no_camera_permissions);
-    }
 }
