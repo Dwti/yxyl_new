@@ -92,6 +92,7 @@ public class MistakeSubjectListActivity extends YanxiuBaseActivity implements Vi
         super.onResume();
         if(mShouldRefreshOnResume){
             requestData();
+            mShouldRefreshOnResume = false;
         }
     }
 
