@@ -121,4 +121,8 @@
         android:layout_height="match_parent"
         android:visibility="gone"/>
 
+    <include layout="@layout/answer_result"
+        android:id="@+id/answer_result"
+        android:visibility="gone"/>
+
 </RelativeLayout>

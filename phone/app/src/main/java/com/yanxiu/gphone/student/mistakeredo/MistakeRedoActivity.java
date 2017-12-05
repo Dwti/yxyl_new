@@ -75,11 +75,12 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
     private ArrayList<BaseQuestion> mQuestions;//题目数据
     private RedoAnswerCardFragment mAnswerCardFragment;
 
+    private View mResultCard;
     private KeyboardObserver mKeyboardObserver;
     private LinearLayout mPrevious_question, mNext_question;//上一题，下一题
     private TextView mNext_text;//下一题textview
     private ImageView mBackView;//返回按钮
-    private ImageView mShowAnswerCardView;//显示答题卡
+    private ImageView mShowAnswerCardView,mAnswerResult;//显示答题卡
     private View mRootView, mOverlay;
     private LoadingView mLoadingView;
     private Button btn_submit;
@@ -142,6 +143,8 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
         mNext_question = (LinearLayout) findViewById(R.id.next_question);
         mNext_text = (TextView) findViewById(R.id.next_text);
         mBackView = (ImageView) findViewById(R.id.backview);
+        mResultCard = findViewById(R.id.answer_result);
+        mAnswerResult = (ImageView) findViewById(R.id.iv_result);
         mShowAnswerCardView = (ImageView) findViewById(R.id.answercardview);
 
         initViewPager();
@@ -322,24 +325,52 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
         }
     }
 
+    private void showResultCard(boolean isRight){
+        mResultCard.setVisibility(View.VISIBLE);
+        if(isRight){
+            mAnswerResult.setImageResource(R.drawable.answer_right);
+        }else {
+            mAnswerResult.setImageResource(R.drawable.answer_wrong);
+        }
+    }
+
+    private void hideResultCard(){
+        mResultCard.setVisibility(View.GONE);
+    }
+
     private void bottomBtnClick() {
         BaseQuestion question = mAdapter.getDatas().get(mViewPager.getCurrentItem());
         switch (mBottomBtnState) {
             //可提交
             case SUBMIT_ABLE:
                 question.setShowType(QuestionShowType.MISTAKE_ANALYSIS);
+                boolean isRight = true;
                 if (question.isComplexQuestion()) {
                     List<BaseQuestion> children = question.getChildren();
                     for(BaseQuestion child : children){
                         child.setShowType(QuestionShowType.MISTAKE_ANALYSIS);
+                        if(!child.getTemplate().equals(QuestionTemplate.ANSWER) && child.getStatus() == Constants.ANSWER_STATUS_WRONG){
+                            isRight = false;
+                        }
                     }
                     mAdapter.notifyDataSetChanged();
-                    WrongComplexExerciseBaseFragment parentFragment = (WrongComplexExerciseBaseFragment) mAdapter.instantiateItem(mViewPager, mViewPager.getCurrentItem());
-                    parentFragment.getmViewPager().getAdapter().notifyDataSetChanged();
+//                    WrongComplexExerciseBaseFragment parentFragment = (WrongComplexExerciseBaseFragment) mAdapter.instantiateItem(mViewPager, mViewPager.getCurrentItem());
+//                    parentFragment.getmViewPager().getAdapter().notifyDataSetChanged();
                 } else {
+                    if(!question.getTemplate().equals(QuestionTemplate.ANSWER) && question.getStatus() == Constants.ANSWER_STATUS_WRONG){
+                        isRight = false;
+                    }
                     mAdapter.notifyDataSetChanged();
                 }
+                showResultCard(isRight);
                 setBottomButtonState(DELETE_ABLE);
+                //1秒后隐藏
+                mViewPager.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        hideResultCard();
+                    }
+                },1000);
                 break;
             //不可提交
             case SUBMIT_UNABLE:
