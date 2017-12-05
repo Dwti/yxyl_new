@@ -79,7 +79,6 @@ public class QAMistakeRedoAdapter extends FragmentStatePagerAdapter {
 
 
     public void deleteItem(int position, int wrongNum) {
-        //TODO 需要考虑删除复合题小题的情况
         if (position > -1 && position < mDatas.size()) {
             BaseQuestion baseQuestion = mDatas.get(position);
             MistakeDeleteMessage deleteMessage = new MistakeDeleteMessage();

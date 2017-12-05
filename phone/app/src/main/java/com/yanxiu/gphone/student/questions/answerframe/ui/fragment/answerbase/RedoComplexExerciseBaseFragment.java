@@ -66,7 +66,7 @@ public abstract class RedoComplexExerciseBaseFragment extends AnswerExerciseBase
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mRootView = inflater.inflate(R.layout.fragment_complex_base, container, false);
+        mRootView = inflater.inflate(R.layout.fragment_complex_redobase, container, false);
         initView();
         setQaNumber(mRootView);
         setQaName(mRootView);
@@ -97,7 +97,7 @@ public abstract class RedoComplexExerciseBaseFragment extends AnswerExerciseBase
                     .commit();
         }
         setTopFragment(topFragment);
-        mViewPager = (QAViewPager) mRootView.findViewById(R.id.ll_bottom_container);
+        mViewPager = (QAViewPager) mRootView.findViewById(R.id.ll_bottom_container_redo);
         mAdapter = new RedoComplexViewPagerAdapter(fm,mAnswerStateChangedListener);
         mAdapter.setData(mBaseQuestion.getChildren());
         mViewPager.setAdapter(mAdapter);

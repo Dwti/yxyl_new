@@ -37,6 +37,7 @@ import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.An
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.RedoComplexExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.RedoSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.wrongbase.WrongComplexExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionTemplate;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionUtil;
@@ -64,7 +65,6 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
     private static final int SUBMIT_UNABLE = 1;
     private static final int DELETE_ABLE = 2;
     private static final int DELETED = 3;
-    private static final int CHECK_ANALYSIS = 4;
 
     private FragmentManager mFragmentManager;
     private QAViewPager mViewPager;
@@ -170,9 +170,9 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
         mFragmentManager = getSupportFragmentManager();
         mViewPager = (QAViewPager) findViewById(R.id.vp_viewPager);
         mViewPager.setOffscreenPageLimit(1);
-        mAdapter = new QAMistakeRedoAdapter(mFragmentManager,mOnInnerPageChangeListener,mOnAnswerStateChangedListener);
+        mAdapter = new QAMistakeRedoAdapter(mFragmentManager, null, mOnAnswerStateChangedListener);
         mAdapter.setSubjectId(mSubjectId);
-        mAdapter.setData(mQuestions,mWrongNum);
+        mAdapter.setData(mQuestions, mWrongNum);
         mViewPager.setAdapter(mAdapter);
         setCurrentState(mQuestions.get(0));
         mNextQidPos = mAdapter.getCount();
@@ -196,10 +196,10 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
                 int totalNum = mAdapter.getCount();
                 if (totalNum < mWrongNum) {
                     if (mViewPager.getCurrentItem() + 1 > totalNum - 3 && !isOnLoadMore) {
-                        requestData(getQids(mNextQidPos, PAGE_SIZE),false);
+                        requestData(getQids(mNextQidPos, PAGE_SIZE), false);
                     }
                 }
-                BaseQuestion baseQuestion = ((ExerciseBaseFragment)mAdapter.getItem(position)).mBaseQuestion;
+                BaseQuestion baseQuestion = ((ExerciseBaseFragment) mAdapter.getItem(position)).mBaseQuestion;
                 setCurrentState(baseQuestion);
             }
 
@@ -210,6 +210,7 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
         });
 
     }
+
     //内层的viewpager
     private ViewPager.OnPageChangeListener mOnInnerPageChangeListener = new ViewPager.OnPageChangeListener() {
         @Override
@@ -221,24 +222,24 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
         public void onPageSelected(int position) {
             BaseQuestion parentQuestion = mAdapter.getDatas().get(mViewPager.getCurrentItem());
             //此处完形填空是个特例:如果外层是完形填空的话，就以大题为准，不以小题为准,(外层已经处理过)
-            if(parentQuestion.getTemplate().equals(QuestionTemplate.CLOZE)){
+            if (parentQuestion.getTemplate().equals(QuestionTemplate.CLOZE)) {
                 return;
             }
             //这是正常的通用逻辑
-            BaseQuestion childQuestion = ((ExerciseBaseFragment)mAdapter.getItem(mViewPager.getCurrentItem())).mBaseQuestion.getChildren().get(position);
+            BaseQuestion childQuestion = ((ExerciseBaseFragment) mAdapter.getItem(mViewPager.getCurrentItem())).mBaseQuestion.getChildren().get(position);
             boolean hasAnswered = childQuestion.getHasAnswered();
-            if(mDeleteQidsList.contains(childQuestion.getQid())){
+            if (mDeleteQidsList.contains(childQuestion.getQid())) {
                 setBottomButtonState(DELETED);
-            }else {
-                if(childQuestion.getShowType().equals(QuestionShowType.MISTAKE_ANALYSIS)){
+            } else {
+                if (childQuestion.getShowType().equals(QuestionShowType.MISTAKE_ANALYSIS)) {
                     setBottomButtonState(DELETE_ABLE);
-                }else {
-                    if(childQuestion.getTemplate().equals(QuestionTemplate.ANSWER)){
-                        setBottomButtonState(CHECK_ANALYSIS);
-                    }else {
-                        if(hasAnswered){
+                } else {
+                    if (childQuestion.getTemplate().equals(QuestionTemplate.ANSWER)) {
+//                        setBottomButtonState(CHECK_ANALYSIS);
+                    } else {
+                        if (hasAnswered) {
                             setBottomButtonState(SUBMIT_ABLE);
-                        }else {
+                        } else {
                             setBottomButtonState(SUBMIT_UNABLE);
                         }
                     }
@@ -259,69 +260,61 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
             //此处肯定是个单题,需要先判断外层是不是复合题
             boolean hasAnswered = true;
             BaseQuestion question = mAdapter.getDatas().get(mViewPager.getCurrentItem());
-            if(question.isComplexQuestion()){
-                if(question.getTemplate().equals(QuestionTemplate.CLOZE)){
-                    List<BaseQuestion> children = question.getChildren();
-                    for(BaseQuestion q : children){
-                        if(!q.getHasAnswered()){
+            if (question.isComplexQuestion()) {
+                List<BaseQuestion> children = question.getChildren();
+                for (BaseQuestion q : children) {
+                    if (q.getTemplate().equals(QuestionTemplate.ANSWER)) {
+                        continue;
+                    } else {
+                        if (!q.getHasAnswered()) {
                             hasAnswered = false;
                             break;
                         }
                     }
-
-                }else {
-                    hasAnswered = baseQuestion.getHasAnswered();
                 }
-
-            }else {
+            } else {
                 hasAnswered = baseQuestion.getHasAnswered();
             }
-
-            if(hasAnswered){
+            if (hasAnswered) {
                 setBottomButtonState(SUBMIT_ABLE);
-            }else {
+            } else {
                 setBottomButtonState(SUBMIT_UNABLE);
             }
         }
     };
 
-    private void setCurrentState(BaseQuestion baseQuestion){
+    private void setCurrentState(BaseQuestion baseQuestion) {
         boolean hasAnswered = true;
         boolean hasDeleted = false;
-        BaseQuestion currentQuestion;  //如果是完型填空，表示外层的大题，否则表示当前的小题
-        //每次滑动到复合题，都是定位到第一个小题，所以取第一个
-        if(baseQuestion.isComplexQuestion()){
-            if(baseQuestion.getTemplate().equals(QuestionTemplate.CLOZE)){
-                List<BaseQuestion> children = baseQuestion.getChildren();
-                for(BaseQuestion q : children){
-                    if(!q.getHasAnswered()){
+        if (baseQuestion.isComplexQuestion()) {
+            List<BaseQuestion> children = baseQuestion.getChildren();
+            for (BaseQuestion q : children) {
+                if (q.getTemplate().equals(QuestionTemplate.ANSWER)) {
+                    continue;
+                } else {
+                    if (!q.getHasAnswered()) {
                         hasAnswered = false;
                         break;
                     }
                 }
-                currentQuestion = baseQuestion;
-            }else {
-                currentQuestion = baseQuestion.getChildren().get(0);
-                hasAnswered = currentQuestion.getHasAnswered();
             }
 
-        }else {
-            currentQuestion = baseQuestion;
-            hasAnswered = currentQuestion.getHasAnswered();
+        } else {
+            hasAnswered = baseQuestion.getHasAnswered();
         }
-        hasDeleted = mDeleteQidsList.contains(currentQuestion.getQid());
-        if(hasDeleted){
+        hasDeleted = mDeletedPos.contains(mViewPager.getCurrentItem());
+        if (hasDeleted) {
             setBottomButtonState(DELETED);
-        }else {
-            if(currentQuestion.getShowType().equals(QuestionShowType.MISTAKE_ANALYSIS)){
+        } else {
+            if (isAllSubjective(baseQuestion)) {
                 setBottomButtonState(DELETE_ABLE);
-            }else {
-                if(currentQuestion.getTemplate().equals(QuestionTemplate.ANSWER)){
-                    setBottomButtonState(CHECK_ANALYSIS);
-                }else {
-                    if(hasAnswered){
+            } else {
+                if (baseQuestion.getShowType().equals(QuestionShowType.MISTAKE_ANALYSIS)) {
+                    setBottomButtonState(DELETE_ABLE);
+                } else {
+                    if (hasAnswered) {
                         setBottomButtonState(SUBMIT_ABLE);
-                    }else {
+                    } else {
                         setBottomButtonState(SUBMIT_UNABLE);
                     }
                 }
@@ -329,23 +322,21 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
         }
     }
 
-    private void bottomBtnClick(){
+    private void bottomBtnClick() {
         BaseQuestion question = mAdapter.getDatas().get(mViewPager.getCurrentItem());
-        switch (mBottomBtnState){
+        switch (mBottomBtnState) {
             //可提交
             case SUBMIT_ABLE:
-                if(question.isComplexQuestion()){
-                    RedoComplexExerciseBaseFragment parentFragment = (RedoComplexExerciseBaseFragment) mAdapter.instantiateItem(mViewPager,mViewPager.getCurrentItem());
-                    if(question.getTemplate().equals(QuestionTemplate.CLOZE)){
-                        question.setShowType(QuestionShowType.MISTAKE_ANALYSIS);
-                    }else {
-                        int innerPos = parentFragment.getmViewPager().getCurrentItem();
-                        BaseQuestion childQuestion = question.getChildren().get(innerPos);
-                        childQuestion.setShowType(QuestionShowType.MISTAKE_ANALYSIS);
+                question.setShowType(QuestionShowType.MISTAKE_ANALYSIS);
+                if (question.isComplexQuestion()) {
+                    List<BaseQuestion> children = question.getChildren();
+                    for(BaseQuestion child : children){
+                        child.setShowType(QuestionShowType.MISTAKE_ANALYSIS);
                     }
+                    mAdapter.notifyDataSetChanged();
+                    WrongComplexExerciseBaseFragment parentFragment = (WrongComplexExerciseBaseFragment) mAdapter.instantiateItem(mViewPager, mViewPager.getCurrentItem());
                     parentFragment.getmViewPager().getAdapter().notifyDataSetChanged();
-                }else {
-                    question.setShowType(QuestionShowType.MISTAKE_ANALYSIS);
+                } else {
                     mAdapter.notifyDataSetChanged();
                 }
                 setBottomButtonState(DELETE_ABLE);
@@ -358,48 +349,31 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
                 break;
             //可删除
             case DELETE_ABLE:
-                if(question.isComplexQuestion()){
-                    RedoComplexExerciseBaseFragment parentFragment = (RedoComplexExerciseBaseFragment) mAdapter.instantiateItem(mViewPager,mViewPager.getCurrentItem());
-                    //完形填空删除整个大题，否则删除单个小题
-                    if(question.getTemplate().equals(QuestionTemplate.CLOZE)){
-                        mDeleteQidsList.add(question.getQid());
-                    }else {
-                        int innerPos = parentFragment.getmViewPager().getCurrentItem();
-                        BaseQuestion childQuestion = question.getChildren().get(innerPos);
-                        mDeleteQidsList.add(childQuestion.getQid());
+                if (!isOnLoadMore) {
+                    //此处需要记录删除的qid 然后在退出时统一删除
+                    ToastManager.showMsg(getString(R.string.question_deleted));
+                    if (mDeletedPos.contains(mViewPager.getCurrentItem())) {
+                        return;
+                    } else {
+                        mDeletedPos.add(mViewPager.getCurrentItem());
                     }
-                    parentFragment.getmViewPager().getAdapter().notifyDataSetChanged();
-                }else {
-                    if(!TextUtils.isEmpty(question.getTypeId_complexToSimple())){
-                        mDeleteQidsList.add(question.getQid_ComplexToSimple());
-                    }else {
-                        mDeleteQidsList.add(question.getQid());
+                    String qid = mAdapter.getQidByPosition(mViewPager.getCurrentItem());
+                    if (mQidsToRemove.length() == 0) {
+                        mQidsToRemove += qid;
+                    } else {
+                        mQidsToRemove = mQidsToRemove + "," + qid;
                     }
+                    setBottomButtonState(DELETED);
                 }
-                setBottomButtonState(DELETED);
-                break;
-            //查看解析
-            case CHECK_ANALYSIS:
-                question.setShowType(QuestionShowType.MISTAKE_ANALYSIS);
-                if(question.isComplexQuestion()){
-                    RedoComplexExerciseBaseFragment parentFragment = (RedoComplexExerciseBaseFragment) mAdapter.instantiateItem(mViewPager,mViewPager.getCurrentItem());
-                    int innerPos = parentFragment.getmViewPager().getCurrentItem();
-                    BaseQuestion childQuestion = question.getChildren().get(innerPos);
-                    childQuestion.setShowType(QuestionShowType.MISTAKE_ANALYSIS);
-                    parentFragment.getmViewPager().getAdapter().notifyDataSetChanged();
-                }else {
-                    mAdapter.notifyDataSetChanged();
-                }
-                setBottomButtonState(DELETE_ABLE);
                 break;
         }
     }
 
-    private void setBottomButtonState(int state){
-        if(mBottomBtnState == state)
+    private void setBottomButtonState(int state) {
+        if (mBottomBtnState == state)
             return;
         mBottomBtnState = state;
-        switch (state){
+        switch (state) {
             //可提交
             case SUBMIT_ABLE:
                 btn_submit.setEnabled(true);
@@ -420,15 +394,30 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
                 btn_submit.setEnabled(true);
                 btn_submit.setText("删除本题");
                 break;
-            //查看解析
-            case CHECK_ANALYSIS:
-                btn_submit.setEnabled(true);
-                btn_submit.setText("查看解析");
-                break;
         }
     }
 
-    private void deleteQuestions(String qids){
+    private boolean isAllSubjective(BaseQuestion baseQuestion) {
+        boolean b = true;
+        if (baseQuestion == null) {
+            b = false;
+            return b;
+        }
+        if (baseQuestion.isComplexQuestion()) {
+            List<BaseQuestion> children = baseQuestion.getChildren();
+            for (BaseQuestion child : children) {
+                if (!child.getTemplate().equals(QuestionTemplate.ANSWER)) {
+                    b = false;
+                    break;
+                }
+            }
+        } else {
+            b = baseQuestion.isComplexQuestion();
+        }
+        return b;
+    }
+
+    private void deleteQuestions(String qids) {
         mLoadingView.showLoadingView();
         FinishReDoWorkRequest request = new FinishReDoWorkRequest();
         request.setDeleteWqidList(qids);
@@ -436,8 +425,8 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
             @Override
             protected void onResponse(RequestBase request, FinishReDoWorkResponse response) {
                 mLoadingView.hiddenLoadingView();
-                if(response.getStatus().getCode() == 0){
-                    for(Integer pos : mDeletedPos){
+                if (response.getStatus().getCode() == 0) {
+                    for (Integer pos : mDeletedPos) {
                         mWrongNum -= 1;
                         mAdapter.deleteItem(pos, mWrongNum);
                     }
@@ -458,8 +447,8 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
      * load more
      * isFromAnswerCard:是否是由点击答题卡跳转产生的数据加载请求
      */
-    private void requestData(String qids,final boolean isFromAnswerCard) {
-        if(isFromAnswerCard){
+    private void requestData(String qids, final boolean isFromAnswerCard) {
+        if (isFromAnswerCard) {
             mLoadingView.showLoadingView();
         }
         isOnLoadMore = true;
@@ -477,12 +466,12 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
                     ToastManager.showMsg(response.getStatus().getDesc());
                 }
                 isOnLoadMore = false;
-                if(isFromAnswerCard){
+                if (isFromAnswerCard) {
                     mLoadingView.hiddenLoadingView();
                     if (mAnswerCardFragment != null) {
                         mFragmentManager.beginTransaction().remove(mAnswerCardFragment).commit();
                     }
-                    if(mAnsCardClickPos < mAdapter.getCount()){
+                    if (mAnsCardClickPos < mAdapter.getCount()) {
                         FragmentStatePagerAdapter a1 = (FragmentStatePagerAdapter) mViewPager.getAdapter();
                         mViewPager.setCurrentItem(mAnsCardClickPos, false);
                         ExerciseBaseFragment currentFragment = (ExerciseBaseFragment) a1.instantiateItem(mViewPager, mAnsCardClickPos);
@@ -495,7 +484,7 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
             public void onFail(RequestBase request, Error error) {
                 isOnLoadMore = false;
                 ToastManager.showMsg(error.getMessage());
-                if(isFromAnswerCard){
+                if (isFromAnswerCard) {
                     mLoadingView.hiddenLoadingView();
                     if (mAnswerCardFragment != null) {
                         mFragmentManager.beginTransaction().remove(mAnswerCardFragment).commit();
@@ -505,20 +494,20 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
         });
     }
 
-    private String getQids(int fromPosition,int count){
+    private String getQids(int fromPosition, int count) {
         String qids = "";
-        if(fromPosition < 0 || fromPosition > mQids.size() - 1 || count < 1){
+        if (fromPosition < 0 || fromPosition > mQids.size() - 1 || count < 1) {
             return qids;
         }
         int boundary = fromPosition + count;
-        if( boundary > mQids.size() -1){
+        if (boundary > mQids.size() - 1) {
             boundary = mQids.size() - 1;
         }
-        for(int i = fromPosition; i <= boundary; i ++){
+        for (int i = fromPosition; i <= boundary; i++) {
             String qid = mQids.get(i);
-            if(qids.length() == 0){
+            if (qids.length() == 0) {
                 qids += qid;
-            }else {
+            } else {
                 qids = qids + "," + qid;
             }
         }
@@ -537,7 +526,7 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
         // 可以在这里打个断点，所有Fill Blank的答案均已存入nodes里
         if (mAnswerCardFragment == null) {
             mAnswerCardFragment = new RedoAnswerCardFragment();
-            mAnswerCardFragment.setData(mPaper, mTitleString,mQids.size());
+            mAnswerCardFragment.setData(mPaper, mTitleString, mQids.size());
             mAnswerCardFragment.setOnCardItemSelectListener(MistakeRedoActivity.this);
         }
         if (mFragmentManager.findFragmentById(R.id.fragment_answercard) == null) {
@@ -777,23 +766,6 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
             case R.id.answercardview:
                 showAnswerCardFragment();
                 break;
-            case R.id.tv_delete:
-                if (!isOnLoadMore) {
-                    //此处需要记录删除的qid 然后在退出时统一删除
-                    ToastManager.showMsg(getString(R.string.question_deleted));
-                    if(mDeletedPos.contains(mViewPager.getCurrentItem())){
-                        return;
-                    }else {
-                        mDeletedPos.add(mViewPager.getCurrentItem());
-                    }
-                    String qid = mAdapter.getQidByPosition(mViewPager.getCurrentItem());
-                    if(mQidsToRemove.length() == 0){
-                        mQidsToRemove += qid;
-                    }else {
-                        mQidsToRemove = mQidsToRemove + "," + qid;
-                    }
-                }
-                break;
             case R.id.submit:
                 bottomBtnClick();
                 break;
@@ -826,7 +798,7 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
         intent.putExtra(SUBJECTID, subjectId);
         intent.putExtra(STAGEID, stageId);
         intent.putExtra(WRONG_NUM, wrongNum);
-        intent.putStringArrayListExtra(QIDS,qids);
+        intent.putStringArrayListExtra(QIDS, qids);
         context.startActivity(intent);
     }
 
@@ -838,9 +810,9 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
             return;
         }
         SpManager.setCompleteQuestionCount(mPaper.getId(), QuestionUtil.calculateCompleteCount(mQuestions));
-        if(!TextUtils.isEmpty(mQidsToRemove)){
+        if (!TextUtils.isEmpty(mQidsToRemove)) {
             deleteQuestions(mQidsToRemove);
-        }else {
+        } else {
             super.onBackPressed();
         }
     }
@@ -850,7 +822,7 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
         //答题卡跳转逻辑 以及分页加载逻辑
         mAnsCardClickPos = position;
         // 2, 跳转
-        if(question != null){
+        if (question != null) {
             if (mAnswerCardFragment != null) {
                 mFragmentManager.beginTransaction().remove(mAnswerCardFragment).commit();
             }
@@ -858,9 +830,9 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
             mViewPager.setCurrentItem(position, false);
             ExerciseBaseFragment currentFragment = (ExerciseBaseFragment) a1.instantiateItem(mViewPager, position);
             currentFragment.setUserVisibleHin2(true);
-        }else {
+        } else {
             //分页加载数据
-            requestData(getQids(mNextQidPos,position + 3),true);
+            requestData(getQids(mNextQidPos, position + 3), true);
         }
 
 //        ArrayList<Integer> remainPositions = new ArrayList<>(question.getLevelPositions());

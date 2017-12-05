@@ -17,7 +17,7 @@ import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.TopBaseF
 public class ListenRedoFragment extends RedoComplexExerciseBaseFragment {
 
     private ListenComplexQuestion mData;
-    private ListenComplexTopFragment topFragment;
+    private ListenRedoTopFragment topFragment;
 
     @Override
     public void setData(BaseQuestion baseQuestion) {
@@ -27,14 +27,14 @@ public class ListenRedoFragment extends RedoComplexExerciseBaseFragment {
 
     @Override
     protected TopBaseFragment getTopFragment() {
-        ListenComplexTopFragment topFragment=new ListenComplexTopFragment();
+        ListenRedoTopFragment topFragment=new ListenRedoTopFragment();
         topFragment.setData(mData);
         return topFragment;
     }
 
     @Override
     protected void setTopFragment(Fragment fragment) {
-        topFragment= (ListenComplexTopFragment) fragment;
+        topFragment= (ListenRedoTopFragment) fragment;
     }
 
     @Override
