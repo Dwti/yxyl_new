@@ -155,6 +155,9 @@ public class QuestionUtil {
             case 22:
                 name = "解答题";
                 break;
+            case 23:
+                name = "写作题";
+                break;
             case 9:
             case 10:
             case 11:
@@ -284,6 +287,10 @@ public class QuestionUtil {
                 break;
             case "材料阅读":
                 result = 18;
+                break;
+            case "写作题":
+                //因为要放在所有题型的后面，所以给一个比较大的数值
+                result = 30;
                 break;
         }
         return result;
