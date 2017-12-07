@@ -34,7 +34,7 @@ public class ReadingComplexQuestion extends BaseQuestion {
 
     @Override
     public ExerciseBaseFragment redoFragment() {
-        return new ListenRedoFragment();
+        return new ReadingRedoFragment();
     }
 
     @Override

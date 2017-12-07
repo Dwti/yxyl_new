@@ -108,6 +108,7 @@ public class SubjectiveRedoFragment extends WrongSimpleExerciseBaseFragment impl
         ll_check_analysis = mAnswerView.findViewById(R.id.ll_check_analysis);
         fl_analysis = mAnswerView.findViewById(R.id.fl_analysis);
         btnCheck = mAnswerView.findViewById(R.id.btn_check);
+        setAnalysisVisible(View.GONE);
     }
 
     private void initData() {
@@ -129,6 +130,7 @@ public class SubjectiveRedoFragment extends WrongSimpleExerciseBaseFragment impl
             @Override
             public void onClick(View v) {
                 ll_check_analysis.setVisibility(View.GONE);
+                setAnalysisVisible(View.VISIBLE);
                 fl_analysis.setVisibility(View.VISIBLE);
             }
         });

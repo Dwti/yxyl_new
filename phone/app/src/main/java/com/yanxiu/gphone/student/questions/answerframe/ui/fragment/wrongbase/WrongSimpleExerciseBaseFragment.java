@@ -42,11 +42,11 @@ import de.greenrobot.event.EventBus;
  * Time : 2017/7/18 15:28.
  * Function :
  */
-public abstract class WrongSimpleExerciseBaseFragment extends WrongExercisbaseFragment implements View.OnClickListener{
+public abstract class WrongSimpleExerciseBaseFragment extends WrongExercisbaseFragment implements View.OnClickListener {
 
     private BaseQuestion mData;
 
-    public View mRootView;
+    public View mRootView, fl_analysis;
     public LinearLayout mAnsewr_container, mAnalysis_container;
     public AnalysisQuestionResultView mAnswerResultView;//答题结果view
     public ImageView mYesno_img;//答题结果对应的对错img，一定要和mAnswerResultView成对出现或隐藏
@@ -57,7 +57,7 @@ public abstract class WrongSimpleExerciseBaseFragment extends WrongExercisbaseFr
     private PointLayoutView mPointView;//知识的view
     private VoiceScoldedLayoutView mVoiceScoldedView;//语音批注
     private NotesLayoutView mNoteView;//笔记
-    protected boolean mToVoiceIsIntent=false;
+    protected boolean mToVoiceIsIntent = false;
     private ListenerSeekBarLayout mListenView;//听力复合题只有一个子题时，题干的听力控件
 
     @Override
@@ -83,6 +83,7 @@ public abstract class WrongSimpleExerciseBaseFragment extends WrongExercisbaseFr
 
     private void initView(LayoutInflater inflater, @Nullable ViewGroup container) {
         mAnsewr_container = (LinearLayout) mRootView.findViewById(R.id.ansewr_container);
+        fl_analysis = mRootView.findViewById(R.id.fl_analysis);
         mAnalysis_container = (LinearLayout) mRootView.findViewById(R.id.analysis_container);
 
         mAnswerResultView = (AnalysisQuestionResultView) mRootView.findViewById(R.id.answerResult);
@@ -94,9 +95,9 @@ public abstract class WrongSimpleExerciseBaseFragment extends WrongExercisbaseFr
         mPointView = (PointLayoutView) mRootView.findViewById(R.id.pointview);
         mAnswerView = (AnswerLayoutView) mRootView.findViewById(R.id.answerview);
         mVoiceScoldedView = (VoiceScoldedLayoutView) mRootView.findViewById(R.id.voicescoldedview);
-        mNoteView= (NotesLayoutView) mRootView.findViewById(R.id.noteview);
+        mNoteView = (NotesLayoutView) mRootView.findViewById(R.id.noteview);
 
-        View answerView = addAnswerView(inflater,container);
+        View answerView = addAnswerView(inflater, container);
         mAnsewr_container.addView(answerView);
         initAnswerView(inflater, container);
         initAnalysisView();
@@ -106,12 +107,18 @@ public abstract class WrongSimpleExerciseBaseFragment extends WrongExercisbaseFr
         hiddenBottomPaddinglayout(mAnsewr_container);
     }
 
+    public void setAnalysisVisible(int visible) {
+        if (fl_analysis != null)
+            fl_analysis.setVisibility(visible);
+    }
+
     /**
      * 如果是只有一个子题的复合题，显示大题的题干
      * (所有单题型都需要支持该方法)
      *
      * @param view
      */
+
     public void initComplexStem(View view, BaseQuestion data) {
         //通用题干
         LinearLayout complex_stem_layout = (LinearLayout) view.findViewById(R.id.complex_stem_layout);
@@ -136,11 +143,11 @@ public abstract class WrongSimpleExerciseBaseFragment extends WrongExercisbaseFr
     /**
      * 隐藏单题型底部设置的paddinglayout
      */
-    private void hiddenBottomPaddinglayout(View view){
-        try{
+    private void hiddenBottomPaddinglayout(View view) {
+        try {
             View bottomPaddingLayout = view.findViewById(R.id.bottompadding_layout);
             bottomPaddingLayout.setVisibility(View.GONE);
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -171,11 +178,11 @@ public abstract class WrongSimpleExerciseBaseFragment extends WrongExercisbaseFr
     /**
      * 答题结果view
      *
-     * @param isRight 是否正确
-     * @param result  server返回的（没有该数据请传空）
-     * @param textContent  给某些题型使用，传入“正确”或者“错误”；不需要请传入null
+     * @param isRight     是否正确
+     * @param result      server返回的（没有该数据请传空）
+     * @param textContent 给某些题型使用，传入“正确”或者“错误”；不需要请传入null
      */
-    public void showAnswerResultView(boolean isRight, String result,String textContent) {
+    public void showAnswerResultView(boolean isRight, String result, String textContent) {
         if (mAnswerResultView != null && mYesno_img != null) {
             int status = mData.getPad().getStatus();
             if (QuestionTemplate.ANSWER.equals(mData.getTemplate())) { //主观题
@@ -264,9 +271,9 @@ public abstract class WrongSimpleExerciseBaseFragment extends WrongExercisbaseFr
 
     /**
      * 答案
-     * */
-    public void showAnswerView(String strem){
-        if (TextUtils.isEmpty(strem)){
+     */
+    public void showAnswerView(String strem) {
+        if (TextUtils.isEmpty(strem)) {
             return;
         }
         mAnswerView.setText(strem);
@@ -275,9 +282,9 @@ public abstract class WrongSimpleExerciseBaseFragment extends WrongExercisbaseFr
 
     /**
      * 知识点
-     * */
-    public void showPointView(List<PointBean> data){
-        if (data==null){
+     */
+    public void showPointView(List<PointBean> data) {
+        if (data == null) {
             return;
         }
         for (PointBean pointBean : data) {
@@ -288,9 +295,9 @@ public abstract class WrongSimpleExerciseBaseFragment extends WrongExercisbaseFr
 
     /**
      * 语音批语
-     * */
-    public void showVoiceScoldedView(List<JsonAudioComment> list){
-        if (list==null||list.size()==0){
+     */
+    public void showVoiceScoldedView(List<JsonAudioComment> list) {
+        if (list == null || list.size() == 0) {
             return;
         }
         mVoiceScoldedView.setData(list);
@@ -299,8 +306,8 @@ public abstract class WrongSimpleExerciseBaseFragment extends WrongExercisbaseFr
 
     /**
      * 笔记
-     * */
-    public void showNoteView(JsonNoteBean noteBean){
+     */
+    public void showNoteView(JsonNoteBean noteBean) {
         mNoteView.setData(noteBean);
     }
 
@@ -313,8 +320,8 @@ public abstract class WrongSimpleExerciseBaseFragment extends WrongExercisbaseFr
         }
     }
 
-    public void onEventMainThread(HomeEventMessage message){
-        mToVoiceIsIntent=false;
+    public void onEventMainThread(HomeEventMessage message) {
+        mToVoiceIsIntent = false;
         setVoicePause();
     }
 
@@ -335,15 +342,15 @@ public abstract class WrongSimpleExerciseBaseFragment extends WrongExercisbaseFr
     public void onVisibilityChangedToUser(boolean isVisibleToUser, boolean invokeInResumeOrPause) {
         super.onVisibilityChangedToUser(isVisibleToUser, invokeInResumeOrPause);
         if (isVisibleToUser) {
-            mToVoiceIsIntent=false;
+            mToVoiceIsIntent = false;
             if (null != mListenView) {
                 mListenView.setResume();
-                if (mData.mIsShouldPlay&&!mData.mIsPause){
-                    mListenView.setPlayToProgress(mData.mProgress,mData.mMax);
-                    mData.mIsShouldPlay=false;
-                }else if (mData.mIsShouldPlay&&mData.mIsPause){
-                    mListenView.setPauseToProgress(mData.mProgress,mData.mMax);
-                    mData.mIsShouldPlay=false;
+                if (mData.mIsShouldPlay && !mData.mIsPause) {
+                    mListenView.setPlayToProgress(mData.mProgress, mData.mMax);
+                    mData.mIsShouldPlay = false;
+                } else if (mData.mIsShouldPlay && mData.mIsPause) {
+                    mListenView.setPauseToProgress(mData.mProgress, mData.mMax);
+                    mData.mIsShouldPlay = false;
                 }
             }
         } else {
@@ -353,8 +360,8 @@ public abstract class WrongSimpleExerciseBaseFragment extends WrongExercisbaseFr
         }
     }
 
-    private void setVoicePause(){
-        if (mVoiceScoldedView != null&&!mToVoiceIsIntent) {
+    private void setVoicePause() {
+        if (mVoiceScoldedView != null && !mToVoiceIsIntent) {
             mVoiceScoldedView.setStop();
         }
     }
@@ -369,10 +376,10 @@ public abstract class WrongSimpleExerciseBaseFragment extends WrongExercisbaseFr
     public void onDestroyView() {
         super.onDestroyView();
         if (null != mListenView) {
-            mData.mProgress=mListenView.getProgress();
-            mData.mMax=mListenView.getMax();
-            mData.mIsShouldPlay=mListenView.getIsPlaying();
-            mData.mIsPause=mListenView.getIsPause();
+            mData.mProgress = mListenView.getProgress();
+            mData.mMax = mListenView.getMax();
+            mData.mIsShouldPlay = mListenView.getIsPlaying();
+            mData.mIsPause = mListenView.getIsPause();
             mListenView.setDestory();
         }
         if (mVoiceScoldedView != null) {

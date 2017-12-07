@@ -95,7 +95,7 @@ public class FillBlankRedoFragment extends RedoSimpleExerciseBaseFragment implem
         mSend = (Button) mRootView.findViewById(R.id.btnSend);
         mScrollView = (ScrollView) mRootView.findViewById(R.id.scrollView);
         mViewWrapper = mRootView.findViewById(R.id.viewWrapper);
-        mActivityRootView = ((AnswerQuestionActivity)getActivity()).getRootView();
+        mActivityRootView = ((MistakeRedoActivity)getActivity()).getRootView();
         mBottom = mActivityRootView.findViewById(R.id.bottom);
         mEditText = (EditText) mRootView.findViewById(R.id.editText);
         imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);

@@ -39,7 +39,8 @@
                 android:layout_height="100dp"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:layout_marginTop="1dp">
+                android:layout_marginTop="1dp"
+                android:background="#fafafa">
 
                 <Button
                     android:id="@+id/btn_check"
@@ -65,7 +66,7 @@
                 android:id="@+id/fl_analysis"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="invisible">
+                android:visibility="gone">
 
                 <FrameLayout
                     android:layout_width="match_parent"
