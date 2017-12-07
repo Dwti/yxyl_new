@@ -18,11 +18,11 @@ import java.util.HashMap;
  * Created by sunpeng on 26/05/2017.
  */
 
-public class HtmlImageGetter1 implements Html.ImageGetter {
+public class HtmlImageGetterNew implements Html.ImageGetter {
     TextView mTextView;
     HashMap<String, UrlDrawable> mMap;
 
-    public HtmlImageGetter1(TextView textview) {
+    public HtmlImageGetterNew(TextView textview) {
         mTextView = textview;
         mMap = new HashMap<>();
     }

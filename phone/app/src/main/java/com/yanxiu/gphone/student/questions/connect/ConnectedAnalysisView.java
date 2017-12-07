@@ -16,8 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
-import com.yanxiu.gphone.student.util.HtmlImageGetter;
-import com.yanxiu.gphone.student.util.HtmlImageGetter1;
+import com.yanxiu.gphone.student.util.HtmlImageGetterNew;
 import com.yanxiu.gphone.student.util.ScreenUtils;
 
 import java.util.ArrayList;
@@ -135,8 +134,8 @@ public class ConnectedAnalysisView extends LinearLayout {
             if (!containsRight) {
                 rightText.setBackground(getResources().getDrawable(R.drawable.shape_connect_item_orange));
             }
-            leftText.setText(Html.fromHtml(leftData.get(i), new HtmlImageGetter1(leftText), null));
-            rightText.setText(Html.fromHtml(rightData.get(i), new HtmlImageGetter1(rightText), null));
+            leftText.setText(Html.fromHtml(leftData.get(i), new HtmlImageGetterNew(leftText), null));
+            rightText.setText(Html.fromHtml(rightData.get(i), new HtmlImageGetterNew(rightText), null));
             addView(view);
         }
         isAllChildAdded = true;
