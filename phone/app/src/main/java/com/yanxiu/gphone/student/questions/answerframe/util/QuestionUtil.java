@@ -158,6 +158,9 @@ public class QuestionUtil {
             case 23:
                 name = "写作题";
                 break;
+            case 24:
+                name = "解决问题";
+                break;
             case 9:
             case 10:
             case 11:
@@ -280,6 +283,9 @@ public class QuestionUtil {
                 result = 15;
                 break;
             case "解答题":
+                result = 16;
+                break;
+            case "解决问题":
                 result = 16;
                 break;
             case "问答题":
