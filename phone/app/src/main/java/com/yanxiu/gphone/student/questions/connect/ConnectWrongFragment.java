@@ -80,13 +80,13 @@ public class ConnectWrongFragment extends WrongSimpleExerciseBaseFragment {
 
     @Override
     public View addAnswerView(LayoutInflater inflater, @Nullable ViewGroup container) {
-        mRootView = inflater.inflate(R.layout.fragment_analysis_connect, container, false);
+        mRootView = inflater.inflate(R.layout.fragment_wrong_analysis_connect, container, false);
         return mRootView;
     }
 
     @Override
     public void initAnswerView(LayoutInflater inflater, @Nullable ViewGroup container) {
-        ConnectedView connectedView = (ConnectedView) mRootView.findViewById(R.id.connected_view);
+        ConnectedAnalysisView connectedView = (ConnectedAnalysisView) mRootView.findViewById(R.id.connected_view);
         mStem = (TextView) mRootView.findViewById(R.id.stem);
         initData();
         mStem.post(new Runnable() {
