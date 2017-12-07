@@ -23,7 +23,7 @@ import com.yanxiu.gphone.student.util.Logger;
 /**
  * Created by Canghaixiao.
  * Time : 2017/10/23 10:14.
- * Function :                    SB 美工，妄想使用两套尺寸
+ * Function :                    美工，妄想使用两套尺寸
  */
 public class SpokenAnimDrawable extends Drawable {
 

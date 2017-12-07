@@ -107,7 +107,7 @@ public class SpokenUtils {
             }catch (Exception e){
                 e.printStackTrace();
             }
-            mIOralEvalSDK.stop();
+//            mIOralEvalSDK.stop();
             return;
         }
         if (TextUtils.isEmpty(text)){
