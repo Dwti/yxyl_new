@@ -19,6 +19,7 @@ import com.yanxiu.gphone.student.customviews.ListenerSeekBarLayout;
 import com.yanxiu.gphone.student.customviews.analysis.AnalysisAnsewrAnslysisView;
 import com.yanxiu.gphone.student.customviews.analysis.AnalysisDifficultyView;
 import com.yanxiu.gphone.student.customviews.analysis.AnalysisQuestionResultView;
+import com.yanxiu.gphone.student.customviews.analysis.AnalysisQuestionSpokenResultView;
 import com.yanxiu.gphone.student.customviews.analysis.AnalysisScoreView;
 import com.yanxiu.gphone.student.customviews.analysis.AnswerLayoutView;
 import com.yanxiu.gphone.student.customviews.analysis.NotesLayoutView;
@@ -48,6 +49,7 @@ public abstract class WrongSimpleExerciseBaseFragment extends WrongExercisbaseFr
 
     public View mRootView, fl_analysis;
     public LinearLayout mAnsewr_container, mAnalysis_container;
+    private AnalysisQuestionSpokenResultView mAnswerSpokenResultView;
     public AnalysisQuestionResultView mAnswerResultView;//答题结果view
     public ImageView mYesno_img;//答题结果对应的对错img，一定要和mAnswerResultView成对出现或隐藏
     public AnalysisScoreView mScoreView;//评分view
@@ -85,6 +87,7 @@ public abstract class WrongSimpleExerciseBaseFragment extends WrongExercisbaseFr
         mAnsewr_container = (LinearLayout) mRootView.findViewById(R.id.ansewr_container);
         fl_analysis = mRootView.findViewById(R.id.fl_analysis);
         mAnalysis_container = (LinearLayout) mRootView.findViewById(R.id.analysis_container);
+        mAnswerSpokenResultView= (AnalysisQuestionSpokenResultView) mRootView.findViewById(R.id.answerSpokenResult);
 
         mAnswerResultView = (AnalysisQuestionResultView) mRootView.findViewById(R.id.answerResult);
         mYesno_img = (ImageView) mRootView.findViewById(R.id.yesno_img);
@@ -278,6 +281,29 @@ public abstract class WrongSimpleExerciseBaseFragment extends WrongExercisbaseFr
         }
         mAnswerView.setText(strem);
         mAnswerView.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * 仅限于口语作答结果
+     * */
+    public void showAnswerSpokenResultView(int score){
+        mAnswerSpokenResultView.setVisibility(View.VISIBLE);
+        mAnswerSpokenResultView.setData(score);
+        mYesno_img.setVisibility(View.VISIBLE);
+        switch (score){
+            case 0:
+            case 1:
+                mYesno_img.setBackgroundResource(R.drawable.analysis_wrong_img);
+                break;
+            case 2:
+            case 3:
+                mYesno_img.setBackgroundResource(R.drawable.analysis_yes_img);
+                break;
+            default:
+                mYesno_img.setBackgroundResource(R.drawable.analysis_wrong_img);
+                break;
+        }
+
     }
 
     /**
