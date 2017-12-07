@@ -7,23 +7,26 @@ import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroupOverlay;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.YanxiuBaseFragment;
 import com.yanxiu.gphone.student.db.SaveAnswerDBHelper;
+import com.yanxiu.gphone.student.mistakeredo.MistakeRedoActivity;
 import com.yanxiu.gphone.student.questions.answerframe.bean.AnswerBean;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnalysisQuestionActivity;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerQuestionActivity;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
 import com.yanxiu.gphone.student.questions.answerframe.listener.IExercise;
-import com.yanxiu.gphone.student.questions.answerframe.ui.activity.WrongQuestionActivity;
+import com.yanxiu.gphone.student.questions.answerframe.ui.activity.MistakeAnalysisActivity;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.analysisbase.AnalysisComplexExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerComplexExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.wrongbase.WrongComplexExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.util.FragmentUserVisibleController;
+import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionTemplate;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionUtil;
 import com.yanxiu.gphone.student.util.TextTypefaceUtil;
@@ -74,11 +77,22 @@ public abstract class ExerciseBaseFragment extends YanxiuBaseFragment implements
             mQaNumber = (TextView) v.findViewById(R.id.qa_number);
             String str = mBaseQuestion.numberStringForShow();
             Fragment parentFragment = getParentFragment();
-            if (parentFragment instanceof AnswerComplexExerciseBaseFragment || parentFragment instanceof AnalysisComplexExerciseBaseFragment) {
-                mQaNumber.setTextColor(getResources().getColor(R.color.color_999999));
-                TextTypefaceUtil.setViewTypeface(TextTypefaceUtil.TypefaceType.METRO_PLAY, mQaNumber);
-            } else if (parentFragment instanceof WrongComplexExerciseBaseFragment) {
-                mQaNumber.setVisibility(View.GONE);
+            boolean isChild = parentFragment != null;
+            boolean isComplexQuestion = mBaseQuestion.isComplexQuestion();
+            if(mBaseQuestion.getShowType().equals(QuestionShowType.MISTAKE_ANALYSIS) || mBaseQuestion.getShowType().equals(QuestionShowType.MISTAKE_REDO)){
+                if(isChild){
+                    //错题解析跟错题重做，子题右上角不显示题号
+                    mQaNumber.setVisibility(View.GONE);
+                }
+            }else if(mBaseQuestion.getShowType().equals(QuestionShowType.ANSWER) || mBaseQuestion.getShowType().equals(QuestionShowType.ANALYSIS)){
+                //答题跟解析的复合题不显示题号（复合题的小题显示）
+                if(isComplexQuestion){
+                    mQaNumber.setVisibility(View.GONE);
+                }
+                if(isChild){
+                    mQaNumber.setTextColor(getResources().getColor(R.color.color_999999));
+                    TextTypefaceUtil.setViewTypeface(TextTypefaceUtil.TypefaceType.METRO_PLAY, mQaNumber);
+                }
             }
             mQaNumber.setText(str);
         } catch (Exception e) {
@@ -240,8 +254,11 @@ public abstract class ExerciseBaseFragment extends YanxiuBaseFragment implements
         } else if (getActivity() instanceof AnalysisQuestionActivity) {
             AnalysisQuestionActivity acticity = (AnalysisQuestionActivity) getActivity();
             acticity.hiddenSwitchQuestionView();
-        } else if (getActivity() instanceof WrongQuestionActivity) {
-            WrongQuestionActivity activity = (WrongQuestionActivity) getActivity();
+        } else if (getActivity() instanceof MistakeAnalysisActivity) {
+            MistakeAnalysisActivity activity = (MistakeAnalysisActivity) getActivity();
+            activity.hiddenSwitchQuestionView();
+        } else if (getActivity() instanceof MistakeRedoActivity){
+            MistakeRedoActivity activity = (MistakeRedoActivity) getActivity();
             activity.hiddenSwitchQuestionView();
         }
 

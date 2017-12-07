@@ -23,7 +23,7 @@ import com.yanxiu.gphone.student.homework.classmanage.activity.JoinClassActivity
 import com.yanxiu.gphone.student.login.activity.ChooseStageActivity;
 import com.yanxiu.gphone.student.user.feedback.activity.FeedbackActivity;
 import com.yanxiu.gphone.student.exercise.SelectSubjectActivity;
-import com.yanxiu.gphone.student.user.mistake.activity.MistakeListActivity;
+import com.yanxiu.gphone.student.user.mistake.activity.MistakeSubjectListActivity;
 import com.yanxiu.gphone.student.user.setting.activity.SettingActivity;
 import com.yanxiu.gphone.student.user.userinfo.activity.UserInfoActivity;
 import com.yanxiu.gphone.student.util.LoginInfo;
@@ -188,7 +188,7 @@ public class MyFragment extends HomePageBaseFragment implements View.OnClickList
                 UserInfoActivity.LaunchActivity(getContext());
                 break;
             case R.id.user_my_mistake:
-                MistakeListActivity.LuanchActivity(getContext());
+                MistakeSubjectListActivity.LuanchActivity(getContext());
                 break;
             case R.id.user_exrcise_history:
                 SubjectHistoryActivity.invoke(getContext());

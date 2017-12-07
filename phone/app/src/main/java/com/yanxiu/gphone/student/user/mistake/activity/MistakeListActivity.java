@@ -4,164 +4,209 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
-import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
+import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
-import com.yanxiu.gphone.student.user.mistake.adapter.MistakeListAdapter;
-import com.yanxiu.gphone.student.user.mistake.request.MistakeListRequest;
-import com.yanxiu.gphone.student.user.mistake.response.MistakeDeleteMessage;
-import com.yanxiu.gphone.student.user.mistake.response.MistakeListResponse;
+import com.yanxiu.gphone.student.user.mistake.fragment.MistakeChapterFragment;
+import com.yanxiu.gphone.student.user.mistake.fragment.MistakeAllFragment;
+import com.yanxiu.gphone.student.user.mistake.fragment.MistakeKongledgeFragment;
 import com.yanxiu.gphone.student.util.LoginInfo;
-import com.yanxiu.gphone.student.util.ToastManager;
 
-import java.util.List;
-
-import de.greenrobot.event.EventBus;
+import java.util.ArrayList;
 
 /**
  * Created by Canghaixiao.
- * Time : 2017/7/12 11:23.
+ * Time : 2017/7/13 16:04.
  * Function :
  */
-public class MistakeListActivity extends YanxiuBaseActivity implements View.OnClickListener, MistakeListAdapter.onItemClickListener {
+public class MistakeListActivity extends YanxiuBaseActivity implements RadioGroup.OnCheckedChangeListener, View.OnClickListener {
 
-    private Context mContext;
-    private View mTopView;
+    private static final String MISTAKE_ALL = "all";
+    private static final String MISTAKE_CHAPTER = "chapter";
+    private static final String MISTAKE_KONGLEDGE = "kongledge";
+
+    public static final String TITLE = "title";
+    public static final String WRONGNUM = "wrongNum";
+    public static final String SUBJECTID = "subjectId";
+    public static final String EDITIONID = "editionId";
+    public static final String STAGEID = "stageId";
+    public static final String QIDS = "qids";
+
+    private RadioGroup mClassifyView;
+    private RadioButton mAllView;
+    private RadioButton mKongledgeView;
     private ImageView mBackView;
     private TextView mTitleView;
-    private MistakeListAdapter mMistakeAdapter;
-    private PublicLoadLayout rootView;
-    private MistakeListRequest mMistakeListRequest;
+    private Button btn_mistake_redo;
+    private View mTopView;
+    private String mTitle;
+    private String mSubjectId;
+    private int mWrongNum;
+    private String mEditionId;
+    private String mStageId;
+    private ArrayList<String> mQids;
+    private FragmentManager mManager = getSupportFragmentManager();
 
-    public static void LuanchActivity(Context context){
-        Intent intent=new Intent(context,MistakeListActivity.class);
+    public static void LaunchActivity(Context context, String title, String subjectId,ArrayList<String> qids) {
+        Intent intent = new Intent(context, MistakeListActivity.class);
+        intent.putExtra(TITLE, title);
+        intent.putExtra(SUBJECTID, subjectId);
+        intent.putExtra(WRONGNUM, qids.size());
+        intent.putStringArrayListExtra(QIDS,qids);
         context.startActivity(intent);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mContext=MistakeListActivity.this;
-        EventBus.getDefault().register(mContext);
-        rootView=new PublicLoadLayout(mContext);
-        rootView.setContentView(R.layout.activity_mistakelist);
+        PublicLoadLayout rootView = new PublicLoadLayout(this);
+        rootView.setContentView(R.layout.activity_mistakeclassify);
         setContentView(rootView);
+        mTitle = getIntent().getStringExtra(TITLE);
+        mSubjectId = getIntent().getStringExtra(SUBJECTID);
+        mWrongNum = getIntent().getIntExtra(WRONGNUM, 0);
+        mEditionId = getIntent().getStringExtra(EDITIONID);
+        mQids = getIntent().getStringArrayListExtra(QIDS);
+        mStageId = LoginInfo.getStageid();
         initView();
+        initFragment();
         listener();
         initData();
     }
 
     private void initView() {
-        mBackView= (ImageView) findViewById(R.id.iv_left);
-        mTitleView= (TextView) findViewById(R.id.tv_title);
         mTopView=findViewById(R.id.include_top);
-        RecyclerView mistakeListView = (RecyclerView) findViewById(R.id.recy);
-        mistakeListView.setLayoutManager(new LinearLayoutManager(this));
-        mMistakeAdapter=new MistakeListAdapter(this);
-        mistakeListView.setAdapter(mMistakeAdapter);
+        mBackView = (ImageView) findViewById(R.id.iv_left);
+        mTitleView = (TextView) findViewById(R.id.tv_title);
+        btn_mistake_redo = (Button) findViewById(R.id.btn_mistake_redo);
+
+        mClassifyView = (RadioGroup) findViewById(R.id.rg_classify);
+        mAllView = (RadioButton) findViewById(R.id.rb_all);
+        mKongledgeView = (RadioButton) findViewById(R.id.rb_kongledge);
+    }
+
+    private void initFragment() {
+        Bundle bundle = new Bundle();
+        bundle.putString(STAGEID, mStageId);
+        bundle.putString(SUBJECTID, mSubjectId);
+        bundle.putInt(WRONGNUM, mWrongNum);
+        bundle.putStringArrayList(QIDS,mQids);
+        bundle.putString(TITLE,mTitle);
+
+        FragmentTransaction transaction = mManager.beginTransaction();
+        MistakeChapterFragment chapterFragment = new MistakeChapterFragment();
+        MistakeKongledgeFragment kongledgeFragment = new MistakeKongledgeFragment();
+        MistakeAllFragment completeFragment = new MistakeAllFragment();
+        chapterFragment.setArguments(bundle);
+        kongledgeFragment.setArguments(bundle);
+        completeFragment.setArguments(bundle);
+
+        if (mStageId.equals(Constants.StageId[0]) || mStageId.equals(Constants.StageId[1])) {
+            if (mTitle.equals(getText(R.string.mistake_redo_math))) {
+                transaction.add(R.id.fl_content, kongledgeFragment, MISTAKE_KONGLEDGE);
+                transaction.add(R.id.fl_content, chapterFragment, MISTAKE_CHAPTER);
+            } else if (mTitle.equals(getText(R.string.mistake_redo_english))) {
+                transaction.add(R.id.fl_content, chapterFragment, MISTAKE_CHAPTER);
+                mKongledgeView.setVisibility(View.INVISIBLE);
+            } else {
+                mClassifyView.setVisibility(View.GONE);
+            }
+        } else {
+            mClassifyView.setVisibility(View.GONE);
+        }
+        transaction.add(R.id.fl_content, completeFragment, MISTAKE_ALL);
+        transaction.commit();
+        mManager.executePendingTransactions();
     }
 
     private void listener() {
+        mClassifyView.setOnCheckedChangeListener(MistakeListActivity.this);
         mBackView.setOnClickListener(MistakeListActivity.this);
-        mMistakeAdapter.addClickListener(MistakeListActivity.this);
-        rootView.setRetryButtonOnclickListener(MistakeListActivity.this);
+        btn_mistake_redo.setOnClickListener(this);
     }
 
     private void initData() {
-        mTopView.setBackgroundColor(Color.WHITE);
+        // TODO: 2017/7/20 隐藏章节知识点
+        mClassifyView.setVisibility(View.GONE);
+
+        mTitleView.setText(mTitle);
         mBackView.setVisibility(View.VISIBLE);
-        mTitleView.setText(R.string.my_mistake);
-        mTitleView.setTextColor(ContextCompat.getColor(mContext,R.color.color_666666));
+        mAllView.setChecked(true);
+        mTopView.setBackgroundColor(Color.WHITE);
+
+        mTitleView.setTextColor(ContextCompat.getColor(this,R.color.color_666666));
         mBackView.setBackgroundResource(R.drawable.selector_back);
-
-        requestData();
-    }
-
-    private void requestData(){
-        rootView.showLoadingView();
-        mMistakeListRequest=new MistakeListRequest();
-        mMistakeListRequest.stageId= LoginInfo.getStageid();
-        mMistakeListRequest.startRequest(MistakeListResponse.class,new EXueELianBaseCallback<MistakeListResponse>(){
-
-            @Override
-            protected void onResponse(RequestBase request, MistakeListResponse response) {
-                rootView.hiddenLoadingView();
-                if (response.getStatus().getCode()==0&&response.data!=null&&response.data.size()>0){
-                    mMistakeAdapter.setData(response.data);
-                }else if (response.getStatus().getCode()==67){
-                    //no data
-                    rootView.showOtherErrorView();
-                }else {
-                    rootView.showNetErrorView();
-                    ToastManager.showMsg(response.getStatus().getDesc());
-                }
-            }
-
-            @Override
-            public void onFail(RequestBase request, Error error) {
-                rootView.hiddenLoadingView();
-                rootView.showNetErrorView();
-                ToastManager.showMsg(error.getMessage().trim());
-            }
-        });
-    }
-
-    public void onEventMainThread(MistakeDeleteMessage message){
-        if (message!=null){
-            List<MistakeListResponse.Data> datas= mMistakeAdapter.getData();
-            for (MistakeListResponse.Data data:datas){
-                if (String.valueOf(data.id).equals(message.subjectId)){
-                    if (message.wrongNum==0){
-                        datas.remove(data);
-                        if (datas.size()>0){
-                            mMistakeAdapter.notifyDataSetChanged();
-                        }else {
-                            MistakeListActivity.this.finish();
-                        }
-                    }else {
-                        data.data.wrongNum=message.wrongNum;
-                        mMistakeAdapter.notifyDataSetChanged();
-                    }
-                    return;
-                }
-            }
-        }
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(mContext);
-        if (mMistakeListRequest!=null){
-            mMistakeListRequest.cancelRequest();
-            mMistakeListRequest=null;
+    public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+        FragmentTransaction transaction = mManager.beginTransaction();
+        Fragment allFragment = mManager.findFragmentByTag(MISTAKE_ALL);
+        Fragment chapterFragment = mManager.findFragmentByTag(MISTAKE_CHAPTER);
+        Fragment kongledgeFragment = mManager.findFragmentByTag(MISTAKE_KONGLEDGE);
+        switch (checkedId) {
+            case R.id.rb_all:
+                if (allFragment != null) {
+                    transaction.show(allFragment);
+                    if (chapterFragment != null) {
+                        transaction.hide(chapterFragment);
+                    }
+                    if (kongledgeFragment != null) {
+                        transaction.hide(kongledgeFragment);
+                    }
+                }
+                break;
+            case R.id.rb_chapter:
+                if (chapterFragment != null) {
+                    transaction.show(chapterFragment);
+                    if (allFragment != null) {
+                        transaction.hide(allFragment);
+                    }
+                    if (kongledgeFragment != null) {
+                        transaction.hide(kongledgeFragment);
+                    }
+                }
+                break;
+            case R.id.rb_kongledge:
+                if (kongledgeFragment != null) {
+                    transaction.show(kongledgeFragment);
+                    if (chapterFragment != null) {
+                        transaction.hide(chapterFragment);
+                    }
+                    if (allFragment != null) {
+                        transaction.hide(allFragment);
+                    }
+                }
+                break;
         }
+        transaction.commit();
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.iv_left:
-                finish();
+                this.finish();
                 break;
-            case R.id.retry_button:
-                rootView.hiddenNetErrorView();
-                requestData();
+            case R.id.btn_mistake_redo:
+                MistakeAllFragment allFragment = (MistakeAllFragment) mManager.findFragmentByTag(MISTAKE_ALL);
+                if(allFragment != null  && allFragment.isAdded()){
+                    allFragment.redoMistake();
+                }
                 break;
         }
-    }
-
-    @Override
-    public void onItemClick(View view, MistakeListResponse.Data data, int position) {
-        MistakeClassifyActivity.LaunchActivity(mContext,data.name,String.valueOf(data.id),data.data.wrongNum,String.valueOf(data.data.editionId));
     }
 }

@@ -7,7 +7,7 @@
 
     <include
         android:id="@+id/include_top"
-        layout="@layout/main_public_top_layout" />
+        layout="@layout/mistake_list_top_layout" />
 
     <RadioGroup
         android:id="@+id/rg_classify"

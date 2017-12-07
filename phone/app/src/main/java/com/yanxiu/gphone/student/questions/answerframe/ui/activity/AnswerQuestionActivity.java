@@ -587,7 +587,7 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
             return;
 
         if (currentFramgent instanceof ExerciseBaseFragment) {
-            ExerciseBaseFragment fragment = (ExerciseBaseFragment) currentFramgent;
+            ExerciseBaseFragment fragment =  currentFramgent;
             fragment.onAnswerCardVisibleToUser(answerCardFragmentIsShwon);
         }
 

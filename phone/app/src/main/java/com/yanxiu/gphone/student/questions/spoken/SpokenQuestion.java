@@ -110,6 +110,11 @@ public class SpokenQuestion extends BaseQuestion {
     }
 
     @Override
+    public ExerciseBaseFragment redoFragment() {
+        return new SpokenRedoFragment();
+    }
+
+    @Override
     public Object getAnswer() {
         return answerList;
     }

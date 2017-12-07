@@ -111,13 +111,17 @@ public abstract class WrongComplexExerciseBaseFragment extends WrongExercisbaseF
 
         FragmentManager fm = getChildFragmentManager();
 
-        TopBaseFragment topFragment = (TopBaseFragment) fm.findFragmentById(R.id.top_container);
-        if (topFragment == null) {
-            topFragment = getTopFragment();
-            fm.beginTransaction()
-                    .add(R.id.top_container, topFragment)
-                    .commit();
-        }
+//        TopBaseFragment topFragment = (TopBaseFragment) fm.findFragmentById(R.id.top_container);
+//        if (topFragment == null) {
+//            topFragment = getTopFragment();
+//            fm.beginTransaction()
+//                    .add(R.id.top_container, topFragment)
+//                    .commit();
+//        }
+        TopBaseFragment topFragment = getTopFragment();
+        fm.beginTransaction()
+                .add(R.id.top_container, topFragment)
+                .commit();
         setTopFragment(topFragment);
         mViewPager = (QAViewPager) mRootView.findViewById(R.id.ll_bottom_container);
         mAdapter = new QAViewPagerAdapter(fm);

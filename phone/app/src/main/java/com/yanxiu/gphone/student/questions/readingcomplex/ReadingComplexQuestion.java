@@ -5,6 +5,7 @@ import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.questions.bean.PaperTestBean;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.listencomplex.ListenRedoFragment;
 
 /**
  * Created by sunpeng on 2017/5/11.
@@ -29,6 +30,11 @@ public class ReadingComplexQuestion extends BaseQuestion {
     @Override
     public ExerciseBaseFragment wrongFragment() {
         return new ReadingWrongComplexFragment();
+    }
+
+    @Override
+    public ExerciseBaseFragment redoFragment() {
+        return new ReadingRedoFragment();
     }
 
     @Override

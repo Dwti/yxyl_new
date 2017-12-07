@@ -38,7 +38,6 @@
     <string name="retry">点击重试</string>
 
     <string name="input_true_name">请输入真实姓名</string>
-    <string name="submit">提交</string>
     <string name="user_name">姓名</string>
     <string name="school">学校</string>
     <string name="period">学段</string>
@@ -148,7 +147,7 @@
 
     <string name="listen_time">/</string>
     <string name="begin_answer">开始作答...</string>
-    <string name="submit_homework_button">提交作业</string>
+    <string name="submit_homework_button">提交</string>
 
     <string name="submit__button_retry">再试一次</string>
     <string name="analysis_text">题目解析</string>
@@ -260,7 +259,7 @@
     <string name="change_sure">确认修改</string>
     <string name="input_password_old_error">原密码错误</string>
     <string name="input_password_new_error">新密码不符合要求</string>
-    
+
     <string name="change_password_success">修改成功</string>
 
     <string name="about_wx">官方微信</string>
@@ -336,5 +335,12 @@
     <string name="mistake_no_data">这回真没了</string>
     <string name="no_bc">还没有BC资源哦</string>
     <string name="no_topic">还没有话题哦</string>
+    <string name="mistakeredo">错题重做</string>
+    <string name="mistake_redo">错题重做</string>
+    <string name="check_analysis_tips">本题不支持在线作答，请在纸上作答后自行校对答案</string>
+    <string name="delete_question">删除本题</string>
+    <string name="question_deleted">本题已被删除</string>
+    <string name="submit">提交</string>
+    <string name="point_title">%1$s (%2$s)</string>
 
 </resources>

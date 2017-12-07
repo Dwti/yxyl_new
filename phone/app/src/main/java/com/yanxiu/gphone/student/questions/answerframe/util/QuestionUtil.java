@@ -571,8 +571,20 @@ public class QuestionUtil {
             return false;
 
         for (int i = 0; i < a.size(); i++) {
-            if (a.get(i).compareTo(b.get(i)) != 0) {
-                return false;
+            T tA=a.get(i);
+            T tB=b.get(i);
+            if (tA instanceof String&&tB instanceof String){
+                   String[] strings=((String) tB).split("&");
+                   for (String s:strings){
+                       if (((String) tA).compareTo(s)==0){
+                           return true;
+                       }
+                   }
+                   return false;
+            }else {
+                if (tA.compareTo(tB) != 0) {
+                    return false;
+                }
             }
         }
         return true;

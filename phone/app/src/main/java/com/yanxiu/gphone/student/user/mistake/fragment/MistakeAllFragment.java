@@ -2,27 +2,32 @@ package com.yanxiu.gphone.student.user.mistake.fragment;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 import com.srt.refresh.EXueELianRefreshLayout;
 import com.test.yanxiu.network.RequestBase;
+import com.yanxiu.gphone.student.BuildConfig;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.base.EXueELianBaseResponse;
 import com.yanxiu.gphone.student.homework.response.PaperResponse;
-import com.yanxiu.gphone.student.questions.bean.PaperTestBean;
-import com.yanxiu.gphone.student.user.mistake.activity.MistakeClassifyActivity;
+import com.yanxiu.gphone.student.mistakeredo.MistakeRedoActivity;
+import com.yanxiu.gphone.student.mistakeredo.request.WrongQByQidsRequest;
+import com.yanxiu.gphone.student.user.mistake.activity.MistakeListActivity;
 import com.yanxiu.gphone.student.user.mistake.adapter.MistakeAllAdapter;
 import com.yanxiu.gphone.student.user.mistake.request.MistakeAllRequest;
 import com.yanxiu.gphone.student.user.mistake.request.MistakeDeleteQuestionRequest;
 import com.yanxiu.gphone.student.user.mistake.response.MistakeDeleteMessage;
 import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
-import com.yanxiu.gphone.student.questions.answerframe.ui.activity.WrongQuestionActivity;
+import com.yanxiu.gphone.student.questions.answerframe.ui.activity.MistakeAnalysisActivity;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.questions.bean.PaperBean;
-import com.yanxiu.gphone.student.util.DESBodyDealer;
 import com.yanxiu.gphone.student.util.DataFetcher;
 import com.yanxiu.gphone.student.util.ToastManager;
+
+import java.util.List;
 
 import de.greenrobot.event.EventBus;
 
@@ -38,6 +43,10 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
     private EXueELianRefreshLayout mRefreshView;
     private MistakeAllAdapter mMistakeAllAdapter;
     private MistakeAllRequest mCompleteRequest;
+    private int mCurrentPos = 0;
+    private int mPageSize = 20;
+
+    private boolean mEnterAnalysis = false; //进入解析之后，又可能删除题目，所以回来的时候需要刷新界面
 
     @Override
     protected int getContentViewId() {
@@ -80,7 +89,7 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
         if (message != null) {
             this.mWrongNum=message.wrongNum;
             if (mWrongNum==0){
-                ((MistakeClassifyActivity)mContext).finish();
+                ((MistakeListActivity)mContext).finish();
             }else {
                 mMistakeAllAdapter.deleteItem(message.position, message.questionId);
                 if (mMistakeAllAdapter.getItemCount() == 0) {
@@ -91,14 +100,20 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
         }
     }
 
-    private void requestData(final String currentId) {
-        requestCancle();
-        mCompleteRequest = new MistakeAllRequest();
-        mCompleteRequest.bodyDealer = new DESBodyDealer();
-        mCompleteRequest.currentId = currentId;
-        mCompleteRequest.stageId = mStageId;
-        mCompleteRequest.subjectId = mSubjectId;
-        mCompleteRequest.startRequest(PaperResponse.class, new EXueELianBaseCallback<PaperResponse>() {
+    @Override
+    public void onResume() {
+        super.onResume();
+//        if(mEnterAnalysis){
+//            getWrongQByQids(true);
+//            mEnterAnalysis = false;
+//        }
+    }
+
+    private void getWrongQByQids(final boolean isRefresh){
+        WrongQByQidsRequest request = new WrongQByQidsRequest();
+        request.setSubjectId(mSubjectId);
+        request.setQids(getQids(isRefresh));
+        request.startRequest(PaperResponse.class, new EXueELianBaseCallback<PaperResponse>() {
             @Override
             protected void onResponse(RequestBase request, PaperResponse response) {
                 rootView.hiddenLoadingView();
@@ -106,7 +121,10 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
                 mRefreshView.finishRefreshing();
                 if (response.getStatus().getCode() == 0) {
                     if (response.getData()!=null&&response.getData().size()>0) {
-                        if (currentId.equals("0")) {
+                        String qids = ((WrongQByQidsRequest)request).getQids();
+                        int count = qids.split(",").length;
+                        mCurrentPos += count;
+                        if (isRefresh) {
                             mMistakeAllAdapter.setData(response.getData().get(0));
                         } else {
                             mMistakeAllAdapter.addData(response.getData().get(0));
@@ -119,12 +137,12 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
                         }
 
                     }else {
-                        if (currentId.equals("0")) {
+                        if (isRefresh) {
                             rootView.showOtherErrorView();
                         }
                     }
                 } else {
-                    if (currentId.equals("0")){
+                    if (isRefresh){
                         rootView.showNetErrorView();
                         mMistakeAllAdapter.clear();
                     }
@@ -137,15 +155,15 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
                 mRefreshView.finishLoadMore();
                 mRefreshView.finishRefreshing();
                 rootView.hiddenLoadingView();
-                if (currentId.equals("0")){
+                if (isRefresh){
                     rootView.showNetErrorView();
                     mMistakeAllAdapter.clear();
                 }
                 ToastManager.showMsg(error.getMessage());
             }
         });
-    }
 
+    }
     public void onEventMainThread(MistakeAllAdapter.OnItemDelete itemDelete){
         if (itemDelete!=null){
             setDeleteItem(itemDelete);
@@ -167,6 +185,7 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
                     deleteMessage.position=itemDelete.position;
                     deleteMessage.questionId=itemDelete.questionId;
                     deleteMessage.subjectId=mSubjectId;
+                    mQids.remove(deleteMessage.questionId);
                     EventBus.getDefault().post(deleteMessage);
                 }else {
                     ToastManager.showMsg(response.getStatus().getDesc());
@@ -181,21 +200,56 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
         });
     }
 
+    private String getQids(boolean isRefresh){
+        String qids = "";
+        List<String> result;
+        if(isRefresh){
+            mCurrentPos = 0;
+        }
+        if(mCurrentPos == mQids.size() - 1){
+            return mQids.get(mCurrentPos);
+        }
+        result = mQids.size() > (mCurrentPos + mPageSize ) ? mQids.subList(mCurrentPos,mCurrentPos + mPageSize) : mQids.subList(mCurrentPos,mQids.size());
+        for(String qid : result){
+            if(qids.length() == 0){
+                qids += qid;
+            }else {
+                qids = qids + "," + qid;
+            }
+        }
+        Log.i("qids",qids);
+        return qids;
+    }
+
     @Override
     public void onItemClick(View view, PaperBean paperBean, int position) {
         Paper paper = new Paper(paperBean, QuestionShowType.MISTAKE_ANALYSIS);
         DataFetcher.getInstance().save(paper.getId(), paper);
-        WrongQuestionActivity.LuanchActivity(mContext, paper.getId(), mSubjectId, mStageId, mWrongNum, position);
+        MistakeAnalysisActivity.LuanchActivity(mContext, paper.getId(), mTitle, mSubjectId, mStageId, mWrongNum, position,mQids);
+        mEnterAnalysis = true;
+    }
+
+    private void openMistakeRedoUI(PaperBean paperBean){
+        Paper paper = new Paper(paperBean, QuestionShowType.MISTAKE_REDO);
+        DataFetcher.getInstance().save(paper.getId(), paper);
+        MistakeRedoActivity.LuanchActivity(mContext, paper.getId(),mTitle, mSubjectId, mStageId, mWrongNum,mQids);
+        mEnterAnalysis = true;
     }
 
     @Override
     public void onRefresh(EXueELianRefreshLayout refreshLayout) {
-        requestData(DEFAULT_QID);
+        getWrongQByQids(true);
     }
 
     @Override
     public void onLoadMore(EXueELianRefreshLayout refreshLayout) {
-        requestData(mMistakeAllAdapter.getLastItemWqid());
+        getWrongQByQids(false);
+    }
+
+    public void redoMistake(){
+        if(mMistakeAllAdapter.getPaperBean() != null){
+            openMistakeRedoUI(mMistakeAllAdapter.getPaperBean());
+        }
     }
 
     @Override
@@ -206,6 +260,7 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
                 rootView.showLoadingView();
                 onRefresh(null);
                 break;
+
         }
     }
 }

@@ -6,13 +6,13 @@
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.CAPTURE_AUDIO_OUTPUT"/>
+    <uses-permission android:name="android.permission.CAPTURE_AUDIO_OUTPUT" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -20,14 +20,15 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
 
-    <!-- 个推iBeancon功能所需权限 -->;
+    <!-- 个推iBeancon功能所需权限 -->
+    ;
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="getui.permission.GetuiService.com.yanxiu.gphone.student" />
 
     <permission
         android:name="getui.permission.GetuiService.com.yanxiu.gphone.student"
-        android:protectionLevel="normal"/>
+        android:protectionLevel="normal" />
 
     <application
         android:name=".YanxiuApplication"
@@ -36,16 +37,15 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="5927f282f43e487b97000e80"></meta-data>
+            android:value="5927f282f43e487b97000e80" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.yanxiu.gphone.student.fileProvider"
-            android:grantUriPermissions="true"
-            android:exported="false">
+            android:exported="false"
+            android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
@@ -60,7 +60,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".homepage.MainActivity"
@@ -80,85 +79,81 @@
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize">
-            <!--<intent-filter>-->
-            <!--<action android:name="com.yanxiu.gphone.student.LoginActivity" />-->
-            <!--<category android:name="android.intent.category.DEFAULT" />-->
-            <!--</intent-filter>-->
-        </activity>
 
+            <!-- <intent-filter> -->
+            <!-- <action android:name="com.yanxiu.gphone.student.LoginActivity" /> -->
+            <!-- <category android:name="android.intent.category.DEFAULT" /> -->
+            <!-- </intent-filter> -->
+        </activity>
         <activity
             android:name=".login.activity.ForgetPassWordActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-
         <activity
             android:name=".login.activity.RegisterActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-
         <activity
             android:name=".login.activity.ResetPassWordActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-
         <activity
             android:name=".homework.classmanage.activity.JoinClassActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" />
-
         <activity
             android:name=".login.activity.JoinClassActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-
         <activity
             android:name=".login.activity.CompleteInfoActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-
         <activity
             android:name=".login.activity.ChooseLocationActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-
         <activity
             android:name=".login.activity.ChooseSchoolActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-
         <activity
             android:name=".homework.classmanage.activity.ClassInfoActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".homework.classmanage.activity.HowToJoinClassActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".homework.homeworkdetail.HomeworkDetailActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".questions.answerframe.ui.activity.AnswerQuestionActivity"
+            android:configChanges="orientation|screenSize|keyboard"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity android:name=".mistakeredo.MistakeRedoActivity"
             android:configChanges="orientation|screenSize|keyboard"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".questions.answerframe.ui.activity.AnalysisQuestionActivity"
+            android:configChanges="orientation|screenSize|keyboard"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:configChanges="orientation|screenSize|keyboard"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".questions.answerframe.ui.activity.AnswerReportActicity"
@@ -171,31 +166,26 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
-
         <activity
             android:name=".login.activity.JoinClassSubmitActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-
         <activity
             android:name=".login.activity.ChooseStageActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
         <activity
             android:name="com.umeng.qq.tencent.AuthActivity"
             android:launchMode="singleTask"
             android:noHistory="true">
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -205,20 +195,17 @@
                 <data android:scheme="tencent100424468" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="com.umeng.qq.tencent.AssistActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
-            android:name="com.yanxiu.gphone.student.questions.answerframe.ui.activity.NotesActicity"
+            android:name=".questions.answerframe.ui.activity.NotesActicity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".common.activity.CameraActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".common.activity.AlbumActivity"
             android:screenOrientation="portrait" />
@@ -229,103 +216,90 @@
         <activity
             android:name=".common.activity.CropImageActivity"
             android:screenOrientation="portrait" />
-
+        <activity
+            android:name=".user.mistake.activity.MistakeSubjectListActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".user.mistake.activity.MistakeListActivity"
             android:screenOrientation="portrait" />
-
         <activity
-            android:name=".user.mistake.activity.MistakeClassifyActivity"
+            android:name=".questions.answerframe.ui.activity.MistakeAnalysisActivity"
             android:screenOrientation="portrait" />
-
-        <activity
-            android:name=".questions.answerframe.ui.activity.WrongQuestionActivity"
-            android:screenOrientation="portrait" />
-
         <activity
             android:name=".user.setting.activity.SettingActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".user.setting.activity.CheckMobileActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".user.setting.activity.BindMobileActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".user.setting.activity.ChangePassWordActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".user.setting.activity.AboutActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".user.setting.activity.PrivacyActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".user.feedback.activity.FeedbackActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".user.userinfo.activity.UserInfoActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".exercise.SelectSubjectActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait" />*/
+            android:screenOrientation="portrait" />
+        */
         <activity
             android:name=".exercise.ModifyEditionActivity"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name=".exercise.SelectEditionActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        
-        <activity android:name=".exercise.SelectChapterAndKnowledgeActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".user.userinfo.activity.UserEditNameActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
-
-        <activity android:name=".user.userinfo.activity.UserSexActivity"
-            android:screenOrientation="portrait" />
-
-        <activity android:name=".common.activity.UserHeadCameraActivity"
-            android:screenOrientation="portrait" />
-
-        <activity android:name=".common.activity.UserHeadCropImageActivity"
-            android:screenOrientation="portrait" />
-
-        <activity android:name=".bcresource.BCActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".bcresource.TopicActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden"/>
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+        <activity
+            android:name=".exercise.SelectEditionActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
+        <activity
+            android:name=".exercise.SelectChapterAndKnowledgeActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".user.userinfo.activity.UserEditNameActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".user.userinfo.activity.UserSexActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".common.activity.UserHeadCameraActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".common.activity.UserHeadCropImageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".bcresource.BCActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".bcresource.TopicActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
 
         <service android:name=".videoplay.NetworkStateService">
             <intent-filter android:priority="1000">
                 <action android:name="com.test.yanxiu.avideoplay.network.state" />
             </intent-filter>
         </service>
-
         /**
         * 个推相关开始
         */
@@ -334,6 +308,7 @@
             android:exported="true"
             android:label="PushService"
             android:process=":pushservice" />
+
         <receiver android:name=".push.YanxiuPushUpdateReceiver">
             <intent-filter>
                 <action android:name="com.yanxiu.gphone.student.yanxiu_push_update_receiver" />
@@ -348,18 +323,21 @@
                 <action android:name="com.igexin.sdk.action.${GETUI_APP_ID}" />
             </intent-filter>
         </receiver>
-
         /**
         * 个推相关结束
         */
-        <activity android:name=".exercise.SubjectHistoryActivity"
+        <activity
+            android:name=".exercise.SubjectHistoryActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".exercise.ExerciseHistoryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".exercise.ExerciseHistoryActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"/>
-
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".mistakeredo.MistakePointActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

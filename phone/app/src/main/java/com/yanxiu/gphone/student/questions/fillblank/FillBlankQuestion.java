@@ -81,6 +81,11 @@ public class FillBlankQuestion extends BaseQuestion {
         return new FillBlankWrongFragment();
     }
 
+    @Override
+    public ExerciseBaseFragment redoFragment() {
+        return new FillBlankRedoFragment();
+    }
+
     public List<String> getStringAnswers() {
         return filledAnswers;
     }

@@ -98,6 +98,11 @@ public class SingleChoiceQuestion extends BaseQuestion {
     }
 
     @Override
+    public ExerciseBaseFragment redoFragment() {
+        return new SingleChooseRedoFragment();
+    }
+
+    @Override
     public Object getAnswer() {
         return answerList;
     }
