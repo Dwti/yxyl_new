@@ -49,6 +49,12 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
+                        <com.yanxiu.gphone.student.customviews.analysis.AnalysisQuestionSpokenResultView
+                            android:id="@+id/answerSpokenResult"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone"/>
+
                         <com.yanxiu.gphone.student.customviews.analysis.AnalysisQuestionResultView
                             android:id="@+id/answerResult"
                             android:layout_width="match_parent"
