@@ -341,8 +341,6 @@
     <string name="delete_question">删除本题</string>
     <string name="question_deleted">本题已被删除</string>
     <string name="submit">提交</string>
-    <string name="point_title"><![CDATA[
-    <font color=#333333>%1$s </font><font color=#666666>(%2$s)</font>
-    ]]></string>
+    <string name="point_title">%1$s (%2$s)</string>
 
 </resources>
