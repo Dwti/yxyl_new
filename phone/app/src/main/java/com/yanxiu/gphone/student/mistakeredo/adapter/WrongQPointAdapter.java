@@ -62,7 +62,7 @@ public class WrongQPointAdapter extends BaseExpandableRecyclerAdapter<WrongQPoin
         setTextSizeByLevel(((WrongQPointViewHolder)holder).text,mData.get(position).getLevel());
         ((WrongQPointViewHolder)holder).ll_above.setPadding(mIndentation * mData.get(position).getLevel(),0,0,0);
         ((WrongQPointViewHolder)holder).text.setText(getSpannableText(holder.itemView.getContext(),mData.get(position).getName(),mData.get(position).getQuestion_num()));
-        ((WrongQPointViewHolder)holder).text.setOnTouchListener(new TextColorTouchListener(holder.itemView.getContext(),mData.get(position).getName(),mData.get(position).getQuestion_num(),((WrongQPointViewHolder)holder).iv_arrow_in));
+        ((WrongQPointViewHolder)holder).text.setOnTouchListener(new TextColorTouchListener(holder.itemView.getContext(),position,mData.get(position).getName(),mData.get(position).getQuestion_num(),((WrongQPointViewHolder)holder).iv_arrow_in));
 
     }
 
@@ -125,14 +125,14 @@ public class WrongQPointAdapter extends BaseExpandableRecyclerAdapter<WrongQPoin
             ll_content = itemView.findViewById(R.id.ll_content);
             ll_above = itemView.findViewById(R.id.ll_above);
             iv_arrow_in = (ImageView) itemView.findViewById(R.id.iv_arrow_in);
-            ll_content.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(mOnItemClickListener != null){
-                        mOnItemClickListener.onItemClick(itemView,getLayoutPosition(),mData.get(getLayoutPosition()));
-                    }
-                }
-            });
+//            ll_content.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    if(mOnItemClickListener != null){
+//                        mOnItemClickListener.onItemClick(itemView,getLayoutPosition(),mData.get(getLayoutPosition()));
+//                    }
+//                }
+//            });
 
             ll_indicator.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -171,12 +171,14 @@ public class WrongQPointAdapter extends BaseExpandableRecyclerAdapter<WrongQPoin
         Context context;
         String name,count;
         ImageView imageView;
+        int position;
 
-        public TextColorTouchListener(Context context, String name, String count, ImageView imageView){
+        public TextColorTouchListener(Context context,int position, String name, String count, ImageView imageView){
             this.context = context;
             this.name = name;
             this.count = count;
             this.imageView = imageView;
+            this.position = position;
         }
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -197,6 +199,9 @@ public class WrongQPointAdapter extends BaseExpandableRecyclerAdapter<WrongQPoin
                 case MotionEvent.ACTION_UP:
                     tv.setText(getSpannableText(context,name,count));
                     imageView.setImageResource(R.drawable.arrow_in_normal);
+                    if(mOnItemClickListener != null){
+                        mOnItemClickListener.onItemClick(view,position,mData.get(position));
+                    }
                     break;
                 case MotionEvent.ACTION_CANCEL:
                     tv.setText(getSpannableText(context,name,count));
