@@ -695,31 +695,40 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
      * 当处在第一题和最后一题时，隐藏相应切换题目按钮
      */
     public void hiddenSwitchQuestionView() {
-        ExerciseBaseFragment currentFramgent = null;//当前的Fragment
+        BaseQuestion currentQuestion;
         FragmentStatePagerAdapter adapter;
         int index;//当前Fragment在外层viewPager中的index
         int size;//viewPager的总共的size
         try {
             adapter = (FragmentStatePagerAdapter) mViewPager.getAdapter();
             index = mViewPager.getCurrentItem();
-            currentFramgent = (ExerciseBaseFragment) adapter.instantiateItem(mViewPager, index);
+            currentQuestion = mAdapter.getDatas().get(index);
             size = adapter.getCount();
         } catch (Exception e) {
             e.printStackTrace();
             return;
         }
 
-        if (adapter == null || index < 0 || size < 1 || mViewPager == null || currentFramgent == null)
+        if (currentQuestion == null || index < 0 || size < 1 || mViewPager == null )
             return;
 
-        if (currentFramgent instanceof RedoComplexExerciseBaseFragment) {
-            RedoComplexExerciseBaseFragment complexExerciseFragment = (RedoComplexExerciseBaseFragment) currentFramgent;
-            ViewPager innerViewPager = complexExerciseFragment.getmViewPager();
-            FragmentStatePagerAdapter innerAdapter = (FragmentStatePagerAdapter) innerViewPager.getAdapter();
+        if (currentQuestion.isComplexQuestion()) {
+            ViewPager innerViewPager;
+            ExerciseBaseFragment currentFramgent = (ExerciseBaseFragment) adapter.instantiateItem(mViewPager, index);
+            if(currentFramgent instanceof WrongComplexExerciseBaseFragment){
+                WrongComplexExerciseBaseFragment wrongComplexExerciseBaseFragment = (WrongComplexExerciseBaseFragment) currentFramgent;
+                innerViewPager = wrongComplexExerciseBaseFragment.getmViewPager();
+            }else if(currentFramgent instanceof RedoComplexExerciseBaseFragment){
+                RedoComplexExerciseBaseFragment redoComplexExerciseBaseFragment = (RedoComplexExerciseBaseFragment) currentFramgent;
+                innerViewPager = redoComplexExerciseBaseFragment.getmViewPager();
+            }else {
+                return;
+            }
+
             int innerIndex = innerViewPager.getCurrentItem();
             int innerSize = innerViewPager.getAdapter().getCount();
 
-            if (complexExerciseFragment == null || innerViewPager == null || innerAdapter == null || innerIndex < 0 || innerSize < 1)
+            if (innerIndex < 0 || innerSize < 1)
                 return;
             /**
              * 复合题型，切换下一题，共有三种状态：
@@ -737,7 +746,7 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
                 mPrevious_question.setVisibility(View.VISIBLE);
             }
 
-        } else if (currentFramgent instanceof RedoSimpleExerciseBaseFragment) {
+        } else {
             if (index == (size - 1)) { //最后一题
                 mNext_text.setText(R.string.complete);
             } else {
