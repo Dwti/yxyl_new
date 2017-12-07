@@ -575,12 +575,15 @@ public class QuestionUtil {
             T tB=b.get(i);
             if (tA instanceof String&&tB instanceof String){
                    String[] strings=((String) tB).split("&");
+                   boolean flag=false;
                    for (String s:strings){
                        if (((String) tA).compareTo(s)==0){
-                           return true;
+                           flag=true;
                        }
                    }
-                   return false;
+                   if (!flag) {
+                       return false;
+                   }
             }else {
                 if (tA.compareTo(tB) != 0) {
                     return false;
