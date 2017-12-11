@@ -82,7 +82,8 @@ public abstract class ExerciseBaseFragment extends YanxiuBaseFragment implements
             if(mBaseQuestion.getShowType().equals(QuestionShowType.MISTAKE_ANALYSIS) || mBaseQuestion.getShowType().equals(QuestionShowType.MISTAKE_REDO)){
                 if(isChild){
                     //错题解析跟错题重做，子题右上角不显示题号
-                    mQaNumber.setVisibility(View.GONE);
+//                    mQaNumber.setVisibility(View.GONE);
+
                 }
             }else if(mBaseQuestion.getShowType().equals(QuestionShowType.ANSWER) || mBaseQuestion.getShowType().equals(QuestionShowType.ANALYSIS)){
                 //答题跟解析的复合题不显示题号（复合题的小题显示）

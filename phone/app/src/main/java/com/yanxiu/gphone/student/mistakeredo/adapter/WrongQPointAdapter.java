@@ -62,7 +62,7 @@ public class WrongQPointAdapter extends BaseExpandableRecyclerAdapter<WrongQPoin
         setTextSizeByLevel(((WrongQPointViewHolder)holder).text,mData.get(position).getLevel());
         ((WrongQPointViewHolder)holder).ll_above.setPadding(mIndentation * mData.get(position).getLevel(),0,0,0);
         ((WrongQPointViewHolder)holder).text.setText(getSpannableText(holder.itemView.getContext(),mData.get(position).getName(),mData.get(position).getQuestion_num()));
-        ((WrongQPointViewHolder)holder).text.setOnTouchListener(new TextColorTouchListener(holder.itemView.getContext(),position,mData.get(position).getName(),mData.get(position).getQuestion_num(),((WrongQPointViewHolder)holder).iv_arrow_in));
+        ((WrongQPointViewHolder)holder).text.setOnTouchListener(new TextColorTouchListener(holder.itemView.getContext(),mData.get(position),((WrongQPointViewHolder)holder).iv_arrow_in));
 
     }
 
@@ -171,14 +171,14 @@ public class WrongQPointAdapter extends BaseExpandableRecyclerAdapter<WrongQPoin
         Context context;
         String name,count;
         ImageView imageView;
-        int position;
+        WrongQPointBean bean;
 
-        public TextColorTouchListener(Context context,int position, String name, String count, ImageView imageView){
+        public TextColorTouchListener(Context context,WrongQPointBean bean, ImageView imageView){
             this.context = context;
-            this.name = name;
-            this.count = count;
+            this.name = bean.getName();
+            this.count = bean.getQuestion_num();
             this.imageView = imageView;
-            this.position = position;
+            this.bean = bean;
         }
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -200,7 +200,7 @@ public class WrongQPointAdapter extends BaseExpandableRecyclerAdapter<WrongQPoin
                     tv.setText(getSpannableText(context,name,count));
                     imageView.setImageResource(R.drawable.arrow_in_normal);
                     if(mOnItemClickListener != null){
-                        mOnItemClickListener.onItemClick(view,position,mData.get(position));
+                        mOnItemClickListener.onItemClick(view,mData.indexOf(bean),bean);
                     }
                     break;
                 case MotionEvent.ACTION_CANCEL:

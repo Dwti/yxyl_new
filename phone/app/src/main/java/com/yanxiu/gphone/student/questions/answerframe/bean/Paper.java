@@ -346,6 +346,14 @@ public class Paper {
             BaseQuestion baseQuestion=nodes.get(i);
             baseQuestion.setPrefixNumberForWrongQuestion(i+1);
             baseQuestion.setPostfixNumberForWrongQuestion(totlaNumber);
+            if(baseQuestion.isComplexQuestion()){
+                List<BaseQuestion> children = baseQuestion.getChildren();
+                for(int j=0 ; j < children.size(); j++){
+                    BaseQuestion child = children.get(j);
+                    child.setPrefixNumberForWrongQuestion(j+1);
+                    child.setPostfixNumberForWrongQuestion(children.size());
+                }
+            }
         }
     }
 
