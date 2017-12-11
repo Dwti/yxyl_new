@@ -4,11 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
 import android.text.Spanned;
-import android.text.TextPaint;
-import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -20,7 +16,6 @@ import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.exercise.adapter.BaseExpandableRecyclerAdapter;
-import com.yanxiu.gphone.student.exercise.bean.Node;
 import com.yanxiu.gphone.student.mistakeredo.bean.WrongQPointBean;
 import com.yanxiu.gphone.student.util.ScreenUtils;
 
@@ -62,13 +57,23 @@ public class WrongQPointAdapter extends BaseExpandableRecyclerAdapter<WrongQPoin
         setTextSizeByLevel(((WrongQPointViewHolder)holder).text,mData.get(position).getLevel());
         ((WrongQPointViewHolder)holder).ll_above.setPadding(mIndentation * mData.get(position).getLevel(),0,0,0);
         ((WrongQPointViewHolder)holder).text.setText(getSpannableText(holder.itemView.getContext(),mData.get(position).getName(),mData.get(position).getQuestion_num()));
-        ((WrongQPointViewHolder)holder).text.setOnTouchListener(new TextColorTouchListener(holder.itemView.getContext(),mData.get(position),((WrongQPointViewHolder)holder).iv_arrow_in));
+        ((WrongQPointViewHolder)holder).text.setOnTouchListener(new TextColorTouchListener(holder.itemView.getContext(),mData.get(position),((WrongQPointViewHolder)holder).iv_arrow_in, ((WrongQPointViewHolder)holder).indicator));
 
     }
 
     @Override
     public int getItemCount() {
         return mData.size();
+    }
+
+    public void collapseOrExpand(int position, boolean animation, ImageView indicator){
+        if (mData.get(position).isExpanded()) {
+            indicator.setImageResource(R.drawable.collapse_normal);
+            collapse(position,true);
+        } else {
+            indicator.setImageResource(R.drawable.expand_normal);
+            expand(position,true);
+        }
     }
 
     private void setBackgroundByLevel(View itemView,int level){
@@ -149,6 +154,7 @@ public class WrongQPointAdapter extends BaseExpandableRecyclerAdapter<WrongQPoin
         }
     }
 
+
     private SpannableString getSpannableText(Context context, String name, String count){
         String title = String.format(context.getString(R.string.point_title),name,count);
         SpannableString spannableString = new SpannableString(title);
@@ -170,14 +176,15 @@ public class WrongQPointAdapter extends BaseExpandableRecyclerAdapter<WrongQPoin
     private class TextColorTouchListener implements View.OnTouchListener{
         Context context;
         String name,count;
-        ImageView imageView;
+        ImageView arrow,indicator;
         WrongQPointBean bean;
 
-        public TextColorTouchListener(Context context,WrongQPointBean bean, ImageView imageView){
+        public TextColorTouchListener(Context context,WrongQPointBean bean, ImageView arrow,ImageView indicator){
             this.context = context;
             this.name = bean.getName();
             this.count = bean.getQuestion_num();
-            this.imageView = imageView;
+            this.arrow = arrow;
+            this.indicator = indicator;
             this.bean = bean;
         }
         @Override
@@ -192,20 +199,23 @@ public class WrongQPointAdapter extends BaseExpandableRecyclerAdapter<WrongQPoin
             switch (action){
                 case MotionEvent.ACTION_DOWN:
                     tv.setText(getPressedSpannableText(context,name,count));
-                    imageView.setImageResource(R.drawable.arrow_in_pressed);
+                    arrow.setImageResource(R.drawable.arrow_in_pressed);
                     break;
                 case MotionEvent.ACTION_MOVE:
                     break;
                 case MotionEvent.ACTION_UP:
                     tv.setText(getSpannableText(context,name,count));
-                    imageView.setImageResource(R.drawable.arrow_in_normal);
-                    if(mOnItemClickListener != null){
-                        mOnItemClickListener.onItemClick(view,mData.indexOf(bean),bean);
+                    arrow.setImageResource(R.drawable.arrow_in_normal);
+                    int position = mData.indexOf(bean);
+                    if(bean.hasChildren()){
+                        collapseOrExpand(position,true,this.indicator);
+                    }else if(mOnItemClickListener != null){
+                        mOnItemClickListener.onItemClick(view,position,bean);
                     }
                     break;
                 case MotionEvent.ACTION_CANCEL:
                     tv.setText(getSpannableText(context,name,count));
-                    imageView.setImageResource(R.drawable.arrow_in_normal);
+                    arrow.setImageResource(R.drawable.arrow_in_normal);
                     break;
             }
             return true;
