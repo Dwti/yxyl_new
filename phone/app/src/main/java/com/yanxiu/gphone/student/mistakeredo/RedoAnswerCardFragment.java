@@ -74,8 +74,8 @@ public class RedoAnswerCardFragment extends YanxiuBaseFragment{
         mSubmiButton = (Button) mRootView.findViewById(R.id.submit_homework);
         mBackView = (ImageView) mRootView.findViewById(R.id.backview);
         mTitle = (TextView) mRootView.findViewById(R.id.title);
-        if (!TextUtils.isEmpty(mTitleString))
-            mTitle.setText(mTitleString);
+//        if (!TextUtils.isEmpty(mTitleString))
+//            mTitle.setText(mTitleString);
         mBackView.setVisibility(View.VISIBLE);
         mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.rv_recyclerView);
         calculationSpanCount();
