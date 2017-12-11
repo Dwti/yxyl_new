@@ -13,8 +13,8 @@ import java.util.List;
 
 public class WrongQByQidsRequest extends EXueELianBaseRequest {
 
-    protected String qids;
-    protected String subjectId;
+    public String qids;
+    public String subjectId;
 
     @Override
     protected HttpType httpType() {

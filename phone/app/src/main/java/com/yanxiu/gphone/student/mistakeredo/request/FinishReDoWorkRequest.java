@@ -10,7 +10,7 @@ import com.yanxiu.gphone.student.util.LoginInfo;
  */
 
 public class FinishReDoWorkRequest extends EXueELianBaseRequest {
-    protected String qids ;  //错题重做之后，需要删除的错题的qid;
+    public String qids ;  //错题重做之后，需要删除的错题的qid;
 
     @Override
     protected HttpType httpType() {

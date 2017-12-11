@@ -11,8 +11,8 @@ import com.yanxiu.gphone.student.util.LoginInfo;
  */
 
 public class WrongQPointRequest extends EXueELianBaseRequest {
-    protected String stageId ;
-    protected String subjectId;
+    public String stageId ;
+    public String subjectId;
 
     @Override
     protected String urlPath() {
