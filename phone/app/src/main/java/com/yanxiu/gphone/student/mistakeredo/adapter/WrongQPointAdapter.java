@@ -57,7 +57,7 @@ public class WrongQPointAdapter extends BaseExpandableRecyclerAdapter<WrongQPoin
         setTextSizeByLevel(((WrongQPointViewHolder)holder).text,mData.get(position).getLevel());
         ((WrongQPointViewHolder)holder).ll_above.setPadding(mIndentation * mData.get(position).getLevel(),0,0,0);
         ((WrongQPointViewHolder)holder).text.setText(getSpannableText(holder.itemView.getContext(),mData.get(position).getName(),mData.get(position).getQuestion_num()));
-        ((WrongQPointViewHolder)holder).text.setOnTouchListener(new TextColorTouchListener(holder.itemView.getContext(),mData.get(position),((WrongQPointViewHolder)holder).iv_arrow_in, ((WrongQPointViewHolder)holder).indicator));
+        ((WrongQPointViewHolder)holder).ll_content.setOnTouchListener(new TextColorTouchListener(holder.itemView.getContext(),mData.get(position),((WrongQPointViewHolder)holder).itemView));
 
     }
 
@@ -69,10 +69,10 @@ public class WrongQPointAdapter extends BaseExpandableRecyclerAdapter<WrongQPoin
     public void collapseOrExpand(int position, boolean animation, ImageView indicator){
         if (mData.get(position).isExpanded()) {
             indicator.setImageResource(R.drawable.collapse_normal);
-            collapse(position,true);
+            collapse(position,animation);
         } else {
             indicator.setImageResource(R.drawable.expand_normal);
-            expand(position,true);
+            expand(position,animation);
         }
     }
 
@@ -177,44 +177,40 @@ public class WrongQPointAdapter extends BaseExpandableRecyclerAdapter<WrongQPoin
         Context context;
         String name,count;
         ImageView arrow,indicator;
+        TextView textView;
         WrongQPointBean bean;
 
-        public TextColorTouchListener(Context context,WrongQPointBean bean, ImageView arrow,ImageView indicator){
+        public TextColorTouchListener(Context context,WrongQPointBean bean, View view){
             this.context = context;
             this.name = bean.getName();
             this.count = bean.getQuestion_num();
-            this.arrow = arrow;
-            this.indicator = indicator;
+            textView = (TextView) view.findViewById(R.id.text);
+            indicator = (ImageView) view.findViewById(R.id.indicator);
+            arrow = (ImageView) view.findViewById(R.id.iv_arrow_in);
             this.bean = bean;
         }
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
             int action = motionEvent.getAction();
-            TextView tv;
-            if(view instanceof TextView){
-                tv = (TextView) view;
-            }else {
-                return false;
-            }
             switch (action){
                 case MotionEvent.ACTION_DOWN:
-                    tv.setText(getPressedSpannableText(context,name,count));
+                    textView.setText(getPressedSpannableText(context,name,count));
                     arrow.setImageResource(R.drawable.arrow_in_pressed);
                     break;
                 case MotionEvent.ACTION_MOVE:
                     break;
                 case MotionEvent.ACTION_UP:
-                    tv.setText(getSpannableText(context,name,count));
+                    textView.setText(getSpannableText(context,name,count));
                     arrow.setImageResource(R.drawable.arrow_in_normal);
                     int position = mData.indexOf(bean);
                     if(bean.hasChildren()){
-                        collapseOrExpand(position,true,this.indicator);
+                        collapseOrExpand(position,true,indicator);
                     }else if(mOnItemClickListener != null){
                         mOnItemClickListener.onItemClick(view,position,bean);
                     }
                     break;
                 case MotionEvent.ACTION_CANCEL:
-                    tv.setText(getSpannableText(context,name,count));
+                    textView.setText(getSpannableText(context,name,count));
                     arrow.setImageResource(R.drawable.arrow_in_normal);
                     break;
             }
