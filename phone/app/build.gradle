@@ -1,7 +1,4 @@
 apply plugin: 'com.android.application'
-dependencies {
-    implementation 'com.android.support.constraint:constraint-layout:+'
-}
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
@@ -106,5 +103,6 @@ android {
         compile files('libs/usc.jar')
         // Dependencies for local unit tests
         testCompile "junit:junit:$rootProject.ext.junitVersion"
+        compile "com.android.support.constraint:constraint-layout:$rootProject.supportLibraryVersion"
     }
 }
