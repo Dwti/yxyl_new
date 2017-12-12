@@ -34,16 +34,14 @@
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
+            android:layout_centerInParent="true"
             android:gravity="center"
-            android:layout_toRightOf="@+id/backview"
-            android:layout_toLeftOf="@+id/right_null"
             android:ellipsize="end"
             android:singleLine="true"
             android:textColor="@color/color_666666"
             android:textSize="20dp"
             android:textStyle="bold"
-            tools:text="放假客服开始开发司法考试打飞机快圣诞节疯狂的减肥可视对讲发射点发" />
+            android:text="题号卡"/>
     </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView

@@ -1,6 +1,7 @@
 package com.yanxiu.gphone.student.mistakeredo.request;
 
 import com.test.yanxiu.network.RequestBase;
+import com.yanxiu.gphone.student.base.EXueELianBaseRequest;
 import com.yanxiu.gphone.student.db.UrlRepository;
 import com.yanxiu.gphone.student.util.LoginInfo;
 
@@ -9,19 +10,9 @@ import com.yanxiu.gphone.student.util.LoginInfo;
  * 获取错题知识点树
  */
 
-public class WrongQPointRequest extends RequestBase {
-    protected String stageId ;
-    protected String subjectId;
-    protected String token = LoginInfo.getToken();
-    @Override
-    protected boolean shouldLog() {
-        return false;
-    }
-
-    @Override
-    protected String urlServer() {
-        return UrlRepository.getInstance().getServer();
-    }
+public class WrongQPointRequest extends EXueELianBaseRequest {
+    public String stageId ;
+    public String subjectId;
 
     @Override
     protected String urlPath() {
@@ -42,13 +33,5 @@ public class WrongQPointRequest extends RequestBase {
 
     public void setSubjectId(String subjectId) {
         this.subjectId = subjectId;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
     }
 }

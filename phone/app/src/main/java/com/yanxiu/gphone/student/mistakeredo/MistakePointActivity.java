@@ -150,6 +150,8 @@ public class MistakePointActivity extends YanxiuBaseActivity {
                     }else {
                         showDataEmptyView();
                     }
+                }else if(ret.getStatus().getCode() == 3){
+                    showDataEmptyView();
                 }else {
                     showDataErrorView();
                 }

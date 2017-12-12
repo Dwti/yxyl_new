@@ -37,7 +37,7 @@ public class Extend extends BaseBean {
         this.ptid = ptid;
     }
 
-    public class Data{
+    public class Data extends BaseBean{
         private String answerCompare;
         private String globalStatis;
 

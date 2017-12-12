@@ -1,6 +1,7 @@
 package com.yanxiu.gphone.student.mistakeredo.request;
 
 import com.test.yanxiu.network.RequestBase;
+import com.yanxiu.gphone.student.base.EXueELianBaseRequest;
 import com.yanxiu.gphone.student.db.UrlRepository;
 import com.yanxiu.gphone.student.util.LoginInfo;
 
@@ -10,20 +11,10 @@ import java.util.List;
  * Created by sp on 17-11-23.
  */
 
-public class WrongQByQidsRequest extends RequestBase {
+public class WrongQByQidsRequest extends EXueELianBaseRequest {
 
-    protected String qids;
-    protected String subjectId;
-    protected String token = LoginInfo.getToken();
-    @Override
-    protected boolean shouldLog() {
-        return false;
-    }
-
-    @Override
-    protected String urlServer() {
-        return UrlRepository.getInstance().getServer();
-    }
+    public String qids;
+    public String subjectId;
 
     @Override
     protected HttpType httpType() {
