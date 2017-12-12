@@ -24,6 +24,7 @@ import com.yanxiu.gphone.student.questions.answerframe.listener.IExercise;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.MistakeAnalysisActivity;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.analysisbase.AnalysisComplexExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerComplexExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.RedoComplexExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.wrongbase.WrongComplexExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.util.FragmentUserVisibleController;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
@@ -117,7 +118,7 @@ public abstract class ExerciseBaseFragment extends YanxiuBaseFragment implements
             mQaName = (TextView) v.findViewById(R.id.qa_name);
             String templateName = null;
             Fragment parentFragment = getParentFragment();
-            if (parentFragment instanceof AnswerComplexExerciseBaseFragment || parentFragment instanceof AnalysisComplexExerciseBaseFragment || parentFragment instanceof WrongComplexExerciseBaseFragment) {
+            if (parentFragment instanceof AnswerComplexExerciseBaseFragment || parentFragment instanceof AnalysisComplexExerciseBaseFragment || parentFragment instanceof WrongComplexExerciseBaseFragment || parentFragment instanceof RedoComplexExerciseBaseFragment) {
                 templateName = getString(R.string.question);
                 TextPaint tp = mQaName.getPaint();
                 tp.setTypeface(DEFAULT_BOLD);
