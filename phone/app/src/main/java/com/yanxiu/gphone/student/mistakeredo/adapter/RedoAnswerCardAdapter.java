@@ -31,9 +31,12 @@ public class RedoAnswerCardAdapter extends RecyclerView.Adapter<RedoAnswerCardAd
 
     private OnItemClickListener mListener;
 
-    public RedoAnswerCardAdapter(Context context, OnItemClickListener listener) {
+    private int mTotalCount;
+
+    public RedoAnswerCardAdapter(Context context, OnItemClickListener listener,int totalCount) {
         mContext = context;
         mListener = listener;
+        mTotalCount = totalCount;
     }
 
     public void setData(ArrayList<BaseQuestion> list) {
@@ -49,9 +52,8 @@ public class RedoAnswerCardAdapter extends RecyclerView.Adapter<RedoAnswerCardAd
 
     @Override
     public void onBindViewHolder(AnswerCardViewHolder holder, final int position) {
-        final BaseQuestion question = mList.get(position);
+        final BaseQuestion question = position < mList.size()? mList.get(position) : null;
         generateQuestionNumber(question, holder,position);
-        final AnswerCardViewHolder holder2 = holder;
         holder.mWavesLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,7 +91,7 @@ public class RedoAnswerCardAdapter extends RecyclerView.Adapter<RedoAnswerCardAd
 
     @Override
     public int getItemCount() {
-        return mList.size();
+        return mTotalCount;
     }
 
 
