@@ -590,7 +590,7 @@ public class QuestionUtil {
                    String[] strings=((String) tB).split("&");
                    boolean flag=false;
                    for (String s:strings){
-                       if (((String) tA).compareTo(s)==0){
+                       if ((((String) tA).trim()).compareTo(s.trim())==0){
                            flag=true;
                        }
                    }
