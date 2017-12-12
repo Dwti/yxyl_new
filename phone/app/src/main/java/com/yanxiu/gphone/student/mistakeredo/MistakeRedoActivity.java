@@ -443,7 +443,7 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
                 }
             }
         } else {
-            b = baseQuestion.isComplexQuestion();
+            b = baseQuestion.getTemplate().equals(QuestionTemplate.ANSWER);
         }
         return b;
     }
