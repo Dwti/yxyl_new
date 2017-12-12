@@ -62,7 +62,7 @@ public class ClozeComplexQuestion extends BaseQuestion {
 
     @Override
     public ExerciseBaseFragment redoFragment() {
-        return new ClozeRedoFragment();
+        return new ClozeRedoComplexFragment();
     }
 
     public List<String> getCorrectAnswers() {

@@ -153,8 +153,8 @@ public class ClozeRedoTopFragment extends TopBaseFragment {
      */
     private void showChildQuestion(boolean isShow) {
         Fragment fragment = getParentFragment();
-        if (null != fragment && fragment instanceof ClozeAnswerComplexFragment) {
-            ClozeAnswerComplexFragment parentFragment = (ClozeAnswerComplexFragment) fragment;
+        if (null != fragment && fragment instanceof ClozeRedoComplexFragment) {
+            ClozeRedoComplexFragment parentFragment = (ClozeRedoComplexFragment) fragment;
             if (isShow) {
                 parentFragment.expand();
             } else {
@@ -169,8 +169,8 @@ public class ClozeRedoTopFragment extends TopBaseFragment {
      */
     private void setCurrentItem(int index) {
         Fragment fragment = getParentFragment();
-        if (null != fragment && fragment instanceof ClozeAnswerComplexFragment) {
-            ClozeAnswerComplexFragment parentFragment = (ClozeAnswerComplexFragment) fragment;
+        if (null != fragment && fragment instanceof ClozeRedoComplexFragment) {
+            ClozeRedoComplexFragment parentFragment = (ClozeRedoComplexFragment) fragment;
             ViewPager viewPager = parentFragment.getmViewPager();
             if(viewPager != null){
                 viewPager.setCurrentItem(index);
@@ -183,8 +183,8 @@ public class ClozeRedoTopFragment extends TopBaseFragment {
      */
     private void setOnPageChangeListener() {
         Fragment fragment = getParentFragment();
-        if (null != fragment && fragment instanceof ClozeAnswerComplexFragment) {
-            ClozeAnswerComplexFragment parentFragment = (ClozeAnswerComplexFragment) fragment;
+        if (null != fragment && fragment instanceof ClozeRedoComplexFragment) {
+            ClozeRedoComplexFragment parentFragment = (ClozeRedoComplexFragment) fragment;
             ViewPager viewPager = parentFragment.getmViewPager();
             if (viewPager != null) {
                 viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -231,8 +231,8 @@ public class ClozeRedoTopFragment extends TopBaseFragment {
      */
     private int getClozeAnsweHashCode(){
         Fragment parentFragment = getParentFragment();
-        if(null != parentFragment && parentFragment instanceof ClozeAnswerComplexFragment){
-            return ((ClozeAnswerComplexFragment) parentFragment).mHashCode;
+        if(null != parentFragment && parentFragment instanceof ClozeRedoComplexFragment){
+            return ((ClozeRedoComplexFragment) parentFragment).mHashCode;
         }
         return -1;
     }

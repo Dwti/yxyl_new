@@ -18,6 +18,7 @@ import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.RedoSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.cloze.ClozeAnswerComplexFragment;
+import com.yanxiu.gphone.student.questions.cloze.ClozeRedoComplexFragment;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
 
 import java.util.List;
@@ -95,8 +96,8 @@ public class SingleChooseRedoFragment extends RedoSimpleExerciseBaseFragment imp
      */
     private int getClozeAnsweHashCode(){
         Fragment parentFragment = getParentFragment();
-        if(null != parentFragment && parentFragment instanceof ClozeAnswerComplexFragment){
-            return ((ClozeAnswerComplexFragment) parentFragment).mHashCode;
+        if(null != parentFragment && parentFragment instanceof ClozeRedoComplexFragment){
+            return ((ClozeRedoComplexFragment) parentFragment).mHashCode;
         }
         return -1;
     }

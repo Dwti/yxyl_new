@@ -21,7 +21,7 @@ import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.TopBaseF
  * Created by 戴延枫 on 2017/6/14.
  */
 
-public class ClozeRedoFragment extends RedoComplexExerciseBaseFragment {
+public class ClozeRedoComplexFragment extends RedoComplexExerciseBaseFragment {
     public int mHashCode = this.hashCode();
     private ClozeComplexQuestion mData;
     private int mTopHeight;
@@ -38,7 +38,7 @@ public class ClozeRedoFragment extends RedoComplexExerciseBaseFragment {
 
     @Override
     protected TopBaseFragment getTopFragment() {
-        ClozeComplexTopFragment topFragment = new ClozeComplexTopFragment();
+        ClozeRedoTopFragment topFragment = new ClozeRedoTopFragment();
         topFragment.setData(mData);
         return topFragment;
     }
