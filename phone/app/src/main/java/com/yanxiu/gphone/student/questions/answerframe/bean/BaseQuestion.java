@@ -167,7 +167,7 @@ public abstract class BaseQuestion implements Serializable {
     public void initTemplateOfAnswerStem(){
         try{
             int type_id = Integer.parseInt(getType_id());
-            if(type_id == 8 || type_id == 22){ //计算或解答题
+            if(type_id == 8 || type_id == 22 || type_id == 24){ //计算或解答题
                 if(children != null && !children.isEmpty()){
                     for(int index =0; index<children.size();index++){
                         String stem = "(" + (index + 1) + ")" + "<br/>" + children.get(index).getStem();
@@ -641,7 +641,7 @@ public abstract class BaseQuestion implements Serializable {
      */
     public Boolean isNodeCountForTotal() {
 //        if (template.equals(QuestionTemplate.CLOZE)) {
-        if (isComplexQuestion && !type_id.equals("8") && !type_id.equals("22")) {
+        if (isComplexQuestion && !type_id.equals("8") && !type_id.equals("22") && !type_id.equals("24")) {
             return false;
         }
         return true;
@@ -657,7 +657,7 @@ public abstract class BaseQuestion implements Serializable {
      */
     public Boolean isChildNodeCountForTotal() {
 //        if (template.equals(QuestionTemplate.CLOZE)) {
-        if (isComplexQuestion && !type_id.equals("8") && !type_id.equals("22")) {
+        if (isComplexQuestion && !type_id.equals("8") && !type_id.equals("22") && !type_id.equals("24")) {
             return true;
         }
 
