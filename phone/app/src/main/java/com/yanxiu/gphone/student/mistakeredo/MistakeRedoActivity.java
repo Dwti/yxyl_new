@@ -738,8 +738,10 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
             if (innerIndex == (innerSize - 1) && index == (size - 1)) { //状态3
 //                mNext_text.setText(R.string.complete);
                 mNext_text.setText("");
+                mNext_question.setVisibility(View.INVISIBLE);
             } else {
                 mNext_text.setText(R.string.next_question);
+                mNext_question.setVisibility(View.VISIBLE);
             }
 
             //第一题
@@ -754,8 +756,10 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
             if (index == (size - 1)) {
 //                mNext_text.setText(R.string.complete);
                 mNext_text.setText("");
+                mNext_question.setVisibility(View.INVISIBLE);
             } else {
                 mNext_text.setText(R.string.next_question);
+                mNext_question.setVisibility(View.VISIBLE);
             }
 
             if (index == 0) { //第一题
