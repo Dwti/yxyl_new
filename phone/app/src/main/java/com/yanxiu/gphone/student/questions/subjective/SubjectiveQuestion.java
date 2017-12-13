@@ -28,6 +28,7 @@ public class SubjectiveQuestion extends BaseQuestion {
     private int typeId=-1;
     private int score;
     private List<JsonAudioComment> audioList;
+    private boolean isMistakeRedoAnalysisExpand = false;
 
     public SubjectiveQuestion(PaperTestBean bean, QuestionShowType showType,String paperStatus) {
         super(bean, showType,paperStatus);
@@ -124,6 +125,14 @@ public class SubjectiveQuestion extends BaseQuestion {
     @Override
     public Object getAnswer() {
         return answerList;
+    }
+
+    public boolean isMistakeRedoAnalysisExpand() {
+        return isMistakeRedoAnalysisExpand;
+    }
+
+    public void setMistakeRedoAnalysisExpand(boolean mistakeRedoAnalysisExpand) {
+        isMistakeRedoAnalysisExpand = mistakeRedoAnalysisExpand;
     }
 
     @Override

@@ -42,6 +42,7 @@ import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionTemplate;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionUtil;
 import com.yanxiu.gphone.student.questions.answerframe.view.QAViewPager;
+import com.yanxiu.gphone.student.questions.subjective.SubjectiveQuestion;
 import com.yanxiu.gphone.student.util.DataFetcher;
 import com.yanxiu.gphone.student.util.KeyboardObserver;
 import com.yanxiu.gphone.student.util.ToastManager;
@@ -858,9 +859,25 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
     protected void onDestroy() {
         mKeyboardObserver.destroy();
         mOverlay.clearAnimation();
+        clearAllSubjectExpandState();
         super.onDestroy();
     }
 
+    private void clearAllSubjectExpandState(){
+        for(BaseQuestion question : mAdapter.getDatas()){
+            if(question.isComplexQuestion()){
+                for(BaseQuestion child : question.getChildren()){
+                    if(child instanceof SubjectiveQuestion){
+                        ((SubjectiveQuestion)child).setMistakeRedoAnalysisExpand(false);
+                    }
+                }
+            }else {
+                if(question instanceof SubjectiveQuestion){
+                    ((SubjectiveQuestion)question).setMistakeRedoAnalysisExpand(false);
+                }
+            }
+        }
+    }
 
     public static void LuanchActivity(Context context, String key, String title, String subjectId, String stageId, int wrongNum, ArrayList<String> qids) {
         Intent intent = new Intent(context, MistakeRedoActivity.class);
