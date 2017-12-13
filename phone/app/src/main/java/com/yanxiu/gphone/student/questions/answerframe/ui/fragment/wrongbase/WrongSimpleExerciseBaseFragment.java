@@ -334,7 +334,7 @@ public abstract class WrongSimpleExerciseBaseFragment extends WrongExercisbaseFr
      * 笔记
      */
     public void showNoteView(JsonNoteBean noteBean) {
-        mNoteView.setData(noteBean);
+        mNoteView.setData(mData);
     }
 
     @Override
