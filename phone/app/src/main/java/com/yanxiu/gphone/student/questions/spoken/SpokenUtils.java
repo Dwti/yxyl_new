@@ -216,15 +216,15 @@ public class SpokenUtils {
 
             @Override
             public void onAudioData(IOralEvalSDK iOralEvalSDK, byte[] bytes, int i, int i1) {
-                try {
-                    if (mAudioFileOut == null) {
-                        File files = new File(path);
-                        mAudioFileOut = new FileOutputStream(files);
-                    }
-                    mAudioFileOut.write(bytes, i, i1);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+//                try {
+//                    if (mAudioFileOut == null) {
+//                        File files = new File(path);
+//                        mAudioFileOut = new FileOutputStream(files);
+//                    }
+//                    mAudioFileOut.write(bytes, i, i1);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
                 if (oralEvalCallback instanceof onOralEvalCallback) {
                     ((onOralEvalCallback) oralEvalCallback).onAudioData(iOralEvalSDK, bytes, i, i1);
                 }
