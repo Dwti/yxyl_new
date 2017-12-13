@@ -91,7 +91,7 @@ public class StemUtil {
                 stem = replaceFirstChar(stem, MARK_ORANGE_START);
                 stem = stem.replaceFirst("\\(_\\)", "<empty>oooooo</empty>");
 //            } else if (!correctAnswers.get(i).equals(filledAnswers.get(i))) {
-            } else if (QuestionUtil.compareStringByOrder(filledAnswers.get(i),correctAnswers.get(i))) {
+            } else if (!QuestionUtil.compareStringByOrder(filledAnswers.get(i),correctAnswers.get(i))) {
                 stem = replaceFirstChar(stem, MARK_ORANGE_START);
                 stem = stem.replaceFirst("\\(_\\)", "<wrong>" + filledAnswers.get(i) + "</wrong>");
             } else {
