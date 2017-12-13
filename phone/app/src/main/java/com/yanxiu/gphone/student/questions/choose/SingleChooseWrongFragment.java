@@ -18,6 +18,8 @@ import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.analysisbase.AnalysisSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.wrongbase.WrongSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.cloze.ClozeAnalysisComplexFragment;
+import com.yanxiu.gphone.student.questions.cloze.ClozeRedoComplexFragment;
+import com.yanxiu.gphone.student.questions.cloze.ClozeWrongComplexFragment;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
 
 import java.util.List;
@@ -72,7 +74,7 @@ public class SingleChooseWrongFragment extends WrongSimpleExerciseBaseFragment {
      */
     private void hiddenNumberBar(View view) {
         Fragment parentFragment = getParentFragment();
-        if (null != parentFragment && parentFragment instanceof ClozeAnalysisComplexFragment) {
+        if (null != parentFragment && parentFragment instanceof ClozeWrongComplexFragment) {
             View number_bar = view.findViewById(R.id.number_bar);
             View ll_question = view.findViewById(R.id.ll_question);
             View line = view.findViewById(R.id.view);
