@@ -41,6 +41,7 @@ public class RedoAnswerCardFragment extends YanxiuBaseFragment{
     private RecyclerView mRecyclerView;
     private RedoAnswerCardAdapter mAnswerCardAdapter;
     private RedoAnswerCardAdapter.OnItemClickListener mListener;
+    private int mQuestionCount;
 
     private int mSpanCount;
     private int mSpacing;
@@ -60,10 +61,11 @@ public class RedoAnswerCardFragment extends YanxiuBaseFragment{
         mPaper = paper;
 //        mQuestions = QuestionUtil.allNodesThatHasNumber(paper.getQuestions());
         mQuestions = paper.getQuestions();
-        for(int i = mQuestions.size(); i < totalCount; i++){
-            //不够的用null填充
-            mQuestions.add(null);
-        }
+//        for(int i = mQuestions.size(); i < totalCount; i++){
+//            //不够的用null填充
+//            mQuestions.add(null);
+//        }
+        mQuestionCount = totalCount;
         mTitleString = title;
     }
 
@@ -79,7 +81,7 @@ public class RedoAnswerCardFragment extends YanxiuBaseFragment{
         calculationSpanCount();
         mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), mSpanCount));
         mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(mSpanCount, mSpacing, true));
-        mAnswerCardAdapter = new RedoAnswerCardAdapter(getActivity(), mListener);
+        mAnswerCardAdapter = new RedoAnswerCardAdapter(getActivity(), mListener,mQuestionCount);
         mAnswerCardAdapter.setData(mQuestions);
         mRecyclerView.setAdapter(mAnswerCardAdapter);
 

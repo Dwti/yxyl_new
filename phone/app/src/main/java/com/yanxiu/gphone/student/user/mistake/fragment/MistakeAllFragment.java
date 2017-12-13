@@ -44,7 +44,7 @@ public class MistakeAllFragment extends MistakeBaseFragment implements MistakeAl
     private MistakeAllAdapter mMistakeAllAdapter;
     private MistakeAllRequest mCompleteRequest;
     private int mCurrentPos = 0;
-    private int mPageSize = 20;
+    private int mPageSize = 10;
 
     private boolean mEnterAnalysis = false; //进入解析之后，又可能删除题目，所以回来的时候需要刷新界面
 

@@ -120,7 +120,7 @@ public abstract class WrongComplexExerciseBaseFragment extends WrongExercisbaseF
 //        }
         TopBaseFragment topFragment = getTopFragment();
         fm.beginTransaction()
-                .add(R.id.top_container, topFragment)
+                .replace(R.id.top_container, topFragment)
                 .commit();
         setTopFragment(topFragment);
         mViewPager = (QAViewPager) mRootView.findViewById(R.id.ll_bottom_container);

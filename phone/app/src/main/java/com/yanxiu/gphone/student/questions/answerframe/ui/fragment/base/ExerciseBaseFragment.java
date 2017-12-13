@@ -24,6 +24,7 @@ import com.yanxiu.gphone.student.questions.answerframe.listener.IExercise;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.MistakeAnalysisActivity;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.analysisbase.AnalysisComplexExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerComplexExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.RedoComplexExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.wrongbase.WrongComplexExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.util.FragmentUserVisibleController;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
@@ -88,7 +89,11 @@ public abstract class ExerciseBaseFragment extends YanxiuBaseFragment implements
             }else if(mBaseQuestion.getShowType().equals(QuestionShowType.ANSWER) || mBaseQuestion.getShowType().equals(QuestionShowType.ANALYSIS)){
                 //答题跟解析的复合题不显示题号（复合题的小题显示）
                 if(isComplexQuestion){
-                    mQaNumber.setVisibility(View.GONE);
+                    if(mBaseQuestion.getType_id().equals("22") || mBaseQuestion.getType_id().equals("24")){
+                        //如果是解答题或者解决问题 不做任何处理
+                    }else {
+                        mQaNumber.setVisibility(View.GONE);
+                    }
                 }
                 if(isChild){
                     mQaNumber.setTextColor(getResources().getColor(R.color.color_999999));
@@ -113,7 +118,7 @@ public abstract class ExerciseBaseFragment extends YanxiuBaseFragment implements
             mQaName = (TextView) v.findViewById(R.id.qa_name);
             String templateName = null;
             Fragment parentFragment = getParentFragment();
-            if (parentFragment instanceof AnswerComplexExerciseBaseFragment || parentFragment instanceof AnalysisComplexExerciseBaseFragment || parentFragment instanceof WrongComplexExerciseBaseFragment) {
+            if (parentFragment instanceof AnswerComplexExerciseBaseFragment || parentFragment instanceof AnalysisComplexExerciseBaseFragment || parentFragment instanceof WrongComplexExerciseBaseFragment || parentFragment instanceof RedoComplexExerciseBaseFragment) {
                 templateName = getString(R.string.question);
                 TextPaint tp = mQaName.getPaint();
                 tp.setTypeface(DEFAULT_BOLD);
