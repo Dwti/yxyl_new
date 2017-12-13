@@ -27,12 +27,15 @@ import com.yanxiu.gphone.student.mistakeredo.bean.WrongQPointBean;
 import com.yanxiu.gphone.student.mistakeredo.request.WrongQPointRequest;
 import com.yanxiu.gphone.student.mistakeredo.response.WrongQPointResponse;
 import com.yanxiu.gphone.student.user.mistake.activity.MistakeListActivity;
+import com.yanxiu.gphone.student.user.mistake.response.MistakeDeleteMessage;
 import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.anim.AlphaAnimationUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import de.greenrobot.event.EventBus;
 
 public class MistakePointActivity extends YanxiuBaseActivity {
 
@@ -64,6 +67,7 @@ public class MistakePointActivity extends YanxiuBaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wrong_qpoint);
+        EventBus.getDefault().register(this);
         initView();
         initData();
         initListener();
@@ -131,6 +135,12 @@ public class MistakePointActivity extends YanxiuBaseActivity {
                 }
             }
         });
+    }
+
+    public void onEventMainThread(MistakeDeleteMessage message){
+        if(message != null){
+            getWrongQPoints();
+        }
     }
 
     private int getSelectedStageIndex(String stageId){
@@ -251,6 +261,12 @@ public class MistakePointActivity extends YanxiuBaseActivity {
         AlphaAnimationUtil.startPopBgAnimIn(mOverlay);
         popupWindow.showAtLocation(getWindow().getDecorView(), Gravity.CENTER, 0, 0);
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     private void dismissPop(){

@@ -127,14 +127,6 @@ public class MistakeAnalysisActivity extends YanxiuBaseActivity implements View.
 
     }
 
-    @Override
-    public void onBackPressed() {
-        if(!TextUtils.isEmpty(mQidsToRemove)){
-            deleteQuestions(mQidsToRemove);
-        }else {
-            super.onBackPressed();
-        }
-    }
 
     private class HomeKeyEventBroadCastReceiver extends BroadcastReceiver {
 
@@ -195,19 +187,8 @@ public class MistakeAnalysisActivity extends YanxiuBaseActivity implements View.
                 break;
             case R.id.tv_delete:
                 if (!isOnLoadMore) {
-                    //此处需要记录删除的qid 然后在退出时统一删除
-                    ToastManager.showMsg(getString(R.string.question_deleted));
-                    if(mDeletedPos.contains(mQaView.getCurrentItem())){
-                        return;
-                    }else {
-                        mDeletedPos.add(mQaView.getCurrentItem());
-                    }
-                    String qid = mQaAdapter.getQidByPosition(mQaView.getCurrentItem());
-                    if(mQidsToRemove.length() == 0){
-                        mQidsToRemove += qid;
-                    }else {
-                        mQidsToRemove = mQidsToRemove + "," + qid;
-                    }
+                    //不变，走老的删除逻辑
+                    setDeleteQuestion();
                 }
                 break;
         }

@@ -81,18 +81,18 @@ public class SubjectiveRedoFragment extends WrongSimpleExerciseBaseFragment impl
                 }
             }
         }
-        if (mData.getTypeId() == QuestionUtil.QUESTION_TYP.QUESTION_FILL_BLANKS.type || mData.getTypeId() == QuestionUtil.QUESTION_TYP.QUESTION_TRANSLATION.type || mData.getTypeId() == QuestionUtil.QUESTION_TYP.QUESTION_SUBJECTSWERE.type) {
-            String result;
-            if (mData.getScore() == 5) {
-                result = getString(R.string.correct);
-                showAnswerResultView(true, null, result);
-            } else {
-                result = getString(R.string.wrong);
-                showAnswerResultView(false, null, result);
-            }
-        } else {
-            showScoreView(String.valueOf(mData.getScore()));
-        }
+//        if (mData.getTypeId() == QuestionUtil.QUESTION_TYP.QUESTION_FILL_BLANKS.type || mData.getTypeId() == QuestionUtil.QUESTION_TYP.QUESTION_TRANSLATION.type || mData.getTypeId() == QuestionUtil.QUESTION_TYP.QUESTION_SUBJECTSWERE.type) {
+//            String result;
+//            if (mData.getScore() == 5) {
+//                result = getString(R.string.correct);
+//                showAnswerResultView(true, null, result);
+//            } else {
+//                result = getString(R.string.wrong);
+//                showAnswerResultView(false, null, result);
+//            }
+//        } else {
+//            showScoreView(String.valueOf(mData.getScore()));
+//        }
         showVoiceScoldedView(mData.getAudioList());
         showDifficultyview(mData.getStarCount());
         showAnswerView(answer);
