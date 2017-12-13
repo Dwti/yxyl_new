@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.PickerViewEx;
@@ -150,9 +151,9 @@ public class MistakePointActivity extends YanxiuBaseActivity {
         WrongQPointRequest request = new WrongQPointRequest();
         request.setSubjectId(mSubjectId);
         request.setStageId(mStageId);
-        request.startRequest(WrongQPointResponse.class, new HttpCallback<WrongQPointResponse>() {
+        request.startRequest(WrongQPointResponse.class, new EXueELianBaseCallback<WrongQPointResponse>() {
             @Override
-            public void onSuccess(RequestBase request, WrongQPointResponse ret) {
+            public void onResponse(RequestBase request, WrongQPointResponse ret) {
                 if(ret.getStatus().getCode() == 0 ){
                     if(!ret.getData().isEmpty()){
                         showContentView();
