@@ -5,6 +5,7 @@ import android.text.TextPaint;
 import android.text.TextUtils;
 
 import com.yanxiu.gphone.student.YanxiuApplication;
+import com.yanxiu.gphone.student.questions.answerframe.util.QuestionUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,7 +90,8 @@ public class StemUtil {
                     filledAnswers.add("");
                 stem = replaceFirstChar(stem, MARK_ORANGE_START);
                 stem = stem.replaceFirst("\\(_\\)", "<empty>oooooo</empty>");
-            } else if (!correctAnswers.get(i).equals(filledAnswers.get(i))) {
+//            } else if (!correctAnswers.get(i).equals(filledAnswers.get(i))) {
+            } else if (!QuestionUtil.compareStringByOrder(filledAnswers.get(i),correctAnswers.get(i))) {
                 stem = replaceFirstChar(stem, MARK_ORANGE_START);
                 stem = stem.replaceFirst("\\(_\\)", "<wrong>" + filledAnswers.get(i) + "</wrong>");
             } else {
