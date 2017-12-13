@@ -830,8 +830,9 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
                 SpManager.setCompleteQuestionCount(mPaper.getId(), QuestionUtil.calculateCompleteCount(mQuestions));
                 if (!TextUtils.isEmpty(mQidsToRemove)) {
                     deleteQuestions(mQidsToRemove);
+                }else {
+                    finish();
                 }
-                finish();
                 break;
             case R.id.answercardview:
                 showAnswerCardFragment();
