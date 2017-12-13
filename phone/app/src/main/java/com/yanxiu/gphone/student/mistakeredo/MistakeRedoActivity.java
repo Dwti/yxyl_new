@@ -348,7 +348,10 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
                 if (question.isComplexQuestion()) {
                     List<BaseQuestion> children = question.getChildren();
                     for(BaseQuestion child : children){
-                        child.setShowType(QuestionShowType.MISTAKE_ANALYSIS);
+                        if(!child.getTemplate().equals(QuestionTemplate.ANSWER)){
+                            //主观题的解析 不变 还按照当前的错题重做的界面展示（没变化，都一样）
+                            child.setShowType(QuestionShowType.MISTAKE_ANALYSIS);
+                        }
                         if(!child.getTemplate().equals(QuestionTemplate.ANSWER) && child.getStatus() == Constants.ANSWER_STATUS_WRONG){
                             isRight = false;
                         }

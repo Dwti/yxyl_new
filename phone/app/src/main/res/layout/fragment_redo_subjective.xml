@@ -71,7 +71,8 @@
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
-                    android:background="@color/color_fafafa">
+                    android:background="@color/color_fafafa"
+                    android:visibility="gone">
 
                     <com.yanxiu.gphone.student.customviews.AlbumGridView
                         android:id="@+id/ag_image"
