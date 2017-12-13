@@ -579,6 +579,17 @@ public class QuestionUtil {
         }
     }
 
+    public static boolean compareStringByOrder(String a,String b){
+        String[] strings=b.split("&");
+        boolean flag=false;
+        for (String s:strings){
+            if ((a.trim()).compareTo(s.trim())==0){
+                flag=true;
+            }
+        }
+        return flag;
+    }
+
     public static <T extends Comparable<T>> boolean compareListByOrder(List<T> a, List<T> b) {
         if (a.size() != b.size())
             return false;
@@ -587,13 +598,13 @@ public class QuestionUtil {
             T tA=a.get(i);
             T tB=b.get(i);
             if (tA instanceof String&&tB instanceof String){
-                   String[] strings=((String) tB).split("&");
-                   boolean flag=false;
-                   for (String s:strings){
-                       if ((((String) tA).trim()).compareTo(s.trim())==0){
-                           flag=true;
-                       }
-                   }
+//                   String[] strings=((String) tB).split("&");
+                   boolean flag=compareStringByOrder((String) tA,(String) tB);
+//                   for (String s:strings){
+//                       if ((((String) tA).trim()).compareTo(s.trim())==0){
+//                           flag=true;
+//                       }
+//                   }
                    if (!flag) {
                        return false;
                    }
