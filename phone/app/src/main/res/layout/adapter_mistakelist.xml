@@ -35,7 +35,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:textColor="@color/color_89e00d"
-            android:textSize="@dimen/mistake_list_item_text_size2" />
+            android:textSize="@dimen/mistake_list_item_text_size2"
+            android:visibility="invisible"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -44,7 +45,8 @@
             android:layout_marginEnd="@dimen/mistake_list_item_padding_r"
             android:text="@string/topic"
             android:textColor="@color/color_89e00d"
-            android:textSize="@dimen/mistake_list_item_text_size2"/>
+            android:textSize="@dimen/mistake_list_item_text_size2"
+            android:visibility="invisible"/>
 
         <ImageView
             android:layout_width="@dimen/mistake_list_item_icon2_w_h"
