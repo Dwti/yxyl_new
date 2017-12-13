@@ -50,6 +50,8 @@ public abstract class BaseQuestion implements Serializable {
     protected JsonNoteBean jsonNoteBean;
     protected boolean hasVideo = false;
 
+    private String serverAnswerCompare;
+
     private Object ansewr;//已回答的问题
 
     private String stem_complexToSimple;//只有一个子题的复合题的主题干(复合题转成单题显示)
@@ -110,6 +112,11 @@ public abstract class BaseQuestion implements Serializable {
             jsonNoteBean.setQid(qid);
             jsonNoteBean.setWqid(String.valueOf(wqid));
         }catch (Exception e){
+            e.printStackTrace();
+        }
+        try {
+            serverAnswerCompare = bean.getQuestions().getExtend().getData().getAnswerCompare();
+        } catch (Exception e) {
             e.printStackTrace();
         }
         this.wqnumber=bean.getWqnumber();
@@ -693,6 +700,18 @@ public abstract class BaseQuestion implements Serializable {
         return retNodes;
     }
 
+    public String getMistakeRedoAnswerResult(){
+        String flag = "答案：";
+        if(!TextUtils.isEmpty(serverAnswerCompare) && serverAnswerCompare.contains(flag)){
+            int index = serverAnswerCompare.indexOf(flag);
+            index += 3;
+            String result = serverAnswerCompare.substring(index,serverAnswerCompare.length());
+            result = "本题答案：" + result;
+            return result;
+        }else {
+            return "";
+        }
+    }
     /**
      * 答题卡复合题获取分子数字
      * @return
