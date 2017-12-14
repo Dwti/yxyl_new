@@ -791,14 +791,10 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
             return;
         }
 
-        if (adapter == null || index < 0 || size < 1 || mViewPager == null || currentFramgent == null)
+        if (index < 0 || size < 1 || mViewPager == null || currentFramgent == null)
             return;
 
-        if (currentFramgent instanceof ExerciseBaseFragment) {
-            ExerciseBaseFragment fragment = (ExerciseBaseFragment) currentFramgent;
-            fragment.onAnswerCardVisibleToUser(answerCardFragmentIsShwon);
-        }
-
+        currentFramgent.onAnswerCardVisibleToUser(answerCardFragmentIsShwon);
     }
 
     public Paper getPaper() {
