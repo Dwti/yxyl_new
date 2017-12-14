@@ -108,6 +108,7 @@ public abstract class BaseQuestion implements Serializable {
             this.jsonNoteBean=bean.getQuestions().getJsonNote();
             if (jsonNoteBean==null){
                 jsonNoteBean=new JsonNoteBean();
+                bean.getQuestions().setJsonNote(jsonNoteBean);
             }
             jsonNoteBean.setQid(qid);
             jsonNoteBean.setWqid(String.valueOf(wqid));

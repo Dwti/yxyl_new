@@ -79,13 +79,8 @@ public class NotesLayoutView extends LinearLayout implements View.OnClickListene
         mImgRightView.setOnClickListener(NotesLayoutView.this);
     }
 
-    public void setData(BaseQuestion baseQuestion){
-        JsonNoteBean jsonNoteBean = baseQuestion.getJsonNoteBean();
-        if (jsonNoteBean==null){
-            return;
-        }
+    public void setData(JsonNoteBean jsonNoteBean){
         mJsonNoteBean = jsonNoteBean;
-        baseQuestion.setJsonNoteBean(mJsonNoteBean);
         this.mWqid=jsonNoteBean.getWqid();
         this.mQid=jsonNoteBean.getQid();
         this.mContent=jsonNoteBean.getText();
