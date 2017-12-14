@@ -62,6 +62,13 @@ public class ListenRedoTopFragment extends TopBaseFragment {
         mListenView.setDestory();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mData.mProgress = 0;
+        mData.mIsShouldPlay = false;
+    }
+
     public void setVisibleToUser(boolean isVisibleToUser){
         if (isVisibleToUser){
             mListenView.setResume();

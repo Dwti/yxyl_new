@@ -145,4 +145,11 @@ public abstract class RedoSimpleExerciseBaseFragment extends AnswerExerciseBaseF
             mListenView.setDestory();
         }
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mData.mProgress = 0;
+        mData.mIsShouldPlay = false;
+    }
 }

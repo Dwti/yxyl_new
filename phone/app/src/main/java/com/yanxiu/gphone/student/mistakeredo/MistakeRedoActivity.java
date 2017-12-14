@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -358,8 +359,6 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
                         }
                     }
                     mAdapter.notifyDataSetChanged();
-//                    WrongComplexExerciseBaseFragment parentFragment = (WrongComplexExerciseBaseFragment) mAdapter.instantiateItem(mViewPager, mViewPager.getCurrentItem());
-//                    parentFragment.getmViewPager().getAdapter().notifyDataSetChanged();
                 } else {
                     if(!question.getTemplate().equals(QuestionTemplate.ANSWER) && question.getStatus() == Constants.ANSWER_STATUS_WRONG){
                         isRight = false;
