@@ -107,4 +107,8 @@ public class StringUtil {
         }
         return list;
     }
+
+    public static char getChoiceByIndex(int index){
+        return (char)(index + 65);
+    }
 }

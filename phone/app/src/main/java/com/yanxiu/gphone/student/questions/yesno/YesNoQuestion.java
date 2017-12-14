@@ -8,6 +8,7 @@ import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.Exercise
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.questions.bean.PaperTestBean;
 import com.yanxiu.gphone.student.questions.bean.PointBean;
+import com.yanxiu.gphone.student.util.StringUtil;
 
 import org.json.JSONArray;
 
@@ -136,4 +137,8 @@ public class YesNoQuestion extends BaseQuestion {
         return pointList;
     }
 
+    @Override
+    public String getMistakeRedoAnswerResult() {
+        return "本题答案：" + choice.get(1-Integer.parseInt(yesNoAnswer));
+    }
 }
