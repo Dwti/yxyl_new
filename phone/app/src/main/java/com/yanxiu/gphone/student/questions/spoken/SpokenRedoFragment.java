@@ -539,4 +539,17 @@ public class SpokenRedoFragment extends RedoSimpleExerciseBaseFragment implement
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mPlayerUtil.playFinish();
+        if (mAudioTagHandler != null) {
+            mAudioTagHandler.stop();
+        }
+//            mSpokenUtils.playClear();
+        mLocationUtil.playFinish();
+        mPlayOrStopView.setImageResource(R.drawable.spoken_play_vedio);
+        mSpokenUtils.cancel();
+    }
 }
