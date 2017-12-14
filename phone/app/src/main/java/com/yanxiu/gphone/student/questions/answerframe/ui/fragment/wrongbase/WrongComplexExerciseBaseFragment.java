@@ -17,6 +17,7 @@ import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.customviews.MyMaxHeightLinearLayout;
 import com.yanxiu.gphone.student.questions.answerframe.adapter.QAViewPagerAdapter;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.analysisbase.AnalysisComplexExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.TopBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.view.QAViewPager;
 
@@ -230,4 +231,10 @@ public abstract class WrongComplexExerciseBaseFragment extends WrongExercisbaseF
         super.onVisibilityChangedToUser(isVisibleToUser, invokeInResumeOrPause);
     }
 
+    @Override
+    public void onAnswerCardVisibleToUser(boolean isVisibleToUser) {
+        super.onAnswerCardVisibleToUser(isVisibleToUser);
+        ExerciseBaseFragment currentFragment = (ExerciseBaseFragment) mAdapter.instantiateItem(mViewPager,mViewPager.getCurrentItem());
+        currentFragment.onAnswerCardVisibleToUser(isVisibleToUser);
+    }
 }
