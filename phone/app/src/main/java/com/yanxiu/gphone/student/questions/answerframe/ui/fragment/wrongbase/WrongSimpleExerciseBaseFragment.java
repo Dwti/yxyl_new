@@ -25,6 +25,7 @@ import com.yanxiu.gphone.student.customviews.analysis.AnswerLayoutView;
 import com.yanxiu.gphone.student.customviews.analysis.NotesLayoutView;
 import com.yanxiu.gphone.student.customviews.analysis.PointLayoutView;
 import com.yanxiu.gphone.student.customviews.analysis.VoiceScoldedLayoutView;
+import com.yanxiu.gphone.student.mistakeredo.MistakeRedoActivity;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.bean.HomeEventMessage;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.NotesActicity;
@@ -186,6 +187,11 @@ public abstract class WrongSimpleExerciseBaseFragment extends WrongExercisbaseFr
      * @param textContent 给某些题型使用，传入“正确”或者“错误”；不需要请传入null
      */
     public void showAnswerResultView(boolean isRight, String result, String textContent) {
+        if(getActivity() instanceof MistakeRedoActivity){
+            //错题重做里面的作答结果，展示不一样（应该展示拼起来的正确答案）
+            //错题解析里面，主观题的result传的是null，但是主观题不显示作答结果，所以不影响
+            result = mData.getMistakeRedoAnswerResult();
+        }
         if (mAnswerResultView != null && mYesno_img != null) {
             int status = mData.getPad().getStatus();
             if (QuestionTemplate.ANSWER.equals(mData.getTemplate())) { //主观题

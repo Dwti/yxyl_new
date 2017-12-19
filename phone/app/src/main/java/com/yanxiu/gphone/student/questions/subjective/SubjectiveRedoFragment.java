@@ -122,6 +122,11 @@ public class SubjectiveRedoFragment extends WrongSimpleExerciseBaseFragment impl
             mNoPictureView.setVisibility(View.VISIBLE);
             mSubjectView.setVisibility(View.GONE);
         }
+
+        if(mData.isMistakeRedoAnalysisExpand()){
+            ll_check_analysis.setVisibility(View.GONE);
+            setAnalysisVisible(View.VISIBLE);
+        }
     }
 
     private void listener() {
@@ -131,7 +136,7 @@ public class SubjectiveRedoFragment extends WrongSimpleExerciseBaseFragment impl
             public void onClick(View v) {
                 ll_check_analysis.setVisibility(View.GONE);
                 setAnalysisVisible(View.VISIBLE);
-                fl_analysis.setVisibility(View.VISIBLE);
+                mData.setMistakeRedoAnalysisExpand(true);
             }
         });
     }

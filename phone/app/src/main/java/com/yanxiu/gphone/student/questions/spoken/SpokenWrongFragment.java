@@ -92,6 +92,15 @@ public class SpokenWrongFragment extends WrongSimpleExerciseBaseFragment impleme
     }
 
     @Override
+    public void onAnswerCardVisibleToUser(boolean isVisibleToUser) {
+        super.onAnswerCardVisibleToUser(isVisibleToUser);
+        if (isVisibleToUser){
+            mPlayerUtil.playFinish();
+            mAudioTagHandler.stop();
+        }
+    }
+
+    @Override
     public void initAnalysisView() {
         if (mData.getAnswerList()!=null&&!mData.getAnswerList().isEmpty()) {
             SpokenResponse response = SpokenQuestion.getBeanFromJson(mData.getAnswerList().get(0));

@@ -213,4 +213,11 @@ public abstract class AnswerComplexExerciseBaseFragment extends AnswerExerciseBa
     public void onVisibilityChangedToUser(boolean isVisibleToUser, boolean invokeInResumeOrPause) {
         super.onVisibilityChangedToUser(isVisibleToUser,invokeInResumeOrPause);
     }
+
+    @Override
+    public void onAnswerCardVisibleToUser(boolean isVisibleToUser) {
+        super.onAnswerCardVisibleToUser(isVisibleToUser);
+        ExerciseBaseFragment currentFragment = (ExerciseBaseFragment) mAdapter.instantiateItem(mViewPager,mViewPager.getCurrentItem());
+        currentFragment.onAnswerCardVisibleToUser(isVisibleToUser);
+    }
 }

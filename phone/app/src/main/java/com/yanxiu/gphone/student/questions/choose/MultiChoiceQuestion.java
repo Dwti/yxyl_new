@@ -6,6 +6,7 @@ import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.questions.bean.PaperTestBean;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.bean.PointBean;
+import com.yanxiu.gphone.student.util.StringUtil;
 
 import org.json.JSONArray;
 
@@ -121,5 +122,14 @@ public class MultiChoiceQuestion extends BaseQuestion {
             }
         }
         return Constants.ANSWER_STATUS_NOANSWERED;
+    }
+
+    @Override
+    public String getMistakeRedoAnswerResult() {
+        StringBuilder sb = new StringBuilder();
+        for(String str : multianswer){
+            sb.append(StringUtil.getChoiceByIndex(Integer.parseInt(str)));
+        }
+        return "本题答案：" + sb.toString();
     }
 }

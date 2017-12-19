@@ -100,6 +100,9 @@ public class QuestionConvertFactory {
 //                    questions.add(readingComplexQuestion);
 //                    break;
                 case QuestionTemplate.CLOZE:
+                    for(PaperTestBean child : paperTestBean.getQuestions().getChildren()){
+                        child.setWqid(paperTestBean.getWqid());
+                    }
                     ClozeComplexQuestion clozeComplexQuestion = new ClozeComplexQuestion(paperTestBean, showType, paperStatus);
                     questions.add(clozeComplexQuestion);
                     break;

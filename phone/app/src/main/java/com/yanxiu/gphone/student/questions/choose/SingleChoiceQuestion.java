@@ -7,6 +7,7 @@ import com.yanxiu.gphone.student.questions.bean.JsonNoteBean;
 import com.yanxiu.gphone.student.questions.bean.PaperTestBean;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.bean.PointBean;
+import com.yanxiu.gphone.student.util.StringUtil;
 
 import org.json.JSONArray;
 
@@ -119,4 +120,8 @@ public class SingleChoiceQuestion extends BaseQuestion {
         return Constants.ANSWER_STATUS_NOANSWERED;
     }
 
+    @Override
+    public String getMistakeRedoAnswerResult() {
+        return "本题答案：" + StringUtil.getChoiceByIndex(Integer.parseInt(singleAnswer));
+    }
 }

@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -42,6 +43,7 @@ import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionTemplate;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionUtil;
 import com.yanxiu.gphone.student.questions.answerframe.view.QAViewPager;
+import com.yanxiu.gphone.student.questions.subjective.SubjectiveQuestion;
 import com.yanxiu.gphone.student.util.DataFetcher;
 import com.yanxiu.gphone.student.util.KeyboardObserver;
 import com.yanxiu.gphone.student.util.ToastManager;
@@ -357,8 +359,6 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
                         }
                     }
                     mAdapter.notifyDataSetChanged();
-//                    WrongComplexExerciseBaseFragment parentFragment = (WrongComplexExerciseBaseFragment) mAdapter.instantiateItem(mViewPager, mViewPager.getCurrentItem());
-//                    parentFragment.getmViewPager().getAdapter().notifyDataSetChanged();
                 } else {
                     if(!question.getTemplate().equals(QuestionTemplate.ANSWER) && question.getStatus() == Constants.ANSWER_STATUS_WRONG){
                         isRight = false;
@@ -791,14 +791,10 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
             return;
         }
 
-        if (adapter == null || index < 0 || size < 1 || mViewPager == null || currentFramgent == null)
+        if (index < 0 || size < 1 || mViewPager == null || currentFramgent == null)
             return;
 
-        if (currentFramgent instanceof ExerciseBaseFragment) {
-            ExerciseBaseFragment fragment = (ExerciseBaseFragment) currentFramgent;
-            fragment.onAnswerCardVisibleToUser(answerCardFragmentIsShwon);
-        }
-
+        currentFramgent.onAnswerCardVisibleToUser(answerCardFragmentIsShwon);
     }
 
     public Paper getPaper() {
@@ -828,7 +824,11 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
                 break;
             case R.id.backview:
                 SpManager.setCompleteQuestionCount(mPaper.getId(), QuestionUtil.calculateCompleteCount(mQuestions));
-                finish();
+                if (!TextUtils.isEmpty(mQidsToRemove)) {
+                    deleteQuestions(mQidsToRemove);
+                }else {
+                    finish();
+                }
                 break;
             case R.id.answercardview:
                 showAnswerCardFragment();
@@ -854,9 +854,25 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
     protected void onDestroy() {
         mKeyboardObserver.destroy();
         mOverlay.clearAnimation();
+        clearAllSubjectExpandState();
         super.onDestroy();
     }
 
+    private void clearAllSubjectExpandState(){
+        for(BaseQuestion question : mAdapter.getDatas()){
+            if(question.isComplexQuestion()){
+                for(BaseQuestion child : question.getChildren()){
+                    if(child instanceof SubjectiveQuestion){
+                        ((SubjectiveQuestion)child).setMistakeRedoAnalysisExpand(false);
+                    }
+                }
+            }else {
+                if(question instanceof SubjectiveQuestion){
+                    ((SubjectiveQuestion)question).setMistakeRedoAnalysisExpand(false);
+                }
+            }
+        }
+    }
 
     public static void LuanchActivity(Context context, String key, String title, String subjectId, String stageId, int wrongNum, ArrayList<String> qids) {
         Intent intent = new Intent(context, MistakeRedoActivity.class);

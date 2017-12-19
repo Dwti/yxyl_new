@@ -79,7 +79,7 @@ public class SingleChooseRedoFragment extends RedoSimpleExerciseBaseFragment imp
      */
     private void hiddenNumberBar(View view){
         Fragment parentFragment = getParentFragment();
-        if(null != parentFragment && parentFragment instanceof ClozeAnswerComplexFragment){
+        if(null != parentFragment && parentFragment instanceof ClozeRedoComplexFragment){
             View number_bar = view.findViewById(R.id.number_bar);
             View ll_question = view.findViewById(R.id.ll_question);
             View line = view.findViewById(R.id.view);

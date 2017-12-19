@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.common.activity.PhotoActivity;
+import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.NotesActicity;
 import com.yanxiu.gphone.student.questions.bean.JsonNoteBean;
 
@@ -43,6 +44,7 @@ public class NotesLayoutView extends LinearLayout implements View.OnClickListene
     private String mQid;
     private String mContent;
     private ArrayList<String> mPhotoPath;
+    private JsonNoteBean mJsonNoteBean;
 
     public NotesLayoutView(Context context) {
         this(context,null);
@@ -78,9 +80,7 @@ public class NotesLayoutView extends LinearLayout implements View.OnClickListene
     }
 
     public void setData(JsonNoteBean jsonNoteBean){
-        if (jsonNoteBean==null){
-            return;
-        }
+        mJsonNoteBean = jsonNoteBean;
         this.mWqid=jsonNoteBean.getWqid();
         this.mQid=jsonNoteBean.getQid();
         this.mContent=jsonNoteBean.getText();
@@ -156,6 +156,8 @@ public class NotesLayoutView extends LinearLayout implements View.OnClickListene
             this.mContent = notesMessage.mNotesContent;
             mNoteContentView.setText(mContent);
             this.mPhotoPath=notesMessage.mPaths;
+            mJsonNoteBean.setText(mContent);
+            mJsonNoteBean.setImages(mPhotoPath);
             setNoteImg(mPhotoPath);
         }
     }

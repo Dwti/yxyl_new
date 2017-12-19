@@ -11,8 +11,8 @@ android {
         applicationId "com.yanxiu.gphone.student"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 27
-        versionName "3.1.2"
+        versionCode 28
+        versionName "3.1.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
             abiFilters "armeabi", "armeabi-v7a", "mips", "x86_64"
