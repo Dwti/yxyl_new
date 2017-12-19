@@ -41,7 +41,8 @@ public class YanxiuApplication extends LitePalApplication {
         initUrlServer();
         Stetho.initializeWithDefaults(this);
         SoundManger.getInstence().initialize(this);
-        if (SpManager.isFristStartUp()) {
+        if (SpManager.isFristStartUp2()) {
+            SpManager.setFristStartUp2(false);
             UserEventManager.getInstense().whenFirstStart();
         }else {
             UserEventManager.getInstense().whenStartApp();

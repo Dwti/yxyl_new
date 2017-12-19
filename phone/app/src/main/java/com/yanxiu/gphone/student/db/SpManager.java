@@ -27,6 +27,10 @@ public class SpManager {
      */
     private static final String FRIST_START_UP = "frist_start_up";
     /**
+     * 第一次启动
+     */
+    private static final String FRIST_START_UP2 = "frist_start_up2";
+    /**
      * 版本号
      */
     private static final String APP_VERSION_CODE = "version_code";
@@ -52,6 +56,19 @@ public class SpManager {
      */
     public static boolean isFristStartUp() {
         return mySharedPreferences.getBoolean(FRIST_START_UP, true);
+    }
+
+    /**
+     * 是否第一次启动（仅限于埋点用）
+     * */
+    public static boolean isFristStartUp2(){
+        return mySharedPreferences.getBoolean(FRIST_START_UP2, true);
+    }
+
+    public static void setFristStartUp2(boolean isFristStartUp) {
+        SharedPreferences.Editor editor = mySharedPreferences.edit();
+        editor.putBoolean(FRIST_START_UP2, isFristStartUp);
+        editor.commit();
     }
 
     public static void setFristEnterSpokenQuestion(boolean isFristStartUp) {
