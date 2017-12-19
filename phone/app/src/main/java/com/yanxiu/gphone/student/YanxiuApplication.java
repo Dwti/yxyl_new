@@ -97,7 +97,7 @@ public class YanxiuApplication extends LitePalApplication {
                 UserInstallBean message = new UserInstallBean();
                 ApplicationInfo ai = pi.applicationInfo;
                 message.name = ai.loadLabel(pm).toString();
-                message.type = ((ApplicationInfo.FLAG_SYSTEM & ai.flags) != ApplicationInfo.FLAG_SYSTEM)?"系统":"三方";
+                message.type = "";
                 list.add(message);
             }
         }
