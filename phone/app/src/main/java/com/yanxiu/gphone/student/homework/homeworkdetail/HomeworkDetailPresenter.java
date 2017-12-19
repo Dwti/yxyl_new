@@ -134,7 +134,7 @@ public class HomeworkDetailPresenter implements HomeworkDetailContract.Presenter
                 if(status == STATUS_UNSUBMMIT){
                     mHomeworkDetailView.openAnalysisQuestionUI(paper.getId());
                 }else if (status == STATUS_TODO){
-                    UserEventManager.getInstense().whenEnterWork(mSubjectId);
+                    UserEventManager.getInstense().whenEnterWork(paper.getSubjectid());
                     mShouldRefreshData = true;
                     mHomeworkDetailView.openAnswerQuestionUI(paper.getId());
                 }
