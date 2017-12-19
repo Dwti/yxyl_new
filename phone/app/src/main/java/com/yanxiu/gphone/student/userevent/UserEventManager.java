@@ -5,12 +5,14 @@ import android.text.TextUtils;
 import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.userevent.bean.UserEventBean;
+import com.yanxiu.gphone.student.userevent.bean.UserInstallBean;
 import com.yanxiu.gphone.student.userevent.bean.WorkBean;
 import com.yanxiu.gphone.student.userevent.request.UploadUserEventRequest;
 import com.yanxiu.gphone.student.userevent.response.UploadUserEventResponse;
 import com.yanxiu.gphone.student.userevent.util.EventDataUtils;
 import com.yanxiu.gphone.student.util.Logger;
 
+import org.json.JSONException;
 import org.litepal.crud.DataSupport;
 
 import java.util.List;
@@ -57,6 +59,13 @@ public class UserEventManager {
     }
 
     /**
+     * 上传用户安装列表
+     * */
+    public void whenGetUserInstalled(List<UserInstallBean> list) throws JSONException {
+        startRequest(EventDataUtils.getUserInstalledMap(list));
+    }
+
+    /**
      * 提交练习/作业
      *
      * @param bedition    教材版本
@@ -82,6 +91,13 @@ public class UserEventManager {
      */
     public void whenEnterWork() {
         startRequest(EventDataUtils.getEnterWorkMap());
+    }
+
+    /**
+     * 进入作业
+     * */
+    public void whenEnterWork(String subjectId){
+        startRequest(EventDataUtils.getEnterWorkMap(subjectId));
     }
 
     /**

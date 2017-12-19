@@ -2,6 +2,7 @@ package com.yanxiu.gphone.student.homework.homeworkdetail;
 
 import com.yanxiu.gphone.student.homework.response.HomeworkDetailBean;
 import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
+import com.yanxiu.gphone.student.userevent.UserEventManager;
 
 import java.util.List;
 
@@ -133,6 +134,7 @@ public class HomeworkDetailPresenter implements HomeworkDetailContract.Presenter
                 if(status == STATUS_UNSUBMMIT){
                     mHomeworkDetailView.openAnalysisQuestionUI(paper.getId());
                 }else if (status == STATUS_TODO){
+                    UserEventManager.getInstense().whenEnterWork(mSubjectId);
                     mShouldRefreshData = true;
                     mHomeworkDetailView.openAnswerQuestionUI(paper.getId());
                 }

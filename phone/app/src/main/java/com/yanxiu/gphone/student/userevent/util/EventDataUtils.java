@@ -4,10 +4,15 @@ import android.os.Build;
 
 import com.yanxiu.gphone.student.YanxiuApplication;
 import com.yanxiu.gphone.student.constant.Constants;
+import com.yanxiu.gphone.student.userevent.bean.UserInstallBean;
 import com.yanxiu.gphone.student.userevent.bean.WorkBean;
 import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.NetWorkUtils;
 import com.yanxiu.gphone.student.util.ScreenUtils;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,6 +27,7 @@ import java.util.Map;
 public class EventDataUtils {
 
     private static final String APPKEY="20001";
+    private static final String APPKEY_INTALL="20003";
     private static final String SOURCE="0";//0，移动端，1，页面
     private static final String CLIENT_TYPE="1";//0，iOS，1，android
     private static final String URL="www.yanxiu.com";
@@ -59,6 +65,25 @@ public class EventDataUtils {
     public static String getStartAppMap(){
         HashMap<String,String> map=getEventDataMap(Constants.UserEvent.UserEventID.START_APP);
         map.put(Constants.UserEvent.RESERVED,eventMapToJsonString(getReservedMap()));
+        return eventMapToJsonMap(map);
+    }
+
+    public static String getUserInstalledMap(List<UserInstallBean> list) throws JSONException {
+        HashMap<String, String> map = getEventDataMap("");
+        map.put(Constants.UserEvent.APPKEY,APPKEY_INTALL);
+        map.put(Constants.UserEvent.IP,"192.168.12.10");
+
+        JSONObject object=new JSONObject();
+        JSONArray array=new JSONArray();
+        for (UserInstallBean installBean:list) {
+            JSONObject jsonObject=new JSONObject();
+            jsonObject.put(Constants.UserEvent.INTALLNAME,installBean.name);
+            jsonObject.put(Constants.UserEvent.INTALLTYPE,installBean.type);
+            array.put(jsonObject);
+        }
+        object.put(Constants.UserEvent.INTALLAPPLIST,array);
+
+        map.put(Constants.UserEvent.RESERVED, object.toString());
         return eventMapToJsonMap(map);
     }
 
@@ -100,6 +125,14 @@ public class EventDataUtils {
     public static String getEnterWorkMap(){
         HashMap<String,String> map=getEventDataMap(Constants.UserEvent.UserEventID.ENTER_WORK);
         map.put(Constants.UserEvent.RESERVED,eventMapToJsonString(getReservedMap()));
+        return eventMapToJsonMap(map);
+    }
+
+    public static String getEnterWorkMap(String subjectId){
+        HashMap<String,String> map=getEventDataMap(Constants.UserEvent.UserEventID.ENTER_WORK2);
+        HashMap<String,String> reserved=getReservedMap();
+        reserved.put(Constants.UserEvent.SUBJECT_ID,subjectId);
+        map.put(Constants.UserEvent.RESERVED,eventMapToJsonString(reserved));
         return eventMapToJsonMap(map);
     }
 

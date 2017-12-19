@@ -142,12 +142,18 @@ public class Constants {
         public static final String QUES_Num = "quesNum";
         public static final String DURATION="duration";
         public static final String ACCURACY="accuracy";
+        public static final String INTALLNAME="name";
+        public static final String INTALLTYPE="type";
+        public static final String INTALLAPPLIST="applist";
 
         public static final class UserEventID {
             public static final String REGISTER_SUCCESS = "20:event_1";
             public static final String START_APP = "20:event_2";
             public static final String SUBMIT_WORK = "20:event_3";
             public static final String RECEIVE_WORK = "20:event_4";
+            /**
+             * 进入练习
+             * */
             public static final String ENTER_WORK = "20:event_5";
             public static final String ENTER_BACK = "20:event_6";
             public static final String ENTER_FRONT = "20:event_7";
@@ -156,6 +162,10 @@ public class Constants {
             public static final String FIRST_START = "20:event_10";
             public static final String EXIT_BC_WORK="20:event_11";
             public static final String SUBMIT_BC_WORK="20:event_12";
+            /**
+             * 进入作业
+             * */
+            public static final String ENTER_WORK2 = "20:event_13";
         }
     }
 }

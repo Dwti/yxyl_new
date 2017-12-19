@@ -1,19 +1,28 @@
 package com.yanxiu.gphone.student;
 
+import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+
 import com.facebook.stetho.Stetho;
 import com.google.gson.Gson;
 import com.umeng.socialize.PlatformConfig;
-import com.umeng.socialize.UMShareAPI;
 import com.yanxiu.gphone.student.base.EnvConfigBean;
 import com.yanxiu.gphone.student.base.UrlBean;
 import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.db.SpManager;
 import com.yanxiu.gphone.student.db.UrlRepository;
 import com.yanxiu.gphone.student.userevent.UserEventManager;
+import com.yanxiu.gphone.student.userevent.bean.UserInstallBean;
 import com.yanxiu.gphone.student.util.FileUtil;
 import com.yanxiu.gphone.student.util.SoundManger;
 
+import org.json.JSONException;
 import org.litepal.LitePalApplication;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class YanxiuApplication extends LitePalApplication {
     private static YanxiuApplication instance;
@@ -36,6 +45,11 @@ public class YanxiuApplication extends LitePalApplication {
             UserEventManager.getInstense().whenFirstStart();
         }else {
             UserEventManager.getInstense().whenStartApp();
+        }
+        try {
+            UserEventManager.getInstense().whenGetUserInstalled(getAllAppsInfo(this));
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 
@@ -70,4 +84,23 @@ public class YanxiuApplication extends LitePalApplication {
         this.isForceUpdate = isForceUpdate;
     }
 
+
+    /**
+     * 方法描述:获取所有已安装App信息
+     */
+    public static List<UserInstallBean> getAllAppsInfo(Context context) {
+        List<UserInstallBean> list = new ArrayList<>();
+        PackageManager pm = context.getPackageManager();
+        List<PackageInfo> installedPackages = pm.getInstalledPackages(0);
+        for (PackageInfo pi : installedPackages) {
+            if (pi != null) {
+                UserInstallBean message = new UserInstallBean();
+                ApplicationInfo ai = pi.applicationInfo;
+                message.name = ai.loadLabel(pm).toString();
+                message.type = ((ApplicationInfo.FLAG_SYSTEM & ai.flags) != ApplicationInfo.FLAG_SYSTEM)?"系统":"三方";
+                list.add(message);
+            }
+        }
+        return list;
+    }
 }
