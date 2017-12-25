@@ -34,4 +34,15 @@ public abstract class AnswerExerciseBaseFragment extends ExerciseBaseFragment {
             calculateExerciseTime();
         }
     }
+
+    @Override
+    public void onAnswerCardVisibleToUser(boolean isVisibleToUser) {
+        super.onAnswerCardVisibleToUser(isVisibleToUser);
+        if (isVisibleToUser){
+            mEndTime = System.currentTimeMillis()/1000l;
+            calculateExerciseTime();
+        }else {
+            mStartTime = System.currentTimeMillis()/1000l;
+        }
+    }
 }
