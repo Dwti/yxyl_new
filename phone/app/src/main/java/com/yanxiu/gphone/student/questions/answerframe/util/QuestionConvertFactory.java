@@ -7,6 +7,7 @@ import com.yanxiu.gphone.student.questions.cloze.ClozeComplexQuestion;
 import com.yanxiu.gphone.student.questions.connect.ConnectQuestion;
 import com.yanxiu.gphone.student.questions.fillblank.FillBlankQuestion;
 import com.yanxiu.gphone.student.questions.listencomplex.ListenComplexQuestion;
+import com.yanxiu.gphone.student.questions.operation.OperationQuestion;
 import com.yanxiu.gphone.student.questions.readingcomplex.ReadingComplexQuestion;
 import com.yanxiu.gphone.student.questions.choose.SingleChoiceQuestion;
 import com.yanxiu.gphone.student.questions.bean.PaperTestBean;
@@ -90,6 +91,10 @@ public class QuestionConvertFactory {
                 case QuestionTemplate.CLASSIFY:
                     ClassifyQuestion classifyQuestion = new ClassifyQuestion(paperTestBean,showType,paperStatus);
                     questions.add(classifyQuestion);
+                    break;
+                case QuestionTemplate.OPERATION:
+                    OperationQuestion operationQuestion = new OperationQuestion(paperTestBean,showType,paperStatus);
+                    questions.add(operationQuestion);
                     break;
                 case QuestionTemplate.ANSWER:
                     SubjectiveQuestion subjectiveQuestion = new SubjectiveQuestion(paperTestBean, showType, paperStatus);
@@ -225,6 +230,17 @@ public class QuestionConvertFactory {
                     classifyQuestion.setPtid_ComplexToSimple(ptid_complex);
                     classifyQuestion.setQid_ComplexToSimple(qid_complex);
                     questions.add(classifyQuestion);
+                    break;
+                case QuestionTemplate.OPERATION:
+                    OperationQuestion operationQuestion = new OperationQuestion(childQuestion,showType,paperStatus);
+                    operationQuestion.setStem_complexToSimple(stem_complex);
+                    operationQuestion.setTemplate_complexToSimple(template);
+                    operationQuestion.setTypeId_complexToSimple(type_id);
+                    operationQuestion.setUrl_listenComplexToSimple(url_complex_listen);
+                    operationQuestion.setPadId_ComplexToSimple(padId_complex);
+                    operationQuestion.setPtid_ComplexToSimple(ptid_complex);
+                    operationQuestion.setQid_ComplexToSimple(qid_complex);
+                    questions.add(operationQuestion);
                     break;
                 case QuestionTemplate.ANSWER:
                     SubjectiveQuestion subjectiveQuestion = new SubjectiveQuestion(childQuestion, showType, paperStatus);
