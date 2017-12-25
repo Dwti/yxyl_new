@@ -121,6 +121,9 @@ public class SpManager {
      *
      * @return -1 ：没记录
      */
+    /**
+     * 数据库分明保存的有全部的各种时间，为啥不用，舍近而求远，再搞这一套
+     * */
     public static int getTotlaTime(String paperId) {
         return myAnswerTimeSharedPreferences.getInt(paperId, -1);
     }

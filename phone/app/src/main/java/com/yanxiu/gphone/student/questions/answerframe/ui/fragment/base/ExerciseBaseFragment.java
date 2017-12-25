@@ -274,6 +274,8 @@ public abstract class ExerciseBaseFragment extends YanxiuBaseFragment implements
      * 保存答案
      */
     public void saveAnswer(BaseQuestion question) {
+        mEndTime = System.currentTimeMillis()/1000l;
+        calculateExerciseTime();
         ArrayList<Integer> LevelPositions = question.getLevelPositions();//获取当前节点（题号）数据，通过节点可以判断出处在ArrayList的位置
         if (LevelPositions == null || LevelPositions.size() < 1)
             return;
@@ -331,7 +333,7 @@ public abstract class ExerciseBaseFragment extends YanxiuBaseFragment implements
                 bean.setAid(SaveAnswerDBHelper.makeId(question));
                 bean.setAnswerJson(json);
                 bean.setAnswerd(question.getHasAnswered());
-                bean.setCostTime(question.getCosttime());
+                bean.setCostTime(String.valueOf(question.getCosttime()));
 //                bean.setStartTime(question.get);
 //                bean.setEndTime();
                 Log.e("dyf", "json = " + json);

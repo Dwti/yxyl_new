@@ -1,6 +1,8 @@
 package com.yanxiu.gphone.student.db;
 
 
+import android.text.TextUtils;
+
 import com.yanxiu.gphone.student.bcresource.bean.TopicPaperStatusBean;
 import com.yanxiu.gphone.student.questions.answerframe.bean.AnswerBean;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
@@ -28,6 +30,16 @@ public class SaveAnswerDBHelper {
 //        }
 //        return json;
 //    }
+
+    public static long getCosttime(String id){
+        String costtime="";
+        List<AnswerBean> mAnswerBeanList = DataSupport.select("costTime").where("aid = ?", id).find(AnswerBean.class);
+        if (null != mAnswerBeanList && mAnswerBeanList.size() > 0) {
+            AnswerBean ab = mAnswerBeanList.get(0);
+            costtime = ab.getCostTime();
+        }
+        return TextUtils.isEmpty(costtime)?0:Long.parseLong(costtime);
+    }
 
     public static String getAnswerJson(String id) {
         String json = null;

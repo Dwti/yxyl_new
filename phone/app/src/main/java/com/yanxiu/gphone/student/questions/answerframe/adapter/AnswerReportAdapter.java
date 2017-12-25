@@ -110,17 +110,14 @@ public class AnswerReportAdapter extends BaseAdapter {
                 weipigai(question, holder);
             }
 
-        }else if (QuestionTemplate.SPOKEN.equals(question.getTemplate())){
-            if (answerBean.isFinish()) {
-                if (answerBean.isRight()) {
-                    isRight(question, holder);
-                } else {
-                    isWrong(question, holder);
-                }
-            } else {
+        }else if (QuestionTemplate.FILL.equals(question.getTemplate())){
+            if (answerBean.isHalfRight()) {
+                isHalfRight(question, holder);
+            } else if (answerBean.isRight()) {
+                isRight(question, holder);
+            } else if (!answerBean.isRight()) {
                 isWrong(question, holder);
             }
-
         }else {          //如果是客观题
             if (answerBean.isFinish()) {
                 if (answerBean.isRight()) {
