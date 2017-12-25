@@ -148,6 +148,7 @@ public abstract class BaseQuestion implements Serializable {
 
         if(showType.equals(QuestionShowType.ANSWER)){ //答题，加载本地数据库答案
             String answerJson = SaveAnswerDBHelper.getAnswerJson(SaveAnswerDBHelper.makeId(this));
+            costtime=SaveAnswerDBHelper.getCosttime(SaveAnswerDBHelper.makeId(this));
             if(!TextUtils.isEmpty(answerJson))
                 bean.getQuestions().getPad().setAnswer(answerJson);
             boolean isAnswered = SaveAnswerDBHelper.getIsAnswered(SaveAnswerDBHelper.makeId(this));
@@ -469,7 +470,7 @@ public abstract class BaseQuestion implements Serializable {
     }
 
     public void setCosttime(long costtime) {
-        this.costtime = costtime;
+        this.costtime += costtime;
     }
 
     public boolean isComplexQuestion() {
