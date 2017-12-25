@@ -24,6 +24,9 @@ import android.widget.RelativeLayout;
 
 public class ConnectAnimationHelper {
 
+    /**
+     * 这写法真逗，遗患无穷
+     * */
     public static Bitmap getDrawBitmap(View view){
         view.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
                 View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));

@@ -189,13 +189,14 @@ public class ConnectResultAdapter extends RecyclerView.Adapter<RecyclerView.View
 
                         @Override
                         public void onAnimationEnd(Animation animation) {
+                            Log.d("asd","onAnimationEnd");
                             mAnimationLayout.removeView(imgLeft);
                             mAnimationLayout.removeView(imgRight);
                         }
 
                         @Override
                         public void onAnimationRepeat(Animation animation) {
-
+                            Log.d("asd","onAnimationRepeat");
                         }
                     });
 
@@ -208,6 +209,12 @@ public class ConnectResultAdapter extends RecyclerView.Adapter<RecyclerView.View
 
         public EmptyViewHolder(View itemView) {
             super(itemView);
+        }
+    }
+
+    public void clearAnim(){
+        if (mAnimationLayout!=null){
+            mAnimationLayout.removeAllViews();
         }
     }
 
