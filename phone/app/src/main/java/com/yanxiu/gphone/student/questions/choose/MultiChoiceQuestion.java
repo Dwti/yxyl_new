@@ -3,6 +3,7 @@ package com.yanxiu.gphone.student.questions.choose;
 import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
+import com.yanxiu.gphone.student.questions.bean.AnalysisBean;
 import com.yanxiu.gphone.student.questions.bean.PaperTestBean;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.bean.PointBean;
@@ -114,6 +115,31 @@ public class MultiChoiceQuestion extends BaseQuestion {
 
     @Override
     public int getStatus() {
+        if (showType.equals(QuestionShowType.MISTAKE_REDO)||showType.equals(QuestionShowType.ANSWER)){
+            return getSta();
+        }else {
+            List<AnalysisBean> analysis=getPad().getAnalysis();
+            List<Object> answer= getBean().getQuestions().getAnswer();
+            int status;
+            if (analysis.size()!=answer.size()){
+                status=Constants.ANSWER_STATUS_WRONG;
+            }else {
+                status=Constants.ANSWER_STATUS_RIGHT;
+            }
+
+            for (AnalysisBean analysisBean:analysis){
+                if (!AnalysisBean.RIGHT.equals(analysisBean.status)){
+                    status=Constants.ANSWER_STATUS_WRONG;
+                }
+            }
+            return status;
+        }
+    }
+
+    /**
+     * 临时处理
+     * */
+    private int getSta(){
         if (multianswer!=null&&answerList!=null) {
             if (multianswer.size() == answerList.size() && multianswer.containsAll(answerList)) {
                 return Constants.ANSWER_STATUS_RIGHT;

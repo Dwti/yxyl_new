@@ -169,6 +169,7 @@
     <string name="answer_sscore_string">分</string>
     <string name="answer_no">回答错误</string>
     <string name="answer_yes">回答正确</string>
+    <string name="answer_half_right">部分正确</string>
     <string name="answer_no_pigai">未批改</string>
     <string name="teacher_no_pigai">老师未批改</string>
 

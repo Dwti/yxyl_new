@@ -30,7 +30,10 @@ public class ReportAnswerBean extends BaseBean {
     //是否是主观题
     private boolean isSubjective = false;
 
-    private boolean isHalfRight = false;    //半对状态，只针对主观题(如果不是半对状态，再去判断isRight)
+    //是否是填空题
+    private boolean isFillBlank=false;
+
+    private boolean isHalfRight = false;    //半对状态，只针对主观题和填空题(如果不是半对状态，再去判断isRight)
 
     private String selectType;
 
@@ -45,6 +48,14 @@ public class ReportAnswerBean extends BaseBean {
     private ArrayList<String> fillAnswers = new ArrayList<String>();
 
     private ArrayList<ArrayList<String>> connect_classfy_answer = new ArrayList<ArrayList<String>>();
+
+    public boolean isFillBlank() {
+        return isFillBlank;
+    }
+
+    public void setFillBlank(boolean fillBlank) {
+        isFillBlank = fillBlank;
+    }
 
     public ArrayList<ArrayList<String>> getConnect_classfy_answer() {
         return connect_classfy_answer;

@@ -9,6 +9,7 @@ import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
 import com.yanxiu.gphone.student.questions.answerframe.bean.ReportAnswerBean;
+import com.yanxiu.gphone.student.questions.bean.AnalysisBean;
 import com.yanxiu.gphone.student.questions.spoken.SpokenQuestion;
 import com.yanxiu.gphone.student.questions.spoken.SpokenResponse;
 
@@ -355,23 +356,14 @@ public class QuestionUtil {
                                 List<Object> rightAnswer = childQuestion.getServer_answer();
                                 ReportAnswerBean reportAnswerBean = childQuestion.getReportAnswerBean();
                                 int status = childQuestion.getPad().getStatus();
+                                List<AnalysisBean> analysis=childQuestion.getPad().getAnalysis();
+                                List<Object> answer= childQuestion.getBean().getQuestions().getAnswer();
                                 String childTemplate = childQuestion.getTemplate();
                                 reportAnswerBean.setStatus(status);
                                 //此处分为需要老师批改跟不需要老师批改两种情况处理（即主观题与非主观题）
                                 if (!QuestionTemplate.ANSWER.equals(childTemplate)) {
                                     //非主观题（就是有正确答案，直接能在客户端判定的题）
                                     if (answerChildList != null && !answerChildList.isEmpty()) {
-
-                                        reportAnswerBean.setIsFinish(true);
-                                        //如果是填空题，需要再次确认一下是不是所有的空全填完了（没填完的空是""）
-                                        if (QuestionTemplate.FILL.equals(childTemplate)) {
-                                            for (String str : answerChildList) {
-                                                if (TextUtils.isEmpty(str)) {
-                                                    reportAnswerBean.setIsFinish(false);
-                                                    break;
-                                                }
-                                            }
-                                        }
 
                                         if (QuestionTemplate.SINGLE_CHOICE.equals(childTemplate) || QuestionTemplate.ALTER.equals(childTemplate)) {
                                             reportAnswerBean.setSelectType(answerChildList.get(0));
@@ -380,10 +372,21 @@ public class QuestionUtil {
                                                 if (!TextUtils.isEmpty(rightString) && rightString.contains(".")) { //系统有可能会把0转化为0.0，导致出错
                                                     rightAnswer.set(0, rightString.substring(0, rightString.indexOf(".")));
                                                 }
-                                                if (!TextUtils.isEmpty(answerChildList.get(0)) && answerChildList.get(0).equals(String.valueOf(rightAnswer.get(0)))) {
-                                                    reportAnswerBean.setIsRight(true);
-                                                } else {
+//                                                if (!TextUtils.isEmpty(answerChildList.get(0)) && answerChildList.get(0).equals(String.valueOf(rightAnswer.get(0)))) {
+//                                                    reportAnswerBean.setIsRight(true);
+//                                                } else {
+//                                                    reportAnswerBean.setIsRight(false);
+//                                                }
+                                                if (analysis.size()!=answer.size()){
                                                     reportAnswerBean.setIsRight(false);
+                                                }else {
+                                                    reportAnswerBean.setIsRight(true);
+                                                }
+
+                                                for (AnalysisBean analysisBean:analysis){
+                                                    if (!AnalysisBean.RIGHT.equals(analysisBean.status)){
+                                                        reportAnswerBean.setIsRight(false);
+                                                    }
                                                 }
                                             }
                                         } else if (QuestionTemplate.SPOKEN.equals(childTemplate)) {
@@ -413,13 +416,67 @@ public class QuestionUtil {
                                             } else if (QuestionTemplate.FILL.equals(childTemplate)) {
                                                 reportAnswerBean.setFillAnswers((ArrayList<String>) answerChildList);
                                             }
-                                            if (compareListByOrder(answerChildList, rightAnswerStr)) {
-                                                reportAnswerBean.setIsRight(true);
-                                            } else {
+
+                                            if (analysis.size()!=answer.size()){
                                                 reportAnswerBean.setIsRight(false);
+                                            }else {
+                                                reportAnswerBean.setIsRight(true);
+                                            }
+
+                                            for (AnalysisBean analysisBean:analysis){
+                                                if (!AnalysisBean.RIGHT.equals(analysisBean.status)){
+                                                    reportAnswerBean.setIsRight(false);
+                                                }
+                                            }
+
+//                                            if (compareListByOrder(answerChildList, rightAnswerStr)) {
+//                                                reportAnswerBean.setIsRight(true);
+//                                            } else {
+//                                                reportAnswerBean.setIsRight(false);
+//                                            }
+                                        }
+                                        reportAnswerBean.setIsFinish(true);
+                                        //如果是填空题，需要再次确认一下是不是所有的空全填完了（没填完的空是""）
+                                        if (QuestionTemplate.FILL.equals(childTemplate)) {
+                                            reportAnswerBean.setFillBlank(true);
+                                            for (String str : answerChildList) {
+                                                if (TextUtils.isEmpty(str)) {
+                                                    reportAnswerBean.setIsFinish(false);
+                                                    break;
+                                                }
+                                            }
+                                            if (reportAnswerBean.isFinish()&&!reportAnswerBean.isRight()){
+                                                //0默认 1只有对  2只有错  3对错都有
+                                                int flag=0;
+                                                for (int k=0;k<analysis.size();k++){
+                                                    AnalysisBean analysisBean=analysis.get(k);
+                                                    boolean b=false;
+                                                    if (AnalysisBean.RIGHT.equals(analysisBean.status)){
+                                                        b=true;
+                                                    }
+                                                    if (j==0){
+                                                        if (b){
+                                                            flag=1;
+                                                        }else {
+                                                            flag=2;
+                                                        }
+                                                    }else {
+                                                        if (b){
+                                                            if (flag==2){
+                                                                flag=3;
+                                                            }
+                                                        }else {
+                                                            if (flag==1){
+                                                                flag=3;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                if (flag==3) {
+                                                    reportAnswerBean.setIsHalfRight(true);
+                                                }
                                             }
                                         }
-
                                     } else {
                                         reportAnswerBean.setIsFinish(false);
                                     }
@@ -449,6 +506,8 @@ public class QuestionUtil {
                     } else {
                         int status = outQuestion.getPad().getStatus();
                         int costTime = Integer.valueOf(outQuestion.getPad().getCosttime());
+                        List<AnalysisBean> analysis=outQuestion.getPad().getAnalysis();
+                        List<Object> answer= outQuestion.getBean().getQuestions().getAnswer();
                         ReportAnswerBean answerBean = outQuestion.getReportAnswerBean();
                         answerBean.setConsumeTime(costTime);
                         answerBean.setStatus(status);
@@ -466,10 +525,23 @@ public class QuestionUtil {
                         //此处分为需要老师批改跟不需要老师批改两种情况处理（即主观题与非主观题）
                         if (!QuestionTemplate.ANSWER.equals(template)) {
                             //非主观题
-                            if (!QuestionTemplate.CONNECT.equals(template) && !QuestionTemplate.CLASSIFY.equals(template)) {
+                            if (!QuestionTemplate.SPOKEN.equals(template)&&!QuestionTemplate.CONNECT.equals(template) && !QuestionTemplate.CLASSIFY.equals(template)) {
                                 if (answerList != null && !answerList.isEmpty()) {
-                                    if (status == QuestionUtil.ANSER_RIGHT)
+
+                                    if (analysis.size()!=answer.size()){
+                                        answerBean.setIsRight(false);
+                                    }else {
                                         answerBean.setIsRight(true);
+                                    }
+
+                                    for (AnalysisBean analysisBean:analysis){
+                                        if (!AnalysisBean.RIGHT.equals(analysisBean.status)){
+                                            answerBean.setIsRight(false);
+                                        }
+                                    }
+
+//                                    if (status == QuestionUtil.ANSER_RIGHT)
+//                                        answerBean.setIsRight(true);
                                     answerBean.setIsFinish(true);
                                     if (QuestionTemplate.SINGLE_CHOICE.equals(template)) {
                                         answerBean.setSelectType(answerList.get(0));
@@ -479,20 +551,73 @@ public class QuestionUtil {
                                         answerBean.setSelectType(answerList.get(0));
                                     } else if (QuestionTemplate.FILL.equals(template)) {
                                         answerBean.setFillAnswers((ArrayList<String>) answerList);
-                                    } else if (QuestionTemplate.SPOKEN.equals(template)) {
-                                        answerBean.setSelectType(answerList.get(0));
                                     }
                                     //如果是填空题，需要再次确认一下是不是所有的空全填完了（没填完的空是""）
                                     if (QuestionTemplate.FILL.equals(template)) {
+                                        answerBean.setFillBlank(true);
                                         for (String str : answerList) {
                                             if (TextUtils.isEmpty(str)) {
                                                 answerBean.setIsFinish(false);
                                                 break;
                                             }
                                         }
+
+                                        if (answerBean.isFinish()&&!answerBean.isRight()){
+                                            //0默认 1只有对  2只有错  3对错都有
+                                            int flag=0;
+                                            for (int j=0;j<analysis.size();j++){
+                                                AnalysisBean analysisBean=analysis.get(j);
+                                                boolean b=false;
+                                                if (AnalysisBean.RIGHT.equals(analysisBean.status)){
+                                                    b=true;
+                                                }
+                                                if (j==0){
+                                                    if (b){
+                                                        flag=1;
+                                                    }else {
+                                                        flag=2;
+                                                    }
+                                                }else {
+                                                    if (b){
+                                                        if (flag==2){
+                                                            flag=3;
+                                                        }
+                                                    }else {
+                                                        if (flag==1){
+                                                            flag=3;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            if (flag==3) {
+                                                answerBean.setIsHalfRight(true);
+                                            }
+                                        }
                                     }
                                 } else {
                                     answerBean.setIsFinish(false);
+                                }
+                            } else if (QuestionTemplate.SPOKEN.equals(template)) {
+                                if (answerList != null && !answerList.isEmpty()) {
+                                    answerBean.setIsFinish(true);
+                                }else {
+                                    answerBean.setIsFinish(false);
+                                }
+                                answerBean.setSelectType(answerList.get(0));
+                                SpokenResponse response = SpokenQuestion.getBeanFromJson(answerList.get(0));
+                                int score = SpokenQuestion.getScore((int) response.lines.get(0).score);
+                                switch (score) {
+                                    case 0:
+                                    case 1:
+                                        answerBean.setIsRight(false);
+                                        break;
+                                    case 2:
+                                    case 3:
+                                        answerBean.setIsRight(true);
+                                        break;
+                                    default:
+                                        answerBean.setIsRight(false);
+                                        break;
                                 }
                             } else {
                                 try {
@@ -531,17 +656,49 @@ public class QuestionUtil {
 //                                        answerBean.setIsFinish(false);
 //                                        answerBean.setIsRight(false);
 //                                    }
-                                    if (Constants.ANSWER_STATUS_RIGHT == outQuestion.getPad().getStatus()) {
-                                        answerBean.setIsFinish(true);
-                                        answerBean.setIsRight(true);
 
-                                    } else if (Constants.ANSWER_STATUS_WRONG == outQuestion.getPad().getStatus()) {
+                                    if (!analysis.isEmpty()){
                                         answerBean.setIsFinish(true);
-                                        answerBean.setIsRight(false);
-                                    } else {
+                                    }else {
                                         answerBean.setIsFinish(false);
-                                        answerBean.setIsRight(false);
                                     }
+
+                                    if (analysis.size()!=answer.size()){
+                                        answerBean.setIsRight(false);
+                                    }else {
+                                        answerBean.setIsRight(true);
+                                    }
+
+                                    if (QuestionTemplate.CONNECT.equals(template) ) {
+                                        for (AnalysisBean analysisBean : analysis) {
+                                            if (!AnalysisBean.RIGHT.equals(analysisBean.status)) {
+                                                answerBean.setIsRight(false);
+                                            }
+                                        }
+                                    }else if (QuestionTemplate.CLASSIFY.equals(template) ){
+                                        for (AnalysisBean analysisBean : analysis){
+                                            List<String> list=analysisBean.subStatus;
+                                            for (String s:list){
+                                                if (!AnalysisBean.RIGHT.equals(s)){
+                                                    answerBean.setIsRight(false);
+                                                }
+                                            }
+                                        }
+                                    }
+
+
+
+//                                    if (Constants.ANSWER_STATUS_RIGHT == outQuestion.getPad().getStatus()) {
+//                                        answerBean.setIsFinish(true);
+//                                        answerBean.setIsRight(true);
+//
+//                                    } else if (Constants.ANSWER_STATUS_WRONG == outQuestion.getPad().getStatus()) {
+//                                        answerBean.setIsFinish(true);
+//                                        answerBean.setIsRight(false);
+//                                    } else {
+//                                        answerBean.setIsFinish(false);
+//                                        answerBean.setIsRight(false);
+//                                    }
 
                                 } catch (Exception e) {
 

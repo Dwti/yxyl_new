@@ -101,7 +101,12 @@ public class ConnectWrongFragment extends WrongSimpleExerciseBaseFragment {
 
     @Override
     public void initAnalysisView() {
-        showAnswerResultView(mQuestion.isRight(), mQuestion.getAnswerCompare(), null);
+        int status=mQuestion.getStatus();
+        if (status==Constants.ANSWER_STATUS_RIGHT) {
+            showAnswerResultView(true, mQuestion.getAnswerCompare(), null);
+        }else {
+            showAnswerResultView(false, mQuestion.getAnswerCompare(), null);
+        }
         showDifficultyview(mQuestion.getStarCount());
         showAnalysisview(mQuestion.getQuestionAnalysis());
         showPointView(mQuestion.getPointList());

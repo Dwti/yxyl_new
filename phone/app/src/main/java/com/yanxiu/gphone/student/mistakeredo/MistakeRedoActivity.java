@@ -29,7 +29,9 @@ import com.yanxiu.gphone.student.mistakeredo.adapter.QAMistakeRedoAdapter;
 import com.yanxiu.gphone.student.mistakeredo.adapter.RedoAnswerCardAdapter;
 import com.yanxiu.gphone.student.mistakeredo.request.FinishReDoWorkRequest;
 import com.yanxiu.gphone.student.mistakeredo.request.WrongQByQidsRequest;
+import com.yanxiu.gphone.student.mistakeredo.response.CheckAnswerResponse;
 import com.yanxiu.gphone.student.mistakeredo.response.FinishReDoWorkResponse;
+import com.yanxiu.gphone.student.mistakeredo.utils.CheckAnswerManager;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
 import com.yanxiu.gphone.student.questions.answerframe.listener.OnAnswerStateChangedListener;
@@ -55,7 +57,10 @@ import java.util.List;
  * Created by sp on 17-11-24.
  */
 
-public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnClickListener, RedoAnswerCardAdapter.OnItemClickListener {
+/* *
+ * 为啥乱分包，这样搞还叫项目么，敢不敢不要瞎整
+ * */
+public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnClickListener, RedoAnswerCardAdapter.OnItemClickListener, CheckAnswerManager.onCheckAnswerListener {
 
     private static final String TITLE = "title";
     private static final String SUBJECTID = "subjectId";
@@ -106,6 +111,7 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
 
     private boolean isCanClick = true;
 
+    private CheckAnswerManager mAnswerManager=CheckAnswerManager.create();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -160,7 +166,7 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
         mBackView.setOnClickListener(this);
         mShowAnswerCardView.setOnClickListener(this);
         btn_submit.setOnClickListener(this);
-
+        mAnswerManager.setCheckAnswerListener(this);
     }
 
     public void addKeyboardVisibleChangeListener(KeyboardObserver.KeyBoardVisibleChangeListener listener) {
@@ -345,6 +351,9 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
         switch (mBottomBtnState) {
             //可提交
             case SUBMIT_ABLE:
+                //TODO 暂时不改
+//                mAnswerManager.start(question);
+
                 question.setShowType(QuestionShowType.MISTAKE_ANALYSIS);
                 boolean isRight = true;
                 if (question.isComplexQuestion()) {
@@ -374,6 +383,7 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
                         hideResultCard();
                     }
                 },1000);
+
                 break;
             //不可提交
             case SUBMIT_UNABLE:
@@ -927,5 +937,54 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
 //        }
 
         controlListenView(false);
+    }
+
+    @Override
+    public void onCheckAnswerStart() {
+        mLoadingView.showLoadingView();
+    }
+
+    @Override
+    public void onCheckAnswerSuccess(BaseQuestion question,CheckAnswerResponse response) {
+        // TODO 没写完
+        question.setShowType(QuestionShowType.MISTAKE_ANALYSIS);
+        boolean isRight = true;
+        if (question.isComplexQuestion()) {
+            List<BaseQuestion> children = question.getChildren();
+            for(BaseQuestion child : children){
+                if(!child.getTemplate().equals(QuestionTemplate.ANSWER)){
+                    //主观题的解析 不变 还按照当前的错题重做的界面展示（没变化，都一样）
+                    child.setShowType(QuestionShowType.MISTAKE_ANALYSIS);
+                }
+                if(!child.getTemplate().equals(QuestionTemplate.ANSWER) && child.getStatus() == Constants.ANSWER_STATUS_WRONG){
+                    isRight = false;
+                }
+            }
+            mAdapter.notifyDataSetChanged();
+        } else {
+            if(!question.getTemplate().equals(QuestionTemplate.ANSWER) && question.getStatus() == Constants.ANSWER_STATUS_WRONG){
+                isRight = false;
+            }
+            mAdapter.notifyDataSetChanged();
+        }
+        showResultCard(isRight);
+        setBottomButtonState(DELETE_ABLE);
+        //1秒后隐藏
+        mViewPager.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                hideResultCard();
+            }
+        },1000);
+    }
+
+    @Override
+    public void onCheckAnswerError(String error) {
+        ToastManager.showMsg(error);
+    }
+
+    @Override
+    public void onCheckAnswerEnd() {
+        mLoadingView.hiddenLoadingView();
     }
 }

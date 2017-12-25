@@ -6,6 +6,7 @@ import android.text.TextUtils;
 
 import com.yanxiu.gphone.student.YanxiuApplication;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionUtil;
+import com.yanxiu.gphone.student.questions.bean.AnalysisBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -116,6 +117,40 @@ public class StemUtil {
         return stem;
     }
 
+    public static String initAnalysisFillBlankStem(@NonNull String stem, @NonNull List<AnalysisBean> analysisBeanList) {
+        //<fill>标签 表示空中有答案，需要展示  <empty>标签表示空中没有内容，需要显示为空白
+        int i = 0;
+        while (stem.contains("(_)")) {
+            if (i > analysisBeanList.size() - 1 || TextUtils.isEmpty(analysisBeanList.get(i).key)) {
+                if (i > analysisBeanList.size() - 1)
+                    analysisBeanList.add(new AnalysisBean());
+                stem = replaceFirstChar(stem, MARK_ORANGE_START);
+                stem = stem.replaceFirst("\\(_\\)", "<empty>oooooo</empty>");
+//            } else if (!correctAnswers.get(i).equals(filledAnswers.get(i))) {
+            } else if (AnalysisBean.RIGHT.equals(analysisBeanList.get(i).status)) {
+                stem = replaceFirstChar(stem, MARK_GREEN_START);
+                stem = stem.replaceFirst("\\(_\\)", "<right>" + analysisBeanList.get(i).key + "</right>");
+            } else {
+                stem = replaceFirstChar(stem, MARK_ORANGE_START);
+                stem = stem.replaceFirst("\\(_\\)", "<wrong>" + analysisBeanList.get(i).key + "</wrong>");
+            }
+            i++;
+        }
+        //如果自定义标签标签为第一个字符时，taghandler解析的时候会有一个bug，导致第一个解析会跳过，然后会引起后面的图片显示也有问题
+        if (stem.startsWith("<empty>") || stem.startsWith("<wrong>") || stem.startsWith("<right>")) {
+            stem = "&zwj" + stem;
+        }
+
+        StringBuilder sb = new StringBuilder(stem);
+
+        ArrayList<String> tags = new ArrayList<>();
+        tags.add("empty");
+        tags.add("right");
+        tags.add("wrong");
+        stem = addSpace(stem, tags);
+
+        return stem;
+    }
 
     public static String generateSpaces(String source, int count, PlaceHolderGravity holderGravity) {
         String space = "\u00A0";

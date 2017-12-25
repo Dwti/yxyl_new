@@ -79,6 +79,9 @@ public class HomeworkDetailActivity extends YanxiuBaseActivity implements Homewo
 
         setLoadMoreEnable(true);
 
+        /**
+         * 为什么定义成subjectID，你明明传的是homeworkID，除了坑人还能干啥
+         * */
         String subjectId = getIntent().getStringExtra(EXTRA_SUBJECT_ID);
         String subjectName = getIntent().getStringExtra(EXTRA_SUBJECT_NAME);
         mTitle.setText(subjectName);
@@ -128,6 +131,9 @@ public class HomeworkDetailActivity extends YanxiuBaseActivity implements Homewo
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        /**
+         * 为什么定义成subjectID，你明明传的是homeworkID，除了坑人还能干啥
+         * */
         String subjectId = intent.getStringExtra(EXTRA_SUBJECT_ID);
         String subjectName = intent.getStringExtra(EXTRA_SUBJECT_NAME);
         mTitle.setText(subjectName);

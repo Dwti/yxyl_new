@@ -221,6 +221,18 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
      * @param textContent  给某些题型使用，传入“正确”或者“错误”；不需要请传入null
      */
     public void showAnswerResultView(boolean isRight, String result,String textContent) {
+        showAnswerResultView(isRight, result, textContent,false);
+    }
+
+    /**
+     * 答题结果view
+     *
+     * @param isRight 是否正确
+     * @param result  server返回的（没有该数据请传空）
+     * @param textContent  给某些题型使用，传入“正确”或者“错误”；不需要请传入null
+     * @param isHalfRight 是否是半对，暂时填空题需要
+     */
+    public void showAnswerResultView(boolean isRight, String result,String textContent,boolean isHalfRight) {
         if (mAnswerResultView != null && mYesno_img != null) {
             int status = mData.getPad().getStatus();
             if (QuestionTemplate.ANSWER.equals(mData.getTemplate())) { //主观题
@@ -245,25 +257,33 @@ public abstract class AnalysisSimpleExerciseBaseFragment extends AnalysisExercis
                 }else{
                     mAnswerResultView.setText(getResources().getString(R.string.answer_no_pigai), result);
                 }
-            }else{
-                if (isRight) {
-                    if (TextUtils.isEmpty(textContent)){
-                        mAnswerResultView.setText(getResources().getString(R.string.answer_yes), result);
-                    }else{
+            }else {
+                if (isHalfRight) {
+                    if (TextUtils.isEmpty(textContent)) {
+                        mAnswerResultView.setText(getResources().getString(R.string.answer_half_right), result);
+                    } else {
                         mAnswerResultView.setText(textContent, result);
                     }
-                    mYesno_img.setBackgroundResource(R.drawable.analysis_yes_img);
-
+                    mYesno_img.setBackgroundResource(R.drawable.analysis_half_right_img);
                 } else {
-                    if (TextUtils.isEmpty(textContent)){
-                        mAnswerResultView.setText(getResources().getString(R.string.answer_no), result);
-                    }else{
-                        mAnswerResultView.setText(textContent, result);
+                    if (isRight) {
+                        if (TextUtils.isEmpty(textContent)) {
+                            mAnswerResultView.setText(getResources().getString(R.string.answer_yes), result);
+                        } else {
+                            mAnswerResultView.setText(textContent, result);
+                        }
+                        mYesno_img.setBackgroundResource(R.drawable.analysis_yes_img);
+
+                    } else {
+                        if (TextUtils.isEmpty(textContent)) {
+                            mAnswerResultView.setText(getResources().getString(R.string.answer_no), result);
+                        } else {
+                            mAnswerResultView.setText(textContent, result);
+                        }
+                        mYesno_img.setBackgroundResource(R.drawable.analysis_wrong_img);
                     }
-                    mYesno_img.setBackgroundResource(R.drawable.analysis_wrong_img);
                 }
                 mYesno_img.setVisibility(View.VISIBLE);
-
             }
 
             mAnswerResultView.setVisibility(View.VISIBLE);

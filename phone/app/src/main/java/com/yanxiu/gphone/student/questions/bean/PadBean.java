@@ -20,6 +20,15 @@ public class PadBean extends BaseBean {
     private String objectiveScore;
     private TeacherCheckBean teachercheck;
     private List<JsonAudioComment> jsonAudioComment;
+    private List<AnalysisBean> analysis;
+
+    public List<AnalysisBean> getAnalysis() {
+        return analysis;
+    }
+
+    public void setAnalysis(List<AnalysisBean> analysis) {
+        this.analysis = analysis;
+    }
 
     public String getObjectiveScore() {
         return objectiveScore;

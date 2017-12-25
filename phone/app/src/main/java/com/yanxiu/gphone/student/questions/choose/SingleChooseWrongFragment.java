@@ -14,9 +14,11 @@ import android.widget.TextView;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.ChooseLayout;
+import com.yanxiu.gphone.student.mistakeredo.MistakeRedoActivity;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.analysisbase.AnalysisSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.wrongbase.WrongSimpleExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.bean.AnalysisBean;
 import com.yanxiu.gphone.student.questions.cloze.ClozeAnalysisComplexFragment;
 import com.yanxiu.gphone.student.questions.cloze.ClozeRedoComplexFragment;
 import com.yanxiu.gphone.student.questions.cloze.ClozeWrongComplexFragment;
@@ -104,7 +106,14 @@ public class SingleChooseWrongFragment extends WrongSimpleExerciseBaseFragment {
             int select_position = Integer.parseInt(select);
             if (count > select_position) {
                 ChooseLayout.ViewHolder selectViewHolder = (ChooseLayout.ViewHolder) mChooseView.getChildAt(select_position).getTag();
-                if (answer.equals(select)) {
+                boolean flag;
+                if (getActivity() instanceof MistakeRedoActivity) {
+                    flag = answer.equals(select);
+                } else {
+                    List<AnalysisBean> analysisBeans = mData.getPad().getAnalysis();
+                    flag = !analysisBeans.isEmpty() && AnalysisBean.RIGHT.equals(analysisBeans.get(0).status);
+                }
+                if (flag) {
                     mChooseView.setSelect(select_position);
                     selectViewHolder.mQuestionContentView.setTextColor(ContextCompat.getColor(getContext(), R.color.color_89e00d));
                     selectViewHolder.mQuestionIdView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.choose_right));

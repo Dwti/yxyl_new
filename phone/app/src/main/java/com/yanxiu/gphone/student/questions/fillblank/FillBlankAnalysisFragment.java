@@ -77,7 +77,14 @@ public class FillBlankAnalysisFragment extends AnalysisSimpleExerciseBaseFragmen
     @Override
     public void initAnalysisView() {
         if(Constants.HAS_FINISH_STATUS.equals(mQuestion.getPaperStatus())){ //已完成
-            showAnswerResultView(mQuestion.isRight(),mQuestion.getAnswerCompare(),null);
+            int status=mQuestion.getStatus();
+            if (status==Constants.ANSWER_STATUS_RIGHT){
+                showAnswerResultView(true,mQuestion.getAnswerCompare(),null);
+            }else if (status==Constants.ANSWER_STATUS_HALFRIGHT){
+                showAnswerResultView(true,mQuestion.getAnswerCompare(),null,true);
+            }else {
+                showAnswerResultView(false,mQuestion.getAnswerCompare(),null);
+            }
             showDifficultyview(mQuestion.getStarCount());
             showAnalysisview(mQuestion.getQuestionAnalysis());
             showPointView(mQuestion.getPointList());
@@ -100,7 +107,7 @@ public class FillBlankAnalysisFragment extends AnalysisSimpleExerciseBaseFragmen
     }
 
     private void setStem(String text){
-        String stem = StemUtil.initAnalysisFillBlankStem(text, mFilledAnswers,mCorrectAnswers);
+        String stem = StemUtil.initAnalysisFillBlankStem(text, mQuestion.getPad().getAnalysis());
         mFillBlank.setText(stem);
     }
 

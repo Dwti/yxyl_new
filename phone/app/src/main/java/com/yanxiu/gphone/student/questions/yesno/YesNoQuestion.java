@@ -6,6 +6,7 @@ import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
+import com.yanxiu.gphone.student.questions.bean.AnalysisBean;
 import com.yanxiu.gphone.student.questions.bean.PaperTestBean;
 import com.yanxiu.gphone.student.questions.bean.PointBean;
 import com.yanxiu.gphone.student.util.StringUtil;
@@ -111,6 +112,28 @@ public class YesNoQuestion extends BaseQuestion {
 
     @Override
     public int getStatus() {
+        if (showType.equals(QuestionShowType.MISTAKE_REDO) || showType.equals(QuestionShowType.ANSWER)) {
+            return getSta();
+        } else {
+            List<AnalysisBean> analysis=getPad().getAnalysis();
+            List<Object> answer= getBean().getQuestions().getAnswer();
+            int status;
+            if (analysis.size()!=answer.size()){
+                status=Constants.ANSWER_STATUS_WRONG;
+            }else {
+                status=Constants.ANSWER_STATUS_RIGHT;
+            }
+
+            for (AnalysisBean analysisBean:analysis){
+                if (!AnalysisBean.RIGHT.equals(analysisBean.status)){
+                    status=Constants.ANSWER_STATUS_WRONG;
+                }
+            }
+            return status;
+        }
+    }
+
+    private int getSta() {
         if (answerList!=null&&answerList.size()>0){
             if (answerList.get(0).equals(yesNoAnswer)){
                 return Constants.ANSWER_STATUS_RIGHT;

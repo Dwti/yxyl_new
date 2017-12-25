@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.analysis.AnalysisFillBlankTextView;
+import com.yanxiu.gphone.student.mistakeredo.MistakeRedoActivity;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.analysisbase.AnalysisSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
@@ -76,7 +77,15 @@ public class FillBlankWrongFragment extends WrongSimpleExerciseBaseFragment {
 
     @Override
     public void initAnalysisView() {
-        showAnswerResultView(mQuestion.isRight(), mQuestion.getAnswerCompare(), null);
+        int status=mQuestion.getStatus();
+        if (status==Constants.ANSWER_STATUS_RIGHT){
+            showAnswerResultView(true,mQuestion.getAnswerCompare(),null);
+        }else if (status==Constants.ANSWER_STATUS_HALFRIGHT){
+            showAnswerResultView(true,mQuestion.getAnswerCompare(),null,true);
+        }else {
+            showAnswerResultView(false,mQuestion.getAnswerCompare(),null);
+        }
+//        showAnswerResultView(mQuestion.isRight(), mQuestion.getAnswerCompare(), null);
         showDifficultyview(mQuestion.getStarCount());
         showAnalysisview(mQuestion.getQuestionAnalysis());
         showPointView(mQuestion.getPointList());
@@ -84,7 +93,13 @@ public class FillBlankWrongFragment extends WrongSimpleExerciseBaseFragment {
     }
 
     private void setStem(String text) {
-        String stem = StemUtil.initAnalysisFillBlankStem(text, mFilledAnswers, mCorrectAnswers);
+        String stem="";
+        //TODO 临时处理，区分错题重做与错题解析,等iOS端错题重做的答案判断移交sever完成后移除
+        if (getActivity() instanceof MistakeRedoActivity) {
+            stem = StemUtil.initAnalysisFillBlankStem(text, mFilledAnswers, mCorrectAnswers);
+        }else {
+            stem = StemUtil.initAnalysisFillBlankStem(text, mQuestion.getPad().getAnalysis());
+        }
         mFillBlank.setText(stem);
     }
 

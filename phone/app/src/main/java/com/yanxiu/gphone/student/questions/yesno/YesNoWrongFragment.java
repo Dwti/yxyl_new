@@ -13,8 +13,10 @@ import android.widget.TextView;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.ChooseLayout;
+import com.yanxiu.gphone.student.mistakeredo.MistakeRedoActivity;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.wrongbase.WrongSimpleExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.bean.AnalysisBean;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
 
 import java.util.List;
@@ -97,7 +99,14 @@ public class YesNoWrongFragment extends WrongSimpleExerciseBaseFragment {
 
 
             if (count > select_position) {
-                if (answer.equals(select)) {
+                boolean flag;
+                if (getActivity() instanceof MistakeRedoActivity){
+                    flag=answer.equals(select);
+                }else {
+                    List<AnalysisBean> analysisBeans = mData.getPad().getAnalysis();
+                    flag=!analysisBeans.isEmpty()&&AnalysisBean.RIGHT.equals(analysisBeans.get(0).status);
+                }
+                if (flag) {
                     selectViewHolder.mQuestionContentView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.choose_right));
                     selectViewHolder.mQuestionContentView.setTextColor(ContextCompat.getColor(getContext(), R.color.color_ffffff));
                 } else {

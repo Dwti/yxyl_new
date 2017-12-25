@@ -9,6 +9,8 @@ import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
+import com.yanxiu.gphone.student.questions.answerframe.util.QuestionTemplate;
+import com.yanxiu.gphone.student.questions.bean.AnalysisBean;
 import com.yanxiu.gphone.student.questions.bean.PaperTestBean;
 import com.yanxiu.gphone.student.questions.bean.PointBean;
 
@@ -73,11 +75,11 @@ public class ClassifyQuestion extends BaseQuestion {
             String jsonString = bean.getQuestions().getPad().getAnswer();
             JSONArray array = new JSONArray(jsonString);
             for (int i = 0; i < array.length(); i++) {
-                String string=array.getString(i);
-                String[] strings=string.split(",");
+                String string = array.getString(i);
+                String[] strings = string.split(",");
                 ArrayList<String> childList = new ArrayList<>();
-                for (String s:strings){
-                    if (!TextUtils.isEmpty(s)){
+                for (String s : strings) {
+                    if (!TextUtils.isEmpty(s)) {
                         childList.add(s);
                     }
                 }
@@ -89,14 +91,14 @@ public class ClassifyQuestion extends BaseQuestion {
         }
     }
 
-    public String getAnalysisviewAnswer(){
-        String answer="";
-        for (int i=0;i<classifyBasketList.size();i++){
-            answer+=classifyBasketList.get(i)+":";
-            List<String> list=classifyAnswer.get(i);
-            for (String s:list){
-                int index=Integer.parseInt(s);
-                answer+=choice.get(index)+" ";
+    public String getAnalysisviewAnswer() {
+        String answer = "";
+        for (int i = 0; i < classifyBasketList.size(); i++) {
+            answer += classifyBasketList.get(i) + ":";
+            List<String> list = classifyAnswer.get(i);
+            for (String s : list) {
+                int index = Integer.parseInt(s);
+                answer += choice.get(index) + " ";
             }
         }
         return answer;
@@ -157,6 +159,32 @@ public class ClassifyQuestion extends BaseQuestion {
 
     @Override
     public int getStatus() {
+        if (showType.equals(QuestionShowType.MISTAKE_REDO) || showType.equals(QuestionShowType.ANSWER)) {
+            return getSta();
+        } else {
+            List<AnalysisBean> analysis = getPad().getAnalysis();
+            List<Object> answer = getBean().getQuestions().getAnswer();
+            int status;
+
+            if (analysis.size() != answer.size()) {
+                status = Constants.ANSWER_STATUS_WRONG;
+            } else {
+                status = Constants.ANSWER_STATUS_RIGHT;
+            }
+
+            for (AnalysisBean analysisBean : analysis) {
+                List<String> list = analysisBean.subStatus;
+                for (String s : list) {
+                    if (!AnalysisBean.RIGHT.equals(s)) {
+                        status = Constants.ANSWER_STATUS_WRONG;
+                    }
+                }
+            }
+            return status;
+        }
+    }
+
+    private int getSta() {
         List<List<String>> rightAnswer = getClassifyAnswer();
         List<List<String>> answerList = getAnswerList();
         if (rightAnswer != null && answerList != null && !rightAnswer.isEmpty() && !answerList.isEmpty()) {

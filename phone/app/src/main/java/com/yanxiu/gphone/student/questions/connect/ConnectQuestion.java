@@ -6,6 +6,7 @@ import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
+import com.yanxiu.gphone.student.questions.bean.AnalysisBean;
 import com.yanxiu.gphone.student.questions.bean.PaperTestBean;
 import com.yanxiu.gphone.student.questions.bean.PointBean;
 
@@ -57,48 +58,48 @@ public class ConnectQuestion extends BaseQuestion {
         choices = bean.getQuestions().getContent().getChoices();
 
         //处理用户已作答的答案
-        if(bean.getQuestions().getPad() != null && bean.getQuestions().getPad().getAnswer() != null){
+        if (bean.getQuestions().getPad() != null && bean.getQuestions().getPad().getAnswer() != null) {
 
             try {
                 JSONArray jsonArray = new JSONArray(bean.getQuestions().getPad().getAnswer());
-                for(int i =0;i<jsonArray.length();i++){
+                for (int i = 0; i < jsonArray.length(); i++) {
                     serverFilledAnswers.add(jsonArray.getString(i));
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
-            for(String s : serverFilledAnswers){
-                if(!s.contains(",")){
+            for (String s : serverFilledAnswers) {
+                if (!s.contains(",")) {
                     filledAnswers.add("");
                     continue;
                 }
                 int leftPos = Integer.parseInt(s.split(",")[0]);
                 int rightPos = Integer.parseInt(s.split(",")[1]);
-                if(rightPos >= choices.size() / 2){
-                    rightPos = rightPos - choices.size() /2;
+                if (rightPos >= choices.size() / 2) {
+                    rightPos = rightPos - choices.size() / 2;
                 }
                 filledAnswers.add(leftPos + "," + rightPos);
             }
         }
 
         //处理本题的正确答案
-        if(server_answer != null){
+        if (server_answer != null) {
 
-            for(Object o : server_answer){
-                Map<String,String> map = (Map) o;
-                for(Map.Entry<String,String> entry : map.entrySet()){
-                    if(entry.getKey().equals("answer")){
+            for (Object o : server_answer) {
+                Map<String, String> map = (Map) o;
+                for (Map.Entry<String, String> entry : map.entrySet()) {
+                    if (entry.getKey().equals("answer")) {
                         serverCorrectAnswers.add(entry.getValue());
                     }
                 }
             }
 
-            for(String s : serverCorrectAnswers){
+            for (String s : serverCorrectAnswers) {
                 int leftPos = Integer.parseInt(s.split(",")[0]);
                 int rightPos = Integer.parseInt(s.split(",")[1]);
-                if(rightPos >= choices.size() / 2){
-                    rightPos = rightPos - choices.size() /2;
+                if (rightPos >= choices.size() / 2) {
+                    rightPos = rightPos - choices.size() / 2;
                 }
                 correctAnswers.add(leftPos + "," + rightPos);
             }
@@ -106,10 +107,13 @@ public class ConnectQuestion extends BaseQuestion {
 
     }
 
-    public boolean isRight(){
-        if(serverFilledAnswers == null)
+    /**
+     * 这叫项目？
+     * */
+    public boolean isRight() {
+        if (serverFilledAnswers == null)
             return false;
-        if(serverFilledAnswers.containsAll(serverCorrectAnswers) && serverCorrectAnswers.containsAll(serverFilledAnswers))
+        if (serverFilledAnswers.containsAll(serverCorrectAnswers) && serverCorrectAnswers.containsAll(serverFilledAnswers))
             return true;
         else return false;
     }
@@ -141,6 +145,29 @@ public class ConnectQuestion extends BaseQuestion {
 
     @Override
     public int getStatus() {
+        if (showType.equals(QuestionShowType.MISTAKE_REDO) || showType.equals(QuestionShowType.ANSWER)) {
+            return getSta();
+        } else {
+            List<AnalysisBean> analysis = getPad().getAnalysis();
+            List<Object> answer = getBean().getQuestions().getAnswer();
+            int status;
+
+            if (analysis.size() != answer.size()) {
+                status = Constants.ANSWER_STATUS_WRONG;
+            } else {
+                status = Constants.ANSWER_STATUS_RIGHT;
+            }
+
+            for (AnalysisBean analysisBean : analysis) {
+                if (!AnalysisBean.RIGHT.equals(analysisBean.status)) {
+                    status = Constants.ANSWER_STATUS_WRONG;
+                }
+            }
+            return status;
+        }
+    }
+
+    private int getSta() {
         for (String str : serverFilledAnswers) {
             if (TextUtils.isEmpty(str.trim())) {
                 return Constants.ANSWER_STATUS_NOANSWERED;
@@ -177,7 +204,7 @@ public class ConnectQuestion extends BaseQuestion {
         return filledAnswers;
     }
 
-    public void setFilledAnswers(List<String> answers){
+    public void setFilledAnswers(List<String> answers) {
         filledAnswers = answers;
     }
 

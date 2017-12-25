@@ -13,9 +13,11 @@ import android.widget.TextView;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.ChooseLayout;
+import com.yanxiu.gphone.student.mistakeredo.MistakeRedoActivity;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.analysisbase.AnalysisSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.wrongbase.WrongSimpleExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.bean.AnalysisBean;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
 
 import java.util.List;
@@ -72,6 +74,7 @@ public class MultiChooseWrongFragment extends WrongSimpleExerciseBaseFragment {
 
     private void showAnalysis() {
         List<String> datas = mData.getAnswerList();
+        List<AnalysisBean> analysisBeans=mData.getPad().getAnalysis();
         List<String> answers = mData.getMultianswer();
         int count = mChooseView.getChildCount();
         for (int i = 0; i < answers.size(); i++) {
@@ -84,17 +87,30 @@ public class MultiChooseWrongFragment extends WrongSimpleExerciseBaseFragment {
             }
         }
 
-        for (int i = 0; i < datas.size(); i++) {
-            int selectPosition = Integer.parseInt(datas.get(i));
-            if (count > selectPosition) {
-                if (answers.contains(datas.get(i))) {
-                    mChooseView.setSelect(selectPosition);
-                } else {
-                    ChooseLayout.ViewHolder selectViewHolder = (ChooseLayout.ViewHolder) mChooseView.getChildAt(selectPosition).getTag();
-                    selectViewHolder.mQuestionIdView.setTextColor(ContextCompat.getColor(getContext(), R.color.color_ffffff));
-                    selectViewHolder.mQuestionIdView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.choose_wrong));
-                    selectViewHolder.mQuestionContentView.setTextColor(ContextCompat.getColor(getContext(), R.color.color_ff7a05));
-                    selectViewHolder.mQuestionSelectView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.multi_select_wrong));
+        for (int i=0;i<analysisBeans.size();i++){
+            AnalysisBean analysisBean=analysisBeans.get(i);
+            int selectPosition=Integer.parseInt(analysisBean.key);
+            if (count>selectPosition){
+                if (getActivity() instanceof MistakeRedoActivity){
+                    if (answers.contains(datas.get(i))) {
+                        mChooseView.setSelect(selectPosition);
+                    } else {
+                        ChooseLayout.ViewHolder selectViewHolder = (ChooseLayout.ViewHolder) mChooseView.getChildAt(selectPosition).getTag();
+                        selectViewHolder.mQuestionIdView.setTextColor(ContextCompat.getColor(getContext(), R.color.color_ffffff));
+                        selectViewHolder.mQuestionIdView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.choose_wrong));
+                        selectViewHolder.mQuestionContentView.setTextColor(ContextCompat.getColor(getContext(), R.color.color_ff7a05));
+                        selectViewHolder.mQuestionSelectView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.multi_select_wrong));
+                    }
+                }else {
+                    if (AnalysisBean.RIGHT.equals(analysisBean.status)) {
+                        mChooseView.setSelect(selectPosition);
+                    } else {
+                        ChooseLayout.ViewHolder selectViewHolder = (ChooseLayout.ViewHolder) mChooseView.getChildAt(selectPosition).getTag();
+                        selectViewHolder.mQuestionIdView.setTextColor(ContextCompat.getColor(getContext(), R.color.color_ffffff));
+                        selectViewHolder.mQuestionIdView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.choose_wrong));
+                        selectViewHolder.mQuestionContentView.setTextColor(ContextCompat.getColor(getContext(), R.color.color_ff7a05));
+                        selectViewHolder.mQuestionSelectView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.multi_select_wrong));
+                    }
                 }
             }
         }

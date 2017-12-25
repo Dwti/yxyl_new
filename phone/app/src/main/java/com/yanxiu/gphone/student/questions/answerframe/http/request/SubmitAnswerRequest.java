@@ -28,9 +28,14 @@ public class SubmitAnswerRequest extends EXueELianBaseRequest {
         return false;
     }
 
+//    @Override
+//    protected String urlPath() {
+//        return "/q/submitQ.do";
+//    }//?answers=&token=kk&ppId=344
+
     @Override
     protected String urlPath() {
-        return "/q/submitQ.do";
+        return "/q/submitQV2.do";
     }//?answers=&token=kk&ppId=344
 
     @Override

@@ -20,6 +20,9 @@ public class HomeworkDetailPresenter implements HomeworkDetailContract.Presenter
     public static final int STATUS_FINISHED = 2;  //已完成
 
     private boolean mShouldRefreshData = false;  //进入答题界面之后回来需要刷新数据
+    /**
+     * 为什么定义成subjectID，你明明传的是homeworkID，除了坑人还能干啥
+     * */
     private String mSubjectId;
 
     public HomeworkDetailPresenter(String homeworkId, HomeworkDetailRepository mHomeworkRepository, HomeworkDetailContract.View mHomeworkDetailView) {

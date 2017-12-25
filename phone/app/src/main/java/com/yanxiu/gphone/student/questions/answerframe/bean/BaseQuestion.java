@@ -169,6 +169,10 @@ public abstract class BaseQuestion implements Serializable {
         initTemplateOfAnswerStem();
     }
 
+    public PaperTestBean getBean() {
+        return mBean;
+    }
+
     /**
      *计算题和及答题的小题，题干需要拼接小题的index，诸如：（1）、（2）
      */

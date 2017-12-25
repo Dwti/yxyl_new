@@ -15,6 +15,7 @@ import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.ChooseLayout;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.analysisbase.AnalysisSimpleExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.bean.AnalysisBean;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
 
 import java.util.List;
@@ -67,7 +68,8 @@ public class MultiChooseAnalysisFragment extends AnalysisSimpleExerciseBaseFragm
         mChooseView.setIsClick(false);
         mChooseView.setChooseType(ChooseLayout.TYPE_MULTI);
         mChooseView.setData(mData.getChoice());
-        List<String> datas = mData.getAnswerList();
+//        List<String> datas = mData.getAnswerList();
+        List<AnalysisBean> analysisBeans=mData.getPad().getAnalysis();
         List<String> answers=mData.getMultianswer();
         int count=mChooseView.getChildCount();
         for (int i = 0; i < answers.size(); i++) {
@@ -80,10 +82,11 @@ public class MultiChooseAnalysisFragment extends AnalysisSimpleExerciseBaseFragm
             }
         }
 
-        for (int i=0;i<datas.size();i++){
-            int selectPosition=Integer.parseInt(datas.get(i));
+        for (int i=0;i<analysisBeans.size();i++){
+            AnalysisBean analysisBean=analysisBeans.get(i);
+            int selectPosition=Integer.parseInt(analysisBean.key);
             if (count>selectPosition){
-                if (answers.contains(datas.get(i))){
+                if (AnalysisBean.RIGHT.equals(analysisBean.status)){
                     mChooseView.setSelect(selectPosition);
                 }else {
                     ChooseLayout.ViewHolder selectViewHolder= (ChooseLayout.ViewHolder) mChooseView.getChildAt(selectPosition).getTag();

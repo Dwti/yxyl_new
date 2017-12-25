@@ -27,6 +27,7 @@ import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerQuestionActivity;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerComplexExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerSimpleExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.RedoComplexExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.RedoSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
 import com.yanxiu.gphone.student.util.MediaPlayerUtil;
@@ -314,12 +315,22 @@ public class SpokenRedoFragment extends RedoSimpleExerciseBaseFragment implement
     };
 
     private void setIsCanClick(boolean isCanClick) {
-        if (getActivity() instanceof AnswerQuestionActivity) {
+        /* *
+         * 错题重做既然已经把activity和基类fragment都改了，为啥这里不改，留着坑人啊？
+         * */
+//        if (getActivity() instanceof AnswerQuestionActivity) {
+//            ((MistakeRedoActivity) getActivity()).setCanClick(isCanClick);
+//        }
+//        Fragment fragment = getParentFragment();
+//        if (fragment != null && fragment instanceof AnswerComplexExerciseBaseFragment) {
+//            ((AnswerComplexExerciseBaseFragment) fragment).setCanScroll(isCanClick);
+//        }
+        if (getActivity() instanceof MistakeRedoActivity) {
             ((MistakeRedoActivity) getActivity()).setCanClick(isCanClick);
         }
         Fragment fragment = getParentFragment();
-        if (fragment != null && fragment instanceof AnswerComplexExerciseBaseFragment) {
-            ((AnswerComplexExerciseBaseFragment) fragment).setCanScroll(isCanClick);
+        if (fragment != null && fragment instanceof RedoComplexExerciseBaseFragment) {
+            ((RedoComplexExerciseBaseFragment) fragment).setCanScroll(isCanClick);
         }
     }
 

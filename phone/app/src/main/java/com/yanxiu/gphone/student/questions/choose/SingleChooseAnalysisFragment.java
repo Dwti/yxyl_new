@@ -16,6 +16,7 @@ import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.ChooseLayout;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.analysisbase.AnalysisSimpleExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.bean.AnalysisBean;
 import com.yanxiu.gphone.student.questions.cloze.ClozeAnalysisComplexFragment;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
 
@@ -98,7 +99,8 @@ public class SingleChooseAnalysisFragment extends AnalysisSimpleExerciseBaseFrag
             int select_position=Integer.parseInt(select);
             if (count>select_position) {
                 ChooseLayout.ViewHolder selectViewHolder = (ChooseLayout.ViewHolder) mChooseView.getChildAt(select_position).getTag();
-                if (answer.equals(select)){
+                List<AnalysisBean> analysisBeans=mData.getPad().getAnalysis();
+                if (!analysisBeans.isEmpty()&&AnalysisBean.RIGHT.equals(analysisBeans.get(0).status)) {
                     mChooseView.setSelect(select_position);
                     selectViewHolder.mQuestionContentView.setTextColor(ContextCompat.getColor(getContext(),R.color.color_89e00d));
                     selectViewHolder.mQuestionIdView.setBackground(ContextCompat.getDrawable(getContext(),R.drawable.choose_right));

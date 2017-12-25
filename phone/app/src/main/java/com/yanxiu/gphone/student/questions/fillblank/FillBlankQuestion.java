@@ -9,6 +9,7 @@ import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionUtil;
+import com.yanxiu.gphone.student.questions.bean.AnalysisBean;
 import com.yanxiu.gphone.student.questions.bean.PaperTestBean;
 import com.yanxiu.gphone.student.questions.bean.PointBean;
 import com.yanxiu.gphone.student.util.StringUtil;
@@ -101,6 +102,59 @@ public class FillBlankQuestion extends BaseQuestion {
 
     @Override
     public int getStatus() {
+        if (showType.equals(QuestionShowType.MISTAKE_REDO) || showType.equals(QuestionShowType.ANSWER)) {
+            return getSta();
+        } else {
+            List<AnalysisBean> analysis=getPad().getAnalysis();
+            List<Object> answer= getBean().getQuestions().getAnswer();
+            int status;
+            if (analysis.size()!=answer.size()){
+                status=Constants.ANSWER_STATUS_WRONG;
+            }else {
+                status=Constants.ANSWER_STATUS_RIGHT;
+            }
+
+            for (AnalysisBean analysisBean:analysis){
+                if (!AnalysisBean.RIGHT.equals(analysisBean.status)){
+                    status=Constants.ANSWER_STATUS_WRONG;
+                }
+            }
+
+            if (status==Constants.ANSWER_STATUS_WRONG){
+                int flag=0;
+                for (int j=0;j<analysis.size();j++){
+                    AnalysisBean analysisBean=analysis.get(j);
+                    boolean b=false;
+                    if (AnalysisBean.RIGHT.equals(analysisBean.status)){
+                        b=true;
+                    }
+                    if (j==0){
+                        if (b){
+                            flag=1;
+                        }else {
+                            flag=2;
+                        }
+                    }else {
+                        if (b){
+                            if (flag==2){
+                                flag=3;
+                            }
+                        }else {
+                            if (flag==1){
+                                flag=3;
+                            }
+                        }
+                    }
+                }
+                if (flag==3) {
+                    status=Constants.ANSWER_STATUS_HALFRIGHT;
+                }
+            }
+            return status;
+        }
+    }
+
+    private int getSta() {
         for (String str : filledAnswers) {
             if (TextUtils.isEmpty(str.trim())) {
                 return Constants.ANSWER_STATUS_NOANSWERED;
@@ -114,6 +168,9 @@ public class FillBlankQuestion extends BaseQuestion {
         }
     }
 
+    /**
+     * 这是项目，不是你的玩具，你想咋样就咋样，项目不要特立独行，留下一堆坑
+     * */
     public boolean isRight() {
         for (String str : filledAnswers) {
             if (TextUtils.isEmpty(str.trim())) {

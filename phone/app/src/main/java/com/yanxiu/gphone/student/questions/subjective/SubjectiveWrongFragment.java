@@ -68,18 +68,18 @@ public class SubjectiveWrongFragment extends WrongSimpleExerciseBaseFragment imp
                 }
             }
         }
-        if (mData.getTypeId() == QuestionUtil.QUESTION_TYP.QUESTION_FILL_BLANKS.type || mData.getTypeId() == QuestionUtil.QUESTION_TYP.QUESTION_TRANSLATION.type || mData.getTypeId() == QuestionUtil.QUESTION_TYP.QUESTION_SUBJECTSWERE.type) {
-            String result;
-            if (mData.getScore() == 5) {
-                result = getString(R.string.correct);
-                showAnswerResultView(true, null, result);
-            } else {
-                result = getString(R.string.wrong);
-                showAnswerResultView(false, null, result);
-            }
-        } else {
+//        if (mData.getTypeId() == QuestionUtil.QUESTION_TYP.QUESTION_FILL_BLANKS.type || mData.getTypeId() == QuestionUtil.QUESTION_TYP.QUESTION_TRANSLATION.type || mData.getTypeId() == QuestionUtil.QUESTION_TYP.QUESTION_SUBJECTSWERE.type) {
+//            String result;
+//            if (mData.getScore() == 5) {
+//                result = getString(R.string.correct);
+//                showAnswerResultView(true, null, result);
+//            } else {
+//                result = getString(R.string.wrong);
+//                showAnswerResultView(false, null, result);
+//            }
+//        } else {
             showScoreView(String.valueOf(mData.getScore()));
-        }
+//        }
         showVoiceScoldedView(mData.getAudioList());
         showDifficultyview(mData.getStarCount());
         showAnswerView(answer);
