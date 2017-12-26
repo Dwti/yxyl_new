@@ -11,6 +11,8 @@ import java.util.List;
 public class ContentBean extends BaseBean {
     private List<String> answer;
     private List<String> choices;
+    private String leftCount;
+    private String uselessNode;
 
     public List<String> getAnswer() {
         return answer;
@@ -26,5 +28,21 @@ public class ContentBean extends BaseBean {
 
     public void setChoices(List<String> choices) {
         this.choices = choices;
+    }
+
+    public String getLeftCount() {
+        return leftCount;
+    }
+
+    public void setLeftCount(String leftCount) {
+        this.leftCount = leftCount;
+    }
+
+    public String getUselessNode() {
+        return uselessNode;
+    }
+
+    public void setUselessNode(String uselessNode) {
+        this.uselessNode = uselessNode;
     }
 }

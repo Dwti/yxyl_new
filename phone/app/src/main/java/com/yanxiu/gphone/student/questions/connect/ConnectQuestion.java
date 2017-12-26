@@ -35,6 +35,7 @@ public class ConnectQuestion extends BaseQuestion {
     private String questionAnalysis;
     private String answerCompare;
 
+    private String mLeftCount;
 
     public ConnectQuestion(PaperTestBean bean, QuestionShowType showType, String paperStatus) {
         super(bean, showType, paperStatus);
@@ -56,6 +57,7 @@ public class ConnectQuestion extends BaseQuestion {
     private void initAnswer(PaperTestBean bean) {
 
         choices = bean.getQuestions().getContent().getChoices();
+        mLeftCount=bean.getQuestions().getContent().getLeftCount();
 
         //处理用户已作答的答案
         if (bean.getQuestions().getPad() != null && bean.getQuestions().getPad().getAnswer() != null) {
@@ -185,14 +187,14 @@ public class ConnectQuestion extends BaseQuestion {
     }
 
     public List<String> getLeftChoices() {
-        if (leftChoices == null)
-            leftChoices = new ArrayList<>(choices.subList(0, (choices.size() / 2)));
+        if (leftChoices == null&&!TextUtils.isEmpty(mLeftCount))
+            leftChoices = new ArrayList<>(choices.subList(0, Integer.parseInt(mLeftCount)));
         return leftChoices;
     }
 
     public List<String> getRightChoices() {
-        if (rightChoices == null)
-            rightChoices = new ArrayList<>(choices.subList(choices.size() / 2, choices.size()));
+        if (rightChoices == null&&!TextUtils.isEmpty(mLeftCount))
+            rightChoices = new ArrayList<>(choices.subList(Integer.parseInt(mLeftCount), choices.size()));
         return rightChoices;
     }
 
