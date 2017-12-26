@@ -5,6 +5,7 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
@@ -36,6 +37,10 @@ public class ConnectItemAdapter extends RecyclerView.Adapter<ConnectItemAdapter.
 
     @Override
     public void onBindViewHolder(final ItemViewHolder holder, final int position) {
+
+        FrameLayout.LayoutParams params=new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+        holder.text.setLayoutParams(params);
+
         holder.itemView.post(new Runnable() {
             @Override
             public void run() {
@@ -65,7 +70,7 @@ public class ConnectItemAdapter extends RecyclerView.Adapter<ConnectItemAdapter.
     public void add(ConnectItemBean itemBean) {
         int pos = computeInsertPosition(itemBean);
         mData.add(pos, itemBean);
-        if (mLastSelectedPos > pos) {
+        if (mLastSelectedPos >= pos) {
             mLastSelectedPos += 1;
         }
         notifyItemInserted(pos);
