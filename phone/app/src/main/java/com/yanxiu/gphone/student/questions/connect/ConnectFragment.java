@@ -288,6 +288,9 @@ public class ConnectFragment extends AnswerSimpleExerciseBaseFragment {
     }
 
     private void dismissResult() {
+        if (mResultAdapter!=null) {
+            mResultAdapter.clearAnim();
+        }
         AlphaAnimationUtil.startPopBgAnimExit(((AnswerQuestionActivity)getActivity()).getOverlayView());
         ((AnswerQuestionActivity)getActivity()).getOverlayView().setVisibility(View.GONE);
         if (mPopWindow.isShowing())

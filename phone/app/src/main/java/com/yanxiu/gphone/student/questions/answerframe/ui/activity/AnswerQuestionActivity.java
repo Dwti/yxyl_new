@@ -569,6 +569,13 @@ public class AnswerQuestionActivity extends YanxiuBaseActivity implements View.O
      * 答题卡显示或隐藏，回调给fragment，用来控制听力播放控件
      */
     public void controlListenView(boolean answerCardFragmentIsShwon) {
+
+        if (answerCardFragmentIsShwon){
+            endTiming();
+        }else {
+            startTiming();
+        }
+
         ExerciseBaseFragment currentFramgent = null;//当前的Fragment
         FragmentStatePagerAdapter adapter;
         int index;//当前Fragment在外层viewPager中的index

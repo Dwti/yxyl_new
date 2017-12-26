@@ -474,7 +474,7 @@ public abstract class BaseQuestion implements Serializable {
     }
 
     public void setCosttime(long costtime) {
-        this.costtime += costtime;
+        this.costtime = costtime;
     }
 
     public boolean isComplexQuestion() {
