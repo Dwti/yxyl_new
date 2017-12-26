@@ -10,7 +10,7 @@
         android:gravity="left|center_vertical"
         android:minHeight="45dp"
         android:minWidth="45dp"
-        android:padding="15dp"
+        android:padding="5dp"
         android:textColor="@color/color_666666"
         android:textSize="19dp" />
 </LinearLayout>
