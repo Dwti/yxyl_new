@@ -89,7 +89,7 @@ public abstract class ExerciseBaseFragment extends YanxiuBaseFragment implements
             }else if(mBaseQuestion.getShowType().equals(QuestionShowType.ANSWER) || mBaseQuestion.getShowType().equals(QuestionShowType.ANALYSIS)){
                 //答题跟解析的复合题不显示题号（复合题的小题显示）
                 if(isComplexQuestion){
-                    if(mBaseQuestion.getType_id().equals("8") || mBaseQuestion.getType_id().equals("22") || mBaseQuestion.getType_id().equals("24")){
+                    if(mBaseQuestion.getType_id().equals("8") || mBaseQuestion.getType_id().equals("22") || mBaseQuestion.getType_id().equals("24") || mBaseQuestion.getType_id().equals("30")){
                         //如果是解答题或者解决问题 不做任何处理
                     }else {
                         mQaNumber.setVisibility(View.GONE);
