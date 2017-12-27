@@ -45,6 +45,7 @@ import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionTemplate;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionUtil;
 import com.yanxiu.gphone.student.questions.answerframe.view.QAViewPager;
+import com.yanxiu.gphone.student.questions.bean.PadBean;
 import com.yanxiu.gphone.student.questions.subjective.SubjectiveQuestion;
 import com.yanxiu.gphone.student.util.DataFetcher;
 import com.yanxiu.gphone.student.util.KeyboardObserver;
@@ -351,38 +352,38 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
         switch (mBottomBtnState) {
             //可提交
             case SUBMIT_ABLE:
-                //TODO 暂时不改
-                mAnswerManager.start(question);
+                //TODO 重做答案判断移交sever，暂时不改
+//                mAnswerManager.start(question);
 
-//                question.setShowType(QuestionShowType.MISTAKE_ANALYSIS);
-//                boolean isRight = true;
-//                if (question.isComplexQuestion()) {
-//                    List<BaseQuestion> children = question.getChildren();
-//                    for(BaseQuestion child : children){
-//                        if(!child.getTemplate().equals(QuestionTemplate.ANSWER)){
-//                            //主观题的解析 不变 还按照当前的错题重做的界面展示（没变化，都一样）
-//                            child.setShowType(QuestionShowType.MISTAKE_ANALYSIS);
-//                        }
-//                        if(!child.getTemplate().equals(QuestionTemplate.ANSWER) && child.getStatus() == Constants.ANSWER_STATUS_WRONG){
-//                            isRight = false;
-//                        }
-//                    }
-//                    mAdapter.notifyDataSetChanged();
-//                } else {
-//                    if(!question.getTemplate().equals(QuestionTemplate.ANSWER) && question.getStatus() == Constants.ANSWER_STATUS_WRONG){
-//                        isRight = false;
-//                    }
-//                    mAdapter.notifyDataSetChanged();
-//                }
-//                showResultCard(isRight);
-//                setBottomButtonState(DELETE_ABLE);
-//                //1秒后隐藏
-//                mViewPager.postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        hideResultCard();
-//                    }
-//                },1000);
+                question.setShowType(QuestionShowType.MISTAKE_ANALYSIS);
+                boolean isRight = true;
+                if (question.isComplexQuestion()) {
+                    List<BaseQuestion> children = question.getChildren();
+                    for(BaseQuestion child : children){
+                        if(!child.getTemplate().equals(QuestionTemplate.ANSWER)){
+                            //主观题的解析 不变 还按照当前的错题重做的界面展示（没变化，都一样）
+                            child.setShowType(QuestionShowType.MISTAKE_ANALYSIS);
+                        }
+                        if(!child.getTemplate().equals(QuestionTemplate.ANSWER) && child.getStatus() == Constants.ANSWER_STATUS_WRONG){
+                            isRight = false;
+                        }
+                    }
+                    mAdapter.notifyDataSetChanged();
+                } else {
+                    if(!question.getTemplate().equals(QuestionTemplate.ANSWER) && question.getStatus() == Constants.ANSWER_STATUS_WRONG){
+                        isRight = false;
+                    }
+                    mAdapter.notifyDataSetChanged();
+                }
+                showResultCard(isRight);
+                setBottomButtonState(DELETE_ABLE);
+                //1秒后隐藏
+                mViewPager.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        hideResultCard();
+                    }
+                },1000);
 
                 break;
             //不可提交
@@ -946,26 +947,34 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
 
     @Override
     public void onCheckAnswerSuccess(BaseQuestion question,CheckAnswerResponse response) {
-        // TODO 没写完
-
-       
-
         question.setShowType(QuestionShowType.MISTAKE_ANALYSIS);
         boolean isRight = true;
         if (question.isComplexQuestion()) {
             List<BaseQuestion> children = question.getChildren();
+            int i=0;
             for(BaseQuestion child : children){
                 if(!child.getTemplate().equals(QuestionTemplate.ANSWER)){
+                    PadBean padBean=child.getBean().getQuestions().getPad();
+                    padBean.setStatus(response.data.get(i).status);
+                    padBean.setObjectiveScore(response.data.get(i).objectiveScore);
+                    padBean.setAnalysis(response.data.get(i).analysis);
+
                     //主观题的解析 不变 还按照当前的错题重做的界面展示（没变化，都一样）
                     child.setShowType(QuestionShowType.MISTAKE_ANALYSIS);
+                    if(child.getStatus() != Constants.ANSWER_STATUS_RIGHT){
+                        isRight = false;
+                    }
+                    i++;
                 }
-                if(!child.getTemplate().equals(QuestionTemplate.ANSWER) && child.getStatus() == Constants.ANSWER_STATUS_WRONG){
-                    isRight = false;
-                }
+
             }
             mAdapter.notifyDataSetChanged();
         } else {
-            if(!question.getTemplate().equals(QuestionTemplate.ANSWER) && question.getStatus() == Constants.ANSWER_STATUS_WRONG){
+            PadBean padBean=question.getBean().getQuestions().getPad();
+            padBean.setStatus(response.data.get(0).status);
+            padBean.setObjectiveScore(response.data.get(0).objectiveScore);
+            padBean.setAnalysis(response.data.get(0).analysis);
+            if(!question.getTemplate().equals(QuestionTemplate.ANSWER) && padBean.getStatus() != Constants.ANSWER_STATUS_RIGHT){
                 isRight = false;
             }
             mAdapter.notifyDataSetChanged();

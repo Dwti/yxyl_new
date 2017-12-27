@@ -1,6 +1,7 @@
 package com.yanxiu.gphone.student.mistakeredo.response;
 
 import com.yanxiu.gphone.student.base.EXueELianBaseResponse;
+import com.yanxiu.gphone.student.questions.bean.AnalysisBean;
 
 import java.util.List;
 
@@ -14,20 +15,10 @@ public class CheckAnswerResponse extends EXueELianBaseResponse{
     public List<Data> data;
 
     public class Data{
-        public List<Analysis> analysis;
+        public List<AnalysisBean> analysis;
         public String objectiveRate;
         public String objectiveScore;
-        public String status;
+        public int status;
         public List<Integer> subStatus;
-
-        public class Analysis{
-            public String key;
-            /* *
-             * 0对 1错 2半对 3未作答
-             * */
-            public String status;
-            public String name;
-            public List<Integer> subStatus;
-        }
     }
 }
