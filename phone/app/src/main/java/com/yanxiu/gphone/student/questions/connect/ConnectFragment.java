@@ -255,6 +255,22 @@ public class ConnectFragment extends AnswerSimpleExerciseBaseFragment {
                         mResultAdapter.clear();
                         mLeftAdapter.addAll(leftToAdd);
                         mRightAdapter.addAll(rightToAdd);
+                        if (mLeftAdapter.getLastSelectedPosition()!=-1) {
+                            mRecyclerViewLeft.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mRecyclerViewLeft.scrollToPosition(mLeftAdapter.getLastSelectedPosition());
+                                }
+                            });
+                        }
+                        if (mRightAdapter.getLastSelectedPosition()!=-1) {
+                            mRecyclerViewRight.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mRecyclerViewRight.scrollToPosition(mRightAdapter.getLastSelectedPosition());
+                                }
+                            });
+                        }
                         saveAnswer(mQuestion);
                         updateProgress();
                     }
