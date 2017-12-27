@@ -14,7 +14,7 @@ public class CheckAnswerRequest extends EXueELianBaseRequest {
 
     @Override
     protected HttpType httpType() {
-        return HttpType.POST;
+        return HttpType.GET;
     }
 
     @Override

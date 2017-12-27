@@ -14,6 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -111,7 +112,35 @@ public class CheckAnswerManager {
         String template=question.getTemplate();
         String typeId=question.getType_id();
         String correctAns=gson.toJson(question.getBean().getQuestions().getAnswer());
+        try {
+            JSONArray array=new JSONArray(correctAns);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         String userAns=gson.toJson(question.getAnswer());
+
+
+        if (question.getTemplate().equals(QuestionTemplate.CLASSIFY)) {
+            List<String> answerList = new ArrayList<>();
+            List<List<String>> listList = (List<List<String>>) question.getAnswer();
+            for (List<String> stringList : listList) {
+                StringBuilder answerString = new StringBuilder();
+                for (String s : stringList) {
+                    answerString.append(s).append(",");
+                }
+                if (!TextUtils.isEmpty(answerString.toString())) {
+                    answerString = new StringBuilder(answerString.substring(0, answerString.length() - 1));
+                }
+                answerList.add(answerString.toString());
+            }
+            userAns=gson.toJson(answerList);
+        }
+
+        try {
+            JSONArray array=new JSONArray(userAns);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         try {
             JSONObject object=new JSONObject();
