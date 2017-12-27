@@ -24,7 +24,7 @@ import java.util.Map;
 public class ConnectQuestion extends BaseQuestion {
 
     private List<String> choices;
-    private List<String> leftChoices, rightChoices;
+    private List<ConnectAnalysisItemBean> leftChoices, rightChoices;
     private List<String> correctAnswers = new ArrayList<>(); //转换过的，右边以一半计数，比如choices的大小为10，则"0,5"为"0,0";
     private List<String> filledAnswers = new ArrayList<>();//转换过的，右边以一半计数，比如choices的大小为10，则"0,5"为"0,0";
     private List<String> serverCorrectAnswers = new ArrayList<>();
@@ -36,6 +36,7 @@ public class ConnectQuestion extends BaseQuestion {
     private String answerCompare;
 
     private String mLeftCount;
+    private String mUselessNode;
 
     public ConnectQuestion(PaperTestBean bean, QuestionShowType showType, String paperStatus) {
         super(bean, showType, paperStatus);
@@ -58,6 +59,7 @@ public class ConnectQuestion extends BaseQuestion {
 
         choices = bean.getQuestions().getContent().getChoices();
         mLeftCount=bean.getQuestions().getContent().getLeftCount();
+        mUselessNode=bean.getQuestions().getContent().getUselessNode();
 
         //处理用户已作答的答案
         if (bean.getQuestions().getPad() != null && bean.getQuestions().getPad().getAnswer() != null) {
@@ -182,19 +184,59 @@ public class ConnectQuestion extends BaseQuestion {
         }
     }
 
+    public int getLineNumber(){
+        int leftCount=Integer.parseInt(mLeftCount);
+        if (leftCount*2>choices.size()){
+            return choices.size()-leftCount;
+        }
+        return leftCount;
+    }
+
     public List<String> getChoices() {
         return choices;
     }
 
-    public List<String> getLeftChoices() {
-        if (leftChoices == null&&!TextUtils.isEmpty(mLeftCount))
-            leftChoices = new ArrayList<>(choices.subList(0, Integer.parseInt(mLeftCount)));
+    public List<ConnectAnalysisItemBean> getLeftChoices() {
+        if (leftChoices == null&&!TextUtils.isEmpty(mLeftCount)) {
+            String[] strings=new String[0];
+            if (!TextUtils.isEmpty(mUselessNode)) {
+                strings = mUselessNode.split(",");
+            }
+            leftChoices = new ArrayList<>();
+            int count=Integer.parseInt(mLeftCount);
+            for (int i=0;i<count;i++){
+                boolean isExtra=false;
+                for (String s:strings){
+                    int position=Integer.parseInt(s);
+                    if (i==position){
+                        isExtra=true;
+                    }
+                }
+                leftChoices.add(new ConnectAnalysisItemBean(choices.get(i),isExtra));
+            }
+        }
         return leftChoices;
     }
 
-    public List<String> getRightChoices() {
-        if (rightChoices == null&&!TextUtils.isEmpty(mLeftCount))
-            rightChoices = new ArrayList<>(choices.subList(Integer.parseInt(mLeftCount), choices.size()));
+    public List<ConnectAnalysisItemBean> getRightChoices() {
+        if (rightChoices == null&&!TextUtils.isEmpty(mLeftCount)){
+            String[] strings=new String[0];
+            if (!TextUtils.isEmpty(mUselessNode)) {
+                strings = mUselessNode.split(",");
+            }
+            rightChoices = new ArrayList<>();
+            int count=Integer.parseInt(mLeftCount);
+            for (int i=count;i<choices.size();i++){
+                boolean isExtra=false;
+                for (String s:strings){
+                    int position=Integer.parseInt(s);
+                    if (i==position){
+                        isExtra=true;
+                    }
+                }
+                rightChoices.add(new ConnectAnalysisItemBean(choices.get(i),isExtra));
+            }
+        }
         return rightChoices;
     }
 

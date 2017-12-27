@@ -42,7 +42,8 @@ public class SoundManger {
     }
 
     private void init(){
-        isCanPlay = SpManager.isSoundOn();
+//        isCanPlay = SpManager.isSoundOn();
+        isCanPlay=false;
         mSoundPool=new SoundPool(MAX_MUSIC_NUM, AudioManager.STREAM_SYSTEM,0);
         mSoundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
             @Override

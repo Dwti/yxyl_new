@@ -151,15 +151,15 @@ public class ConnectRedoFragment extends RedoSimpleExerciseBaseFragment {
             }
         });
 
-        List<String> leftTexts = mQuestion.getLeftChoices();
-        List<String> rightTexts = mQuestion.getRightChoices();
+        List<ConnectAnalysisItemBean> leftTexts = mQuestion.getLeftChoices();
+        List<ConnectAnalysisItemBean> rightTexts = mQuestion.getRightChoices();
 
         for (int i = 0; i < leftTexts.size(); i++) {
-            mLeftChoices.add(new ConnectItemBean(leftTexts.get(i), i));
+            mLeftChoices.add(new ConnectItemBean(leftTexts.get(i).text, i));
         }
 
         for (int i = 0; i < rightTexts.size(); i++) {
-            mRightChoices.add(new ConnectItemBean(rightTexts.get(i), i));
+            mRightChoices.add(new ConnectItemBean(rightTexts.get(i).text, i));
         }
 
         List<String> filledAnswers = mQuestion.getFilledAnswers();
@@ -167,8 +167,8 @@ public class ConnectRedoFragment extends RedoSimpleExerciseBaseFragment {
             if(!TextUtils.isEmpty(str) && str.contains(",")){
                 int left = Integer.parseInt(str.split(",")[0]);
                 int right = Integer.parseInt(str.split(",")[1]);
-                ConnectItemBean leftItem = new ConnectItemBean(leftTexts.get(left),left);
-                ConnectItemBean rightItem = new ConnectItemBean(rightTexts.get(right),right);
+                ConnectItemBean leftItem = new ConnectItemBean(leftTexts.get(left).text,left);
+                ConnectItemBean rightItem = new ConnectItemBean(rightTexts.get(right).text,right);
 
                 mConnectedList.add(new ConnectedBean(leftItem,rightItem));
 

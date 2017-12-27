@@ -16,7 +16,7 @@
         android:textSize="17dp"
         android:textColor="#666666"
         android:gravity="center"
-        android:background="@drawable/shape_connect_item_green"/>
+        android:background="@drawable/shape_connect_item_orange"/>
 
 
     <TextView
@@ -30,6 +30,6 @@
         android:textColor="#666666"
         android:gravity="center"
         android:layout_marginLeft="55dp"
-        android:background="@drawable/shape_connect_item_green"/>
+        android:background="@drawable/shape_connect_item_orange"/>
 
 </LinearLayout>

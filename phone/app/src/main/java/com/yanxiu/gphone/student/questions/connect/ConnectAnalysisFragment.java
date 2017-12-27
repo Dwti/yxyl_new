@@ -14,6 +14,7 @@ import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.analysisbase.AnalysisSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.bean.AnalysisBean;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
 
 import java.util.ArrayList;
@@ -27,8 +28,9 @@ public class ConnectAnalysisFragment extends AnalysisSimpleExerciseBaseFragment 
     private ConnectQuestion mQuestion;
     private View mRootView;
     private TextView mStem;
-    private List<String> mChoicesLeft, mChoicesRight;
-    private List<String> mFilledAnswers,mCorrectAnswers;
+    private List<ConnectAnalysisItemBean> mChoicesLeft, mChoicesRight;
+    private List<String> mFilledAnswers;
+//    private List<String> mCorrectAnswers;
     private List<ConnectPositionInfo> mConnectPositionInfos = new ArrayList<>();
 
 
@@ -57,18 +59,30 @@ public class ConnectAnalysisFragment extends AnalysisSimpleExerciseBaseFragment 
         mChoicesRight = mQuestion.getRightChoices();
 
         mFilledAnswers = mQuestion.getFilledAnswers();
-        mCorrectAnswers = mQuestion.getCorrectAnswer();
+//        mCorrectAnswers = mQuestion.getCorrectAnswer();
+        List<AnalysisBean> analysisBeans=mQuestion.getPad().getAnalysis();
+
         for(int i = 0;i<mFilledAnswers.size();i++){
             ConnectPositionInfo info;
-            boolean isRight = false;
-            if(mCorrectAnswers.contains(mFilledAnswers.get(i))){
-                isRight = true;
-            }
-            if(TextUtils.isEmpty(mFilledAnswers.get(i))){
+            String answer=mFilledAnswers.get(i);
+
+//            if(mCorrectAnswers.contains()){
+//                isRight = true;
+//            }
+
+            if(TextUtils.isEmpty(answer)){
                 info = new ConnectPositionInfo(-1,-1,false);
                 mConnectPositionInfos.add(info);
             }else {
-                String[] answers = mFilledAnswers.get(i).split(",");
+                boolean isRight = false;
+
+                for (AnalysisBean analysisBean:analysisBeans){
+                    if (answer.equals(analysisBean.key)){
+                        isRight=analysisBean.status.equals(AnalysisBean.RIGHT);
+                    }
+                }
+
+                String[] answers = answer.split(",");
                 int left = Integer.parseInt(answers[0]);
                 int right = Integer.parseInt(answers[1]);
                 info = new ConnectPositionInfo(left,right,isRight);

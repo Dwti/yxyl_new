@@ -11,10 +11,12 @@ import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.constant.Constants;
+import com.yanxiu.gphone.student.mistakeredo.MistakeRedoActivity;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.analysisbase.AnalysisSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.wrongbase.WrongSimpleExerciseBaseFragment;
+import com.yanxiu.gphone.student.questions.bean.AnalysisBean;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
 
 import java.util.ArrayList;
@@ -28,7 +30,7 @@ public class ConnectWrongFragment extends WrongSimpleExerciseBaseFragment {
     private ConnectQuestion mQuestion;
     private View mRootView;
     private TextView mStem;
-    private List<String> mChoicesLeft, mChoicesRight;
+    private List<ConnectAnalysisItemBean> mChoicesLeft, mChoicesRight;
     private List<String> mFilledAnswers, mCorrectAnswers;
     private List<ConnectPositionInfo> mConnectPositionInfos = new ArrayList<>();
 
@@ -53,7 +55,7 @@ public class ConnectWrongFragment extends WrongSimpleExerciseBaseFragment {
         outState.putSerializable(ExerciseBaseFragment.KEY_NODE, mQuestion);
     }
 
-    private void initData() {
+    private void initRedoData() {
         mChoicesLeft = mQuestion.getLeftChoices();
         mChoicesRight = mQuestion.getRightChoices();
 
@@ -78,6 +80,38 @@ public class ConnectWrongFragment extends WrongSimpleExerciseBaseFragment {
         }
     }
 
+    private void initAnalysisData(){
+        mChoicesLeft = mQuestion.getLeftChoices();
+        mChoicesRight = mQuestion.getRightChoices();
+
+        mFilledAnswers = mQuestion.getFilledAnswers();
+        List<AnalysisBean> analysisBeans=mQuestion.getPad().getAnalysis();
+
+        for(int i = 0;i<mFilledAnswers.size();i++){
+            ConnectPositionInfo info;
+            String answer=mFilledAnswers.get(i);
+
+            if(TextUtils.isEmpty(answer)){
+                info = new ConnectPositionInfo(-1,-1,false);
+                mConnectPositionInfos.add(info);
+            }else {
+                boolean isRight = false;
+
+                for (AnalysisBean analysisBean:analysisBeans){
+                    if (answer.equals(analysisBean.key)){
+                        isRight=analysisBean.status.equals(AnalysisBean.RIGHT);
+                    }
+                }
+
+                String[] answers = answer.split(",");
+                int left = Integer.parseInt(answers[0]);
+                int right = Integer.parseInt(answers[1]);
+                info = new ConnectPositionInfo(left,right,isRight);
+            }
+            mConnectPositionInfos.add(info);
+        }
+    }
+
     @Override
     public View addAnswerView(LayoutInflater inflater, @Nullable ViewGroup container) {
         mRootView = inflater.inflate(R.layout.fragment_wrong_analysis_connect, container, false);
@@ -88,7 +122,11 @@ public class ConnectWrongFragment extends WrongSimpleExerciseBaseFragment {
     public void initAnswerView(LayoutInflater inflater, @Nullable ViewGroup container) {
         ConnectedAnalysisView connectedView = (ConnectedAnalysisView) mRootView.findViewById(R.id.connected_view);
         mStem = (TextView) mRootView.findViewById(R.id.stem);
-        initData();
+        if (getActivity() instanceof MistakeRedoActivity) {
+            initRedoData();
+        }else {
+            initAnalysisData();
+        }
         mStem.post(new Runnable() {
             @Override
             public void run() {

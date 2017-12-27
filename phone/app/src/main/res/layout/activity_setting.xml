@@ -194,6 +194,7 @@
         android:layout_height="@dimen/mistake_list_item_h"
         android:onClick="onClick"
         android:orientation="horizontal"
+        android:visibility="gone"
         android:background="@color/color_ffffff">
 
         <TextView

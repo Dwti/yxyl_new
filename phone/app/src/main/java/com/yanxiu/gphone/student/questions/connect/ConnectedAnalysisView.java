@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.util.HtmlImageGetter;
 import com.yanxiu.gphone.student.util.HtmlImageGetterNew;
 import com.yanxiu.gphone.student.util.ScreenUtils;
 
@@ -104,38 +105,56 @@ public class ConnectedAnalysisView extends LinearLayout {
         return result;
     }
 
-    public void addItems(List<String> leftData, List<String> rightData, List<ConnectPositionInfo> connPosInfos) {
-        if (leftData == null || rightData == null || leftData.size() != rightData.size())
+    public void addItems(List<ConnectAnalysisItemBean> leftData, List<ConnectAnalysisItemBean> rightData, List<ConnectPositionInfo> connPosInfos) {
+        if (leftData == null || rightData == null)
             return;
-        for (int i = 0; i < leftData.size(); i++) {
+        int count=leftData.size()>rightData.size()?leftData.size():rightData.size();
+        for (int i = 0; i < count; i++) {
             View view = LayoutInflater.from(getContext()).inflate(R.layout.item_connect_analysis, this, false);
             TextView leftText = (TextView) view.findViewById(R.id.text_left);
             TextView rightText = (TextView) view.findViewById(R.id.text_right);
-            boolean containsLeft = false;
-            boolean containsRight = false;
+
+            if (leftData.size()>i) {
+                ConnectAnalysisItemBean analysisItemBean=leftData.get(i);
+                leftText.setText(Html.fromHtml(analysisItemBean.text, new HtmlImageGetterNew(leftText), null));
+                leftText.setVisibility(VISIBLE);
+
+                if (analysisItemBean.isExtra){
+                    leftText.setBackground(getResources().getDrawable(R.drawable.shape_connect_item_green));
+                }
+            }else {
+                leftText.setVisibility(INVISIBLE);
+            }
+
+            if (rightData.size()>i) {
+                ConnectAnalysisItemBean analysisItemBean=rightData.get(i);
+                rightText.setText(Html.fromHtml(analysisItemBean.text, new HtmlImageGetterNew(rightText), null));
+                rightText.setVisibility(VISIBLE);
+
+                if (analysisItemBean.isExtra){
+                    rightText.setBackground(getResources().getDrawable(R.drawable.shape_connect_item_green));
+                }
+            }else {
+                rightText.setVisibility(INVISIBLE);
+            }
+
             for (ConnectPositionInfo info : connPosInfos) {
                 if (info.getLeftPosition() == i) {
-                    containsLeft = true;
-                    if (!info.isRight()) {
+                    if (info.isRight()) {
+                        leftText.setBackground(getResources().getDrawable(R.drawable.shape_connect_item_green));
+                    }else {
                         leftText.setBackground(getResources().getDrawable(R.drawable.shape_connect_item_orange));
                     }
                 }
 
                 if (info.getRightPosition() == i) {
-                    containsRight = true;
-                    if (!info.isRight()) {
+                    if (info.isRight()) {
+                        rightText.setBackground(getResources().getDrawable(R.drawable.shape_connect_item_green));
+                    }else {
                         rightText.setBackground(getResources().getDrawable(R.drawable.shape_connect_item_orange));
                     }
                 }
             }
-            if (!containsLeft) {
-                leftText.setBackground(getResources().getDrawable(R.drawable.shape_connect_item_orange));
-            }
-            if (!containsRight) {
-                rightText.setBackground(getResources().getDrawable(R.drawable.shape_connect_item_orange));
-            }
-            leftText.setText(Html.fromHtml(leftData.get(i), new HtmlImageGetterNew(leftText), null));
-            rightText.setText(Html.fromHtml(rightData.get(i), new HtmlImageGetterNew(rightText), null));
             addView(view);
         }
         isAllChildAdded = true;
