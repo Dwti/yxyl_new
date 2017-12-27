@@ -63,21 +63,19 @@ public class CheckAnswerManager {
             List<BaseQuestion> children = question.getChildren();
             for (BaseQuestion child:children){
                 if(!child.getTemplate().equals(QuestionTemplate.ANSWER)) {
-                    String param = getParams(child, gson);
-                    if (TextUtils.isEmpty(param)) {
-                        return;
+                    JSONObject param = getParams(child, gson);
+                    if (param!=null) {
+                        isShouldRequest = true;
+                        array.put(param);
                     }
-                    isShouldRequest=true;
-                    array.put(param);
                 }
             }
         }else {
-            String param=getParams(question,gson);
-            if (TextUtils.isEmpty(param)){
-                return;
+            JSONObject param=getParams(question,gson);
+            if (param!=null) {
+                isShouldRequest = true;
+                array.put(param);
             }
-            isShouldRequest=true;
-            array.put(param);
         }
 
         if (!isShouldRequest){
@@ -108,17 +106,11 @@ public class CheckAnswerManager {
         });
     }
 
-    private String getParams(BaseQuestion question,Gson gson){
+    private JSONObject getParams(BaseQuestion question,Gson gson){
         String template=question.getTemplate();
         String typeId=question.getType_id();
         String correctAns=gson.toJson(question.getBean().getQuestions().getAnswer());
-        try {
-            JSONArray array=new JSONArray(correctAns);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
         String userAns=gson.toJson(question.getAnswer());
-
 
         if (question.getTemplate().equals(QuestionTemplate.CLASSIFY)) {
             List<String> answerList = new ArrayList<>();
@@ -137,21 +129,15 @@ public class CheckAnswerManager {
         }
 
         try {
-            JSONArray array=new JSONArray(userAns);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        try {
             JSONObject object=new JSONObject();
             object.put(TEMPLATE,template);
             object.put(TYPEID,typeId);
-            object.put(CORRECTANS,correctAns);
-            object.put(USERANS,userAns);
-            return object.toString();
+            object.put(CORRECTANS,new JSONArray(correctAns));
+            object.put(USERANS,new JSONArray(userAns));
+            return object;
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return "";
+        return null;
     }
 }

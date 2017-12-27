@@ -947,6 +947,9 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
     @Override
     public void onCheckAnswerSuccess(BaseQuestion question,CheckAnswerResponse response) {
         // TODO 没写完
+
+       
+
         question.setShowType(QuestionShowType.MISTAKE_ANALYSIS);
         boolean isRight = true;
         if (question.isComplexQuestion()) {
