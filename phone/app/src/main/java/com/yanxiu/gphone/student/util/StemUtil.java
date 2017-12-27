@@ -136,6 +136,23 @@ public class StemUtil {
         //<fill>标签 表示空中有答案，需要展示  <empty>标签表示空中没有内容，需要显示为空白
         int i = 0;
         while (stem.contains("(_)")) {
+
+            TextPaint textPaint = new TextPaint();
+            textPaint.setTextSize(ScreenUtils.dpToPx(YanxiuApplication.getContext(), 17));
+            float defaultWidth = StringUtil.computeStringWidth("oooooo", textPaint);
+            float placeHolderWidth = StringUtil.computeStringWidth("\u00A0", textPaint);
+
+            String replace;
+            boolean isFrontChar = isFrontChar(stem);
+            float answerWidth = StringUtil.computeStringWidth(analysisBeanList.get(i).key, textPaint);
+            if (answerWidth + placeHolderWidth < defaultWidth) {
+                int holderCount = (int) Math.floor((defaultWidth - answerWidth) / placeHolderWidth);
+                PlaceHolderGravity holderGravity = isFrontChar ? PlaceHolderGravity.LEFT : PlaceHolderGravity.CENTER;
+                replace = generateSpaces(analysisBeanList.get(i).key, holderCount, holderGravity);
+            } else {
+                replace = analysisBeanList.get(i).key;
+            }
+
             if (i > analysisBeanList.size() - 1 || TextUtils.isEmpty(analysisBeanList.get(i).key)) {
                 if (i > analysisBeanList.size() - 1)
                     analysisBeanList.add(new AnalysisBean());
@@ -144,10 +161,10 @@ public class StemUtil {
 //            } else if (!correctAnswers.get(i).equals(filledAnswers.get(i))) {
             } else if (AnalysisBean.RIGHT.equals(analysisBeanList.get(i).status)) {
                 stem = replaceFirstChar(stem, MARK_GREEN_START);
-                stem = stem.replaceFirst("\\(_\\)", "<right>" + analysisBeanList.get(i).key + "</right>");
+                stem = stem.replaceFirst("\\(_\\)", "<right>" + replace + "</right>");
             } else {
                 stem = replaceFirstChar(stem, MARK_ORANGE_START);
-                stem = stem.replaceFirst("\\(_\\)", "<wrong>" + analysisBeanList.get(i).key + "</wrong>");
+                stem = stem.replaceFirst("\\(_\\)", "<wrong>" + replace + "</wrong>");
             }
             i++;
         }
