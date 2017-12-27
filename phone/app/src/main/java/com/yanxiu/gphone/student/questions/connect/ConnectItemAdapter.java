@@ -50,6 +50,7 @@ public class ConnectItemAdapter extends RecyclerView.Adapter<ConnectItemAdapter.
         holder.itemView.setTag(mData.get(position));
         if (position == mLastSelectedPos) {
             holder.itemView.setSelected(true);
+            mLastSelectedItem=holder.itemView;
         } else {
             holder.itemView.setSelected(false);
         }
