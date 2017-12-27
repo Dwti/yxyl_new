@@ -1,8 +1,13 @@
 package com.yanxiu.gphone.student.util;
 
 import android.support.annotation.NonNull;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.TextUtils;
+import android.text.style.ImageSpan;
+import android.util.Log;
 
 import com.yanxiu.gphone.student.YanxiuApplication;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionUtil;
@@ -233,6 +238,31 @@ public class StemUtil {
             str = sb.toString();
         }
         return str;
+    }
+
+    public static List<String> getImgUrls(String stem){
+        List<String> urls = new ArrayList<>();
+        if(TextUtils.isEmpty(stem)){
+            return urls;
+        }
+        String imgStrs = "";
+        while (stem.matches(".*\\[\\[.*?]].*")){
+            int startIndex = stem.indexOf("[[");
+            int endIndex = stem.indexOf("]]");
+            String str  = stem.substring(startIndex,endIndex + 2);
+            imgStrs += str;
+            stem = stem.replaceFirst("\\[\\[.*?]]","");
+
+        }
+        ImageSpan[] imageSpans;
+        Spanned spannable = Html.fromHtml(imgStrs);
+        imageSpans = spannable.getSpans(0,spannable.length(),ImageSpan.class);
+        for(ImageSpan imageSpan: imageSpans){
+            String url = imageSpan.getSource();
+            urls.add(url);
+        }
+
+        return urls;
     }
 
     public enum PlaceHolderGravity {

@@ -13,6 +13,9 @@ import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
 import com.yanxiu.gphone.student.util.HtmlImageGetterNew;
+import com.yanxiu.gphone.student.util.StemUtil;
+
+import java.util.List;
 
 /**
  * Created by sunpeng on 2017/12/25.
@@ -22,7 +25,8 @@ public class OperationFragment extends AnswerSimpleExerciseBaseFragment {
     private OperationQuestion mQuestion;
     private View mRootView;
     private TextView mStem;
-    //TODO server给的图片的url在题干里面，需要自己抠出来; initDataWithAnswer里面没有加操作题的判断，会影响答题报告，逻辑跟主观题是一样的
+    private List<String> mImgUrls;
+    //TODO initDataWithAnswer里面没有加操作题的判断，会影响答题报告，逻辑跟主观题是一样的
     @Override
     public void setData(BaseQuestion node) {
         super.setData(node);
@@ -61,5 +65,6 @@ public class OperationFragment extends AnswerSimpleExerciseBaseFragment {
 
     private void initData() {
         mStem.setText(Html.fromHtml(mQuestion.getStem(),new HtmlImageGetterNew(mStem),null));
+        mImgUrls = mQuestion.getOperateImgUrls();
     }
 }
