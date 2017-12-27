@@ -86,6 +86,21 @@ public class StemUtil {
         //<fill>标签 表示空中有答案，需要展示  <empty>标签表示空中没有内容，需要显示为空白
         int i = 0;
         while (stem.contains("(_)")) {
+            TextPaint textPaint = new TextPaint();
+            textPaint.setTextSize(ScreenUtils.dpToPx(YanxiuApplication.getContext(), 17));
+            float defaultWidth = StringUtil.computeStringWidth("oooooo", textPaint);
+            float placeHolderWidth = StringUtil.computeStringWidth("\u00A0", textPaint);
+
+            String replace;
+            boolean isFrontChar = isFrontChar(stem);
+            float answerWidth = StringUtil.computeStringWidth(filledAnswers.get(i), textPaint);
+            if (answerWidth + placeHolderWidth < defaultWidth) {
+                int holderCount = (int) Math.floor((defaultWidth - answerWidth) / placeHolderWidth);
+                PlaceHolderGravity holderGravity = isFrontChar ? PlaceHolderGravity.LEFT : PlaceHolderGravity.CENTER;
+                replace = generateSpaces(filledAnswers.get(i), holderCount, holderGravity);
+            } else {
+                replace = filledAnswers.get(i);
+            }
             if (i > filledAnswers.size() - 1 || TextUtils.isEmpty(filledAnswers.get(i))) {
                 if (i > filledAnswers.size() - 1)
                     filledAnswers.add("");
@@ -94,10 +109,10 @@ public class StemUtil {
 //            } else if (!correctAnswers.get(i).equals(filledAnswers.get(i))) {
             } else if (!QuestionUtil.compareStringByOrder(filledAnswers.get(i),correctAnswers.get(i))) {
                 stem = replaceFirstChar(stem, MARK_ORANGE_START);
-                stem = stem.replaceFirst("\\(_\\)", "<wrong>" + filledAnswers.get(i) + "</wrong>");
+                stem = stem.replaceFirst("\\(_\\)", "<wrong>" + replace + "</wrong>");
             } else {
                 stem = replaceFirstChar(stem, MARK_GREEN_START);
-                stem = stem.replaceFirst("\\(_\\)", "<right>" + filledAnswers.get(i) + "</right>");
+                stem = stem.replaceFirst("\\(_\\)", "<right>" + replace + "</right>");
             }
             i++;
         }

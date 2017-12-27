@@ -141,13 +141,18 @@ public class ConnectFragment extends AnswerSimpleExerciseBaseFragment {
 
     private void initData() {
 
-        mTextStem.post(new Runnable() {
-            @Override
-            public void run() {
-                Spanned spanned = Html.fromHtml(mQuestion.getStem(),new HtmlImageGetter(mTextStem),null);
-                mTextStem.setText(spanned);
-            }
-        });
+        if(TextUtils.isEmpty(mQuestion.getStem())) {
+            mTextStem.setVisibility(View.GONE);
+        } else {
+            mTextStem.setVisibility(View.VISIBLE);
+            mTextStem.post(new Runnable() {
+                @Override
+                public void run() {
+                    Spanned spanned = Html.fromHtml(mQuestion.getStem(), new HtmlImageGetter(mTextStem), null);
+                    mTextStem.setText(spanned);
+                }
+            });
+        }
 
         List<ConnectAnalysisItemBean> leftTexts = mQuestion.getLeftChoices();
         List<ConnectAnalysisItemBean> rightTexts = mQuestion.getRightChoices();
