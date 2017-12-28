@@ -102,7 +102,7 @@ public class FillBlankQuestion extends BaseQuestion {
 
     @Override
     public int getStatus() {
-        if (showType.equals(QuestionShowType.MISTAKE_REDO) || showType.equals(QuestionShowType.ANSWER)) {
+        if (showType.equals(QuestionShowType.MISTAKE_REDO) || showType.equals(QuestionShowType.ANSWER)||getPad().getAnalysis()==null) {
             return getSta();
         } else {
             List<AnalysisBean> analysis=getPad().getAnalysis();
