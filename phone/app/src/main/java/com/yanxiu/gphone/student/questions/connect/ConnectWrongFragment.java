@@ -127,12 +127,17 @@ public class ConnectWrongFragment extends WrongSimpleExerciseBaseFragment {
         }else {
             initAnalysisData();
         }
-        mStem.post(new Runnable() {
-            @Override
-            public void run() {
-                mStem.setText(Html.fromHtml(mQuestion.getStem(), new HtmlImageGetter(mStem), null));
-            }
-        });
+        if(TextUtils.isEmpty(mQuestion.getStem())) {
+            mStem.setVisibility(View.GONE);
+        } else {
+            mStem.setVisibility(View.VISIBLE);
+            mStem.post(new Runnable() {
+                @Override
+                public void run() {
+                    mStem.setText(Html.fromHtml(mQuestion.getStem(), new HtmlImageGetter(mStem), null));
+                }
+            });
+        }
         connectedView.setConnectPositionInfo(mConnectPositionInfos);
         connectedView.addItems(mChoicesLeft, mChoicesRight, mConnectPositionInfos);
     }

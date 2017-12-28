@@ -101,12 +101,17 @@ public class ConnectAnalysisFragment extends AnalysisSimpleExerciseBaseFragment 
         ConnectedView connectedView = (ConnectedView) mRootView.findViewById(R.id.connected_view);
         mStem = (TextView) mRootView.findViewById(R.id.stem);
         initData();
-        mStem.post(new Runnable() {
-            @Override
-            public void run() {
-                mStem.setText(Html.fromHtml(mQuestion.getStem(),new HtmlImageGetter(mStem),null));
-            }
-        });
+        if(TextUtils.isEmpty(mQuestion.getStem())) {
+            mStem.setVisibility(View.GONE);
+        } else {
+            mStem.setVisibility(View.VISIBLE);
+            mStem.post(new Runnable() {
+                @Override
+                public void run() {
+                    mStem.setText(Html.fromHtml(mQuestion.getStem(), new HtmlImageGetter(mStem), null));
+                }
+            });
+        }
         connectedView.setConnectPositionInfo(mConnectPositionInfos);
         connectedView.addItems(mChoicesLeft,mChoicesRight,mConnectPositionInfos);
     }
