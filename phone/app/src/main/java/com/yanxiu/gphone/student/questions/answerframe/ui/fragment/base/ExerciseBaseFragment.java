@@ -222,11 +222,13 @@ public abstract class ExerciseBaseFragment extends YanxiuBaseFragment implements
      * 计算题目时间
      */
     public void calculateExerciseTime() {
-        long exerciseTime = mEndTime - mStartTime;
-        // 计算时间及保存
-        mTotalTime += exerciseTime;
-        mBaseQuestion.setCosttime(mTotalTime);
-        boolean is = SaveAnswerDBHelper.updata(SaveAnswerDBHelper.makeId(mBaseQuestion),String.valueOf(mTotalTime));
+        if (String.valueOf(mEndTime).length()==String.valueOf(mStartTime).length()) {
+            long exerciseTime = mEndTime - mStartTime;
+            // 计算时间及保存
+            mTotalTime += exerciseTime;
+            mBaseQuestion.setCosttime(mTotalTime);
+            boolean is = SaveAnswerDBHelper.updata(SaveAnswerDBHelper.makeId(mBaseQuestion), String.valueOf(mTotalTime));
+        }
     }
 
     /**
