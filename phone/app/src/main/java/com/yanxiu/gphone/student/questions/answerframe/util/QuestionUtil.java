@@ -600,25 +600,27 @@ public class QuestionUtil {
                             } else if (QuestionTemplate.SPOKEN.equals(template)) {
                                 if (answerList != null && !answerList.isEmpty()) {
                                     answerBean.setIsFinish(true);
+                                    answerBean.setSelectType(answerList.get(0));
+                                    SpokenResponse response = SpokenQuestion.getBeanFromJson(answerList.get(0));
+                                    int score = SpokenQuestion.getScore((int) response.lines.get(0).score);
+                                    switch (score) {
+                                        case 0:
+                                        case 1:
+                                            answerBean.setIsRight(false);
+                                            break;
+                                        case 2:
+                                        case 3:
+                                            answerBean.setIsRight(true);
+                                            break;
+                                        default:
+                                            answerBean.setIsRight(false);
+                                            break;
+                                    }
                                 }else {
                                     answerBean.setIsFinish(false);
+                                    answerBean.setIsRight(false);
                                 }
-                                answerBean.setSelectType(answerList.get(0));
-                                SpokenResponse response = SpokenQuestion.getBeanFromJson(answerList.get(0));
-                                int score = SpokenQuestion.getScore((int) response.lines.get(0).score);
-                                switch (score) {
-                                    case 0:
-                                    case 1:
-                                        answerBean.setIsRight(false);
-                                        break;
-                                    case 2:
-                                    case 3:
-                                        answerBean.setIsRight(true);
-                                        break;
-                                    default:
-                                        answerBean.setIsRight(false);
-                                        break;
-                                }
+
                             } else {
                                 try {
                                     JSONArray array = new JSONArray(jsonAnswer);
