@@ -445,7 +445,7 @@ public class QuestionUtil {
                                                     break;
                                                 }
                                             }
-                                            if (reportAnswerBean.isFinish()&&!reportAnswerBean.isRight()){
+                                            if (!reportAnswerBean.isRight()){
                                                 //0默认 1只有对  2只有错  3对错都有
                                                 int flag=0;
                                                 for (int k=0;k<analysis.size();k++){
@@ -562,7 +562,7 @@ public class QuestionUtil {
                                             }
                                         }
 
-                                        if (answerBean.isFinish()&&!answerBean.isRight()){
+                                        if (!answerBean.isRight()){
                                             //0默认 1只有对  2只有错  3对错都有
                                             int flag=0;
                                             for (int j=0;j<analysis.size();j++){
