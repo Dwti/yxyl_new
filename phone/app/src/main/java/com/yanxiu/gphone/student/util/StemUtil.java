@@ -144,11 +144,11 @@ public class StemUtil {
 
             String replace;
             boolean isFrontChar = isFrontChar(stem);
-            float answerWidth = StringUtil.computeStringWidth(analysisBeanList.get(i).key, textPaint);
+            float answerWidth = StringUtil.computeStringWidth(analysisBeanList.size()>i?analysisBeanList.get(i).key:"", textPaint);
             if (answerWidth + placeHolderWidth < defaultWidth) {
                 int holderCount = (int) Math.floor((defaultWidth - answerWidth) / placeHolderWidth);
                 PlaceHolderGravity holderGravity = isFrontChar ? PlaceHolderGravity.LEFT : PlaceHolderGravity.CENTER;
-                replace = generateSpaces(analysisBeanList.get(i).key, holderCount, holderGravity);
+                replace = generateSpaces(analysisBeanList.size()>i?analysisBeanList.get(i).key:"", holderCount, holderGravity);
             } else {
                 replace = analysisBeanList.get(i).key;
             }
