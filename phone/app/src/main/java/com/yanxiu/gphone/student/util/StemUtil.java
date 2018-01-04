@@ -154,8 +154,11 @@ public class StemUtil {
             }
 
             if (i > analysisBeanList.size() - 1 || TextUtils.isEmpty(analysisBeanList.get(i).key)) {
-                if (i > analysisBeanList.size() - 1)
-                    analysisBeanList.add(new AnalysisBean());
+                if (i > analysisBeanList.size() - 1) {
+                    AnalysisBean bean = new AnalysisBean();
+                    bean.key="";
+                    analysisBeanList.add(bean);
+                }
                 stem = replaceFirstChar(stem, MARK_ORANGE_START);
                 stem = stem.replaceFirst("\\(_\\)", "<empty>oooooo</empty>");
 //            } else if (!correctAnswers.get(i).equals(filledAnswers.get(i))) {
