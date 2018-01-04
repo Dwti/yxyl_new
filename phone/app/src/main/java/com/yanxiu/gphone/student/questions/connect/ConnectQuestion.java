@@ -80,7 +80,7 @@ public class ConnectQuestion extends BaseQuestion {
                 }
                 int leftPos = Integer.parseInt(s.split(",")[0]);
                 int rightPos = Integer.parseInt(s.split(",")[1]);
-                int leftCount=TextUtils.isEmpty(mLeftCount)?0:Integer.parseInt(mLeftCount);
+                int leftCount=TextUtils.isEmpty(mLeftCount)?choices.size()/2:Integer.parseInt(mLeftCount);
                 if (rightPos >= leftCount) {
                     rightPos = rightPos - leftCount;
                 }
@@ -103,7 +103,7 @@ public class ConnectQuestion extends BaseQuestion {
             for (String s : serverCorrectAnswers) {
                 int leftPos = Integer.parseInt(s.split(",")[0]);
                 int rightPos = Integer.parseInt(s.split(",")[1]);
-                int leftCount=TextUtils.isEmpty(mLeftCount)?0:Integer.parseInt(mLeftCount);
+                int leftCount=TextUtils.isEmpty(mLeftCount)?choices.size()/2:Integer.parseInt(mLeftCount);
                 if (rightPos >= leftCount) {
                     rightPos = rightPos - leftCount;
                 }
