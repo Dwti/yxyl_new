@@ -80,8 +80,9 @@ public class ConnectQuestion extends BaseQuestion {
                 }
                 int leftPos = Integer.parseInt(s.split(",")[0]);
                 int rightPos = Integer.parseInt(s.split(",")[1]);
-                if (rightPos >= choices.size() / 2) {
-                    rightPos = rightPos - choices.size() / 2;
+                int leftCount=TextUtils.isEmpty(mLeftCount)?0:Integer.parseInt(mLeftCount);
+                if (rightPos >= leftCount) {
+                    rightPos = rightPos - leftCount;
                 }
                 filledAnswers.add(leftPos + "," + rightPos);
             }
@@ -102,8 +103,9 @@ public class ConnectQuestion extends BaseQuestion {
             for (String s : serverCorrectAnswers) {
                 int leftPos = Integer.parseInt(s.split(",")[0]);
                 int rightPos = Integer.parseInt(s.split(",")[1]);
-                if (rightPos >= choices.size() / 2) {
-                    rightPos = rightPos - choices.size() / 2;
+                int leftCount=TextUtils.isEmpty(mLeftCount)?0:Integer.parseInt(mLeftCount);
+                if (rightPos >= leftCount) {
+                    rightPos = rightPos - leftCount;
                 }
                 correctAnswers.add(leftPos + "," + rightPos);
             }
