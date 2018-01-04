@@ -150,7 +150,7 @@ public class StemUtil {
                 PlaceHolderGravity holderGravity = isFrontChar ? PlaceHolderGravity.LEFT : PlaceHolderGravity.CENTER;
                 replace = generateSpaces(analysisBeanList.size()>i?analysisBeanList.get(i).key:"", holderCount, holderGravity);
             } else {
-                replace = analysisBeanList.get(i).key;
+                replace = analysisBeanList.size()>i?analysisBeanList.get(i).key:"";
             }
 
             if (i > analysisBeanList.size() - 1 || TextUtils.isEmpty(analysisBeanList.get(i).key)) {
