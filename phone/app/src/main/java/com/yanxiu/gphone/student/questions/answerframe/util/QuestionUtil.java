@@ -416,16 +416,23 @@ public class QuestionUtil {
                                             for (Object o : rightAnswer) {
                                                 rightAnswerStr.add(String.valueOf(o));
                                             }
-                                            if (QuestionTemplate.MULTI_CHOICES.equals(childTemplate)) {
-                                                reportAnswerBean.setMultiSelect((ArrayList<String>) answerChildList);
-                                            } else if (QuestionTemplate.FILL.equals(childTemplate)) {
-                                                reportAnswerBean.setFillAnswers((ArrayList<String>) answerChildList);
-                                            }
 
                                             if (analysis.size()!=answer.size()){
                                                 reportAnswerBean.setIsRight(false);
                                             }else {
                                                 reportAnswerBean.setIsRight(true);
+                                            }
+
+                                            if (QuestionTemplate.MULTI_CHOICES.equals(childTemplate)) {
+                                                reportAnswerBean.setMultiSelect((ArrayList<String>) answerChildList);
+                                            } else if (QuestionTemplate.FILL.equals(childTemplate)) {
+                                                reportAnswerBean.setFillAnswers((ArrayList<String>) answerChildList);
+                                            } else if (QuestionTemplate.CLASSIFY.equals(childTemplate)) {
+                                                if (analysis.size()!=answer.size()+1){
+                                                    reportAnswerBean.setIsRight(false);
+                                                }else {
+                                                    reportAnswerBean.setIsRight(true);
+                                                }
                                             }
 
                                             for (AnalysisBean analysisBean:analysis){
@@ -670,19 +677,23 @@ public class QuestionUtil {
                                         answerBean.setIsFinish(false);
                                     }
 
-                                    if (analysis.size()!=answer.size()){
-                                        answerBean.setIsRight(false);
-                                    }else {
-                                        answerBean.setIsRight(true);
-                                    }
-
                                     if (QuestionTemplate.CONNECT.equals(template) ) {
+                                        if (analysis.size()!=answer.size()){
+                                            answerBean.setIsRight(false);
+                                        }else {
+                                            answerBean.setIsRight(true);
+                                        }
                                         for (AnalysisBean analysisBean : analysis) {
                                             if (!AnalysisBean.RIGHT.equals(analysisBean.status)) {
                                                 answerBean.setIsRight(false);
                                             }
                                         }
                                     }else if (QuestionTemplate.CLASSIFY.equals(template) ){
+                                        if (analysis.size()!=answer.size()+1){
+                                            answerBean.setIsRight(false);
+                                        }else {
+                                            answerBean.setIsRight(true);
+                                        }
                                         for (AnalysisBean analysisBean : analysis){
                                             List<String> list=analysisBean.subStatus;
                                             for (String s:list){

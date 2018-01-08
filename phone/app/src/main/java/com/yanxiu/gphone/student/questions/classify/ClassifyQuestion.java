@@ -166,7 +166,7 @@ public class ClassifyQuestion extends BaseQuestion {
             List<Object> answer = getBean().getQuestions().getAnswer();
             int status;
 
-            if (analysis.size() != answer.size()) {
+            if (analysis.size() != answer.size()+1) {
                 status = Constants.ANSWER_STATUS_WRONG;
             } else {
                 status = Constants.ANSWER_STATUS_RIGHT;
