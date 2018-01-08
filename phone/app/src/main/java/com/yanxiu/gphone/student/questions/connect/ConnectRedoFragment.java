@@ -256,6 +256,22 @@ public class ConnectRedoFragment extends RedoSimpleExerciseBaseFragment {
                         mResultAdapter.clear();
                         mLeftAdapter.addAll(leftToAdd);
                         mRightAdapter.addAll(rightToAdd);
+                        if (mLeftAdapter.getLastSelectedPosition()!=-1) {
+                            mRecyclerViewLeft.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mRecyclerViewLeft.scrollToPosition(mLeftAdapter.getLastSelectedPosition());
+                                }
+                            });
+                        }
+                        if (mRightAdapter.getLastSelectedPosition()!=-1) {
+                            mRecyclerViewRight.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mRecyclerViewRight.scrollToPosition(mRightAdapter.getLastSelectedPosition());
+                                }
+                            });
+                        }
                         saveAnswer(mQuestion);
                         updateProgress();
                     }
@@ -288,6 +304,9 @@ public class ConnectRedoFragment extends RedoSimpleExerciseBaseFragment {
     }
 
     private void dismissResult() {
+        if (mResultAdapter!=null) {
+            mResultAdapter.clearAnim();
+        }
         AlphaAnimationUtil.startPopBgAnimExit(((MistakeRedoActivity)getActivity()).getOverlayView());
         ((MistakeRedoActivity)getActivity()).getOverlayView().setVisibility(View.GONE);
         if (mPopWindow.isShowing())
@@ -330,11 +349,12 @@ public class ConnectRedoFragment extends RedoSimpleExerciseBaseFragment {
 
             localFilledAnswers.add(leftPos + "," + rightPos);
 
-            rightPos += mQuestion.getChoices().size() / 2;
+//            rightPos += mQuestion.getChoices().size() / 2;
+            rightPos += mQuestion.getLeftCount();
             serverFilledAnswers.add(leftPos + "," + rightPos);
         }
-        if (serverFilledAnswers.size() < mQuestion.getChoices().size() / 2) {
-            int count = mQuestion.getChoices().size() / 2 - serverFilledAnswers.size();
+        if (serverFilledAnswers.size() < mQuestion.getLineNumber()) {
+            int count = mQuestion.getLineNumber() - serverFilledAnswers.size();
             for (int i = 0; i < count; i++) {
                 serverFilledAnswers.add("");
             }
