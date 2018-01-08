@@ -101,7 +101,7 @@ public class ConnectWrongFragment extends WrongSimpleExerciseBaseFragment {
                 int right = Integer.parseInt(answers[1]);
 
                 for (AnalysisBean analysisBean:analysisBeans){
-                    String[] Keyanswers = answer.split(",");
+                    String[] Keyanswers = analysisBean.key.split(",");
                     int Keyleft = Integer.parseInt(Keyanswers[0]);
                     //只判断左边，极易出现误差，根源在连线题写法上面，问题太多
                     if (left==Keyleft){
