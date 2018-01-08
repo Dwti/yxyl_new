@@ -96,16 +96,18 @@ public class ConnectWrongFragment extends WrongSimpleExerciseBaseFragment {
                 mConnectPositionInfos.add(info);
             }else {
                 boolean isRight = false;
+                String[] answers = answer.split(",");
+                int left = Integer.parseInt(answers[0]);
+                int right = Integer.parseInt(answers[1]);
 
                 for (AnalysisBean analysisBean:analysisBeans){
-                    if (answer.equals(analysisBean.key)){
+                    String[] Keyanswers = answer.split(",");
+                    int Keyleft = Integer.parseInt(Keyanswers[0]);
+                    if (left==Keyleft){
                         isRight=analysisBean.status.equals(AnalysisBean.RIGHT);
                     }
                 }
 
-                String[] answers = answer.split(",");
-                int left = Integer.parseInt(answers[0]);
-                int right = Integer.parseInt(answers[1]);
                 info = new ConnectPositionInfo(left,right,isRight);
             }
             mConnectPositionInfos.add(info);
