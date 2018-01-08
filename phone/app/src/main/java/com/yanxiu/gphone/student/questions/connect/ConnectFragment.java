@@ -354,7 +354,7 @@ public class ConnectFragment extends AnswerSimpleExerciseBaseFragment {
 
             localFilledAnswers.add(leftPos + "," + rightPos);
 
-            rightPos += mQuestion.getChoices().size() / 2;
+            rightPos += mQuestion.getLeftCount();
             serverFilledAnswers.add(leftPos + "," + rightPos);
         }
         if (serverFilledAnswers.size() < mQuestion.getLineNumber()) {

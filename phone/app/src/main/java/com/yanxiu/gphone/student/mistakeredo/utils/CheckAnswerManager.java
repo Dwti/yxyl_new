@@ -62,7 +62,7 @@ public class CheckAnswerManager {
         if (question.isComplexQuestion()) {
             List<BaseQuestion> children = question.getChildren();
             for (BaseQuestion child:children){
-                if(!child.getTemplate().equals(QuestionTemplate.ANSWER)) {
+                if(!child.getTemplate().equals(QuestionTemplate.ANSWER)&&!child.getTemplate().equals(QuestionTemplate.SPOKEN)) {
                     JSONObject param = getParams(child, gson);
                     if (param!=null) {
                         isShouldRequest = true;
@@ -71,10 +71,12 @@ public class CheckAnswerManager {
                 }
             }
         }else {
-            JSONObject param=getParams(question,gson);
-            if (param!=null) {
-                isShouldRequest = true;
-                array.put(param);
+            if(!question.getTemplate().equals(QuestionTemplate.ANSWER)&&!question.getTemplate().equals(QuestionTemplate.SPOKEN)) {
+                JSONObject param = getParams(question, gson);
+                if (param != null) {
+                    isShouldRequest = true;
+                    array.put(param);
+                }
             }
         }
 

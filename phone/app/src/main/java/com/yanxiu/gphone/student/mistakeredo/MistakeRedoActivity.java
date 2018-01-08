@@ -954,28 +954,38 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
             int i=0;
             for(BaseQuestion child : children){
                 if(!child.getTemplate().equals(QuestionTemplate.ANSWER)){
+                    //主观题的解析 不变 还按照当前的错题重做的界面展示（没变化，都一样）
+                    child.setShowType(QuestionShowType.MISTAKE_ANALYSIS);
+                }
+                if(!child.getTemplate().equals(QuestionTemplate.ANSWER) && child.getStatus() == Constants.ANSWER_STATUS_WRONG){
+                    isRight = false;
+                }
+                if(response!=null){
                     PadBean padBean=child.getBean().getQuestions().getPad();
                     padBean.setStatus(response.data.get(i).status);
                     padBean.setObjectiveScore(response.data.get(i).objectiveScore);
                     padBean.setAnalysis(response.data.get(i).analysis);
-
                     //主观题的解析 不变 还按照当前的错题重做的界面展示（没变化，都一样）
                     child.setShowType(QuestionShowType.MISTAKE_ANALYSIS);
-                    if(child.getStatus() != Constants.ANSWER_STATUS_RIGHT){
+                    if(padBean.getStatus() != Constants.ANSWER_STATUS_RIGHT){
                         isRight = false;
                     }
-                    i++;
                 }
-
+                i++;
             }
             mAdapter.notifyDataSetChanged();
         } else {
-            PadBean padBean=question.getBean().getQuestions().getPad();
-            padBean.setStatus(response.data.get(0).status);
-            padBean.setObjectiveScore(response.data.get(0).objectiveScore);
-            padBean.setAnalysis(response.data.get(0).analysis);
-            if(!question.getTemplate().equals(QuestionTemplate.ANSWER) && padBean.getStatus() != Constants.ANSWER_STATUS_RIGHT){
+            if(!question.getTemplate().equals(QuestionTemplate.ANSWER) && question.getStatus() == Constants.ANSWER_STATUS_WRONG){
                 isRight = false;
+            }
+            if(response!=null) {
+                PadBean padBean = question.getBean().getQuestions().getPad();
+                padBean.setStatus(response.data.get(0).status);
+                padBean.setObjectiveScore(response.data.get(0).objectiveScore);
+                padBean.setAnalysis(response.data.get(0).analysis);
+                if (!question.getTemplate().equals(QuestionTemplate.ANSWER) && padBean.getStatus() != Constants.ANSWER_STATUS_RIGHT) {
+                    isRight = false;
+                }
             }
             mAdapter.notifyDataSetChanged();
         }

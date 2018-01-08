@@ -262,6 +262,15 @@ public class ConnectQuestion extends BaseQuestion {
         this.serverFilledAnswers = serverFilledAnswers;
     }
 
+    public int getLeftCount() {
+        int leftCount=TextUtils.isEmpty(mLeftCount)?choices.size()/2:Integer.parseInt(mLeftCount);
+        return leftCount;
+    }
+
+    public void setmLeftCount(String mLeftCount) {
+        this.mLeftCount = mLeftCount;
+    }
+
     public List<PointBean> getPointList() {
         return pointList;
     }
