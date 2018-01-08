@@ -142,6 +142,15 @@ public class StemUtil {
         int i = 0;
         while (stem.contains("(_)")) {
 
+            if (analysisBeanList==null){
+                analysisBeanList=new ArrayList<>();
+            }
+            if (analysisBeanList.size()-1<i){
+                AnalysisBean bean = new AnalysisBean();
+                bean.key="";
+                analysisBeanList.add(bean);
+            }
+
             TextPaint textPaint = new TextPaint();
             textPaint.setTextSize(ScreenUtils.dpToPx(YanxiuApplication.getContext(), 17));
             float defaultWidth = StringUtil.computeStringWidth("oooooo", textPaint);

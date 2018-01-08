@@ -82,6 +82,7 @@ public class ConnectAnalysisFragment extends AnalysisSimpleExerciseBaseFragment 
                 for (AnalysisBean analysisBean:analysisBeans){
                     String[] Keyanswers = answer.split(",");
                     int Keyleft = Integer.parseInt(Keyanswers[0]);
+                    //只判断左边，极易出现误差，根源在连线题写法上面，问题太多
                     if (left==Keyleft){
                         isRight=analysisBean.status.equals(AnalysisBean.RIGHT);
                     }
