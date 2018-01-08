@@ -28,7 +28,7 @@
                 layout="@layout/common_stem"
                 android:visibility="gone"/>
 
-            <TextureView
+            <TextView
                 android:id="@+id/tv_stem"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
