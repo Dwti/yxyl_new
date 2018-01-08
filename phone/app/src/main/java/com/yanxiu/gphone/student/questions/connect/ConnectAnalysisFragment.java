@@ -79,12 +79,14 @@ public class ConnectAnalysisFragment extends AnalysisSimpleExerciseBaseFragment 
                 int left = Integer.parseInt(answers[0]);
                 int right = Integer.parseInt(answers[1]);
 
-                for (AnalysisBean analysisBean:analysisBeans){
-                    String[] Keyanswers = answer.split(",");
-                    int Keyleft = Integer.parseInt(Keyanswers[0]);
-                    //只判断左边，极易出现误差，根源在连线题写法上面，问题太多
-                    if (left==Keyleft){
-                        isRight=analysisBean.status.equals(AnalysisBean.RIGHT);
+                if (analysisBeans!=null) {
+                    for (AnalysisBean analysisBean : analysisBeans) {
+                        String[] Keyanswers = answer.split(",");
+                        int Keyleft = Integer.parseInt(Keyanswers[0]);
+                        //只判断左边，极易出现误差，根源在连线题写法上面，问题太多
+                        if (left == Keyleft) {
+                            isRight = analysisBean.status.equals(AnalysisBean.RIGHT);
+                        }
                     }
                 }
 

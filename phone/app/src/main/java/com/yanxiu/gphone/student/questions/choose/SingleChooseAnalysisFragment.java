@@ -100,7 +100,7 @@ public class SingleChooseAnalysisFragment extends AnalysisSimpleExerciseBaseFrag
             if (count>select_position) {
                 ChooseLayout.ViewHolder selectViewHolder = (ChooseLayout.ViewHolder) mChooseView.getChildAt(select_position).getTag();
                 List<AnalysisBean> analysisBeans=mData.getPad().getAnalysis();
-                if (!analysisBeans.isEmpty()&&AnalysisBean.RIGHT.equals(analysisBeans.get(0).status)) {
+                if (analysisBeans!=null&&!analysisBeans.isEmpty()&&AnalysisBean.RIGHT.equals(analysisBeans.get(0).status)) {
                     mChooseView.setSelect(select_position);
                     selectViewHolder.mQuestionContentView.setTextColor(ContextCompat.getColor(getContext(),R.color.color_89e00d));
                     selectViewHolder.mQuestionIdView.setBackground(ContextCompat.getDrawable(getContext(),R.drawable.choose_right));

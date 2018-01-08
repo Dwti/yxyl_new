@@ -96,10 +96,9 @@ public class YesNoAnalysisFragment extends AnalysisSimpleExerciseBaseFragment {
                 select_position = -1;
             }
 
-
             if (count > select_position) {
                 List<AnalysisBean> analysisBeans=mData.getPad().getAnalysis();
-                if (!analysisBeans.isEmpty()&&AnalysisBean.RIGHT.equals(analysisBeans.get(0).status)) {
+                if (analysisBeans!=null&&!analysisBeans.isEmpty()&&AnalysisBean.RIGHT.equals(analysisBeans.get(0).status)) {
                     selectViewHolder.mQuestionContentView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.choose_right));
                     selectViewHolder.mQuestionContentView.setTextColor(ContextCompat.getColor(getContext(), R.color.color_ffffff));
                 } else {
