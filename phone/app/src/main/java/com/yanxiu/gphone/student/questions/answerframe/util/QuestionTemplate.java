@@ -16,4 +16,5 @@ public class QuestionTemplate{
     public static final String CLOZE= "cloze";//完形填空
     public static final String LISTEN = "listen";//听力
     public static final String SPOKEN="speak";
+    public static final String OPERATION="operation"; //操作题
 }
