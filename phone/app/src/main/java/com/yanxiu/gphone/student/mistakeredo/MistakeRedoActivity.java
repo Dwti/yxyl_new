@@ -356,6 +356,7 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
 //                mAnswerManager.start(question);
 
                 question.setShowType(QuestionShowType.MISTAKE_ANALYSIS);
+                question.setMisTakeRedo(true);
                 boolean isRight = true;
                 if (question.isComplexQuestion()) {
                     List<BaseQuestion> children = question.getChildren();
@@ -363,6 +364,7 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
                         if(!child.getTemplate().equals(QuestionTemplate.ANSWER)){
                             //主观题的解析 不变 还按照当前的错题重做的界面展示（没变化，都一样）
                             child.setShowType(QuestionShowType.MISTAKE_ANALYSIS);
+                            child.setMisTakeRedo(true);
                         }
                         if(!child.getTemplate().equals(QuestionTemplate.ANSWER) && child.getStatus() == Constants.ANSWER_STATUS_WRONG){
                             isRight = false;
@@ -948,6 +950,7 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
     @Override
     public void onCheckAnswerSuccess(BaseQuestion question,CheckAnswerResponse response) {
         question.setShowType(QuestionShowType.MISTAKE_ANALYSIS);
+        question.setMisTakeRedo(true);
         boolean isRight = true;
         if (question.isComplexQuestion()) {
             List<BaseQuestion> children = question.getChildren();
@@ -956,6 +959,7 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
                 if(!child.getTemplate().equals(QuestionTemplate.ANSWER)){
                     //主观题的解析 不变 还按照当前的错题重做的界面展示（没变化，都一样）
                     child.setShowType(QuestionShowType.MISTAKE_ANALYSIS);
+                    child.setMisTakeRedo(true);
                 }
                 if(!child.getTemplate().equals(QuestionTemplate.ANSWER) && child.getStatus() == Constants.ANSWER_STATUS_WRONG){
                     isRight = false;
@@ -967,6 +971,7 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
                     padBean.setAnalysis(response.data.get(i).analysis);
                     //主观题的解析 不变 还按照当前的错题重做的界面展示（没变化，都一样）
                     child.setShowType(QuestionShowType.MISTAKE_ANALYSIS);
+                    child.setMisTakeRedo(true);
                     if(padBean.getStatus() != Constants.ANSWER_STATUS_RIGHT){
                         isRight = false;
                     }

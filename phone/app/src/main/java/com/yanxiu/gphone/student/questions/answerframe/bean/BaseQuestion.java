@@ -94,6 +94,8 @@ public abstract class BaseQuestion implements Serializable {
     private String mPaperStatus;//数据来源：paperStatus-status。解析力需要判断paperStatus
     private PaperTestBean mBean;
 
+    private boolean isMisTakeRedo=false;
+
     public BaseQuestion(PaperTestBean bean,QuestionShowType showType,String paperStatus){
         this.id = bean.getId();
         this.correctRate = bean.getCorrectRate();
@@ -168,6 +170,14 @@ public abstract class BaseQuestion implements Serializable {
         mPaperStatus = paperStatus;
         mBean = bean;
         initTemplateOfAnswerStem();
+    }
+
+    public boolean isMisTakeRedo() {
+        return isMisTakeRedo;
+    }
+
+    public void setMisTakeRedo(boolean misTakeRedo) {
+        isMisTakeRedo = misTakeRedo;
     }
 
     public PaperTestBean getBean() {

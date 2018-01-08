@@ -151,7 +151,7 @@ public class ConnectQuestion extends BaseQuestion {
 
     @Override
     public int getStatus() {
-        if (showType.equals(QuestionShowType.MISTAKE_REDO) || showType.equals(QuestionShowType.ANSWER)||getPad().getAnalysis()==null) {
+        if (showType.equals(QuestionShowType.MISTAKE_REDO) || showType.equals(QuestionShowType.ANSWER)||isMisTakeRedo()||getPad().getAnalysis()==null) {
             return getSta();
         } else {
             List<AnalysisBean> analysis = getPad().getAnalysis();
