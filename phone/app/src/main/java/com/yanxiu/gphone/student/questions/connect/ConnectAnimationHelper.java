@@ -24,6 +24,9 @@ import android.widget.RelativeLayout;
 
 public class ConnectAnimationHelper {
 
+    /**
+     * 这写法真逗，遗患无穷
+     * */
     public static Bitmap getDrawBitmap(View view){
         view.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
                 View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
@@ -32,6 +35,19 @@ public class ConnectAnimationHelper {
         view.buildDrawingCache();
         Bitmap bitmap = view.getDrawingCache();
         return bitmap;
+    }
+
+    /**
+     * 换种写法,留作纪念
+     * */
+    public static Bitmap getDrawBitmap2(View view){
+        view.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+        view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
+        view.destroyDrawingCache();
+        view.buildDrawingCache();
+        Bitmap bitmap = view.getDrawingCache();
+        return Bitmap.createBitmap(bitmap);
     }
 
     private static RelativeLayout createAnimationLayout(Activity activity){
@@ -118,7 +134,7 @@ public class ConnectAnimationHelper {
 
     public static void startDropIntoBasketAnimation(Activity activity, View basket, View item, int[] start_location, int[] end_location){
         ImageView imageView = new ImageView(activity);
-        imageView.setImageBitmap(getDrawBitmap(item));
+        imageView.setImageBitmap(getDrawBitmap2(item));
         RelativeLayout relativeLayout = createAnimationLayout(activity);
 
         addViewToAnimLayout(relativeLayout,imageView,start_location);

@@ -122,6 +122,8 @@ public class ConnectResultAdapter extends RecyclerView.Adapter<RecyclerView.View
                     delete.setClickable(false);
                     delete.setLongClickable(false);
 
+                    mAnimationLayout.setTag(getLayoutPosition());
+
                     bean = mData.get(getLayoutPosition());
 
                     int centerX = itemView.getWidth() / 2 ;
@@ -181,21 +183,24 @@ public class ConnectResultAdapter extends RecyclerView.Adapter<RecyclerView.View
                     ConnectAnimationHelper.startDeleteAnimation(imgRight, 0, 90, pivotXRight, pivotY, new Animation.AnimationListener() {
                         @Override
                         public void onAnimationStart(Animation animation) {
-                            remove(getLayoutPosition());
-                            if(mOnItemDeletedListener !=null){
-                                mOnItemDeletedListener.onDeleted(bean);
+                            if ((int)mAnimationLayout.getTag()!=-1) {
+                                mAnimationLayout.setTag(-1);
+                                remove(getLayoutPosition());
+                                if (mOnItemDeletedListener != null) {
+                                    mOnItemDeletedListener.onDeleted(bean);
+                                }
                             }
                         }
 
                         @Override
                         public void onAnimationEnd(Animation animation) {
-                            mAnimationLayout.removeView(imgLeft);
-                            mAnimationLayout.removeView(imgRight);
+                            Log.d("asd","onAnimationEnd");
+                            mAnimationLayout.removeAllViews();
                         }
 
                         @Override
                         public void onAnimationRepeat(Animation animation) {
-
+                            Log.d("asd","onAnimationRepeat");
                         }
                     });
 
@@ -208,6 +213,23 @@ public class ConnectResultAdapter extends RecyclerView.Adapter<RecyclerView.View
 
         public EmptyViewHolder(View itemView) {
             super(itemView);
+        }
+    }
+
+    public void clearAnim(){
+        if (mAnimationLayout!=null){
+            try {
+                int position= (int) mAnimationLayout.getTag();
+                if (position!=-1) {
+                    mAnimationLayout.setTag(-1);
+                    remove(position);
+                    ConnectedBean bean = mData.get(position);
+                    if (mOnItemDeletedListener != null) {
+                        mOnItemDeletedListener.onDeleted(bean);
+                    }
+                }
+            }catch (Exception e){}
+            mAnimationLayout.removeAllViews();
         }
     }
 

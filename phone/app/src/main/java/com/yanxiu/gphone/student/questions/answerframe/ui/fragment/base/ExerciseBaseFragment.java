@@ -222,11 +222,13 @@ public abstract class ExerciseBaseFragment extends YanxiuBaseFragment implements
      * 计算题目时间
      */
     public void calculateExerciseTime() {
-        long exerciseTime = mEndTime - mStartTime;
-        // 计算时间及保存
-        mTotalTime += exerciseTime;
-        mBaseQuestion.setCosttime(mTotalTime);
-
+        if (String.valueOf(mEndTime).length()==String.valueOf(mStartTime).length()) {
+            long exerciseTime = mEndTime - mStartTime;
+            // 计算时间及保存
+            mTotalTime += exerciseTime;
+            mBaseQuestion.setCosttime(mTotalTime);
+            boolean is = SaveAnswerDBHelper.updata(SaveAnswerDBHelper.makeId(mBaseQuestion), String.valueOf(mTotalTime));
+        }
     }
 
     /**
@@ -276,6 +278,7 @@ public abstract class ExerciseBaseFragment extends YanxiuBaseFragment implements
     public void saveAnswer(BaseQuestion question) {
         mEndTime = System.currentTimeMillis()/1000l;
         calculateExerciseTime();
+        mStartTime = System.currentTimeMillis()/1000l;
         ArrayList<Integer> LevelPositions = question.getLevelPositions();//获取当前节点（题号）数据，通过节点可以判断出处在ArrayList的位置
         if (LevelPositions == null || LevelPositions.size() < 1)
             return;

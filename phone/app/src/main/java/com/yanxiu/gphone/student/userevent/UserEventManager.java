@@ -197,7 +197,7 @@ public class UserEventManager {
                 Logger.d(TAG, data);
                 eventBean.save();
             } catch (Exception e) {
-                e.printStackTrace();
+//                e.printStackTrace();
             }
         }
     }

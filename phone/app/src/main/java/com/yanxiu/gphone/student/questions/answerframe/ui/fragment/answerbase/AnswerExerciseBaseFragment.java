@@ -3,6 +3,7 @@ package com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase;
 
 import android.util.Log;
 
+import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
 
 /**
@@ -12,6 +13,12 @@ import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.Exercise
 
 public abstract class AnswerExerciseBaseFragment extends ExerciseBaseFragment {
     public final String TAG = this.getClass().getSimpleName();
+
+    @Override
+    public void setData(BaseQuestion node) {
+        super.setData(node);
+        mTotalTime=node.getCosttime();
+    }
 
     @Override
     public void onVisibilityChangedToUser(boolean isVisibleToUser, boolean invokeInResumeOrPause) {
@@ -25,6 +32,17 @@ public abstract class AnswerExerciseBaseFragment extends ExerciseBaseFragment {
             //不可见，计时结束
             mEndTime = System.currentTimeMillis()/1000l;
             calculateExerciseTime();
+        }
+    }
+
+    @Override
+    public void onAnswerCardVisibleToUser(boolean isVisibleToUser) {
+        super.onAnswerCardVisibleToUser(isVisibleToUser);
+        if (isVisibleToUser){
+            mEndTime = System.currentTimeMillis()/1000l;
+            calculateExerciseTime();
+        }else {
+            mStartTime = System.currentTimeMillis()/1000l;
         }
     }
 }

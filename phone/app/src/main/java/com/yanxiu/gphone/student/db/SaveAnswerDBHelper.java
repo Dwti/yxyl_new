@@ -22,6 +22,16 @@ public class SaveAnswerDBHelper {
         return bean.save();
     }
 
+    public static boolean updata(String aid,String costTime){
+        List<AnswerBean> mAnswerBeanList = DataSupport.where("aid = ?", aid).find(AnswerBean.class);
+        if (null != mAnswerBeanList && mAnswerBeanList.size() > 0) {
+            AnswerBean ab = mAnswerBeanList.get(0);
+            ab.setCostTime(costTime);
+            return ab.save();
+        }
+        return false;
+    }
+
 //    public static String getAnswerJson2(long id) {
 //        String json = null;
 //        AnswerBean answerBean = DataSupport.find(AnswerBean.class, id);
