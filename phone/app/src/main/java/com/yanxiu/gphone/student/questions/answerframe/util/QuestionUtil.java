@@ -314,6 +314,9 @@ public class QuestionUtil {
      *
      * @param paper
      */
+    /**
+     * 这块儿逻辑彻底烂了,有机会重写吧
+     * */
     public static void initDataWithAnswer(Paper paper) {
         if (paper != null && paper.getQuestions() != null && !paper.getQuestions().isEmpty()) {
             List<BaseQuestion> questionsList = paper.getQuestions();
@@ -423,6 +426,12 @@ public class QuestionUtil {
                                                 reportAnswerBean.setIsRight(true);
                                             }
 
+                                            for (AnalysisBean analysisBean:analysis){
+                                                if (!AnalysisBean.RIGHT.equals(analysisBean.status)){
+                                                    reportAnswerBean.setIsRight(false);
+                                                }
+                                            }
+
                                             if (QuestionTemplate.MULTI_CHOICES.equals(childTemplate)) {
                                                 reportAnswerBean.setMultiSelect((ArrayList<String>) answerChildList);
                                             } else if (QuestionTemplate.FILL.equals(childTemplate)) {
@@ -433,13 +442,16 @@ public class QuestionUtil {
                                                 }else {
                                                     reportAnswerBean.setIsRight(true);
                                                 }
-                                            }
-
-                                            for (AnalysisBean analysisBean:analysis){
-                                                if (!AnalysisBean.RIGHT.equals(analysisBean.status)){
-                                                    reportAnswerBean.setIsRight(false);
+                                                for (AnalysisBean analysisBean : analysis){
+                                                    List<String> list=analysisBean.subStatus;
+                                                    for (String s:list){
+                                                        if (!AnalysisBean.RIGHT.equals(s)){
+                                                            reportAnswerBean.setIsRight(false);
+                                                        }
+                                                    }
                                                 }
                                             }
+
 
 //                                            if (compareListByOrder(answerChildList, rightAnswerStr)) {
 //                                                reportAnswerBean.setIsRight(true);
