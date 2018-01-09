@@ -6,6 +6,7 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
@@ -15,6 +16,7 @@ import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.Exercise
 import com.yanxiu.gphone.student.util.HtmlImageGetterNew;
 import com.yanxiu.gphone.student.util.StemUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,6 +28,8 @@ public class OperationFragment extends AnswerSimpleExerciseBaseFragment {
     private View mRootView;
     private TextView mStem;
     private List<String> mImgUrls;
+    private GridView mGridView;
+    private OperationAdapter mAdapter;
     //TODO initDataWithAnswer里面没有加操作题的判断，会影响答题报告，逻辑跟主观题是一样的
     @Override
     public void setData(BaseQuestion node) {
@@ -61,10 +65,24 @@ public class OperationFragment extends AnswerSimpleExerciseBaseFragment {
 
     private void initView() {
         mStem = (TextView) mRootView.findViewById(R.id.tv_stem);
+        mGridView = (GridView) mRootView.findViewById(R.id.gridView);
     }
 
     private void initData() {
         mStem.setText(Html.fromHtml(mQuestion.getStem(),new HtmlImageGetterNew(mStem),null));
         mImgUrls = mQuestion.getOperateImgUrls();
+        List<OperationBean> operationBeanList = new ArrayList<>();
+        for(String url: mImgUrls){
+            OperationBean bean = new OperationBean();
+            bean.setImageUrl(url);
+            //TODO 需要找到存储的url对应的path
+            operationBeanList.add(bean);
+        }
+        mAdapter = new OperationAdapter(operationBeanList);
+        if(operationBeanList.size() > 1){
+            mGridView.setNumColumns(2);
+            mGridView.setStretchMode(GridView.STRETCH_SPACING_UNIFORM);
+        }
+        mGridView.setAdapter(mAdapter);
     }
 }

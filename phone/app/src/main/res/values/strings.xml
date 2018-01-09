@@ -345,5 +345,6 @@
     <string name="question_deleted">本题已被删除</string>
     <string name="submit">提交</string>
     <string name="point_title">%1$s (%2$s)</string>
+    <string name="operation_no_answer">[ 白板答题 ]</string>
 
 </resources>

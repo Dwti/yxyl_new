@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="128dp"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:orientation="vertical"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:background="@drawable/operation_frame">
+
+        <ImageView
+            android:id="@+id/iv_content"
+            android:layout_width="126dp"
+            android:layout_height="126dp"
+            android:layout_centerInParent="true"/>
+
+        <TextView
+            android:id="@+id/tv_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textSize="14dp"
+            android:textColor="#cccccc"
+            android:text="@string/operation_no_answer"
+            android:visibility="gone"/>
+    </RelativeLayout>
+
+    <com.yanxiu.gphone.student.customviews.WavesLayout
+        android:id="@+id/wavesLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:clickable="true"
+        android:layout_marginTop="12dp"
+        app:waves_animend_alpha="102"
+        app:waves_radius="@dimen/wavesRadius"
+        android:layout_gravity="center_horizontal">
+
+        <Button
+            android:id="@+id/btn_operate"
+            android:layout_width="85dp"
+            android:layout_height="28dp"
+            android:layout_centerHorizontal="true"
+            android:text="开始作答"
+            android:textColor="@color/color_ffffff"
+            android:textSize="12dp"
+            style="?android:attr/borderlessButtonStyle"
+            android:background="@drawable/selector_operation_button_green_bg"/>
+    </com.yanxiu.gphone.student.customviews.WavesLayout>
+
+</LinearLayout>
