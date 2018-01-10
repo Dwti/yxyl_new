@@ -41,7 +41,7 @@ public class OperationAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, final ViewGroup parent) {
         if(convertView == null){
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_operation,parent,false);
         }
@@ -67,6 +67,12 @@ public class OperationAdapter extends BaseAdapter {
             //TODO 需要加载图片跟以前的path
             Glide.with(parent.getContext()).load(operationBean.getImageUrl()).asBitmap().error(R.drawable.image_load_failed).into(imageView);
         }
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PaletteActivity.invoke(parent.getContext());
+            }
+        });
         return convertView;
     }
 }
