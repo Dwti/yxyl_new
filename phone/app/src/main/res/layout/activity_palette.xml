@@ -89,6 +89,11 @@
         android:background="@android:color/white"
         android:layout_margin="15dp">
 
+        <com.yanxiu.gphone.student.questions.operation.PaletteView
+            android:id="@+id/palette"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
     </FrameLayout>
 
     <FrameLayout

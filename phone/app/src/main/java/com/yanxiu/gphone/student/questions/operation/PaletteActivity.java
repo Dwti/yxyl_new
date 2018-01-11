@@ -19,6 +19,7 @@ public class PaletteActivity extends YanxiuBaseActivity implements View.OnClickL
 
     private ImageView iv_undo,iv_redo,iv_back,iv_save;
     private Button btn_reset;
+    private PaletteView mPaletteView;
 
     public static void invoke(Context context){
         Intent intent = new Intent(context,PaletteActivity.class);
@@ -39,6 +40,7 @@ public class PaletteActivity extends YanxiuBaseActivity implements View.OnClickL
         iv_redo= (ImageView) findViewById(R.id.iv_redo);
         iv_back = (ImageView) findViewById(R.id.iv_back);
         iv_save = (ImageView) findViewById(R.id.iv_save);
+        mPaletteView = (PaletteView) findViewById(R.id.palette);
 
         iv_undo.setEnabled(false);
         iv_redo.setEnabled(false);
@@ -50,6 +52,28 @@ public class PaletteActivity extends YanxiuBaseActivity implements View.OnClickL
         iv_undo.setOnClickListener(this);
         iv_redo.setOnClickListener(this);
         iv_save.setOnClickListener(this);
+
+        mPaletteView.setUndoStatusChangedListener(new PaletteView.UndoStatusChangedListener() {
+            @Override
+            public void onStatusChanged(boolean canUndo) {
+                if(canUndo){
+                    iv_undo.setEnabled(true);
+                }else {
+                    iv_undo.setEnabled(false);
+                }
+            }
+        });
+
+        mPaletteView.setRedoStatusChangedListener(new PaletteView.RedoStatusChangedListener() {
+            @Override
+            public void onStatusChanged(boolean canRedo) {
+                if(canRedo){
+                    iv_redo.setEnabled(true);
+                }else {
+                    iv_redo.setEnabled(false);
+                }
+            }
+        });
     }
 
     @Override
@@ -60,10 +84,13 @@ public class PaletteActivity extends YanxiuBaseActivity implements View.OnClickL
             case R.id.iv_save:
                 break;
             case R.id.btn_reset:
+                mPaletteView.clear();
                 break;
             case R.id.iv_undo:
+                mPaletteView.undo();
                 break;
             case R.id.iv_redo:
+                mPaletteView.redo();
                 break;
             default:
                 break;
