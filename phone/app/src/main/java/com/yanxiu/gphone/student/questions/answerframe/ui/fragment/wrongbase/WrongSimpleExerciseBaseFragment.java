@@ -60,6 +60,8 @@ public abstract class WrongSimpleExerciseBaseFragment extends WrongExercisbaseFr
     private PointLayoutView mPointView;//知识的view
     private VoiceScoldedLayoutView mVoiceScoldedView;//语音批注
     private NotesLayoutView mNoteView;//笔记
+    private boolean isHideBottomView=false;
+    private View mBottomView;
     protected boolean mToVoiceIsIntent = false;
     private ListenerSeekBarLayout mListenView;//听力复合题只有一个子题时，题干的听力控件
 
@@ -100,6 +102,13 @@ public abstract class WrongSimpleExerciseBaseFragment extends WrongExercisbaseFr
         mAnswerView = (AnswerLayoutView) mRootView.findViewById(R.id.answerview);
         mVoiceScoldedView = (VoiceScoldedLayoutView) mRootView.findViewById(R.id.voicescoldedview);
         mNoteView = (NotesLayoutView) mRootView.findViewById(R.id.noteview);
+
+        mBottomView=mRootView.findViewById(R.id.v_bottom);
+        if (isHideBottomView){
+            mBottomView.setVisibility(View.GONE);
+        }else {
+            mBottomView.setVisibility(View.VISIBLE);
+        }
 
         View answerView = addAnswerView(inflater, container);
         mAnsewr_container.addView(answerView);
@@ -155,6 +164,15 @@ public abstract class WrongSimpleExerciseBaseFragment extends WrongExercisbaseFr
             e.printStackTrace();
         }
 
+    }
+
+    @Override
+    public void hideBottomView() {
+        super.hideBottomView();
+        isHideBottomView=true;
+        if (mBottomView!=null) {
+            mBottomView.setVisibility(View.GONE);
+        }
     }
 
     /**

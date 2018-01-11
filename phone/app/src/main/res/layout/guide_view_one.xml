@@ -1,67 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/color_89e00d"
+    android:background="@color/color_88df1f"
     android:orientation="vertical">
 
-    <ImageView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:adjustViewBounds="false"
-        android:layout_weight="1"
-        android:background="@drawable/welcome"
-        android:focusable="true"
-        android:contentDescription="@null"
-        android:scaleType="centerCrop" />
+        android:layout_weight="1">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="false"
+            android:layout_marginLeft="29dp"
+            android:layout_marginRight="29dp"
+            android:layout_alignParentBottom="true"
+            android:contentDescription="@null"
+            android:focusable="true"
+            android:src="@drawable/welcome" />
+    </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="247dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="vertical">
+
             <TextView
+                android:id="@+id/tv_viewpager"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="39dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="40dp"
+                android:gravity="center_horizontal"
+                android:text="@string/new_project"
                 android:textColor="@color/color_336600"
-                android:gravity="center_horizontal"
-                android:text="@string/new_project"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="17dp"
-                android:textColor="@color/color_69ad0a"
-                android:textSize="17dp"
-                android:gravity="center_horizontal"
-                android:text="@string/new_project_name"/>
-
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight="1"/>
+                android:textSize="22sp" />
 
             <com.yanxiu.gphone.student.customviews.WavesLayout
                 android:id="@+id/wl_enter"
                 android:layout_width="170dp"
                 android:layout_height="50dp"
+                android:layout_marginTop="110dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="40dp"
                 app:waves_animend_alpha="102"
                 app:waves_radius="@dimen/wavesRadius">
 
                 <TextView
+                    android:id="@+id/tv_button"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/shape_common_button_bg_normal"
                     android:gravity="center"
                     android:text="@string/experience"
                     android:textColor="@drawable/selector_answercard_no_text_color"
-                    android:textSize="@dimen/answer_card_submitbutton_textsize" />
+                    android:textSize="18dp" />
             </com.yanxiu.gphone.student.customviews.WavesLayout>
 
         </LinearLayout>
-
 </LinearLayout>

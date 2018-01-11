@@ -42,10 +42,10 @@
     <string name="school">学校</string>
     <string name="period">学段</string>
 
-    <string name="what_is_class_1">班级是由老师在“易学易练老师端”中创建，给学生布置批改作业的班级群。</string>
-    <string name="what_is_class_2">每个易学易练班级都有一个8位数班级号码如：“班级号码：12345678”。</string>
-    <string name="how_to_join_class_1">第一步：老师在“易学易练教师端”中创建班级，并将班级号码 分享或告知学生们。</string>
-    <string name="how_to_join_class_2">第二步：同学们在“易学易练学生端”作业页面，输入班级号码，即可加入班级，然后 就可以通过手机来完成来自老师布置的作业了。</string>
+    <string name="what_is_class_1">班级是由老师在“尚学院（教师端）”中创建，给学生布置批改作业的班级群。</string>
+    <string name="what_is_class_2">每个睿学堂班级都有一个8位数班级号码，如：“班级号码：12345678”。</string>
+    <string name="how_to_join_class_1">第一步： 老师在“尚学院（教师端）”中创建班级，并将班级号码分享或告知学生们。</string>
+    <string name="how_to_join_class_2">第二步：同学们在“睿学堂（学生端）”作业页面，输入班级号码，即可加入班级，然后就可以通过手机来完成老师布置的作业了。</string>
     <string name="homework_todo"> • %1$d份待完成</string>
     <string name="student_count">%1$d人</string>
     <string name="check_homework_done"> • 查看已完成</string>
@@ -320,7 +320,7 @@
 
     <string name="no_wrong_data">真棒!还没有错题哦</string>
 
-    <string name="new_project">全新界面</string>
+    <string name="new_project">爱学习,就来睿学堂</string>
     <string name="new_project_name">轻松做题,让学习拥有美好的体验</string>
     <string name="experience">立即体验</string>
 

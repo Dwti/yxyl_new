@@ -24,14 +24,14 @@
     ;
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission android:name="getui.permission.GetuiService.com.yanxiu.gphone.student" />
+    <uses-permission android:name="getui.permission.GetuiService.com.yanxiu.ruixuetang" />
 
     <permission
-        android:name="getui.permission.GetuiService.com.yanxiu.gphone.student"
+        android:name="getui.permission.GetuiService.com.yanxiu.ruixuetang"
         android:protectionLevel="normal" />
 
     <application
-        android:name=".YanxiuApplication"
+        android:name="com.yanxiu.gphone.student.YanxiuApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -43,7 +43,7 @@
 
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.yanxiu.gphone.student.fileProvider"
+            android:authorities="com.yanxiu.ruixuetang.fileProvider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -52,9 +52,9 @@
         </provider>
 
         <activity
-            android:name=".homepage.WelcomeActivity"
+            android:name="com.yanxiu.gphone.student.homepage.WelcomeActivity"
             android:screenOrientation="portrait"
-            android:taskAffinity="com.yanxiu.gphone.student">
+            android:taskAffinity="com.yanxiu.ruixuetang">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -62,11 +62,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".homepage.MainActivity"
+            android:name="com.yanxiu.gphone.student.homepage.MainActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:taskAffinity="com.yanxiu.gphone.student"
+            android:taskAffinity="com.yanxiu.ruixuetang"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -75,7 +75,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".login.activity.LoginActivity"
+            android:name="com.yanxiu.gphone.student.login.activity.LoginActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize">
@@ -86,98 +86,98 @@
             <!-- </intent-filter> -->
         </activity>
         <activity
-            android:name=".login.activity.ForgetPassWordActivity"
+            android:name="com.yanxiu.gphone.student.login.activity.ForgetPassWordActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
-            android:name=".login.activity.RegisterActivity"
+            android:name="com.yanxiu.gphone.student.login.activity.RegisterActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
-            android:name=".login.activity.ResetPassWordActivity"
+            android:name="com.yanxiu.gphone.student.login.activity.ResetPassWordActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
-            android:name=".homework.classmanage.activity.JoinClassActivity"
+            android:name="com.yanxiu.gphone.student.homework.classmanage.activity.JoinClassActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".login.activity.JoinClassActivity"
+            android:name="com.yanxiu.gphone.student.login.activity.JoinClassActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
-            android:name=".login.activity.CompleteInfoActivity"
+            android:name="com.yanxiu.gphone.student.login.activity.CompleteInfoActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
-            android:name=".login.activity.ChooseLocationActivity"
+            android:name="com.yanxiu.gphone.student.login.activity.ChooseLocationActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
-            android:name=".login.activity.ChooseSchoolActivity"
+            android:name="com.yanxiu.gphone.student.login.activity.ChooseSchoolActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
-            android:name=".homework.classmanage.activity.ClassInfoActivity"
+            android:name="com.yanxiu.gphone.student.homework.classmanage.activity.ClassInfoActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".homework.classmanage.activity.HowToJoinClassActivity"
+            android:name="com.yanxiu.gphone.student.homework.classmanage.activity.HowToJoinClassActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".homework.homeworkdetail.HomeworkDetailActivity"
+            android:name="com.yanxiu.gphone.student.homework.homeworkdetail.HomeworkDetailActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".questions.answerframe.ui.activity.AnswerQuestionActivity"
+            android:name="com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerQuestionActivity"
             android:configChanges="orientation|screenSize|keyboard"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
 
-        <activity android:name=".mistakeredo.MistakeRedoActivity"
+        <activity android:name="com.yanxiu.gphone.student.mistakeredo.MistakeRedoActivity"
             android:configChanges="orientation|screenSize|keyboard"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".questions.answerframe.ui.activity.AnalysisQuestionActivity"
+            android:name="com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnalysisQuestionActivity"
             android:configChanges="orientation|screenSize|keyboard"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".questions.answerframe.ui.activity.AnswerReportActicity"
+            android:name="com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerReportActicity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".questions.answerframe.ui.activity.AnswerErrorActicity"
+            android:name="com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerErrorActicity"
             android:configChanges="orientation|keyboardHidden"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
         <activity
-            android:name=".login.activity.JoinClassSubmitActivity"
+            android:name="com.yanxiu.gphone.student.login.activity.JoinClassSubmitActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
-            android:name=".login.activity.ChooseStageActivity"
+            android:name="com.yanxiu.gphone.student.login.activity.ChooseStageActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
-            android:name=".wxapi.WXEntryActivity"
+            android:name="com.yanxiu.gphone.student.wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:screenOrientation="portrait"
@@ -201,101 +201,101 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
-            android:name=".questions.answerframe.ui.activity.NotesActicity"
+            android:name="com.yanxiu.gphone.student.questions.answerframe.ui.activity.NotesActicity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".common.activity.CameraActivity"
+            android:name="com.yanxiu.gphone.student.common.activity.CameraActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".common.activity.AlbumActivity"
+            android:name="com.yanxiu.gphone.student.common.activity.AlbumActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".common.activity.PhotoActivity"
+            android:name="com.yanxiu.gphone.student.common.activity.PhotoActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".common.activity.CropImageActivity"
+            android:name="com.yanxiu.gphone.student.common.activity.CropImageActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".user.mistake.activity.MistakeSubjectListActivity"
+            android:name="com.yanxiu.gphone.student.user.mistake.activity.MistakeSubjectListActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".user.mistake.activity.MistakeListActivity"
+            android:name="com.yanxiu.gphone.student.user.mistake.activity.MistakeListActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".questions.answerframe.ui.activity.MistakeAnalysisActivity"
+            android:name="com.yanxiu.gphone.student.questions.answerframe.ui.activity.MistakeAnalysisActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".user.setting.activity.SettingActivity"
+            android:name="com.yanxiu.gphone.student.user.setting.activity.SettingActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".user.setting.activity.CheckMobileActivity"
+            android:name="com.yanxiu.gphone.student.user.setting.activity.CheckMobileActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".user.setting.activity.BindMobileActivity"
+            android:name="com.yanxiu.gphone.student.user.setting.activity.BindMobileActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".user.setting.activity.ChangePassWordActivity"
+            android:name="com.yanxiu.gphone.student.user.setting.activity.ChangePassWordActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".user.setting.activity.AboutActivity"
+            android:name="com.yanxiu.gphone.student.user.setting.activity.AboutActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".user.setting.activity.PrivacyActivity"
+            android:name="com.yanxiu.gphone.student.user.setting.activity.PrivacyActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".user.feedback.activity.FeedbackActivity"
+            android:name="com.yanxiu.gphone.student.user.feedback.activity.FeedbackActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".user.userinfo.activity.UserInfoActivity"
+            android:name="com.yanxiu.gphone.student.user.userinfo.activity.UserInfoActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".exercise.SelectSubjectActivity"
+            android:name="com.yanxiu.gphone.student.exercise.SelectSubjectActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         */
         <activity
-            android:name=".exercise.ModifyEditionActivity"
+            android:name="com.yanxiu.gphone.student.exercise.ModifyEditionActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
         <activity
-            android:name=".exercise.SelectEditionActivity"
+            android:name="com.yanxiu.gphone.student.exercise.SelectEditionActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
         <activity
-            android:name=".exercise.SelectChapterAndKnowledgeActivity"
+            android:name="com.yanxiu.gphone.student.exercise.SelectChapterAndKnowledgeActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".user.userinfo.activity.UserEditNameActivity"
+            android:name="com.yanxiu.gphone.student.user.userinfo.activity.UserEditNameActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".user.userinfo.activity.UserSexActivity"
+            android:name="com.yanxiu.gphone.student.user.userinfo.activity.UserSexActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".common.activity.UserHeadCameraActivity"
+            android:name="com.yanxiu.gphone.student.common.activity.UserHeadCameraActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".common.activity.UserHeadCropImageActivity"
+            android:name="com.yanxiu.gphone.student.common.activity.UserHeadCropImageActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".bcresource.BCActivity"
+            android:name="com.yanxiu.gphone.student.bcresource.BCActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".bcresource.TopicActivity"
+            android:name="com.yanxiu.gphone.student.bcresource.TopicActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" />
 
-        <service android:name=".videoplay.NetworkStateService">
+        <service android:name="com.yanxiu.gphone.student.videoplay.NetworkStateService">
             <intent-filter android:priority="1000">
                 <action android:name="com.test.yanxiu.avideoplay.network.state" />
             </intent-filter>
@@ -304,20 +304,20 @@
         * 个推相关开始
         */
         <service
-            android:name=".push.YanxiuPushService"
+            android:name="com.yanxiu.gphone.student.push.YanxiuPushService"
             android:exported="true"
             android:label="PushService"
             android:process=":pushservice" />
 
-        <receiver android:name=".push.YanxiuPushUpdateReceiver">
+        <receiver android:name="com.yanxiu.gphone.student.push.YanxiuPushUpdateReceiver">
             <intent-filter>
-                <action android:name="com.yanxiu.gphone.student.yanxiu_push_update_receiver" />
+                <action android:name="com.yanxiu.ruixuetang.yanxiu_push_update_receiver" />
             </intent-filter>
         </receiver>
         <!-- 配置第三方Receiver -->
         <!-- 此处com.getui.demo.PushDemoReceiver，需要替换成开发者自己的BroadcastReceiver文件全名 -->
         <receiver
-            android:name=".push.YanxiuPushReceiver"
+            android:name="com.yanxiu.gphone.student.push.YanxiuPushReceiver"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.igexin.sdk.action.${GETUI_APP_ID}" />
@@ -327,15 +327,15 @@
         * 个推相关结束
         */
         <activity
-            android:name=".exercise.SubjectHistoryActivity"
+            android:name="com.yanxiu.gphone.student.exercise.SubjectHistoryActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".exercise.ExerciseHistoryActivity"
+            android:name="com.yanxiu.gphone.student.exercise.ExerciseHistoryActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".mistakeredo.MistakePointActivity"
+            android:name="com.yanxiu.gphone.student.mistakeredo.MistakePointActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
     </application>

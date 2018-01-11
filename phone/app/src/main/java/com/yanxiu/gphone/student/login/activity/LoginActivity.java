@@ -184,6 +184,10 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
         boolean isInstanllWx=SystemUtil.checkBrowser(mContext, "com.tencent.mm");
         boolean isInstallQq=SystemUtil.checkBrowser(mContext,"com.tencent.mobileqq");
 
+        //隐藏三方登陆
+        isInstallQq=false;
+        isInstanllWx=false;
+
         if (!isInstallQq&&!isInstanllWx){
             mThridLoginView.setVisibility(View.GONE);
         }else {

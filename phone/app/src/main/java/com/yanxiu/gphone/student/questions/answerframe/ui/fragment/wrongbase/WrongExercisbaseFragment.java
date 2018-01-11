@@ -31,4 +31,5 @@ public class WrongExercisbaseFragment extends ExerciseBaseFragment {
         return true;
     }
 
+    public void hideBottomView(){};
 }
