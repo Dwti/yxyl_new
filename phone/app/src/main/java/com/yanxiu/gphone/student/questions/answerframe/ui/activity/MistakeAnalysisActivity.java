@@ -282,11 +282,21 @@ public class MistakeAnalysisActivity extends YanxiuBaseActivity implements View.
             mLastQuestionView.setVisibility(View.VISIBLE);
             mNextQuestionView.setVisibility(View.VISIBLE);
         } else {
-            mLastQuestionView.setVisibility(View.GONE);
-            mNextQuestionView.setVisibility(View.GONE);
-            mBottomView.setVisibility(View.GONE);
             WrongExercisbaseFragment currentFramgent = (WrongExercisbaseFragment) mQaAdapter.instantiateItem(mQaView, 0);
-            currentFramgent.hideBottomView();
+            if (currentFramgent.getIsEnd()&&currentFramgent.getIsFirst()){
+                mLastQuestionView.setVisibility(View.GONE);
+                mNextQuestionView.setVisibility(View.GONE);
+                mBottomView.setVisibility(View.GONE);
+                currentFramgent.hideBottomView();
+            }else if (currentFramgent.getIsFirst()){
+                mBottomView.setVisibility(View.VISIBLE);
+                mNextQuestionView.setVisibility(View.VISIBLE);
+            }else if (currentFramgent.getIsEnd()){
+                mBottomView.setVisibility(View.VISIBLE);
+                mLastQuestionView.setVisibility(View.VISIBLE);
+            }
+
+
         }
     }
 
