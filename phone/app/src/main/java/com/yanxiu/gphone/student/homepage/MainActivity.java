@@ -64,14 +64,15 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
     private FrameLayout mContentMain;
     private final int INDEX_HOMEWORK = 0;//作业tab
     private final int INDEX_EXERCISE = 1;//练习tab
-    private final int INDEX_MY = 2;//我的tab
+    private final int INDEX_STUDY=2;//学习tab
+    private final int INDEX_MY = 3;//我的tab
 
     private int mLastSelectIndex = -1;
 
     private View mBottomNaviLayout;
-    private View[] mNavBarViews = new View[3];
-    private ImageView[] mNavIconViews = new ImageView[3];
-    private TextView[] mNavTextViews = new TextView[3];
+    private View[] mNavBarViews = new View[4];
+    private ImageView[] mNavIconViews = new ImageView[4];
+    private TextView[] mNavTextViews = new TextView[4];
     private int mNormalNavTxtColor, mSelNavTxtColor;
 
     public NaviFragmentFactory mNaviFragmentFactory;
@@ -153,8 +154,9 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
         mNormalNavTxtColor = getResources().getColor(R.color.color_999999);
         mNavBarViews[0] = findViewById(R.id.navi_homework);
         mNavBarViews[1] = findViewById(R.id.navi_exercise);
-        mNavBarViews[2] = findViewById(R.id.navi_my);
-        for (int i = 0; i < 3; i++) {
+        mNavBarViews[2] = findViewById(R.id.navi_study);
+        mNavBarViews[3] = findViewById(R.id.navi_my);
+        for (int i = 0; i < 4; i++) {
             mNavBarViews[i].setOnClickListener(this);
             mNavIconViews[i] = (ImageView) mNavBarViews[i].findViewById(R.id.nav_icon);
             mNavTextViews[i] = (TextView) mNavBarViews[i].findViewById(R.id.nav_txt);
@@ -163,10 +165,14 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
 //                mNavTextViews[1], mNavTextViews[2]);
         mNavTextViews[0].setText(R.string.navi_tbm_group);
         mNavTextViews[1].setText(R.string.exercises);
-        mNavTextViews[2].setText(R.string.navi_tbm_my);
+        mNavTextViews[2].setText(R.string.study);
+        mNavTextViews[3].setText(R.string.navi_tbm_my);
 
         mNavIconViews[0].setEnabled(false);
-        setColorFilter(2, 0);
+        setColorFilter(3, 0);
+
+        //TODO 隐藏学习fragment
+        mNavBarViews[2].setVisibility(View.GONE);
     }
 
     @Override
@@ -178,21 +184,32 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
                 mNavIconViews[0].setEnabled(false);
                 mNavIconViews[1].setEnabled(true);
                 mNavIconViews[2].setEnabled(true);
-                setColorFilter(2, 0);
+                mNavIconViews[3].setEnabled(true);
+                setColorFilter(3, 0);
                 break;
             case R.id.navi_exercise:
                 curItem = INDEX_EXERCISE;
                 mNavIconViews[0].setEnabled(true);
                 mNavIconViews[1].setEnabled(false);
                 mNavIconViews[2].setEnabled(true);
-                setColorFilter(2, 0);
+                mNavIconViews[3].setEnabled(true);
+                setColorFilter(3, 0);
+                break;
+            case R.id.navi_study:
+                curItem = INDEX_STUDY;
+                mNavIconViews[0].setEnabled(true);
+                mNavIconViews[1].setEnabled(true);
+                mNavIconViews[2].setEnabled(false);
+                mNavIconViews[3].setEnabled(true);
+                setColorFilter(3, 0);
                 break;
             case R.id.navi_my:
                 curItem = INDEX_MY;
                 mNavIconViews[0].setEnabled(true);
                 mNavIconViews[1].setEnabled(true);
-                mNavIconViews[2].setEnabled(false);
-                setColorFilter(2, 1);
+                mNavIconViews[2].setEnabled(true);
+                mNavIconViews[3].setEnabled(false);
+                setColorFilter(3, 1);
                 break;
             default:
                 break;

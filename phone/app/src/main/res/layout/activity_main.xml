@@ -25,6 +25,9 @@
             android:id="@+id/navi_exercise"
             layout="@layout/home_nav_bar_exercise_layout"/>
         <include
+            android:id="@+id/navi_study"
+            layout="@layout/home_nav_bar_study_layout"/>
+        <include
             android:id="@+id/navi_my"
             layout="@layout/home_nav_bar_my_layout"/>
     </LinearLayout>

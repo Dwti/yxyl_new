@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.homepage.fragment.ExerciseFragment;
+import com.yanxiu.gphone.student.homepage.fragment.StudyFragment;
 import com.yanxiu.gphone.student.homework.HomeworkFragment;
 import com.yanxiu.gphone.student.user.MyFragment;
 
@@ -14,6 +15,7 @@ public class NaviFragmentFactory {
 	private int mCurrItem = 0;
 	private HomeworkFragment mHomeWorkFragment;    //作业
 	private ExerciseFragment mExerciseFragment;    //练习
+	private StudyFragment mStudyFragment;			 //学习
 	private MyFragment mMyFragment;                //我的
 	public NaviFragmentFactory() {
 	}
@@ -21,14 +23,16 @@ public class NaviFragmentFactory {
 		return mCurrItem;
 	}
 	public int getCount() {
-		return 3;
+		return 4;
 	}
 	public Fragment getItem(int item){
 		if(item == 0){
 			return mHomeWorkFragment;
 		} else if(item == 1){
 			return mExerciseFragment;
-		}else if(item == 2){
+		}else if (item==2){
+			return mStudyFragment;
+		}else if(item == 3){
 			return mMyFragment;
 		}else {
 			return mExerciseFragment;
@@ -54,7 +58,10 @@ public class NaviFragmentFactory {
 		if (mCurrItem == 1 && mExerciseFragment != null) {
 			transaction.hide(mExerciseFragment);
 		}
-		if (mCurrItem == 2 && mMyFragment != null) {
+		if (mCurrItem == 2 && mStudyFragment != null) {
+			transaction.hide(mStudyFragment);
+		}
+		if (mCurrItem == 3 && mMyFragment != null) {
 			transaction.hide(mMyFragment);
 		}
 		mCurrItem = index;
@@ -78,6 +85,14 @@ public class NaviFragmentFactory {
 				}
 				break;
 			case 2:
+				if (mStudyFragment== null) {
+					mStudyFragment = new StudyFragment();
+					transaction.add(R.id.content_main, mStudyFragment);
+				} else {
+					transaction.show(mStudyFragment);
+				}
+				break;
+			case 3:
 				if (mMyFragment == null) {
 					mMyFragment = new MyFragment();
 					transaction.add(R.id.content_main, mMyFragment);
