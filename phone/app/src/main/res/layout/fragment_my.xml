@@ -196,6 +196,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/user_item_height"
                     android:background="@drawable/selector_user_fragment_item"
+                    android:visibility="gone"
                     android:paddingLeft="@dimen/user_item_marginleft"
                     android:paddingRight="@dimen/user_item_marginright">
 

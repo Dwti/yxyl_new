@@ -55,31 +55,6 @@ public class ConnectWrongFragment extends WrongSimpleExerciseBaseFragment {
         outState.putSerializable(ExerciseBaseFragment.KEY_NODE, mQuestion);
     }
 
-    private void initRedoData() {
-        mChoicesLeft = mQuestion.getLeftChoices();
-        mChoicesRight = mQuestion.getRightChoices();
-
-        mFilledAnswers = mQuestion.getFilledAnswers();
-        mCorrectAnswers = mQuestion.getCorrectAnswer();
-        for (int i = 0; i < mFilledAnswers.size(); i++) {
-            ConnectPositionInfo info;
-            boolean isRight = false;
-            if (mCorrectAnswers.contains(mFilledAnswers.get(i))) {
-                isRight = true;
-            }
-            if (TextUtils.isEmpty(mFilledAnswers.get(i))) {
-                info = new ConnectPositionInfo(-1, -1, false);
-                mConnectPositionInfos.add(info);
-            } else {
-                String[] answers = mFilledAnswers.get(i).split(",");
-                int left = Integer.parseInt(answers[0]);
-                int right = Integer.parseInt(answers[1]);
-                info = new ConnectPositionInfo(left, right, isRight);
-            }
-            mConnectPositionInfos.add(info);
-        }
-    }
-
     private void initAnalysisData(){
         mChoicesLeft = mQuestion.getLeftChoices();
         mChoicesRight = mQuestion.getRightChoices();
@@ -125,11 +100,7 @@ public class ConnectWrongFragment extends WrongSimpleExerciseBaseFragment {
     public void initAnswerView(LayoutInflater inflater, @Nullable ViewGroup container) {
         ConnectedAnalysisView connectedView = (ConnectedAnalysisView) mRootView.findViewById(R.id.connected_view);
         mStem = (TextView) mRootView.findViewById(R.id.stem);
-        if (getActivity() instanceof MistakeRedoActivity) {
-            initRedoData();
-        }else {
             initAnalysisData();
-        }
         if(TextUtils.isEmpty(mQuestion.getStem())) {
             mStem.setVisibility(View.GONE);
         } else {

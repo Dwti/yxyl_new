@@ -94,12 +94,7 @@ public class FillBlankWrongFragment extends WrongSimpleExerciseBaseFragment {
 
     private void setStem(String text) {
         String stem="";
-        //TODO 临时处理，区分错题重做与错题解析,等iOS端错题重做的答案判断移交sever完成后移除
-        if (getActivity() instanceof MistakeRedoActivity) {
-            stem = StemUtil.initAnalysisFillBlankStem(text, mFilledAnswers, mCorrectAnswers);
-        }else {
             stem = StemUtil.initAnalysisFillBlankStem(text, mQuestion.getPad().getAnalysis());
-        }
         mFillBlank.setText(stem);
     }
 

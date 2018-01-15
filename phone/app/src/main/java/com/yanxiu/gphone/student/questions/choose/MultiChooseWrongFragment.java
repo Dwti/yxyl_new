@@ -73,35 +73,25 @@ public class MultiChooseWrongFragment extends WrongSimpleExerciseBaseFragment {
     }
 
     private void showAnalysis() {
-        List<String> datas = mData.getAnswerList();
+//        List<String> datas = mData.getAnswerList();
         List<AnalysisBean> analysisBeans=mData.getPad().getAnalysis();
-        List<String> answers = mData.getMultianswer();
-        int count = mChooseView.getChildCount();
+        List<String> answers=mData.getMultianswer();
+        int count=mChooseView.getChildCount();
         for (int i = 0; i < answers.size(); i++) {
-            int answerPosition = Integer.parseInt(answers.get(i));
-            if (count > answerPosition) {
-                ChooseLayout.ViewHolder answerViewHolder = (ChooseLayout.ViewHolder) mChooseView.getChildAt(answerPosition).getTag();
-                answerViewHolder.mQuestionIdView.setTextColor(ContextCompat.getColor(getContext(), R.color.color_ffffff));
-                answerViewHolder.mQuestionIdView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.choose_right));
-                answerViewHolder.mQuestionContentView.setTextColor(ContextCompat.getColor(getContext(), R.color.color_89e00d));
+            int answerPosition=Integer.parseInt(answers.get(i));
+            if (count>answerPosition){
+                ChooseLayout.ViewHolder answerViewHolder= (ChooseLayout.ViewHolder) mChooseView.getChildAt(answerPosition).getTag();
+                answerViewHolder.mQuestionIdView.setTextColor(ContextCompat.getColor(getContext(),R.color.color_ffffff));
+                answerViewHolder.mQuestionIdView.setBackground(ContextCompat.getDrawable(getContext(),R.drawable.choose_right));
+                answerViewHolder.mQuestionContentView.setTextColor(ContextCompat.getColor(getContext(),R.color.color_89e00d));
             }
         }
 
-        for (int i=0;i<analysisBeans.size();i++){
-            AnalysisBean analysisBean=analysisBeans.get(i);
-            int selectPosition=Integer.parseInt(analysisBean.key);
-            if (count>selectPosition){
-                if (getActivity() instanceof MistakeRedoActivity){
-                    if (answers.contains(datas.get(i))) {
-                        mChooseView.setSelect(selectPosition);
-                    } else {
-                        ChooseLayout.ViewHolder selectViewHolder = (ChooseLayout.ViewHolder) mChooseView.getChildAt(selectPosition).getTag();
-                        selectViewHolder.mQuestionIdView.setTextColor(ContextCompat.getColor(getContext(), R.color.color_ffffff));
-                        selectViewHolder.mQuestionIdView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.choose_wrong));
-                        selectViewHolder.mQuestionContentView.setTextColor(ContextCompat.getColor(getContext(), R.color.color_ff7a05));
-                        selectViewHolder.mQuestionSelectView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.multi_select_wrong));
-                    }
-                }else {
+        if (analysisBeans!=null) {
+            for (int i = 0; i < analysisBeans.size(); i++) {
+                AnalysisBean analysisBean = analysisBeans.get(i);
+                int selectPosition = Integer.parseInt(analysisBean.key);
+                if (count > selectPosition) {
                     if (AnalysisBean.RIGHT.equals(analysisBean.status)) {
                         mChooseView.setSelect(selectPosition);
                     } else {

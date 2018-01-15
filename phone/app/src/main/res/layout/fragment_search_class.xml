@@ -81,6 +81,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center"
+                android:visibility="gone"
                 android:layout_marginTop="30dp">
                 <TextView
                     android:id="@+id/how_to_join_class"

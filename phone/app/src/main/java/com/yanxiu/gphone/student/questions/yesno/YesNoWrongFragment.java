@@ -97,15 +97,9 @@ public class YesNoWrongFragment extends WrongSimpleExerciseBaseFragment {
                 select_position = -1;
             }
 
-
             if (count > select_position) {
-                boolean flag;
-                if (getActivity() instanceof MistakeRedoActivity){
-                    flag=answer.equals(select);
-                }else {
-                    List<AnalysisBean> analysisBeans = mData.getPad().getAnalysis();
-                    flag=!analysisBeans.isEmpty()&&AnalysisBean.RIGHT.equals(analysisBeans.get(0).status);
-                }
+                List<AnalysisBean> analysisBeans = mData.getPad().getAnalysis();
+                boolean flag=!analysisBeans.isEmpty()&&AnalysisBean.RIGHT.equals(analysisBeans.get(0).status);
                 if (flag) {
                     selectViewHolder.mQuestionContentView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.choose_right));
                     selectViewHolder.mQuestionContentView.setTextColor(ContextCompat.getColor(getContext(), R.color.color_ffffff));

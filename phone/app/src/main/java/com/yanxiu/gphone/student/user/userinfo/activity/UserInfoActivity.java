@@ -159,7 +159,7 @@ public class UserInfoActivity extends YanxiuBaseActivity implements View.OnClick
                 UserSexActivity.LaunchActivity(mContext);
                 break;
             case R.id.ll_school:
-                ChooseLocationActivity.LaunchActivity(mContext, mContext.hashCode());
+//                ChooseLocationActivity.LaunchActivity(mContext, mContext.hashCode());
                 break;
             case R.id.iv_head:
                 showDialog();

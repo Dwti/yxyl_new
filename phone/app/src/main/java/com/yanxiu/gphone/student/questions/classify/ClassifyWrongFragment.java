@@ -99,50 +99,6 @@ public class ClassifyWrongFragment extends WrongSimpleExerciseBaseFragment {
     private void iniAnalysisData() {
         mAnalysisData = new ArrayList<>(mClassifyBasketList.size());
 
-        //TODO 临时处理，区分错题重做与错题解析,等iOS端错题重做的答案判断移交sever完成后移除
-        if (getActivity() instanceof MistakeRedoActivity) {
-            List<List<String>> classifyAnswer = mData.getClassifyAnswer();
-            List<List<String>> answerList = mData.getAnswerList();
-            ArrayList<String> tempList = (ArrayList<String>) mChoiceList.clone();//未作答选项list
-            for (int i = 0; i < answerList.size(); i++) {
-                List<String> myAnswerList = answerList.get(i);//自己的答案
-                List rightAnswerList = classifyAnswer.get(i);//正确的答案
-                ClassifyBean classifyBean = new ClassifyBean();//封装的数据
-                ArrayList<ClassifyItemBean> classifyItemBeenList = new ArrayList<>();
-                for (int j = 0; j < myAnswerList.size(); j++) {
-                    String id = myAnswerList.get(j);
-                    ClassifyItemBean classifyItemBean = new ClassifyItemBean();
-                    classifyItemBean.setContent(getChoiceContent(id));
-                    if (rightAnswerList.contains(id)) {//我的答案是正确的
-                        classifyItemBean.setRight(true);
-                    } else {
-                        classifyItemBean.setRight(false);
-                    }
-                    classifyItemBeenList.add(classifyItemBean);
-
-                    if (tempList.contains(getChoiceContent(id))) { //该选项已经作答了
-                        tempList.remove(getChoiceContent(id));//移除已经作答的，剩下的就是未归类的选项
-                    }
-                }
-                classifyBean.setTitle(mClassifyBasketList.get(i));
-                classifyBean.setClassifyBeanArrayList(classifyItemBeenList);
-                mAnalysisData.add(classifyBean);
-            }
-            if (null != tempList && tempList.size() > 0) {
-                ArrayList<ClassifyItemBean> weiguileiList = new ArrayList<ClassifyItemBean>();//未作答选项list
-                for (int i = 0; i < tempList.size(); i++) {
-                    String content = tempList.get(i);
-                    ClassifyItemBean classifyItemBean = new ClassifyItemBean();
-                    classifyItemBean.setContent(content);
-                    classifyItemBean.setRight(false);
-                    weiguileiList.add(classifyItemBean);
-                }
-                ClassifyBean weiguileiBean = new ClassifyBean();//封装的数据
-                weiguileiBean.setTitle(getString(R.string.classify_drawer_noClassify));
-                weiguileiBean.setClassifyBeanArrayList(weiguileiList);
-                mAnalysisData.add(weiguileiBean);
-            }
-        }else {
             List<AnalysisBean> analysisBeanList=mData.getPad().getAnalysis();
             for (AnalysisBean bean:analysisBeanList){
                 ClassifyBean classifyBean=new ClassifyBean();
@@ -160,7 +116,6 @@ public class ClassifyWrongFragment extends WrongSimpleExerciseBaseFragment {
                 classifyBean.setTitle(bean.name);
                 classifyBean.setClassifyBeanArrayList(classifyItemBeenList);
                 mAnalysisData.add(classifyBean);
-            }
         }
     }
 

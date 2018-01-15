@@ -102,8 +102,11 @@ public class ClassifyAnalysisFragment extends AnalysisSimpleExerciseBaseFragment
     private void iniAnalysisData() {
         mAnalysisData = new ArrayList<>(mClassifyBasketList.size());
 
-        //逾期未提交没有pad，没法使用最新的逻辑
-        List<AnalysisBean> analysisBeanList=mData.getPad().getAnalysis();
+        //逾期未提交没有pad
+        List<AnalysisBean> analysisBeanList=null;
+        if (mData.getPad()!=null){
+            analysisBeanList=mData.getPad().getAnalysis();
+        }
         if (analysisBeanList!=null) {
             for (AnalysisBean bean : analysisBeanList) {
                 ClassifyBean classifyBean = new ClassifyBean();
@@ -123,47 +126,18 @@ public class ClassifyAnalysisFragment extends AnalysisSimpleExerciseBaseFragment
                 mAnalysisData.add(classifyBean);
             }
         }else {
-            List<List<String>> classifyAnswer = mData.getClassifyAnswer();
-            List<List<String>> answerList = mData.getAnswerList();
-            ArrayList<String> tempList = (ArrayList<String>) mChoiceList.clone();//未作答选项list
-            for (int i = 0; i < answerList.size(); i++) {
-                List<String> myAnswerList = answerList.get(i);//自己的答案
-                List rightAnswerList = classifyAnswer.get(i);//正确的答案
-                ClassifyBean classifyBean = new ClassifyBean();//封装的数据
-                ArrayList<ClassifyItemBean> classifyItemBeenList = new ArrayList<>();
-                for (int j = 0; j < myAnswerList.size(); j++) {
-                    String id = myAnswerList.get(j);
-                    ClassifyItemBean classifyItemBean = new ClassifyItemBean();
-                    classifyItemBean.setContent(getChoiceContent(id));
-                    if (rightAnswerList.contains(id)) {//我的答案是正确的
-                        classifyItemBean.setRight(true);
-                    } else {
-                        classifyItemBean.setRight(false);
-                    }
-                    classifyItemBeenList.add(classifyItemBean);
-
-                    if (tempList.contains(getChoiceContent(id))) { //该选项已经作答了
-                        tempList.remove(getChoiceContent(id));//移除已经作答的，剩下的就是未归类的选项
-                    }
-                }
-                classifyBean.setTitle(mClassifyBasketList.get(i));
-                classifyBean.setClassifyBeanArrayList(classifyItemBeenList);
-                mAnalysisData.add(classifyBean);
+            ArrayList<ClassifyItemBean> weiguileiList = new ArrayList<ClassifyItemBean>();//未作答选项list
+            for (int i = 0; i < mChoiceList.size(); i++) {
+                String content = mChoiceList.get(i);
+                ClassifyItemBean classifyItemBean = new ClassifyItemBean();
+                classifyItemBean.setContent(content);
+                classifyItemBean.setRight(false);
+                weiguileiList.add(classifyItemBean);
             }
-            if (null != tempList && tempList.size() > 0) {
-                ArrayList<ClassifyItemBean> weiguileiList = new ArrayList<ClassifyItemBean>();//未作答选项list
-                for (int i = 0; i < tempList.size(); i++) {
-                    String content = tempList.get(i);
-                    ClassifyItemBean classifyItemBean = new ClassifyItemBean();
-                    classifyItemBean.setContent(content);
-                    classifyItemBean.setRight(false);
-                    weiguileiList.add(classifyItemBean);
-                }
-                ClassifyBean weiguileiBean = new ClassifyBean();//封装的数据
-                weiguileiBean.setTitle(getString(R.string.classify_drawer_noClassify));
-                weiguileiBean.setClassifyBeanArrayList(weiguileiList);
-                mAnalysisData.add(weiguileiBean);
-            }
+            ClassifyBean weiguileiBean = new ClassifyBean();//封装的数据
+            weiguileiBean.setTitle(getString(R.string.classify_drawer_noClassify));
+            weiguileiBean.setClassifyBeanArrayList(weiguileiList);
+            mAnalysisData.add(weiguileiBean);
         }
     }
 

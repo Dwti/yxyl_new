@@ -123,6 +123,7 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/login_thrid_padding"
                 android:text="@string/tv_fast_registered"
+                android:visibility="gone"
                 android:textColor="@drawable/select_login_text_color"
                 android:textSize="@dimen/complete_info_textsize" />
 
