@@ -39,4 +39,21 @@
         <attr name="text" format="string"/>
     </declare-styleable>
 
+    <declare-styleable name="CircleView">
+        <attr name="circle_color" format="color"/>
+        <attr name="circle_style" format="enum">
+            <enum name="solid" value="0"/>
+            <enum name="ring" value="1"/>
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="TrapezoidalView">
+        <!--上底跟下底的比-->
+        <attr name="ratio" format="float"/>
+    </declare-styleable>
+
+    <declare-styleable name="ColorFrameRelativeLayout">
+        <attr name="frameVisible" format="boolean"/>
+    </declare-styleable>
+
 </resources>

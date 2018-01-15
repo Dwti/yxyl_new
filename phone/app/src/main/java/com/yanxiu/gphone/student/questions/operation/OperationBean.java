@@ -1,6 +1,7 @@
 package com.yanxiu.gphone.student.questions.operation;
 
 import com.yanxiu.gphone.student.base.BaseBean;
+import com.yanxiu.gphone.student.questions.operation.view.PathDrawingInfo;
 
 import java.util.List;
 

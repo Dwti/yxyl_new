@@ -89,7 +89,7 @@
         android:background="@android:color/white"
         android:layout_margin="15dp">
 
-        <com.yanxiu.gphone.student.questions.operation.PaletteView
+        <com.yanxiu.gphone.student.questions.operation.view.PaletteView
             android:id="@+id/palette"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
@@ -101,6 +101,17 @@
         android:layout_height="100dp"
         android:layout_gravity="bottom"
         android:background="@android:color/white">
+
+        <com.yanxiu.gphone.student.questions.operation.view.PaletteToolsView
+            android:id="@+id/paletteTools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.yanxiu.gphone.student.questions.operation.view.SelectColorView
+            android:id="@+id/selectColorView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible"/>
 
     </FrameLayout>
 

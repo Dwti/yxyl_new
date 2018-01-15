@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    
+    <com.yanxiu.gphone.student.questions.operation.view.TrapezoidalView
+        android:id="@+id/trapezoidalView"
+        android:layout_width="4dp"
+        android:layout_height="12dp"
+        app:ratio="0.25"
+        android:layout_marginLeft="4dp"/>
+
+    <ImageView
+        android:id="@+id/iv_pen"
+        android:layout_width="12dp"
+        android:layout_height="match_parent"
+        android:src="@drawable/smallpen_unuse"
+        android:layout_marginTop="-10dp"/>
+</LinearLayout>

@@ -1,4 +1,4 @@
-package com.yanxiu.gphone.student.questions.operation;
+package com.yanxiu.gphone.student.questions.operation.view;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;

@@ -1,6 +1,5 @@
 package com.yanxiu.gphone.student.questions.operation;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +9,9 @@ import android.widget.ImageView;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
+import com.yanxiu.gphone.student.questions.operation.view.PaletteToolsView;
+import com.yanxiu.gphone.student.questions.operation.view.PaletteView;
+import com.yanxiu.gphone.student.questions.operation.view.SelectColorView;
 
 /**
  * Created by sunpeng on 2018/1/10.
@@ -20,6 +22,8 @@ public class PaletteActivity extends YanxiuBaseActivity implements View.OnClickL
     private ImageView iv_undo,iv_redo,iv_back,iv_save;
     private Button btn_reset;
     private PaletteView mPaletteView;
+    private PaletteToolsView mPaletteToolsView;
+    private SelectColorView mSelectColorView;
 
     public static void invoke(Context context){
         Intent intent = new Intent(context,PaletteActivity.class);
@@ -41,6 +45,8 @@ public class PaletteActivity extends YanxiuBaseActivity implements View.OnClickL
         iv_back = (ImageView) findViewById(R.id.iv_back);
         iv_save = (ImageView) findViewById(R.id.iv_save);
         mPaletteView = (PaletteView) findViewById(R.id.palette);
+        mPaletteToolsView = (PaletteToolsView) findViewById(R.id.paletteTools);
+        mSelectColorView = (SelectColorView) findViewById(R.id.selectColorView);
 
         iv_undo.setEnabled(false);
         iv_redo.setEnabled(false);
@@ -61,6 +67,44 @@ public class PaletteActivity extends YanxiuBaseActivity implements View.OnClickL
                 }else {
                     iv_undo.setEnabled(false);
                 }
+            }
+        });
+
+        mSelectColorView.setOnSelectedColorChangedListener(new SelectColorView.OnSelectedColorChangedListener() {
+            @Override
+            public void onColorChanged(int color) {
+                mPaletteToolsView.setColor(color);
+                mPaletteView.setPaintColor(color);
+            }
+        });
+
+        mSelectColorView.setOnColorBoardDismissListener(new SelectColorView.OnColorBoardDismissListener() {
+            @Override
+            public void onDismiss() {
+                mPaletteToolsView.setVisibility(View.VISIBLE);
+            }
+        });
+
+        mPaletteToolsView.setOnColorClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSelectColorView.setVisibility(View.VISIBLE);
+                mPaletteToolsView.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        mPaletteToolsView.setOnPaintModeChangedListener(new PaletteToolsView.OnPaintModeChangedListener() {
+            @Override
+            public void onPaintModeChanged(PaletteView.PaintMode mode, float strokeWidth) {
+                mPaletteView.setPaintMode(mode);
+                mPaletteView.setStrokeWidth(strokeWidth);
+            }
+        });
+
+        mPaletteToolsView.setOnLineModeChangedListener(new PaletteToolsView.OnLineModeChangedListener() {
+            @Override
+            public void onLineModeChanged(PaletteView.LineMode mode) {
+                mPaletteView.setLineMode(mode);
             }
         });
 

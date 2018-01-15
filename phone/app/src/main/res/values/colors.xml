@@ -62,4 +62,13 @@
     <color name="clearColor">#00000000</color>
 
     <color name="gray22">#22000000</color>
+
+    <color name="palette_colo10">#000000</color>
+    <color name="palette_colo11">#007aff</color>
+    <color name="palette_colo12">#00eaff</color>
+    <color name="palette_colo13">#89e00d</color>
+    <color name="palette_colo14">#ffd200</color>
+    <color name="palette_colo15">#ff9500</color>
+    <color name="palette_colo16">#ff2d3c</color>
+    <color name="palette_colo17">#f677fe</color>
 </resources>
