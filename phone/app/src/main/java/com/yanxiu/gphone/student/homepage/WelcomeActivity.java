@@ -11,6 +11,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
@@ -19,6 +20,7 @@ import com.yanxiu.gphone.student.db.SpManager;
 import com.yanxiu.gphone.student.login.activity.LoginActivity;
 import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.SystemUtil;
+import com.yanxiu.gphone.student.util.TextTypefaceUtil;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -71,8 +73,12 @@ public class WelcomeActivity extends YanxiuBaseActivity implements View.OnClickL
         LayoutInflater inflater = LayoutInflater.from(this);
         mViews = new ArrayList<>();
         View view=inflater.inflate(R.layout.guide_view_one, null);
+        TextView textView= (TextView) view.findViewById(R.id.tv_viewpager);
+        TextView buttonView= (TextView) view.findViewById(R.id.tv_button);
         WavesLayout enterView= (WavesLayout) view.findViewById(R.id.wl_enter);
         enterView.setOnClickListener(this);
+        TextTypefaceUtil.setViewTypeface(TextTypefaceUtil.TypefaceType.METRO_MEDIUM_PLAY,buttonView);
+        TextTypefaceUtil.setViewTypeface(TextTypefaceUtil.TypefaceType.METRO_MEDIUM_PLAY,textView);
         mViews.add(view);
 //        mViews.add(inflater.inflate(R.layout.guide_view_two, null));
 //        mViews.add(inflater.inflate(R.layout.guide_view_three, null));

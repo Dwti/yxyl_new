@@ -30,6 +30,7 @@
                 android:layout_below="@+id/include_img"
                 android:gravity="center_vertical"
                 android:layout_marginTop="20dp"
+                android:visibility="gone"
                 android:orientation="horizontal">
 
                 <TextView
@@ -48,6 +49,7 @@
                 android:layout_marginTop="@dimen/login_edit_margin_top"
                 android:background="@drawable/shape_login_edit_bottom"
                 android:gravity="center_vertical"
+                android:visibility="gone"
                 android:orientation="horizontal">
 
                 <TextView
@@ -63,7 +65,7 @@
                 android:id="@+id/ll_pass_word"
                 style="@style/LoginLayoutButton"
                 android:layout_below="@+id/ll_ver_code"
-                android:layout_marginTop="@dimen/login_margin_top_img"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/shape_login_edit"
                 android:gravity="center_vertical"
                 android:onClick="onClick"

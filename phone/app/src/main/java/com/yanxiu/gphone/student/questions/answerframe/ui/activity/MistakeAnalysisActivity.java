@@ -61,6 +61,7 @@ public class MistakeAnalysisActivity extends YanxiuBaseActivity implements View.
     private LinearLayout mNextQuestionView;
     private ImageView mBackView;
     private ImageView mDeleteView;
+    private View mBottomView;
     private QAViewPager mQaView;
     private QAWrongViewPagerAdapter mQaAdapter;
 
@@ -141,6 +142,7 @@ public class MistakeAnalysisActivity extends YanxiuBaseActivity implements View.
         mNextQuestionView = (LinearLayout) findViewById(R.id.ll_next);
         mBackView = (ImageView) findViewById(R.id.backview);
         mDeleteView = (ImageView) findViewById(R.id.tv_delete);
+        mBottomView=findViewById(R.id.bottom);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         mQaView = (QAViewPager) findViewById(R.id.vp_viewPager);
@@ -261,6 +263,7 @@ public class MistakeAnalysisActivity extends YanxiuBaseActivity implements View.
 
     public void hiddenSwitchQuestionView() {
         if (mWrongNum != 1) {
+            mBottomView.setVisibility(View.VISIBLE);
             int index = mQaView.getCurrentItem();
             WrongExercisbaseFragment currentFramgent = (WrongExercisbaseFragment) mQaAdapter.instantiateItem(mQaView, index);
             if (index == 0) {
@@ -279,8 +282,21 @@ public class MistakeAnalysisActivity extends YanxiuBaseActivity implements View.
             mLastQuestionView.setVisibility(View.VISIBLE);
             mNextQuestionView.setVisibility(View.VISIBLE);
         } else {
-            mLastQuestionView.setVisibility(View.GONE);
-            mNextQuestionView.setVisibility(View.GONE);
+            WrongExercisbaseFragment currentFramgent = (WrongExercisbaseFragment) mQaAdapter.instantiateItem(mQaView, 0);
+            if (currentFramgent.getIsEnd()&&currentFramgent.getIsFirst()){
+                mLastQuestionView.setVisibility(View.GONE);
+                mNextQuestionView.setVisibility(View.GONE);
+                mBottomView.setVisibility(View.GONE);
+                currentFramgent.hideBottomView();
+            }else if (currentFramgent.getIsFirst()){
+                mBottomView.setVisibility(View.VISIBLE);
+                mNextQuestionView.setVisibility(View.VISIBLE);
+            }else if (currentFramgent.getIsEnd()){
+                mBottomView.setVisibility(View.VISIBLE);
+                mLastQuestionView.setVisibility(View.VISIBLE);
+            }
+
+
         }
     }
 

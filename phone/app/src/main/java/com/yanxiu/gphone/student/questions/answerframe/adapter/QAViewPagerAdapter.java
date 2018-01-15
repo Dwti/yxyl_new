@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.view.ViewGroup;
 
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
+import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.wrongbase.WrongSimpleExerciseBaseFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,8 @@ import java.util.List;
 
 public class QAViewPagerAdapter extends FragmentStatePagerAdapter {
     private ArrayList<BaseQuestion> mDatas = new ArrayList<>();
+
+    private boolean isHideBottomView=false;
 
     public QAViewPagerAdapter(FragmentManager fragmentManager) {
         super(fragmentManager);
@@ -47,6 +50,11 @@ public class QAViewPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         Object fragment = super.instantiateItem(container, position);
+        if (fragment instanceof WrongSimpleExerciseBaseFragment){
+            if (isHideBottomView){
+                ((WrongSimpleExerciseBaseFragment)fragment).hideBottomView();
+            }
+        }
         return fragment;
     }
 
@@ -57,9 +65,12 @@ public class QAViewPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getItemPosition(Object object) {
-        return super.getItemPosition(object);
+        return POSITION_NONE;
     }
 
+    public void hideBottomView(){
+        isHideBottomView=true;
+    }
 
 //    @Override
 //    public Parcelable saveState() {

@@ -8,11 +8,11 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.yanxiu.gphone.student"
+        applicationId "com.yanxiu.ruixuetang"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 31
-        versionName "3.1.6"
+        versionCode 1
+        versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
             abiFilters "armeabi", "armeabi-v7a", "mips", "x86_64"
@@ -37,9 +37,13 @@ android {
                 //参数说明
                 manifestPlaceholders = [
                         //dev
-                        GETUI_APP_ID    : "Riw2lQ0vEQ9iEv8ADs2Qg5", //APP_ID
-                        GETUI_APP_KEY   : "fpq9FFbGLB8zpLkwCO1oQA",   //APP_KEY
-                        GETUI_APP_SECRET: "PiNzRvizni8i4Enu1HYuh7",   //APPSECRET
+//                        GETUI_APP_ID    : "Riw2lQ0vEQ9iEv8ADs2Qg5", //APP_ID
+//                        GETUI_APP_KEY   : "fpq9FFbGLB8zpLkwCO1oQA",   //APP_KEY
+//                        GETUI_APP_SECRET: "PiNzRvizni8i4Enu1HYuh7",   //APPSECRET
+
+                        GETUI_APP_ID    : "VKUOZXhFCB7GevG6yfQXE1", //APP_ID
+                        GETUI_APP_KEY   : "xSFRKbsdKmALW38Bvvx0U6",   //APP_KEY
+                        GETUI_APP_SECRET: "ulxmindW6P7FjCx0xhVSz1",   //APPSECRET
                 ]
                 //APP_ID、APP_KEY、APP_SECRET请根据个推开发者后台申请到的应用参数进行相应替换
             }
@@ -51,9 +55,13 @@ android {
                 //参数说明
                 manifestPlaceholders = [
                         //realse
-                        GETUI_APP_ID    : "FXeG42IpmI9C9KpKbNPbs1", //APP_ID
-                        GETUI_APP_KEY   : "Gk4NS64CY07lV5mvEB2QT4",   //APP_KEY
-                        GETUI_APP_SECRET: "L3PVLZ2a4Z8v4Bsdzynkx4",   //APPSECRET
+//                        GETUI_APP_ID    : "FXeG42IpmI9C9KpKbNPbs1", //APP_ID
+//                        GETUI_APP_KEY   : "Gk4NS64CY07lV5mvEB2QT4",   //APP_KEY
+//                        GETUI_APP_SECRET: "L3PVLZ2a4Z8v4Bsdzynkx4",   //APPSECRET
+
+                        GETUI_APP_ID    : "xy6JNNaUzP66bUOgoTqom", //APP_ID
+                        GETUI_APP_KEY   : "oMgcaCRKRp8secHbF5zveA",   //APP_KEY
+                        GETUI_APP_SECRET: "tstl2Ge5Rw76WzOL0vxWz2",   //APPSECRET
                 ]
                 //APP_ID、APP_KEY、APP_SECRET请根据个推开发者后台申请到的应用参数进行相应替换
             }

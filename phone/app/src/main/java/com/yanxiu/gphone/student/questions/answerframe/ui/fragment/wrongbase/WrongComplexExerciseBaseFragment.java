@@ -88,6 +88,13 @@ public abstract class WrongComplexExerciseBaseFragment extends WrongExercisbaseF
         return index == mAdapter.getCount() - 1;
     }
 
+    @Override
+    public void hideBottomView() {
+        super.hideBottomView();
+        mAdapter.hideBottomView();
+        mAdapter.notifyDataSetChanged();
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
