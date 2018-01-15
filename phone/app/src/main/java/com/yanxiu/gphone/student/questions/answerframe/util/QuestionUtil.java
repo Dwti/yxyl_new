@@ -227,7 +227,13 @@ public class QuestionUtil {
         QUESTION_TRANSLATION(16, YanxiuApplication.getInstance().getResources().getString(R.string.question_translation)),
         QUESTION_SUBJECTSWERE(17, YanxiuApplication.getInstance().getResources().getString(R.string.question_subjects_were)),
         QUESTION_SORTING(20, YanxiuApplication.getInstance().getResources().getString(R.string.question_sorting)),
-        QUESTION_SOLVE_COMPLEX(22, YanxiuApplication.getInstance().getResources().getString(R.string.question_solve_complex));
+        QUESTION_LISTEN_COMPLEX2(21, YanxiuApplication.getInstance().getResources().getString(R.string.question_listen_complex)),
+        QUESTION_SOLVE_COMPLEX(22, YanxiuApplication.getInstance().getResources().getString(R.string.question_solve_complex)),
+        QUESTION_WRITING(23,"写作题"),
+        QUESTION_SOLVE_PROBLEM(24,"解决问题"),
+        QUESTION_OPERATION(25,"操作题"),
+        QUESTION_READE_TOPIC(26,"朗读题"),
+        QUESTION_TO_READE(27,"跟读题");
 
         public int type;
         public String name;

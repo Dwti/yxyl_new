@@ -98,6 +98,10 @@ public class SpokenAnalysisFragment extends AnalysisSimpleExerciseBaseFragment i
         }else {
             showAnswerSpokenResultView(-1);
         }
+        //29  口语作文
+        if ("29".equals(mData.getType_id())){
+            showAnswerView(mData.getAnswerResult());
+        }
         showDifficultyview(mData.getStarCount());
         showAnalysisview(mData.getQuestionAnalysis());
         showPointView(mData.getPointList());

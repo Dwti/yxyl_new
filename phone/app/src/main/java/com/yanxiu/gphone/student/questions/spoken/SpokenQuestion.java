@@ -25,19 +25,20 @@ public class SpokenQuestion extends BaseQuestion {
     private int starCount;
     private String questionAnalysis;
     private String objectiveScore;
-    private List<String> answerList=new ArrayList<>();
+    private List<String> answerList = new ArrayList<>();
+    private String answer;
 
     public SpokenQuestion(PaperTestBean bean, QuestionShowType showType, String paperStatus) {
         super(bean, showType, paperStatus);
 //        if ("26".equals(getType_id())){
-            //朗读题，答案获取方法与另外三种不同
-            //需求更改（sever的锅）
-            try {
-                spokenAnswer = String.valueOf(bean.getQuestions().getContent().getAnswer().get(0));
-            } catch (Exception e) {
-                e.printStackTrace();
-                spokenAnswer = "炸了";
-            }
+        //朗读题，答案获取方法与另外三种不同
+        //需求更改（sever的锅）
+        try {
+            spokenAnswer = String.valueOf(bean.getQuestions().getContent().getAnswer().get(0));
+        } catch (Exception e) {
+            e.printStackTrace();
+            spokenAnswer = "炸了";
+        }
 //        }else {
 //            try {
 //                spokenAnswer = String.valueOf(bean.getQuestions().getAnswer().get(0));
@@ -46,28 +47,38 @@ public class SpokenQuestion extends BaseQuestion {
 //                spokenAnswer = "炸了";
 //            }
 //        }
-        pointList=bean.getQuestions().getPoint();
         try {
-            starCount=Integer.parseInt(bean.getQuestions().getDifficulty());
-        }catch (Exception e){
+            answer = String.valueOf(bean.getQuestions().getAnswer().get(0));
+        } catch (Exception e) {
+            e.printStackTrace();
+            answer = "答案异常";
+        }
+        pointList = bean.getQuestions().getPoint();
+        try {
+            starCount = Integer.parseInt(bean.getQuestions().getDifficulty());
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        questionAnalysis=bean.getQuestions().getAnalysis();
+        questionAnalysis = bean.getQuestions().getAnalysis();
         try {
-            objectiveScore=bean.getQuestions().getPad().getObjectiveScore();
-        }catch (Exception e){
+            objectiveScore = bean.getQuestions().getPad().getObjectiveScore();
+        } catch (Exception e) {
             e.printStackTrace();
         }
         try {
-            String jsonArray=bean.getQuestions().getPad().getAnswer();
+            String jsonArray = bean.getQuestions().getPad().getAnswer();
             JSONArray array;
-            array=new JSONArray(jsonArray);
-            for (int i=0;i<array.length();i++){
+            array = new JSONArray(jsonArray);
+            for (int i = 0; i < array.length(); i++) {
                 answerList.add(array.getString(i));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public String getAnswerResult(){
+        return answer;
     }
 
     public String getSpokenAnswer() {
@@ -121,47 +132,47 @@ public class SpokenQuestion extends BaseQuestion {
 
     @Override
     public int getScore() {
-        if (answerList!=null&&!answerList.isEmpty()) {
+        if (answerList != null && !answerList.isEmpty()) {
             SpokenResponse response = getBeanFromJson(answerList.get(0));
             return getScore((int) response.lines.get(0).score);
-        }else {
+        } else {
             return super.getScore();
         }
     }
 
     @Override
     public int getStatus() {
-        int status=Constants.ANSWER_STATUS_NOANSWERED;
-        if (answerList!=null&&!answerList.isEmpty()) {
+        int status = Constants.ANSWER_STATUS_NOANSWERED;
+        if (answerList != null && !answerList.isEmpty()) {
             SpokenResponse response = getBeanFromJson(answerList.get(0));
-            int score=getScore((int) response.lines.get(0).score);
-            switch (score){
+            int score = getScore((int) response.lines.get(0).score);
+            switch (score) {
                 case 0:
                 case 1:
-                    status=Constants.ANSWER_STATUS_WRONG;
+                    status = Constants.ANSWER_STATUS_WRONG;
                     break;
                 case 2:
                 case 3:
-                    status=Constants.ANSWER_STATUS_RIGHT;
+                    status = Constants.ANSWER_STATUS_RIGHT;
                     break;
             }
         }
         return status;
     }
 
-    public static SpokenResponse getBeanFromJson(String json){
-        Gson gson=new Gson();
-        return gson.fromJson(json,SpokenResponse.class);
+    public static SpokenResponse getBeanFromJson(String json) {
+        Gson gson = new Gson();
+        return gson.fromJson(json, SpokenResponse.class);
     }
 
-    public static int getScore(int score){
-        if (score<30){
+    public static int getScore(int score) {
+        if (score < 30) {
             return 0;
-        }else if (score>=30&&score<60){
+        } else if (score >= 30 && score < 60) {
             return 1;
-        }else if (score>=60&&score<80){
+        } else if (score >= 60 && score < 80) {
             return 2;
-        }else {
+        } else {
             return 3;
         }
     }
