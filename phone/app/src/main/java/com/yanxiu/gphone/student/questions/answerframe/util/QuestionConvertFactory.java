@@ -5,6 +5,7 @@ import com.yanxiu.gphone.student.questions.choose.MultiChoiceQuestion;
 import com.yanxiu.gphone.student.questions.classify.ClassifyQuestion;
 import com.yanxiu.gphone.student.questions.cloze.ClozeComplexQuestion;
 import com.yanxiu.gphone.student.questions.connect.ConnectQuestion;
+import com.yanxiu.gphone.student.questions.dialogSpoken.DialogSpokenQuestion;
 import com.yanxiu.gphone.student.questions.fillblank.FillBlankQuestion;
 import com.yanxiu.gphone.student.questions.listencomplex.ListenComplexQuestion;
 import com.yanxiu.gphone.student.questions.operation.OperationQuestion;
@@ -119,6 +120,10 @@ public class QuestionConvertFactory {
                 case QuestionTemplate.SPOKEN:
                     SpokenQuestion spokenQuestion=new SpokenQuestion(paperTestBean,showType,paperStatus);
                     questions.add(spokenQuestion);
+                    break;
+                case QuestionTemplate.DIALOG:
+                    DialogSpokenQuestion dialogSpokenQuestion=new DialogSpokenQuestion(paperTestBean,showType,paperStatus);
+                    questions.add(dialogSpokenQuestion);
                     break;
                 default:
                     break;
@@ -263,6 +268,17 @@ public class QuestionConvertFactory {
                     spokenQuestion.setPtid_ComplexToSimple(ptid_complex);
                     spokenQuestion.setQid_ComplexToSimple(qid_complex);
                     questions.add(spokenQuestion);
+                    break;
+                case QuestionTemplate.DIALOG:
+                    DialogSpokenQuestion dialogSpokenQuestion = new DialogSpokenQuestion(childQuestion, showType, paperStatus);
+                    dialogSpokenQuestion.setStem_complexToSimple(stem_complex);
+                    dialogSpokenQuestion.setTemplate_complexToSimple(template);
+                    dialogSpokenQuestion.setTypeId_complexToSimple(type_id);
+                    dialogSpokenQuestion.setUrl_listenComplexToSimple(url_complex_listen);
+                    dialogSpokenQuestion.setPadId_ComplexToSimple(padId_complex);
+                    dialogSpokenQuestion.setPtid_ComplexToSimple(ptid_complex);
+                    dialogSpokenQuestion.setQid_ComplexToSimple(qid_complex);
+                    questions.add(dialogSpokenQuestion);
                     break;
                 default:
                     break;

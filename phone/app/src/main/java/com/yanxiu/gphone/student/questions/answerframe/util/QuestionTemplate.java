@@ -15,6 +15,7 @@ public class QuestionTemplate{
     public static final String READING = "multi";//阅读理解或者材料题（显示题型的图标时候再根据type_id判断一次）
     public static final String CLOZE= "cloze";//完形填空
     public static final String LISTEN = "listen";//听力
-    public static final String SPOKEN="speak";
+    public static final String SPOKEN="speak";//口语题
     public static final String OPERATION="operation"; //操作题
+    public static final String DIALOG="dialog";//多人机对话
 }
