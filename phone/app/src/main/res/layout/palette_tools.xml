@@ -9,12 +9,12 @@
     <com.yanxiu.gphone.student.questions.operation.view.SmallPenView
         android:id="@+id/smallPen"
         android:layout_width="12dp"
-        android:layout_height="60dp" />
+        android:layout_height="wrap_content" />
 
     <com.yanxiu.gphone.student.questions.operation.view.BigPenView
         android:id="@+id/bigPen"
         android:layout_width="34dp"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/paletteToosLeftMargin"/>
 
     <com.yanxiu.gphone.student.questions.operation.view.ColorFrameRelativeLayout
@@ -22,7 +22,7 @@
         android:layout_width="13dp"
         android:layout_height="65dp"
         android:layout_marginLeft="@dimen/paletteToosLeftMargin"
-        app:frameVisible="true">
+        app:frameVisible="false">
 
         <ImageView
             android:layout_width="wrap_content"

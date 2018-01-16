@@ -18,7 +18,6 @@ import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -49,6 +48,7 @@ public class PaletteView extends View {
     long mActionPointerDownBegin = 0; //第二根或者以上的手指按下屏幕
     private PointF mLastPoint0 = new PointF();
     private float mLastDis;
+    private float mLineStartX,mLineStartY; //画直线的时候，保存的直线的起始点坐标
 
     private PointF midPoint;
     private PointF mP1,mP2; //测试画线用
@@ -132,7 +132,6 @@ public class PaletteView extends View {
         mCachedPathList = new ArrayList<>();
         mRemovedPathList = new ArrayList<>();
 
-        mBaseLine = new Line(600,500,600,1000);
 
     }
 
@@ -179,17 +178,18 @@ public class PaletteView extends View {
          mMatrix.getValues(values);
          float drawX = x;
          float drawY = y;
-         Log.i("dis",String.valueOf(mBaseLine.distanceToPoint(drawX,drawY)));
-         if(action == MotionEvent.ACTION_DOWN && mBaseLine.distanceToPoint(drawX,drawY) < 150){
-             PointF p = mBaseLine.shadowPoint(drawX,drawY);
-             drawX = p.x + mLineWidth;
-             drawY = p.y;
-             mShouldBaseRuler = true;
-         }
-         if(mTouchMode == TouchMode.SINGLE_TOUCH && mShouldBaseRuler){
-             PointF p = mBaseLine.shadowPoint(drawX,drawY);
-             drawX = p.x + mLineWidth;
-             drawY = p.y;
+         if(mBaseLine != null){
+             if(action == MotionEvent.ACTION_DOWN && mBaseLine.distanceToPoint(drawX,drawY) < 150){
+                 PointF p = mBaseLine.shadowPoint(drawX,drawY);
+                 drawX = p.x + mLineWidth;
+                 drawY = p.y;
+                 mShouldBaseRuler = true;
+             }
+             if(mTouchMode == TouchMode.SINGLE_TOUCH && mShouldBaseRuler){
+                 PointF p = mBaseLine.shadowPoint(drawX,drawY);
+                 drawX = p.x + mLineWidth;
+                 drawY = p.y;
+             }
          }
          float matrixX =( drawX - values[Matrix.MTRANS_X] ) / values[Matrix.MSCALE_X];
          float matrixY = (drawY - values[Matrix.MTRANS_Y]) / values[Matrix.MSCALE_Y];
@@ -197,6 +197,8 @@ public class PaletteView extends View {
             case MotionEvent.ACTION_DOWN:
                 mTouchMode = TouchMode.SINGLE_TOUCH;
                 mActionDownBegin = SystemClock.uptimeMillis();
+                mLineStartX = matrixX;
+                mLineStartY = matrixY;
                 mPath.moveTo(matrixX, matrixY);
                 mLastPoint0.set(event.getX(), event.getY());
                 break;
@@ -231,8 +233,19 @@ public class PaletteView extends View {
                 }else if(mTouchMode == TouchMode.SINGLE_TOUCH){
                     if (mBufferBitmap == null)
                         initDrawBuffer();
-                    mPath.lineTo(matrixX, matrixY);
-                    mBufferCanvas.drawPath(mPath, mPaint);
+                    if(mLineMode == LineMode.NONE){
+                        mPath.lineTo(matrixX, matrixY);
+                        mBufferCanvas.drawPath(mPath, mPaint);
+
+                    }else {
+                        //清除上一次画的线(也就是当前的path，因为当前的path还没保存进去，只是画上去了)
+                        reDrawBufferedPath();
+
+                        mPath.reset();
+                        mPath.moveTo(mLineStartX,mLineStartY);
+                        mPath.lineTo(matrixX,matrixY);
+                        mBufferCanvas.drawPath(mPath, mPaint);
+                    }
                     postInvalidate();
 
                 }
@@ -304,6 +317,18 @@ public class PaletteView extends View {
                 pathDrawingInfo.draw(mBufferCanvas);
             }
             postInvalidate();
+        }
+    }
+
+    /**
+     * 只是重新画bitmap，但是view并不重绘
+     */
+    private void reDrawBufferedPath() {
+        if (mBufferBitmap != null) {
+            mBufferBitmap.eraseColor(Color.TRANSPARENT);
+            for (PathDrawingInfo pathDrawingInfo : mCachedPathList) {
+                pathDrawingInfo.draw(mBufferCanvas);
+            }
         }
     }
 

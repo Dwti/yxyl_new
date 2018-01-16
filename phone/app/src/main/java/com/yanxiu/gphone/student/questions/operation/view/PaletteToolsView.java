@@ -62,7 +62,6 @@ public class PaletteToolsView extends FrameLayout {
         mEraser = (ImageView) root.findViewById(R.id.iv_eraser);
         mColorView = (CircleView) root.findViewById(R.id.currentColor);
 
-        mSmallPenView.setSelected(true);
 
         SMALL_PEN_STROKE = ScreenUtils.dpToPx(getContext(),2);
         BIG_PEN_STROKE = ScreenUtils.dpToPx(getContext(),10);
@@ -132,12 +131,12 @@ public class PaletteToolsView extends FrameLayout {
             if(selected){
                 setBigPenViewSelected(false);
                 setEraserSelected(false);
-                //做动画 选中 伸出来
+                mSmallPenView.setUseStatus(true);
                 if(mOnPaintModeChangedListener != null){
                     mOnPaintModeChangedListener.onPaintModeChanged(PaletteView.PaintMode.DRAW,SMALL_PEN_STROKE);
                 }
             }else {
-                //做动画 缩回去
+                mSmallPenView.setUseStatus(false);
             }
         }
     }
@@ -150,12 +149,12 @@ public class PaletteToolsView extends FrameLayout {
             if(selected){
                 setSmallPenViewSelected(false);
                 setEraserSelected(false);
-                //TODO 做动画 选中 伸出来
+                mBigPenView.setUseStatus(true);
                 if(mOnPaintModeChangedListener != null){
                     mOnPaintModeChangedListener.onPaintModeChanged(PaletteView.PaintMode.DRAW,BIG_PEN_STROKE);
                 }
             }else {
-                //做动画 缩回去
+                mBigPenView.setUseStatus(false);
             }
         }
     }
@@ -169,12 +168,12 @@ public class PaletteToolsView extends FrameLayout {
             if(selected){
                 setSmallPenViewSelected(false);
                 setBigPenViewSelected(false);
-                //TODO 做动画 选中 伸出来
+                mEraser.setImageResource(R.drawable.eraser_use);
                 if(mOnPaintModeChangedListener != null){
                     mOnPaintModeChangedListener.onPaintModeChanged(PaletteView.PaintMode.ERASER,ERASER_STROKE);
                 }
             }else {
-                //做动画 缩回去
+                mEraser.setImageResource(R.drawable.eraser_unuse);
             }
         }
     }

@@ -14,8 +14,8 @@
 
     <ImageView
         android:id="@+id/iv_pen"
-        android:layout_width="12dp"
-        android:layout_height="match_parent"
-        android:src="@drawable/smallpen_unuse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/smallpen_use"
         android:layout_marginTop="-10dp"/>
 </LinearLayout>
