@@ -38,10 +38,11 @@ public class PaletteView extends View {
     private static final int TIME_INTERVAL = 500;  //时间间隔（用来判定是单指触摸还是多指）
     private Paint mPaint;
     private Path mPath;
-    private DashPathEffect mDashPathEffect;
+    private DashPathEffect mThinDashPathEffect;  //细线
+    private DashPathEffect mBoldDashPathEffect;  //粗线
     private LineMode mLineMode = LineMode.NONE;
 
-    private float mLineWidth;
+    private float mLineWidth,mDefaultLineWidth;
     private int mEraseWidth;
     private int mColor;
     long mActionDownBegin = 0;  //单根手指按下的时间
@@ -113,7 +114,8 @@ public class PaletteView extends View {
         mPath = new Path();
         mMatrix = new Matrix();
 
-        mDashPathEffect = new DashPathEffect(new float[] { 10,50 }, 0);
+        mThinDashPathEffect = new DashPathEffect(new float[] { ScreenUtils.dpToPx(getContext(),3),ScreenUtils.dpToPx(getContext(),5) }, 0);
+        mBoldDashPathEffect = new DashPathEffect(new float[] { ScreenUtils.dpToPx(getContext(),3),ScreenUtils.dpToPx(getContext(),15) }, 0);
 
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.DITHER_FLAG);
         mPaint.setStyle(Paint.Style.STROKE);
@@ -121,8 +123,8 @@ public class PaletteView extends View {
         mPaint.setStrokeJoin(Paint.Join.ROUND);
         mPaint.setStrokeCap(Paint.Cap.ROUND);
 
-        mLineWidth = ScreenUtils.dpToPx(getContext(),2);
-        mEraseWidth = 40;
+        mDefaultLineWidth = ScreenUtils.dpToPx(getContext(),2);
+        mLineWidth = mDefaultLineWidth;
         mColor = Color.BLACK;
         mPaint.setStrokeWidth(mLineWidth);
         mPaint.setColor(mColor);
@@ -389,7 +391,13 @@ public class PaletteView extends View {
     public void setPaintMode(PaintMode mode) {
         if (mPaintMode != mode) {
             mPaintMode = mode;
-            setPaintMode();
+            if (mPaintMode == PaintMode.DRAW) {
+                mPaint.setXfermode(null);
+                setPathEffect();
+            } else if(mPaintMode == PaintMode.ERASER){
+                mPaint.setXfermode(mClearMode);
+                mPaint.setPathEffect(null);
+            }
         }
     }
 
@@ -397,6 +405,7 @@ public class PaletteView extends View {
         if(mLineWidth != width){
             mLineWidth = width;
             mPaint.setStrokeWidth(width);
+            setPathEffect();
         }
     }
 
@@ -406,9 +415,16 @@ public class PaletteView extends View {
         }else {
             mLineMode = lineMode;
         }
-        if(lineMode == LineMode.DOTTED){
-            //TODO 需要根据是粗笔还是细笔 去设定patheffect
-            mPaint.setPathEffect(mDashPathEffect);
+        setPathEffect();
+    }
+
+    private void setPathEffect() {
+        if(mLineMode == LineMode.DOTTED){
+            if(mLineWidth == mDefaultLineWidth){
+                mPaint.setPathEffect(mThinDashPathEffect);
+            }else {
+                mPaint.setPathEffect(mBoldDashPathEffect);
+            }
         }else {
             mPaint.setPathEffect(null);
         }
@@ -427,16 +443,6 @@ public class PaletteView extends View {
         this.mP2 = new PointF(p2.x,p2.y);
         postInvalidate();
     }
-
-    private void setPaintMode() {
-        if (mPaintMode == PaintMode.DRAW) {
-            mPaint.setXfermode(null);
-        } else if(mPaintMode == PaintMode.ERASER){
-            mPaint.setXfermode(mClearMode);
-        }
-    }
-
-
 
     public void setPaintColor(int color){
         if(mColor != color){

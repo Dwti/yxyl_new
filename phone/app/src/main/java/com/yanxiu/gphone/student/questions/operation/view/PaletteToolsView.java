@@ -11,10 +11,8 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
-import com.google.android.exoplayer2.util.ParsableNalUnitBitArray;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.util.ScreenUtils;
-import com.yanxiu.gphone.student.util.ToastManager;
 
 /**
  * Created by sunpeng on 2018/1/12.
@@ -26,8 +24,8 @@ public class PaletteToolsView extends FrameLayout {
     private ColorFrameRelativeLayout mStraightLineFrame,mDottedLineFrame;
     private ImageView mEraser;
     private CircleView mColorView;
-    public static float SMALL_PEN_STROKE;
-    public static float BIG_PEN_STROKE;
+    public static float THIN_STROKE;
+    public static float BOLD_STROKE;
     public static float ERASER_STROKE;
 
     private OnPaintModeChangedListener mOnPaintModeChangedListener;
@@ -64,8 +62,8 @@ public class PaletteToolsView extends FrameLayout {
 
         mSmallPenView.setSelected(true);
 
-        SMALL_PEN_STROKE = ScreenUtils.dpToPx(getContext(),2);
-        BIG_PEN_STROKE = ScreenUtils.dpToPx(getContext(),10);
+        THIN_STROKE = ScreenUtils.dpToPx(getContext(),2);
+        BOLD_STROKE = ScreenUtils.dpToPx(getContext(),10);
         ERASER_STROKE = ScreenUtils.dpToPx(getContext(),12);
 
         initListener();
@@ -134,7 +132,7 @@ public class PaletteToolsView extends FrameLayout {
                 setEraserSelected(false);
                 mSmallPenView.setUseStatus(true);
                 if(mOnPaintModeChangedListener != null){
-                    mOnPaintModeChangedListener.onPaintModeChanged(PaletteView.PaintMode.DRAW,SMALL_PEN_STROKE);
+                    mOnPaintModeChangedListener.onPaintModeChanged(PaletteView.PaintMode.DRAW, THIN_STROKE);
                 }
             }else {
                 mSmallPenView.setUseStatus(false);
@@ -152,7 +150,7 @@ public class PaletteToolsView extends FrameLayout {
                 setEraserSelected(false);
                 mBigPenView.setUseStatus(true);
                 if(mOnPaintModeChangedListener != null){
-                    mOnPaintModeChangedListener.onPaintModeChanged(PaletteView.PaintMode.DRAW,BIG_PEN_STROKE);
+                    mOnPaintModeChangedListener.onPaintModeChanged(PaletteView.PaintMode.DRAW, BOLD_STROKE);
                 }
             }else {
                 mBigPenView.setUseStatus(false);
