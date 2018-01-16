@@ -113,7 +113,7 @@ public class PaletteView extends View {
         mPath = new Path();
         mMatrix = new Matrix();
 
-        mDashPathEffect = new DashPathEffect(new float[] { 10,10 }, 4);
+        mDashPathEffect = new DashPathEffect(new float[] { 10,50 }, 0);
 
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.DITHER_FLAG);
         mPaint.setStyle(Paint.Style.STROKE);
