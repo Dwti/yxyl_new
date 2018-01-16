@@ -85,8 +85,8 @@ public abstract class ReplacementSpanTextView<T extends View> extends FrameLayou
         mTextView = (XTextView) view.findViewById(R.id.textView);
         MIN_WIDTH = (int) StringUtil.computeStringWidth("oooooo",mTextView.getPaint());
         mOverLayViewContainer = (RelativeLayout) view.findViewById(R.id.relativeLayout);
-        mExtraLineSpacing = ScreenUtils.dpToPxInt(context,3);
-        mTextView.setLineSpacing(mExtraLineSpacing,1);
+//        mExtraLineSpacing = mContext.getResources().getDimensionPixelSize(R.dimen.question_line_height);
+//        mTextView.setLineSpacing(mExtraLineSpacing,1);
 //        mTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP,17);
         mTextView.setTextColor(getResources().getColor(R.color.color_333333));
         mTextView.setOnDrawFinishedListener(this);

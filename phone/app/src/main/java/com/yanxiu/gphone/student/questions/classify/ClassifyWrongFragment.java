@@ -148,9 +148,9 @@ public class ClassifyWrongFragment extends WrongSimpleExerciseBaseFragment {
     @Override
     public void initAnalysisView() {
         if (mData.getStatus() == Constants.ANSWER_STATUS_RIGHT) {
-            showAnswerResultView(true, mData.getAnswerCompare(), null);
+            showAnswerResultView(true, mData.getAnswerCompare(), null,-1,getResources().getDimensionPixelSize(R.dimen.classify_choice_img_height));
         } else {
-            showAnswerResultView(false, mData.getAnswerCompare(), null);
+            showAnswerResultView(false, mData.getAnswerCompare(), null,-1,getResources().getDimensionPixelSize(R.dimen.classify_choice_img_height));
         }
         showDifficultyview(mData.getStarCount());
         showAnalysisview(mData.getQuestionAnalysis());

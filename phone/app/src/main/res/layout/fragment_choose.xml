@@ -32,7 +32,7 @@
 
                 <TextView
                     android:id="@+id/tv_question"
-                    style="@style/CommonQuestionFragmentTextView" />
+                    style="@style/CommonQuestionFragmentTextView2" />
             </LinearLayout>
 
             <View
