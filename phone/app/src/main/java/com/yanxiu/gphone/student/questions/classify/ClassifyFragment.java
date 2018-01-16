@@ -128,8 +128,12 @@ public class ClassifyFragment extends AnswerSimpleExerciseBaseFragment implement
                 mClassify_choice.setData(mChoiceList, this);
             }
         }
-        Spanned string = Html.fromHtml(mData.getStem(), new HtmlImageGetter(mQuestionView), null);
-        mQuestionView.setText(string);
+        if (!TextUtils.isEmpty(mData.getStem())) {
+            Spanned string = Html.fromHtml(mData.getStem(), new HtmlImageGetter(mQuestionView), null);
+            mQuestionView.setText(string);
+        }else {
+            mQuestionView.setVisibility(View.GONE);
+        }
         mClassifyAdapter.setData(mData);
         mClassify_recyclerview.setAdapter(mClassifyAdapter);
         if(mData.getClassifyBasket().size() <= 2){

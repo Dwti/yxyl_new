@@ -2,6 +2,7 @@ package com.yanxiu.gphone.student.questions.fillblank;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,7 +82,7 @@ public class FillBlankAnalysisFragment extends AnalysisSimpleExerciseBaseFragmen
             if (status==Constants.ANSWER_STATUS_RIGHT){
                 showAnswerResultView(true,mQuestion.getAnswerCompare(),null);
             }else if (status==Constants.ANSWER_STATUS_HALFRIGHT){
-                showAnswerResultView(true,mQuestion.getAnswerCompare(),null,true);
+                showAnswerResultView(true,mQuestion.getAnswerCompare(),null,-1,-1,true);
             }else {
                 showAnswerResultView(false,mQuestion.getAnswerCompare(),null);
             }
@@ -107,8 +108,12 @@ public class FillBlankAnalysisFragment extends AnalysisSimpleExerciseBaseFragmen
     }
 
     private void setStem(String text){
-        String stem = StemUtil.initAnalysisFillBlankStem(text, mQuestion.getPad().getAnalysis());
-        mFillBlank.setText(stem);
+        if (!TextUtils.isEmpty(text)) {
+            String stem = StemUtil.initAnalysisFillBlankStem(text, mQuestion.getPad().getAnalysis());
+            mFillBlank.setText(stem);
+        }else {
+            mFillBlank.setVisibility(View.GONE);
+        }
     }
 
     private void initListener() {

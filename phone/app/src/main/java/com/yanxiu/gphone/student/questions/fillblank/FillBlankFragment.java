@@ -116,8 +116,12 @@ public class FillBlankFragment extends AnswerSimpleExerciseBaseFragment implemen
         if(mQuestion.getShowType() == QuestionShowType.ANALYSIS){
             mFillBlank.setBlankEditable(false);
         }
-        String stem = StemUtil.initFillBlankStem(text,mAnswers);
-        mFillBlank.setText(stem);
+        if (!TextUtils.isEmpty(text)) {
+            String stem = StemUtil.initFillBlankStem(text,mAnswers);
+            mFillBlank.setText(stem);
+        }else {
+            mFillBlank.setVisibility(View.GONE);
+        }
     }
 
     private void initListener() {

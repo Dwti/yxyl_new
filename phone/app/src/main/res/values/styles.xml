@@ -87,6 +87,7 @@
         <item name="android:layout_marginBottom">@dimen/question_fragment_a_margin_t</item>
         <item name="android:textColor">@color/color_333333</item>
         <item name="android:textSize">@dimen/choose_fragment_item_content_text_size</item>
+        <item name="android:lineSpacingExtra">@dimen/question_line_height</item>
     </style>
     <style name="AlertDialogStyle" parent="@android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item>

@@ -16,6 +16,7 @@
             android:layout_marginTop="@dimen/question_fragment_a_margin_t"
             android:textSize="@dimen/choose_fragment_item_content_text_size"
             android:textColor="@color/color_333333"
+            android:lineSpacingExtra="@dimen/question_line_height"
             android:layout_height="wrap_content" />
 
         <com.yanxiu.gphone.student.customviews.ListenerSeekBarLayout

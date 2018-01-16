@@ -20,6 +20,7 @@
         android:layout_height="wrap_content"
         android:textSize="17dp"
         android:layout_marginTop="25dp"
+        android:lineSpacingExtra="@dimen/question_line_height"
         android:layout_marginBottom="5dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Html;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -91,8 +92,12 @@ public class ClassifyWrongFragment extends WrongSimpleExerciseBaseFragment {
         mClassifyBasketList = mData.getClassifyBasket();
         iniAnalysisData();
         mClassify_choice.setData(mAnalysisData);
-        Spanned string = Html.fromHtml(mData.getStem(), new HtmlImageGetter(mStemView), null);
-        mStemView.setText(string);
+        if (!TextUtils.isEmpty(mData.getStem())) {
+            Spanned string = Html.fromHtml(mData.getStem(), new HtmlImageGetter(mStemView), null);
+            mStemView.setText(string);
+        }else {
+            mStemView.setVisibility(View.GONE);
+        }
     }
 
     //初始化mAnalysisData

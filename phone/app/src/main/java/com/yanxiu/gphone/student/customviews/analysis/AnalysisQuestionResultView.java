@@ -53,12 +53,17 @@ public class AnalysisQuestionResultView extends LinearLayout {
      * @param yesno      "回答错误" or "回答正确"
      * @param yourAnswer 正确答案（没有该数据请传空）
      */
-    public void setText(String yesno, String yourAnswer) {
+    public void setText(String yesno, String yourAnswer,int width,int height) {
         if (mYesNo != null) {
             mYesNo.setText(yesno);
         }
         if (mResult != null && !TextUtils.isEmpty(yourAnswer)) {
-            Spanned string = Html.fromHtml(yourAnswer, new HtmlImageGetter(mResult), null);
+            Spanned string;
+            if (width!=-1||height!=-1){
+                string= Html.fromHtml(yourAnswer, new HtmlImageGetter(mResult,width,height), null);
+            }else {
+                string= Html.fromHtml(yourAnswer, new HtmlImageGetter(mResult), null);
+            }
             mResult.setText(string);
             mResult.setVisibility(VISIBLE);
         }

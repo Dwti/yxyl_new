@@ -262,16 +262,16 @@ public class QuestionUtil {
             case "多选题":
                 result = 5;
                 break;
-            case "判断题":
+            case "填空题":
                 result = 6;
                 break;
             case "连线题":
                 result = 7;
                 break;
-            case "归类题":
+            case "判断题":
                 result = 8;
                 break;
-            case "排序题":
+            case "归类题":
                 result = 9;
                 break;
             case "完形填空":
@@ -280,35 +280,35 @@ public class QuestionUtil {
             case "阅读理解":
                 result = 11;
                 break;
-            case "填空题":
+            case "翻译题":
                 result = 12;
                 break;
             case "改错题":
                 result = 13;
                 break;
-            case "翻译题":
+            case "排序题":
                 result = 14;
                 break;
-            case "计算题":
+            case "写作题":
                 result = 15;
                 break;
-            case "解答题":
+            case "计算题":
                 result = 16;
+                break;
+            case "解答题":
+                result = 17;
                 break;
             case "解决问题":
-                result = 16;
-                break;
-            case "操作题":
-                result = 17;
-            case "问答题":
                 result = 18;
                 break;
-            case "材料阅读":
+            case "操作题":
                 result = 19;
                 break;
-            case "写作题":
-                //因为要放在所有题型的后面，所以给一个比较大的数值
-                result = 30;
+            case "问答题":
+                result = 20;
+                break;
+            case "材料阅读":
+                result = 21;
                 break;
         }
         return result;

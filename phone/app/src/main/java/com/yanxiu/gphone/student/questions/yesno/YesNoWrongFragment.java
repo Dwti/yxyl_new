@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,8 +61,12 @@ public class YesNoWrongFragment extends WrongSimpleExerciseBaseFragment {
     }
 
     private void initData() {
-        Spanned string = Html.fromHtml(mData.getStem(), new HtmlImageGetter(mQuestionView), null);
-        mQuestionView.setText(string);
+        if (!TextUtils.isEmpty(mData.getStem())) {
+            Spanned string = Html.fromHtml(mData.getStem(), new HtmlImageGetter(mQuestionView), null);
+            mQuestionView.setText(string);
+        }else {
+            mQuestionView.setVisibility(GONE);
+        }
         mChooseView.setIsClick(false);
         mChooseView.setYesyNoData(mData.getChoice());
         List<String> datas = mData.getAnswerList();

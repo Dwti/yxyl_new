@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Html;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -94,8 +95,13 @@ public class ClassifyAnalysisFragment extends AnalysisSimpleExerciseBaseFragment
         Log.e("dyf", "----------->自己答案" + mData.getAnswerList().toString());
         iniAnalysisData();
         mClassify_choice.setData(mAnalysisData);
-        Spanned string = Html.fromHtml(mData.getStem(), new HtmlImageGetter(mStemView), null);
-        mStemView.setText(string);
+
+        if (!TextUtils.isEmpty(mData.getStem())) {
+            Spanned string = Html.fromHtml(mData.getStem(), new HtmlImageGetter(mStemView), null);
+            mStemView.setText(string);
+        }else {
+            mStemView.setVisibility(View.GONE);
+        }
     }
 
     //初始化mAnalysisData
@@ -166,9 +172,9 @@ public class ClassifyAnalysisFragment extends AnalysisSimpleExerciseBaseFragment
     public void initAnalysisView() {
         if (Constants.HAS_FINISH_STATUS.equals(mData.getPaperStatus())) { //已完成
             if (mData.getStatus() == Constants.ANSWER_STATUS_RIGHT) {
-                showAnswerResultView(true, mData.getAnswerCompare(), null);
+                showAnswerResultView(true, mData.getAnswerCompare(), null,-1,getResources().getDimensionPixelSize(R.dimen.classify_choice_img_height));
             } else {
-                showAnswerResultView(false, mData.getAnswerCompare(), null);
+                showAnswerResultView(false, mData.getAnswerCompare(), null,-1,getResources().getDimensionPixelSize(R.dimen.classify_choice_img_height));
             }
             showDifficultyview(mData.getStarCount());
             showAnalysisview(mData.getQuestionAnalysis());

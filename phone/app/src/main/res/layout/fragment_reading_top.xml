@@ -19,7 +19,8 @@
         android:layout_height="wrap_content"
         android:textSize="@dimen/stem_text_size"
         android:textColor="#333333"
-        android:lineSpacingExtra="@dimen/stem_line_space" />
+        android:lineSpacingExtra="@dimen/question_line_height"
+        />
 
     </LinearLayout>
 </ScrollView>

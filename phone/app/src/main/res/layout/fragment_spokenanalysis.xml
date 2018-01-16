@@ -35,6 +35,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/choose_fragment_item_content_text_size"
+                    android:lineSpacingExtra="@dimen/question_line_height"
                     android:textColor="@color/color_333333"/>
 
             </LinearLayout>

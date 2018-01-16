@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -104,8 +105,12 @@ public class SingleChooseFragment extends AnswerSimpleExerciseBaseFragment imple
     }
 
     private void initData() {
-        Spanned string= Html.fromHtml(mData.getStem(),new HtmlImageGetter(mQuestionView),null);
-        mQuestionView.setText(string);
+        if (!TextUtils.isEmpty(mData.getStem())) {
+            Spanned string = Html.fromHtml(mData.getStem(), new HtmlImageGetter(mQuestionView), null);
+            mQuestionView.setText(string);
+        }else {
+            mQuestionView.setVisibility(View.GONE);
+        }
         mAnswerView.setData(mData.getChoice());
         List<String> datas=mData.getAnswerList();
         if (datas.size()>0){

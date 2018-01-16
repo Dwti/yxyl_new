@@ -23,6 +23,18 @@ public class HtmlImageGetter implements Html.ImageGetter {
     TextView mTextView;
     HashMap<String, UrlDrawable> mMap;
 
+    /**
+     * 控制图片大小，免得变的傻大傻大的
+     * cwq
+     * */
+    private int mWidth=-1;
+    private int mHeight=-1;
+    public HtmlImageGetter(TextView textview,int width,int height) {
+        this(textview);
+        this.mWidth=width;
+        this.mHeight=height;
+    }
+
     public HtmlImageGetter(TextView textview) {
         mTextView = textview;
         mMap = new HashMap<>();
@@ -61,6 +73,18 @@ public class HtmlImageGetter implements Html.ImageGetter {
         }
         float scaledWidth = width * scaleRatio;
         float scaledHeight = height * scaleRatio;
+        if (mWidth!=-1&&mHeight!=-1){
+            scaledHeight = mHeight;
+            scaledWidth=mWidth;
+        }else if (mWidth!=-1){
+            float scale = mWidth / scaledWidth;
+            scaledHeight = scaledHeight * scale;
+            scaledWidth = mWidth;
+        }else if (mHeight!=-1){
+            float scale = mHeight / scaledHeight;
+            scaledHeight = mHeight;
+            scaledWidth = scaledWidth * scale;
+        }
         if(scaledWidth > maxWidth){
             float scale = maxWidth / scaledWidth;
             scaledHeight = scaledHeight * scale;

@@ -300,5 +300,7 @@
     <dimen name="notifi_icon_padding">5dp</dimen>
     <dimen name="notifi_time_textsize">11dp</dimen>
     <dimen name="notifi_title_textsize">14dp</dimen>
+
+    <dimen name="question_line_height">3dp</dimen>
 </resources>
 
