@@ -62,6 +62,7 @@ public class PaletteToolsView extends FrameLayout {
         mEraser = (ImageView) root.findViewById(R.id.iv_eraser);
         mColorView = (CircleView) root.findViewById(R.id.currentColor);
 
+        mSmallPenView.setSelected(true);
 
         SMALL_PEN_STROKE = ScreenUtils.dpToPx(getContext(),2);
         BIG_PEN_STROKE = ScreenUtils.dpToPx(getContext(),10);

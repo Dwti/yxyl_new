@@ -233,7 +233,7 @@ public class PaletteView extends View {
                 }else if(mTouchMode == TouchMode.SINGLE_TOUCH){
                     if (mBufferBitmap == null)
                         initDrawBuffer();
-                    if(mLineMode == LineMode.NONE){
+                    if(mLineMode == LineMode.NONE || mPaintMode == PaintMode.ERASER){
                         mPath.lineTo(matrixX, matrixY);
                         mBufferCanvas.drawPath(mPath, mPaint);
 
