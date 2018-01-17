@@ -12,7 +12,7 @@ import android.widget.TextView;
  * Time : 2017/10/19 15:47.
  * Function :
  */
-class SpokenLinkMovementMethod extends LinkMovementMethod {
+public class SpokenLinkMovementMethod extends LinkMovementMethod {
 
     private static SpokenLinkMovementMethod sInstance;
 

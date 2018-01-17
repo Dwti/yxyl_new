@@ -21,7 +21,7 @@ import static com.yanxiu.gphone.student.customviews.SpokenAnimDrawable.TYPE_TOUC
  */
 public class ClickableImageSpan extends ImageSpan {
 
-    interface onSpanClickListener {
+    public interface onSpanClickListener {
         void onClick(String url);
     }
 
