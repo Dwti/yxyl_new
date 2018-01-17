@@ -19,7 +19,7 @@ public class Constants {
     public static final String pcode = "010110000";
     public static final String BRAND = DeviceUtil.getBrandName();
     public static final String OPERTYPE = "app.upload.log";
-    public static final String PRODUCTLINE = "1";
+    public static final String PRODUCTLINE = "6";
     public static String token = LoginInfo.getToken();
     public static String trace_uid = LoginInfo.getUID();
     //    public static String deviceId= DeviceUtil.getAppDeviceId();
