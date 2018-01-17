@@ -21,6 +21,9 @@ import com.yanxiu.gphone.student.questions.spoken.SpokenLinkMovementMethod;
 import com.yanxiu.gphone.student.questions.spoken.SpokenQuestion;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Created by Canghaixiao.
  * Time : 2018/1/15 14:49.
@@ -79,6 +82,8 @@ public class DialogSpokenFragment extends AnswerSimpleExerciseBaseFragment imple
     }
 
     private void initData() {
+        Pattern pattern=Pattern.compile("");
+        Matcher matcher=pattern.matcher(mData.getStem());
         mAudioTagHandler = new AudioTagHandler(getContext(), mQuestionView, DialogSpokenFragment.this);
         Spanned string = Html.fromHtml(mData.getStem(), new HtmlImageGetter(mQuestionView), mAudioTagHandler);
         mQuestionView.setData(string);
