@@ -207,6 +207,7 @@ public class BindMobileActivity extends YanxiuBaseActivity implements View.OnCli
                 if (response.getStatus().getCode()==0){
                     LoginInfo.saveMobile(mobile);
                     if (COME_TYPE_LOGIN.equals(mComeFrom)){
+                        ToastManager.showMsg(R.string.bind_mobile_success);
                         MainActivity.invoke(BindMobileActivity.this, true);
                     }else {
                         EventBus.getDefault().post(new BindMobileMessage());
