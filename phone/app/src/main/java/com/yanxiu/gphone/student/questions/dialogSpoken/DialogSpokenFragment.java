@@ -21,6 +21,8 @@ import com.yanxiu.gphone.student.questions.spoken.SpokenLinkMovementMethod;
 import com.yanxiu.gphone.student.questions.spoken.SpokenQuestion;
 import com.yanxiu.gphone.student.util.HtmlImageGetter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -82,8 +84,24 @@ public class DialogSpokenFragment extends AnswerSimpleExerciseBaseFragment imple
     }
 
     private void initData() {
-        Pattern pattern=Pattern.compile("");
+        String regex="\\[\\[.*?\\]\\]";
+        Pattern pattern=Pattern.compile(regex);
         Matcher matcher=pattern.matcher(mData.getStem());
+        mData.setStem(matcher.replaceAll("啦啦"));
+
+        List<String> items=new ArrayList<>();
+
+        String regex1="<audio";
+        Pattern pattern1=Pattern.compile(regex1);
+        Matcher matcher1=pattern1.matcher(mData.getStem());
+        while (matcher1.find()){
+            int ss=matcher1.start();
+            if (ss!=0){
+                String item=mData.getStem().substring(0,ss);
+                items.add(item);
+            }
+        }
+
         mAudioTagHandler = new AudioTagHandler(getContext(), mQuestionView, DialogSpokenFragment.this);
         Spanned string = Html.fromHtml(mData.getStem(), new HtmlImageGetter(mQuestionView), mAudioTagHandler);
         mQuestionView.setData(string);
