@@ -200,12 +200,17 @@ public class PaletteActivity extends YanxiuBaseActivity implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_back:
-                //TODO 如果有修改就弹窗，否则直接退出
-                showPop();
+                if(mPaletteView.hasModified()){
+                    showPop();
+                }else {
+                    finish();
+                }
                 break;
             case R.id.iv_save:
-                //TODO 需要判断有没有新的修改
-                saveDrawPath();
+                if(mPaletteView.hasModified()){
+                    saveDrawPath();
+                    finish();
+                }
                 break;
             case R.id.btn_reset:
                 mPaletteView.clear();

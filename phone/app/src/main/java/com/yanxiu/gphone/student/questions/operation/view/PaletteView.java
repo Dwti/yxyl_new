@@ -485,6 +485,10 @@ public class PaletteView extends View {
         return mBgBitmap;
     }
 
+    public boolean hasModified(){
+        return mCachedPathList.isEmpty();
+    }
+
     public ArrayList<PathDrawingInfo> getCachedPathList() {
         return mCachedPathList;
     }
