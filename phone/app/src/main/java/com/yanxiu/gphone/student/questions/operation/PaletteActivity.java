@@ -27,7 +27,6 @@ import com.yanxiu.gphone.student.questions.operation.view.PaletteView;
 import com.yanxiu.gphone.student.questions.operation.view.SelectColorView;
 import com.yanxiu.gphone.student.questions.spoken.SpokenErrorDialog;
 import com.yanxiu.gphone.student.util.FileUtil;
-import com.yanxiu.gphone.student.util.StringUtil;
 import com.yanxiu.gphone.student.util.anim.AlphaAnimationUtil;
 
 /**
@@ -115,7 +114,7 @@ public class PaletteActivity extends YanxiuBaseActivity implements View.OnClickL
             mPaletteView.post(new Runnable() {
                 @Override
                 public void run() {
-                    mPaletteView.restoreBuffedBitmap(OperationUtils.getStoredBitmap(mStoredFileName).copy(Bitmap.Config.ARGB_8888,true));
+                    mPaletteView.restoreLocalBitmap(OperationUtils.getStoredBitmap(mStoredFileName).copy(Bitmap.Config.ARGB_8888,true));
                 }
             });
         }
@@ -209,8 +208,8 @@ public class PaletteActivity extends YanxiuBaseActivity implements View.OnClickL
             case R.id.iv_save:
                 if(mPaletteView.hasModified()){
                     saveDrawPath();
-                    finish();
                 }
+                finish();
                 break;
             case R.id.btn_reset:
                 mPaletteView.clear();
@@ -228,7 +227,11 @@ public class PaletteActivity extends YanxiuBaseActivity implements View.OnClickL
 
     @Override
     public void onBackPressed() {
-        showPop();
+        if(mPaletteView.hasModified()){
+            showPop();
+        }else {
+            finish();
+        }
     }
 
     private void showPop() {

@@ -59,6 +59,7 @@ public class PaletteView extends View {
     private PointF mP1, mP2; //测试画线用
     private Boolean mIsMultiTouch = false;
 
+    private Bitmap mLocalBitmap; //本地文件中缓存的以前作答的path
     private Bitmap mBufferBitmap;
     private Canvas mBufferCanvas;
 
@@ -324,7 +325,7 @@ public class PaletteView extends View {
 
     private void reDraw() {
         if (mBufferBitmap != null) {
-            mBufferBitmap.eraseColor(Color.TRANSPARENT);
+            resetBufferBitmap();
             for (PathDrawingInfo pathDrawingInfo : mCachedPathList) {
                 pathDrawingInfo.draw(mBufferCanvas);
             }
@@ -337,7 +338,7 @@ public class PaletteView extends View {
      */
     private void reDrawBufferedPath() {
         if (mBufferBitmap != null) {
-            mBufferBitmap.eraseColor(Color.TRANSPARENT);
+            resetBufferBitmap();
             for (PathDrawingInfo pathDrawingInfo : mCachedPathList) {
                 pathDrawingInfo.draw(mBufferCanvas);
             }
@@ -466,11 +467,25 @@ public class PaletteView extends View {
         return mBufferBitmap;
     }
 
-    public void restoreBuffedBitmap(Bitmap bitmap) {
-        if (mBufferBitmap == null && bitmap != null) {
-            mBufferBitmap = bitmap;
+    /**
+     * 还原本地以前保存的作图信息
+     * @param bitmap
+     */
+    public void restoreLocalBitmap(Bitmap bitmap) {
+        if (bitmap != null) {
+            mLocalBitmap = bitmap;
+            mBufferBitmap = bitmap.copy(Bitmap.Config.ARGB_8888,true);
             mBufferCanvas = new Canvas(mBufferBitmap);
             postInvalidate();
+        }
+    }
+
+    private void resetBufferBitmap(){
+        if(mLocalBitmap != null){
+            mBufferBitmap = mLocalBitmap.copy(Bitmap.Config.ARGB_8888,true);
+            mBufferCanvas = new Canvas(mBufferBitmap);
+        }else {
+            mBufferBitmap.eraseColor(Color.TRANSPARENT);
         }
     }
 
@@ -486,7 +501,7 @@ public class PaletteView extends View {
     }
 
     public boolean hasModified(){
-        return mCachedPathList.isEmpty();
+        return !mCachedPathList.isEmpty();
     }
 
     public ArrayList<PathDrawingInfo> getCachedPathList() {
