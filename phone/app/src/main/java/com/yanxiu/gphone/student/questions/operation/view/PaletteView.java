@@ -26,6 +26,7 @@ import com.yanxiu.gphone.student.questions.operation.TouchMode;
 import com.yanxiu.gphone.student.util.ScreenUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by sunpeng on 2017/11/8.
@@ -450,13 +451,21 @@ public class PaletteView extends View {
         }
     }
 
-    private static class PathDrawingInfo {
-        Paint mPaint;
-        Path mPath;
 
-        public void draw(Canvas canvas) {
-            canvas.drawPath(mPath, mPaint);
+    public Bitmap getBufferedBitmap(){
+        return mBufferBitmap;
+    }
+
+    public void restoreBuffedBitmap(Bitmap bitmap){
+        if(mBufferBitmap == null && bitmap != null){
+            mBufferBitmap = bitmap;
+            mBufferCanvas = new Canvas(mBufferBitmap);
+            postInvalidate();
         }
+    }
+
+    public ArrayList<PathDrawingInfo> getCachedPathList() {
+        return mCachedPathList;
     }
 
     public UndoStatusChangedListener getUndoStatusChangedListener() {

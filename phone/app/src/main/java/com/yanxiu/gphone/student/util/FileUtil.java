@@ -1,12 +1,20 @@
 package com.yanxiu.gphone.student.util;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Environment;
+import android.text.TextUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import static com.yanxiu.gphone.student.constant.Constants.CHARACTER_SLASH;
 import static com.yanxiu.gphone.student.constant.Constants.DOMYBOXDIR;
@@ -63,5 +71,79 @@ public class FileUtil {
         mBuffer.append(DOMYBOXDIR);
         mBuffer.append(CHARACTER_SLASH);
         return mBuffer.toString();
+    }
+
+    public static synchronized boolean saveObject(Object object,String path){
+
+        ObjectOutputStream oos = null;
+        try {
+            oos = new ObjectOutputStream(new FileOutputStream(path));
+            oos.writeObject(object);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            if(oos != null){
+                try {
+                    oos.close();
+                    return true;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return false;
+                }
+            }
+            return false;
+        }
+    }
+
+    public static synchronized <T> T readObject(String path){
+        ObjectInputStream ojs = null;
+        T t = null;
+        try {
+            ojs = new ObjectInputStream(new FileInputStream(path));
+            t = (T) ojs.readObject();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }finally {
+            if(ojs != null){
+                try {
+                    ojs.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return t;
+        }
+    }
+
+    public static synchronized boolean saveBitmapToFile(Bitmap bitmap,String path){
+        boolean success;
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(path);
+            success = bitmap.compress(Bitmap.CompressFormat.PNG,100,fos);
+            fos.flush();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            success = false;
+        } catch (IOException e) {
+            e.printStackTrace();
+            success = false;
+        }finally {
+            if(fos != null){
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    success = false;
+                }
+            }
+        }
+        return  success;
+    }
+
+    public static synchronized Bitmap readBitmapFromFile(String path){
+       return BitmapFactory.decodeFile(path);
     }
 }

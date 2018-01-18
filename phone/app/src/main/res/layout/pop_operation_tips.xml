@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/pop_bg"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:orientation="vertical"
+        android:layout_marginLeft="@dimen/pop_margin"
+        android:layout_marginRight="@dimen/pop_margin"
+        android:background="@drawable/bg_white_corner">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:textSize="14dp"
+            android:textColor="@color/color_666666"
+            android:text="是否保存已做进度？"
+            android:gravity="center"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_edf0ee"/>
+
+        <TextView
+            android:id="@+id/tv_ignore"
+            android:layout_width="match_parent"
+            android:layout_height="59dp"
+            android:textSize="18dp"
+            android:textColor="@color/ff7a05"
+            android:text="不保存"
+            android:gravity="center"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_edf0ee"/>
+
+        <TextView
+            android:id="@+id/tv_save"
+            android:layout_width="match_parent"
+            android:layout_height="59dp"
+            android:textSize="18dp"
+            android:textColor="@color/color_89e00d"
+            android:text="保存"
+            android:gravity="center"/>
+        <!--android:textColor="@drawable/pop_text_color_selector"-->
+    </LinearLayout>
+
+    <com.yanxiu.gphone.student.customviews.WavesLayout
+        android:id="@+id/wavesLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/pop_margin"
+        app:waves_animend_alpha="102"
+        app:waves_radius="@dimen/wavesRadius">
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="57dp"
+            android:background="@drawable/pop_cancle_bg"
+            android:text="取消"
+            style="?android:attr/borderlessButtonStyle"
+            android:textColor="@android:color/white"
+            android:textSize="18dp"/>
+    </com.yanxiu.gphone.student.customviews.WavesLayout>
+
+</LinearLayout>

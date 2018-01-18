@@ -4,6 +4,8 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 
+import java.io.Serializable;
+
 /**
  * Created by sunpeng on 2018/1/8.
  */
