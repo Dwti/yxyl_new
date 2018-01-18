@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class SpokenResponse {
 
-    /**音频地址，iOS与Android可不一致，本地需要*/
+    /**音频地址，手动放置*/
     public String url;
     /**每行输入文本的评测结果*/
     public List<Lines> lines;

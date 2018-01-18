@@ -19,26 +19,26 @@ import java.lang.reflect.Field;
  * Time : 2017/10/23 15:04.
  * Function :
  */
-class AudioTagHandler implements Html.TagHandler {
+public class AudioTagHandler implements Html.TagHandler {
 
     private Context mContext;
     private View mView;
     private ClickableImageSpan.onSpanClickListener mSpanClickListener;
     private ClickableImageSpan mImageSpan;
 
-    AudioTagHandler(Context context,View view,ClickableImageSpan.onSpanClickListener spanClickListener){
+    public AudioTagHandler(Context context,View view,ClickableImageSpan.onSpanClickListener spanClickListener){
         this.mContext=context;
         this.mView=view;
         this.mSpanClickListener=spanClickListener;
     }
 
-    void start(){
+    public void start(){
         if (mImageSpan!=null){
             mImageSpan.start();
         }
     }
 
-    void stop(){
+    public void stop(){
         if (mImageSpan!=null){
             try {
                 mImageSpan.stop();

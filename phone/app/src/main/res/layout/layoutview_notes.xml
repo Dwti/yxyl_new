@@ -6,10 +6,13 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/analysis_view_paddingbottom"
         android:layout_height="wrap_content">
 
         <TextView
             style="@style/AnalysisViewLeftTitle"
+            android:layout_marginBottom="0dp"
+            android:layout_marginTop="0dp"
             android:text="@string/note" />
 
         <LinearLayout
@@ -57,6 +60,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/color_336600"
+            android:visibility="gone"
             android:textSize="@dimen/analysis_score_textsize2" />
 
         <LinearLayout

@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.support.annotation.Nullable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -84,7 +85,12 @@ public class NotesLayoutView extends LinearLayout implements View.OnClickListene
         this.mWqid=jsonNoteBean.getWqid();
         this.mQid=jsonNoteBean.getQid();
         this.mContent=jsonNoteBean.getText();
-        mNoteContentView.setText(mContent);
+        if (!TextUtils.isEmpty(mContent)) {
+            mNoteContentView.setVisibility(VISIBLE);
+            mNoteContentView.setText(mContent);
+        }else {
+            mNoteContentView.setVisibility(GONE);
+        }
         this.mPhotoPath=jsonNoteBean.getImages();
         setNoteImg(mPhotoPath);
     }
