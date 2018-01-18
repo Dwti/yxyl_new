@@ -1,9 +1,12 @@
 package com.yanxiu.gphone.student.questions.operation;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,16 +15,20 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
+import com.yanxiu.gphone.student.customviews.LoadingView;
 import com.yanxiu.gphone.student.questions.operation.view.PaletteToolsView;
 import com.yanxiu.gphone.student.questions.operation.view.PaletteView;
-import com.yanxiu.gphone.student.questions.operation.view.PathDrawingInfo;
 import com.yanxiu.gphone.student.questions.operation.view.SelectColorView;
+import com.yanxiu.gphone.student.questions.spoken.SpokenErrorDialog;
 import com.yanxiu.gphone.student.util.FileUtil;
+import com.yanxiu.gphone.student.util.StringUtil;
 import com.yanxiu.gphone.student.util.anim.AlphaAnimationUtil;
-
-import java.util.List;
 
 /**
  * Created by sunpeng on 2018/1/10.
@@ -31,14 +38,21 @@ public class PaletteActivity extends YanxiuBaseActivity implements View.OnClickL
 
     private ImageView iv_undo, iv_redo, iv_back, iv_save;
     private View mOverlay;
+    private LoadingView mLoadingView;
     private Button btn_reset;
     private PaletteView mPaletteView;
     private PaletteToolsView mPaletteToolsView;
     private SelectColorView mSelectColorView;
     private PopupWindow mPopupWindow;
+    private String mImgUrl;
+    private String mStoredFileName;
+    public static final String IMAGE_URL = "IMAGE_URL";
+    public static final String FILE_NAME = "FILE_NAME";  //保存涂画的path的文件名字
 
-    public static void invoke(Context context) {
+    public static void invoke(Context context,String fileName,String imgUrl) {
         Intent intent = new Intent(context, PaletteActivity.class);
+        intent.putExtra(FILE_NAME,fileName);
+        intent.putExtra(IMAGE_URL,imgUrl);
         context.startActivity(intent);
     }
 
@@ -46,12 +60,14 @@ public class PaletteActivity extends YanxiuBaseActivity implements View.OnClickL
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_palette);
+        initData();
         initView();
         initListener();
     }
 
     private void initView() {
         mOverlay = findViewById(R.id.overlay);
+        mLoadingView = (LoadingView) findViewById(R.id.loading);
         btn_reset = (Button) findViewById(R.id.btn_reset);
         iv_undo = (ImageView) findViewById(R.id.iv_undo);
         iv_redo = (ImageView) findViewById(R.id.iv_redo);
@@ -63,6 +79,53 @@ public class PaletteActivity extends YanxiuBaseActivity implements View.OnClickL
 
         iv_undo.setEnabled(false);
         iv_redo.setEnabled(false);
+
+        if(!TextUtils.isEmpty(mImgUrl)){
+            Glide.with(this).load(mImgUrl).into(new SimpleTarget<GlideDrawable>() {
+
+                @Override
+                public void onLoadStarted(Drawable placeholder) {
+                    super.onLoadStarted(placeholder);
+                    mLoadingView.showLoadingView();
+                }
+
+                @Override
+                public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+                    mPaletteView.setResourceDrawable(resource);
+                    mLoadingView.hiddenLoadingView();
+                }
+
+                @Override
+                public void onLoadFailed(Exception e, Drawable errorDrawable) {
+                    mLoadingView.hiddenLoadingView();
+                    SpokenErrorDialog errorDialog = new SpokenErrorDialog(PaletteActivity.this);
+                    errorDialog.setTitle("图片加载失败");
+                    errorDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                            PaletteActivity.this.finish();
+                        }
+                    });
+                    errorDialog.show();
+                }
+            });
+        }
+
+        if(OperationUtils.hasStoredBitmap(mStoredFileName)){
+            mPaletteView.post(new Runnable() {
+                @Override
+                public void run() {
+                    mPaletteView.restoreBuffedBitmap(OperationUtils.getStoredBitmap(mStoredFileName).copy(Bitmap.Config.ARGB_8888,true));
+                }
+            });
+        }
+
+
+    }
+
+    private void initData(){
+        mImgUrl = getIntent().getStringExtra(IMAGE_URL);
+        mStoredFileName = getIntent().getStringExtra(FILE_NAME);
     }
 
     private void initListener() {
@@ -141,8 +204,8 @@ public class PaletteActivity extends YanxiuBaseActivity implements View.OnClickL
                 showPop();
                 break;
             case R.id.iv_save:
-                String filePath = FileUtil.getSavePicturePath("222");
-                mPaletteView.restoreBuffedBitmap(FileUtil.readBitmapFromFile(filePath).copy(Bitmap.Config.ARGB_8888,true));
+                //TODO 需要判断有没有新的修改
+                saveDrawPath();
                 break;
             case R.id.btn_reset:
                 mPaletteView.clear();
@@ -184,9 +247,7 @@ public class PaletteActivity extends YanxiuBaseActivity implements View.OnClickL
             tv_save.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //保存和读取的时候最好开启一个线程（因为时间原因，再一个这个bitmap本身比较小的缘故所以没用，后期优化）
-                    String filePath = FileUtil.getSavePicturePath("222");
-                    FileUtil.saveBitmapToFile(mPaletteView.getBufferedBitmap(),filePath);
+                    saveDrawPath();
                     dismissPop();
                     PaletteActivity.this.finish();
                 }
@@ -215,6 +276,12 @@ public class PaletteActivity extends YanxiuBaseActivity implements View.OnClickL
         AlphaAnimationUtil.startPopBgAnimIn(mOverlay);
         mPopupWindow.showAtLocation(getWindow().getDecorView(), Gravity.CENTER, 0, 0);
 
+    }
+
+    private void saveDrawPath() {
+        //保存和读取的时候最好开启一个线程（因为时间原因，再一个这个bitmap本身比较小的缘故所以没用，后期优化）
+        String filePath = FileUtil.getSavePicturePath(mStoredFileName);
+        FileUtil.saveBitmapToFile(mPaletteView.getBufferedBitmap(),filePath);
     }
 
     private void dismissPop() {

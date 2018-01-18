@@ -1,6 +1,7 @@
 package com.yanxiu.gphone.student.questions.operation;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.util.StringUtil;
 
 import java.util.List;
 
@@ -45,7 +47,7 @@ public class OperationAdapter extends BaseAdapter {
         if(convertView == null){
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_operation,parent,false);
         }
-        OperationBean operationBean = mData.get(position);
+        final OperationBean operationBean = mData.get(position);
         ImageView imageView = (ImageView) convertView.findViewById(R.id.iv_content);
         TextView textView = (TextView) convertView.findViewById(R.id.tv_tips);
         Button button = (Button) convertView.findViewById(R.id.btn_operate);
@@ -57,7 +59,7 @@ public class OperationAdapter extends BaseAdapter {
         }else {
             textView.setVisibility(View.GONE);
             imageView.setVisibility(View.VISIBLE);
-            if(operationBean.getDrawingInfos() != null && !operationBean.getDrawingInfos().isEmpty()){
+            if(OperationUtils.hasStoredBitmap(operationBean.getStoredFileName())){
                 button.setText("修改");
                 button.setBackgroundResource(R.drawable.selector_operation_button_gray_bg);
             }else {
@@ -66,11 +68,12 @@ public class OperationAdapter extends BaseAdapter {
             }
             //TODO 需要加载图片跟以前的path
             Glide.with(parent.getContext()).load(operationBean.getImageUrl()).asBitmap().error(R.drawable.image_load_failed).into(imageView);
+//            Log.i("picname","url:" + operationBean.getImageUrl() + "pic===" + StringUtil.getPictureName(operationBean.getImageUrl()));
         }
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PaletteActivity.invoke(parent.getContext());
+                PaletteActivity.invoke(parent.getContext(),operationBean.getStoredFileName(),operationBean.getImageUrl());
             }
         });
         return convertView;

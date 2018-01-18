@@ -3,6 +3,7 @@ package com.yanxiu.gphone.student.questions.operation;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,11 +11,13 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.db.SaveAnswerDBHelper;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerSimpleExerciseBaseFragment;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
 import com.yanxiu.gphone.student.util.HtmlImageGetterNew;
 import com.yanxiu.gphone.student.util.StemUtil;
+import com.yanxiu.gphone.student.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +78,13 @@ public class OperationFragment extends AnswerSimpleExerciseBaseFragment {
         for(String url: mImgUrls){
             OperationBean bean = new OperationBean();
             bean.setImageUrl(url);
-            //TODO 需要找到存储的url对应的path
+            String fileName;
+            if(TextUtils.isEmpty(url)){
+                fileName = SaveAnswerDBHelper.makeId(mQuestion);
+            }else {
+                fileName = SaveAnswerDBHelper.makeId(mQuestion) + StringUtil.getPictureName(url);
+            }
+            bean.setStoredFileName(fileName);
             operationBeanList.add(bean);
         }
         mAdapter = new OperationAdapter(operationBeanList);

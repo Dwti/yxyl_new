@@ -1,9 +1,6 @@
 package com.yanxiu.gphone.student.questions.operation;
 
 import com.yanxiu.gphone.student.base.BaseBean;
-import com.yanxiu.gphone.student.questions.operation.view.PathDrawingInfo;
-
-import java.util.List;
 
 /**
  * Created by sunpeng on 2018/1/8.
@@ -11,7 +8,7 @@ import java.util.List;
 
 public class OperationBean extends BaseBean {
     private String mImageUrl;
-    private List<PathDrawingInfo> mDrawingInfos;
+    private String mStoredFileName;  //画线保存的文件名字
 
     public String getImageUrl() {
         return mImageUrl;
@@ -21,11 +18,11 @@ public class OperationBean extends BaseBean {
         mImageUrl = imageUrl;
     }
 
-    public List<PathDrawingInfo> getDrawingInfos() {
-        return mDrawingInfos;
+    public String getStoredFileName() {
+        return mStoredFileName;
     }
 
-    public void setDrawingInfos(List<PathDrawingInfo> drawingInfos) {
-        mDrawingInfos = drawingInfos;
+    public void setStoredFileName(String storedFileName) {
+        mStoredFileName = storedFileName;
     }
 }

@@ -121,6 +121,11 @@ public class FileUtil {
         boolean success;
         FileOutputStream fos = null;
         try {
+            File file = new File(path);
+            if(file.exists()){
+                file.delete();
+                file.createNewFile();
+            }
             fos = new FileOutputStream(path);
             success = bitmap.compress(Bitmap.CompressFormat.PNG,100,fos);
             fos.flush();
