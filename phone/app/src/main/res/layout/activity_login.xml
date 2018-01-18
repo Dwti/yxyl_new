@@ -101,7 +101,7 @@
             android:layout_below="@+id/rl_login"
             android:layout_marginTop="@dimen/login_button_margin_top"
             android:background="@null"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tv_forget_password"
@@ -109,13 +109,15 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/login_thrid_padding"
                 android:text="@string/tv_forget_pass"
+                android:layout_gravity="center_horizontal"
                 android:textColor="@drawable/select_login_text_color"
                 android:textSize="@dimen/complete_info_textsize" />
 
             <View
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/tv_fast_registered"

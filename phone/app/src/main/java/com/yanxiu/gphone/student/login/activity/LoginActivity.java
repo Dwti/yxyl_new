@@ -30,6 +30,7 @@ import com.yanxiu.gphone.student.login.response.LoginResponse;
 import com.yanxiu.gphone.student.login.request.LoginRequest;
 import com.yanxiu.gphone.student.login.response.ThridMessageBean;
 import com.yanxiu.gphone.student.login.response.UserMessageBean;
+import com.yanxiu.gphone.student.user.setting.activity.BindMobileActivity;
 import com.yanxiu.gphone.student.util.ActivityManger;
 import com.yanxiu.gphone.student.util.EditTextManger;
 import com.yanxiu.gphone.student.util.LoginInfo;
@@ -140,6 +141,9 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
     private void initData() {
         mClearView.setEnabled(false);
         mLoginView.setEnabled(false);
+
+        mUserNameView.setText("dc1215171201");
+        mPassWordView.setText("123456");
     }
 
     private void listener() {
@@ -298,9 +302,12 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
                 if (response.getStatus().getCode()==0&&response.data!=null&&response.data.size()>0){
                     LoginInfo.saveCacheData(response.data.get(0));
                     LoginInfo.saveLoginType(UserMessageBean.LOGIN_ACCOUNT);
-                    MainActivity.invoke(LoginActivity.this,true);
-                    //there can't finish
-                    LoginActivity.this.finish();
+                    if (TextUtils.isEmpty(LoginInfo.getMobile())){
+                        BindMobileActivity.LaunchActivity(mContext,BindMobileActivity.COME_TYPE_LOGIN);
+                    }else {
+                        MainActivity.invoke(LoginActivity.this, true);
+                        LoginActivity.this.finish();
+                    }
                 }else if (response.getStatus().getCode()==80){
                     LoginInfo.setMobile(user_name);
                     LoginInfo.setPassWord(pass_word);

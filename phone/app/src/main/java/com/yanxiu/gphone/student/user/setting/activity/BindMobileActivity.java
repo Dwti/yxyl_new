@@ -17,6 +17,8 @@ import com.yanxiu.gphone.student.base.EXueELianBaseResponse;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
 import com.yanxiu.gphone.student.customviews.WavesLayout;
+import com.yanxiu.gphone.student.homepage.MainActivity;
+import com.yanxiu.gphone.student.login.activity.LoginActivity;
 import com.yanxiu.gphone.student.user.setting.bean.BindMobileMessage;
 import com.yanxiu.gphone.student.user.setting.request.BindMobileRequest;
 import com.yanxiu.gphone.student.user.setting.request.SendVerCodeBindMobileRequest;
@@ -36,6 +38,7 @@ public class BindMobileActivity extends YanxiuBaseActivity implements View.OnCli
 
     public static final String COME_TYPE_CHECK_MOBILE = "check_mobile";
     public static final String COME_TYPE_SETTING = "setting";
+    public static final String COME_TYPE_LOGIN="login";
 
     private static final String COME_TYPE_KEY = "come_type";
     private static final String TYPE = "0";
@@ -57,6 +60,7 @@ public class BindMobileActivity extends YanxiuBaseActivity implements View.OnCli
 
     private SendVerCodeBindMobileRequest mVerCodeBindMobileRequest;
     private BindMobileRequest mBindMobileRequest;
+    private String mComeFrom;
 
     public static void LaunchActivity(Context context, String comeFrom) {
         Intent intent = new Intent(context, BindMobileActivity.class);
@@ -101,11 +105,11 @@ public class BindMobileActivity extends YanxiuBaseActivity implements View.OnCli
 
     private void initData() {
 
-        String comeFrom = getIntent().getStringExtra(COME_TYPE_KEY);
+        mComeFrom = getIntent().getStringExtra(COME_TYPE_KEY);
 
         mTopView.setBackgroundColor(Color.WHITE);
         mBackView.setVisibility(View.VISIBLE);
-        if (COME_TYPE_CHECK_MOBILE.equals(comeFrom)) {
+        if (COME_TYPE_CHECK_MOBILE.equals(mComeFrom)) {
             mTitleView.setText(R.string.bind_new_mobile);
         } else {
             mTitleView.setText(R.string.setting_bind_mobile);
@@ -120,6 +124,9 @@ public class BindMobileActivity extends YanxiuBaseActivity implements View.OnCli
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (COME_TYPE_LOGIN.equals(mComeFrom)){
+            LoginInfo.LogOut();
+        }
         if (mVerCodeBindMobileRequest != null) {
             mVerCodeBindMobileRequest.cancelRequest();
             mVerCodeBindMobileRequest = null;
@@ -199,7 +206,11 @@ public class BindMobileActivity extends YanxiuBaseActivity implements View.OnCli
                 rootView.hiddenLoadingView();
                 if (response.getStatus().getCode()==0){
                     LoginInfo.saveMobile(mobile);
-                    EventBus.getDefault().post(new BindMobileMessage());
+                    if (COME_TYPE_LOGIN.equals(mComeFrom)){
+                        MainActivity.invoke(BindMobileActivity.this, true);
+                    }else {
+                        EventBus.getDefault().post(new BindMobileMessage());
+                    }
                     BindMobileActivity.this.finish();
                 }else {
                     ToastManager.showMsg(response.getStatus().getDesc());
