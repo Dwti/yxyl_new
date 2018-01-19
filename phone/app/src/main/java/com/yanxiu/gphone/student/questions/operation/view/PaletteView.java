@@ -342,9 +342,10 @@ public class PaletteView extends View {
     }
 
     public void reset() {
-        mResetCount++;
-        if (mBufferBitmap != null)
+        if (mBufferBitmap != null){
             mBufferBitmap.eraseColor(Color.TRANSPARENT);
+            mResetCount++;
+        }
         boolean isCachedPathEmpty = mCachedPathList.isEmpty();
         boolean isRemovedPathEmpty = mRemovedPathList.isEmpty();
         mCachedPathList.clear();
