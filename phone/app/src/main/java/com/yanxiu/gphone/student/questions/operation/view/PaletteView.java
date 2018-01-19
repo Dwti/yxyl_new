@@ -153,26 +153,20 @@ public class PaletteView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         if (mBgBitmap == null && mResourceDrawable != null) {
-//            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.mm);
-//            mBgBitmap = Bitmap.createBitmap(bitmap,0,0,bitmap.getWidth(),bitmap.getHeight());
             //缩放背景图
             OperationUtils.scaleDrawable(mResourceDrawable, getWidth(), getHeight());
-            mBgBitmap = OperationUtils.drawableToBitmap(mResourceDrawable);
+            Bitmap bitmap = OperationUtils.drawableToBitmap(mResourceDrawable);
+            mBgBitmap = Bitmap.createBitmap(getWidth(),getHeight(), Bitmap.Config.ARGB_8888);
+            Canvas c = new Canvas(mBgBitmap);
+            //居中开始画
+            float startX =  ( mBgBitmap.getWidth() - bitmap.getWidth() ) / 2;
+            float startY = (mBgBitmap.getHeight() - bitmap.getHeight() ) / 2;
+            c.drawBitmap(bitmap,startX,startY,null);
         }
 
-//        float  tranX = 0 ,tranY = 0;
-//        canvas.save();
-//        if(mBgBitmap.getWidth() < getWidth()){
-//            tranX = ( getWidth() - mBgBitmap.getWidth() ) / 2 ;
-//        }
-//        if(mBgBitmap.getHeight() < getHeight()){
-//            tranY = (getHeight() - mBgBitmap.getHeight()) / 2;
-//        }
-//        canvas.translate(tranX,tranY);
         if(mBgBitmap != null){
             canvas.drawBitmap(mBgBitmap, mMatrix, null);
         }
-//        canvas.restore();
 
         if (mBufferBitmap != null) {
             canvas.drawBitmap(mBufferBitmap, mMatrix, null);
