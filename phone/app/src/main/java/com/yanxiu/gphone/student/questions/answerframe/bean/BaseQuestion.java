@@ -664,7 +664,7 @@ public abstract class BaseQuestion implements Serializable {
      */
     public Boolean isNodeCountForTotal() {
 //        if (template.equals(QuestionTemplate.CLOZE)) {
-        if (isComplexQuestion && !type_id.equals("8") && !type_id.equals("22") && !type_id.equals("24") && !type_id.equals("30")) {
+        if (isComplexQuestion && !type_id.equals("8") && !type_id.equals("22") && !type_id.equals("24") && !type_id.equals("30") && !type_id.equals("25")) {
             return false;
         }
         return true;
@@ -680,7 +680,7 @@ public abstract class BaseQuestion implements Serializable {
      */
     public Boolean isChildNodeCountForTotal() {
 //        if (template.equals(QuestionTemplate.CLOZE)) {
-        if (isComplexQuestion && !type_id.equals("8") && !type_id.equals("22") && !type_id.equals("24") && !type_id.equals("30")) {
+        if (isComplexQuestion && !type_id.equals("8") && !type_id.equals("22") && !type_id.equals("24") && !type_id.equals("30") && !type_id.equals("25")) {
             return true;
         }
 
