@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -47,6 +49,7 @@ public class PaletteActivity extends YanxiuBaseActivity implements View.OnClickL
     private String mStoredFileName;
     public static final String IMAGE_URL = "IMAGE_URL";
     public static final String FILE_NAME = "FILE_NAME";  //保存涂画的path的文件名字
+    public static final String SUFFIX = ".jpg";
 
     public static void invoke(Context context,String fileName,String imgUrl) {
         Intent intent = new Intent(context, PaletteActivity.class);
@@ -287,9 +290,23 @@ public class PaletteActivity extends YanxiuBaseActivity implements View.OnClickL
     }
 
     private void saveDrawPath() {
-        //保存和读取的时候最好开启一个线程（因为时间原因，再一个这个bitmap本身比较小的缘故所以没用，后期优化）
+        //保存画的路径
         String filePath = FileUtil.getSavePicturePath(mStoredFileName);
         FileUtil.saveBitmapToFile(mPaletteView.getBufferedBitmap(),filePath);
+        //合成背景图跟画的图
+        Bitmap bgBmp = mPaletteView.getBgBitmap();
+        Bitmap buffBmp = mPaletteView.getBufferedBitmap();
+        Bitmap newBmp = Bitmap.createBitmap(mPaletteView.getWidth(),mPaletteView.getHeight(), Bitmap.Config.ARGB_8888);
+        newBmp.eraseColor(Color.WHITE);
+        Canvas canvas = new Canvas(newBmp);
+        float startX =  ( newBmp.getWidth() - bgBmp.getWidth() ) / 2;
+        float startY = (newBmp.getHeight() - bgBmp.getHeight() ) / 2;
+        //背景图需要居中
+        canvas.drawBitmap(bgBmp,startX,startY,null);
+        canvas.drawBitmap(buffBmp,0,0,null);
+        //保存合成后的图片
+        String picPath = filePath + SUFFIX;
+        FileUtil.saveBitmapToFile(newBmp,picPath);
     }
 
     private void dismissPop() {

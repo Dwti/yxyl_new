@@ -127,7 +127,7 @@ public class FileUtil {
                 file.createNewFile();
             }
             fos = new FileOutputStream(path);
-            success = bitmap.compress(Bitmap.CompressFormat.PNG,100,fos);
+            success = bitmap.compress(Bitmap.CompressFormat.JPEG,100,fos);
             fos.flush();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
