@@ -74,6 +74,7 @@ public class PaletteView extends View {
     private Bitmap mBgBitmap;
 
     private Line mBaseLine; //尺子的基准线
+    private int mResetCount = 0;
 
     private boolean mShouldBaseRuler = false;
 
@@ -82,6 +83,7 @@ public class PaletteView extends View {
 
     private UndoStatusChangedListener mUndoStatusChangedListener;
     private RedoStatusChangedListener mRedoStatusChangedListener;
+    private OnResetListener mOnResetListener;
 
     public enum PaintMode {
         DRAW,
@@ -339,7 +341,8 @@ public class PaletteView extends View {
         }
     }
 
-    public void clear() {
+    public void reset() {
+        mResetCount++;
         if (mBufferBitmap != null)
             mBufferBitmap.eraseColor(Color.TRANSPARENT);
         boolean isCachedPathEmpty = mCachedPathList.isEmpty();
@@ -353,6 +356,9 @@ public class PaletteView extends View {
         }
         if (mRedoStatusChangedListener != null && !isRemovedPathEmpty) {
             mRedoStatusChangedListener.onStatusChanged(false);
+        }
+        if(mOnResetListener != null){
+            mOnResetListener.onReset();
         }
     }
 
@@ -495,7 +501,11 @@ public class PaletteView extends View {
     }
 
     public boolean hasModified(){
-        return !mCachedPathList.isEmpty();
+        if(mResetCount > 0 ){
+            return true;
+        }else {
+            return !mCachedPathList.isEmpty();
+        }
     }
 
     public ArrayList<PathDrawingInfo> getCachedPathList() {
@@ -518,11 +528,23 @@ public class PaletteView extends View {
         mRedoStatusChangedListener = redoStatusChangedListener;
     }
 
+    public OnResetListener getOnResetListener() {
+        return mOnResetListener;
+    }
+
+    public void setOnResetListener(OnResetListener onResetListener) {
+        mOnResetListener = onResetListener;
+    }
+
     public interface UndoStatusChangedListener {
         void onStatusChanged(boolean canUndo);
     }
 
     public interface RedoStatusChangedListener {
         void onStatusChanged(boolean canRedo);
+    }
+
+    public interface OnResetListener{
+        void onReset();
     }
 }

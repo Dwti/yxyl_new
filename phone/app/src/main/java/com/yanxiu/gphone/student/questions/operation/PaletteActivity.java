@@ -31,6 +31,10 @@ import com.yanxiu.gphone.student.questions.spoken.SpokenErrorDialog;
 import com.yanxiu.gphone.student.util.FileUtil;
 import com.yanxiu.gphone.student.util.anim.AlphaAnimationUtil;
 
+import java.io.File;
+
+import de.greenrobot.event.EventBus;
+
 /**
  * Created by sunpeng on 2018/1/10.
  */
@@ -196,6 +200,22 @@ public class PaletteActivity extends YanxiuBaseActivity implements View.OnClickL
                 }
             }
         });
+
+        mPaletteView.setOnResetListener(new PaletteView.OnResetListener() {
+            @Override
+            public void onReset() {
+                String bmpPath = FileUtil.getSavePicturePath(mStoredFileName);
+                String picPath = bmpPath + SUFFIX;
+                File bmpFile = new File(bmpPath);
+                File picFile = new File(picPath);
+                if(bmpFile.exists()){
+                    bmpFile.delete();
+                }
+                if(picFile.exists()){
+                    picFile.delete();
+                }
+            }
+        });
     }
 
     @Override
@@ -215,7 +235,7 @@ public class PaletteActivity extends YanxiuBaseActivity implements View.OnClickL
                 finish();
                 break;
             case R.id.btn_reset:
-                mPaletteView.clear();
+                mPaletteView.reset();
                 break;
             case R.id.iv_undo:
                 mPaletteView.undo();
@@ -291,8 +311,8 @@ public class PaletteActivity extends YanxiuBaseActivity implements View.OnClickL
 
     private void saveDrawPath() {
         //保存画的路径
-        String filePath = FileUtil.getSavePicturePath(mStoredFileName);
-        FileUtil.saveBitmapToFile(mPaletteView.getBufferedBitmap(),filePath);
+        String bmpPath = FileUtil.getSavePicturePath(mStoredFileName);
+        FileUtil.saveBitmapToFile(mPaletteView.getBufferedBitmap(),bmpPath);
         //合成背景图跟画的图
         Bitmap bgBmp = mPaletteView.getBgBitmap();
         Bitmap buffBmp = mPaletteView.getBufferedBitmap();
@@ -305,8 +325,11 @@ public class PaletteActivity extends YanxiuBaseActivity implements View.OnClickL
         canvas.drawBitmap(bgBmp,startX,startY,null);
         canvas.drawBitmap(buffBmp,0,0,null);
         //保存合成后的图片
-        String picPath = filePath + SUFFIX;
+        String picPath = bmpPath + SUFFIX;
         FileUtil.saveBitmapToFile(newBmp,picPath);
+
+        //通知图片被修改
+        EventBus.getDefault().post(new PictureModifiedMessage());
     }
 
     private void dismissPop() {
