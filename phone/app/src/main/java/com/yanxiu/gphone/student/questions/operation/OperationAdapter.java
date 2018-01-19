@@ -51,25 +51,32 @@ public class OperationAdapter extends BaseAdapter {
         ImageView imageView = (ImageView) convertView.findViewById(R.id.iv_content);
         TextView textView = (TextView) convertView.findViewById(R.id.tv_tips);
         Button button = (Button) convertView.findViewById(R.id.btn_operate);
-        if(TextUtils.isEmpty(operationBean.getImageUrl())){
-            imageView.setVisibility(View.GONE);
-            textView.setVisibility(View.VISIBLE);
+        String picPath = operationBean.getStoredFilePath() + PaletteActivity.SUFFIX;
+        if(OperationUtils.hasStoredBitmap(picPath)){
+            button.setText("修改");
+            button.setBackgroundResource(R.drawable.selector_operation_button_gray_bg);
+            Glide.with(parent.getContext()).load(picPath).asBitmap().skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE).error(R.drawable.image_load_failed).into(imageView);
+        }else {
             button.setText("开始作答");
             button.setBackgroundResource(R.drawable.selector_operation_button_green_bg);
-        }else {
-            textView.setVisibility(View.GONE);
-            imageView.setVisibility(View.VISIBLE);
-            String picPath = operationBean.getStoredFilePath() + PaletteActivity.SUFFIX;
-            if(OperationUtils.hasStoredBitmap(picPath)){
-                button.setText("修改");
-                button.setBackgroundResource(R.drawable.selector_operation_button_gray_bg);
-                Glide.with(parent.getContext()).load(picPath).asBitmap().skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE).error(R.drawable.image_load_failed).into(imageView);
+            Glide.with(parent.getContext()).load(operationBean.getImageUrl()).asBitmap().error(R.drawable.image_load_failed).into(imageView);
+            if(TextUtils.isEmpty(operationBean.getImageUrl())){
+                imageView.setVisibility(View.GONE);
+                textView.setVisibility(View.VISIBLE);
             }else {
-                button.setText("开始作答");
-                button.setBackgroundResource(R.drawable.selector_operation_button_green_bg);
-                Glide.with(parent.getContext()).load(operationBean.getImageUrl()).asBitmap().error(R.drawable.image_load_failed).into(imageView);
+                textView.setVisibility(View.GONE);
+                imageView.setVisibility(View.VISIBLE);
+
             }
         }
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String localPath = operationBean.getStoredFilePath() + PaletteActivity.SUFFIX;
+                String url = OperationUtils.hasStoredBitmap(localPath) ?localPath:operationBean.getImageUrl();
+                OperaPicPreviewActivity.invoke(parent.getContext(),url);
+            }
+        });
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
