@@ -1,7 +1,6 @@
 package com.yanxiu.gphone.student.questions.operation;
 
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.util.FileUtil;
-import com.yanxiu.gphone.student.util.StringUtil;
 
 import java.util.List;
 
@@ -61,9 +59,8 @@ public class OperationAdapter extends BaseAdapter {
         }else {
             textView.setVisibility(View.GONE);
             imageView.setVisibility(View.VISIBLE);
-            String picName = operationBean.getStoredFileName() + PaletteActivity.SUFFIX;
-            String picPath = FileUtil.getSavePicturePath(picName);
-            if(OperationUtils.hasStoredBitmap(picName)){
+            String picPath = operationBean.getStoredFilePath() + PaletteActivity.SUFFIX;
+            if(OperationUtils.hasStoredBitmap(picPath)){
                 button.setText("修改");
                 button.setBackgroundResource(R.drawable.selector_operation_button_gray_bg);
                 Glide.with(parent.getContext()).load(picPath).asBitmap().skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE).error(R.drawable.image_load_failed).into(imageView);
@@ -76,7 +73,7 @@ public class OperationAdapter extends BaseAdapter {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PaletteActivity.invoke(parent.getContext(),operationBean.getStoredFileName(),operationBean.getImageUrl());
+                PaletteActivity.invoke(parent.getContext(),operationBean.getStoredFilePath(),operationBean.getImageUrl());
             }
         });
         return convertView;

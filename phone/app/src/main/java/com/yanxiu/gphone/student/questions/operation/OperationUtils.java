@@ -8,7 +8,6 @@ import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 
 import com.yanxiu.gphone.student.util.FileUtil;
-import com.yanxiu.gphone.student.util.StringUtil;
 
 import java.io.File;
 
@@ -18,11 +17,10 @@ import java.io.File;
 
 public class OperationUtils {
 
-    public static boolean hasStoredBitmap(String fileName){
-        if(TextUtils.isEmpty(fileName)){
+    public static boolean hasStoredBitmap(String filePath){
+        if(TextUtils.isEmpty(filePath)){
             return false;
         }
-        String filePath = FileUtil.getSavePicturePath(fileName);
         File file = new File(filePath);
         if(file.exists()){
             return true;
@@ -31,11 +29,10 @@ public class OperationUtils {
         }
     }
 
-    public static Bitmap getStoredBitmap(String fileName){
-        if(TextUtils.isEmpty(fileName)){
+    public static Bitmap getStoredBitmap(String filePath){
+        if(TextUtils.isEmpty(filePath)){
             return null;
         }
-        String filePath = FileUtil.getSavePicturePath(fileName);
         return FileUtil.readBitmapFromFile(filePath);
     }
 

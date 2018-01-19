@@ -50,14 +50,14 @@ public class PaletteActivity extends YanxiuBaseActivity implements View.OnClickL
     private SelectColorView mSelectColorView;
     private PopupWindow mPopupWindow;
     private String mImgUrl;
-    private String mStoredFileName;
+    private String mStoredFilePath;
     public static final String IMAGE_URL = "IMAGE_URL";
-    public static final String FILE_NAME = "FILE_NAME";  //保存涂画的path的文件名字
+    public static final String FILE_PATH = "FILE_PATH";  //保存涂画的path的文件名字
     public static final String SUFFIX = ".jpg";
 
-    public static void invoke(Context context,String fileName,String imgUrl) {
+    public static void invoke(Context context,String filePath,String imgUrl) {
         Intent intent = new Intent(context, PaletteActivity.class);
-        intent.putExtra(FILE_NAME,fileName);
+        intent.putExtra(FILE_PATH,filePath);
         intent.putExtra(IMAGE_URL,imgUrl);
         context.startActivity(intent);
     }
@@ -117,11 +117,11 @@ public class PaletteActivity extends YanxiuBaseActivity implements View.OnClickL
             });
         }
 
-        if(OperationUtils.hasStoredBitmap(mStoredFileName)){
+        if(OperationUtils.hasStoredBitmap(mStoredFilePath)){
             mPaletteView.post(new Runnable() {
                 @Override
                 public void run() {
-                    mPaletteView.restoreLocalBitmap(OperationUtils.getStoredBitmap(mStoredFileName).copy(Bitmap.Config.ARGB_8888,true));
+                    mPaletteView.restoreLocalBitmap(OperationUtils.getStoredBitmap(mStoredFilePath).copy(Bitmap.Config.ARGB_8888,true));
                 }
             });
         }
@@ -131,7 +131,7 @@ public class PaletteActivity extends YanxiuBaseActivity implements View.OnClickL
 
     private void initData(){
         mImgUrl = getIntent().getStringExtra(IMAGE_URL);
-        mStoredFileName = getIntent().getStringExtra(FILE_NAME);
+        mStoredFilePath = getIntent().getStringExtra(FILE_PATH);
     }
 
     private void initListener() {
@@ -204,8 +204,8 @@ public class PaletteActivity extends YanxiuBaseActivity implements View.OnClickL
         mPaletteView.setOnResetListener(new PaletteView.OnResetListener() {
             @Override
             public void onReset() {
-                String bmpPath = FileUtil.getSavePicturePath(mStoredFileName);
-                String picPath = bmpPath + SUFFIX;
+                String bmpPath = mStoredFilePath;
+                String picPath = mStoredFilePath + SUFFIX;
                 File bmpFile = new File(bmpPath);
                 File picFile = new File(picPath);
                 if(bmpFile.exists()){
@@ -311,8 +311,8 @@ public class PaletteActivity extends YanxiuBaseActivity implements View.OnClickL
 
     private void saveDrawPath() {
         //保存画的路径
-        String bmpPath = FileUtil.getSavePicturePath(mStoredFileName);
-        FileUtil.saveBitmapToFile(mPaletteView.getBufferedBitmap(),bmpPath);
+        String bmpPath = mStoredFilePath;
+        FileUtil.saveBitmapToFile(mPaletteView.getBufferedBitmap(),mStoredFilePath);
         //合成背景图跟画的图
         Bitmap bgBmp = mPaletteView.getBgBitmap();
         Bitmap buffBmp = mPaletteView.getBufferedBitmap();

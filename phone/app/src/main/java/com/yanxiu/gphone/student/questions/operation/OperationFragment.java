@@ -87,7 +87,8 @@ public class OperationFragment extends AnswerSimpleExerciseBaseFragment {
             }else {
                 fileName = SaveAnswerDBHelper.makeId(mQuestion) + StringUtil.getPictureName(url);
             }
-            bean.setStoredFileName(fileName);
+            String filePath = FileUtil.getSavePicturePath(fileName);
+            bean.setStoredFilePath(filePath);
             mOperationBeanList.add(bean);
         }
         mAdapter = new OperationAdapter(mOperationBeanList);
@@ -108,9 +109,9 @@ public class OperationFragment extends AnswerSimpleExerciseBaseFragment {
         if(message != null){
             mQuestion.answerList.clear();
             for(OperationBean bean : mOperationBeanList){
-                String picName = bean.getStoredFileName() + PaletteActivity.SUFFIX;
-                if(OperationUtils.hasStoredBitmap(picName)){
-                    mQuestion.answerList.add(FileUtil.getSavePicturePath(picName));
+                String picPath = bean.getStoredFilePath() + PaletteActivity.SUFFIX;
+                if(OperationUtils.hasStoredBitmap(picPath)){
+                    mQuestion.answerList.add(picPath);
                 }
             }
             if(mQuestion.answerList.isEmpty()){
