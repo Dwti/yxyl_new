@@ -375,7 +375,7 @@ public class QuestionUtil {
                                 String childTemplate = childQuestion.getTemplate();
                                 reportAnswerBean.setStatus(status);
                                 //此处分为需要老师批改跟不需要老师批改两种情况处理（即主观题与非主观题）
-                                if (!QuestionTemplate.ANSWER.equals(childTemplate)) {
+                                if (!QuestionTemplate.ANSWER.equals(childTemplate) && !QuestionTemplate.OPERATION.equals(childTemplate)) {
                                     //非主观题（就是有正确答案，直接能在客户端判定的题）
                                     if (answerChildList != null && !answerChildList.isEmpty()) {
 
@@ -553,7 +553,7 @@ public class QuestionUtil {
                             e.printStackTrace();
                         }
                         //此处分为需要老师批改跟不需要老师批改两种情况处理（即主观题与非主观题）
-                        if (!QuestionTemplate.ANSWER.equals(template)) {
+                        if (!QuestionTemplate.ANSWER.equals(template) && !QuestionTemplate.OPERATION.equals(template)) {
                             //非主观题
                             if (!QuestionTemplate.SPOKEN.equals(template)&&!QuestionTemplate.CONNECT.equals(template) && !QuestionTemplate.CLASSIFY.equals(template)) {
                                 if (answerList != null && !answerList.isEmpty()) {

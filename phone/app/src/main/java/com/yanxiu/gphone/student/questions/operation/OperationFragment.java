@@ -36,7 +36,6 @@ public class OperationFragment extends AnswerSimpleExerciseBaseFragment {
     private GridView mGridView;
     private OperationAdapter mAdapter;
     List<OperationBean> mOperationBeanList = new ArrayList<>();
-    //TODO initDataWithAnswer里面没有加操作题的判断，会影响答题报告，逻辑跟主观题是一样的
     @Override
     public void setData(BaseQuestion node) {
         super.setData(node);
@@ -111,7 +110,7 @@ public class OperationFragment extends AnswerSimpleExerciseBaseFragment {
             for(OperationBean bean : mOperationBeanList){
                 String picName = bean.getStoredFileName() + PaletteActivity.SUFFIX;
                 if(OperationUtils.hasStoredBitmap(picName)){
-                    mQuestion.answerList.add(picName);
+                    mQuestion.answerList.add(FileUtil.getSavePicturePath(picName));
                 }
             }
             if(mQuestion.answerList.isEmpty()){

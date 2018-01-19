@@ -268,7 +268,7 @@ public class SubmitQuesitonTask extends AsyncTask {
                 if (null != childQuestions && childSize >= 1) {
                     for (int j = 0; j < childSize; j++) {
                         BaseQuestion childQuestion = childQuestions.get(j);
-                        if (QuestionTemplate.ANSWER.equals(childQuestion.getTemplate())) {
+                        if (QuestionTemplate.ANSWER.equals(childQuestion.getTemplate()) || QuestionTemplate.OPERATION.equals(childQuestion.getTemplate())) {
                             ArrayList<SubjectiveUpLoadImgBean> imgList = new ArrayList<>();
                             boolean isShouldSetTotalCount = true;
                             Object answer = childQuestion.getAnswer();
@@ -298,7 +298,7 @@ public class SubmitQuesitonTask extends AsyncTask {
                     }
                 }
 
-            } else if (QuestionTemplate.ANSWER.equals(outQuestion.getTemplate())) {
+            } else if (QuestionTemplate.ANSWER.equals(outQuestion.getTemplate()) || QuestionTemplate.OPERATION.equals(outQuestion.getTemplate())) {
                 Object answer = outQuestion.getAnswer();
                 ArrayList<String> answerList = null;
                 boolean isShouldSetTotalCount = true;

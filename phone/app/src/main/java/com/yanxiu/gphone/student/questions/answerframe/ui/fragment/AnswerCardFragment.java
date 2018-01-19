@@ -197,7 +197,7 @@ public class AnswerCardFragment extends YanxiuBaseFragment implements View.OnCli
             }
         }
         for (int i = 0; i < mQuestions.size(); i++) {
-            if (QuestionTemplate.ANSWER.equals(mQuestions.get(i).getTemplate()) && mQuestions.get(i).getHasAnswered()) { //主观题且回答了，有图片
+            if ((QuestionTemplate.ANSWER.equals(mQuestions.get(i).getTemplate()) || QuestionTemplate.OPERATION.equals(mQuestions.get(i).getTemplate())) && mQuestions.get(i).getHasAnswered()) { //主观题且回答了，有图片
                 state = STATE_PROGRESS;
                 return state;
             }
@@ -208,7 +208,7 @@ public class AnswerCardFragment extends YanxiuBaseFragment implements View.OnCli
     private AnswerCardSubmitDialog.SubmitState checkHasImgState() {
         AnswerCardSubmitDialog.SubmitState state;
         for (int i = 0; i < mQuestions.size(); i++) {
-            if (QuestionTemplate.ANSWER.equals(mQuestions.get(i).getTemplate()) && mQuestions.get(i).getHasAnswered()) { //主观题且回答了，有图片
+            if ((QuestionTemplate.ANSWER.equals(mQuestions.get(i).getTemplate()) || QuestionTemplate.OPERATION.equals(mQuestions.get(i).getTemplate())) && mQuestions.get(i).getHasAnswered()) { //主观题且回答了，有图片
                 state = STATE_PROGRESS;
                 return state;
             }

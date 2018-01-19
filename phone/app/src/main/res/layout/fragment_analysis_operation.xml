@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_edf0ee"
+    android:orientation="vertical">
+
+    <include layout="@layout/answerquestion_common_number" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/complex_stem_layout"
+                layout="@layout/common_stem"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/ll_question"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/color_ffffff">
+
+                <com.yanxiu.gphone.student.customviews.spantextview.SubjectClozeTextView
+                    android:id="@+id/tv_question"
+                    style="@style/CommonQuestionFragmentTextView" />
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:background="@color/color_fafafa">
+
+                <com.yanxiu.gphone.student.customviews.AlbumGridView
+                    android:id="@+id/ag_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp" />
+
+                <TextView
+                    android:id="@+id/no_picture"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/no_picture"
+                    android:textColor="@color/color_cccccc"
+                    android:textSize="19dp"
+                    android:visibility="gone" />
+            </FrameLayout>
+            <LinearLayout
+                android:id="@+id/shadow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <include layout="@layout/shadow_view" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/bottompadding_layout"
+                android:layout_height="@dimen/analysis_line_h"
+                android:layout_width="match_parent"
+                android:background="@android:color/transparent"/>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
