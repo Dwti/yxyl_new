@@ -11,7 +11,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.util.FileUtil;
 import com.yanxiu.gphone.student.util.StringUtil;
 
 import java.util.List;
@@ -59,16 +61,17 @@ public class OperationAdapter extends BaseAdapter {
         }else {
             textView.setVisibility(View.GONE);
             imageView.setVisibility(View.VISIBLE);
-            if(OperationUtils.hasStoredBitmap(operationBean.getStoredFileName())){
+            String picName = operationBean.getStoredFileName() + PaletteActivity.SUFFIX;
+            String picPath = FileUtil.getSavePicturePath(picName);
+            if(OperationUtils.hasStoredBitmap(picName)){
                 button.setText("修改");
                 button.setBackgroundResource(R.drawable.selector_operation_button_gray_bg);
+                Glide.with(parent.getContext()).load(picPath).asBitmap().skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE).error(R.drawable.image_load_failed).into(imageView);
             }else {
                 button.setText("开始作答");
                 button.setBackgroundResource(R.drawable.selector_operation_button_green_bg);
+                Glide.with(parent.getContext()).load(operationBean.getImageUrl()).asBitmap().error(R.drawable.image_load_failed).into(imageView);
             }
-            //TODO 需要加载图片跟以前的path
-            Glide.with(parent.getContext()).load(operationBean.getImageUrl()).asBitmap().error(R.drawable.image_load_failed).into(imageView);
-//            Log.i("picname","url:" + operationBean.getImageUrl() + "pic===" + StringUtil.getPictureName(operationBean.getImageUrl()));
         }
         button.setOnClickListener(new View.OnClickListener() {
             @Override
