@@ -41,4 +41,10 @@ public class OperaPicPreviewActivity extends YanxiuBaseActivity {
         });
         Glide.with(this).load(mImgUrl).asBitmap().skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE).error(R.drawable.image_load_failed).into(mImageView);
     }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0,R.anim.activity_photo_exit);
+    }
 }
