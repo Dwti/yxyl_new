@@ -1,5 +1,7 @@
 package com.yanxiu.gphone.student.util;
 
+import android.text.TextUtils;
+
 import com.yanxiu.gphone.student.login.response.PassportBean;
 import com.yanxiu.gphone.student.login.response.UserMessageBean;
 
@@ -34,11 +36,7 @@ public class LoginInfo {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (bean == null) {
-            LOGIN_STATUS = LOGIN_OUT;
-        } else {
-            LOGIN_STATUS = LOGIN_IN;
-        }
+        checkLogStatus();
     }
 
     private static UserMessageBean getCacheData() {
@@ -49,8 +47,8 @@ public class LoginInfo {
         if (isLogIn()) {
             return;
         }
-        LOGIN_STATUS = LOGIN_IN;
         bean = messageBean;
+        checkLogStatus();
         Save();
     }
 
@@ -66,6 +64,17 @@ public class LoginInfo {
         LOGIN_STATUS = LOGIN_OUT;
         bean.delete();
         bean = null;
+    }
+
+    /**
+     * This method cannot be used at will.
+     * */
+    public static void checkLogStatus(){
+        if (bean == null|| TextUtils.isEmpty(getMobile())) {
+            LOGIN_STATUS = LOGIN_OUT;
+        } else {
+            LOGIN_STATUS = LOGIN_IN;
+        }
     }
 
     /**

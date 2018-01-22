@@ -89,6 +89,10 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
         initView();
         UpdateUtil.Initialize(this, false);
         judgeToJump(getIntent());
+        /* *
+         * 绑定别名不该放在这，在这会出现链接个推没成功，就开始绑定别名，结果肯定绑不上,有空再改
+         * cwq
+         * */
         PushManager.getInstance().bindAlias(this.getApplicationContext(), LoginInfo.getUID());
 //        ToastManager.showMsg(LoginInfo.getUID());
     }
