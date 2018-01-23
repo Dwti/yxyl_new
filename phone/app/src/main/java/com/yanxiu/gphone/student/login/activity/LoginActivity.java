@@ -308,10 +308,10 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
                         MainActivity.invoke(LoginActivity.this, true);
                         LoginActivity.this.finish();
                     }
-                }else if (response.getStatus().getCode()==80){
-                    LoginInfo.setMobile(user_name);
-                    LoginInfo.setPassWord(pass_word);
-                    JoinClassActivity.LaunchActivity(mContext);
+//                }else if (response.getStatus().getCode()==80){
+//                    LoginInfo.setMobile(user_name);
+//                    LoginInfo.setPassWord(pass_word);
+//                    JoinClassActivity.LaunchActivity(mContext);
                 }else {
                     ToastManager.showMsg(response.getStatus().getDesc());
                 }
