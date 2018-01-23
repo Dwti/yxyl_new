@@ -121,7 +121,8 @@ public class LoginInfo {
     }
 
     public static String getUID() {
-        if (!isLogIn()) {
+        //因登录处有绑定手机操作，需要uid，所以这样处理
+        if (bean==null||bean.getPassport()==null) {
             return "";
         }
         return String.valueOf(bean.getPassport().getUid());
