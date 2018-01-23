@@ -81,18 +81,27 @@ public class OperationFragment extends AnswerSimpleExerciseBaseFragment {
         mStem.setText(Html.fromHtml(mQuestion.getStem(),new HtmlImageGetterNew(mStem),null));
         mImgUrls = mQuestion.getOperateImgUrls();
 
-        for(String url: mImgUrls){
+        if(mImgUrls == null || mImgUrls.isEmpty()){
             OperationBean bean = new OperationBean();
-            bean.setImageUrl(url);
             String fileName;
-            if(TextUtils.isEmpty(url)){
-                fileName = SaveAnswerDBHelper.makeId(mQuestion);
-            }else {
-                fileName = SaveAnswerDBHelper.makeId(mQuestion) + StringUtil.getPictureName(url);
-            }
+            fileName = SaveAnswerDBHelper.makeId(mQuestion);
             String filePath = FileUtil.getSavePicturePath(fileName);
             bean.setStoredFilePath(filePath);
             mOperationBeanList.add(bean);
+        }else {
+            for(String url: mImgUrls){
+                OperationBean bean = new OperationBean();
+                bean.setImageUrl(url);
+                String fileName;
+                if(TextUtils.isEmpty(url)){
+                    fileName = SaveAnswerDBHelper.makeId(mQuestion);
+                }else {
+                    fileName = SaveAnswerDBHelper.makeId(mQuestion) + StringUtil.getPictureName(url);
+                }
+                String filePath = FileUtil.getSavePicturePath(fileName);
+                bean.setStoredFilePath(filePath);
+                mOperationBeanList.add(bean);
+            }
         }
         mAdapter = new OperationAdapter(mOperationBeanList,mOnStartAnswerClickListener);
         if(mOperationBeanList.size() > 1){
