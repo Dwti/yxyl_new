@@ -93,7 +93,7 @@ public class AnswerReportAdapter extends BaseAdapter {
         }
         int status = question.getPad().getStatus();
         ReportAnswerBean answerBean = question.getReportAnswerBean();
-        if (QuestionTemplate.ANSWER.equals(question.getTemplate())) {                //如果是主观题
+        if (QuestionTemplate.ANSWER.equals(question.getTemplate()) || QuestionTemplate.OPERATION.equals(question.getTemplate())) {                //如果是主观题或者操作题
             if (status == QuestionUtil.ANSER_READED) {                                   //如果已批改
                 if (answerBean.isHalfRight()) {
 //                        holder.ivSign.setImageResource(R.drawable.answer_report_half_correct);
