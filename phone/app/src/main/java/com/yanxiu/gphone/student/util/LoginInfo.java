@@ -128,9 +128,9 @@ public class LoginInfo {
     }
 
     public static String getToken() {
-        if (!isLogIn()) {
-            return "";
-        }
+//        if (!isLogIn()) {
+//            return "";
+//        }
         return bean.getPassport().getToken();
     }
 

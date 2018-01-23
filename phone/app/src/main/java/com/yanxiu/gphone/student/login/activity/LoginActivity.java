@@ -142,8 +142,8 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
         mClearView.setEnabled(false);
         mLoginView.setEnabled(false);
 
-//        mUserNameView.setText("dc1215171201");
-//        mPassWordView.setText("123456");
+        mUserNameView.setText("dc1215171201");
+        mPassWordView.setText("123456");
     }
 
     private void listener() {
