@@ -55,12 +55,12 @@ public class CircleView extends View {
 
     private void init(Context context){
 
-        mPaintOuterRing = new Paint();
+        mPaintOuterRing = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaintOuterRing.setColor(mColor);
         mPaintOuterRing.setStyle(Paint.Style.STROKE);
         mPaintOuterRing.setStrokeWidth(ScreenUtils.dpToPx(context,2));
 
-        mPaintInnerRing = new Paint();
+        mPaintInnerRing = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaintInnerRing.setColor(mColor);
         mPaintInnerRing.setStyle(Paint.Style.FILL);
 
