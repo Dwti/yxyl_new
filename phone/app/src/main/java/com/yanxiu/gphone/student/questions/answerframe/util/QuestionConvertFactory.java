@@ -93,10 +93,10 @@ public class QuestionConvertFactory {
                     ClassifyQuestion classifyQuestion = new ClassifyQuestion(paperTestBean,showType,paperStatus);
                     questions.add(classifyQuestion);
                     break;
-                case QuestionTemplate.OPERATION:
-                    OperationQuestion operationQuestion = new OperationQuestion(paperTestBean,showType,paperStatus);
-                    questions.add(operationQuestion);
-                    break;
+//                case QuestionTemplate.OPERATION:
+//                    OperationQuestion operationQuestion = new OperationQuestion(paperTestBean,showType,paperStatus);
+//                    questions.add(operationQuestion);
+//                    break;
                 case QuestionTemplate.ANSWER:
                     SubjectiveQuestion subjectiveQuestion = new SubjectiveQuestion(paperTestBean, showType, paperStatus);
                     questions.add(subjectiveQuestion);
@@ -236,17 +236,17 @@ public class QuestionConvertFactory {
                     classifyQuestion.setQid_ComplexToSimple(qid_complex);
                     questions.add(classifyQuestion);
                     break;
-                case QuestionTemplate.OPERATION:
-                    OperationQuestion operationQuestion = new OperationQuestion(childQuestion,showType,paperStatus);
-                    operationQuestion.setStem_complexToSimple(stem_complex);
-                    operationQuestion.setTemplate_complexToSimple(template);
-                    operationQuestion.setTypeId_complexToSimple(type_id);
-                    operationQuestion.setUrl_listenComplexToSimple(url_complex_listen);
-                    operationQuestion.setPadId_ComplexToSimple(padId_complex);
-                    operationQuestion.setPtid_ComplexToSimple(ptid_complex);
-                    operationQuestion.setQid_ComplexToSimple(qid_complex);
-                    questions.add(operationQuestion);
-                    break;
+//                case QuestionTemplate.OPERATION:
+//                    OperationQuestion operationQuestion = new OperationQuestion(childQuestion,showType,paperStatus);
+//                    operationQuestion.setStem_complexToSimple(stem_complex);
+//                    operationQuestion.setTemplate_complexToSimple(template);
+//                    operationQuestion.setTypeId_complexToSimple(type_id);
+//                    operationQuestion.setUrl_listenComplexToSimple(url_complex_listen);
+//                    operationQuestion.setPadId_ComplexToSimple(padId_complex);
+//                    operationQuestion.setPtid_ComplexToSimple(ptid_complex);
+//                    operationQuestion.setQid_ComplexToSimple(qid_complex);
+//                    questions.add(operationQuestion);
+//                    break;
                 case QuestionTemplate.ANSWER:
                     SubjectiveQuestion subjectiveQuestion = new SubjectiveQuestion(childQuestion, showType, paperStatus);
                     subjectiveQuestion.setStem_complexToSimple(stem_complex);
