@@ -11,6 +11,8 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.base.OnPermissionCallback;
+import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.db.SaveAnswerDBHelper;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.AnswerSimpleExerciseBaseFragment;
@@ -18,6 +20,7 @@ import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.Exercise
 import com.yanxiu.gphone.student.util.FileUtil;
 import com.yanxiu.gphone.student.util.HtmlImageGetterNew;
 import com.yanxiu.gphone.student.util.StringUtil;
+import com.yanxiu.gphone.student.util.ToastManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,13 +94,30 @@ public class OperationFragment extends AnswerSimpleExerciseBaseFragment {
             bean.setStoredFilePath(filePath);
             mOperationBeanList.add(bean);
         }
-        mAdapter = new OperationAdapter(mOperationBeanList);
+        mAdapter = new OperationAdapter(mOperationBeanList,mOnStartAnswerClickListener);
         if(mOperationBeanList.size() > 1){
             mGridView.setNumColumns(2);
             mGridView.setStretchMode(GridView.STRETCH_SPACING_UNIFORM);
         }
         mGridView.setAdapter(mAdapter);
     }
+
+    private OperationAdapter.OnStartAnswerClickListener mOnStartAnswerClickListener = new OperationAdapter.OnStartAnswerClickListener() {
+        @Override
+        public void onStartAnswerClick(final String storedFilePath, final String imgUrl) {
+            YanxiuBaseActivity.requestWriteAndReadPermission(new OnPermissionCallback() {
+                @Override
+                public void onPermissionsGranted(@Nullable List<String> deniedPermissions) {
+                    PaletteActivity.invoke(OperationFragment.this.getActivity(),storedFilePath,imgUrl);
+                }
+
+                @Override
+                public void onPermissionsDenied(@Nullable List<String> deniedPermissions) {
+                    ToastManager.showMsg(R.string.no_storage_permissions);
+                }
+            });
+        }
+    };
 
     @Override
     public void onDestroyView() {
@@ -121,7 +141,7 @@ public class OperationFragment extends AnswerSimpleExerciseBaseFragment {
             }
             saveAnswer(mQuestion);
             updateProgress();
-            mAdapter = new OperationAdapter(mOperationBeanList);
+            mAdapter = new OperationAdapter(mOperationBeanList,mOnStartAnswerClickListener);
             mGridView.setAdapter(mAdapter);
         }
     }
