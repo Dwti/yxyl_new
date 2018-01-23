@@ -134,9 +134,8 @@ public class PaletteView extends View {
 
         mDefaultLineWidth = ScreenUtils.dpToPx(getContext(), 2);
         mLineWidth = mDefaultLineWidth;
-        mColor = Color.BLACK;
         mPaint.setStrokeWidth(mLineWidth);
-        mPaint.setColor(mColor);
+        mPaint.setColor(Color.BLACK);
 
         mClearMode = new PorterDuffXfermode(PorterDuff.Mode.CLEAR);
 
@@ -458,9 +457,7 @@ public class PaletteView extends View {
     }
 
     public void setPaintColor(int color) {
-        if (mColor != color) {
-            mPaint.setColor(color);
-        }
+        mPaint.setColor(color);
     }
 
 
