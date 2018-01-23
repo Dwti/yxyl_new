@@ -239,7 +239,7 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
     }
 
     private void checkBottomBarProcess(int index) {
-        if (index >= 0 && index < 3) {
+        if (index >= 0 && index < mNavTextViews.length) {
             resetBottomBar();
 //            mNavBarViews[index].setBackgroundResource(R.drawable.home_nav_bar_sel);
             mNavTextViews[index].setTextColor(mSelNavTxtColor);
@@ -259,7 +259,7 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
     }
 
     private void resetBottomBar() {
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < mNavTextViews.length; i++) {
 //            mNavBarViews[i].setBackgroundResource(R.drawable.home_nav_bar_nor);
             mNavTextViews[i].setTextColor(mNormalNavTxtColor);
 //            mNavTextViews[i].setShadowLayer(2, 0, 2, getResources().getColor(R.color.color_33ffff));
