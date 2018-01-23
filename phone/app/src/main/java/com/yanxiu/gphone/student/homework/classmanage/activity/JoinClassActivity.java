@@ -26,6 +26,7 @@ import com.yanxiu.gphone.student.homework.response.JoinClassResponse;
 import com.yanxiu.gphone.student.homework.request.UpdateUserInfoRequest;
 import com.yanxiu.gphone.student.homework.response.UpdateUserInfoResponse;
 import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
+import com.yanxiu.gphone.student.login.activity.ChooseStageActivity;
 import com.yanxiu.gphone.student.userevent.UserEventManager;
 import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.ToastManager;
@@ -212,6 +213,12 @@ public class JoinClassActivity extends YanxiuBaseActivity {
             if (stageId.equals(stage_Id)){
                 LoginInfo.saveStageid(stage_Id);
                 LoginInfo.saveStageName(getText(stageNameId).toString());
+
+                ChooseStageActivity.StageMessage message = new ChooseStageActivity.StageMessage();
+                message.requestCode = 0;
+                message.stageId = stageId;
+                message.stageText = getText(stageNameId).toString();
+                EventBus.getDefault().post(message);
                 return;
             }
         }
