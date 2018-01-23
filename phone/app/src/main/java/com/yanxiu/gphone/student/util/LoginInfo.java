@@ -128,7 +128,8 @@ public class LoginInfo {
     }
 
     public static String getToken() {
-        if (!isLogIn()) {
+        //因登录处有绑定手机操作，需要token，所以这样处理
+        if (bean==null||bean.getPassport()==null) {
             return "";
         }
         return bean.getPassport().getToken();
