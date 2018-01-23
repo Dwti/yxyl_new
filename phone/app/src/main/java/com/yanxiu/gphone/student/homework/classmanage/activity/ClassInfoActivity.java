@@ -52,7 +52,7 @@ public class ClassInfoActivity extends YanxiuBaseActivity {
 
         Button btnCancel = (Button) findViewById(R.id.btn_cancel);
         //TODO 去掉退出班级按钮，为了开发方便，暂时不去，上线时选择隐藏（不要随便删除）
-//        btnCancel.setVisibility(View.GONE);
+        btnCancel.setVisibility(View.GONE);
 
         ImageView back = (ImageView) findViewById(R.id.iv_left);
 
