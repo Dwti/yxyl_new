@@ -143,10 +143,10 @@ public class OperationFragment extends AnswerSimpleExerciseBaseFragment {
                     mQuestion.answerList.add(picPath);
                 }
             }
-            if(mQuestion.answerList.isEmpty()){
-                mQuestion.setHasAnswered(false);
-            }else {
+            if(!mQuestion.answerList.isEmpty() && mQuestion.answerList.size() == mOperationBeanList.size()){
                 mQuestion.setHasAnswered(true);
+            }else {
+                mQuestion.setHasAnswered(false);
             }
             saveAnswer(mQuestion);
             updateProgress();
