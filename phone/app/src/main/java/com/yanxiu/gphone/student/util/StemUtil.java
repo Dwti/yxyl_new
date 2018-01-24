@@ -344,6 +344,19 @@ public class StemUtil {
         return urls;
     }
 
+    public static String initOperationStem(String stem){
+        if(TextUtils.isEmpty(stem)){
+            return "";
+        }
+        while (stem.matches(".*\\[\\[.*?]].*")){
+            int startIndex = stem.indexOf("[[");
+            int endIndex = stem.indexOf("]]");
+            String imgUrl  = stem.substring(startIndex,endIndex + 2);
+            stem = stem.replaceFirst("\\[\\[.*?]]",imgUrl);
+        }
+        return stem;
+    }
+
     public enum PlaceHolderGravity {
         LEFT, CENTER
     }

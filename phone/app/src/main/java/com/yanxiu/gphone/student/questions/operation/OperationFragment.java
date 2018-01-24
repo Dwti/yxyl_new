@@ -19,6 +19,7 @@ import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.answerbase.An
 import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.base.ExerciseBaseFragment;
 import com.yanxiu.gphone.student.util.FileUtil;
 import com.yanxiu.gphone.student.util.HtmlImageGetterNew;
+import com.yanxiu.gphone.student.util.StemUtil;
 import com.yanxiu.gphone.student.util.StringUtil;
 import com.yanxiu.gphone.student.util.ToastManager;
 
@@ -78,7 +79,7 @@ public class OperationFragment extends AnswerSimpleExerciseBaseFragment {
     }
 
     private void initData() {
-        mStem.setText(Html.fromHtml(mQuestion.getStem(),new HtmlImageGetterNew(mStem),null));
+        mStem.setText(Html.fromHtml(StemUtil.initOperationStem(mQuestion.getStem()),new HtmlImageGetterNew(mStem),null));
         mImgUrls = mQuestion.getOperateImgUrls();
 
         if(mImgUrls == null || mImgUrls.isEmpty()){
