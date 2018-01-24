@@ -300,7 +300,7 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
             protected void onResponse(RequestBase request, LoginResponse response) {
                 rootView.hiddenLoadingView();
                 if (response.getStatus().getCode()==0&&response.data!=null&&response.data.size()>0){
-                    if (TextUtils.isEmpty(LoginInfo.getMobile())){
+                    if (TextUtils.isEmpty(response.data.get(0).getMobile())){
                         LoginInfo.setCacheData(response.data.get(0));
                         LoginInfo.setLoginType(UserMessageBean.LOGIN_ACCOUNT);
                         BindMobileActivity.LaunchActivity(mContext,BindMobileActivity.COME_TYPE_LOGIN);
