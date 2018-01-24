@@ -153,6 +153,25 @@ public class ConnectAnalysisFragment extends AnalysisSimpleExerciseBaseFragment 
                 result.append(r);
             }
         }
+        String useLessNote=mQuestion.getUselessNode();
+        if (!TextUtils.isEmpty(useLessNote)){
+            String[] strings=useLessNote.split(",");
+            int leftCount=mQuestion.getLeftCount();
+            StringBuilder message= new StringBuilder();
+            for (String s:strings){
+                int i=Integer.parseInt(s);
+                if (i<leftCount){
+                    message.append("左").append(i+1).append("、");
+                }else {
+                    i-=leftCount;
+                    message.append("左").append(i+1).append("、");
+                }
+            }
+            if(message.lastIndexOf("、") == message.length() - 1){
+                message.deleteCharAt(message.length() - 1);
+            }
+            result.append(message).append("是多余干扰项");
+        }
         if(result.lastIndexOf(",") == result.length() - 1){
             result.deleteCharAt(result.length() - 1);
         }

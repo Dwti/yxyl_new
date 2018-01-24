@@ -173,6 +173,10 @@ public class ConnectQuestion extends BaseQuestion {
         }
     }
 
+    public String getUselessNode() {
+        return mUselessNode;
+    }
+
     private int getSta() {
         for (String str : serverFilledAnswers) {
             if (TextUtils.isEmpty(str.trim())) {
@@ -265,10 +269,6 @@ public class ConnectQuestion extends BaseQuestion {
     public int getLeftCount() {
         int leftCount=TextUtils.isEmpty(mLeftCount)?choices.size()/2:Integer.parseInt(mLeftCount);
         return leftCount;
-    }
-
-    public void setmLeftCount(String mLeftCount) {
-        this.mLeftCount = mLeftCount;
     }
 
     public List<PointBean> getPointList() {
