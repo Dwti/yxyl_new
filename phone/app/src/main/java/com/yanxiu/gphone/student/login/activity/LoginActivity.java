@@ -300,18 +300,20 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
             protected void onResponse(RequestBase request, LoginResponse response) {
                 rootView.hiddenLoadingView();
                 if (response.getStatus().getCode()==0&&response.data!=null&&response.data.size()>0){
-                    LoginInfo.saveCacheData(response.data.get(0));
-                    LoginInfo.saveLoginType(UserMessageBean.LOGIN_ACCOUNT);
                     if (TextUtils.isEmpty(LoginInfo.getMobile())){
+                        LoginInfo.setCacheData(response.data.get(0));
+                        LoginInfo.setLoginType(UserMessageBean.LOGIN_ACCOUNT);
                         BindMobileActivity.LaunchActivity(mContext,BindMobileActivity.COME_TYPE_LOGIN);
                     }else {
+                        LoginInfo.saveCacheData(response.data.get(0));
+                        LoginInfo.saveLoginType(UserMessageBean.LOGIN_ACCOUNT);
                         MainActivity.invoke(LoginActivity.this, true);
                         LoginActivity.this.finish();
                     }
-//                }else if (response.getStatus().getCode()==80){
-//                    LoginInfo.setMobile(user_name);
-//                    LoginInfo.setPassWord(pass_word);
-//                    JoinClassActivity.LaunchActivity(mContext);
+                }else if (response.getStatus().getCode()==80){
+                    LoginInfo.setMobile(user_name);
+                    LoginInfo.setPassWord(pass_word);
+                    JoinClassActivity.LaunchActivity(mContext);
                 }else {
                     ToastManager.showMsg(response.getStatus().getDesc());
                 }

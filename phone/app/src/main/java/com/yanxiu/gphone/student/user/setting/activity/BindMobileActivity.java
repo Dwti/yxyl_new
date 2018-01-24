@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.test.yanxiu.network.RequestBase;
@@ -54,6 +55,7 @@ public class BindMobileActivity extends YanxiuBaseActivity implements View.OnCli
     private TextView mSendVerCodeView;
     private WavesLayout mWavesView;
     private TextView mSureView;
+    private LinearLayout mSkipView;
 
     private boolean isMobileReady = false;
     private boolean isVerCodeReady = false;
@@ -91,6 +93,7 @@ public class BindMobileActivity extends YanxiuBaseActivity implements View.OnCli
         mSendVerCodeView = (TextView) findViewById(R.id.tv_send_verCode);
         mWavesView = (WavesLayout) findViewById(R.id.wl_waves);
         mSureView = (TextView) findViewById(R.id.tv_ok);
+        mSkipView= (LinearLayout) findViewById(R.id.ll_skip);
     }
 
     private void listener() {
@@ -98,6 +101,7 @@ public class BindMobileActivity extends YanxiuBaseActivity implements View.OnCli
         mSendVerCodeView.setOnClickListener(BindMobileActivity.this);
         mSureView.setOnClickListener(BindMobileActivity.this);
         mClearMobileView.setOnClickListener(BindMobileActivity.this);
+        mSkipView.setOnClickListener(BindMobileActivity.this);
 
         EditTextManger.getManager(mMobileView).setInputOnlyNumber().setTextChangedListener(BindMobileActivity.this);
         EditTextManger.getManager(mVerCodeView).setInputOnlyNumber().setTextChangedListener(BindMobileActivity.this);
@@ -111,7 +115,11 @@ public class BindMobileActivity extends YanxiuBaseActivity implements View.OnCli
         mBackView.setVisibility(View.VISIBLE);
         if (COME_TYPE_CHECK_MOBILE.equals(mComeFrom)) {
             mTitleView.setText(R.string.bind_new_mobile);
-        } else {
+        }else if (COME_TYPE_LOGIN.equals(mComeFrom)){
+            mTitleView.setText(R.string.setting_bind_mobile);
+            mSureView.setText("确定");
+            mSkipView.setVisibility(View.VISIBLE);
+        }else {
             mTitleView.setText(R.string.setting_bind_mobile);
         }
         mTitleView.setTextColor(ContextCompat.getColor(mContext, R.color.color_666666));
@@ -124,9 +132,6 @@ public class BindMobileActivity extends YanxiuBaseActivity implements View.OnCli
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (COME_TYPE_LOGIN.equals(mComeFrom)){
-            LoginInfo.LogOut();
-        }
         if (mVerCodeBindMobileRequest != null) {
             mVerCodeBindMobileRequest.cancelRequest();
             mVerCodeBindMobileRequest = null;
@@ -168,6 +173,11 @@ public class BindMobileActivity extends YanxiuBaseActivity implements View.OnCli
                 }
                 checkMobile(mMobileCode, verCode);
                 break;
+            case R.id.ll_skip:
+                LoginInfo.Save();
+                MainActivity.invoke(this,true);
+                this.finish();
+                break;
         }
     }
 
@@ -206,7 +216,7 @@ public class BindMobileActivity extends YanxiuBaseActivity implements View.OnCli
                 rootView.hiddenLoadingView();
                 if (response.getStatus().getCode()==0){
                     LoginInfo.saveMobile(mobile);
-                    LoginInfo.checkLogStatus();
+//                    LoginInfo.checkLogStatus();
                     if (COME_TYPE_LOGIN.equals(mComeFrom)){
                         ToastManager.showMsg(R.string.bind_mobile_success);
                         MainActivity.invoke(BindMobileActivity.this, true);

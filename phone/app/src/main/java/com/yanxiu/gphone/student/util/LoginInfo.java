@@ -36,11 +36,22 @@ public class LoginInfo {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        checkLogStatus();
+        if (bean == null) {
+            LOGIN_STATUS = LOGIN_OUT;
+        } else {
+            LOGIN_STATUS = LOGIN_IN;
+        }
     }
 
     private static UserMessageBean getCacheData() {
         return DataSupport.findFirst(UserMessageBean.class, true);
+    }
+
+    public static void setCacheData(UserMessageBean messageBean){
+        if (isLogIn()) {
+            return;
+        }
+        bean = messageBean;
     }
 
     public static void saveCacheData(UserMessageBean messageBean) {
@@ -48,11 +59,14 @@ public class LoginInfo {
             return;
         }
         bean = messageBean;
-        checkLogStatus();
+        LOGIN_STATUS = LOGIN_IN;
         Save();
     }
 
-    private static void Save() {
+    public static void Save() {
+        if (bean==null||bean.getPassport()==null){
+            return;
+        }
         bean.getPassport().save();
         bean.save();
     }
@@ -64,17 +78,6 @@ public class LoginInfo {
         LOGIN_STATUS = LOGIN_OUT;
         bean.delete();
         bean = null;
-    }
-
-    /**
-     * This method cannot be used at will.
-     * */
-    public static void checkLogStatus(){
-        if (bean == null|| TextUtils.isEmpty(getMobile())) {
-            LOGIN_STATUS = LOGIN_OUT;
-        } else {
-            LOGIN_STATUS = LOGIN_IN;
-        }
     }
 
     /**
@@ -174,6 +177,13 @@ public class LoginInfo {
             return "";
         }
         return bean.getLoginType();
+    }
+
+    public static void setLoginType(String loginType) {
+        if (bean==null) {
+            return;
+        }
+        bean.setLoginType(loginType);
     }
 
     public static void saveLoginType(String loginType) {
