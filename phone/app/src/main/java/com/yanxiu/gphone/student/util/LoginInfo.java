@@ -59,7 +59,6 @@ public class LoginInfo {
             return;
         }
         bean = messageBean;
-        LOGIN_STATUS = LOGIN_IN;
         Save();
     }
 
@@ -67,6 +66,7 @@ public class LoginInfo {
         if (bean==null||bean.getPassport()==null){
             return;
         }
+        LOGIN_STATUS = LOGIN_IN;
         bean.getPassport().save();
         bean.save();
     }
