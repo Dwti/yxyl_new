@@ -16,6 +16,7 @@ import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
+import com.yanxiu.gphone.student.customviews.ChapterSwitchBar;
 import com.yanxiu.gphone.student.exercise.bean.SubjectBean;
 import com.yanxiu.gphone.student.exercise.request.SubjectsRequest;
 import com.yanxiu.gphone.student.exercise.response.SubjectsResponse;
@@ -37,7 +38,9 @@ public class SelectSubjectActivity extends YanxiuBaseActivity {
     private Button mRefreshBtn;
     private ListView mListView;
     private ImageView mTipsImg;
-    private SelectSubjectAdapter mAdapter;
+    private SelectSubjectAdapter mPracticseAdapter;
+    private ChapterSwitchBar mSwitchBar;
+    private SelectSubjectAdapter mLearningAdapter;
 
     public static void invoke(Context context) {
         Intent intent = new Intent(context, SelectSubjectActivity.class);
@@ -55,7 +58,7 @@ public class SelectSubjectActivity extends YanxiuBaseActivity {
     }
 
     public void onEventMainThread(EditionSelectChangeMessage message){
-        requestSubjects();
+        requestPracticeSubjects();
     }
 
     private void initView() {
@@ -65,19 +68,23 @@ public class SelectSubjectActivity extends YanxiuBaseActivity {
         mTipsImg = (ImageView) findViewById(R.id.iv_tips);
         mTips = (TextView) findViewById(R.id.tv_tips);
         mBack = findViewById(R.id.back);
+
+        mSwitchBar = (ChapterSwitchBar) findViewById(R.id.switchBar);
+        mSwitchBar.setOnText(R.string.study);
+        mSwitchBar.setOffText(R.string.exercises);
     }
 
     private void initListener() {
         mRefreshBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestSubjects();
+                requestPracticeSubjects();
             }
         });
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                SubjectBean bean = (SubjectBean) mAdapter.getItem(position);
+                SubjectBean bean = (SubjectBean) mPracticseAdapter.getItem(position);
                 String subjectId = bean.getId();
                 String subjectName = bean.getName();
                 String editionName = null;
@@ -93,12 +100,29 @@ public class SelectSubjectActivity extends YanxiuBaseActivity {
                 finish();
             }
         });
+        mSwitchBar.setOnCheckedChangedListener(new ChapterSwitchBar.OnCheckedChangedListener() {
+            @Override
+            public void onCheckedChanged(boolean isOff) {
+                if (isOff) {
+                    mListView.setAdapter(mPracticseAdapter);
+                    if(mPracticseAdapter.getCount() == 0) {
+                        requestPracticeSubjects();
+                    }
+                } else {
+                    mListView.setAdapter(mLearningAdapter);
+                    if(mLearningAdapter.getCount() == 0) {
+                        requestLearningSubjects();
+                    }
+                }
+            }
+        });
     }
 
     private void initData() {
-        mAdapter = new SelectSubjectAdapter(new ArrayList<SubjectBean>(0));
-        mListView.setAdapter(mAdapter);
-        requestSubjects();
+        mPracticseAdapter = new SelectSubjectAdapter(new ArrayList<SubjectBean>(0));
+        mListView.setAdapter(mPracticseAdapter);
+        requestPracticeSubjects();
+        mLearningAdapter = new SelectSubjectAdapter(new ArrayList<SubjectBean>(0));
     }
 
     private void showDataEmptyView() {
@@ -116,16 +140,29 @@ public class SelectSubjectActivity extends YanxiuBaseActivity {
         mRefreshBtn.setText(R.string.click_to_retry);
     }
 
-    private void showSubjects(List<SubjectBean> data) {
+    private void showPracticeSubjects(List<SubjectBean> data) {
         mListView.setVisibility(View.VISIBLE);
         mTipsView.setVisibility(View.GONE);
-        mAdapter.replaceData(data);
+        mPracticseAdapter.replaceData(data);
     }
 
-    private void requestSubjects() {
+    private void showLearningSubjects(List<SubjectBean> data) {
+        mListView.setVisibility(View.VISIBLE);
+        mTipsView.setVisibility(View.GONE);
+        mLearningAdapter.replaceData(data);
+    }
+
+    private void requestPracticeSubjects() {
         SubjectsRequest request = new SubjectsRequest();
         request.setStageId(LoginInfo.getStageid());
         request.startRequest(SubjectsResponse.class, mSubjectsCallback);
+    }
+
+    //TODO:添加学习模块获取学科接口
+    private void requestLearningSubjects() {
+        SubjectsRequest request = new SubjectsRequest();
+        request.setStageId(LoginInfo.getStageid());
+        request.startRequest(SubjectsResponse.class, mLearningSubjectsCallback);
     }
 
     HttpCallback<SubjectsResponse> mSubjectsCallback = new EXueELianBaseCallback<SubjectsResponse>() {
@@ -138,7 +175,38 @@ public class SelectSubjectActivity extends YanxiuBaseActivity {
         protected void onResponse(RequestBase request, SubjectsResponse response) {
             if (response.getStatus().getCode() == 0) {
                 if (response.getData().size() > 0) {
-                    showSubjects(response.getData());
+                    showPracticeSubjects(response.getData());
+                } else {
+                    showDataEmptyView();
+                }
+            } else {
+                showDataErrorView();
+            }
+        }
+
+        @Override
+        public void onFail(RequestBase request, Error error) {
+            showDataErrorView();
+        }
+    };
+
+
+    HttpCallback<SubjectsResponse> mLearningSubjectsCallback = new EXueELianBaseCallback<SubjectsResponse>() {
+        @Override
+        public void onSuccess(RequestBase request, SubjectsResponse ret) {
+            super.onSuccess(request, ret);
+        }
+
+        @Override
+        protected void onResponse(RequestBase request, SubjectsResponse response) {
+            if (response.getStatus().getCode() == 0) {
+                if (response.getData().size() > 0) {
+                    List<SubjectBean> list = response.getData();
+                    list.remove(0);
+                    if(list.size() > 0) {
+                        showLearningSubjects(list);
+                    }
+//                    showSubjects(response.getData());
                 } else {
                     showDataEmptyView();
                 }

@@ -346,4 +346,9 @@
     <string name="submit">提交</string>
     <string name="point_title">%1$s (%2$s)</string>
 
+
+    <string name="sync_title">同步</string>
+    <string name="special_title">专题</string>
+    <string name="weak_point">薄弱知识点</string>
+    <string name="video_point_detail">知识点视频详解</string>
 </resources>

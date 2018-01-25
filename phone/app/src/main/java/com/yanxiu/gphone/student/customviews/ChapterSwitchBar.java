@@ -72,6 +72,23 @@ public class ChapterSwitchBar extends FrameLayout {
         });
     }
 
+    public void setOnText(String onText) {
+        mOn.setText(onText);
+    }
+
+    public void setOffText(String offText) {
+        mOff.setText(offText);
+    }
+
+    public void setOnText(int sync_title) {
+        mOn.setText(sync_title);
+    }
+
+    public void setOffText(int special_title) {
+        mOff.setText(special_title);
+        mSelected.setText(mOff.getText());
+    }
+
     private void performAnimation(boolean isOff){
         TranslateAnimation animation = null;
         if(!isOff && mIsOff){

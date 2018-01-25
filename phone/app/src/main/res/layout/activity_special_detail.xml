@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/layout_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/top_layout_height"
+        android:background="@android:color/white">
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="12dp"
+            android:background="@drawable/selector_back" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/top_layout_height"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="专题名"
+            android:textColor="#666666"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+    <!--视频播放层 start-->
+    <RelativeLayout
+        android:id="@+id/video_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:keepScreenOn="true"
+        android:orientation="vertical">
+
+        <com.yanxiu.gphone.student.videoplay.PlayerView
+            android:id="@+id/player_view"
+            android:layout_width="match_parent"
+            android:layout_height="216dp"
+            android:background="@android:color/black"></com.yanxiu.gphone.student.videoplay.PlayerView>
+
+        <RelativeLayout
+            android:id="@+id/video_cover"
+            android:layout_width="match_parent"
+            android:layout_height="216dp"
+            android:background="@android:color/black">
+
+            <ImageView
+                android:id="@+id/iv_cover"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY" />
+
+            <ImageView
+                android:id="@+id/iv_play"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/bg_play_video" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+    <!-- end -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:background="@color/color_5002c0f" />
+
+            <TextView
+                android:id="@+id/video_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/special_margin"
+                android:layout_marginRight="@dimen/special_margin"
+                android:layout_marginTop="27dp"
+                android:text="小学有理数教案"
+                android:textColor="@color/color_999999"
+                android:textSize="@dimen/text_size_17" />
+
+            <TextView
+                android:id="@+id/video_play_times"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/special_margin"
+                android:layout_marginRight="@dimen/special_margin"
+                android:layout_marginTop="12dp"
+                android:text="32次播放"
+                android:textColor="@color/color_333333"
+                android:textSize="@dimen/text_size_12" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="30dp"
+                android:background="@color/color_edf0ee" />
+
+            <TextView
+                android:id="@+id/video_related"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/special_margin"
+                android:layout_marginRight="@dimen/special_margin"
+                android:layout_marginTop="22dp"
+                android:text="相关视频"
+                android:textColor="@color/color_666666"
+                android:textSize="@dimen/text_size_16" />
+
+            <com.yanxiu.gphone.student.customviews.UnMoveGridView
+                android:id="@+id/gridView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/special_margin"
+                android:layout_marginRight="@dimen/special_margin"
+                android:layout_marginTop="@dimen/special_margin"
+                android:columnWidth="160dp"
+                android:horizontalSpacing="15dp"
+                android:listSelector="@android:color/transparent"
+                android:numColumns="2"
+                android:paddingBottom="30dp"
+                android:stretchMode="spacingWidth"
+                android:verticalSpacing="15dp" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

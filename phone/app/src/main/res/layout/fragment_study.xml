@@ -1,6 +1,52 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/white">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/top_layout_height"
+        android:textSize="20sp"
+        android:textColor="#666666"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:text="学习"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        android:background="#edf0ee">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.yanxiu.gphone.student.customviews.UnMoveGridView
+                android:id="@+id/gridView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="30dp"
+                android:listSelector="@android:color/transparent"
+                android:paddingBottom="30dp"
+                android:verticalSpacing="15dp"
+                android:numColumns="3"
+                android:columnWidth="87dp"
+                android:stretchMode="spacingWidth"
+                android:scrollbars="none"/>
+
+            <include
+                android:id="@+id/tips_layout"
+                layout="@layout/homework_tips_layout"
+                android:visibility="gone" />
+        </FrameLayout>
+
+
+
+    </ScrollView>
 
 </LinearLayout>

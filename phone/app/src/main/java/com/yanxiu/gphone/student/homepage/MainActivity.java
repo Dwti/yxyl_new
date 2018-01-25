@@ -112,7 +112,7 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
         if (!TextUtils.isEmpty(headImg)) {
             String[] strings = headImg.split("/");
             if (!"file_56a60c9d7cbd4.jpg".equals(strings[strings.length - 1])) {
-                Glide.with(this).load(LoginInfo.getHeadIcon()).asBitmap().placeholder(R.drawable.selector_my).into(new BitmapImageViewTarget(mNavIconViews[2]) {
+                Glide.with(this).load(LoginInfo.getHeadIcon()).asBitmap().placeholder(R.drawable.selector_my).into(new BitmapImageViewTarget(mNavIconViews[3]) {
                     @Override
                     protected void setResource(Bitmap resource) {
                         RoundedBitmapDrawable bitmapDrawable = RoundedBitmapDrawableFactory.create(view.getContext().getResources(), resource);
@@ -123,7 +123,7 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
                  return;
             }
         }
-        mNavIconViews[2].setImageDrawable(ContextCompat.getDrawable(this, R.drawable.selector_my));
+        mNavIconViews[3].setImageDrawable(ContextCompat.getDrawable(this, R.drawable.selector_my));
     }
 
     @Override
@@ -176,7 +176,7 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
         setColorFilter(3, 0);
 
         //TODO 隐藏学习fragment
-        mNavBarViews[2].setVisibility(View.GONE);
+//        mNavBarViews[2].setVisibility(View.GONE);
     }
 
     @Override
