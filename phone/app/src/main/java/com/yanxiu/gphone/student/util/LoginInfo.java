@@ -1,11 +1,12 @@
 package com.yanxiu.gphone.student.util;
 
-import android.text.TextUtils;
-
 import com.yanxiu.gphone.student.login.response.PassportBean;
 import com.yanxiu.gphone.student.login.response.UserMessageBean;
 
 import org.litepal.crud.DataSupport;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Canghaixiao.
@@ -346,5 +347,19 @@ public class LoginInfo {
             return "";
         }
         return bean.getAreaName();
+    }
+
+    /**
+     * 可访问的学科ID
+     * */
+    public static List<Integer> getSubjectIds(){
+        if (!isLogIn()){
+            return new ArrayList<>();
+        }
+        List<Integer> list=bean.getSubjectIds();
+        if (list==null){
+            list=new ArrayList<>();
+        }
+        return list;
     }
 }
