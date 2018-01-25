@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -18,11 +19,14 @@ import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
+import com.yanxiu.gphone.student.bcresource.bean.TopicBean;
 import com.yanxiu.gphone.student.bcresource.bean.TopicPaperStatusChangeMessage;
 import com.yanxiu.gphone.student.bcresource.request.ResetTopicPaperHistoryRequest;
+import com.yanxiu.gphone.student.bcresource.response.TopicPaperResponse;
 import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.AnswerCardSubmitDialog;
 import com.yanxiu.gphone.student.customviews.AnswerReportTitleView;
+import com.yanxiu.gphone.student.customviews.ClassifyChoice;
 import com.yanxiu.gphone.student.customviews.LoadingView;
 import com.yanxiu.gphone.student.customviews.UnMoveGridView;
 import com.yanxiu.gphone.student.customviews.vieweffect.GradientEffect;
@@ -30,6 +34,9 @@ import com.yanxiu.gphone.student.customviews.vieweffect.GradientEffectImpl;
 import com.yanxiu.gphone.student.db.SpManager;
 import com.yanxiu.gphone.student.exercise.request.GenQuesRequest;
 import com.yanxiu.gphone.student.homework.response.PaperResponse;
+import com.yanxiu.gphone.student.learning.KnowledgePointLabelItem;
+import com.yanxiu.gphone.student.learning.adapter.RelatedVideoAdapter;
+import com.yanxiu.gphone.student.learning.activity.SpecialDetailActivity;
 import com.yanxiu.gphone.student.questions.answerframe.adapter.AnswerReportAdapter;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
@@ -38,6 +45,7 @@ import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionUtil;
 import com.yanxiu.gphone.student.util.DESBodyDealer;
 import com.yanxiu.gphone.student.util.DataFetcher;
+import com.yanxiu.gphone.student.util.FileUtil;
 import com.yanxiu.gphone.student.util.ScreenUtils;
 import com.yanxiu.gphone.student.util.TextTypefaceUtil;
 import com.yanxiu.gphone.student.util.TimeUtils;
@@ -96,6 +104,20 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
 
     private AnswerCardSubmitDialog mDialog;
 
+    private GridView mGridView;
+    RelatedVideoAdapter mRelatedAdapter;
+    private TopicPaperResponse mMockData;
+    private RelatedVideoAdapter.OnItemClickListener mOnItemClickListener = new RelatedVideoAdapter.OnItemClickListener() {
+        @Override
+        public void onClick(TopicBean bean, int position) {
+            Paper paper = new Paper(mMockRelatedVideoData.getData().get(0), QuestionShowType.ANSWER);
+            DataFetcher.getInstance().save(paper.getId(), paper);
+            SpecialDetailActivity.invoke(AnswerReportActicity.this, paper.getId(),"413602",Constants.FROM_BC_RESOURCE);
+        }
+    };;
+    private PaperResponse mMockRelatedVideoData;
+    private ClassifyChoice mWeakPointDetail;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -135,6 +157,9 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
         mTotalCount = QuestionUtil.getTotalCount(mQuestions);
         mTitleString = mPaper.getName();
         calculationSpanCount();
+
+        mockBCData();
+        mockRelatedVideoDataData();
     }
 
     /**
@@ -194,6 +219,29 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
         }
         addGridView(QuestionUtil.classifyQuestionByType(mQuestions));
         setDragAmin();
+
+        mGridView = (GridView) findViewById(R.id.gridView);
+        mRelatedAdapter = new RelatedVideoAdapter(this, mMockData.getData(), mOnItemClickListener );
+        mGridView.setAdapter(mRelatedAdapter);
+        mGridView.setFocusable(false);
+
+        mWeakPointDetail = (ClassifyChoice) findViewById(R.id.weak_point_detail);
+        ArrayList<KnowledgePointLabelItem> list = new ArrayList<KnowledgePointLabelItem>();
+        KnowledgePointLabelItem item = new KnowledgePointLabelItem();
+        item.content = "有理数的加法";
+        item.marginRight = 15; //15dp
+        item.textSize = 15; //15sp
+        item.textColor = getResources().getColor(R.color.color_ffffff);
+        item.backGroundId = R.drawable.selector_knowledge_item_layout;
+        list.add(item);
+
+        item.content = "平面直角坐标系";
+        item.marginRight = 15; //15dp
+        item.textSize = 15; //15sp
+        item.textColor = getResources().getColor(R.color.color_ffffff);
+        item.backGroundId = R.drawable.selector_knowledge_item_layout;
+        list.add(item);
+        mWeakPointDetail.setData(list);
     }
 
 
@@ -397,5 +445,14 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
             mGradientEffect = null;
         }
         super.onDestroy();
+    }
+
+    public void mockBCData() {
+        String json = FileUtil.getDataFromAssets(this, "Mock_BC.json");
+        mMockData = RequestBase.gson.fromJson(json, TopicPaperResponse.class);
+    }
+    public void mockRelatedVideoDataData() {
+        String json = FileUtil.getDataFromAssets(this, "Mock_relatedVideo.json");
+        mMockRelatedVideoData = RequestBase.gson.fromJson(json, PaperResponse.class);
     }
 }

@@ -50,6 +50,8 @@
 
     <dimen name="text_size_16">16dp</dimen>
     <dimen name="text_size_15">15dp</dimen>
+    <dimen name="text_size_17">17dp</dimen>
+    <dimen name="text_size_12">12dp</dimen>
 
     <dimen name="login_thrid_padding">5dp</dimen>
 
@@ -302,5 +304,6 @@
     <dimen name="notifi_title_textsize">14dp</dimen>
 
     <dimen name="question_line_height">3dp</dimen>
+    <dimen name="special_margin">15dp</dimen>
 </resources>
 

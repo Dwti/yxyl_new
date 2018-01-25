@@ -101,7 +101,7 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
-        showCurrentFragment(0);
+        showCurrentFragment(INDEX_HOMEWORK);
         judgeToJump(getIntent());
     }
 
@@ -112,7 +112,7 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
         if (!TextUtils.isEmpty(headImg)) {
             String[] strings = headImg.split("/");
             if (!"file_56a60c9d7cbd4.jpg".equals(strings[strings.length - 1])) {
-                Glide.with(this).load(LoginInfo.getHeadIcon()).asBitmap().placeholder(R.drawable.selector_my).into(new BitmapImageViewTarget(mNavIconViews[2]) {
+                Glide.with(this).load(LoginInfo.getHeadIcon()).asBitmap().placeholder(R.drawable.selector_my).into(new BitmapImageViewTarget(mNavIconViews[INDEX_MY]) {
                     @Override
                     protected void setResource(Bitmap resource) {
                         RoundedBitmapDrawable bitmapDrawable = RoundedBitmapDrawableFactory.create(view.getContext().getResources(), resource);
@@ -123,7 +123,7 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
                  return;
             }
         }
-        mNavIconViews[2].setImageDrawable(ContextCompat.getDrawable(this, R.drawable.selector_my));
+        mNavIconViews[INDEX_MY].setImageDrawable(ContextCompat.getDrawable(this, R.drawable.selector_my));
 
         boolean isShouldShowStudy=false;
         for (Integer integer:LoginInfo.getSubjectIds()){
@@ -133,10 +133,10 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
         }
         if (isShouldShowStudy){
             //TODO 隐藏学习fragment
-            mNavBarViews[2].setVisibility(View.VISIBLE);
+            mNavBarViews[INDEX_STUDY].setVisibility(View.VISIBLE);
         }else {
             //TODO 隐藏学习fragment
-            mNavBarViews[2].setVisibility(View.GONE);
+            mNavBarViews[INDEX_STUDY].setVisibility(View.GONE);
         }
     }
 
@@ -164,16 +164,16 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
         mFragmentManager = getSupportFragmentManager();
         mNaviFragmentFactory = new NaviFragmentFactory();
         initBottomBar();
-        showCurrentFragment(0);
+        showCurrentFragment(INDEX_HOMEWORK);
     }
 
     private void initBottomBar() {
         mSelNavTxtColor = getResources().getColor(R.color.color_336600);
         mNormalNavTxtColor = getResources().getColor(R.color.color_999999);
-        mNavBarViews[0] = findViewById(R.id.navi_homework);
-        mNavBarViews[1] = findViewById(R.id.navi_exercise);
-        mNavBarViews[2] = findViewById(R.id.navi_study);
-        mNavBarViews[3] = findViewById(R.id.navi_my);
+        mNavBarViews[INDEX_HOMEWORK] = findViewById(R.id.navi_homework);
+        mNavBarViews[INDEX_EXERCISE] = findViewById(R.id.navi_exercise);
+        mNavBarViews[INDEX_STUDY] = findViewById(R.id.navi_study);
+        mNavBarViews[INDEX_MY] = findViewById(R.id.navi_my);
         for (int i = 0; i < 4; i++) {
             mNavBarViews[i].setOnClickListener(this);
             mNavIconViews[i] = (ImageView) mNavBarViews[i].findViewById(R.id.nav_icon);
@@ -181,13 +181,13 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
         }
 //        Util.setViewTypeface(YanxiuTypefaceTextView.TypefaceType.FANGZHENG, mNavTextViews[0],
 //                mNavTextViews[1], mNavTextViews[2]);
-        mNavTextViews[0].setText(R.string.navi_tbm_group);
-        mNavTextViews[1].setText(R.string.exercises);
-        mNavTextViews[2].setText(R.string.study);
-        mNavTextViews[3].setText(R.string.navi_tbm_my);
+        mNavTextViews[INDEX_HOMEWORK].setText(R.string.navi_tbm_group);
+        mNavTextViews[INDEX_EXERCISE].setText(R.string.exercises);
+        mNavTextViews[INDEX_STUDY].setText(R.string.study);
+        mNavTextViews[INDEX_MY].setText(R.string.navi_tbm_my);
 
-        mNavIconViews[0].setEnabled(false);
-        setColorFilter(3, 0);
+        mNavIconViews[INDEX_HOMEWORK].setEnabled(false);
+        setColorFilter(INDEX_MY, 0);
     }
 
     @Override
@@ -196,35 +196,35 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
         switch (view.getId()) {
             case R.id.navi_homework:
                 curItem = INDEX_HOMEWORK;
-                mNavIconViews[0].setEnabled(false);
-                mNavIconViews[1].setEnabled(true);
-                mNavIconViews[2].setEnabled(true);
-                mNavIconViews[3].setEnabled(true);
-                setColorFilter(3, 0);
+                mNavIconViews[INDEX_HOMEWORK].setEnabled(false);
+                mNavIconViews[INDEX_EXERCISE].setEnabled(true);
+                mNavIconViews[INDEX_STUDY].setEnabled(true);
+                mNavIconViews[INDEX_MY].setEnabled(true);
+                setColorFilter(INDEX_MY, 0);
                 break;
             case R.id.navi_exercise:
                 curItem = INDEX_EXERCISE;
-                mNavIconViews[0].setEnabled(true);
-                mNavIconViews[1].setEnabled(false);
-                mNavIconViews[2].setEnabled(true);
-                mNavIconViews[3].setEnabled(true);
-                setColorFilter(3, 0);
+                mNavIconViews[INDEX_HOMEWORK].setEnabled(true);
+                mNavIconViews[INDEX_EXERCISE].setEnabled(false);
+                mNavIconViews[INDEX_STUDY].setEnabled(true);
+                mNavIconViews[INDEX_MY].setEnabled(true);
+                setColorFilter(INDEX_MY, 0);
                 break;
             case R.id.navi_study:
                 curItem = INDEX_STUDY;
-                mNavIconViews[0].setEnabled(true);
-                mNavIconViews[1].setEnabled(true);
-                mNavIconViews[2].setEnabled(false);
-                mNavIconViews[3].setEnabled(true);
-                setColorFilter(3, 0);
+                mNavIconViews[INDEX_HOMEWORK].setEnabled(true);
+                mNavIconViews[INDEX_EXERCISE].setEnabled(true);
+                mNavIconViews[INDEX_STUDY].setEnabled(false);
+                mNavIconViews[INDEX_MY].setEnabled(true);
+                setColorFilter(INDEX_MY, 0);
                 break;
             case R.id.navi_my:
                 curItem = INDEX_MY;
-                mNavIconViews[0].setEnabled(true);
-                mNavIconViews[1].setEnabled(true);
-                mNavIconViews[2].setEnabled(true);
-                mNavIconViews[3].setEnabled(false);
-                setColorFilter(3, 1);
+                mNavIconViews[INDEX_HOMEWORK].setEnabled(true);
+                mNavIconViews[INDEX_EXERCISE].setEnabled(true);
+                mNavIconViews[INDEX_STUDY].setEnabled(true);
+                mNavIconViews[INDEX_MY].setEnabled(false);
+                setColorFilter(INDEX_MY, 1);
                 break;
             default:
                 break;

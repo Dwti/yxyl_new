@@ -1,0 +1,241 @@
+{
+  "data": [
+    {"authorid": 0,
+      "bedition": 0,
+      "begintime": 1510201024000,
+      "buildtime": 1510201024000,
+      "cellid": 0,
+      "chapterid": 0,
+      "cover": "http://www.yixueyilian.com/static/task/widget/comm/menu/img/logo.png",
+      "endtime": 1510201024000,
+      "gradeid": 0,
+      "id": 413602,
+      "name": "练习-(Amazing superheroes)",
+
+      "paperTest": [
+        {"correctRate": -1,
+          "id": 2914454,
+          "isfavorite": 0,
+          "parentid": 0,
+          "pid": 413602,
+          "qid": 3558841,
+          "qtype": 0,
+
+          "questions": {"analysis": "",
+
+            "answer": [
+              {"answer": "0,6",
+                "point": ""
+              },
+
+              {"answer": "1,5",
+                "point": ""
+              },
+
+              {"answer": "2,8",
+                "point": ""
+              },
+
+              {"answer": "3,9",
+                "point": ""
+              },
+
+              {"answer": "4,7",
+                "point": ""
+              }
+            ],
+
+            "content": {
+              "choices": ["He can run faster than a train.",
+                "He can jump higher than a tree.",
+                "He can see through walls.",
+                "He can swim underwater for an hour.",
+                "He can lift four elephants at one time.",
+                "<img src=\"http://scc.jsyxw.cn/image/20171029/1509280883832779.png\" title=\"1509280883832779.png\" alt=\"1509280883832779.png\" width=\"110\" height=\"110\" border=\"0\" vspace=\"0\" style=\"width: 110px; height: 110px;\"/>",
+                "<img src=\"http://scc.jsyxw.cn/image/20171029/1509280904602150.png\" title=\"1509280904602150.png\" alt=\"1509280904602150.png\" width=\"110\" height=\"110\" border=\"0\" vspace=\"0\" style=\"width: 110px; height: 110px;\"/>",
+                "<img src=\"http://scc.jsyxw.cn/image/20171029/1509280922407661.png\" title=\"1509280922407661.png\" alt=\"1509280922407661.png\" width=\"110\" height=\"110\" border=\"0\" vspace=\"0\" style=\"width: 110px; height: 110px;\"/>",
+                "<img src=\"http://scc.jsyxw.cn/image/20171029/1509281056103817.png\" title=\"1509281056103817.png\" alt=\"1509281056103817.png\" width=\"110\" height=\"110\" border=\"0\" vspace=\"0\" style=\"width: 110px; height: 110px;\"/>",
+                "<img src=\"http://scc.jsyxw.cn/image/20171029/1509281071909313.png\" title=\"1509281071909313.png\" alt=\"1509281071909313.png\" width=\"110\" height=\"110\" border=\"0\" vspace=\"0\" style=\"width: 110px; height: 110px;\"/>"
+              ],
+              "leftCount": 5
+            },
+            "difficulty": 3,
+            "has_video": 1,
+            "id": 3558841,
+            "publish_status": 2,
+            "stem": "Match them up!<br/>Read the sentences and match them to the picture.",
+            "submit_way": 0,
+            "template": "connect",
+            "type_id": 7
+          },
+          "sectionid": 0,
+          "typeid": 7
+        },
+
+        {"correctRate": -1,
+          "id": 2914455,
+          "isfavorite": 0,
+          "parentid": 0,
+          "pid": 413602,
+          "qid": 3558843,
+          "qtype": 0,
+
+          "questions": {"analysis": "",
+
+            "answer": ["rain"
+            ],
+            "difficulty": 3,
+            "has_video": 1,
+            "id": 3558843,
+            "publish_status": 2,
+            "stem": "Write the correct answer!<br/>She can spin around and make it (_). <strong>(rain, snow)</strong>",
+            "submit_way": 0,
+            "template": "fill",
+            "type_id": 3
+          },
+          "sectionid": 0,
+          "typeid": 3
+        },
+
+        {"correctRate": -1,
+          "id": 2914456,
+          "isfavorite": 0,
+          "parentid": 0,
+          "pid": 413602,
+          "qid": 3558845,
+          "qtype": 0,
+
+          "questions": {"analysis": "",
+
+            "answer": ["invisible"
+            ],
+            "difficulty": 3,
+            "has_video": 1,
+            "id": 3558845,
+            "publish_status": 2,
+            "stem": "Write the correct answer!<br/>She can turn (_) and get in free! <strong>(blue, invisible)</strong>",
+            "submit_way": 0,
+            "template": "fill",
+            "type_id": 3
+          },
+          "sectionid": 0,
+          "typeid": 3
+        },
+
+        {"correctRate": -1,
+          "id": 2914457,
+          "isfavorite": 0,
+          "parentid": 0,
+          "pid": 413602,
+          "qid": 3558846,
+          "qtype": 0,
+
+          "questions": {"analysis": "",
+
+            "answer": ["tall"
+            ],
+            "difficulty": 3,
+            "has_video": 1,
+            "id": 3558846,
+            "publish_status": 2,
+            "stem": "Write the correct answer!<br/>She&#39;s amazingly (_). <strong>(tall, small)</strong>",
+            "submit_way": 0,
+            "template": "fill",
+            "type_id": 3
+          },
+          "sectionid": 0,
+          "typeid": 3
+        },
+
+        {"correctRate": -1,
+          "id": 2914458,
+          "isfavorite": 0,
+          "parentid": 0,
+          "pid": 413602,
+          "qid": 3558852,
+          "qtype": 0,
+
+          "questions": {"analysis": "",
+
+            "answer": ["fly"
+            ],
+            "difficulty": 3,
+            "has_video": 1,
+            "id": 3558852,
+            "publish_status": 2,
+            "stem": "Write the correct answer!<br/>She can (_) into space. <strong>(jump, fly)</strong>",
+            "submit_way": 0,
+            "template": "fill",
+            "type_id": 3
+          },
+          "sectionid": 0,
+          "typeid": 3
+        },
+
+        {"correctRate": -1,
+          "id": 2914459,
+          "isfavorite": 0,
+          "parentid": 0,
+          "pid": 413602,
+          "qid": 3558853,
+          "qtype": 0,
+
+          "questions": {"analysis": "",
+
+            "answer": ["flower"
+            ],
+            "difficulty": 3,
+            "has_video": 1,
+            "id": 3558853,
+            "publish_status": 2,
+            "stem": "Write the correct answer!<br/>She can shrink and hide inside a (_). <strong>(flower, ball)</strong>",
+            "submit_way": 0,
+            "template": "fill",
+            "type_id": 3
+          },
+          "sectionid": 0,
+          "typeid": 3
+        },
+
+        {"correctRate": -1,
+          "id": 2914460,
+          "isfavorite": 0,
+          "parentid": 0,
+          "pid": 413602,
+          "qid": 3558854,
+          "qtype": 0,
+
+          "questions": {"analysis": "",
+
+            "answer": ["fighting"
+            ],
+            "difficulty": 3,
+            "has_video": 1,
+            "id": 3558854,
+            "publish_status": 2,
+            "stem": "Write the correct answer!<br/>They all helps us out by (_) crime. <strong>(committing, fighting)</strong>",
+            "submit_way": 0,
+            "template": "fill",
+            "type_id": 3
+          },
+          "sectionid": 0,
+          "typeid": 3
+        }
+      ],
+      "parentId": 0,
+      "ptype": 10,
+      "quesnum": 7,
+      "sectionid": 0,
+      "stageid": 0,
+      "subjectid": 0,
+      "testPaperId": 5900,
+      "videoSize": 24129165,
+      "videoUrl": "http://scc.jsyxw.cn/video/2017/1030/6b94d82ce7cf3694b686f950f14b1dc3.mp4",
+      "volume": 0
+    }
+  ],
+
+  "status": {"code": 0,
+    "desc": "操作成功"
+  }
+}

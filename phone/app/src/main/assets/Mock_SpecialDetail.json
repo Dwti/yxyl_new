@@ -1,0 +1,185 @@
+{
+  "data": [
+    {"authorid": 0,
+      "bedition": 0,
+      "begintime": 1510200794000,
+      "buildtime": 1510200794000,
+      "cellid": 0,
+      "chapterid": 0,
+      "cover": "http://www.yixueyilian.com/static/task/widget/comm/menu/img/logo.png",
+      "endtime": 1510200794000,
+      "gradeid": 0,
+      "id": 413596,
+      "name": "练习-(Abracadabra)",
+
+      "paperTest": [
+        {"correctRate": -1,
+          "id": 2914410,
+          "isfavorite": 0,
+          "parentid": 0,
+          "pid": 413596,
+          "qid": 3558832,
+          "qtype": 0,
+
+          "questions": {"analysis": "",
+
+            "answer": ["3",
+              "1",
+              "5",
+              "4",
+              "2"
+            ],
+            "difficulty": 1,
+            "has_video": 1,
+            "id": 3558832,
+            "publish_status": 2,
+            "stem": "What's the order?<br/>(_)&nbsp;<img src=\"http://scc.jsyxw.cn/image/20171029/1509279581343421.png\" title=\"1509279581343421.png\" alt=\"1509279581343421.png\" width=\"110\" height=\"110\" border=\"0\" vspace=\"0\" style=\"width: 110px; height: 110px;\"/><br/>(_)&nbsp;<img src=\"http://scc.jsyxw.cn/image/20171029/1509279596136028.png\" title=\"1509279596136028.png\" alt=\"1509279596136028.png\" width=\"110\" height=\"110\" border=\"0\" vspace=\"0\" style=\"width: 110px; height: 110px;\"/><br/>(_)&nbsp;<img src=\"http://scc.jsyxw.cn/image/20171029/1509279660628356.png\" title=\"1509279660628356.png\" alt=\"1509279660628356.png\" width=\"110\" height=\"110\" border=\"0\" vspace=\"0\" style=\"width: 110px; height: 110px;\"/><br/>(_)&nbsp;<img src=\"http://scc.jsyxw.cn/image/20171029/1509279678365020.png\" title=\"1509279678365020.png\" alt=\"1509279678365020.png\" width=\"110\" height=\"110\" border=\"0\" vspace=\"0\" style=\"width: 110px; height: 110px;\"/><br/>(_)&nbsp;<img src=\"http://scc.jsyxw.cn/image/20171029/1509279702677901.png\" title=\"1509279702677901.png\" alt=\"1509279702677901.png\" width=\"110\" height=\"110\" border=\"0\" vspace=\"0\" style=\"width: 110px; height: 110px;\"/>",
+            "submit_way": 0,
+            "template": "fill",
+            "type_id": 20
+          },
+          "sectionid": 0,
+          "typeid": 20
+        },
+
+        {"correctRate": -1,
+          "id": 2914411,
+          "isfavorite": 0,
+          "parentid": 0,
+          "pid": 413596,
+          "qid": 3558833,
+          "qtype": 0,
+
+          "questions": {"analysis": "",
+
+            "answer": ["1"
+            ],
+            "difficulty": 1,
+            "has_video": 1,
+            "id": 3558833,
+            "publish_status": 2,
+            "stem": "True or False.<br/>Make two circles and touch your nose and the floor = the cat flies.",
+            "submit_way": 0,
+            "template": "alter",
+            "type_id": 4
+          },
+          "sectionid": 0,
+          "typeid": 4
+        },
+
+        {"correctRate": -1,
+          "id": 2914412,
+          "isfavorite": 0,
+          "parentid": 0,
+          "pid": 413596,
+          "qid": 3558834,
+          "qtype": 0,
+
+          "questions": {"analysis": "",
+
+            "answer": ["0"
+            ],
+            "difficulty": 1,
+            "has_video": 1,
+            "id": 3558834,
+            "publish_status": 2,
+            "stem": "True or False.<br/>Make two circles and touch your shoulder and shoe = the cat turns green.",
+            "submit_way": 0,
+            "template": "alter",
+            "type_id": 4
+          },
+          "sectionid": 0,
+          "typeid": 4
+        },
+
+        {"correctRate": -1,
+          "id": 2914413,
+          "isfavorite": 0,
+          "parentid": 0,
+          "pid": 413596,
+          "qid": 3558835,
+          "qtype": 0,
+
+          "questions": {"analysis": "",
+
+            "answer": ["1"
+            ],
+            "difficulty": 1,
+            "has_video": 1,
+            "id": 3558835,
+            "publish_status": 2,
+            "stem": "True or False.<br/>Make four circles = the cat loses its hair.",
+            "submit_way": 0,
+            "template": "alter",
+            "type_id": 4
+          },
+          "sectionid": 0,
+          "typeid": 4
+        },
+
+        {"correctRate": -1,
+          "id": 2914414,
+          "isfavorite": 0,
+          "parentid": 0,
+          "pid": 413596,
+          "qid": 3558836,
+          "qtype": 0,
+
+          "questions": {"analysis": "",
+
+            "answer": ["0"
+            ],
+            "difficulty": 1,
+            "has_video": 1,
+            "id": 3558836,
+            "publish_status": 2,
+            "stem": "True or False.<br/>Make big circles and touch your chin and nose = the cat&#39;s is head smaller.",
+            "submit_way": 0,
+            "template": "alter",
+            "type_id": 4
+          },
+          "sectionid": 0,
+          "typeid": 4
+        },
+
+        {"correctRate": -1,
+          "id": 2914415,
+          "isfavorite": 0,
+          "parentid": 0,
+          "pid": 413596,
+          "qid": 3558837,
+          "qtype": 0,
+
+          "questions": {"analysis": "",
+
+            "answer": ["1"
+            ],
+            "difficulty": 1,
+            "has_video": 1,
+            "id": 3558837,
+            "publish_status": 2,
+            "stem": "True or False.<br/>Touch your elbow and your knee = the cat turns into a bumblebee.",
+            "submit_way": 0,
+            "template": "alter",
+            "type_id": 4
+          },
+          "sectionid": 0,
+          "typeid": 4
+        }
+      ],
+      "parentId": 0,
+      "ptype": 10,
+      "quesnum": 6,
+      "sectionid": 0,
+      "stageid": 0,
+      "subjectid": 0,
+      "testPaperId": 5899,
+      "videoSize": 41339158,
+      "videoUrl": "http://scc.jsyxw.cn/video/2017/1029/c2de516a422a372ccb52acb03f995d63.mp4",
+      "volume": 0
+    }
+  ],
+  "status": {"code": 0,
+    "desc": "操作成功"
+  }
+}

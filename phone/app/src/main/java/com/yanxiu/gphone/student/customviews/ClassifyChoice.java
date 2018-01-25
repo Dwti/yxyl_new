@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.learning.KnowledgePointLabelItem;
 import com.yanxiu.gphone.student.questions.classify.ClassifyItemBean;
 import com.yanxiu.gphone.student.util.HtmlImageGetterForClassify;
 
@@ -285,6 +286,41 @@ public class ClassifyChoice extends ViewGroup {
                     }
                 }
             });
+            this.addView(layout);
+        }
+    }
+
+    /**
+     * 报告中使用
+     *
+     * @param list
+     */
+    public void setData(List<KnowledgePointLabelItem> list) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        this.removeAllViews();
+        for (int i = 0; i < list.size(); i++) {
+            LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.homework_tagview_layout, null);
+            final TextView view = (TextView) layout.findViewById(R.id.classfy_choice_text);
+            final String content = list.get(i).content;
+            if (null == content) {
+                continue;
+            }
+            view.setText(content);
+            view.setTextSize(list.get(i).textSize);
+            view.setTextColor(list.get(i).textColor);
+            if (list.get(i).backGroundId != 0) {
+                view.setBackgroundResource(list.get(i).backGroundId);
+//                int paddingTop = getResources().getDimensionPixelSize(R.dimen.chioce_item_topmargin);
+//                int paddingLeft = getResources().getDimensionPixelSize(R.dimen.chioce_item_leftmargin);
+//                view.setPadding(paddingLeft, paddingTop, paddingLeft, paddingTop);
+            }
+
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+            int marginRight = list.get(i).marginRight;
+            lp.setMargins(0, 10, marginRight, 0);
+            layout.setLayoutParams(lp);
+            layout.setTag(content);
             this.addView(layout);
         }
     }
