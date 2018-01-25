@@ -351,7 +351,7 @@ public class StemUtil {
         while (stem.matches(".*\\[\\[.*?]].*")){
             int startIndex = stem.indexOf("[[");
             int endIndex = stem.indexOf("]]");
-            String imgUrl  = stem.substring(startIndex,endIndex + 2);
+            String imgUrl  = stem.substring(startIndex + 2,endIndex);
             stem = stem.replaceFirst("\\[\\[.*?]]",imgUrl);
         }
         return stem;
