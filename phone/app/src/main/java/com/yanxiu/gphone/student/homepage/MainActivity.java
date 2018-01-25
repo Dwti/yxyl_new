@@ -124,6 +124,20 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
             }
         }
         mNavIconViews[2].setImageDrawable(ContextCompat.getDrawable(this, R.drawable.selector_my));
+
+        boolean isShouldShowStudy=false;
+        for (Integer integer:LoginInfo.getSubjectIds()){
+            if (integer==Constants.SubjectId.MATH){
+                isShouldShowStudy=true;
+            }
+        }
+        if (isShouldShowStudy){
+            //TODO 隐藏学习fragment
+            mNavBarViews[2].setVisibility(View.VISIBLE);
+        }else {
+            //TODO 隐藏学习fragment
+            mNavBarViews[2].setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -174,9 +188,6 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
 
         mNavIconViews[0].setEnabled(false);
         setColorFilter(3, 0);
-
-        //TODO 隐藏学习fragment
-        mNavBarViews[2].setVisibility(View.GONE);
     }
 
     @Override
