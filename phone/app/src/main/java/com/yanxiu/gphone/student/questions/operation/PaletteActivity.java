@@ -204,16 +204,16 @@ public class PaletteActivity extends YanxiuBaseActivity implements View.OnClickL
         mPaletteView.setOnResetListener(new PaletteView.OnResetListener() {
             @Override
             public void onReset() {
-                String bmpPath = mStoredFilePath;
-                String picPath = mStoredFilePath + SUFFIX;
-                File bmpFile = new File(bmpPath);
-                File picFile = new File(picPath);
-                if(bmpFile.exists()){
-                    bmpFile.delete();
-                }
-                if(picFile.exists()){
-                    picFile.delete();
-                }
+//                String bmpPath = mStoredFilePath;
+//                String picPath = mStoredFilePath + SUFFIX;
+//                File bmpFile = new File(bmpPath);
+//                File picFile = new File(picPath);
+//                if(bmpFile.exists()){
+//                    bmpFile.delete();
+//                }
+//                if(picFile.exists()){
+//                    picFile.delete();
+//                }
             }
         });
     }
