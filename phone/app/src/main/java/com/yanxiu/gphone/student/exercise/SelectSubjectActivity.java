@@ -20,6 +20,8 @@ import com.yanxiu.gphone.student.customviews.ChapterSwitchBar;
 import com.yanxiu.gphone.student.exercise.bean.SubjectBean;
 import com.yanxiu.gphone.student.exercise.request.SubjectsRequest;
 import com.yanxiu.gphone.student.exercise.response.SubjectsResponse;
+import com.yanxiu.gphone.student.learning.LearningEditionSelectChangeMessage;
+import com.yanxiu.gphone.student.learning.request.LearningSubjectRequest;
 import com.yanxiu.gphone.student.util.LoginInfo;
 
 import java.util.ArrayList;
@@ -41,6 +43,7 @@ public class SelectSubjectActivity extends YanxiuBaseActivity {
     private SelectSubjectAdapter mPracticseAdapter;
     private ChapterSwitchBar mSwitchBar;
     private SelectSubjectAdapter mLearningAdapter;
+    private boolean mIsPracticeMode = true;
 
     public static void invoke(Context context) {
         Intent intent = new Intent(context, SelectSubjectActivity.class);
@@ -61,6 +64,10 @@ public class SelectSubjectActivity extends YanxiuBaseActivity {
         requestPracticeSubjects();
     }
 
+    public void onEventMainThread(LearningEditionSelectChangeMessage message){
+        requestLearningSubjects();
+    }
+
     private void initView() {
         mListView = (ListView) findViewById(R.id.listView);
         mTipsView = findViewById(R.id.tips_layout);
@@ -78,20 +85,33 @@ public class SelectSubjectActivity extends YanxiuBaseActivity {
         mRefreshBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestPracticeSubjects();
+                if(mIsPracticeMode) {
+                    requestPracticeSubjects();
+                } else {
+                    requestLearningSubjects();
+                }
             }
         });
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                SubjectBean bean = (SubjectBean) mPracticseAdapter.getItem(position);
+                SubjectBean bean;
+                if (mIsPracticeMode) {
+                    bean = (SubjectBean) mPracticseAdapter.getItem(position);
+                } else {
+                    bean = (SubjectBean) mLearningAdapter.getItem(position);
+                }
                 String subjectId = bean.getId();
                 String subjectName = bean.getName();
                 String editionName = null;
                 if(bean.getData() != null){
                     editionName = bean.getData().getEditionName();
                 }
-                ModifyEditionActivity.invoke(SelectSubjectActivity.this, subjectId, subjectName,editionName, ModifyEditionActivity.FROM_SUBJECT_SELECT);
+                if (mIsPracticeMode) {
+                    ModifyEditionActivity.invoke(SelectSubjectActivity.this, subjectId, subjectName,editionName, ModifyEditionActivity.FROM_SUBJECT_SELECT);
+                } else {
+                    ModifyEditionActivity.invoke(SelectSubjectActivity.this, subjectId, subjectName,editionName, ModifyEditionActivity.FROM_LEARNING);
+                }
             }
         });
         mBack.setOnClickListener(new View.OnClickListener() {
@@ -104,11 +124,13 @@ public class SelectSubjectActivity extends YanxiuBaseActivity {
             @Override
             public void onCheckedChanged(boolean isOff) {
                 if (isOff) {
+                    mIsPracticeMode = true;
                     mListView.setAdapter(mPracticseAdapter);
                     if(mPracticseAdapter.getCount() == 0) {
                         requestPracticeSubjects();
                     }
                 } else {
+                    mIsPracticeMode = false;
                     mListView.setAdapter(mLearningAdapter);
                     if(mLearningAdapter.getCount() == 0) {
                         requestLearningSubjects();
@@ -160,8 +182,9 @@ public class SelectSubjectActivity extends YanxiuBaseActivity {
 
     //TODO:添加学习模块获取学科接口
     private void requestLearningSubjects() {
-        SubjectsRequest request = new SubjectsRequest();
+        LearningSubjectRequest request = new LearningSubjectRequest();
         request.setStageId(LoginInfo.getStageid());
+        request.setSubjectIds(LoginInfo.getSubjectIds_string());
         request.startRequest(SubjectsResponse.class, mLearningSubjectsCallback);
     }
 
@@ -201,12 +224,12 @@ public class SelectSubjectActivity extends YanxiuBaseActivity {
         protected void onResponse(RequestBase request, SubjectsResponse response) {
             if (response.getStatus().getCode() == 0) {
                 if (response.getData().size() > 0) {
-                    List<SubjectBean> list = response.getData();
-                    list.remove(0);
-                    if(list.size() > 0) {
-                        showLearningSubjects(list);
-                    }
-//                    showSubjects(response.getData());
+//                    List<SubjectBean> list = response.getData();
+//                    list.remove(0);
+//                    if(list.size() > 0) {
+//                        showLearningSubjects(list);
+//                    }
+                    showLearningSubjects(response.getData());
                 } else {
                     showDataEmptyView();
                 }

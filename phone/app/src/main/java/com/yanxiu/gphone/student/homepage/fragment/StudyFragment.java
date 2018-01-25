@@ -17,14 +17,15 @@ import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.base.HomePageBaseFragment;
 import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
-import com.yanxiu.gphone.student.exercise.EditionSelectChangeMessage;
 import com.yanxiu.gphone.student.exercise.ModifyEditionActivity;
+import com.yanxiu.gphone.student.exercise.SelectEditionActivity;
 import com.yanxiu.gphone.student.exercise.bean.SubjectBean;
-import com.yanxiu.gphone.student.exercise.request.SubjectsRequest;
 import com.yanxiu.gphone.student.exercise.response.SubjectsResponse;
+import com.yanxiu.gphone.student.learning.LearningEditionSelectChangeMessage;
 import com.yanxiu.gphone.student.learning.adapter.LearningSubjectsAdapter;
 import com.yanxiu.gphone.student.learning.activity.SelectLearningEditionActivity;
 import com.yanxiu.gphone.student.learning.activity.SelectSyncAndSpecailActivity;
+import com.yanxiu.gphone.student.learning.request.LearningSubjectRequest;
 import com.yanxiu.gphone.student.login.activity.ChooseStageActivity;
 import com.yanxiu.gphone.student.util.LoginInfo;
 
@@ -62,13 +63,13 @@ public class StudyFragment extends HomePageBaseFragment {
         return rootView;
     }
 
-    public void onEventMainThread(EditionSelectChangeMessage message){
-        requestSubjects(mStageId);
+    public void onEventMainThread(LearningEditionSelectChangeMessage message){
+        requestLearningSubjects(mStageId);
     }
 
     public void onEventMainThread(ChooseStageActivity.StageMessage message){
         mStageId = message.stageId;
-        requestSubjects(mStageId);
+        requestLearningSubjects(mStageId);
     }
 
     private void initView() {
@@ -83,7 +84,7 @@ public class StudyFragment extends HomePageBaseFragment {
         mRefreshBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestSubjects(LoginInfo.getStageid());
+                requestLearningSubjects(LoginInfo.getStageid());
             }
         });
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -99,7 +100,7 @@ public class StudyFragment extends HomePageBaseFragment {
                         if(bean.getData() != null){
                             editionName = bean.getData().getEditionName();
                         }
-                    SelectLearningEditionActivity.invoke(getActivity(), subjectId, subjectName,editionName, ModifyEditionActivity.FROM_EXERCISE);
+                    SelectEditionActivity.invoke(getActivity(), subjectId, subjectName,editionName, ModifyEditionActivity.FROM_LEARNING);
                 }
             }
         });
@@ -109,14 +110,14 @@ public class StudyFragment extends HomePageBaseFragment {
         mAdapter = new LearningSubjectsAdapter(new ArrayList<SubjectBean>(0));
         mGridView.setAdapter(mAdapter);
         mStageId = LoginInfo.getStageid();
-        requestSubjects(mStageId);
+        requestLearningSubjects(mStageId);
     }
 
-    private void requestSubjects(String stageId){
-        rootView.showLoadingView();
-        SubjectsRequest request = new SubjectsRequest();
+    private void requestLearningSubjects(String stageId){
+        LearningSubjectRequest request = new LearningSubjectRequest();
         request.setStageId(stageId);
-        request.startRequest(SubjectsResponse.class,mSubjectsCallback);
+        request.setSubjectIds(LoginInfo.getSubjectIds_string());
+        request.startRequest(SubjectsResponse.class, mSubjectsCallback);
     }
 
     HttpCallback<SubjectsResponse> mSubjectsCallback = new EXueELianBaseCallback<SubjectsResponse>() {

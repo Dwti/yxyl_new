@@ -29,6 +29,8 @@ import java.util.List;
 
 import de.greenrobot.event.EventBus;
 
+import static com.yanxiu.gphone.student.exercise.ModifyEditionActivity.FROM_LEARNING;
+
 /**
  * Created by sp on 17-7-26.
  */
@@ -61,7 +63,7 @@ public class SelectEditionActivity extends YanxiuBaseActivity {
         intent.putExtra(COME_FROM, comeFrom);
         intent.putExtra(EDITION_NAME,editionName);
         activity.startActivity(intent);
-        if(comeFrom == FROM_EXERCISE){
+        if(comeFrom == FROM_EXERCISE || comeFrom == FROM_LEARNING){
             activity.overridePendingTransition(R.anim.pop_in,0);
         }
     }
