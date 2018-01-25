@@ -357,6 +357,7 @@ public class PaletteView extends View {
 
     public void reset() {
         if (mBufferBitmap != null){
+            mLocalBitmap = null;
             mBufferBitmap.eraseColor(Color.TRANSPARENT);
             mResetCount++;
         }
