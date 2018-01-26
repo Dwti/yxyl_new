@@ -177,6 +177,7 @@ public class SelectSubjectActivity extends YanxiuBaseActivity {
     private void requestPracticeSubjects() {
         SubjectsRequest request = new SubjectsRequest();
         request.setStageId(LoginInfo.getStageid());
+        request.setSubjectIds(LoginInfo.getSubjectIds_string());
         request.startRequest(SubjectsResponse.class, mSubjectsCallback);
     }
 

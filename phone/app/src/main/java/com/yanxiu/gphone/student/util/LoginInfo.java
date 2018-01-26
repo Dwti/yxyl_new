@@ -380,6 +380,9 @@ public class LoginInfo {
     }
 
     public static String getSubjectIds_string() {
+        if (!isLogIn()){
+            return "";
+        }
         return bean.getSubjectIds_string();
     }
 }
