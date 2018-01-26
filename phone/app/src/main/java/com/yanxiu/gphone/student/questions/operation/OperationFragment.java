@@ -104,6 +104,7 @@ public class OperationFragment extends AnswerSimpleExerciseBaseFragment {
                 mOperationBeanList.add(bean);
             }
         }
+        setupAnswerList(mOperationBeanList);
         mAdapter = new OperationAdapter(mOperationBeanList,mOnStartAnswerClickListener);
         if(mOperationBeanList.size() > 1){
             mGridView.setNumColumns(2);
@@ -137,13 +138,7 @@ public class OperationFragment extends AnswerSimpleExerciseBaseFragment {
 
     public void onEventMainThread(PictureModifiedMessage message){
         if(message != null){
-            mQuestion.answerList.clear();
-            for(OperationBean bean : mOperationBeanList){
-                String picPath = bean.getStoredFilePath() + PaletteActivity.SUFFIX;
-                if(OperationUtils.hasStoredBitmap(picPath)){
-                    mQuestion.answerList.add(picPath);
-                }
-            }
+            setupAnswerList(mOperationBeanList);
             if(!mQuestion.answerList.isEmpty() && mQuestion.answerList.size() == mOperationBeanList.size()){
                 mQuestion.setHasAnswered(true);
             }else {
@@ -153,6 +148,18 @@ public class OperationFragment extends AnswerSimpleExerciseBaseFragment {
             updateProgress();
             mAdapter = new OperationAdapter(mOperationBeanList,mOnStartAnswerClickListener);
             mGridView.setAdapter(mAdapter);
+        }
+    }
+
+    private void setupAnswerList(List<OperationBean> list){
+        mQuestion.answerList.clear();
+        for(OperationBean bean : list){
+            String picPath = bean.getStoredFilePath() + PaletteActivity.SUFFIX;
+            if(OperationUtils.hasStoredBitmap(picPath)){
+                mQuestion.answerList.add(picPath);
+            }else {
+                mQuestion.answerList.add(bean.getImageUrl());
+            }
         }
     }
 }
