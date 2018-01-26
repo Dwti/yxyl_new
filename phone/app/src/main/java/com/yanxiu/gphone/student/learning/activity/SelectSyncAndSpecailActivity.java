@@ -44,6 +44,8 @@ import com.yanxiu.gphone.student.exercise.response.SaveVolumeResponse;
 import com.yanxiu.gphone.student.homework.response.PaperResponse;
 import com.yanxiu.gphone.student.learning.adapter.SpecialAdapter;
 import com.yanxiu.gphone.student.learning.adapter.SyncAdapter;
+import com.yanxiu.gphone.student.learning.request.GetChannelRequest;
+import com.yanxiu.gphone.student.learning.response.GetChannelResponse;
 import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.util.DESBodyDealer;
@@ -82,6 +84,25 @@ public class SelectSyncAndSpecailActivity extends YanxiuBaseActivity {
     private static final String EDITION_ID = "EDITION_ID";
     private String mClickRmsPaperId;
     private PaperResponse mMockData;
+    private HttpCallback<GetChannelResponse> mGetChannelCallback = new HttpCallback<GetChannelResponse>() {
+        @Override
+        public void onSuccess(RequestBase request, GetChannelResponse ret) {
+            if (ret.getStatus().getCode() == 0) {
+//                mNoEditions = false;
+//                mEditionChildBeanList = ret.getData();
+//                initVolumeId(mEditionChildBeanList);
+//                showContentView();
+//                getChapterList(mSubjectId, mEditionId, mVolumeId);
+            } else {
+                showDataErrorView(true);
+            }
+        }
+
+        @Override
+        public void onFail(RequestBase request, Error error) {
+            showDataErrorView(true);
+        }
+    };
 
     public static void invoke(Activity activity, String subjectId, String subjectName, String editionId) {
         Intent intent = new Intent(activity, SelectSyncAndSpecailActivity.class);
@@ -118,7 +139,7 @@ public class SelectSyncAndSpecailActivity extends YanxiuBaseActivity {
                     mLayoutStage.setVisibility(View.VISIBLE);
                     mRecyclerView.setAdapter(mSyncAdapter);
                     if (mSyncAdapter.getItemCount() == 0) {
-                        getVolumeList();
+                        getSyncList();
                     }
                 } else {
                     mIsSyncMode = false;
@@ -149,7 +170,7 @@ public class SelectSyncAndSpecailActivity extends YanxiuBaseActivity {
                 }
                 showContentView();
                 if (mNoEditions) {
-                    getVolumeList();
+                    getSyncList();
                 } else {
                     loadData();
                 }
@@ -233,8 +254,14 @@ public class SelectSyncAndSpecailActivity extends YanxiuBaseActivity {
         mEditionId = getIntent().getStringExtra(EDITION_ID);
         mTitle.setText(mSubjectName);
 
+        getChannel();
         setSwitchBarVisibility(mSubjectId);
-        getVolumeList();
+        getSyncList();
+    }
+
+    private void getChannel() {
+        GetChannelRequest request = new GetChannelRequest();
+        request.startRequest(GetChannelResponse.class, mGetChannelCallback);
     }
 
     private void loadData() {
@@ -387,7 +414,7 @@ public class SelectSyncAndSpecailActivity extends YanxiuBaseActivity {
         request.startRequest(KnowledgePointResponse.class, mKnowledgePointCallback);
     }
 
-    private void getVolumeList() {
+    private void getSyncList() {
         GetVolumesRequest request = new GetVolumesRequest();
         request.setSubjectId(mSubjectId);
         request.setEditionId(mEditionId);

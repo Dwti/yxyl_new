@@ -378,4 +378,8 @@ public class LoginInfo {
         }
         return list;
     }
+
+    public static String getSubjectIds_string() {
+        return bean.getSubjectIds_string();
+    }
 }
