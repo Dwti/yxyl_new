@@ -204,16 +204,16 @@ public class PaletteActivity extends YanxiuBaseActivity implements View.OnClickL
         mPaletteView.setOnResetListener(new PaletteView.OnResetListener() {
             @Override
             public void onReset() {
-                String bmpPath = mStoredFilePath;
-                String picPath = mStoredFilePath + SUFFIX;
-                File bmpFile = new File(bmpPath);
-                File picFile = new File(picPath);
-                if(bmpFile.exists()){
-                    bmpFile.delete();
-                }
-                if(picFile.exists()){
-                    picFile.delete();
-                }
+//                String bmpPath = mStoredFilePath;
+//                String picPath = mStoredFilePath + SUFFIX;
+//                File bmpFile = new File(bmpPath);
+//                File picFile = new File(picPath);
+//                if(bmpFile.exists()){
+//                    bmpFile.delete();
+//                }
+//                if(picFile.exists()){
+//                    picFile.delete();
+//                }
             }
         });
     }
@@ -311,25 +311,33 @@ public class PaletteActivity extends YanxiuBaseActivity implements View.OnClickL
 
     private void saveDrawPath() {
         //保存画的路径
-        String bmpPath = mStoredFilePath;
-        FileUtil.saveBitmapToFile(mPaletteView.getBufferedBitmap(),mStoredFilePath);
-        //合成背景图跟画的图
-        Bitmap bgBmp = mPaletteView.getBgBitmap();
         Bitmap buffBmp = mPaletteView.getBufferedBitmap();
-        Bitmap newBmp = Bitmap.createBitmap(mPaletteView.getWidth(),mPaletteView.getHeight(), Bitmap.Config.ARGB_8888);
-        newBmp.eraseColor(Color.WHITE);
-        Canvas canvas = new Canvas(newBmp);
-        float startX =  ( newBmp.getWidth() - bgBmp.getWidth() ) / 2;
-        float startY = (newBmp.getHeight() - bgBmp.getHeight() ) / 2;
-        //背景图需要居中
-        canvas.drawBitmap(bgBmp,startX,startY,null);
-        canvas.drawBitmap(buffBmp,0,0,null);
-        //保存合成后的图片
-        String picPath = bmpPath + SUFFIX;
-        FileUtil.saveBitmapToFile(newBmp,picPath);
-
-        //通知图片被修改
-        EventBus.getDefault().post(new PictureModifiedMessage());
+        FileUtil.saveBitmapToFile(buffBmp,mStoredFilePath);
+        Bitmap bgBmp = mPaletteView.getBgBitmap();
+        if(bgBmp == null){
+            //保存画的图片
+            String picPath = mStoredFilePath + SUFFIX;
+            FileUtil.saveBitmapToFile(buffBmp,picPath);
+            //通知图片被修改
+            EventBus.getDefault().post(new PictureModifiedMessage());
+            //没有背景图直接返回
+            return;
+        }else {
+            //合成背景图跟画的图
+            Bitmap newBmp = Bitmap.createBitmap(mPaletteView.getWidth(),mPaletteView.getHeight(), Bitmap.Config.ARGB_8888);
+            newBmp.eraseColor(Color.WHITE);
+            Canvas canvas = new Canvas(newBmp);
+            float startX =  ( newBmp.getWidth() - bgBmp.getWidth() ) / 2;
+            float startY = (newBmp.getHeight() - bgBmp.getHeight() ) / 2;
+            //背景图需要居中
+            canvas.drawBitmap(bgBmp,startX,startY,null);
+            canvas.drawBitmap(buffBmp,0,0,null);
+            //保存合成后的图片
+            String picPath = mStoredFilePath + SUFFIX;
+            FileUtil.saveBitmapToFile(newBmp,picPath);
+            //通知图片被修改
+            EventBus.getDefault().post(new PictureModifiedMessage());
+        }
     }
 
     private void dismissPop() {

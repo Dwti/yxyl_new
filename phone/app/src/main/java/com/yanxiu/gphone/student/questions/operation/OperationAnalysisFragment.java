@@ -103,7 +103,7 @@ public class OperationAnalysisFragment extends AnalysisSimpleExerciseBaseFragmen
     }
 
     private void initData() {
-        String string= StemUtil.initClozeStem(mData.getStem());
+        String string= StemUtil.initClozeStem(StemUtil.initOperationStem(mData.getStem()));
         mQuestionView.setText(string);
         if (mData.answerList.size()>0) {
             mNoPictureView.setVisibility(View.GONE);

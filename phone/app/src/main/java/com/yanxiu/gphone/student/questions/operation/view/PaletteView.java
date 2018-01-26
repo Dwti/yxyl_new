@@ -20,6 +20,7 @@ import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -39,6 +40,8 @@ public class PaletteView extends View {
 
     private static final int DRAG = 1;
     private static final int ZOOM = 2;
+    private static final float MAX_SCALE = 5.0f;
+    private static final float MIN_SCALE = 0.5f;
     private static final int TIME_INTERVAL = 500;  //时间间隔（用来判定是单指触摸还是多指）
     private Paint mPaint;
     private Path mPath;
@@ -134,9 +137,8 @@ public class PaletteView extends View {
 
         mDefaultLineWidth = ScreenUtils.dpToPx(getContext(), 2);
         mLineWidth = mDefaultLineWidth;
-        mColor = Color.BLACK;
         mPaint.setStrokeWidth(mLineWidth);
-        mPaint.setColor(mColor);
+        mPaint.setColor(Color.BLACK);
 
         mClearMode = new PorterDuffXfermode(PorterDuff.Mode.CLEAR);
 
@@ -233,6 +235,18 @@ public class PaletteView extends View {
                         midPoint = mid(event);
                         float endDis = distance(event);// 结束距离
                         float scale = endDis / mLastDis;// 得到缩放倍数
+                        float currentScaleX = values[Matrix.MSCALE_X];
+                        Matrix tempMatrix = new Matrix(mMatrix);
+                        tempMatrix.postScale(scale, scale, midPoint.x, midPoint.y);
+                        float[] tempValues = new float[9];
+                        tempMatrix.getValues(tempValues);
+                        float temScaleX = tempValues[Matrix.MSCALE_X];
+                        //限制缩放系数
+                        if(temScaleX > MAX_SCALE){
+                            scale = MAX_SCALE / currentScaleX;
+                        }else if(temScaleX < MIN_SCALE){
+                            scale = MIN_SCALE / currentScaleX;
+                        }
                         mMatrix.postScale(scale, scale, midPoint.x, midPoint.y);
                     }
 
@@ -343,6 +357,7 @@ public class PaletteView extends View {
 
     public void reset() {
         if (mBufferBitmap != null){
+            mLocalBitmap = null;
             mBufferBitmap.eraseColor(Color.TRANSPARENT);
             mResetCount++;
         }
@@ -458,9 +473,7 @@ public class PaletteView extends View {
     }
 
     public void setPaintColor(int color) {
-        if (mColor != color) {
-            mPaint.setColor(color);
-        }
+        mPaint.setColor(color);
     }
 
 

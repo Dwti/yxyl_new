@@ -56,20 +56,20 @@ public class OperationUtils {
         int scaleWidth,scaleHeight;
         float scale;
         if(width >= height){
-            scale = toWidth / width;
+            scale = toWidth / (float) width;
             scaleWidth = toWidth;
             scaleHeight = (int) (height * scale);
             if(scaleHeight > toHeight){
-                scale = toHeight / scaleHeight;
+                scale = toHeight / (float) scaleHeight;
                 scaleHeight = toHeight;
                 scaleWidth = (int) (scaleWidth * scale);
             }
         }else {
-            scale = toHeight / height;
+            scale = toHeight / (float) height;
             scaleWidth = (int) (width * scale);
             scaleHeight = toHeight;
             if(scaleWidth > toWidth){
-                scale = toWidth / scaleWidth;
+                scale = toWidth / (float) scaleWidth;
                 scaleWidth = toWidth;
                 scaleHeight = (int) (scaleHeight * scale);
             }

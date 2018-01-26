@@ -22,9 +22,11 @@ import java.util.List;
 
 public class OperationAdapter extends BaseAdapter {
     private List<OperationBean> mData;
+    private OnStartAnswerClickListener mOnStartAnswerClickListener;
 
-    public OperationAdapter(List<OperationBean> data) {
+    public OperationAdapter(List<OperationBean> data, OnStartAnswerClickListener listener) {
         mData = data;
+        mOnStartAnswerClickListener = listener;
     }
 
     @Override
@@ -80,9 +82,15 @@ public class OperationAdapter extends BaseAdapter {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PaletteActivity.invoke(parent.getContext(),operationBean.getStoredFilePath(),operationBean.getImageUrl());
+                if(mOnStartAnswerClickListener != null){
+                    mOnStartAnswerClickListener.onStartAnswerClick(operationBean.getStoredFilePath(),operationBean.getImageUrl());
+                }
             }
         });
         return convertView;
+    }
+
+    public interface OnStartAnswerClickListener{
+        void onStartAnswerClick(String storedFilePath,String imgUrl);
     }
 }
