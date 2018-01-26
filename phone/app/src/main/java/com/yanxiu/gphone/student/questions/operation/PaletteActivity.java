@@ -155,6 +155,13 @@ public class PaletteActivity extends YanxiuBaseActivity implements View.OnClickL
         mSelectColorView.setOnSelectedColorChangedListener(new SelectColorView.OnSelectedColorChangedListener() {
             @Override
             public void onColorChanged(int color) {
+                if(mPaletteView.getPaintMode() == PaletteView.PaintMode.ERASER){
+                    if(mPaletteToolsView.getPenMode() == PaletteToolsView.PenMode.THIN){
+                        mPaletteToolsView.setSmallPenViewSelected(true);
+                    }else if(mPaletteToolsView.getPenMode() == PaletteToolsView.PenMode.BOLD){
+                        mPaletteToolsView.setBigPenViewSelected(true);
+                    }
+                }
                 mPaletteToolsView.setColor(color);
                 mPaletteView.setPaintColor(color);
             }
