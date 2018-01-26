@@ -2,6 +2,7 @@ package com.yanxiu.gphone.student.questions.operation;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,8 @@ import com.yanxiu.gphone.student.questions.answerframe.ui.fragment.analysisbase.
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionUtil;
 import com.yanxiu.gphone.student.questions.subjective.SubjectiveQuestion;
 import com.yanxiu.gphone.student.util.StemUtil;
+
+import java.util.ListIterator;
 
 /**
  * Created by Canghaixiao.
@@ -105,6 +108,13 @@ public class OperationAnalysisFragment extends AnalysisSimpleExerciseBaseFragmen
     private void initData() {
         String string= StemUtil.initClozeStem(StemUtil.initOperationStem(mData.getStem()));
         mQuestionView.setText(string);
+        //去掉空字符串
+        ListIterator<String> listIterator  = mData.answerList.listIterator();
+        while (listIterator.hasNext()){
+            if(TextUtils.isEmpty(listIterator.next())){
+                listIterator.remove();
+            }
+        }
         if (mData.answerList.size()>0) {
             mNoPictureView.setVisibility(View.GONE);
             mSubjectView.setData(mData.answerList);
