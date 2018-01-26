@@ -19,6 +19,7 @@ public class OperaPicPreviewActivity extends YanxiuBaseActivity {
 
     private String mImgUrl;
     private ImageView mImageView;
+    private View mRootView;
 
     public static void invoke(Context context,String imgUrl){
         Intent intent = new Intent(context,OperaPicPreviewActivity.class);
@@ -30,10 +31,17 @@ public class OperaPicPreviewActivity extends YanxiuBaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_operation_pic_preview);
+        mRootView = findViewById(R.id.root);
         mImageView = (ImageView) findViewById(R.id.image);
         mImgUrl = getIntent().getStringExtra(PaletteActivity.IMAGE_URL);
 
         mImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        mRootView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
