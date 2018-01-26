@@ -447,7 +447,7 @@ public class PaletteView extends View {
     }
 
     private void setPathEffect() {
-        if (mLineMode == LineMode.DOTTED) {
+        if (mLineMode == LineMode.DOTTED && mPaintMode != PaintMode.ERASER) {
             if (mLineWidth == mDefaultLineWidth) {
                 mPaint.setPathEffect(mThinDashPathEffect);
             } else {
