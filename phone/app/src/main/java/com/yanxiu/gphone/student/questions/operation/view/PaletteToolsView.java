@@ -87,6 +87,8 @@ public class PaletteToolsView extends FrameLayout {
         mStraightLineFrame.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(mEraser.isSelected())
+                    return;
                 mStraightLineFrame.setFrameVisible(!mStraightLineFrame.getFrameVisible());
                 mDottedLineFrame.setFrameVisible(false);
                 if(mOnLineModeChangedListener != null){
@@ -102,6 +104,8 @@ public class PaletteToolsView extends FrameLayout {
         mDottedLineFrame.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(mEraser.isSelected())
+                    return;
                 mDottedLineFrame.setFrameVisible(!mDottedLineFrame.getFrameVisible());
                 mStraightLineFrame.setFrameVisible(false);
                 if(mOnLineModeChangedListener != null){
