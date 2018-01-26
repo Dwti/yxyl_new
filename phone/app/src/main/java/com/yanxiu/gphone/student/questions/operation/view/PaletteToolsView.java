@@ -24,9 +24,15 @@ public class PaletteToolsView extends FrameLayout {
     private ColorFrameRelativeLayout mStraightLineFrame,mDottedLineFrame;
     private ImageView mEraser;
     private CircleView mColorView;
+    private PenMode mPenMode;
     public static float THIN_STROKE;
     public static float BOLD_STROKE;
     public static float ERASER_STROKE;
+
+    public enum PenMode{
+        THIN,
+        BOLD
+    }
 
     private OnPaintModeChangedListener mOnPaintModeChangedListener;
     private OnLineModeChangedListener mOnLineModeChangedListener;
@@ -61,6 +67,7 @@ public class PaletteToolsView extends FrameLayout {
         mColorView = (CircleView) root.findViewById(R.id.currentColor);
 
         mSmallPenView.setSelected(true);
+        mPenMode = PenMode.THIN;
 
         THIN_STROKE = ScreenUtils.dpToPx(getContext(),2);
         BOLD_STROKE = ScreenUtils.dpToPx(getContext(),10);
@@ -87,6 +94,8 @@ public class PaletteToolsView extends FrameLayout {
         mStraightLineFrame.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(mEraser.isSelected())
+                    return;
                 mStraightLineFrame.setFrameVisible(!mStraightLineFrame.getFrameVisible());
                 mDottedLineFrame.setFrameVisible(false);
                 if(mOnLineModeChangedListener != null){
@@ -102,6 +111,8 @@ public class PaletteToolsView extends FrameLayout {
         mDottedLineFrame.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(mEraser.isSelected())
+                    return;
                 mDottedLineFrame.setFrameVisible(!mDottedLineFrame.getFrameVisible());
                 mStraightLineFrame.setFrameVisible(false);
                 if(mOnLineModeChangedListener != null){
@@ -122,7 +133,7 @@ public class PaletteToolsView extends FrameLayout {
         });
     }
 
-    private void setSmallPenViewSelected(boolean selected){
+    public void setSmallPenViewSelected(boolean selected){
         if(mSmallPenView.isSelected() == selected){
             return;
         }else {
@@ -131,6 +142,7 @@ public class PaletteToolsView extends FrameLayout {
                 setBigPenViewSelected(false);
                 setEraserSelected(false);
                 mSmallPenView.setUseStatus(true);
+                mPenMode = PenMode.THIN;
                 if(mOnPaintModeChangedListener != null){
                     mOnPaintModeChangedListener.onPaintModeChanged(PaletteView.PaintMode.DRAW, THIN_STROKE);
                 }
@@ -140,7 +152,7 @@ public class PaletteToolsView extends FrameLayout {
         }
     }
 
-    private void setBigPenViewSelected(boolean selected){
+    public void setBigPenViewSelected(boolean selected){
         if(mBigPenView.isSelected() == selected){
             return;
         }else {
@@ -149,6 +161,7 @@ public class PaletteToolsView extends FrameLayout {
                 setSmallPenViewSelected(false);
                 setEraserSelected(false);
                 mBigPenView.setUseStatus(true);
+                mPenMode = PenMode.BOLD;
                 if(mOnPaintModeChangedListener != null){
                     mOnPaintModeChangedListener.onPaintModeChanged(PaletteView.PaintMode.DRAW, BOLD_STROKE);
                 }
@@ -159,7 +172,7 @@ public class PaletteToolsView extends FrameLayout {
     }
 
 
-    private void setEraserSelected(boolean selected){
+    public void setEraserSelected(boolean selected){
         if(mEraser.isSelected() == selected){
             return;
         }else {
@@ -183,6 +196,10 @@ public class PaletteToolsView extends FrameLayout {
         mStraightLineFrame.setColor(color);
         mDottedLineFrame.setColor(color);
         mColorView.setCircleColor(color);
+    }
+
+    public PenMode getPenMode() {
+        return mPenMode;
     }
 
     public void setOnColorClickListener(OnClickListener listener){
