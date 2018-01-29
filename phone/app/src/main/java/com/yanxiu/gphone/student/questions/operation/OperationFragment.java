@@ -119,7 +119,7 @@ public class OperationFragment extends AnswerSimpleExerciseBaseFragment {
             YanxiuBaseActivity.requestWriteAndReadPermission(new OnPermissionCallback() {
                 @Override
                 public void onPermissionsGranted(@Nullable List<String> deniedPermissions) {
-                    PaletteActivity.invoke(OperationFragment.this.getActivity(),storedFilePath,imgUrl);
+                    PaletteActivity.invoke(OperationFragment.this.getActivity(),storedFilePath,imgUrl,OperationFragment.this.hashCode());
                 }
 
                 @Override
@@ -137,7 +137,7 @@ public class OperationFragment extends AnswerSimpleExerciseBaseFragment {
     }
 
     public void onEventMainThread(PictureModifiedMessage message){
-        if(message != null){
+        if(message != null && message.fromId == this.hashCode()){
             setupAnswerList(mOperationBeanList);
             if(!mQuestion.answerList.isEmpty() && mQuestion.answerList.size() == mOperationBeanList.size()){
                 mQuestion.setHasAnswered(true);
