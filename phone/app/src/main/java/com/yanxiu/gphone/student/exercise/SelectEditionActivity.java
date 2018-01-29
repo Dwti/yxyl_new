@@ -55,6 +55,7 @@ public class SelectEditionActivity extends YanxiuBaseActivity {
     private static final String COME_FROM = "comeFrom";
     public static final int FROM_EXERCISE = 0x01;
     public static final int FROM_SUBJECT_SELECT = 0x02;
+    private int mComeFrom;
 
     public static void invoke(Activity activity, String subjectId, String subjectName, String editionName, int comeFrom) {
         Intent intent = new Intent(activity, SelectEditionActivity.class);
@@ -100,6 +101,7 @@ public class SelectEditionActivity extends YanxiuBaseActivity {
         mSubjectId = getIntent().getStringExtra(SUBJECT_ID);
         mDefaultEditionName = getIntent().getStringExtra(EDITION_NAME);
         mSubjectName = getIntent().getStringExtra(SUBJECT_NAME);
+        mComeFrom = getIntent().getIntExtra(COME_FROM,0);
         mSubject.setText(mSubjectName);
         if (mIcon != null)
             setIcon(mIcon, mSubjectId);
