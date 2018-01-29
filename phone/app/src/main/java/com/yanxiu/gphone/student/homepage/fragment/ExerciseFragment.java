@@ -156,6 +156,15 @@ public class ExerciseFragment extends HomePageBaseFragment {
     private void requestSubjects(String stageId){
         SubjectsRequest request = new SubjectsRequest();
         request.setStageId(stageId);
+        String subjectids="";
+        for (Integer integer:LoginInfo.getSubjectIds()){
+            if (TextUtils.isEmpty(subjectids)){
+                subjectids+=integer;
+            }else {
+                subjectids+=(","+integer);
+            }
+        }
+        request.setSubjectIds(subjectids);
         request.startRequest(SubjectsResponse.class,mSubjectsCallback);
     }
 

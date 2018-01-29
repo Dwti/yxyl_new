@@ -1,6 +1,11 @@
 package com.yanxiu.gphone.student.login.response;
 
+import android.text.TextUtils;
+
 import org.litepal.crud.DataSupport;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Canghaixiao.
@@ -35,6 +40,43 @@ public class UserMessageBean extends DataSupport {
     private String createtime;
     private String head;
     private PassportBean passport;
+    private List<Integer> subjectIds;
+    private String subjectIds_string;
+
+    public String getSubjectIds_string() {
+        String string="";
+        for (Integer integer:subjectIds){
+            if (TextUtils.isEmpty(string)){
+                string+=integer;
+            }else {
+                string+=(","+integer);
+            }
+        }
+        this.subjectIds_string=string;
+        return subjectIds_string;
+    }
+
+    public void setSubjectIds_string(String subjectIds_string) {
+        this.subjectIds_string = subjectIds_string;
+        if (subjectIds==null||subjectIds.isEmpty()){
+            if (!TextUtils.isEmpty(subjectIds_string)){
+                String[] strings=subjectIds_string.split(",");
+                subjectIds=new ArrayList<>();
+                for (String s:strings){
+                    int i=Integer.parseInt(s);
+                    subjectIds.add(i);
+                }
+            }
+        }
+    }
+
+    public List<Integer> getSubjectIds() {
+        return subjectIds;
+    }
+
+    public void setSubjectIds(List<Integer> subjectIds) {
+        this.subjectIds = subjectIds;
+    }
 
     public int getId() {
         return id;

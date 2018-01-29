@@ -322,7 +322,7 @@
 
     <string name="no_wrong_data">真棒!还没有错题哦</string>
 
-    <string name="new_project">爱学习,就来睿学堂</string>
+    <string name="new_project">爱学习 , 就来睿学堂</string>
     <string name="new_project_name">轻松做题,让学习拥有美好的体验</string>
     <string name="experience">立即体验</string>
 
@@ -348,4 +348,9 @@
     <string name="operation_no_answer">[ 白板答题 ]</string>
     <string name="reset">还原</string>
 
+
+    <string name="sync_title">同步</string>
+    <string name="special_title">专题</string>
+    <string name="weak_point">薄弱知识点</string>
+    <string name="video_point_detail">知识点视频详解</string>
 </resources>

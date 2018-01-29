@@ -1,11 +1,12 @@
 package com.yanxiu.gphone.student.util;
 
-import android.text.TextUtils;
-
 import com.yanxiu.gphone.student.login.response.PassportBean;
 import com.yanxiu.gphone.student.login.response.UserMessageBean;
 
 import org.litepal.crud.DataSupport;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Canghaixiao.
@@ -36,11 +37,22 @@ public class LoginInfo {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        checkLogStatus();
+        if (bean == null) {
+            LOGIN_STATUS = LOGIN_OUT;
+        } else {
+            LOGIN_STATUS = LOGIN_IN;
+        }
     }
 
     private static UserMessageBean getCacheData() {
         return DataSupport.findFirst(UserMessageBean.class, true);
+    }
+
+    public static void setCacheData(UserMessageBean messageBean) {
+        if (isLogIn()) {
+            return;
+        }
+        bean = messageBean;
     }
 
     public static void saveCacheData(UserMessageBean messageBean) {
@@ -48,11 +60,20 @@ public class LoginInfo {
             return;
         }
         bean = messageBean;
-        checkLogStatus();
         Save();
     }
 
-    private static void Save() {
+    public static void updataCacheData(UserMessageBean messageBean) {
+        messageBean.setPassport(bean.getPassport());
+        bean=messageBean;
+        Save();
+    }
+
+    public static void Save() {
+        if (bean == null || bean.getPassport() == null) {
+            return;
+        }
+        LOGIN_STATUS = LOGIN_IN;
         bean.getPassport().save();
         bean.save();
     }
@@ -64,17 +85,6 @@ public class LoginInfo {
         LOGIN_STATUS = LOGIN_OUT;
         bean.delete();
         bean = null;
-    }
-
-    /**
-     * This method cannot be used at will.
-     * */
-    public static void checkLogStatus(){
-        if (bean == null|| TextUtils.isEmpty(getMobile())) {
-            LOGIN_STATUS = LOGIN_OUT;
-        } else {
-            LOGIN_STATUS = LOGIN_IN;
-        }
     }
 
     /**
@@ -111,6 +121,7 @@ public class LoginInfo {
 
     /**
      * 账号（手机号）
+     *
      * @return 手机号
      */
     public static String getMobile() {
@@ -122,7 +133,7 @@ public class LoginInfo {
 
     public static String getUID() {
         //因登录处有绑定手机操作，需要uid，所以这样处理
-        if (bean==null||bean.getPassport()==null) {
+        if (bean == null || bean.getPassport() == null) {
             return "";
         }
         return String.valueOf(bean.getPassport().getUid());
@@ -130,7 +141,7 @@ public class LoginInfo {
 
     public static String getToken() {
         //因登录处有绑定手机操作，需要token，所以这样处理
-        if (bean==null||bean.getPassport()==null) {
+        if (bean == null || bean.getPassport() == null) {
             return "";
         }
         return bean.getPassport().getToken();
@@ -138,6 +149,7 @@ public class LoginInfo {
 
     /**
      * 账号名称
+     *
      * @return 真实姓名
      */
     public static String getRealName() {
@@ -149,8 +161,8 @@ public class LoginInfo {
 
     /**
      * 获得登录名称
-     * */
-    public static String getLoginName(){
+     */
+    public static String getLoginName() {
         if (!isLogIn()) {
             return "";
         }
@@ -167,13 +179,21 @@ public class LoginInfo {
 
     /**
      * 登录方式（账号登录、三方登录）
+     *
      * @return 三方类型
      */
-    public static String getLoginType(){
+    public static String getLoginType() {
         if (!isLogIn()) {
             return "";
         }
         return bean.getLoginType();
+    }
+
+    public static void setLoginType(String loginType) {
+        if (bean == null) {
+            return;
+        }
+        bean.setLoginType(loginType);
     }
 
     public static void saveLoginType(String loginType) {
@@ -186,16 +206,17 @@ public class LoginInfo {
 
     /**
      * 学段ID
+     *
      * @return 学段ID
      */
-    public static String getStageid(){
-        if (!isLogIn()){
+    public static String getStageid() {
+        if (!isLogIn()) {
             return "";
         }
         return bean.getStageid();
     }
 
-    public static void saveStageid(String stageId){
+    public static void saveStageid(String stageId) {
         if (!isLogIn()) {
             return;
         }
@@ -203,7 +224,7 @@ public class LoginInfo {
         Save();
     }
 
-    public static void saveUid(int uid){
+    public static void saveUid(int uid) {
         if (!isLogIn()) {
             return;
         }
@@ -211,7 +232,7 @@ public class LoginInfo {
         Save();
     }
 
-    public static void saveToken(String token){
+    public static void saveToken(String token) {
         if (!isLogIn()) {
             return;
         }
@@ -226,18 +247,20 @@ public class LoginInfo {
         bean.getPassport().setPassword(passWord);
         Save();
     }
+
     /**
      * 学段名称
+     *
      * @return 学段名称
      */
-    public static String getStageName(){
-        if (!isLogIn()){
+    public static String getStageName() {
+        if (!isLogIn()) {
             return "";
         }
         return bean.getStageName();
     }
 
-    public static void saveStageName(String stageName){
+    public static void saveStageName(String stageName) {
         if (!isLogIn()) {
             return;
         }
@@ -247,16 +270,17 @@ public class LoginInfo {
 
     /**
      * 用户头像
+     *
      * @return 头像URL
      */
-    public static String getHeadIcon(){
-        if (!isLogIn()){
+    public static String getHeadIcon() {
+        if (!isLogIn()) {
             return "";
         }
         return bean.getHead();
     }
 
-    public static void saveHeadIcon(String path){
+    public static void saveHeadIcon(String path) {
         if (!isLogIn()) {
             return;
         }
@@ -266,16 +290,17 @@ public class LoginInfo {
 
     /**
      * 学校名称
+     *
      * @return 学校名称
-     * */
-    public static String getSchoolName(){
-        if (!isLogIn()){
+     */
+    public static String getSchoolName() {
+        if (!isLogIn()) {
             return "";
         }
         return bean.getSchoolName();
     }
 
-    public static void saveSchoolMessage(String areaId, String areaName, String cityId, String cityName, String provinceId, String provinceName, String schoolId, String schoolName){
+    public static void saveSchoolMessage(String areaId, String areaName, String cityId, String cityName, String provinceId, String provinceName, String schoolId, String schoolName) {
         if (!isLogIn()) {
             return;
         }
@@ -292,15 +317,15 @@ public class LoginInfo {
 
     /**
      * 获取性别
-     * */
-    public static int getSex(){
-        if (!isLogIn()){
+     */
+    public static int getSex() {
+        if (!isLogIn()) {
             return 0;
         }
         return bean.getSex();
     }
 
-    public static void saveSex(int sex){
+    public static void saveSex(int sex) {
         if (!isLogIn()) {
             return;
         }
@@ -310,9 +335,9 @@ public class LoginInfo {
 
     /**
      * 获得省份名称
-     * */
-    public static String getProvinceName(){
-        if (!isLogIn()){
+     */
+    public static String getProvinceName() {
+        if (!isLogIn()) {
             return "";
         }
         return bean.getProvinceName();
@@ -320,9 +345,9 @@ public class LoginInfo {
 
     /**
      * 获得城市名称
-     * */
-    public static String getCityName(){
-        if (!isLogIn()){
+     */
+    public static String getCityName() {
+        if (!isLogIn()) {
             return "";
         }
         return bean.getCityName();
@@ -330,11 +355,32 @@ public class LoginInfo {
 
     /**
      * 获得区域名称
-     * */
-    public static String getAreaName(){
-        if (!isLogIn()){
+     */
+    public static String getAreaName() {
+        if (!isLogIn()) {
             return "";
         }
         return bean.getAreaName();
+    }
+
+    /**
+     * 可访问的学科ID
+     */
+    public static List<Integer> getSubjectIds() {
+        if (!isLogIn()) {
+            return new ArrayList<>();
+        }
+        List<Integer> list = bean.getSubjectIds();
+        if (list == null) {
+            list = new ArrayList<>();
+        }
+        return list;
+    }
+
+    public static String getSubjectIds_string() {
+        if (!isLogIn()){
+            return "";
+        }
+        return bean.getSubjectIds_string();
     }
 }

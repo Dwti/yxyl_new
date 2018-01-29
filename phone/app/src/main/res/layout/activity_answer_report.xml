@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/fl_qa"
+    android:background="@color/color_fefefe"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -10,7 +11,7 @@
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/color_edf0ee">
+        android:background="@color/color_fefefe">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -168,7 +169,6 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@id/totalnumber"
                             android:layout_toRightOf="@id/line"
-
                             tools:text="12:30:00"
                             android:textColor="@color/color_336600"
                             android:textSize="19dp" />
@@ -195,9 +195,76 @@
                 android:layout_height="match_parent"
                 android:layout_below="@id/text"
                 android:gravity="center_horizontal"
+                android:background="@color/color_edf0ee"
                 android:paddingBottom="@dimen/report_grid_paddingbottom"
                 android:orientation="vertical"></LinearLayout>
 
+
+            <TextView
+                android:id="@+id/weak_point"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_below="@+id/card_grid"
+                android:layout_centerHorizontal="true"
+                android:textSize="17dp"
+                android:textColor="@color/color_666666"
+                android:background="@color/color_fefefe"
+                android:gravity="center"
+                android:text="@string/weak_point" />
+
+            <com.yanxiu.gphone.student.customviews.ClassifyChoice
+                android:id="@+id/weak_point_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/weak_point"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="30dp"/>
+            <LinearLayout
+                android:id="@+id/video_related"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/weak_point_detail"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="23dp"
+                    android:layout_height="23dp"
+                    android:layout_marginLeft="@dimen/special_margin"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/report_video_hint" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/weak_point_detail"
+                    android:layout_marginLeft="7dp"
+                    android:text="@string/video_point_detail"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/color_666666"
+                    android:textSize="@dimen/text_size_16" />
+            </LinearLayout>
+
+
+
+            <com.yanxiu.gphone.student.customviews.UnMoveGridView
+                android:id="@+id/gridView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/video_related"
+                android:layout_marginLeft="@dimen/special_margin"
+                android:layout_marginRight="@dimen/special_margin"
+                android:layout_marginTop="20dp"
+                android:columnWidth="160dp"
+                android:horizontalSpacing="15dp"
+                android:listSelector="@android:color/transparent"
+                android:numColumns="2"
+                android:paddingBottom="30dp"
+                android:stretchMode="spacingWidth"
+                android:verticalSpacing="15dp" />
         </RelativeLayout>
 
     </com.yanxiu.gphone.student.customviews.UnFocusableScrollView>

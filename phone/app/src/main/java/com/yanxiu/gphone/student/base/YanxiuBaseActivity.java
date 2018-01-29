@@ -9,10 +9,16 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
+import com.test.yanxiu.network.HttpCallback;
+import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.constant.Constants;
+import com.yanxiu.gphone.student.http.request.CheckStudentTokenRequest;
+import com.yanxiu.gphone.student.login.response.LoginResponse;
+import com.yanxiu.gphone.student.login.response.UserMessageBean;
 import com.yanxiu.gphone.student.userevent.UserEventManager;
 import com.yanxiu.gphone.student.util.ActivityManger;
+import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.PermissionUtil;
 
 import java.util.ArrayList;
@@ -53,6 +59,24 @@ public class YanxiuBaseActivity extends FragmentActivity implements EasyPermissi
         if (!isAppOnForeground()) {
             isActive = false;
             UserEventManager.getInstense().whenEnterBack();
+            if (LoginInfo.isLogIn()) {
+                //更新用户数据
+                CheckStudentTokenRequest studentTokenRequest = new CheckStudentTokenRequest();
+                studentTokenRequest.startRequest(LoginResponse.class, new EXueELianBaseCallback<LoginResponse>() {
+                    @Override
+                    protected void onResponse(RequestBase request, LoginResponse response) {
+                        if (response.getStatus().getCode()==0&&response.data!=null&&response.data.size()>0) {
+                            UserMessageBean messageBean = response.data.get(0);
+                            LoginInfo.updataCacheData(messageBean);
+                        }
+                    }
+
+                    @Override
+                    public void onFail(RequestBase request, Error error) {
+
+                    }
+                });
+            }
         }
     }
 

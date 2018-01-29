@@ -142,7 +142,7 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
         mClearView.setEnabled(false);
         mLoginView.setEnabled(false);
 
-        mUserNameView.setText("dc1215171201");
+        mUserNameView.setText("c10000481s001");
         mPassWordView.setText("123456");
     }
 
@@ -300,11 +300,13 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
             protected void onResponse(RequestBase request, LoginResponse response) {
                 rootView.hiddenLoadingView();
                 if (response.getStatus().getCode()==0&&response.data!=null&&response.data.size()>0){
-                    LoginInfo.saveCacheData(response.data.get(0));
-                    LoginInfo.saveLoginType(UserMessageBean.LOGIN_ACCOUNT);
-                    if (TextUtils.isEmpty(LoginInfo.getMobile())){
+                    if (TextUtils.isEmpty(response.data.get(0).getMobile())){
+                        LoginInfo.setCacheData(response.data.get(0));
+                        LoginInfo.setLoginType(UserMessageBean.LOGIN_ACCOUNT);
                         BindMobileActivity.LaunchActivity(mContext,BindMobileActivity.COME_TYPE_LOGIN);
                     }else {
+                        LoginInfo.saveCacheData(response.data.get(0));
+                        LoginInfo.saveLoginType(UserMessageBean.LOGIN_ACCOUNT);
                         MainActivity.invoke(LoginActivity.this, true);
                         LoginActivity.this.finish();
                     }

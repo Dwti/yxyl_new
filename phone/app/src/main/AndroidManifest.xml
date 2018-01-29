@@ -347,6 +347,19 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"/>
+        <activity
+            android:name=".learning.activity.SelectLearningEditionActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+        android:name=".learning.activity.SelectSyncAndSpecailActivity"
+        android:launchMode="singleTop"
+        android:screenOrientation="portrait" />
+        <activity
+            android:name=".learning.activity.SpecialDetailActivity"
+            android:configChanges="orientation|screenSize|keyboard"
+            android:screenOrientation="portrait"/>
+
     </application>
 
 </manifest>

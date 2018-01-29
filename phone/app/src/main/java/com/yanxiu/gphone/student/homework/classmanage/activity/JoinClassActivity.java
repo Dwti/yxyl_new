@@ -18,6 +18,7 @@ import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
+import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.WavesLayout;
 import com.yanxiu.gphone.student.homework.response.ClassBean;
 import com.yanxiu.gphone.student.homework.request.JoinClassRequest;
@@ -25,6 +26,7 @@ import com.yanxiu.gphone.student.homework.response.JoinClassResponse;
 import com.yanxiu.gphone.student.homework.request.UpdateUserInfoRequest;
 import com.yanxiu.gphone.student.homework.response.UpdateUserInfoResponse;
 import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
+import com.yanxiu.gphone.student.login.activity.ChooseStageActivity;
 import com.yanxiu.gphone.student.userevent.UserEventManager;
 import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.ToastManager;
@@ -59,18 +61,19 @@ public class JoinClassActivity extends YanxiuBaseActivity {
     private ImageView mIvEdit;
 
     private boolean isRequesting = false;
+    private ClassBean classInfo;
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join_class);
-        ClassBean classInfo = (ClassBean) getIntent().getSerializableExtra(EXTRA_CLASS_INFO);
+        classInfo = (ClassBean) getIntent().getSerializableExtra(EXTRA_CLASS_INFO);
         mClassStatus = classInfo.getStatus();
-        initView(classInfo);
+        initView();
         initListener();
     }
-    private void initView(final ClassBean classInfo) {
+    private void initView() {
         TextView title = (TextView) findViewById(R.id.tv_title);
         TextView className = (TextView) findViewById(R.id.tv_class_name);
         TextView classNum = (TextView) findViewById(R.id.tv_class_num);
@@ -182,6 +185,7 @@ public class JoinClassActivity extends YanxiuBaseActivity {
         public void onResponse(RequestBase request, JoinClassResponse ret) {
             if(ret.getStatus().getCode() == 0){
                 updateUserInfo(mName);
+                saveStageMessage(String.valueOf(classInfo.getStageid()));
                 if(mClassStatus == ALLOW_TO_JOIN){
                     ToastManager.showMsg(getString(R.string.join_class_success));
                 }else if(mClassStatus == NEED_VERIFY){
@@ -199,6 +203,26 @@ public class JoinClassActivity extends YanxiuBaseActivity {
             isRequesting = false;
         }
     };
+
+    private void saveStageMessage(String stage_Id){
+        String[] stageIds= Constants.StageId;
+        int[] stageNames=Constants.StageTxtId;
+        for (int i=0;i<stageIds.length;i++){
+            String stageId=stageIds[i];
+            int stageNameId=stageNames[i];
+            if (stageId.equals(stage_Id)){
+                LoginInfo.saveStageid(stage_Id);
+                LoginInfo.saveStageName(getText(stageNameId).toString());
+
+                ChooseStageActivity.StageMessage message = new ChooseStageActivity.StageMessage();
+                message.requestCode = 0;
+                message.stageId = stageId;
+                message.stageText = getText(stageNameId).toString();
+                EventBus.getDefault().post(message);
+                return;
+            }
+        }
+    }
 
     HttpCallback<UpdateUserInfoResponse> mUpdateUserInfoCallback = new EXueELianBaseCallback<UpdateUserInfoResponse>() {
         @Override
