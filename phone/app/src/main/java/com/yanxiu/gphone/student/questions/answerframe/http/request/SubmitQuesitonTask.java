@@ -9,27 +9,18 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
-import com.yanxiu.gphone.student.constant.Constants;
-import com.yanxiu.gphone.student.db.SaveAnswerDBHelper;
 import com.yanxiu.gphone.student.db.UrlRepository;
 import com.yanxiu.gphone.student.homework.response.PaperResponse;
 import com.yanxiu.gphone.student.http.request.UpDataRequest;
-import com.yanxiu.gphone.student.http.request.UpDataRequest.onUpDatalistener;
-import com.yanxiu.gphone.student.questions.answerframe.bean.AnswerBean;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
 import com.yanxiu.gphone.student.questions.answerframe.bean.SubjectiveUpLoadImgBean;
 import com.yanxiu.gphone.student.questions.answerframe.listener.SubmitAnswerCallback;
-import com.yanxiu.gphone.student.questions.answerframe.ui.activity.AnswerQuestionActivity;
-import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionTemplate;
 import com.yanxiu.gphone.student.questions.subjective.SubjectiveQuestion;
-import com.yanxiu.gphone.student.util.DataFetcher;
 import com.yanxiu.gphone.student.util.LoginInfo;
-import com.yanxiu.gphone.student.util.ToastManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -127,7 +118,7 @@ public class SubmitQuesitonTask extends AsyncTask {
             public Object getImgTag(int position) {
                 return imgList.get(position);
             }
-        }).setProgressListener(new UpDataRequest.onProgressListener() {
+        }).setRequestListener(new UpDataRequest.onRequestListener() {
             @Override
             public void onRequestStart() {
                 isError = false;
@@ -170,7 +161,7 @@ public class SubmitQuesitonTask extends AsyncTask {
                     });
                 }
             }
-        }).setListener(new onUpDatalistener() {
+        }).setProgressListener(new UpDataRequest.onUpDataProgresslistener() {
             @Override
             public void onUpDataStart(int position, Object tag) {
 //                    Log.e(TAG, "onUpDataStart: " + position);
@@ -619,9 +610,9 @@ public class SubmitQuesitonTask extends AsyncTask {
         }
 
         //保存逻辑
-        if (subjectQuestion.answerList.contains(localPath)) {
-            int index = subjectQuestion.answerList.indexOf(localPath);
-            subjectQuestion.answerList.set(index, imgUrl);
+        if (subjectQuestion.getAnswerList().contains(localPath)) {
+            int index = subjectQuestion.getAnswerList().indexOf(localPath);
+            subjectQuestion.getAnswerList().set(index, imgUrl);
             Log.e(TAG, "保存url" + imgUrl);
         }
 

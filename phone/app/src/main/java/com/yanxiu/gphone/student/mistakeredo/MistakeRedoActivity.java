@@ -246,7 +246,7 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
                 if (childQuestion.getShowType().equals(QuestionShowType.MISTAKE_ANALYSIS)) {
                     setBottomButtonState(DELETE_ABLE);
                 } else {
-                    if (childQuestion.getTemplate().equals(QuestionTemplate.ANSWER)) {
+                    if (childQuestion.getTemplate().equals(QuestionTemplate.ANSWER)||childQuestion.getTemplate().equals(QuestionTemplate.OPERATION)) {
 //                        setBottomButtonState(CHECK_ANALYSIS);
                     } else {
                         if (hasAnswered) {
@@ -275,7 +275,7 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
             if (question.isComplexQuestion()) {
                 List<BaseQuestion> children = question.getChildren();
                 for (BaseQuestion q : children) {
-                    if (q.getTemplate().equals(QuestionTemplate.ANSWER)) {
+                    if (q.getTemplate().equals(QuestionTemplate.ANSWER)||q.getTemplate().equals(QuestionTemplate.OPERATION)) {
                         continue;
                     } else {
                         if (!q.getHasAnswered()) {
@@ -301,7 +301,7 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
         if (baseQuestion.isComplexQuestion()) {
             List<BaseQuestion> children = baseQuestion.getChildren();
             for (BaseQuestion q : children) {
-                if (q.getTemplate().equals(QuestionTemplate.ANSWER)) {
+                if (q.getTemplate().equals(QuestionTemplate.ANSWER)||q.getTemplate().equals(QuestionTemplate.OPERATION)) {
                     continue;
                 } else {
                     if (!q.getHasAnswered()) {
@@ -361,18 +361,18 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
                 if (question.isComplexQuestion()) {
                     List<BaseQuestion> children = question.getChildren();
                     for(BaseQuestion child : children){
-                        if(!child.getTemplate().equals(QuestionTemplate.ANSWER)){
+                        if(!child.getTemplate().equals(QuestionTemplate.ANSWER)&&!child.getTemplate().equals(QuestionTemplate.OPERATION)){
                             //主观题的解析 不变 还按照当前的错题重做的界面展示（没变化，都一样）
                             child.setShowType(QuestionShowType.MISTAKE_ANALYSIS);
                             child.setMisTakeRedo(true);
                         }
-                        if(!child.getTemplate().equals(QuestionTemplate.ANSWER) && child.getStatus() == Constants.ANSWER_STATUS_WRONG){
+                        if(!child.getTemplate().equals(QuestionTemplate.ANSWER)&&!child.getTemplate().equals(QuestionTemplate.OPERATION) && child.getStatus() == Constants.ANSWER_STATUS_WRONG){
                             isRight = false;
                         }
                     }
                     mAdapter.notifyDataSetChanged();
                 } else {
-                    if(!question.getTemplate().equals(QuestionTemplate.ANSWER) && question.getStatus() == Constants.ANSWER_STATUS_WRONG){
+                    if(!question.getTemplate().equals(QuestionTemplate.ANSWER)&&!question.getTemplate().equals(QuestionTemplate.OPERATION) && question.getStatus() == Constants.ANSWER_STATUS_WRONG){
                         isRight = false;
                     }
                     mAdapter.notifyDataSetChanged();
@@ -453,13 +453,13 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
         if (baseQuestion.isComplexQuestion()) {
             List<BaseQuestion> children = baseQuestion.getChildren();
             for (BaseQuestion child : children) {
-                if (!child.getTemplate().equals(QuestionTemplate.ANSWER)) {
+                if (!child.getTemplate().equals(QuestionTemplate.ANSWER)&&!child.getTemplate().equals(QuestionTemplate.OPERATION)) {
                     b = false;
                     break;
                 }
             }
         } else {
-            b = baseQuestion.getTemplate().equals(QuestionTemplate.ANSWER);
+            b = baseQuestion.getTemplate().equals(QuestionTemplate.ANSWER)||baseQuestion.getTemplate().equals(QuestionTemplate.OPERATION);
         }
         return b;
     }
@@ -956,12 +956,12 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
             List<BaseQuestion> children = question.getChildren();
             int i=0;
             for(BaseQuestion child : children){
-                if(!child.getTemplate().equals(QuestionTemplate.ANSWER)){
+                if(!child.getTemplate().equals(QuestionTemplate.ANSWER)&&!child.getTemplate().equals(QuestionTemplate.OPERATION)){
                     //主观题的解析 不变 还按照当前的错题重做的界面展示（没变化，都一样）
                     child.setShowType(QuestionShowType.MISTAKE_ANALYSIS);
                     child.setMisTakeRedo(true);
                 }
-                if(!child.getTemplate().equals(QuestionTemplate.ANSWER) && child.getStatus() == Constants.ANSWER_STATUS_WRONG){
+                if(!child.getTemplate().equals(QuestionTemplate.ANSWER)&&!child.getTemplate().equals(QuestionTemplate.OPERATION) && child.getStatus() == Constants.ANSWER_STATUS_WRONG){
                     isRight = false;
                 }
                 if(response!=null){
@@ -980,7 +980,7 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
             }
             mAdapter.notifyDataSetChanged();
         } else {
-            if(!question.getTemplate().equals(QuestionTemplate.ANSWER) && question.getStatus() == Constants.ANSWER_STATUS_WRONG){
+            if(!question.getTemplate().equals(QuestionTemplate.ANSWER)&&!question.getTemplate().equals(QuestionTemplate.OPERATION) && question.getStatus() == Constants.ANSWER_STATUS_WRONG){
                 isRight = false;
             }
             if(response!=null) {
@@ -988,7 +988,7 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
                 padBean.setStatus(response.data.get(0).status);
                 padBean.setObjectiveScore(response.data.get(0).objectiveScore);
                 padBean.setAnalysis(response.data.get(0).analysis);
-                if (!question.getTemplate().equals(QuestionTemplate.ANSWER) && padBean.getStatus() != Constants.ANSWER_STATUS_RIGHT) {
+                if (!question.getTemplate().equals(QuestionTemplate.ANSWER)&&!question.getTemplate().equals(QuestionTemplate.OPERATION) && padBean.getStatus() != Constants.ANSWER_STATUS_RIGHT) {
                     isRight = false;
                 }
             }

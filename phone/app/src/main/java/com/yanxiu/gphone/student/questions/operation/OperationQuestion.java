@@ -38,12 +38,12 @@ public class OperationQuestion extends SubjectiveQuestion{
 
     @Override
     public ExerciseBaseFragment wrongFragment() {
-        return null;
+        return new OperationWrongFragment();
     }
 
     @Override
     public ExerciseBaseFragment redoFragment() {
-        return null;
+        return new OperationRedoFragment();
     }
 
     public List<String> getOperateImgUrls() {

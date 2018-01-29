@@ -139,7 +139,7 @@ public class OperationFragment extends AnswerSimpleExerciseBaseFragment {
     public void onEventMainThread(PictureModifiedMessage message){
         if(message != null){
             setupAnswerList(mOperationBeanList);
-            if(!mQuestion.answerList.isEmpty() && mQuestion.answerList.size() == mOperationBeanList.size()){
+            if(!mQuestion.getAnswerList().isEmpty() && mQuestion.getAnswerList().size() == mOperationBeanList.size()){
                 mQuestion.setHasAnswered(true);
             }else {
                 mQuestion.setHasAnswered(false);
@@ -152,13 +152,13 @@ public class OperationFragment extends AnswerSimpleExerciseBaseFragment {
     }
 
     private void setupAnswerList(List<OperationBean> list){
-        mQuestion.answerList.clear();
+        mQuestion.getAnswerList().clear();
         for(OperationBean bean : list){
             String picPath = bean.getStoredFilePath() + PaletteActivity.SUFFIX;
             if(OperationUtils.hasStoredBitmap(picPath)){
-                mQuestion.answerList.add(picPath);
+                mQuestion.getAnswerList().add(picPath);
             }else {
-                mQuestion.answerList.add(bean.getImageUrl());
+                mQuestion.getAnswerList().add(bean.getImageUrl());
             }
         }
     }

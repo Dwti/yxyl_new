@@ -20,15 +20,15 @@ import java.util.List;
  */
 public class SubjectiveQuestion extends BaseQuestion {
 
-    public ArrayList<String> answerList=new ArrayList<>();
-    protected List<PointBean> pointList;
-    protected int starCount;
-    protected String questionAnalysis;
-    protected List<String> subjectAnswer;
-    protected int typeId=-1;
+    private ArrayList<String> answerList=new ArrayList<>();
+    private List<PointBean> pointList;
+    private int starCount;
+    private String questionAnalysis;
+    private List<String> subjectAnswer;
+    private int typeId=-1;
     protected int score;
-    protected List<JsonAudioComment> audioList;
-    protected boolean isMistakeRedoAnalysisExpand = false;
+    private List<JsonAudioComment> audioList;
+    private boolean isMistakeRedoAnalysisExpand = false;
 
     public SubjectiveQuestion(PaperTestBean bean, QuestionShowType showType,String paperStatus) {
         super(bean, showType,paperStatus);

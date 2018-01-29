@@ -25,8 +25,10 @@ public class NoteGrideView extends GridView {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        getLayoutParams().height=w/4;
-        getLayoutParams().width=w;
-        setLayoutParams(getLayoutParams());
+        if (h!=w/4) {
+            getLayoutParams().height = w / 4;
+            getLayoutParams().width = w;
+            setLayoutParams(getLayoutParams());
+        }
     }
 }
