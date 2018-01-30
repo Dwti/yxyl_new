@@ -11,10 +11,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.test.yanxiu.network.RequestBase;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;

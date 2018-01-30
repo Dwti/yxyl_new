@@ -1,6 +1,7 @@
 package com.yanxiu.gphone.student.homework.classmanage.activity;
 
 import android.app.Activity;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 
 import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
+import com.yanxiu.gphone.student.BuildConfig;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.homework.classmanage.ClassStatus;
@@ -52,7 +54,9 @@ public class ClassInfoActivity extends YanxiuBaseActivity {
 
         Button btnCancel = (Button) findViewById(R.id.btn_cancel);
         //TODO 去掉退出班级按钮，为了开发方便，暂时不去，上线时选择隐藏（不要随便删除）
-        btnCancel.setVisibility(View.GONE);
+//        if (!BuildConfig.DEBUG) {
+//            btnCancel.setVisibility(View.GONE);
+//        }
 
         ImageView back = (ImageView) findViewById(R.id.iv_left);
 

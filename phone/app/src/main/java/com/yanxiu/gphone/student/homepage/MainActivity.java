@@ -132,10 +132,8 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
             }
         }
         if (isShouldShowStudy){
-            //TODO 隐藏学习fragment
             mNavBarViews[INDEX_STUDY].setVisibility(View.VISIBLE);
         }else {
-            //TODO 隐藏学习fragment
             mNavBarViews[INDEX_STUDY].setVisibility(View.GONE);
         }
     }

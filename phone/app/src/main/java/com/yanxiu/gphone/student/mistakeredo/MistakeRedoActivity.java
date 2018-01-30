@@ -352,7 +352,7 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
         switch (mBottomBtnState) {
             //可提交
             case SUBMIT_ABLE:
-                //TODO 重做答案判断移交sever，暂时不改
+                //重做答案判断移交sever
                 mAnswerManager.start(question);
 
 //                question.setShowType(QuestionShowType.MISTAKE_ANALYSIS);
