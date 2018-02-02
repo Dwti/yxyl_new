@@ -249,13 +249,15 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
     private void initWeakPoint() {
         ArrayList<KnowledgePointLabelItem> list = new ArrayList<>();
         KnowledgePointLabelItem item = null;
-        item = new KnowledgePointLabelItem();
-        item.content = "若View宽高、位置发生改变且显示内容不变，只需调用requestLayout方法";
-        item.marginRight = 15; //15dp
-        item.textSize = 15; //15sp
-        item.textColor = getResources().getColor(R.color.color_ffffff);
-        item.backGroundId = R.drawable.selector_knowledge_item_layout;
-        list.add(item);
+        for (int i=0;i<20;i++) {
+            item = new KnowledgePointLabelItem();
+            item.content = i+"科...";
+            item.marginRight = 15; //15dp
+            item.textSize = 15; //15sp
+            item.textColor = getResources().getColor(R.color.color_ffffff);
+            item.backGroundId = R.drawable.selector_knowledge_item_layout;
+            list.add(item);
+        }
         for (PointBean pointBean:mPaper.getWeakPoints()) {
             item = new KnowledgePointLabelItem();
             item.content = pointBean.getName();
