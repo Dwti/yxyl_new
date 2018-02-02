@@ -33,6 +33,8 @@ public class WeakPointTagView extends ViewGroup {
     private Context context;
     int mWidth, mHeight;
     private List<KnowledgePointLabelItem> mList;
+    private int freeWidth;
+    private int lastItem;
 
     public boolean isCollapseMode() {
         return isCollapseMode;
@@ -92,13 +94,16 @@ public class WeakPointTagView extends ViewGroup {
                         if(lineViews.size() == 0) {
                             break;
                         }
+                        lastItem=i-1;
                         View lastChild = lineViews.remove(lineViews.size() - 1);
+                        MarginLayoutParams lastLp = (MarginLayoutParams) child.getLayoutParams();
                         int lastChildWidth = lastChild.getMeasuredWidth();
                         int lastChildHeight = lastChild.getMeasuredHeight();
-                        lineWidth -= lastChildWidth;
+                        lineWidth -= (lastChildWidth+lastLp.leftMargin+lastLp.rightMargin);
                         if(childWidth + lp.leftMargin + lp.rightMargin + lineWidth < width) {
                             modifyWidth = width - (lineWidth + childWidth + lp.leftMargin + lp.rightMargin);
                             if(modifyWidth > 25) {
+                                freeWidth=modifyWidth;
                                 lineViews.add(lastChild);
                             } else {
                                 modifyWidth = 0;
@@ -152,11 +157,11 @@ public class WeakPointTagView extends ViewGroup {
             }
             // 遍历当前行所有的View
             for (int j = 0; j < lineViews.size(); j++) {
-                View child = lineViews.get(j);
+                final View child = lineViews.get(j);
                 if (child.getVisibility() == View.GONE) {
                     continue;
                 }
-                MarginLayoutParams lp = (MarginLayoutParams) child
+                final MarginLayoutParams lp = (MarginLayoutParams) child
                         .getLayoutParams();
 
                 //计算childView的left,top,right,bottom
@@ -169,11 +174,8 @@ public class WeakPointTagView extends ViewGroup {
                     rc = lc + modifyWidth-lp.rightMargin;
                     left += modifyWidth + lp.rightMargin
                             + lp.leftMargin;
-                    child.getLayoutParams().width = modifyWidth;
-                    child.setLayoutParams(child.getLayoutParams());
+                    child.getLayoutParams().width = modifyWidth-lp.leftMargin-lp.rightMargin;
                 } else {
-                    child.getLayoutParams().width = child.getMeasuredWidth();
-                    child.setLayoutParams(child.getLayoutParams());
                     left += child.getMeasuredWidth() + lp.rightMargin
                             + lp.leftMargin;
                 }
@@ -297,6 +299,7 @@ public class WeakPointTagView extends ViewGroup {
      */
     public void setData(List<KnowledgePointLabelItem> list) {
         mList = list;
+//        isCollapseMode=true;
         LayoutInflater inflater = LayoutInflater.from(context);
         this.removeAllViews();
         for (int i = 0; i < list.size(); i++) {
@@ -324,7 +327,7 @@ public class WeakPointTagView extends ViewGroup {
             this.addView(layout);
         }
 
-        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.weakpoint_moreview_layout, null);
+        final LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.weakpoint_moreview_layout, null);
         final TextView view = (TextView) layout.findViewById(R.id.more_text);
         final ImageView imageView = (ImageView) layout.findViewById(R.id.more_img);
         if (isCollapseMode) {
@@ -334,27 +337,44 @@ public class WeakPointTagView extends ViewGroup {
             view.setText("收起");
             imageView.setImageResource(R.drawable.selector_collapse_img);
         }
+        /* *
+         * 这种改法确实能暂时满足需求，但是在部分情况下会出异常，希望以后修改
+         * cwq
+         * */
         layout.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                setChildLayout();
                 isCollapseMode = !isCollapseMode;
                 if (isCollapseMode) {
-                    setData(mList);
+                    WeakPointTagView.this.requestLayout();
+                    WeakPointTagView.this.invalidate();
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(freeWidth, LayoutParams.WRAP_CONTENT);
+                    WeakPointTagView.this.getChildAt(lastItem).setLayoutParams(params);
                     view.setText("更多");
                     imageView.setImageResource(R.drawable.selector_more_text_img);
                 } else {
-                    requestLayout();
-                    invalidate();
+                    WeakPointTagView.this.requestLayout();
+                    WeakPointTagView.this.invalidate();
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+                    WeakPointTagView.this.getChildAt(lastItem).setLayoutParams(params);
                     view.setText("收起");
                     imageView.setImageResource(R.drawable.selector_collapse_img);
                 }
-
             }
         });
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         lp.setMargins(0, 10, 0, 0);
         layout.setLayoutParams(lp);
         this.addView(layout);
+    }
+
+    private void setChildLayout(){
+        int count=getChildCount();
+        for (int i=0;i<count;i++){
+            View view=getChildAt(i);
+            view.layout(mWidth,0,mWidth,0);
+        }
     }
 }
 

@@ -50,15 +50,6 @@ public class YanxiuBaseActivity extends FragmentActivity implements EasyPermissi
         if (!isActive) {
             isActive = true;
             UserEventManager.getInstense().whenEnterFront();
-        }
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (!isAppOnForeground()) {
-            isActive = false;
-            UserEventManager.getInstense().whenEnterBack();
             if (LoginInfo.isLogIn()) {
                 //更新用户数据
                 CheckStudentTokenRequest studentTokenRequest = new CheckStudentTokenRequest();
@@ -77,6 +68,15 @@ public class YanxiuBaseActivity extends FragmentActivity implements EasyPermissi
                     }
                 });
             }
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (!isAppOnForeground()) {
+            isActive = false;
+            UserEventManager.getInstense().whenEnterBack();
         }
     }
 
