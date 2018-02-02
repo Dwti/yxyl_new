@@ -350,7 +350,10 @@
             android:name=".learning.activity.SpecialDetailActivity"
             android:configChanges="orientation|screenSize|keyboard"
             android:screenOrientation="portrait"/>
-
+        <activity
+            android:name=".learning.activity.VideoListActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

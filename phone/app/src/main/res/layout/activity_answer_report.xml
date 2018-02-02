@@ -212,7 +212,7 @@
                 android:gravity="center"
                 android:text="@string/weak_point" />
 
-            <com.yanxiu.gphone.student.customviews.ClassifyChoice
+            <com.yanxiu.gphone.student.customviews.WeakPointTagView
                 android:id="@+id/weak_point_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

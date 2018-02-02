@@ -308,6 +308,10 @@ public class VideoManager {
     }
 
     private void setupVideoProperty(VideoModel model){
+        if(model.videoSize == 0) {
+            ((TextView)playerView.findViewById(R.id.video_size)).setText(model.videoSizeFormat);
+            return;
+        }
         String text;
         //传进来的size是以byte为单位
         if(model.videoSize < 1024){

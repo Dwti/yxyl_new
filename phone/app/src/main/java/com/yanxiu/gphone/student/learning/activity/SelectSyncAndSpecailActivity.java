@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,26 +27,24 @@ import com.yanxiu.gphone.student.customviews.ChapterSwitchBar;
 import com.yanxiu.gphone.student.customviews.PickerViewEx;
 import com.yanxiu.gphone.student.exercise.adapter.BaseExpandableRecyclerAdapter;
 import com.yanxiu.gphone.student.exercise.bean.ChapterBean;
-import com.yanxiu.gphone.student.exercise.bean.EditionBeanEx;
 import com.yanxiu.gphone.student.exercise.bean.EditionChildBean;
 import com.yanxiu.gphone.student.exercise.bean.KnowledgePointBean;
-import com.yanxiu.gphone.student.exercise.request.ChapterListRequest;
-import com.yanxiu.gphone.student.exercise.request.GenQuesByChapterRequest;
-import com.yanxiu.gphone.student.exercise.request.GenQuesByKnpointRequest;
 import com.yanxiu.gphone.student.exercise.request.GenQuesRequest;
-import com.yanxiu.gphone.student.exercise.request.GetVolumesRequest;
-import com.yanxiu.gphone.student.exercise.request.KnowledgePointRequest;
-import com.yanxiu.gphone.student.exercise.request.SaveVolumeRequest;
 import com.yanxiu.gphone.student.exercise.response.ChapterListResponse;
-import com.yanxiu.gphone.student.exercise.response.EditionResponse;
 import com.yanxiu.gphone.student.exercise.response.GetVolumeResponse;
 import com.yanxiu.gphone.student.exercise.response.KnowledgePointResponse;
 import com.yanxiu.gphone.student.exercise.response.SaveVolumeResponse;
 import com.yanxiu.gphone.student.homework.response.PaperResponse;
 import com.yanxiu.gphone.student.learning.adapter.SpecialAdapter;
 import com.yanxiu.gphone.student.learning.adapter.SyncAdapter;
+import com.yanxiu.gphone.student.learning.bean.ChannelChildBean;
 import com.yanxiu.gphone.student.learning.request.GetChannelRequest;
+import com.yanxiu.gphone.student.learning.request.GetLearningVolumesRequest;
+import com.yanxiu.gphone.student.learning.request.GetTreeRequest;
+import com.yanxiu.gphone.student.learning.request.SaveLearningVolumeRequest;
+import com.yanxiu.gphone.student.learning.request.GetResourceListDataRequest;
 import com.yanxiu.gphone.student.learning.response.GetChannelResponse;
+import com.yanxiu.gphone.student.learning.response.GetResourceListDataResponse;
 import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.util.DESBodyDealer;
@@ -82,17 +81,30 @@ public class SelectSyncAndSpecailActivity extends YanxiuBaseActivity {
     private static final String SUBJECT_ID = "SUBJECT_ID";
     private static final String SUBJECT_NAME = "SUBJECT_NAME";
     private static final String EDITION_ID = "EDITION_ID";
-    private String mClickRmsPaperId;
-    private PaperResponse mMockData;
+    private List<ChannelChildBean> mChannelList;
+    private boolean mHasgetChannel = false;
     private HttpCallback<GetChannelResponse> mGetChannelCallback = new HttpCallback<GetChannelResponse>() {
         @Override
         public void onSuccess(RequestBase request, GetChannelResponse ret) {
             if (ret.getStatus().getCode() == 0) {
-//                mNoEditions = false;
-//                mEditionChildBeanList = ret.getData();
-//                initVolumeId(mEditionChildBeanList);
-//                showContentView();
-//                getChapterList(mSubjectId, mEditionId, mVolumeId);
+                mHasgetChannel = true;
+                mChannelList = ret.getData();
+                if(mChannelList.size() == 1) {
+                    mSwitchBar.setVisibility(View.GONE);
+                    if(TextUtils.equals(mChannelList.get(0).getName(),"专题")) {
+                        mLayoutStage.setVisibility(View.GONE);
+                    } else {
+                        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mLayoutStage.getLayoutParams();
+                        params.removeRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+                        params.addRule(RelativeLayout.CENTER_IN_PARENT);
+                        mLayoutStage.setLayoutParams(params);
+                    }
+                } else {
+                    mSwitchBar.setVisibility(View.VISIBLE);
+                    if(mIsSyncMode) {
+                        mLayoutStage.setVisibility(View.VISIBLE);
+                    }
+                }
             } else {
                 showDataErrorView(true);
             }
@@ -119,7 +131,6 @@ public class SelectSyncAndSpecailActivity extends YanxiuBaseActivity {
         initView();
         initData();
         initListener();
-        mockBCDetailData();
     }
 
     private void initListener() {
@@ -139,7 +150,7 @@ public class SelectSyncAndSpecailActivity extends YanxiuBaseActivity {
                     mLayoutStage.setVisibility(View.VISIBLE);
                     mRecyclerView.setAdapter(mSyncAdapter);
                     if (mSyncAdapter.getItemCount() == 0) {
-                        getSyncList();
+                        getSyncVolumes();
                     }
                 } else {
                     mIsSyncMode = false;
@@ -147,7 +158,7 @@ public class SelectSyncAndSpecailActivity extends YanxiuBaseActivity {
                     mLayoutStage.setVisibility(View.GONE);
                     mRecyclerView.setAdapter(mSpecialAdapter);
                     if (mSpecialAdapter.getItemCount() == 0) {
-                        getKnowledgePointList(mSubjectId);
+                        getSpecialTree(mSubjectId);
                     }
                 }
             }
@@ -163,6 +174,10 @@ public class SelectSyncAndSpecailActivity extends YanxiuBaseActivity {
         mRefreshBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!mHasgetChannel) {
+                    getChannel();
+                    return;
+                }
                 if (mIsSyncMode) {
                     mSyncAdapter.clearData();
                 } else {
@@ -170,7 +185,7 @@ public class SelectSyncAndSpecailActivity extends YanxiuBaseActivity {
                 }
                 showContentView();
                 if (mNoEditions) {
-                    getSyncList();
+                    getSyncVolumes();
                 } else {
                     loadData();
                 }
@@ -180,47 +195,30 @@ public class SelectSyncAndSpecailActivity extends YanxiuBaseActivity {
         mSyncAdapter.setOnItemClickListener(new BaseExpandableRecyclerAdapter.OnItemClickListener<ChapterBean>() {
             @Override
             public void onItemClick(View itemView, int position, ChapterBean node) {
-                GenQuesByChapterRequest request = new GenQuesByChapterRequest();
-                request.setSubjectId(mSubjectId);
-                request.setEditionId(mEditionId);
-                request.setVolumeId(mVolumeId);
-                request.bodyDealer = new DESBodyDealer();
+                String chapterId = null;
                 if (node.getLevel() == 0) {
-                    request.setChapterId(node.getId());
+                    chapterId = node.getId();
                 } else if (node.getLevel() == 1) {
-                    request.setChapterId(node.getParent().getId());
-                    request.setSectionId(node.getId());
+                    chapterId = node.getParent().getId();
                 } else if (node.getLevel() == 2) {
-                    request.setChapterId(node.getParent().getParent().getId());
-                    request.setSectionId(node.getParent().getId());
-                    request.setCellId(node.getId());
+                    chapterId = node.getParent().getParent().getId();
                 }
-                request.startRequest(PaperResponse.class, mGenQuesByChapterCallback);
+                openVideoListActivity("1", chapterId, node.getName());
             }
         });
 
         mSpecialAdapter.setOnItemClickListener(new BaseExpandableRecyclerAdapter.OnItemClickListener<KnowledgePointBean>() {
             @Override
             public void onItemClick(View itemView, int position, KnowledgePointBean node) {
-                GenQuesByKnpointRequest request = new GenQuesByKnpointRequest();
-                request.setSubjectId(mSubjectId);
-                request.bodyDealer = new DESBodyDealer();
+                String chapterId = null;
                 if (node.getLevel() == 0) {
-                    request.setKnpId1(node.getId());
+                    chapterId = node.getId();
                 } else if (node.getLevel() == 1) {
-                    request.setKnpId1(node.getParent().getId());
-                    request.setKnpId2(node.getId());
+                    chapterId = node.getParent().getId();
                 } else if (node.getLevel() == 2) {
-                    request.setKnpId1(node.getParent().getParent().getId());
-                    request.setKnpId2(node.getParent().getId());
-                    request.setKnpId3(node.getId());
-                } else if (node.getLevel() == 3) {
-                    request.setKnpId1(node.getParent().getParent().getParent().getId());
-                    request.setKnpId2(node.getParent().getParent().getId());
-                    request.setKnpId3(node.getParent().getId());
-                    request.setKnpId4(node.getId());
+                    chapterId = node.getParent().getParent().getId();
                 }
-                request.startRequest(PaperResponse.class, mGenQuesByKnpointCallback);
+                openVideoListActivity("2", chapterId, node.getName());
             }
         });
     }
@@ -255,8 +253,7 @@ public class SelectSyncAndSpecailActivity extends YanxiuBaseActivity {
         mTitle.setText(mSubjectName);
 
         getChannel();
-        setSwitchBarVisibility(mSubjectId);
-        getSyncList();
+        getSyncVolumes();
     }
 
     private void getChannel() {
@@ -266,9 +263,9 @@ public class SelectSyncAndSpecailActivity extends YanxiuBaseActivity {
 
     private void loadData() {
         if (mIsSyncMode) {
-            getChapterList(mSubjectId, mEditionId, mVolumeId);
+            getSyncTree(mSubjectId, mEditionId, mVolumeId);
         } else {
-            getKnowledgePointList(mSubjectId);
+            getSpecialTree(mSubjectId);
         }
     }
 
@@ -313,7 +310,7 @@ public class SelectSyncAndSpecailActivity extends YanxiuBaseActivity {
                         mStage.setText(mEditionChildBeanList.get(mCurrSelectedPos).getName());
                         dismissPop();
                         saveVolume(mVolumeId);
-                        getChapterList(mSubjectId, mEditionId, mVolumeId);
+                        getSyncTree(mSubjectId, mEditionId, mVolumeId);
                     } else {
                         dismissPop();
                     }
@@ -350,11 +347,8 @@ public class SelectSyncAndSpecailActivity extends YanxiuBaseActivity {
         return result;
     }
 
-    protected void openSpecialDetailActivity(String paperId, GenQuesRequest request) {
-//        UserEventManager.getInstense().whenEnterWork();
-//        paperId = "413596";//BC-Songs-Abracadabra
-        mClickRmsPaperId = "5899";
-        SpecialDetailActivity.invoke(this, paperId, mClickRmsPaperId, Constants.FROM_BC_RESOURCE);
+    protected void openVideoListActivity(String channel, String chapterId, String name) {
+        VideoListActivity.invoke(this, channel, chapterId, name);
     }
 
     private void dismissPop() {
@@ -362,25 +356,6 @@ public class SelectSyncAndSpecailActivity extends YanxiuBaseActivity {
         mOverlay.setVisibility(View.GONE);
         if (popupWindow != null && popupWindow.isShowing())
             popupWindow.dismiss();
-    }
-
-    private void setSwitchBarVisibility(String subjectId) {
-        switch (subjectId) {
-            //非数理化生科目，不展示章节知识点切换（只有章节）
-            case "1102":
-            case "1104":
-            case "1108":
-            case "1109":
-            case "1110":
-                mSwitchBar.setVisibility(View.GONE);
-                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mLayoutStage.getLayoutParams();
-                params.removeRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-                params.addRule(RelativeLayout.CENTER_IN_PARENT);
-                mLayoutStage.setLayoutParams(params);
-                break;
-            default:
-                break;
-        }
     }
 
     private void showContentView() {
@@ -400,47 +375,33 @@ public class SelectSyncAndSpecailActivity extends YanxiuBaseActivity {
         mRefreshBtn.setText(R.string.click_to_retry);
     }
 
-    private void getChapterList(String subjectId, String editionId, String volume) {
-        ChapterListRequest request = new ChapterListRequest();
+    private void getSyncTree(String subjectId, String editionId, String volume) {
+        GetTreeRequest request = new GetTreeRequest();
         request.setSubjectId(subjectId);
-        request.setEditionId(editionId);
-        request.setVolume(volume);
-        request.startRequest(ChapterListResponse.class, mChapterCallback);
+        request.setChannel("1");
+        request.setVolumeId(volume);
+        request.startRequest(ChapterListResponse.class, mSyncCallback);
     }
 
-    private void getKnowledgePointList(String subjectId) {
-        KnowledgePointRequest request = new KnowledgePointRequest();
+    private void getSpecialTree(String subjectId) {
+        GetTreeRequest request = new GetTreeRequest();
         request.setSubjectId(subjectId);
-        request.startRequest(KnowledgePointResponse.class, mKnowledgePointCallback);
+        request.setChannel("2");
+        request.startRequest(KnowledgePointResponse.class, mSpecialCallback);
     }
 
-    private void getSyncList() {
-        GetVolumesRequest request = new GetVolumesRequest();
+    private void getSyncVolumes() {
+        GetLearningVolumesRequest request = new GetLearningVolumesRequest();
         request.setSubjectId(mSubjectId);
         request.setEditionId(mEditionId);
         request.startRequest(GetVolumeResponse.class, mGetVolumeCallback);
     }
 
     private void saveVolume(String volumeId) {
-        SaveVolumeRequest request = new SaveVolumeRequest();
+        SaveLearningVolumeRequest request = new SaveLearningVolumeRequest();
         request.setSubjectId(mSubjectId);
         request.setVolumeId(volumeId);
         request.startRequest(SaveVolumeResponse.class, mSaveVolumeCallback);
-    }
-
-    private String getVolume(List<EditionBeanEx> list, String editionId) {
-        String volume = "";
-        for (EditionBeanEx bean : list) {
-            if (editionId.equals(bean.getId())) {
-                mEditionChildBeanList = bean.getChildren();
-                if (bean.getChildren() != null && bean.getChildren().size() > 0) {
-                    volume = bean.getChildren().get(0).getId();
-                    mStage.setText(bean.getChildren().get(0).getName());
-                }
-                break;
-            }
-        }
-        return volume;
     }
 
     private void initVolumeId(List<EditionChildBean> list) {
@@ -469,26 +430,7 @@ public class SelectSyncAndSpecailActivity extends YanxiuBaseActivity {
         mOverlay.clearAnimation();
     }
 
-    HttpCallback<EditionResponse> mEditionCallback = new EXueELianBaseCallback<EditionResponse>() {
-        @Override
-        protected void onResponse(RequestBase request, EditionResponse response) {
-            if (response.getStatus().getCode() == 0) {
-                mNoEditions = false;
-                mVolumeId = getVolume(response.getData(), mEditionId);
-                showContentView();
-                getChapterList(mSubjectId, mEditionId, mVolumeId);
-            } else {
-                showDataErrorView(true);
-            }
-        }
-
-        @Override
-        public void onFail(RequestBase request, Error error) {
-            showDataErrorView(true);
-        }
-    };
-
-    HttpCallback<ChapterListResponse> mChapterCallback = new EXueELianBaseCallback<ChapterListResponse>() {
+    HttpCallback<ChapterListResponse> mSyncCallback = new EXueELianBaseCallback<ChapterListResponse>() {
         @Override
         protected void onResponse(RequestBase request, ChapterListResponse response) {
             if (response.getStatus().getCode() == 0) {
@@ -505,7 +447,7 @@ public class SelectSyncAndSpecailActivity extends YanxiuBaseActivity {
         }
     };
 
-    HttpCallback<KnowledgePointResponse> mKnowledgePointCallback = new EXueELianBaseCallback<KnowledgePointResponse>() {
+    HttpCallback<KnowledgePointResponse> mSpecialCallback = new EXueELianBaseCallback<KnowledgePointResponse>() {
         @Override
         protected void onResponse(RequestBase request, KnowledgePointResponse response) {
             if (response.getStatus().getCode() == 0) {
@@ -522,44 +464,6 @@ public class SelectSyncAndSpecailActivity extends YanxiuBaseActivity {
         }
     };
 
-    HttpCallback<PaperResponse> mGenQuesByChapterCallback = new EXueELianBaseCallback<PaperResponse>() {
-        @Override
-        public void onResponse(RequestBase request, PaperResponse ret) {
-            if (ret.getStatus().getCode() == 0) {
-//                Paper paper = new Paper(ret.getData().get(0), QuestionShowType.ANSWER);
-                Paper paper = new Paper(mMockData.getData().get(0), QuestionShowType.ANSWER);
-                DataFetcher.getInstance().save(paper.getId(), paper);
-                openSpecialDetailActivity(paper.getId(), (GenQuesRequest) request);
-            } else {
-                ToastManager.showMsg(ret.getStatus().getDesc());
-            }
-        }
-
-        @Override
-        public void onFail(RequestBase request, Error error) {
-            ToastManager.showMsg(error.getLocalizedMessage());
-        }
-    };
-
-    HttpCallback<PaperResponse> mGenQuesByKnpointCallback = new EXueELianBaseCallback<PaperResponse>() {
-        @Override
-        public void onResponse(RequestBase request, PaperResponse ret) {
-            if (ret.getStatus().getCode() == 0) {
-//                Paper paper = new Paper(ret.getData().get(0), QuestionShowType.ANSWER);
-                Paper paper = new Paper(mMockData.getData().get(0), QuestionShowType.ANSWER);
-                DataFetcher.getInstance().save(paper.getId(), paper);
-                openSpecialDetailActivity(paper.getId(), (GenQuesRequest) request);
-            } else {
-                ToastManager.showMsg(ret.getStatus().getDesc());
-            }
-        }
-
-        @Override
-        public void onFail(RequestBase request, Error error) {
-            ToastManager.showMsg(error.getLocalizedMessage());
-        }
-    };
-
     HttpCallback<GetVolumeResponse> mGetVolumeCallback = new HttpCallback<GetVolumeResponse>() {
         @Override
         public void onSuccess(RequestBase request, GetVolumeResponse ret) {
@@ -568,7 +472,7 @@ public class SelectSyncAndSpecailActivity extends YanxiuBaseActivity {
                 mEditionChildBeanList = ret.getData();
                 initVolumeId(mEditionChildBeanList);
                 showContentView();
-                getChapterList(mSubjectId, mEditionId, mVolumeId);
+                getSyncTree(mSubjectId, mEditionId, mVolumeId);
             } else {
                 showDataErrorView(true);
             }
@@ -591,8 +495,4 @@ public class SelectSyncAndSpecailActivity extends YanxiuBaseActivity {
         }
     };
 
-    public void mockBCDetailData() {
-        String json = FileUtil.getDataFromAssets(this, "Mock_SpecialDetail.json");
-        mMockData = RequestBase.gson.fromJson(json, PaperResponse.class);
-    }
 }

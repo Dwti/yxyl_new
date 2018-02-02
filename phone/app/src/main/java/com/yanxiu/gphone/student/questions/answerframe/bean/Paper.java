@@ -1,9 +1,12 @@
 package com.yanxiu.gphone.student.questions.answerframe.bean;
 
+import android.text.TextUtils;
+
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionConvertFactory;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.questions.bean.PaperBean;
 import com.yanxiu.gphone.student.questions.bean.PaperStatusBean;
+import com.yanxiu.gphone.student.questions.bean.PointBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +45,16 @@ public class Paper {
     private String cover;
     private long videoSize;
     private String videoUrl;
+    private List<PointBean> weakPoints;
+    private String weakPoints_string;
 
+    public List<PointBean> getWeakPoints() {
+        return weakPoints;
+    }
+
+    public void setWeakPoints(List<PointBean> weakPoints) {
+        this.weakPoints = weakPoints;
+    }
     public Paper(PaperBean paperBean, QuestionShowType showType) {
         this.authorid = paperBean.getAuthorid();
         this.bedition = paperBean.getBedition();
@@ -73,6 +85,7 @@ public class Paper {
         this.cover = paperBean.getCover();
         this.videoSize = paperBean.getVideoSize();
         this.videoUrl = paperBean.getVideoUrl();
+        this.weakPoints = paperBean.getWeakPoints();
     }
 
     public String getAuthorid() {
@@ -357,4 +370,16 @@ public class Paper {
         }
     }
 
+    public String WeakPoints_string() {
+        String string="";
+        for (PointBean pointBean:weakPoints){
+            if (TextUtils.isEmpty(string)){
+                string+=pointBean.getId();
+            }else {
+                string+=(","+pointBean.getId());
+            }
+        }
+        this.weakPoints_string=string;
+        return weakPoints_string;
+    }
 }

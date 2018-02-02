@@ -62,4 +62,6 @@
     <color name="clearColor">#00000000</color>
 
     <color name="gray22">#22000000</color>
+    <color name="color_e1e3e0">#e1e3e0</color>
+    <color name="color_e5e5e5">#e5e5e5</color>
 </resources>

@@ -299,7 +299,7 @@ public class ClassifyChoice extends ViewGroup {
         LayoutInflater inflater = LayoutInflater.from(context);
         this.removeAllViews();
         for (int i = 0; i < list.size(); i++) {
-            LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.homework_tagview_layout, null);
+            LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.weakpoint_tagview_layout, null);
             final TextView view = (TextView) layout.findViewById(R.id.classfy_choice_text);
             final String content = list.get(i).content;
             if (null == content) {
@@ -316,7 +316,6 @@ public class ClassifyChoice extends ViewGroup {
             }
 
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
             int marginRight = list.get(i).marginRight;
             lp.setMargins(0, 10, marginRight, 0);
             layout.setLayoutParams(lp);

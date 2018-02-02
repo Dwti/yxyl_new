@@ -38,6 +38,15 @@ public class PaperBean extends BaseBean {
     private String cover;
     private long videoSize;
     private String videoUrl;
+    private List<PointBean> weakPoints;
+
+    public List<PointBean> getWeakPoints() {
+        return weakPoints;
+    }
+
+    public void setWeakPoints(List<PointBean> weakPoints) {
+        this.weakPoints = weakPoints;
+    }
 
     public String getAuthorid() {
         return authorid;

@@ -16,6 +16,7 @@ public class VideoModel {
     public long bodyPosition;
     public long bodyDuration = -1;
     public long videoSize;
+    public String videoSizeFormat;
     public String videoName;
 
     public boolean isHeadFinished;

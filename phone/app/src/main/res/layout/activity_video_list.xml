@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_edf0ee"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/layout_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/top_layout_height"
+        android:background="@android:color/white">
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="12dp"
+            android:background="@drawable/selector_back" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/top_layout_height"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="第一章"
+            android:textColor="#666666"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+        <LinearLayout
+            android:background="@android:color/white"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:id="@+id/default_order"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/default_order"
+                android:textColor="@color/color_89e00d"
+                android:textSize="@dimen/text_size_15" />
+            <View
+                android:layout_width="2dp"
+                android:layout_height="17dp"
+                android:gravity="center"
+                android:background="@color/color_e1e3e0" />
+
+            <TextView
+                android:id="@+id/hot_order"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/hot_order"
+                android:textColor="@color/color_666666"
+                android:textSize="@dimen/text_size_15" />
+
+        </LinearLayout>
+
+    <com.srt.refresh.EXueELianRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+            <com.yanxiu.gphone.student.customviews.UnMoveGridView
+                android:id="@+id/gridView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/special_margin"
+                android:layout_marginRight="@dimen/special_margin"
+                android:layout_marginTop="@dimen/special_margin"
+                android:columnWidth="160dp"
+                android:horizontalSpacing="15dp"
+                android:listSelector="@android:color/transparent"
+                android:numColumns="2"
+                android:paddingBottom="30dp"
+                android:stretchMode="spacingWidth"
+                android:verticalSpacing="15dp" />
+    </com.srt.refresh.EXueELianRefreshLayout>
+
+</LinearLayout>
