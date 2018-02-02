@@ -30,16 +30,22 @@
                 android:layout_below="@+id/include_img"
                 android:gravity="center_vertical"
                 android:layout_marginTop="20dp"
-                android:visibility="gone"
                 android:orientation="horizontal">
 
                 <TextView
                     style="@style/AboutTextLeft"
-                    android:text="@string/about_wx"/>
+                    android:text="@string/about_wx"
+                    android:layout_gravity="center_vertical"
+                    android:includeFontPadding="false"
+                    android:gravity="center_vertical"/>
 
                 <TextView
                     style="@style/AboutTextRight"
-                    android:text="@string/about_wx_code"/>
+                    android:text="@string/about_wx_code"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    android:includeFontPadding="false"
+                    android:textSize="14dp"/>
             </LinearLayout>
 
             <LinearLayout
@@ -58,7 +64,8 @@
 
                 <TextView
                     style="@style/AboutTextRight"
-                    android:text="@string/about_qq_code"/>
+                    android:text="@string/about_qq_code"
+                    android:textSize="14dp"/>
             </LinearLayout>
 
             <LinearLayout

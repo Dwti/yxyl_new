@@ -26,7 +26,14 @@
                     layout="@layout/common_stem"
                     android:visibility="gone" />
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/tv_question"
+                    android:background="@color/color_ffffff"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <com.yanxiu.gphone.student.questions.dialogSpoken.DialogSpokenLinearLayout
+                    android:id="@+id/dsl_spoken"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="157dp"
@@ -35,44 +42,7 @@
                     android:paddingBottom="25dp"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
-                    android:paddingTop="25dp">
-
-                    <com.yanxiu.gphone.student.customviews.SpokenSpanTextView
-                        android:id="@+id/tv_question"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/color_333333"
-                        android:lineSpacingExtra="@dimen/question_line_height"
-                        android:textSize="@dimen/choose_fragment_item_content_text_size" />
-
-                    <LinearLayout
-                        android:id="@+id/ll_hand"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:orientation="horizontal"
-                        android:paddingTop="20dp"
-                        android:visibility="gone">
-
-                        <ImageView
-                            android:id="@+id/iv_hand1"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp" />
-
-                        <ImageView
-                            android:id="@+id/iv_hand2"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_marginLeft="3dp" />
-
-                        <ImageView
-                            android:id="@+id/iv_hand3"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_marginLeft="3dp" />
-                    </LinearLayout>
-
-                </LinearLayout>
+                    android:paddingTop="25dp" />
 
                 <LinearLayout
                     android:id="@+id/shadow"
@@ -102,8 +72,8 @@
                 android:id="@+id/sw_wave"
                 android:layout_width="match_parent"
                 android:layout_height="117dp"
-                android:visibility="gone"
-                android:layout_centerHorizontal="true" />
+                android:layout_centerHorizontal="true"
+                android:visibility="gone" />
 
             <RelativeLayout
                 android:layout_width="match_parent"

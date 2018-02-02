@@ -1,118 +1,169 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal">
+    android:layout_height="match_parent">
 
-    <View
-        android:layout_width="30dp"
-        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:id="@+id/ll_updata"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
 
-    <RelativeLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_weight="1">
+        <View
+            android:layout_width="30dp"
+            android:layout_height="wrap_content" />
 
-        <com.yanxiu.gphone.student.customviews.UpdataRelativeLayout
-            android:layout_width="match_parent"
+        <RelativeLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true">
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1">
 
-            <LinearLayout
+            <com.yanxiu.gphone.student.customviews.UpdataRelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="124dp"
-                android:background="@drawable/updata_bottom"
-                android:orientation="vertical"
-                android:paddingTop="131dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:paddingTop="3dp"
-                    android:text="@string/version_updata"
-                    android:textColor="@color/color_336600"
-                    android:textSize="23dp" />
-
-                <TextView
-                    android:id="@+id/tv_updata_content"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:textColor="@color/color_69ad0a"
-                    android:paddingBottom="8dp" />
+                android:layout_centerInParent="true">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingBottom="15dp"
-                    android:paddingEnd="15dp"
-                    android:paddingStart="15dp">
+                    android:layout_marginTop="124dp"
+                    android:background="@drawable/updata_bottom"
+                    android:orientation="vertical"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingTop="131dp">
 
-                    <com.yanxiu.gphone.student.customviews.WavesLayout
-                        android:id="@+id/wave_no"
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:layout_alignParentBottom="true"
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:paddingTop="3dp"
+                        android:text="@string/version_updata"
+                        android:textColor="@color/color_336600"
+                        android:textSize="23dp" />
+
+                    <TextView
+                        android:id="@+id/tv_updata_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
                         android:layout_marginBottom="15dp"
-                        android:layout_marginLeft="15dp"
-                        android:layout_weight="1"
-                        app:waves_animend_alpha="102"
-                        app:waves_radius="@dimen/wavesRadius">
+                        android:gravity="center_horizontal"
+                        android:paddingBottom="8dp"
+                        android:textColor="@color/color_69ad0a" />
 
-                        <TextView
-                            android:id="@+id/update_layout_cel"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/shape_updata_no_bg"
-                            android:gravity="center"
-                            android:text="@string/updata_after"
-                            android:textColor="@drawable/selector_answercard_no_text_color"
-                            android:textSize="@dimen/answer_card_submitbutton_textsize" />
-                    </com.yanxiu.gphone.student.customviews.WavesLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingBottom="15dp">
 
-                    <View
-                        android:layout_width="15dp"
-                        android:layout_height="0dp" />
+                        <com.yanxiu.gphone.student.customviews.WavesLayout
+                            android:id="@+id/wave_no"
+                            android:layout_width="0dp"
+                            android:layout_height="50dp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_weight="1"
+                            app:waves_animend_alpha="102"
+                            app:waves_radius="@dimen/wavesRadius">
 
-                    <com.yanxiu.gphone.student.customviews.WavesLayout
-                        android:id="@+id/wave_yes"
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:layout_alignParentBottom="true"
-                        android:layout_marginBottom="15dp"
-                        android:layout_marginLeft="15dp"
-                        android:layout_weight="1"
-                        app:waves_animend_alpha="102"
-                        app:waves_radius="@dimen/wavesRadius">
+                            <TextView
+                                android:id="@+id/update_layout_cel"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/shape_updata_no_bg"
+                                android:gravity="center"
+                                android:text="@string/updata_after"
+                                android:textColor="@drawable/selector_answercard_no_text_color"
+                                android:textSize="@dimen/answer_card_submitbutton_textsize" />
+                        </com.yanxiu.gphone.student.customviews.WavesLayout>
 
-                        <TextView
-                            android:id="@+id/update_layout_sure"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/shape_common_button_bg_normal"
-                            android:gravity="center"
-                            android:text="@string/updata_now"
-                            android:textColor="@drawable/selector_answercard_no_text_color"
-                            android:textSize="@dimen/answer_card_submitbutton_textsize" />
-                    </com.yanxiu.gphone.student.customviews.WavesLayout>
+                        <View
+                            android:layout_width="15dp"
+                            android:layout_height="0dp" />
+
+                        <com.yanxiu.gphone.student.customviews.WavesLayout
+                            android:id="@+id/wave_yes"
+                            android:layout_width="0dp"
+                            android:layout_height="50dp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginLeft="15dp"
+                            android:layout_weight="1"
+                            app:waves_animend_alpha="102"
+                            app:waves_radius="@dimen/wavesRadius">
+
+                            <TextView
+                                android:id="@+id/update_layout_sure"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/shape_common_button_bg_normal"
+                                android:gravity="center"
+                                android:text="@string/updata_now"
+                                android:textColor="@drawable/selector_answercard_no_text_color"
+                                android:textSize="@dimen/answer_card_submitbutton_textsize" />
+                        </com.yanxiu.gphone.student.customviews.WavesLayout>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
-            </LinearLayout>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="255dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/updata_top" />
+            </com.yanxiu.gphone.student.customviews.UpdataRelativeLayout>
+        </RelativeLayout>
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="255dp"
-                android:contentDescription="@null"
-                android:src="@drawable/updata_top" />
-        </com.yanxiu.gphone.student.customviews.UpdataRelativeLayout>
-    </RelativeLayout>
+        <View
+            android:layout_width="30dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
-    <View
-        android:layout_width="30dp"
-        android:layout_height="wrap_content" />
-</LinearLayout>
+    <LinearLayout
+        android:id="@+id/rl_progress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:background="@drawable/updata_pop_wihte_bg">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:paddingTop="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="正在下载新版本"
+            android:textColor="#000000"
+            android:textSize="15dp" />
+
+        <ProgressBar
+            android:id="@+id/pb_progress"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+            android:max="100"
+            android:progress="0"
+            android:progressDrawable="@drawable/updata_pop_progress"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="正在下载新版本"
+            android:visibility="invisible"
+            android:textColor="@color/color_336600"
+            android:textSize="18dp" />
+    </LinearLayout>
+</RelativeLayout>

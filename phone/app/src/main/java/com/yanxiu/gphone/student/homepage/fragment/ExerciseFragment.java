@@ -112,12 +112,13 @@ public class ExerciseFragment extends HomePageBaseFragment {
         mAdapter = new SubjectsAdapter(new ArrayList<SubjectBean>(0));
         mGridView.setAdapter(mAdapter);
         mStageId = LoginInfo.getStageid();
-        requestSubjects(mStageId);
+//        requestSubjects(mStageId);
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        requestSubjects(mStageId);
     }
 
     @Override

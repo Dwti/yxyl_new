@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_89e00d"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp">
+
+        <com.yanxiu.gphone.student.customviews.SquareImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/spoken_result_bg" />
+
+        <ImageView
+            android:id="@+id/iv_score"
+            android:layout_width="280dp"
+            android:layout_height="280dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/spoken_result_score0" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="107dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <com.yanxiu.gphone.student.customviews.WavesLayout
+            android:id="@+id/wl_reset_waves"
+            android:layout_width="135dp"
+            android:layout_height="@dimen/common_button_height"
+            app:waves_canshowwave="false"
+            app:waves_color="@color/color_E3F8C5"
+            app:waves_radius="@dimen/wavesRadius">
+
+            <TextView
+                android:id="@+id/tv_reset"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/common_button_height"
+                android:background="@drawable/shape_common_button_bg_disable"
+                android:gravity="center"
+                android:text="重录"
+                android:textColor="@color/color_89e00d"
+                android:textSize="@dimen/login_edit_default_textsize" />
+        </com.yanxiu.gphone.student.customviews.WavesLayout>
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <com.yanxiu.gphone.student.customviews.WavesLayout
+            android:id="@+id/wl_again_waves"
+            android:layout_width="135dp"
+            android:layout_height="@dimen/common_button_height"
+            app:waves_canshowwave="false"
+            app:waves_color="@color/color_E3F8C5"
+            app:waves_radius="@dimen/wavesRadius">
+
+            <TextView
+                android:id="@+id/tv_again"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/common_button_height"
+                android:background="@drawable/shape_common_button_bg_normal"
+                android:gravity="center"
+                android:text="继续"
+                android:textColor="@color/color_8ae00d"
+                android:textSize="@dimen/login_edit_default_textsize" />
+        </com.yanxiu.gphone.student.customviews.WavesLayout>
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+    </LinearLayout>
+</LinearLayout>

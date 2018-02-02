@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yanxiu.gphone.student.R;
@@ -32,6 +34,9 @@ class UpdateDialog extends Dialog {
     private TextView mUpdateContentView;
     private WavesLayout mUpdataCancelView;
     private WavesLayout mUpdataSureView;
+    private LinearLayout mProgressLayout;
+    private ProgressBar mProgressView;
+    private LinearLayout mUpdataLayout;
 
     private String mUpdateType;
     private UpdateDialogCallBack mCallBack;
@@ -63,6 +68,7 @@ class UpdateDialog extends Dialog {
     }
 
     private void initData() {
+        mProgressLayout.setVisibility(View.GONE);
         if (mUpdateType.equals(UPDATETYPE_MANDATORY)){
             mCelTextView.setText(mContext.getResources().getText(R.string.app_update_exit));
             mUpdataSureView.setOnClickListener(new View.OnClickListener() {
@@ -72,6 +78,8 @@ class UpdateDialog extends Dialog {
 //                        mPbLoadApkView.setVisibility(View.VISIBLE);
                         mCallBack.update();
                     }
+                    mUpdataLayout.setVisibility(View.GONE);
+                    mProgressLayout.setVisibility(View.VISIBLE);
                 }
             });
             mUpdataCancelView.setOnClickListener(new View.OnClickListener() {
@@ -124,6 +132,9 @@ class UpdateDialog extends Dialog {
     private void initView() {
 //        mPbLoadApkView= (ProgressBar) findViewById(R.id.pb_loadapk);
 //        mUpdateTitleView = (TextView)findViewById(R.id.update_title);
+        mUpdataLayout= (LinearLayout) findViewById(R.id.ll_updata);
+        mProgressLayout= (LinearLayout) findViewById(R.id.rl_progress);
+        mProgressView= (ProgressBar) findViewById(R.id.pb_progress);
         mUpdateContentView = (TextView)findViewById(R.id.tv_updata_content);
         mCelTextView = (TextView)findViewById(R.id.update_layout_cel);
         mSureTextView = (TextView)findViewById(R.id.update_layout_sure);
@@ -141,9 +152,9 @@ class UpdateDialog extends Dialog {
     }
 
     public void setProgress(int progress){
-//        if (mPbLoadApkView!=null) {
-//            mPbLoadApkView.setProgress(progress);
-//        }
+        if (mProgressView!=null) {
+            mProgressView.setProgress(progress);
+        }
     }
 
 }
