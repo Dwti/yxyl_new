@@ -8,16 +8,21 @@ import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
+import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
+import com.yanxiu.gphone.student.base.EXueELianBaseResponse;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
 import com.yanxiu.gphone.student.bcresource.bean.TopicBean;
 import com.yanxiu.gphone.student.bcresource.response.TopicPaperResponse;
@@ -25,6 +30,11 @@ import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
 import com.yanxiu.gphone.student.homework.response.PaperResponse;
 import com.yanxiu.gphone.student.learning.adapter.RelatedVideoAdapter;
+import com.yanxiu.gphone.student.learning.bean.VideoDataBean;
+import com.yanxiu.gphone.student.learning.request.AddResViewNumRequest;
+import com.yanxiu.gphone.student.learning.request.GetRelatedCourseRequest;
+import com.yanxiu.gphone.student.learning.response.GetRelatedCourseResponse;
+import com.yanxiu.gphone.student.learning.response.GetResourceListDataResponse;
 import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.util.DataFetcher;
@@ -34,6 +44,8 @@ import com.yanxiu.gphone.student.videoplay.NetworkStateService;
 import com.yanxiu.gphone.student.videoplay.PlayerView;
 import com.yanxiu.gphone.student.videoplay.VideoManager;
 import com.yanxiu.gphone.student.videoplay.VideoModel;
+
+import java.util.List;
 
 import static com.yanxiu.gphone.student.videoplay.VideoManager.VideoState.LastVideoFinished;
 import static com.yanxiu.gphone.student.videoplay.VideoManager.VideoState.Loading;
@@ -54,45 +66,78 @@ public class SpecialDetailActivity extends YanxiuBaseActivity implements  View.O
     private ImageView video_play;
     private ImageView video_cover;
 
-    private Paper mPaper;//试卷数据
     RelatedVideoAdapter mRelatedAdapter;
-    private TopicPaperResponse mMockData;
     private RelatedVideoAdapter.OnItemClickListener mOnItemClickListener = new RelatedVideoAdapter.OnItemClickListener() {
         @Override
-        public void onClick(TopicBean bean, int position) {
-            Paper paper = new Paper(mMockRelatedVideoData.getData().get(0), QuestionShowType.ANSWER);
-            DataFetcher.getInstance().save(paper.getId(), paper);
-            SpecialDetailActivity.invoke(SpecialDetailActivity.this, paper.getId(),"413602",Constants.FROM_BC_RESOURCE);
+        public void onClick(VideoDataBean bean, int position) {
+            SpecialDetailActivity.invoke(SpecialDetailActivity.this, bean);
         }
     };
-    private String mPaperId;
     private GridView mGridView;
     private View mBack;
     private View layout_cover;
-    private PaperResponse mMockRelatedVideoData;
     private RelativeLayout mVideoLayout;
     private RelativeLayout mTitleLayout;
+    private TextView mTitle;
+    private boolean isRegisterReceiver = false;
+    private VideoDataBean mVideoBean;
+    private List<VideoDataBean> mRelatedVideoList;
+    private HttpCallback<GetRelatedCourseResponse> mGetRelatedListCallback = new EXueELianBaseCallback<GetRelatedCourseResponse>() {
+        @Override
+        protected void onResponse(RequestBase request, GetRelatedCourseResponse response) {
+             if(response.getStatus().getCode() == 0){
+                 if(response.getData() != null && response.getData().size() > 0){
+                     mRelatedVideoList = response.getData();
+                     mRelatedAdapter = new RelatedVideoAdapter(SpecialDetailActivity.this, mRelatedVideoList , mOnItemClickListener );
+                     mGridView.setAdapter(mRelatedAdapter);
+                     mRelatedVideoHint.setVisibility(View.VISIBLE);
+                     mGridView.setVisibility(View.VISIBLE);
+                    } else {
+                     mRelatedVideoHint.setVisibility(View.GONE);
+                     mGridView.setVisibility(View.GONE);
+                 }
+             } else {
+                 mRelatedVideoHint.setVisibility(View.GONE);
+                 mGridView.setVisibility(View.GONE);
+             }
+        }
 
-    public static void invoke(Activity activity){
+        @Override
+        public void onFail(RequestBase request, Error error) {
+            mRelatedVideoHint.setVisibility(View.GONE);
+          mGridView.setVisibility(View.GONE);
+        }
+    };
+    private TextView mRelatedVideoHint;
+    private HttpCallback<EXueELianBaseResponse> mAddResCallback = new HttpCallback<EXueELianBaseResponse>() {
+        @Override
+        public void onSuccess(RequestBase request, EXueELianBaseResponse ret) {
+            if(ret.getStatus().getCode() == 0) {
+                mVideoPlayTimes.setText(getResources().getString(R.string.play_times, mVideoBean.getViewnum() + 1));
+                setResult(RESULT_OK);
+            }
+        }
+
+        @Override
+        public void onFail(RequestBase request, Error error) {
+
+        }
+    };
+    private TextView mVideoTitle;
+    private TextView mVideoPlayTimes;
+
+    public static void invoke(Activity activity, VideoDataBean bean){
         Intent intent = new Intent(activity,SpecialDetailActivity.class);
-        activity.startActivity(intent);
+        intent.putExtra(Constants.VIDEO_BEAN, bean);
+        activity.startActivityForResult(intent,1);
     }
 
-    public static void invoke(Activity activity, String paperId, String rmsPaperId, String fromType) {
-        Intent intent = new Intent(activity, SpecialDetailActivity.class);
-        intent.putExtra(Constants.EXTRA_PAPER, paperId);
-        intent.putExtra(Constants.EXTRA_RMSPAPER,rmsPaperId);
-        intent.putExtra(Constants.EXTRA_FROMTYPE, fromType);
-        activity.startActivity(intent);
-    }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         rootView=new PublicLoadLayout(this);
         rootView.setContentView(R.layout.activity_special_detail);
         setContentView(rootView);
-        mockBCData();
-        mockRelatedVideoDataData();
         initView();
         initData();
         initListener();
@@ -110,17 +155,35 @@ public class SpecialDetailActivity extends YanxiuBaseActivity implements  View.O
     }
 
     private void initData() {
-        mPaperId = getIntent().getStringExtra(Constants.EXTRA_PAPER);
-        mPaper = DataFetcher.getInstance().getPaper(mPaperId);
-        if (mPaper==null){
+        mVideoBean = (VideoDataBean) getIntent().getSerializableExtra(Constants.VIDEO_BEAN);
+        if (mVideoBean==null){
             this.finish();
             return;
         }
+        mTitle.setText(mVideoBean.getTitle());
+        mVideoTitle.setText(mVideoBean.getRes_name());
+        mVideoPlayTimes.setText(getResources().getString(R.string.play_times,mVideoBean.getViewnum()));
         setupVideoModel();
         setupNetwork4GWifi();
-        mRelatedAdapter = new RelatedVideoAdapter(this, mMockData.getData(), mOnItemClickListener );
-        mGridView.setAdapter(mRelatedAdapter);
+        initRelatedVideoList();
         mGridView.setFocusable(false);
+    }
+
+    private void initRelatedVideoList() {
+        //TODO
+        if(mVideoBean.getPoint() == null || mVideoBean.getPoint().size() == 0) {
+            mRelatedVideoHint.setVisibility(View.GONE);
+            mGridView.setVisibility(View.GONE);
+        } else {
+            GetRelatedCourseRequest request = new GetRelatedCourseRequest();
+            request.setExcludeId(mVideoBean.getId());
+            request.setPoints(mVideoBean.getPoint_string());
+            request.startRequest(GetRelatedCourseResponse.class, mGetRelatedListCallback);
+        }
+//        GetRelatedCourseRequest request = new GetRelatedCourseRequest();
+//        request.setExcludeId(mVideoBean.getId());
+//        request.setPoints("5000,5001");
+//        request.startRequest(GetRelatedCourseResponse.class, mGetRelatedListCallback);
     }
 
     private void initView() {
@@ -129,21 +192,25 @@ public class SpecialDetailActivity extends YanxiuBaseActivity implements  View.O
         mPlayerView = (PlayerView) findViewById(R.id.player_view);
         mVideoLayout = (RelativeLayout) findViewById(R.id.video_layout);
         mTitleLayout = (RelativeLayout) findViewById(R.id.layout_title);
+        mTitle = (TextView) findViewById(R.id.title);
+        mVideoTitle = (TextView) findViewById(R.id.video_title);
+        mVideoPlayTimes = (TextView) findViewById(R.id.video_play_times);
         layout_cover = findViewById(R.id.video_cover);
         mVideoManager = new VideoManager(this, (PlayerView) findViewById(R.id.player_view));
         mVideoManager.setOnCourseEventListener(mListener);
         mGridView = (GridView) findViewById(R.id.gridView);
+        mRelatedVideoHint = (TextView) findViewById(R.id.video_related);
         mBack = findViewById(R.id.back);
     }
 
     private void setupVideoModel(){
         mVideoModel = new VideoModel();
-        mVideoModel.cover = mPaper.getCover();
-        mVideoModel.bodyUrl = mPaper.getVideoUrl();
+        mVideoModel.cover = mVideoBean.getRes_thumb();
+        mVideoModel.bodyUrl = mVideoBean.getRes_download_url();
         mVideoModel.bodyPosition = 0;
         mVideoModel.isHeadFinished = false;
-        mVideoModel.videoName = mPaper.getName();
-        mVideoModel.videoSize = mPaper.getVideoSize();
+        mVideoModel.videoName = mVideoBean.getTitle();
+        mVideoModel.videoSizeFormat = mVideoBean.getRes_size_format();
 
         Glide.with(this).load(mVideoModel.cover).asBitmap().placeholder(R.drawable.video_cover_default).error(R.drawable.video_cover_default).into(video_cover);
     }
@@ -205,14 +272,10 @@ public class SpecialDetailActivity extends YanxiuBaseActivity implements  View.O
     private void setLandscapeStyle() {
         mVideoManager.isPortrait = false;
         mVideoManager.updatePortraitLandscapeControllerView();
-//        findViewById(R.id.play_button).setVisibility(View.GONE);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         //FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-//        ViewGroup.LayoutParams layoutParams = mVideoLayout.getLayoutParams();
-//        layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
-//        layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
         params.topMargin = 0;
         mVideoManager.getPlayerView().setLayoutParams(params);
         mTitleLayout.setVisibility(View.GONE);
@@ -237,6 +300,7 @@ public class SpecialDetailActivity extends YanxiuBaseActivity implements  View.O
 
         IntentFilter mFilter = new IntentFilter();
         mFilter.addAction(NetworkStateService.NETWORKSTATE);
+        isRegisterReceiver = true;
         registerReceiver(mNotification, mFilter);
     }
 
@@ -285,6 +349,13 @@ public class SpecialDetailActivity extends YanxiuBaseActivity implements  View.O
         if ((lastState != Normal) && (lastState != Loading)) {
             mVideoManager.setState(lastState);
         }
+        submitAddResViewNumRequest();
+    }
+
+    private void submitAddResViewNumRequest() {
+        AddResViewNumRequest request = new AddResViewNumRequest();
+        request.setResId(mVideoBean.getId());
+        request.startRequest(EXueELianBaseResponse.class, mAddResCallback);
     }
 
     private void destoryVideo(){
@@ -294,18 +365,25 @@ public class SpecialDetailActivity extends YanxiuBaseActivity implements  View.O
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        mVideoManager.setBodyPlayWhenReady(true);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mVideoManager.setBodyPlayWhenReady(false);
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
-         unregisterReceiver(mNotification);
+        destoryVideo();
+        if(isRegisterReceiver) {
+            unregisterReceiver(mNotification);
+        }
     }
 
-    public void mockBCData() {
-        String json = FileUtil.getDataFromAssets(this, "Mock_BC.json");
-        mMockData = RequestBase.gson.fromJson(json, TopicPaperResponse.class);
-    }
 
-    public void mockRelatedVideoDataData() {
-        String json = FileUtil.getDataFromAssets(this, "Mock_relatedVideo.json");
-        mMockRelatedVideoData = RequestBase.gson.fromJson(json, PaperResponse.class);
-    }
 }

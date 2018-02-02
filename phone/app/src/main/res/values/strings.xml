@@ -351,4 +351,8 @@
     <string name="special_title">专题</string>
     <string name="weak_point">薄弱知识点</string>
     <string name="video_point_detail">知识点视频详解</string>
+    <string name="default_order">默认排序</string>
+    <string name="hot_order">人气排序</string>
+    <string name="play_times">%1$d次</string>
+    <string name="video_play_times">%1$d次播放</string>
 </resources>

@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
@@ -29,6 +30,7 @@ import com.yanxiu.gphone.student.customviews.AnswerReportTitleView;
 import com.yanxiu.gphone.student.customviews.ClassifyChoice;
 import com.yanxiu.gphone.student.customviews.LoadingView;
 import com.yanxiu.gphone.student.customviews.UnMoveGridView;
+import com.yanxiu.gphone.student.customviews.WeakPointTagView;
 import com.yanxiu.gphone.student.customviews.vieweffect.GradientEffect;
 import com.yanxiu.gphone.student.customviews.vieweffect.GradientEffectImpl;
 import com.yanxiu.gphone.student.db.SpManager;
@@ -37,12 +39,16 @@ import com.yanxiu.gphone.student.homework.response.PaperResponse;
 import com.yanxiu.gphone.student.learning.KnowledgePointLabelItem;
 import com.yanxiu.gphone.student.learning.adapter.RelatedVideoAdapter;
 import com.yanxiu.gphone.student.learning.activity.SpecialDetailActivity;
+import com.yanxiu.gphone.student.learning.bean.VideoDataBean;
+import com.yanxiu.gphone.student.learning.request.GetRelatedCourseRequest;
+import com.yanxiu.gphone.student.learning.response.GetRelatedCourseResponse;
 import com.yanxiu.gphone.student.questions.answerframe.adapter.AnswerReportAdapter;
 import com.yanxiu.gphone.student.questions.answerframe.bean.BaseQuestion;
 import com.yanxiu.gphone.student.questions.answerframe.bean.Paper;
 import com.yanxiu.gphone.student.questions.answerframe.listener.OnAnswerCardItemSelectListener;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionShowType;
 import com.yanxiu.gphone.student.questions.answerframe.util.QuestionUtil;
+import com.yanxiu.gphone.student.questions.bean.PointBean;
 import com.yanxiu.gphone.student.util.DESBodyDealer;
 import com.yanxiu.gphone.student.util.DataFetcher;
 import com.yanxiu.gphone.student.util.FileUtil;
@@ -106,17 +112,17 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
 
     private GridView mGridView;
     RelatedVideoAdapter mRelatedAdapter;
-    private TopicPaperResponse mMockData;
+
     private RelatedVideoAdapter.OnItemClickListener mOnItemClickListener = new RelatedVideoAdapter.OnItemClickListener() {
         @Override
-        public void onClick(TopicBean bean, int position) {
-            Paper paper = new Paper(mMockRelatedVideoData.getData().get(0), QuestionShowType.ANSWER);
-            DataFetcher.getInstance().save(paper.getId(), paper);
-            SpecialDetailActivity.invoke(AnswerReportActicity.this, paper.getId(),"413602",Constants.FROM_BC_RESOURCE);
+        public void onClick(VideoDataBean bean, int position) {
+            SpecialDetailActivity.invoke(AnswerReportActicity.this, bean);
         }
-    };;
-    private PaperResponse mMockRelatedVideoData;
-    private ClassifyChoice mWeakPointDetail;
+    };
+
+    private WeakPointTagView mWeakPointDetail;
+    private TextView mWeakPointHint;
+    private LinearLayout mVideoRelatedHint;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -157,9 +163,6 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
         mTotalCount = QuestionUtil.getTotalCount(mQuestions);
         mTitleString = mPaper.getName();
         calculationSpanCount();
-
-        mockBCData();
-        mockRelatedVideoDataData();
     }
 
     /**
@@ -221,28 +224,80 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
         setDragAmin();
 
         mGridView = (GridView) findViewById(R.id.gridView);
-        mRelatedAdapter = new RelatedVideoAdapter(this, mMockData.getData(), mOnItemClickListener );
-        mGridView.setAdapter(mRelatedAdapter);
+        mWeakPointHint = (TextView) findViewById(R.id.weak_point);
+        mWeakPointDetail = (WeakPointTagView) findViewById(R.id.weak_point_detail);
+        mVideoRelatedHint = (LinearLayout) findViewById(R.id.video_related);
         mGridView.setFocusable(false);
+        initRelatedVideoList();
+    }
 
-        mWeakPointDetail = (ClassifyChoice) findViewById(R.id.weak_point_detail);
-        ArrayList<KnowledgePointLabelItem> list = new ArrayList<KnowledgePointLabelItem>();
-        KnowledgePointLabelItem item = new KnowledgePointLabelItem();
-        item.content = "有理数的加法";
+    private void initRelatedVideoList() {
+        //TODO
+        if(mPaper.getWeakPoints() == null || mPaper.getWeakPoints().size() == 0) {
+            mGridView.setVisibility(View.GONE);
+            mWeakPointHint.setVisibility(View.GONE);
+            mWeakPointDetail.setVisibility(View.GONE);
+            mVideoRelatedHint.setVisibility(View.GONE);
+        } else {
+            initWeakPoint();
+            GetRelatedCourseRequest request = new GetRelatedCourseRequest();
+            request.setPoints(mPaper.WeakPoints_string());
+            request.startRequest(GetRelatedCourseResponse.class, mGetRelatedListCallback);
+        }
+    }
+
+    private void initWeakPoint() {
+        ArrayList<KnowledgePointLabelItem> list = new ArrayList<>();
+        KnowledgePointLabelItem item = null;
+        item = new KnowledgePointLabelItem();
+        item.content = "若View宽高、位置发生改变且显示内容不变，只需调用requestLayout方法";
         item.marginRight = 15; //15dp
         item.textSize = 15; //15sp
         item.textColor = getResources().getColor(R.color.color_ffffff);
         item.backGroundId = R.drawable.selector_knowledge_item_layout;
         list.add(item);
-
-        item.content = "平面直角坐标系";
-        item.marginRight = 15; //15dp
-        item.textSize = 15; //15sp
-        item.textColor = getResources().getColor(R.color.color_ffffff);
-        item.backGroundId = R.drawable.selector_knowledge_item_layout;
-        list.add(item);
+        for (PointBean pointBean:mPaper.getWeakPoints()) {
+            item = new KnowledgePointLabelItem();
+            item.content = pointBean.getName();
+            item.marginRight = 15; //15dp
+            item.textSize = 15; //15sp
+            item.textColor = getResources().getColor(R.color.color_ffffff);
+            item.backGroundId = R.drawable.selector_knowledge_item_layout;
+            list.add(item);
+        }
+        mWeakPointHint.setVisibility(View.VISIBLE);
+        mWeakPointDetail.setVisibility(View.VISIBLE);
         mWeakPointDetail.setData(list);
     }
+
+    private List<VideoDataBean> mRelatedVideoList;
+    private HttpCallback<GetRelatedCourseResponse> mGetRelatedListCallback = new EXueELianBaseCallback<GetRelatedCourseResponse>() {
+        @Override
+        protected void onResponse(RequestBase request, GetRelatedCourseResponse response) {
+            if(response.getStatus().getCode() == 0){
+                if(response.getData() != null && response.getData().size() > 0){
+                    mRelatedVideoList = response.getData();
+                    mRelatedAdapter = new RelatedVideoAdapter(AnswerReportActicity.this, mRelatedVideoList , mOnItemClickListener );
+                    mGridView.setAdapter(mRelatedAdapter);
+                    mGridView.setVisibility(View.VISIBLE);
+                    mVideoRelatedHint.setVisibility(View.VISIBLE);
+                } else {
+                    mGridView.setVisibility(View.GONE);
+                    mVideoRelatedHint.setVisibility(View.GONE);
+                }
+            } else {
+                mGridView.setVisibility(View.GONE);
+                mVideoRelatedHint.setVisibility(View.GONE);
+            }
+        }
+
+        @Override
+        public void onFail(RequestBase request, Error error) {
+            mGridView.setVisibility(View.GONE);
+            mVideoRelatedHint.setVisibility(View.GONE);
+        }
+    };
+
 
 
     private void addGridView(Map<String, List<BaseQuestion>> map) {
@@ -447,12 +502,5 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
         super.onDestroy();
     }
 
-    public void mockBCData() {
-        String json = FileUtil.getDataFromAssets(this, "Mock_BC.json");
-        mMockData = RequestBase.gson.fromJson(json, TopicPaperResponse.class);
-    }
-    public void mockRelatedVideoDataData() {
-        String json = FileUtil.getDataFromAssets(this, "Mock_relatedVideo.json");
-        mMockRelatedVideoData = RequestBase.gson.fromJson(json, PaperResponse.class);
-    }
+
 }

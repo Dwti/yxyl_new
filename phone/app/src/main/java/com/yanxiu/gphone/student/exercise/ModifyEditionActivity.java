@@ -22,6 +22,7 @@ import com.yanxiu.gphone.student.exercise.request.SaveEditionRequest;
 import com.yanxiu.gphone.student.exercise.response.EditionResponse;
 import com.yanxiu.gphone.student.exercise.response.SaveEditionResponse;
 import com.yanxiu.gphone.student.learning.LearningEditionSelectChangeMessage;
+import com.yanxiu.gphone.student.learning.request.LearningEditionRequest;
 import com.yanxiu.gphone.student.learning.request.LearningSaveEditionRequest;
 import com.yanxiu.gphone.student.util.ScreenUtils;
 import com.yanxiu.gphone.student.util.ToastManager;
@@ -178,7 +179,7 @@ public class ModifyEditionActivity extends YanxiuBaseActivity {
     }
 
     private void requestLearningEditions(String subjectId) {
-        EditionRequest request = new EditionRequest();
+        LearningEditionRequest request = new LearningEditionRequest();
         request.setSubjectId(subjectId);
         request.startRequest(EditionResponse.class, mGetEditionsCallback);
     }

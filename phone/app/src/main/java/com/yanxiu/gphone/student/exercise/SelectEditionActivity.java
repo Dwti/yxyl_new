@@ -21,6 +21,11 @@ import com.yanxiu.gphone.student.exercise.request.EditionRequest;
 import com.yanxiu.gphone.student.exercise.request.SaveEditionRequest;
 import com.yanxiu.gphone.student.exercise.response.EditionResponse;
 import com.yanxiu.gphone.student.exercise.response.SaveEditionResponse;
+import com.yanxiu.gphone.student.learning.LearningEditionSelectChangeMessage;
+import com.yanxiu.gphone.student.learning.activity.SelectLearningEditionActivity;
+import com.yanxiu.gphone.student.learning.activity.SelectSyncAndSpecailActivity;
+import com.yanxiu.gphone.student.learning.request.LearningEditionRequest;
+import com.yanxiu.gphone.student.learning.request.LearningSaveEditionRequest;
 import com.yanxiu.gphone.student.util.ScreenUtils;
 import com.yanxiu.gphone.student.util.ToastManager;
 
@@ -55,6 +60,7 @@ public class SelectEditionActivity extends YanxiuBaseActivity {
     private static final String COME_FROM = "comeFrom";
     public static final int FROM_EXERCISE = 0x01;
     public static final int FROM_SUBJECT_SELECT = 0x02;
+    private int mComeFrom;
 
     public static void invoke(Activity activity, String subjectId, String subjectName, String editionName, int comeFrom) {
         Intent intent = new Intent(activity, SelectEditionActivity.class);
@@ -100,6 +106,7 @@ public class SelectEditionActivity extends YanxiuBaseActivity {
         mSubjectId = getIntent().getStringExtra(SUBJECT_ID);
         mDefaultEditionName = getIntent().getStringExtra(EDITION_NAME);
         mSubjectName = getIntent().getStringExtra(SUBJECT_NAME);
+        mComeFrom = getIntent().getIntExtra(COME_FROM,0);
         mSubject.setText(mSubjectName);
         if (mIcon != null)
             setIcon(mIcon, mSubjectId);
@@ -111,7 +118,11 @@ public class SelectEditionActivity extends YanxiuBaseActivity {
         mRefreshBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestEditions(mSubjectId);
+                if(mComeFrom == FROM_LEARNING) {
+                    requestLearningEditions(mSubjectId);
+                } else {
+                    requestEditions(mSubjectId);
+                }
             }
         });
 
@@ -123,7 +134,11 @@ public class SelectEditionActivity extends YanxiuBaseActivity {
                     return;
                 }
                 String editionId = editions.get(mPickerView.getSelectedIndex()).getId();
-                saveEdition(mSubjectId, editionId);
+                if(mComeFrom == FROM_LEARNING) {
+                    saveLearningEdition(mSubjectId, editionId);
+                } else {
+                    saveEdition(mSubjectId, editionId);
+                }
             }
         });
 
@@ -175,11 +190,27 @@ public class SelectEditionActivity extends YanxiuBaseActivity {
         request.startRequest(EditionResponse.class, mGetEditionsCallback);
     }
 
+    private void requestLearningEditions(String subjectId) {
+        LearningEditionRequest request = new LearningEditionRequest();
+        request.setSubjectId(subjectId);
+        request.startRequest(EditionResponse.class, mGetEditionsCallback);
+    }
+
     private void saveEdition(String subjectId, String editionId) {
         if (mIsSavingEdition)
             return;
         mIsSavingEdition = true;
         SaveEditionRequest request = new SaveEditionRequest();
+        request.setSubjectId(subjectId);
+        request.setBeditionId(editionId);
+        request.startRequest(SaveEditionResponse.class, mSaveEditionCallback);
+    }
+
+    private void saveLearningEdition(String subjectId, String editionId) {
+        if (mIsSavingEdition)
+            return;
+        mIsSavingEdition = true;
+        LearningSaveEditionRequest request = new LearningSaveEditionRequest();
         request.setSubjectId(subjectId);
         request.setBeditionId(editionId);
         request.startRequest(SaveEditionResponse.class, mSaveEditionCallback);
@@ -204,6 +235,11 @@ public class SelectEditionActivity extends YanxiuBaseActivity {
 
     private void sendEditionChangeMsg() {
         EditionSelectChangeMessage message = new EditionSelectChangeMessage();
+        EventBus.getDefault().post(message);
+    }
+
+    private void sendLearningEditionChangeMsg() {
+        LearningEditionSelectChangeMessage message = new LearningEditionSelectChangeMessage();
         EventBus.getDefault().post(message);
     }
 
@@ -237,9 +273,14 @@ public class SelectEditionActivity extends YanxiuBaseActivity {
             if (response.getStatus().getCode() == 0) {
                 mSelectedIndex = mPickerView.getSelectedIndex();
                 ToastManager.showMsg(response.getStatus().getDesc());
-                sendEditionChangeMsg();
                 String editionId = editions.get(mPickerView.getSelectedIndex()).getId();
-                SelectChapterAndKnowledgeActivity.invoke(SelectEditionActivity.this,mSubjectId,mSubjectName,editionId);
+                if(mComeFrom == FROM_LEARNING) {
+                    SelectSyncAndSpecailActivity.invoke(SelectEditionActivity.this,mSubjectId,mSubjectName,editionId);
+                    sendLearningEditionChangeMsg();
+                } else {
+                    SelectChapterAndKnowledgeActivity.invoke(SelectEditionActivity.this, mSubjectId, mSubjectName, editionId);
+                    sendEditionChangeMsg();
+                }
                 finish();
             } else {
                 ToastManager.showMsg(response.getStatus().getDesc());

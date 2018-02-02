@@ -20,6 +20,10 @@ public class Constants {
     public static final String BRAND = DeviceUtil.getBrandName();
     public static final String OPERTYPE = "app.upload.log";
     public static final String PRODUCTLINE = "6";
+    public static final String EXTRA_CHANNEL = "channel";
+    public static final String EXTRA_CHAPTER = "chapter";
+    public static final String VIDEO_BEAN ="video_bean" ;
+    public static final String EXTRA_NAME = "name";
     public static String token = LoginInfo.getToken();
     public static String trace_uid = LoginInfo.getUID();
     //    public static String deviceId= DeviceUtil.getAppDeviceId();

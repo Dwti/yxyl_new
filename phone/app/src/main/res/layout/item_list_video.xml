@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="162dp"
+    android:background="@drawable/shape_black_round_rectangle_6">
+
+    <com.yanxiu.gphone.student.customviews.RoundedCornersImageView
+        android:id="@+id/video_cover"
+        android:layout_width="165dp"
+        android:layout_height="93dp"
+        android:background="@drawable/shape_black_round_rectangle_6"
+        android:scaleType="fitXY" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_for_list_video"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+    <TextView
+        android:id="@+id/video_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:text="无理数"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:textColor="@color/color_666666"
+        android:textSize="@dimen/text_size_12" />
+
+    <ImageView
+        android:id="@+id/video_play"
+        android:layout_below="@id/video_name"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="8dp"
+        android:layout_width="16dp"
+        android:layout_height="14dp"
+        android:src="@drawable/video_play_record" />
+
+        <TextView
+            android:id="@+id/play_times"
+            android:layout_below="@id/video_name"
+            android:layout_toRightOf="@id/video_play"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="10dp"
+            android:text="120次"
+            android:textColor="@color/color_e5e5e5"
+            android:textSize="9dp" />
+
+
+    </RelativeLayout>
+
+</RelativeLayout>
