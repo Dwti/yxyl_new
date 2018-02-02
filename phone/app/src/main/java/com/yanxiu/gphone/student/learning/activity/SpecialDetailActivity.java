@@ -161,7 +161,7 @@ public class SpecialDetailActivity extends YanxiuBaseActivity implements  View.O
             return;
         }
         mTitle.setText(mVideoBean.getTitle());
-        mVideoTitle.setText(mVideoBean.getRes_name());
+        mVideoTitle.setText(mVideoBean.getTitle());
         mVideoPlayTimes.setText(getResources().getString(R.string.play_times,mVideoBean.getViewnum()));
         setupVideoModel();
         setupNetwork4GWifi();

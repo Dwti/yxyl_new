@@ -217,7 +217,7 @@ public class PublicLoadLayout extends FrameLayout{
      * 設置空界面顯示
      * */
     public void setDataEmptyErrorView(@DrawableRes int resId, String content){
-        mDataEmptyTopView.setBackgroundResource(resId);
+        mDataEmptyTopView.setImageResource(resId);
         mDataEmptyContentView.setText(content);
     }
 
