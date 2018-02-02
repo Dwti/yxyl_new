@@ -35,6 +35,7 @@ public class WeakPointTagView extends ViewGroup {
     private List<KnowledgePointLabelItem> mList;
     private int freeWidth;
     private int lastItem;
+    private boolean isShowSetRight=false;
 
     public boolean isCollapseMode() {
         return isCollapseMode;
@@ -73,6 +74,7 @@ public class WeakPointTagView extends ViewGroup {
         int cCount = getChildCount();
         int lineNum = 0;
         int modifyWidth = 0;
+        isShowSetRight=false;
         // 遍历所有的孩子
         for (int i = 0; i < cCount; i++) {
             View child = getChildAt(i);
@@ -84,6 +86,9 @@ public class WeakPointTagView extends ViewGroup {
             // 如果已经需要换行
             if (childWidth + lp.leftMargin + lp.rightMargin + lineWidth > width && lineWidth > 0) {
                 lineNum++;
+                if (i==cCount-1&&child.getTag()!=null){
+                    isShowSetRight=true;
+                }
                 if (isCollapseMode && lineNum == 2) {
                     child = getChildAt(cCount - 1);
                     lp = (MarginLayoutParams) child
@@ -180,7 +185,11 @@ public class WeakPointTagView extends ViewGroup {
                             + lp.leftMargin;
                 }
 //                child.measure(modifyWidth, child.getMeasuredHeight());
-                child.layout(lc, tc, rc, bc);
+                if (isShowSetRight&&i==mAllViews.size()-1&&j==lineViews.size()-1){
+                    child.layout(mWidth-(rc-lc),tc,mWidth,bc);
+                }else {
+                    child.layout(lc, tc, rc, bc);
+                }
 
 
             }
@@ -366,6 +375,7 @@ public class WeakPointTagView extends ViewGroup {
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         lp.setMargins(0, 10, 0, 0);
         layout.setLayoutParams(lp);
+        layout.setTag(1);
         this.addView(layout);
     }
 
