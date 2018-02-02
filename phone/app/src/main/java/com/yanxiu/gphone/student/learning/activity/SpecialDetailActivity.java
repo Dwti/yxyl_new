@@ -206,7 +206,7 @@ public class SpecialDetailActivity extends YanxiuBaseActivity implements  View.O
     private void setupVideoModel(){
         mVideoModel = new VideoModel();
         mVideoModel.cover = mVideoBean.getRes_thumb();
-        mVideoModel.bodyUrl = mVideoBean.getRes_download_url();
+        mVideoModel.bodyUrl = mVideoBean.getRes_preview_url();
         mVideoModel.bodyPosition = 0;
         mVideoModel.isHeadFinished = false;
         mVideoModel.videoName = mVideoBean.getTitle();
@@ -367,7 +367,7 @@ public class SpecialDetailActivity extends YanxiuBaseActivity implements  View.O
     @Override
     protected void onResume() {
         super.onResume();
-        mVideoManager.setBodyPlayWhenReady(true);
+//        mVideoManager.setBodyPlayWhenReady(true);
     }
 
     @Override

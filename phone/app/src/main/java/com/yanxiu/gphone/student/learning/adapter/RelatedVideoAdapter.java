@@ -47,6 +47,9 @@ public class RelatedVideoAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
+        if(mData.size() > 6) {
+            return 6;
+        }
         return mData.size();
     }
 
