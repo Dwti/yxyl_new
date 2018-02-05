@@ -248,18 +248,8 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
 
     private void initWeakPoint() {
         ArrayList<KnowledgePointLabelItem> list = new ArrayList<>();
-        KnowledgePointLabelItem item = null;
-        for (int i=0;i<20;i++) {
-            item = new KnowledgePointLabelItem();
-            item.content = i+"科...";
-            item.marginRight = 15; //15dp
-            item.textSize = 15; //15sp
-            item.textColor = getResources().getColor(R.color.color_ffffff);
-            item.backGroundId = R.drawable.selector_knowledge_item_layout;
-            list.add(item);
-        }
         for (PointBean pointBean:mPaper.getWeakPoints()) {
-            item = new KnowledgePointLabelItem();
+            KnowledgePointLabelItem item = new KnowledgePointLabelItem();
             item.content = pointBean.getName();
             item.marginRight = 15; //15dp
             item.textSize = 15; //15sp
