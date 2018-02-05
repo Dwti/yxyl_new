@@ -40,7 +40,7 @@ public class LoginInfo {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            if (bean == null) {
+            if (bean == null||bean.getPassport()==null||bean.getPassport().getToken()==null) {
                 LOGIN_STATUS = LOGIN_OUT;
             } else {
                 LOGIN_STATUS = LOGIN_IN;
@@ -68,9 +68,13 @@ public class LoginInfo {
     }
 
     public static void updataCacheData(UserMessageBean messageBean) {
-        messageBean.setPassport(bean.getPassport());
-        bean=messageBean;
-        Save();
+        try {
+            messageBean.setPassport(bean.getPassport());
+            bean=messageBean;
+            Save();
+        }catch (Exception e){
+            e.toString();
+        }
     }
 
     public static void Save() {

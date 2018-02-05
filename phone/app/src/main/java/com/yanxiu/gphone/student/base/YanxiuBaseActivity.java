@@ -9,11 +9,13 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
+import com.igexin.sdk.PushManager;
 import com.test.yanxiu.network.HttpCallback;
 import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.http.request.CheckStudentTokenRequest;
+import com.yanxiu.gphone.student.login.activity.LoginActivity;
 import com.yanxiu.gphone.student.login.response.LoginResponse;
 import com.yanxiu.gphone.student.login.response.UserMessageBean;
 import com.yanxiu.gphone.student.userevent.UserEventManager;
@@ -58,7 +60,14 @@ public class YanxiuBaseActivity extends FragmentActivity implements EasyPermissi
                     protected void onResponse(RequestBase request, LoginResponse response) {
                         if (response.getStatus().getCode()==0&&response.data!=null&&response.data.size()>0) {
                             UserMessageBean messageBean = response.data.get(0);
-                            LoginInfo.updataCacheData(messageBean);
+                            if (!messageBean.getSubjectIds().isEmpty()){
+                                LoginInfo.updataCacheData(messageBean);
+                            }else {
+                                PushManager.getInstance().unBindAlias(getApplicationContext(), String.valueOf(LoginInfo.getUID()), true);
+                                LoginInfo.LogOut();
+                                ActivityManger.LogOut();
+                                LoginActivity.LaunchActivity(YanxiuBaseActivity.this);
+                            }
                         }
                     }
 
