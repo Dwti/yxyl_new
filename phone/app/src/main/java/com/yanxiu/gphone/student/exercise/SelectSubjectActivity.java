@@ -16,6 +16,7 @@ import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.base.EXueELianBaseCallback;
 import com.yanxiu.gphone.student.base.YanxiuBaseActivity;
+import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.ChapterSwitchBar;
 import com.yanxiu.gphone.student.exercise.bean.SubjectBean;
 import com.yanxiu.gphone.student.exercise.request.SubjectsRequest;
@@ -79,6 +80,18 @@ public class SelectSubjectActivity extends YanxiuBaseActivity {
         mSwitchBar = (ChapterSwitchBar) findViewById(R.id.switchBar);
         mSwitchBar.setOnText(R.string.study);
         mSwitchBar.setOffText(R.string.exercises);
+
+        boolean isShouldShowStudy=false;
+        for (Integer integer:LoginInfo.getSubjectIds()){
+            if (integer== Constants.SubjectId.MATH){
+                isShouldShowStudy=true;
+            }
+        }
+        if (isShouldShowStudy){
+            mSwitchBar.setVisibility(View.VISIBLE);
+        }else {
+            mSwitchBar.setVisibility(View.GONE);
+        }
     }
 
     private void initListener() {
