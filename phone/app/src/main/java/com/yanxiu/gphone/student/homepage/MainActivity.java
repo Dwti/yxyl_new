@@ -125,17 +125,17 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
         }
         mNavIconViews[INDEX_MY].setImageDrawable(ContextCompat.getDrawable(this, R.drawable.selector_my));
 
-        boolean isShouldShowStudy=false;
-        for (Integer integer:LoginInfo.getSubjectIds()){
-            if (integer==Constants.SubjectId.MATH){
-                isShouldShowStudy=true;
-            }
-        }
-        if (isShouldShowStudy){
-            mNavBarViews[INDEX_STUDY].setVisibility(View.VISIBLE);
-        }else {
-            mNavBarViews[INDEX_STUDY].setVisibility(View.GONE);
-        }
+//        boolean isShouldShowStudy=false;
+//        for (Integer integer:LoginInfo.getSubjectIds()){
+//            if (integer==Constants.SubjectId.MATH){
+//                isShouldShowStudy=true;
+//            }
+//        }
+//        if (isShouldShowStudy){
+//            mNavBarViews[INDEX_STUDY].setVisibility(View.VISIBLE);
+//        }else {
+//            mNavBarViews[INDEX_STUDY].setVisibility(View.GONE);
+//        }
     }
 
     @Override

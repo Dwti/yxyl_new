@@ -25,7 +25,7 @@ import com.yanxiu.gphone.student.R;
  * Time : 2017/6/14 9:14.
  * Function :
  */
-class ListenDrawable extends Drawable {
+public class ListenDrawable extends Drawable {
 
     private static final int mStartDown= R.drawable.listener_start_press;
     private static final int mStartUp=R.drawable.listener_start_normal;
@@ -45,7 +45,7 @@ class ListenDrawable extends Drawable {
     private int mPadding;
     private int mType=TYPE_START;
 
-    ListenDrawable(Context context,Bitmap bitmap, int padding){
+    public ListenDrawable(Context context,Bitmap bitmap, int padding){
         this.mContext=context;
         this.mBitmap=bitmap;
         this.mPadding=padding;

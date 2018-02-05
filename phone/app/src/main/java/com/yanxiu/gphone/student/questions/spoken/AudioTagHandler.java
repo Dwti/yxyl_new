@@ -1,12 +1,16 @@
 package com.yanxiu.gphone.student.questions.spoken;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.ImageSpan;
 import android.view.View;
 
+import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.customviews.SpokenAnimDrawable;
 import com.yanxiu.gphone.student.util.ScreenUtils;
 
@@ -92,7 +96,13 @@ public class AudioTagHandler implements Html.TagHandler {
             }
         } else if (tag.equalsIgnoreCase("b")) {
             if (opening) {
-
+                int len = output.length();
+                output.append("\uFFFC");
+                Drawable drawable= ContextCompat.getDrawable(mContext, R.drawable.ic_launcher);
+                int px = (int) ScreenUtils.dpToPx(mContext, 34);
+                drawable.setBounds(0, 0, px, px);
+                ImageSpan span=new ImageSpan(drawable);
+                output.setSpan(span, len, output.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
         }
     }
