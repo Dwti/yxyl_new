@@ -84,7 +84,7 @@ public class SubjectiveFragment extends AnswerSimpleExerciseBaseFragment impleme
     private void initData() {
         String string= StemUtil.initClozeStem(mData.getStem());
         mQuestionView.setText(string);
-        mAnswerView.setData(mData.answerList);
+        mAnswerView.setData(mData.getAnswerList());
     }
 
     private void listener() {
@@ -99,18 +99,18 @@ public class SubjectiveFragment extends AnswerSimpleExerciseBaseFragment impleme
                 YanxiuBaseActivity.requestCameraPermission(SubjectiveFragment.this);
                 break;
             case AlbumGridView.TYPE_IMAGE:
-                PhotoActivity.LaunchActivity(getContext(), mData.answerList, position, SubjectiveFragment.this.hashCode(),PhotoActivity.DELETE_CAN);
+                PhotoActivity.LaunchActivity(getContext(), mData.getAnswerList(), position, SubjectiveFragment.this.hashCode(),PhotoActivity.DELETE_CAN);
                 break;
         }
     }
 
     @Override
     public void onChanged(ArrayList<String> paths) {
-        mData.answerList.clear();
+        mData.getAnswerList().clear();
         if (paths != null) {
-            mData.answerList.addAll(paths);
+            mData.getAnswerList().addAll(paths);
         }
-        if (mData.answerList.size() > 0) {
+        if (mData.getAnswerList().size() > 0) {
             mData.setHasAnswered(true);
         } else {
             mData.setHasAnswered(false);

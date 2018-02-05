@@ -104,9 +104,9 @@ public class SubjectiveAnalysisFragment extends AnalysisSimpleExerciseBaseFragme
     private void initData() {
         String string= StemUtil.initClozeStem(mData.getStem());
         mQuestionView.setText(string);
-        if (mData.answerList.size()>0) {
+        if (mData.getAnswerList().size()>0) {
             mNoPictureView.setVisibility(View.GONE);
-            mSubjectView.setData(mData.answerList);
+            mSubjectView.setData(mData.getAnswerList());
             mSubjectView.setCanAddItem(false);
         }else {
             mNoPictureView.setVisibility(View.VISIBLE);
@@ -123,7 +123,7 @@ public class SubjectiveAnalysisFragment extends AnalysisSimpleExerciseBaseFragme
         switch (Type) {
             case AlbumGridView.TYPE_IMAGE:
                 mToVoiceIsIntent=true;
-                PhotoActivity.LaunchActivity(getContext(), mData.answerList, position, SubjectiveAnalysisFragment.this.hashCode(),PhotoActivity.DELETE_CANNOT);
+                PhotoActivity.LaunchActivity(getContext(), mData.getAnswerList(), position, SubjectiveAnalysisFragment.this.hashCode(),PhotoActivity.DELETE_CANNOT);
                 break;
         }
     }

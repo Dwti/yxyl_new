@@ -20,13 +20,13 @@ import java.util.List;
  */
 public class SubjectiveQuestion extends BaseQuestion {
 
-    public ArrayList<String> answerList=new ArrayList<>();
+    private ArrayList<String> answerList=new ArrayList<>();
     private List<PointBean> pointList;
     private int starCount;
     private String questionAnalysis;
     private List<String> subjectAnswer;
     private int typeId=-1;
-    private int score;
+    protected int score;
     private List<JsonAudioComment> audioList;
     private boolean isMistakeRedoAnalysisExpand = false;
 

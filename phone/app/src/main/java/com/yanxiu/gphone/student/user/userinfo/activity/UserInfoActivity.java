@@ -250,7 +250,7 @@ public class UserInfoActivity extends YanxiuBaseActivity implements View.OnClick
                 public String getImgPath(int position) {
                     return message.path;
                 }
-            }).setProgressListener(null).setListener(new UpDataRequest.onUpDatalistener() {
+            }).setRequestListener(null).setProgressListener(new UpDataRequest.onUpDataProgresslistener() {
                 @Override
                 public void onUpDataStart(int position, Object tag) {
                     rootView.showLoadingView();

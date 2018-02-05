@@ -114,9 +114,9 @@ public class SubjectiveRedoFragment extends WrongSimpleExerciseBaseFragment impl
     private void initData() {
         String string = StemUtil.initClozeStem(mData.getStem());
         mQuestionView.setText(string);
-        if (mData.answerList.size() > 0) {
+        if (mData.getAnswerList().size() > 0) {
             mNoPictureView.setVisibility(View.GONE);
-            mSubjectView.setData(mData.answerList);
+            mSubjectView.setData(mData.getAnswerList());
             mSubjectView.setCanAddItem(false);
         } else {
             mNoPictureView.setVisibility(View.VISIBLE);
@@ -146,7 +146,7 @@ public class SubjectiveRedoFragment extends WrongSimpleExerciseBaseFragment impl
         switch (Type) {
             case AlbumGridView.TYPE_IMAGE:
                 mToVoiceIsIntent = true;
-                PhotoActivity.LaunchActivity(getContext(), mData.answerList, position, SubjectiveRedoFragment.this.hashCode(), PhotoActivity.DELETE_CANNOT);
+                PhotoActivity.LaunchActivity(getContext(), mData.getAnswerList(), position, SubjectiveRedoFragment.this.hashCode(), PhotoActivity.DELETE_CANNOT);
                 break;
         }
     }

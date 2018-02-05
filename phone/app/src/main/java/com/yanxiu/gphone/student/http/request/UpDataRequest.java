@@ -48,7 +48,7 @@ public class UpDataRequest {
         Object getImgTag(int position);
     }
 
-    public interface onUpDatalistener {
+    public interface onUpDataProgresslistener {
         void onUpDataStart(int position, Object tag);
 
         void onUpDataSuccess(int position, Object tag, String jsonString);
@@ -58,7 +58,7 @@ public class UpDataRequest {
         void onError(String errorMsg);
     }
 
-    public interface onProgressListener {
+    public interface onRequestListener {
         void onRequestStart();
 
         void onProgress(int index,int position);
@@ -80,7 +80,7 @@ public class UpDataRequest {
     private findConstantParams mFindConstantParams;
     private findImgPath mFindImgPath;
     private findImgTag mFindImgTag;
-    private onProgressListener mProgressListener;
+    private onRequestListener mRequestListener;
 
     public static UpDataRequest getInstense() {
         if (mUpDataRequest == null) {
@@ -108,12 +108,12 @@ public class UpDataRequest {
         return mUpDataRequest;
     }
 
-    public UpDataRequest setProgressListener(onProgressListener progressListener) {
-        this.mProgressListener = progressListener;
+    public UpDataRequest setRequestListener(onRequestListener progressListener) {
+        this.mRequestListener = progressListener;
         return mUpDataRequest;
     }
 
-    public void setListener(@Nullable onUpDatalistener upDatalistener) {
+    public void setProgressListener(@Nullable onUpDataProgresslistener upDataProgresslistener) {
         int fileNumber;
         String url;
         Map<String, String> params;
@@ -122,26 +122,26 @@ public class UpDataRequest {
             url = mFindConstantParams.findUpdataUrl();
             params = mFindConstantParams.findParams();
         } else {
-            if (upDatalistener != null) {
-                upDatalistener.onError("can not find constant params");
+            if (upDataProgresslistener != null) {
+                upDataProgresslistener.onError("can not find constant params");
             }
             return;
         }
         index = 0;
         totalCount = fileNumber;
-        if (mProgressListener != null) {
-            mProgressListener.onRequestStart();
+        if (mRequestListener != null) {
+            mRequestListener.onRequestStart();
         }
         if (totalCount==0){
             postMainThread(new Runnable() {
                 @Override
                 public void run() {
-                    mProgressListener.onRequestEnd();
+                    mRequestListener.onRequestEnd();
                 }
             });
         }else {
             for (int i = 0; i < fileNumber; i++) {
-                upData(url, i, params, upDatalistener);
+                upData(url, i, params, upDataProgresslistener);
             }
         }
     }
@@ -150,18 +150,18 @@ public class UpDataRequest {
         mHandler.post(runnable);
     }
 
-    private void upData(final String url, final int position, final Map<String, String> params, final onUpDatalistener upDatalistener) {
+    private void upData(final String url, final int position, final Map<String, String> params, final onUpDataProgresslistener upDataProgresslistener) {
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
 
         final String imgPath;
         if (mFindImgPath != null) {
             imgPath = mFindImgPath.getImgPath(position);
         } else {
-            if (upDatalistener != null) {
+            if (upDataProgresslistener != null) {
                 postMainThread(new Runnable() {
                     @Override
                     public void run() {
-                        upDatalistener.onError("Can not find img path ");
+                        upDataProgresslistener.onError("Can not find img path ");
                     }
                 });
             }
@@ -169,11 +169,11 @@ public class UpDataRequest {
         }
 
         if (TextUtils.isEmpty(imgPath)) {
-            if (upDatalistener != null) {
+            if (upDataProgresslistener != null) {
                 postMainThread(new Runnable() {
                     @Override
                     public void run() {
-                        upDatalistener.onError("The imgPath can not be NULL");
+                        upDataProgresslistener.onError("The imgPath can not be NULL");
                     }
                 });
             }
@@ -191,11 +191,11 @@ public class UpDataRequest {
         }
 
         if (TextUtils.isEmpty(url)) {
-            if (upDatalistener != null) {
+            if (upDataProgresslistener != null) {
                 postMainThread(new Runnable() {
                     @Override
                     public void run() {
-                        upDatalistener.onError("The url can not be NULL");
+                        upDataProgresslistener.onError("The url can not be NULL");
                     }
                 });
             }
@@ -203,27 +203,27 @@ public class UpDataRequest {
         }
         MultipartBody requestBody = builder.build();
         Request request = new Request.Builder().url(url).post(requestBody).build();
-        if (upDatalistener != null) {
+        if (upDataProgresslistener != null) {
             postMainThread(new Runnable() {
                 @Override
                 public void run() {
-                    upDatalistener.onUpDataStart(position, imgPath);
+                    upDataProgresslistener.onUpDataStart(position, imgPath);
                 }
             });
         }
         mOkHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                if (mProgressListener != null) {
+                if (mRequestListener != null) {
                     index++;
                     postMainThread(new Runnable() {
                         @Override
                         public void run() {
-                            mProgressListener.onProgress(index,position);
+                            mRequestListener.onProgress(index,position);
                         }
                     });
                 }
-                if (upDatalistener != null) {
+                if (upDataProgresslistener != null) {
                     final String message = e.getMessage();
                     Object tag = null;
                     if (mFindImgTag != null) {
@@ -233,16 +233,16 @@ public class UpDataRequest {
                     postMainThread(new Runnable() {
                         @Override
                         public void run() {
-                            upDatalistener.onUpDataFailed(position, finalTag, message);
+                            upDataProgresslistener.onUpDataFailed(position, finalTag, message);
                         }
                     });
                 }
                 if (index == totalCount) {
-                    if (mProgressListener != null) {
+                    if (mRequestListener != null) {
                         postMainThread(new Runnable() {
                             @Override
                             public void run() {
-                                mProgressListener.onRequestEnd();
+                                mRequestListener.onRequestEnd();
                             }
                         });
                     }
@@ -251,16 +251,16 @@ public class UpDataRequest {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                if (mProgressListener != null) {
+                if (mRequestListener != null) {
                     index++;
                     postMainThread(new Runnable() {
                         @Override
                         public void run() {
-                            mProgressListener.onProgress(index,position);
+                            mRequestListener.onProgress(index,position);
                         }
                     });
                 }
-                if (upDatalistener != null) {
+                if (upDataProgresslistener != null) {
                     final String jsonString = response.body().string();
                     Object tag = null;
                     if (mFindImgTag != null) {
@@ -270,16 +270,16 @@ public class UpDataRequest {
                     postMainThread(new Runnable() {
                         @Override
                         public void run() {
-                            upDatalistener.onUpDataSuccess(position, finalTag, jsonString);
+                            upDataProgresslistener.onUpDataSuccess(position, finalTag, jsonString);
                         }
                     });
                 }
                 if (index == totalCount) {
-                    if (mProgressListener != null) {
+                    if (mRequestListener != null) {
                         postMainThread(new Runnable() {
                             @Override
                             public void run() {
-                                mProgressListener.onRequestEnd();
+                                mRequestListener.onRequestEnd();
                             }
                         });
                     }

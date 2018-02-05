@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_edf0ee"
+    android:orientation="vertical">
+
+    <include layout="@layout/answerquestion_common_number" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/complex_stem_layout"
+                layout="@layout/common_stem"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/ll_question"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/color_ffffff">
+
+                <com.yanxiu.gphone.student.customviews.spantextview.SubjectClozeTextView
+                    android:id="@+id/tv_question"
+                    style="@style/CommonQuestionFragmentTextView" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/ll_check_analysis"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_marginTop="1dp"
+                android:background="#fafafa">
+
+                <Button
+                    android:id="@+id/btn_check"
+                    android:layout_width="130dp"
+                    android:layout_height="34dp"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/check_analysis"
+                    android:textColor="@color/color_ffffff"
+                    android:textSize="14dp"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:background="@drawable/selector_answercard_submit_button_bg1"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12dp"
+                    android:textColor="#999999"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/check_analysis_tips"/>
+            </LinearLayout>
+
+            <FrameLayout
+                android:id="@+id/fl_analysis"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:background="@color/color_fafafa"
+                    android:visibility="gone">
+
+                    <com.yanxiu.gphone.student.customviews.AlbumGridView
+                        android:id="@+id/ag_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp" />
+
+                    <TextView
+                        android:id="@+id/no_picture"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="@string/no_picture"
+                        android:textColor="@color/color_cccccc"
+                        android:textSize="19dp"
+                        android:visibility="gone" />
+                </FrameLayout>
+
+                <LinearLayout
+                    android:id="@+id/shadow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <include layout="@layout/shadow_view" />
+                </LinearLayout>
+            </FrameLayout>
+
+            <View
+                android:id="@+id/bottompadding_layout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/analysis_line_h"
+                android:background="@android:color/transparent" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
