@@ -44,6 +44,7 @@
                 android:id="@+id/rl_tool_bar"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/top_layout_height"
+                android:visibility="gone"
                 android:background="@android:color/white">
 
                 <com.yanxiu.gphone.student.customviews.ChapterSwitchBar
