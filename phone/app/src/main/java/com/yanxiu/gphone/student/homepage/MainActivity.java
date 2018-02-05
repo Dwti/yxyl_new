@@ -44,6 +44,7 @@ import com.yanxiu.gphone.student.util.DESBodyDealer;
 import com.yanxiu.gphone.student.util.DataFetcher;
 import com.yanxiu.gphone.student.util.Logger;
 import com.yanxiu.gphone.student.util.LoginInfo;
+import com.yanxiu.gphone.student.util.NoticeUtil;
 import com.yanxiu.gphone.student.util.SoundManger;
 import com.yanxiu.gphone.student.util.ToastManager;
 import com.yanxiu.gphone.student.util.UpdateUtil;
@@ -88,6 +89,7 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
         PushManager.getInstance().initialize(this.getApplicationContext(), YanxiuPushService.class);
         initView();
         UpdateUtil.Initialize(this, false);
+        NoticeUtil.Initialize(this);
         judgeToJump(getIntent());
         /* *
          * 绑定别名不该放在这，在这会出现链接个推没成功，就开始绑定别名，结果肯定绑不上,有空再改

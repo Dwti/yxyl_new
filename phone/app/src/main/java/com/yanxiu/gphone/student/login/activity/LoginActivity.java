@@ -32,6 +32,7 @@ import com.yanxiu.gphone.student.user.setting.activity.BindMobileActivity;
 import com.yanxiu.gphone.student.util.ActivityManger;
 import com.yanxiu.gphone.student.util.EditTextManger;
 import com.yanxiu.gphone.student.util.LoginInfo;
+import com.yanxiu.gphone.student.util.NoticeUtil;
 import com.yanxiu.gphone.student.util.SysEncryptUtil;
 import com.yanxiu.gphone.student.util.SystemUtil;
 import com.yanxiu.gphone.student.util.ToastManager;
@@ -102,6 +103,7 @@ public class LoginActivity extends YanxiuBaseActivity implements View.OnClickLis
         rootView=new PublicLoadLayout(mContext);
         rootView.setContentView(R.layout.activity_login);
         UpdateUtil.Initialize(mContext,false);
+        NoticeUtil.Initialize(mContext);
         setContentView(rootView);
         mUMShareAPI=UMShareAPI.get(mContext);
         initView();
