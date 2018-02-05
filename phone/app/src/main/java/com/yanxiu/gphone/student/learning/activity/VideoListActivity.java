@@ -58,6 +58,7 @@ public class VideoListActivity extends YanxiuBaseActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         rootView=new PublicLoadLayout(this);
         rootView.setContentView(R.layout.activity_video_list);
+        rootView.setDataEmptyErrorView(R.drawable.data_empty,getResources().getString(R.string.resource_empty));
         setContentView(rootView);
         initView();
         initData();
@@ -83,6 +84,13 @@ public class VideoListActivity extends YanxiuBaseActivity implements View.OnClic
                 loadMoreData();
             }
         });
+        rootView.setRetryButtonOnclickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                refreshData();
+            }
+        } );
     }
 
     private void initData() {
@@ -91,6 +99,8 @@ public class VideoListActivity extends YanxiuBaseActivity implements View.OnClic
         mName = getIntent().getStringExtra(Constants.EXTRA_NAME);
         mTitle.setText(mName);
         mRefreshLayout = (EXueELianRefreshLayout) findViewById(R.id.refreshLayout);
+        mAdapter = new VideoListAdapter(VideoListActivity.this, mVideoList, mOnItemClickListener);
+        mGridView.setAdapter(mAdapter);
         mGridView.setFocusable(false);
         getResourseList(mCurrentOrder,1);
     }
@@ -169,8 +179,6 @@ public class VideoListActivity extends YanxiuBaseActivity implements View.OnClic
                     mTotalPage = response.getPage().getTotalPage();
                     if (response.getData() != null && response.getData().size() > 0) {
                         mVideoList = response.getData();
-                        mAdapter = new VideoListAdapter(VideoListActivity.this, mVideoList, mOnItemClickListener);
-                        mGridView.setAdapter(mAdapter);
                         showContentView(mVideoList);
                     } else {
                         mAdapter.clearData();
@@ -230,6 +238,7 @@ public class VideoListActivity extends YanxiuBaseActivity implements View.OnClic
 
     public void showNoMoreData() {
         setLoadMoreEnable(false);
+        ToastManager.showMsg(R.string.no_more_data);
     }
 
     private void showLoadMoreErrorMsg(String msg){

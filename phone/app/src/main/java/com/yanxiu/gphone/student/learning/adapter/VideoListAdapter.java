@@ -19,6 +19,7 @@ import com.yanxiu.gphone.student.util.DataFetcher;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,7 +29,7 @@ import java.util.List;
 public class VideoListAdapter extends BaseAdapter {
 
     private final Context mContext;
-    private List<VideoDataBean> mData;
+    private List<VideoDataBean> mData = new ArrayList<>();
     private OnItemClickListener mListener;
 
     public VideoListAdapter(Context context, List<VideoDataBean> mData, OnItemClickListener listener) {
@@ -44,14 +45,16 @@ public class VideoListAdapter extends BaseAdapter {
     }
 
     public void clearData(){
-        mData.clear();
+        if(mData != null) {
+            mData.clear();
+        }
         notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
         if(mData == null) {
-            return 1;
+            return 0;
         }
         return mData.size();
     }

@@ -355,4 +355,5 @@
     <string name="hot_order">人气排序</string>
     <string name="play_times">%1$d次</string>
     <string name="video_play_times">%1$d次播放</string>
+    <string name="resource_empty">资源建设中，敬请期待</string>
 </resources>

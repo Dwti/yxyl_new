@@ -46,6 +46,16 @@ public class VideoDataBean implements Serializable {
     private String res_type;
     private int termId;
     private String res_download_url;
+
+    public String getRes_preview_url() {
+        return res_preview_url;
+    }
+
+    public void setRes_preview_url(String res_preview_url) {
+        this.res_preview_url = res_preview_url;
+    }
+
+    private String res_preview_url;
     private int viewnum;
     private int createTime;
     private String id;

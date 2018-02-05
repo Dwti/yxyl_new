@@ -128,34 +128,38 @@ public class StudyFragment extends HomePageBaseFragment {
                 if(response.getData().size() > 0){
                     showSubjects(response.getData());
                 }else {
-                    rootView.showOtherErrorView();
+//                    rootView.showOtherErrorView();
+                    showDataEmptyView();
                 }
             }else {
-                rootView.showNetErrorView();
+//                rootView.showNetErrorView();
+                showDataErrorView();
             }
         }
 
         @Override
         public void onFail(RequestBase request, Error error) {
             rootView.hiddenLoadingView();
-            rootView.showNetErrorView();
+//                rootView.showNetErrorView();
+            showDataErrorView();
         }
     };
 
-//    private void showDataEmptyView(){
-//        mGridView.setVisibility(View.GONE);
-//        mTipsView.setVisibility(View.VISIBLE);
-//        mTips.setText("");
-//        mRefreshBtn.setText(R.string.click_to_retry);
-//    }
-//
-//    private void showDataErrorView(){
-//        mGridView.setVisibility(View.GONE);
-//        mTipsView.setVisibility(View.VISIBLE);
-//        mTipsImg.setImageResource(R.drawable.net_error);
-//        mTips.setText(R.string.load_failed);
-//        mRefreshBtn.setText(R.string.click_to_retry);
-//    }
+    private void showDataEmptyView(){
+        mGridView.setVisibility(View.GONE);
+        mTipsView.setVisibility(View.VISIBLE);
+        mTipsImg.setImageResource(R.drawable.learning_empty_data);
+        mTips.setText(R.string.resource_empty);
+        mRefreshBtn.setVisibility(View.INVISIBLE);
+    }
+
+    private void showDataErrorView(){
+        mGridView.setVisibility(View.GONE);
+        mTipsView.setVisibility(View.VISIBLE);
+        mTipsImg.setImageResource(R.drawable.net_error);
+        mTips.setText(R.string.load_failed);
+        mRefreshBtn.setText(R.string.click_to_retry);
+    }
 
     private void showSubjects(List<SubjectBean> data){
         mGridView.setVisibility(View.VISIBLE);
