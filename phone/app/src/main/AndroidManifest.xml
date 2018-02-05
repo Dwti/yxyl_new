@@ -338,6 +338,15 @@
             android:name="com.yanxiu.gphone.student.mistakeredo.MistakePointActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
+
+        <activity android:name=".questions.operation.PaletteActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".questions.operation.OperaPicPreviewActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"/>
         <activity
             android:name=".learning.activity.SelectLearningEditionActivity"
             android:launchMode="singleTop"

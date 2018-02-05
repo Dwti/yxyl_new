@@ -212,7 +212,7 @@ public class NotesActicity extends YanxiuBaseActivity implements View.OnClickLis
             public Object getImgTag(int position) {
                 return data.get(position);
             }
-        }).setProgressListener(new UpDataRequest.onProgressListener() {
+        }).setRequestListener(new UpDataRequest.onRequestListener() {
             @Override
             public void onRequestStart() {
 
@@ -225,7 +225,7 @@ public class NotesActicity extends YanxiuBaseActivity implements View.OnClickLis
                 uploadPicture(paths,content);
 //                uploadData(paths, content);
             }
-        }).setListener(new UpDataRequest.onUpDatalistener() {
+        }).setProgressListener(new UpDataRequest.onUpDataProgresslistener() {
             @Override
             public void onUpDataStart(int position, Object tag) {}
             @Override

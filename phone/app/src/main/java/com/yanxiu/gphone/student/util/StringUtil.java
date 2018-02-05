@@ -1,6 +1,7 @@
 package com.yanxiu.gphone.student.util;
 
 import android.text.TextPaint;
+import android.text.TextUtils;
 
 import com.yanxiu.gphone.student.R;
 import com.yanxiu.gphone.student.YanxiuApplication;
@@ -110,5 +111,21 @@ public class StringUtil {
 
     public static char getChoiceByIndex(int index){
         return (char)(index + 65);
+    }
+
+    public static String getPictureName(String url){
+        String picName = null;
+        if(TextUtils.isEmpty(url)){
+            throw new IllegalArgumentException("url can not be empty");
+        }
+        int index = url.lastIndexOf("/");
+        if(index != -1){
+            picName = url.substring(index + 1,url.length());
+        }
+        int index1 = picName.lastIndexOf(".");
+        if(index != -1){
+            picName = picName.substring(0,index1);
+        }
+        return picName;
     }
 }

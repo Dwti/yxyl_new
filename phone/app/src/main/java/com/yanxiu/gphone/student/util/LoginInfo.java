@@ -1,7 +1,5 @@
 package com.yanxiu.gphone.student.util;
 
-import android.text.TextUtils;
-
 import com.yanxiu.gphone.student.login.response.PassportBean;
 import com.yanxiu.gphone.student.login.response.UserMessageBean;
 
