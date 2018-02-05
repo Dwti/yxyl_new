@@ -28,7 +28,7 @@ class UpdateDialog extends Dialog {
     private Context mContext;
 
 //    private ProgressBar mPbLoadApkView;
-//    private TextView mUpdateTitleView;
+    private TextView mUpdateTitleView;
     private TextView mCelTextView;
     private TextView mSureTextView;
     private TextView mUpdateContentView;
@@ -113,11 +113,11 @@ class UpdateDialog extends Dialog {
         }
 
         mUpdateContentView.setText(mContent);
-//        if(TextUtils.isEmpty(mTitle)) {
-//            mUpdateTitleView.setText(mContext.getResources().getString(R.string.app_update, mVersion));
-//        } else {
-//            mUpdateTitleView.setText(mTitle);
-//        }
+        if(TextUtils.isEmpty(mTitle)) {
+            mUpdateTitleView.setText(mContext.getResources().getString(R.string.app_update, mVersion));
+        } else {
+            mUpdateTitleView.setText(mTitle);
+        }
 
     }
 
@@ -131,7 +131,7 @@ class UpdateDialog extends Dialog {
 
     private void initView() {
 //        mPbLoadApkView= (ProgressBar) findViewById(R.id.pb_loadapk);
-//        mUpdateTitleView = (TextView)findViewById(R.id.update_title);
+        mUpdateTitleView = (TextView)findViewById(R.id.update_title);
         mUpdataLayout= (LinearLayout) findViewById(R.id.ll_updata);
         mProgressLayout= (LinearLayout) findViewById(R.id.rl_progress);
         mProgressView= (ProgressBar) findViewById(R.id.pb_progress);

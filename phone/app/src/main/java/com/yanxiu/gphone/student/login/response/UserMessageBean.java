@@ -45,11 +45,13 @@ public class UserMessageBean extends DataSupport {
 
     public String getSubjectIds_string() {
         String string="";
-        for (Integer integer:subjectIds){
-            if (TextUtils.isEmpty(string)){
-                string+=integer;
-            }else {
-                string+=(","+integer);
+        if (subjectIds!=null) {
+            for (Integer integer : subjectIds) {
+                if (TextUtils.isEmpty(string)) {
+                    string += integer;
+                } else {
+                    string += ("," + integer);
+                }
             }
         }
         this.subjectIds_string=string;

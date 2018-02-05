@@ -33,16 +33,18 @@ public class LoginInfo {
     private static UserMessageBean bean;
 
     static {
-        LOGIN_STATUS = LOGIN_DEFAULT;
-        try {
-            bean = getCacheData();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (bean == null) {
-            LOGIN_STATUS = LOGIN_OUT;
-        } else {
-            LOGIN_STATUS = LOGIN_IN;
+        if (bean==null) {
+            LOGIN_STATUS = LOGIN_DEFAULT;
+            try {
+                bean = getCacheData();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (bean == null) {
+                LOGIN_STATUS = LOGIN_OUT;
+            } else {
+                LOGIN_STATUS = LOGIN_IN;
+            }
         }
     }
 
@@ -87,6 +89,8 @@ public class LoginInfo {
         LOGIN_STATUS = LOGIN_OUT;
         bean.delete();
         bean = null;
+        DataSupport.deleteAll(PassportBean.class);
+        DataSupport.deleteAll(UserMessageBean.class);
     }
 
     /**

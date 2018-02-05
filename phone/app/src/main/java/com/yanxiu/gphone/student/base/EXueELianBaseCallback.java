@@ -9,6 +9,8 @@ import com.test.yanxiu.network.RequestBase;
 import com.yanxiu.gphone.student.YanxiuApplication;
 import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.login.activity.LoginActivity;
+import com.yanxiu.gphone.student.login.response.PassportBean;
+import com.yanxiu.gphone.student.login.response.UserMessageBean;
 import com.yanxiu.gphone.student.questions.answerframe.bean.AnswerBean;
 import com.yanxiu.gphone.student.util.ActivityManger;
 import com.yanxiu.gphone.student.util.LoginInfo;
