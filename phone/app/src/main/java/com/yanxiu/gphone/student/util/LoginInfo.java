@@ -9,6 +9,7 @@ import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by Canghaixiao.
@@ -77,9 +78,12 @@ public class LoginInfo {
 
     public static void updataCacheData(UserMessageBean messageBean) {
         try {
-            messageBean.setPassport(bean.getPassport());
-            bean=messageBean;
-            Save();
+//            messageBean.setPassport(bean.getPassport());
+            if (!bean.getStageid().equals(messageBean.getStageid()) &&bean.getSubjectIds().containsAll(messageBean.getSubjectIds())) {
+                bean.setSubjectIds(messageBean.getSubjectIds());
+                bean.setStageid(messageBean.getStageid());
+                Save();
+            }
         }catch (Exception e){
             e.toString();
         }
