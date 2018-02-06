@@ -55,9 +55,9 @@ public class YanxiuBaseActivity extends FragmentActivity implements EasyPermissi
             if (LoginInfo.isLogIn()) {
                 //更新用户数据
                 CheckStudentTokenRequest studentTokenRequest = new CheckStudentTokenRequest();
-                studentTokenRequest.startRequest(LoginResponse.class, new EXueELianBaseCallback<LoginResponse>() {
+                studentTokenRequest.startRequest(LoginResponse.class, new HttpCallback<LoginResponse>() {
                     @Override
-                    protected void onResponse(RequestBase request, LoginResponse response) {
+                    public void onSuccess(RequestBase request, LoginResponse response) {
                         if (response.getStatus().getCode()==0&&response.data!=null&&response.data.size()>0) {
                             UserMessageBean messageBean = response.data.get(0);
                             if (!messageBean.getSubjectIds().isEmpty()){
