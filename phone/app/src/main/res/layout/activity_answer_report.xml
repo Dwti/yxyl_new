@@ -223,6 +223,7 @@
                 android:layout_marginBottom="30dp"/>
             <LinearLayout
                 android:id="@+id/video_related"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/weak_point_detail"
@@ -265,6 +266,29 @@
                 android:paddingBottom="30dp"
                 android:stretchMode="spacingWidth"
                 android:verticalSpacing="15dp" />
+
+            <com.yanxiu.gphone.student.customviews.WavesLayout
+                android:id="@+id/wavesLayout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/answer_card_bottomview_marginbottom"
+                android:layout_below="@id/gridView"
+                android:layout_gravity="center"
+                android:layout_marginTop="19dp"
+                android:clickable="true"
+                app:waves_animend_alpha="102"
+                app:waves_radius="@dimen/wavesRadius"
+                android:visibility="gone">
+
+                <Button
+                    android:id="@+id/onceagain"
+                    android:layout_width="@dimen/answer_card_submitbutton_width"
+                    android:layout_height="@dimen/answer_card_submitbutton_height"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/submit_homework_button"
+                    android:textColor="@color/color_ffffff"
+                    android:textSize="@dimen/answer_card_submitbutton_textsize"
+                    android:background="@drawable/selector_answercard_submit_button_bg"/>
+            </com.yanxiu.gphone.student.customviews.WavesLayout>
         </RelativeLayout>
 
     </com.yanxiu.gphone.student.customviews.UnFocusableScrollView>
@@ -305,29 +329,6 @@
             android:textSize="21dp"
             tools:text="放假客服开始开发司法考试打飞机快圣诞节疯狂的减肥可视对讲发射点发" />
     </RelativeLayout>
-
-    <com.yanxiu.gphone.student.customviews.WavesLayout
-        android:id="@+id/wavesLayout"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/answer_card_bottomview_marginbottom"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="center"
-        android:layout_marginTop="19dp"
-        android:clickable="true"
-        app:waves_animend_alpha="102"
-        app:waves_radius="@dimen/wavesRadius"
-        android:visibility="gone">
-
-        <Button
-            android:id="@+id/onceagain"
-            android:layout_width="@dimen/answer_card_submitbutton_width"
-            android:layout_height="@dimen/answer_card_submitbutton_height"
-            android:layout_centerHorizontal="true"
-            android:text="@string/submit_homework_button"
-            android:textColor="@color/color_ffffff"
-            android:textSize="@dimen/answer_card_submitbutton_textsize"
-            android:background="@drawable/selector_answercard_submit_button_bg"/>
-    </com.yanxiu.gphone.student.customviews.WavesLayout>
 
     <RelativeLayout
         android:id="@+id/reset_answer"
