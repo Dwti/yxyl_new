@@ -55,7 +55,7 @@ import static com.yanxiu.gphone.student.videoplay.VideoManager.VideoState.Normal
  * Created by lufengqing on 2018/1/16.
  */
 
-public class SpecialDetailActivity extends YanxiuBaseActivity implements  View.OnClickListener{
+public class SpecialDetailActivity extends YanxiuBaseActivity implements View.OnClickListener {
 
     private PublicLoadLayout rootView;
     private PlayerView mPlayerView;
@@ -85,34 +85,37 @@ public class SpecialDetailActivity extends YanxiuBaseActivity implements  View.O
     private HttpCallback<GetRelatedCourseResponse> mGetRelatedListCallback = new EXueELianBaseCallback<GetRelatedCourseResponse>() {
         @Override
         protected void onResponse(RequestBase request, GetRelatedCourseResponse response) {
-             if(response.getStatus().getCode() == 0){
-                 if(response.getData() != null && response.getData().size() > 0){
-                     mRelatedVideoList = response.getData();
-                     mRelatedAdapter = new RelatedVideoAdapter(SpecialDetailActivity.this, mRelatedVideoList , mOnItemClickListener );
-                     mGridView.setAdapter(mRelatedAdapter);
-                     mRelatedVideoHint.setVisibility(View.VISIBLE);
-                     mGridView.setVisibility(View.VISIBLE);
-                    } else {
-                     mRelatedVideoHint.setVisibility(View.GONE);
-                     mGridView.setVisibility(View.GONE);
-                 }
-             } else {
-                 mRelatedVideoHint.setVisibility(View.GONE);
-                 mGridView.setVisibility(View.GONE);
-             }
+            if (response.getStatus().getCode() == 0) {
+                if (response.getData() != null && response.getData().size() > 0) {
+                    mRelatedVideoList = response.getData();
+                    mRelatedAdapter = new RelatedVideoAdapter(SpecialDetailActivity.this, mRelatedVideoList, mOnItemClickListener);
+                    mGridView.setAdapter(mRelatedAdapter);
+                    mRelatedVideoHint.setVisibility(View.VISIBLE);
+                    mGridView.setVisibility(View.VISIBLE);
+                } else {
+//                     mRelatedVideoHint.setVisibility(View.GONE);
+                    mGridView.setVisibility(View.GONE);
+                    mNoRelatedVideo.setVisibility(View.VISIBLE);
+                }
+            } else {
+//                 mRelatedVideoHint.setVisibility(View.GONE);
+                mGridView.setVisibility(View.GONE);
+                mNoRelatedVideo.setVisibility(View.VISIBLE);
+            }
         }
 
         @Override
         public void onFail(RequestBase request, Error error) {
-            mRelatedVideoHint.setVisibility(View.GONE);
-          mGridView.setVisibility(View.GONE);
+//            mRelatedVideoHint.setVisibility(View.GONE);
+            mGridView.setVisibility(View.GONE);
+            mNoRelatedVideo.setVisibility(View.VISIBLE);
         }
     };
     private TextView mRelatedVideoHint;
     private HttpCallback<EXueELianBaseResponse> mAddResCallback = new HttpCallback<EXueELianBaseResponse>() {
         @Override
         public void onSuccess(RequestBase request, EXueELianBaseResponse ret) {
-            if(ret.getStatus().getCode() == 0) {
+            if (ret.getStatus().getCode() == 0) {
                 mVideoPlayTimes.setText(getResources().getString(R.string.play_times, mVideoBean.getViewnum() + 1));
                 setResult(RESULT_OK);
             }
@@ -125,17 +128,18 @@ public class SpecialDetailActivity extends YanxiuBaseActivity implements  View.O
     };
     private TextView mVideoTitle;
     private TextView mVideoPlayTimes;
+    private TextView mNoRelatedVideo;
 
-    public static void invoke(Activity activity, VideoDataBean bean){
-        Intent intent = new Intent(activity,SpecialDetailActivity.class);
+    public static void invoke(Activity activity, VideoDataBean bean) {
+        Intent intent = new Intent(activity, SpecialDetailActivity.class);
         intent.putExtra(Constants.VIDEO_BEAN, bean);
-        activity.startActivityForResult(intent,1);
+        activity.startActivityForResult(intent, 1);
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        rootView=new PublicLoadLayout(this);
+        rootView = new PublicLoadLayout(this);
         rootView.setContentView(R.layout.activity_special_detail);
         setContentView(rootView);
         initView();
@@ -156,13 +160,13 @@ public class SpecialDetailActivity extends YanxiuBaseActivity implements  View.O
 
     private void initData() {
         mVideoBean = (VideoDataBean) getIntent().getSerializableExtra(Constants.VIDEO_BEAN);
-        if (mVideoBean==null){
+        if (mVideoBean == null) {
             this.finish();
             return;
         }
         mTitle.setText(mVideoBean.getTitle());
         mVideoTitle.setText(mVideoBean.getTitle());
-        mVideoPlayTimes.setText(getResources().getString(R.string.play_times,mVideoBean.getViewnum()));
+        mVideoPlayTimes.setText(getResources().getString(R.string.video_play_times, mVideoBean.getViewnum()));
         setupVideoModel();
         setupNetwork4GWifi();
         initRelatedVideoList();
@@ -171,9 +175,10 @@ public class SpecialDetailActivity extends YanxiuBaseActivity implements  View.O
 
     private void initRelatedVideoList() {
         //TODO
-        if(mVideoBean.getPoint() == null || mVideoBean.getPoint().size() == 0) {
-            mRelatedVideoHint.setVisibility(View.GONE);
+        if (mVideoBean.getPoint() == null || mVideoBean.getPoint().size() == 0) {
+//            mRelatedVideoHint.setVisibility(View.GONE);
             mGridView.setVisibility(View.GONE);
+            mNoRelatedVideo.setVisibility(View.VISIBLE);
         } else {
             GetRelatedCourseRequest request = new GetRelatedCourseRequest();
             request.setExcludeId(mVideoBean.getId());
@@ -200,10 +205,11 @@ public class SpecialDetailActivity extends YanxiuBaseActivity implements  View.O
         mVideoManager.setOnCourseEventListener(mListener);
         mGridView = (GridView) findViewById(R.id.gridView);
         mRelatedVideoHint = (TextView) findViewById(R.id.video_related);
+        mNoRelatedVideo = (TextView) findViewById(R.id.no_related_video);
         mBack = findViewById(R.id.back);
     }
 
-    private void setupVideoModel(){
+    private void setupVideoModel() {
         mVideoModel = new VideoModel();
         mVideoModel.cover = mVideoBean.getRes_thumb();
         mVideoModel.bodyUrl = mVideoBean.getRes_preview_url();
@@ -234,7 +240,7 @@ public class SpecialDetailActivity extends YanxiuBaseActivity implements  View.O
         @Override
         public void onBodyFinish() {
             mVideoManager.setState(LastVideoFinished);
-            if(!mVideoManager.isPortrait){
+            if (!mVideoManager.isPortrait) {
                 rotateScreen();
             }
         }
@@ -330,6 +336,7 @@ public class SpecialDetailActivity extends YanxiuBaseActivity implements  View.O
             finish();
         }
     }
+
     @Override
     public void onClick(View v) {
 
@@ -341,7 +348,7 @@ public class SpecialDetailActivity extends YanxiuBaseActivity implements  View.O
         }
     }
 
-    private void playVideo(){
+    private void playVideo() {
         VideoManager.VideoState lastState = mVideoManager.getState();
         mVideoManager.setupPlayer();
         mVideoManager.setModel(mVideoModel);
@@ -358,7 +365,7 @@ public class SpecialDetailActivity extends YanxiuBaseActivity implements  View.O
         request.startRequest(EXueELianBaseResponse.class, mAddResCallback);
     }
 
-    private void destoryVideo(){
+    private void destoryVideo() {
 //        mVideoModel.bodyPosition = 0;
         mVideoManager.clearPlayer();
         mVideoManager.resetAllState();
@@ -380,7 +387,7 @@ public class SpecialDetailActivity extends YanxiuBaseActivity implements  View.O
     protected void onDestroy() {
         super.onDestroy();
         destoryVideo();
-        if(isRegisterReceiver) {
+        if (isRegisterReceiver) {
             unregisterReceiver(mNotification);
         }
     }
