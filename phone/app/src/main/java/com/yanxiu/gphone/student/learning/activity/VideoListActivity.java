@@ -5,8 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.srt.refresh.EXueELianRefreshLayout;
@@ -37,6 +40,10 @@ import java.util.List;
 
 public class VideoListActivity extends YanxiuBaseActivity implements View.OnClickListener {
     private GridView mGridView;
+    private TextView mTips;
+    private View mTipsView;
+    private ImageView mTipsImg;
+    private Button mRefreshBtn;
     private PublicLoadLayout rootView;
     private View mBack;
     private VideoListAdapter mAdapter;
@@ -91,6 +98,12 @@ public class VideoListActivity extends YanxiuBaseActivity implements View.OnClic
                 refreshData();
             }
         } );
+        mRefreshBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refreshData();
+            }
+        });
     }
 
     private void initData() {
@@ -107,6 +120,10 @@ public class VideoListActivity extends YanxiuBaseActivity implements View.OnClic
 
     private void initView() {
         mGridView = (GridView) findViewById(R.id.gridView);
+        mTipsView = rootView.findViewById(R.id.tips_layout);
+        mTipsImg = (ImageView) rootView.findViewById(R.id.iv_tips);
+        mRefreshBtn = (Button) rootView.findViewById(R.id.btn_refresh);
+        mTips = (TextView) rootView.findViewById(R.id.tv_tips);
         mBack = findViewById(R.id.back);
         mTitle = (TextView) findViewById(R.id.title);
         mDefaultOrder = (TextView) findViewById(R.id.default_order);
@@ -142,6 +159,40 @@ public class VideoListActivity extends YanxiuBaseActivity implements View.OnClic
 
     private void finishLoadingMoireIndicator(){
         mRefreshLayout.finishLoadMore();
+    }
+
+    private void showDataEmptyView(){
+        setOrderIsClickable(false);
+        mGridView.setVisibility(View.GONE);
+        mTipsView.setVisibility(View.VISIBLE);
+        mTipsImg.setImageResource(R.drawable.data_empty);
+        mTips.setText(R.string.resource_empty);
+        mRefreshBtn.setVisibility(View.INVISIBLE);
+    }
+
+    private void setOrderIsClickable(boolean b) {
+        mDefaultOrder.setEnabled(b);
+        mHotOrder.setEnabled(b);
+        if(b) {
+            if(TextUtils.equals(mCurrentOrder, "0")) {
+                mDefaultOrder.setTextColor(getResources().getColor(R.color.color_89e00d));
+                mHotOrder.setTextColor(getResources().getColor(R.color.color_666666));
+            } else {
+                mHotOrder.setTextColor(getResources().getColor(R.color.color_89e00d));
+                mDefaultOrder.setTextColor(getResources().getColor(R.color.color_666666));
+            }
+        } else {
+            mDefaultOrder.setTextColor(getResources().getColor(R.color.color_666666));
+            mHotOrder.setTextColor(getResources().getColor(R.color.color_666666));
+        }
+    }
+
+    private void showDataErrorView(){
+        mGridView.setVisibility(View.GONE);
+        mTipsView.setVisibility(View.VISIBLE);
+        mTipsImg.setImageResource(R.drawable.net_error);
+        mTips.setText(R.string.load_failed);
+        mRefreshBtn.setText(R.string.click_to_retry);
     }
 
     public void getResourseList(String order, int page) {
@@ -182,7 +233,8 @@ public class VideoListActivity extends YanxiuBaseActivity implements View.OnClic
                         showContentView(mVideoList);
                     } else {
                         mAdapter.clearData();
-                        rootView.showOtherErrorView();
+                        //                    rootView.showOtherErrorView();
+                        showDataEmptyView();
                     }
                 } else if (mCurrentPage > 1) {
                     finishLoadingMoireIndicator();
@@ -203,9 +255,11 @@ public class VideoListActivity extends YanxiuBaseActivity implements View.OnClic
                     }
                     //code=3 表示数据为空
                     if (response.getStatus().getCode() == 3) {
-                        rootView.showOtherErrorView();
+//                    rootView.showOtherErrorView();
+                    showDataEmptyView();
                     } else {
-                        rootView.showNetErrorView();
+                       //                rootView.showNetErrorView();
+                showDataErrorView();
                     }
                 } else if (mCurrentPage > 1) {
                     finishLoadingMoireIndicator();
@@ -228,7 +282,8 @@ public class VideoListActivity extends YanxiuBaseActivity implements View.OnClic
                 if (mAdapter != null) {
                     mAdapter.clearData();
                 }
-                rootView.showNetErrorView();
+               //                rootView.showNetErrorView();
+                showDataErrorView();
             } else if (mCurrentPage > 1) {
                 finishLoadingMoireIndicator();
                 showLoadMoreErrorMsg(error.getLocalizedMessage());
@@ -246,6 +301,9 @@ public class VideoListActivity extends YanxiuBaseActivity implements View.OnClic
     }
 
     private void showContentView(List<VideoDataBean> mVideoList) {
+        setOrderIsClickable(true);
+        mGridView.setVisibility(View.VISIBLE);
+        mTipsView.setVisibility(View.GONE);
         mAdapter.replaceData(mVideoList);
 //        if(mCurrentPage == 1){
 //            mGridView.scrollToPosition(0);
@@ -267,12 +325,14 @@ public class VideoListActivity extends YanxiuBaseActivity implements View.OnClic
             case R.id.default_order:
                 mDefaultOrder.setTextColor(getResources().getColor(R.color.color_89e00d));
                 mHotOrder.setTextColor(getResources().getColor(R.color.color_666666));
-                getResourseList("0",1);
+                mCurrentOrder = "0";
+                getResourseList(mCurrentOrder,1);
                 break;
             case R.id.hot_order:
                 mHotOrder.setTextColor(getResources().getColor(R.color.color_89e00d));
                 mDefaultOrder.setTextColor(getResources().getColor(R.color.color_666666));
-                getResourseList("1",1);
+                mCurrentOrder = "1";
+                getResourseList(mCurrentOrder,1);
                 break;
             default:
                 break;
