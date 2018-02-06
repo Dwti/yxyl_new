@@ -111,7 +111,11 @@ public class SelectEditionActivity extends YanxiuBaseActivity {
         if (mIcon != null)
             setIcon(mIcon, mSubjectId);
         mBack.setBackgroundResource(R.drawable.selector_close);
-        requestEditions(mSubjectId);
+        if(mComeFrom == FROM_LEARNING) {
+            requestLearningEditions(mSubjectId);
+        } else {
+            requestEditions(mSubjectId);
+        }
     }
 
     private void initListener() {
