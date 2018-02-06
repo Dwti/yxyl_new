@@ -17,6 +17,13 @@ public class SpecialAdapter extends ExerciseExpandableAdapter<KnowledgePointBean
     }
 
     @Override
+    public void replaceData(List<KnowledgePointBean> data) {
+        super.replaceData(data);
+    }
+
+
+
+    @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
         ((ExpandableViewHolder)holder).text.setText(mData.get(position).getName());
