@@ -1,5 +1,7 @@
 package com.yanxiu.gphone.student.util;
 
+import android.text.TextUtils;
+
 import com.yanxiu.gphone.student.login.response.PassportBean;
 import com.yanxiu.gphone.student.login.response.UserMessageBean;
 
@@ -31,6 +33,10 @@ public class LoginInfo {
     private static UserMessageBean bean;
 
     static {
+        setBean();
+    }
+
+    private static void setBean(){
         if (bean==null) {
             LOGIN_STATUS = LOGIN_DEFAULT;
             try {
@@ -38,12 +44,16 @@ public class LoginInfo {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            if (bean == null||bean.getPassport()==null||bean.getPassport().getToken()==null) {
+            if (bean == null||bean.getPassport()==null|| TextUtils.isEmpty(bean.getPassport().getToken())) {
                 LOGIN_STATUS = LOGIN_OUT;
             } else {
                 LOGIN_STATUS = LOGIN_IN;
             }
         }
+    }
+
+    public static void checkBean(){
+        setBean();
     }
 
     private static UserMessageBean getCacheData() {

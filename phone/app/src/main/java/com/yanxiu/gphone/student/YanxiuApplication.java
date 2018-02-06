@@ -16,6 +16,7 @@ import com.yanxiu.gphone.student.db.UrlRepository;
 import com.yanxiu.gphone.student.userevent.UserEventManager;
 import com.yanxiu.gphone.student.userevent.bean.UserInstallBean;
 import com.yanxiu.gphone.student.util.FileUtil;
+import com.yanxiu.gphone.student.util.LoginInfo;
 import com.yanxiu.gphone.student.util.SoundManger;
 
 import org.json.JSONException;
@@ -41,6 +42,7 @@ public class YanxiuApplication extends LitePalApplication {
         initUrlServer();
         Stetho.initializeWithDefaults(this);
         SoundManger.getInstence().initialize(this);
+        LoginInfo.checkBean();
         if (SpManager.isFristStartUp2()) {
             SpManager.setFristStartUp2(false);
             UserEventManager.getInstense().whenFirstStart();
