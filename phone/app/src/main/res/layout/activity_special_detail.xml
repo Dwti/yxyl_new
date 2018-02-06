@@ -89,7 +89,7 @@
                 android:layout_marginRight="@dimen/special_margin"
                 android:layout_marginTop="27dp"
                 android:text="小学有理数教案"
-                android:textColor="@color/color_999999"
+                android:textColor="@color/color_333333"
                 android:textSize="@dimen/text_size_17" />
 
             <TextView
@@ -100,7 +100,7 @@
                 android:layout_marginRight="@dimen/special_margin"
                 android:layout_marginTop="12dp"
                 android:text="32次播放"
-                android:textColor="@color/color_333333"
+                android:textColor="@color/color_999999"
                 android:textSize="@dimen/text_size_12" />
 
             <View
@@ -120,6 +120,9 @@
                 android:textColor="@color/color_666666"
                 android:textSize="@dimen/text_size_16" />
 
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
             <com.yanxiu.gphone.student.customviews.UnMoveGridView
                 android:id="@+id/gridView"
                 android:layout_width="match_parent"
@@ -134,6 +137,19 @@
                 android:paddingBottom="30dp"
                 android:stretchMode="spacingWidth"
                 android:verticalSpacing="15dp" />
+
+            <TextView
+                android:id="@+id/no_related_video"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/special_margin"
+                android:layout_marginRight="@dimen/special_margin"
+                android:layout_marginTop="12dp"
+                android:text="暂无"
+                android:visibility="gone"
+                android:textColor="@color/color_999999"
+                android:textSize="@dimen/text_size_12" />
+            </FrameLayout>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
