@@ -79,7 +79,7 @@ public class LoginInfo {
     public static void updataCacheData(UserMessageBean messageBean) {
         try {
 //            messageBean.setPassport(bean.getPassport());
-            if (!bean.getStageid().equals(messageBean.getStageid()) && bean.getSubjectIds().containsAll(messageBean.getSubjectIds())) {
+            if (!bean.getStageid().equals(messageBean.getStageid()) &&bean.getSubjectIds().size()!=messageBean.getSubjectIds().size() && bean.getSubjectIds().containsAll(messageBean.getSubjectIds())) {
                 bean.setSubjectIds(messageBean.getSubjectIds());
                 bean.setStageid(messageBean.getStageid());
                 Save();
