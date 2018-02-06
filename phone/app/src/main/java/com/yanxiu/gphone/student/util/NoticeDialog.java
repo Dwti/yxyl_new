@@ -46,5 +46,6 @@ public class NoticeDialog extends Dialog {
     private void initData() {
         mTitleView.setText(mProperty.title);
         mContentView.setText(mProperty.notice);
+//        mContentView.setText("ksalfalfakufak，发班级啊把父控件啊\n暗示法咖啡咖啡");
     }
 }

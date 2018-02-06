@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <com.yanxiu.gphone.student.customviews.NoticeLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
         android:layout_centerInParent="true"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:paddingLeft="33dp"
+        android:paddingRight="33dp"
+        android:paddingBottom="38dp"
+        android:paddingTop="25dp"
         android:background="@drawable/shape_notice_bg"
         android:orientation="vertical">
 
@@ -14,21 +21,29 @@
             android:id="@+id/tv_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/color_336600"
+            android:textColor="@color/color_333333"
             android:textSize="21sp"
-            android:gravity="center"/>
+            android:includeFontPadding="false"
+            android:gravity="center"
+            tools:text="ss"/>
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginTop="25dp">
 
             <TextView
                 android:id="@+id/tv_content"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:includeFontPadding="false"
+                android:textColor="@color/color_666666"
+                android:lineSpacingExtra="8dp"
+                tools:text="sss\nsss"/>
 
         </ScrollView>
 
-    </LinearLayout>
+    </com.yanxiu.gphone.student.customviews.NoticeLinearLayout>
 
 </RelativeLayout>
