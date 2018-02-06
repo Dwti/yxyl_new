@@ -37,15 +37,15 @@ public class LoginInfo {
         setBean();
     }
 
-    private static void setBean(){
-        if (bean==null) {
+    private static void setBean() {
+        if (bean == null) {
             LOGIN_STATUS = LOGIN_DEFAULT;
             try {
                 bean = getCacheData();
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            if (bean == null||bean.getPassport()==null|| TextUtils.isEmpty(bean.getPassport().getToken())) {
+            if (bean == null || bean.getPassport() == null || TextUtils.isEmpty(bean.getPassport().getToken())) {
                 LOGIN_STATUS = LOGIN_OUT;
             } else {
                 LOGIN_STATUS = LOGIN_IN;
@@ -53,7 +53,7 @@ public class LoginInfo {
         }
     }
 
-    public static void checkBean(){
+    public static void checkBean() {
         setBean();
     }
 
@@ -79,12 +79,12 @@ public class LoginInfo {
     public static void updataCacheData(UserMessageBean messageBean) {
         try {
 //            messageBean.setPassport(bean.getPassport());
-            if (!bean.getStageid().equals(messageBean.getStageid()) &&bean.getSubjectIds().containsAll(messageBean.getSubjectIds())) {
+            if (!bean.getStageid().equals(messageBean.getStageid()) && bean.getSubjectIds().containsAll(messageBean.getSubjectIds())) {
                 bean.setSubjectIds(messageBean.getSubjectIds());
                 bean.setStageid(messageBean.getStageid());
                 Save();
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.toString();
         }
     }
@@ -105,6 +105,10 @@ public class LoginInfo {
         LOGIN_STATUS = LOGIN_OUT;
         bean.delete();
         bean = null;
+        clearBeans();
+    }
+
+    private static void clearBeans() {
         DataSupport.deleteAll(PassportBean.class);
         DataSupport.deleteAll(UserMessageBean.class);
     }
@@ -400,7 +404,7 @@ public class LoginInfo {
     }
 
     public static String getSubjectIds_string() {
-        if (!isLogIn()){
+        if (!isLogIn()) {
             return "";
         }
         return bean.getSubjectIds_string();
