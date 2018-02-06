@@ -92,16 +92,20 @@ public class SelectSyncAndSpecailActivity extends YanxiuBaseActivity {
                 if(mChannelList.size() == 1) {
                     mSwitchBar.setVisibility(View.GONE);
                     if(TextUtils.equals(mChannelList.get(0).getName(),"专题")) {
+                        mIsSyncMode = false;
                         mLayoutStage.setVisibility(View.GONE);
+                        getSpecialTree(mSubjectId);
                     } else {
                         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mLayoutStage.getLayoutParams();
                         params.removeRule(RelativeLayout.ALIGN_PARENT_RIGHT);
                         params.addRule(RelativeLayout.CENTER_IN_PARENT);
                         mLayoutStage.setLayoutParams(params);
+                        getSyncVolumes();
                     }
                 } else {
                     mSwitchBar.setVisibility(View.VISIBLE);
                     if(mIsSyncMode) {
+                        getSyncVolumes();
                         mLayoutStage.setVisibility(View.VISIBLE);
                     }
                 }
@@ -251,9 +255,7 @@ public class SelectSyncAndSpecailActivity extends YanxiuBaseActivity {
         mSubjectName = getIntent().getStringExtra(SUBJECT_NAME);
         mEditionId = getIntent().getStringExtra(EDITION_ID);
         mTitle.setText(mSubjectName);
-
         getChannel();
-        getSyncVolumes();
     }
 
     private void getChannel() {
@@ -359,7 +361,9 @@ public class SelectSyncAndSpecailActivity extends YanxiuBaseActivity {
     }
 
     private void showContentView() {
-        mToolBar.setVisibility(View.VISIBLE);
+        if(mIsSyncMode) {
+            mToolBar.setVisibility(View.VISIBLE);
+        }
         mRecyclerView.setVisibility(View.VISIBLE);
         mTipsView.setVisibility(View.GONE);
     }
@@ -452,6 +456,7 @@ public class SelectSyncAndSpecailActivity extends YanxiuBaseActivity {
         protected void onResponse(RequestBase request, KnowledgePointResponse response) {
             if (response.getStatus().getCode() == 0) {
                 showContentView();
+                mRecyclerView.setAdapter(mSpecialAdapter);
                 mSpecialAdapter.replaceData(response.getData());
             } else {
                 showDataErrorView(false);
