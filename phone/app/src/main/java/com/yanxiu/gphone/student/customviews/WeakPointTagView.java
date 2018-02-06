@@ -39,6 +39,7 @@ public class WeakPointTagView extends ViewGroup {
     private int mHeightMeasureSpec;
     private int mWidthMeasureSpec;
     private int mMinWidth;
+    private boolean isShouldShowMore = false;
 
     public boolean isCollapseMode() {
         return isCollapseMode;
@@ -89,10 +90,10 @@ public class WeakPointTagView extends ViewGroup {
             // 如果已经需要换行
             if (childWidth + lp.leftMargin + lp.rightMargin + lineWidth > width && lineWidth > 0) {
                 lineNum++;
-                if (i==cCount-1&&child.getTag()==null){
+                if (i==cCount-1&&child.getTag()==null && isShouldShowMore){
                     isShowSetRight=true;
                 }
-                if (isCollapseMode && lineNum == 2) {
+                if (isCollapseMode && lineNum == 2 ) {
                     child = getChildAt(cCount - 1);
                     lp = (MarginLayoutParams) child
                             .getLayoutParams();
@@ -101,6 +102,9 @@ public class WeakPointTagView extends ViewGroup {
                     while (childWidth + lp.leftMargin + lp.rightMargin + lineWidth > width) {
                         if(lineViews.size() == 0) {
                             break;
+                        }
+                        if(i < cCount - 1) {
+                            isShouldShowMore = true;
                         }
                         lastItem=i-1;
                         View lastChild = lineViews.remove(lineViews.size() - 1);
@@ -112,6 +116,7 @@ public class WeakPointTagView extends ViewGroup {
                             modifyWidth = width - (lineWidth + childWidth + lp.leftMargin + lp.rightMargin);
                             if(modifyWidth <mMinWidth) {
                                 modifyWidth = 0;
+                                isShouldShowMore = true;
                             } else {
                                 freeWidth=modifyWidth;
                                 lineViews.add(lastChild);
@@ -151,6 +156,11 @@ public class WeakPointTagView extends ViewGroup {
         int top = 0;
         // 得到总行数
         int lineNums = mAllViews.size();
+        if(isShouldShowMore) {
+            getChildAt(cCount -1).setVisibility(VISIBLE);
+        } else {
+            getChildAt(cCount -1).setVisibility(GONE);
+        }
         if (isCollapseMode && lineNums > 2) {
             lineNums = 2;
         }
@@ -178,7 +188,7 @@ public class WeakPointTagView extends ViewGroup {
                 int rc = lc + child.getMeasuredWidth();
                 int bc = tc + child.getMeasuredHeight();
 
-                if(isCollapseMode && i==1 && j == lineViews.size() -2 && modifyWidth > 0) {
+                if(isCollapseMode && i==1 && j == lineViews.size() -2 && modifyWidth > 0 && isShouldShowMore) {
                     rc = lc + modifyWidth-lp.rightMargin;
                     left += modifyWidth + lp.rightMargin
                             + lp.leftMargin;
