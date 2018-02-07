@@ -6,21 +6,22 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="177dp"
+        android:layout_height="162dp"
         android:orientation="vertical"
-        android:paddingTop="@dimen/special_margin">
+        android:background="@drawable/shape_for_list_video"
+        android:layout_marginTop="@dimen/special_margin">
 
         <com.yanxiu.gphone.student.customviews.RoundedCornersImageView
             android:id="@+id/video_cover"
             android:layout_width="165dp"
             android:layout_height="93dp"
+            android:layout_marginRight="3dp"
             android:scaleType="centerCrop" />
         <!--android:background="@drawable/shape_black_round_rectangle_6"-->
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/shape_for_list_video"
             android:orientation="vertical">
 
             <TextView
