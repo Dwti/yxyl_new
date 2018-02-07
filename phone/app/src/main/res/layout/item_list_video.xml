@@ -1,61 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@drawable/shape_for_list_video"
-    android:layout_height="162dp">
-
-    <com.yanxiu.gphone.student.customviews.RoundedCornersImageView
-        android:id="@+id/video_cover"
-        android:layout_width="165dp"
-        android:layout_height="93dp"
-        android:scaleType="centerCrop" />
-        <!--android:background="@drawable/shape_black_round_rectangle_6"-->
-
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/shape_for_list_video"
-        android:layout_below="@+id/video_cover"
-        android:orientation="vertical">
-    <TextView
-        android:id="@+id/video_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_marginTop="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:text="无理数"
-        android:maxLines="2"
-        android:ellipsize="end"
-        android:textColor="@color/color_666666"
-        android:textSize="@dimen/text_size_12" />
+        android:layout_height="177dp"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/special_margin">
 
-        <RelativeLayout
+        <com.yanxiu.gphone.student.customviews.RoundedCornersImageView2
+            android:id="@+id/video_cover"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp">
-    <ImageView
-        android:id="@+id/video_play"
-        android:layout_marginLeft="8dp"
-        android:layout_width="16dp"
-        android:layout_height="14dp"
-        android:src="@drawable/video_play_record" />
+            android:layout_height="93dp"
+            android:scaleType="centerCrop" />
+        <!--android:background="@drawable/shape_black_round_rectangle_6"-->
 
-        <TextView
-            android:id="@+id/play_times"
-            android:layout_toRightOf="@id/video_play"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:text="120次"
-            android:textColor="@color/color_e5e5e5"
-            android:textSize="9dp" />
+            android:layout_height="match_parent"
+            android:background="@drawable/shape_for_list_video"
+            android:orientation="vertical">
 
-        </RelativeLayout>
+            <TextView
+                android:id="@+id/video_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="无理
+        数"
+                android:textColor="@color/color_666666"
+                android:textSize="@dimen/text_size_12" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp">
+
+                <ImageView
+                    android:id="@+id/video_play"
+                    android:layout_width="16dp"
+                    android:layout_height="14dp"
+                    android:layout_marginLeft="8dp"
+                    android:src="@drawable/video_play_record" />
+
+                <TextView
+                    android:id="@+id/play_times"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_toRightOf="@id/video_play"
+                    android:text="120次"
+                    android:textColor="@color/color_e5e5e5"
+                    android:textSize="9dp" />
+
+            </RelativeLayout>
+        </LinearLayout>
     </LinearLayout>
 
-</RelativeLayout>
+    <View
+        android:id="@+id/v_cache"
+        android:layout_width="wrap_content"
+        android:visibility="gone"
+        android:layout_height="@dimen/special_margin"/>
+</LinearLayout>
