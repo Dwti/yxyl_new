@@ -40,6 +40,7 @@ public class WeakPointTagView extends ViewGroup {
     private int mWidthMeasureSpec;
     private int mMinWidth;
     private boolean isShouldShowMore = false;
+    private int top=0;
 
     public boolean isCollapseMode() {
         return isCollapseMode;
@@ -153,7 +154,7 @@ public class WeakPointTagView extends ViewGroup {
         mAllViews.add(lineViews);
 
         int left = 0;
-        int top = 0;
+        top = 0;
         // 得到总行数
         int lineNums = mAllViews.size();
         if(isShouldShowMore) {
@@ -171,6 +172,8 @@ public class WeakPointTagView extends ViewGroup {
             lineHeight = mLineHeight.get(i);
 
             if (isCollapseMode && i == 2) {
+//                getLayoutParams().height=top;
+//                setLayoutParams(getLayoutParams());
                 return;
             }
             // 遍历当前行所有的View
@@ -203,12 +206,18 @@ public class WeakPointTagView extends ViewGroup {
                 }else {
                     child.layout(lc, tc, rc, bc);
                 }
-
-
             }
             left = 0;
             top += lineHeight;
         }
+        post(new Runnable() {
+            @Override
+            public void run() {
+                getLayoutParams().height=top;
+                setLayoutParams(getLayoutParams());
+            }
+        });
+
     }
 
     @Override

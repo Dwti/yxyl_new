@@ -196,7 +196,7 @@
                 android:layout_below="@id/text"
                 android:gravity="center_horizontal"
                 android:background="@color/color_edf0ee"
-                android:paddingBottom="@dimen/report_grid_paddingbottom"
+                android:paddingBottom="@dimen/report_grid_title_paddingtop"
                 android:orientation="vertical"></LinearLayout>
 
 

@@ -10,9 +10,9 @@
         android:orientation="vertical"
         android:paddingTop="@dimen/special_margin">
 
-        <com.yanxiu.gphone.student.customviews.RoundedCornersImageView2
+        <com.yanxiu.gphone.student.customviews.RoundedCornersImageView
             android:id="@+id/video_cover"
-            android:layout_width="match_parent"
+            android:layout_width="165dp"
             android:layout_height="93dp"
             android:scaleType="centerCrop" />
         <!--android:background="@drawable/shape_black_round_rectangle_6"-->
