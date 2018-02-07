@@ -39,6 +39,7 @@ import com.yanxiu.gphone.student.homework.response.PaperResponse;
 import com.yanxiu.gphone.student.learning.KnowledgePointLabelItem;
 import com.yanxiu.gphone.student.learning.adapter.RelatedVideoAdapter;
 import com.yanxiu.gphone.student.learning.activity.SpecialDetailActivity;
+import com.yanxiu.gphone.student.learning.adapter.VideoListAdapter;
 import com.yanxiu.gphone.student.learning.bean.VideoDataBean;
 import com.yanxiu.gphone.student.learning.request.GetRelatedCourseRequest;
 import com.yanxiu.gphone.student.learning.response.GetRelatedCourseResponse;
@@ -111,9 +112,9 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
     private AnswerCardSubmitDialog mDialog;
 
     private GridView mGridView;
-    RelatedVideoAdapter mRelatedAdapter;
+    VideoListAdapter mRelatedAdapter;
 
-    private RelatedVideoAdapter.OnItemClickListener mOnItemClickListener = new RelatedVideoAdapter.OnItemClickListener() {
+    private VideoListAdapter.OnItemClickListener mOnItemClickListener = new VideoListAdapter.OnItemClickListener() {
         @Override
         public void onClick(VideoDataBean bean, int position) {
             SpecialDetailActivity.invoke(AnswerReportActicity.this, bean);
@@ -269,7 +270,7 @@ public class AnswerReportActicity extends YanxiuBaseActivity implements OnAnswer
             if(response.getStatus().getCode() == 0){
                 if(response.getData() != null && response.getData().size() > 0){
                     mRelatedVideoList = response.getData();
-                    mRelatedAdapter = new RelatedVideoAdapter(AnswerReportActicity.this, mRelatedVideoList , mOnItemClickListener );
+                    mRelatedAdapter = new VideoListAdapter(AnswerReportActicity.this, mRelatedVideoList , mOnItemClickListener );
                     mGridView.setAdapter(mRelatedAdapter);
                     mGridView.setVisibility(View.VISIBLE);
                     mVideoRelatedHint.setVisibility(View.VISIBLE);
