@@ -357,6 +357,7 @@
         android:screenOrientation="portrait" />
         <activity
             android:name=".learning.activity.SpecialDetailActivity"
+            android:launchMode="singleTop"
             android:configChanges="orientation|screenSize|keyboard"
             android:screenOrientation="portrait"/>
         <activity
