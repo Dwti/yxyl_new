@@ -19,12 +19,11 @@
         android:background="@drawable/shape_for_list_video"
         android:layout_marginTop="@dimen/special_margin">
 
-        <com.yanxiu.gphone.student.customviews.RoundedCornersImageView
+        <com.yanxiu.gphone.student.customviews.RoundedCornersImageView2
             android:id="@+id/video_cover"
-            android:layout_width="165dp"
+            android:layout_width="wrap_content"
             android:layout_height="93dp"
-            android:layout_marginRight="3dp"
-            android:scaleType="centerCrop" />
+            android:layout_marginRight="3dp" />
         <!--android:background="@drawable/shape_black_round_rectangle_6"-->
 
         <LinearLayout

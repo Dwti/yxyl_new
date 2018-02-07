@@ -99,7 +99,7 @@ public class VideoListAdapter extends BaseAdapter {
         video_name.setText(mData.get(position).getTitle());
         video_play_time.setText(mContext.getResources().getString(R.string.play_times,mData.get(position).getViewnum()));
 //        Glide.with(mContext).load(url).skipMemoryCache(true).crossFade().transform(new GlideRoundTransform(mContext, 6)).placeholder(R.drawable.video_cover_default).crossFade().error(R.drawable.video_cover_default).into(video_cover);
-        Glide.with(mContext).load(mData.get(position).getRes_thumb()).skipMemoryCache(true).crossFade().transform(new GlideRoundTransform2(mContext, 6)).placeholder(R.drawable.video_cover_default).crossFade().error(R.drawable.video_cover_default).into(video_cover);
+        Glide.with(mContext).load(mData.get(position).getRes_thumb()).skipMemoryCache(true).crossFade().transform(new GlideRoundTransform2(mContext, 6)).placeholder(R.drawable.shape_video_cover_default).crossFade().error(R.drawable.video_cover_default).into(video_cover);
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -96,6 +96,9 @@ public class WeakPointTagView extends ViewGroup {
                 }
                 if (isCollapseMode && lineNum == 2 ) {
                     child = getChildAt(cCount - 1);
+                    if(i < cCount - 1) {
+                        isShouldShowMore = true;
+                    }
                     lp = (MarginLayoutParams) child
                             .getLayoutParams();
                     childWidth = child.getMeasuredWidth();
@@ -103,9 +106,6 @@ public class WeakPointTagView extends ViewGroup {
                     while (childWidth + lp.leftMargin + lp.rightMargin + lineWidth > width) {
                         if(lineViews.size() == 0) {
                             break;
-                        }
-                        if(i < cCount - 1) {
-                            isShouldShowMore = true;
                         }
                         lastItem=i-1;
                         View lastChild = lineViews.remove(lineViews.size() - 1);
