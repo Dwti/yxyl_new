@@ -13,6 +13,7 @@
             android:id="@+id/iv_top"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             android:src="@drawable/login_top"
             android:layout_marginTop="30dp"/>
 

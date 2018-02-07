@@ -382,13 +382,23 @@ public class WeakPointTagView extends ViewGroup {
                 isCollapseMode = !isCollapseMode;
                 if (isCollapseMode) {
                     setData(list);
+                    LinearLayout.LayoutParams layoutParams= (LinearLayout.LayoutParams) WeakPointTagView.this.getChildAt(lastItem).getLayoutParams();
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(freeWidth, LayoutParams.WRAP_CONTENT);
+                    params.topMargin=layoutParams.topMargin;
+                    params.rightMargin=layoutParams.rightMargin;
+                    params.leftMargin=layoutParams.leftMargin;
+                    params.bottomMargin=layoutParams.bottomMargin;
                     WeakPointTagView.this.getChildAt(lastItem).setLayoutParams(params);
                     view.setText("更多");
                     imageView.setImageResource(R.drawable.selector_more_text_img);
                 } else {
                     setData(list);
+                    LinearLayout.LayoutParams layoutParams= (LinearLayout.LayoutParams) WeakPointTagView.this.getChildAt(lastItem).getLayoutParams();
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+                    params.topMargin=layoutParams.topMargin;
+                    params.rightMargin=layoutParams.rightMargin;
+                    params.leftMargin=layoutParams.leftMargin;
+                    params.bottomMargin=layoutParams.bottomMargin;
                     WeakPointTagView.this.getChildAt(lastItem).setLayoutParams(params);
                     view.setText("收起");
                     imageView.setImageResource(R.drawable.selector_collapse_img);

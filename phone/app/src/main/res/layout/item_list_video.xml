@@ -19,7 +19,7 @@
         android:background="@drawable/shape_for_list_video"
         android:layout_marginTop="@dimen/special_margin">
 
-        <com.yanxiu.gphone.student.customviews.RoundedCornersImageView
+        <com.yanxiu.gphone.student.customviews.RoundedCornersImageView2
             android:id="@+id/video_cover"
             android:layout_width="165dp"
             android:layout_height="93dp"
@@ -81,8 +81,5 @@
         android:visibility="gone"
         android:layout_height="@dimen/special_margin"/>
 </LinearLayout>
-    <View
-        android:id="@+id/v_right"
-        android:layout_width="@dimen/special_margin"
-        android:layout_height="wrap_content"/>
+
 </LinearLayout>
