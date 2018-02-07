@@ -78,8 +78,6 @@
                 android:id="@+id/gridView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/special_margin"
-                android:layout_marginRight="@dimen/special_margin"
                 android:columnWidth="160dp"
                 android:horizontalSpacing="15dp"
                 android:listSelector="@android:color/transparent"

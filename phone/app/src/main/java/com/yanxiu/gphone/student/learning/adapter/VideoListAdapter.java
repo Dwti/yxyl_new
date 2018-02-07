@@ -81,11 +81,20 @@ public class VideoListAdapter extends BaseAdapter {
         ImageView video_cover = (ImageView) convertView.findViewById(R.id.video_cover);
         TextView video_name = (TextView) convertView.findViewById(R.id.video_name);
         TextView video_play_time = (TextView) convertView.findViewById(R.id.play_times);
+        View v_left=convertView.findViewById(R.id.v_left);
+        View v_right=convertView.findViewById(R.id.v_right);
         View v_cache=convertView.findViewById(R.id.v_cache);
         if (position==mData.size()-1){
             v_cache.setVisibility(View.VISIBLE);
         }else {
             v_cache.setVisibility(View.GONE);
+        }
+        if (position%2==0){
+            v_left.setVisibility(View.VISIBLE);
+            v_right.setVisibility(View.GONE);
+        }else {
+            v_left.setVisibility(View.GONE);
+            v_right.setVisibility(View.VISIBLE);
         }
         video_name.setText(mData.get(position).getTitle());
         video_play_time.setText(mContext.getResources().getString(R.string.play_times,mData.get(position).getViewnum()));
