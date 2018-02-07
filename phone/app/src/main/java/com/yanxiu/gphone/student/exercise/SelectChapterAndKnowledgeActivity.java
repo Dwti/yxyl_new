@@ -370,8 +370,9 @@ public class SelectChapterAndKnowledgeActivity extends YanxiuBaseActivity {
         }
         mRecyclerView.setVisibility(View.GONE);
         mTipsView.setVisibility(View.VISIBLE);
-        mTips.setText("");
-        mRefreshBtn.setText(R.string.click_to_refresh);
+        mTipsImg.setImageResource(R.drawable.data_empty);
+        mTips.setText("暂无题目");
+        mRefreshBtn.setVisibility(View.GONE);
     }
 
     private void showDataErrorView(boolean hideToolBar){
@@ -484,6 +485,8 @@ public class SelectChapterAndKnowledgeActivity extends YanxiuBaseActivity {
             if(response.getStatus().getCode() == 0){
                 showContentView();
                 mChapterAdapter.replaceData(response.getData());
+            }else if (response.getStatus().getCode() == 3){
+                showDataEmptyView(false);
             }else {
                 showDataErrorView(false);
             }
@@ -501,6 +504,8 @@ public class SelectChapterAndKnowledgeActivity extends YanxiuBaseActivity {
             if(response.getStatus().getCode() == 0){
                 showContentView();
                 mKnowledgePointAdapter.replaceData(response.getData());
+            }else if (response.getStatus().getCode() == 0){
+                showDataEmptyView(false);
             }else {
                 showDataErrorView(false);
             }
