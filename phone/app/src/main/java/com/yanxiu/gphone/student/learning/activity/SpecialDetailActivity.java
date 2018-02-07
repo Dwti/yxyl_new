@@ -30,6 +30,7 @@ import com.yanxiu.gphone.student.constant.Constants;
 import com.yanxiu.gphone.student.customviews.PublicLoadLayout;
 import com.yanxiu.gphone.student.homework.response.PaperResponse;
 import com.yanxiu.gphone.student.learning.adapter.RelatedVideoAdapter;
+import com.yanxiu.gphone.student.learning.adapter.VideoListAdapter;
 import com.yanxiu.gphone.student.learning.bean.VideoDataBean;
 import com.yanxiu.gphone.student.learning.request.AddResViewNumRequest;
 import com.yanxiu.gphone.student.learning.request.GetRelatedCourseRequest;
@@ -66,11 +67,12 @@ public class SpecialDetailActivity extends YanxiuBaseActivity implements View.On
     private ImageView video_play;
     private ImageView video_cover;
 
-    RelatedVideoAdapter mRelatedAdapter;
-    private RelatedVideoAdapter.OnItemClickListener mOnItemClickListener = new RelatedVideoAdapter.OnItemClickListener() {
+    VideoListAdapter mRelatedAdapter;
+    private VideoListAdapter.OnItemClickListener mOnItemClickListener = new VideoListAdapter.OnItemClickListener() {
         @Override
         public void onClick(VideoDataBean bean, int position) {
             SpecialDetailActivity.invoke(SpecialDetailActivity.this, bean);
+            finish();
         }
     };
     private GridView mGridView;
@@ -88,7 +90,7 @@ public class SpecialDetailActivity extends YanxiuBaseActivity implements View.On
             if (response.getStatus().getCode() == 0) {
                 if (response.getData() != null && response.getData().size() > 0) {
                     mRelatedVideoList = response.getData();
-                    mRelatedAdapter = new RelatedVideoAdapter(SpecialDetailActivity.this, mRelatedVideoList, mOnItemClickListener);
+                    mRelatedAdapter = new VideoListAdapter(SpecialDetailActivity.this, mRelatedVideoList, mOnItemClickListener);
                     mGridView.setAdapter(mRelatedAdapter);
                     mRelatedVideoHint.setVisibility(View.VISIBLE);
                     mGridView.setVisibility(View.VISIBLE);
