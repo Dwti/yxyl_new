@@ -200,13 +200,13 @@ public class SelectSyncAndSpecailActivity extends YanxiuBaseActivity {
             @Override
             public void onItemClick(View itemView, int position, ChapterBean node) {
                 String chapterId = null;
-                if (node.getLevel() == 0) {
+//                if (node.getLevel() == 0) {
                     chapterId = node.getId();
-                } else if (node.getLevel() == 1) {
-                    chapterId = node.getParent().getId();
-                } else if (node.getLevel() == 2) {
-                    chapterId = node.getParent().getParent().getId();
-                }
+//                } else if (node.getLevel() == 1) {
+//                    chapterId = node.getParent().getId();
+//                } else if (node.getLevel() == 2) {
+//                    chapterId = node.getParent().getParent().getId();
+//                }
                 openVideoListActivity("1", chapterId, node.getName());
             }
         });
@@ -215,13 +215,13 @@ public class SelectSyncAndSpecailActivity extends YanxiuBaseActivity {
             @Override
             public void onItemClick(View itemView, int position, KnowledgePointBean node) {
                 String chapterId = null;
-                if (node.getLevel() == 0) {
+//                if (node.getLevel() == 0) {
                     chapterId = node.getId();
-                } else if (node.getLevel() == 1) {
-                    chapterId = node.getParent().getId();
-                } else if (node.getLevel() == 2) {
-                    chapterId = node.getParent().getParent().getId();
-                }
+//                } else if (node.getLevel() == 1) {
+//                    chapterId = node.getParent().getId();
+//                } else if (node.getLevel() == 2) {
+//                    chapterId = node.getParent().getParent().getId();
+//                }
                 openVideoListActivity("2", chapterId, node.getName());
             }
         });
