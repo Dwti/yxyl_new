@@ -111,6 +111,17 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
     protected void onResume() {
         super.onResume();
         String headImg = LoginInfo.getHeadIcon();
+        boolean isShouldShowStudy=false;
+        for (Integer integer:LoginInfo.getSubjectIds()){
+            if (integer==Constants.SubjectId.MATH){
+                isShouldShowStudy=true;
+            }
+        }
+        if (isShouldShowStudy){
+            mNavBarViews[INDEX_STUDY].setVisibility(View.VISIBLE);
+        }else {
+            mNavBarViews[INDEX_STUDY].setVisibility(View.GONE);
+        }
         if (!TextUtils.isEmpty(headImg)) {
             String[] strings = headImg.split("/");
             if (!"file_56a60c9d7cbd4.jpg".equals(strings[strings.length - 1])) {
@@ -126,18 +137,6 @@ public class MainActivity extends YanxiuBaseActivity implements View.OnClickList
             }
         }
         mNavIconViews[INDEX_MY].setImageDrawable(ContextCompat.getDrawable(this, R.drawable.selector_my));
-
-        boolean isShouldShowStudy=false;
-        for (Integer integer:LoginInfo.getSubjectIds()){
-            if (integer==Constants.SubjectId.MATH){
-                isShouldShowStudy=true;
-            }
-        }
-        if (isShouldShowStudy){
-            mNavBarViews[INDEX_STUDY].setVisibility(View.VISIBLE);
-        }else {
-            mNavBarViews[INDEX_STUDY].setVisibility(View.GONE);
-        }
     }
 
     @Override
