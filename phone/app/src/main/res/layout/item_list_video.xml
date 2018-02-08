@@ -80,5 +80,8 @@
         android:visibility="gone"
         android:layout_height="@dimen/special_margin"/>
 </LinearLayout>
-
+    <View
+        android:id="@+id/v_right"
+        android:layout_width="@dimen/special_margin"
+        android:layout_height="wrap_content"/>
 </LinearLayout>

@@ -212,21 +212,52 @@
                 android:gravity="center"
                 android:text="@string/weak_point" />
 
+            <RelativeLayout
+                android:id="@+id/rl_weak"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/weak_point">
+                <View
+                    android:id="@+id/v_top"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"/>
+                <View
+                    android:id="@+id/v_bottom"
+                    android:layout_below="@+id/weak_point_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"/>
+
+                <View
+                    android:layout_alignTop="@+id/v_top"
+                    android:layout_alignBottom="@+id/v_bottom"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/color_edf0ee"/>
+                <View
+                    android:layout_alignTop="@+id/v_top"
+                    android:layout_alignBottom="@+id/v_bottom"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/shape_weakpint_bg"/>
             <com.yanxiu.gphone.student.customviews.WeakPointTagView
                 android:id="@+id/weak_point_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/weak_point"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="30dp"
-                android:layout_marginBottom="30dp"/>
+                android:layout_marginBottom="30dp" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:background="#02002c0f"/>
+            </RelativeLayout>
             <LinearLayout
                 android:id="@+id/video_related"
                 android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/weak_point_detail"
+                android:layout_below="@id/rl_weak"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:orientation="horizontal">
