@@ -34,7 +34,7 @@ public class WeakPointTagView extends ViewGroup {
     int mWidth, mHeight;
     private List<KnowledgePointLabelItem> mList;
     private int freeWidth;
-    private int lastItem;
+    private int lastItem=-1;
     private boolean isShowSetRight=false;
     private int mHeightMeasureSpec;
     private int mWidthMeasureSpec;
@@ -107,7 +107,9 @@ public class WeakPointTagView extends ViewGroup {
                         if(lineViews.size() == 0) {
                             break;
                         }
-                        lastItem=i-1;
+                        if (lastItem==-1) {
+                            lastItem = i - 1;
+                        }
                         View lastChild = lineViews.remove(lineViews.size() - 1);
                         MarginLayoutParams lastLp = (MarginLayoutParams) child.getLayoutParams();
                         int lastChildWidth = lastChild.getMeasuredWidth();
@@ -382,24 +384,28 @@ public class WeakPointTagView extends ViewGroup {
                 isCollapseMode = !isCollapseMode;
                 if (isCollapseMode) {
                     setData(list);
-                    LinearLayout.LayoutParams layoutParams= (LinearLayout.LayoutParams) WeakPointTagView.this.getChildAt(lastItem).getLayoutParams();
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(freeWidth, LayoutParams.WRAP_CONTENT);
-                    params.topMargin=layoutParams.topMargin;
-                    params.rightMargin=layoutParams.rightMargin;
-                    params.leftMargin=layoutParams.leftMargin;
-                    params.bottomMargin=layoutParams.bottomMargin;
-                    WeakPointTagView.this.getChildAt(lastItem).setLayoutParams(params);
+                    if (lastItem!=-1) {
+                        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) WeakPointTagView.this.getChildAt(lastItem).getLayoutParams();
+                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(freeWidth, LayoutParams.WRAP_CONTENT);
+                        params.topMargin = layoutParams.topMargin;
+                        params.rightMargin = layoutParams.rightMargin;
+                        params.leftMargin = layoutParams.leftMargin;
+                        params.bottomMargin = layoutParams.bottomMargin;
+                        WeakPointTagView.this.getChildAt(lastItem).setLayoutParams(params);
+                    }
                     view.setText("更多");
                     imageView.setImageResource(R.drawable.selector_more_text_img);
                 } else {
                     setData(list);
-                    LinearLayout.LayoutParams layoutParams= (LinearLayout.LayoutParams) WeakPointTagView.this.getChildAt(lastItem).getLayoutParams();
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-                    params.topMargin=layoutParams.topMargin;
-                    params.rightMargin=layoutParams.rightMargin;
-                    params.leftMargin=layoutParams.leftMargin;
-                    params.bottomMargin=layoutParams.bottomMargin;
-                    WeakPointTagView.this.getChildAt(lastItem).setLayoutParams(params);
+                    if (lastItem!=-1) {
+                        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) WeakPointTagView.this.getChildAt(lastItem).getLayoutParams();
+                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+                        params.topMargin = layoutParams.topMargin;
+                        params.rightMargin = layoutParams.rightMargin;
+                        params.leftMargin = layoutParams.leftMargin;
+                        params.bottomMargin = layoutParams.bottomMargin;
+                        WeakPointTagView.this.getChildAt(lastItem).setLayoutParams(params);
+                    }
                     view.setText("收起");
                     imageView.setImageResource(R.drawable.selector_collapse_img);
                 }
