@@ -78,11 +78,12 @@
                 android:id="@+id/gridView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:columnWidth="160dp"
+                android:columnWidth="165dp"
                 android:horizontalSpacing="15dp"
+                android:stretchMode="columnWidth"
                 android:listSelector="@android:color/transparent"
-                android:numColumns="2"
-                android:stretchMode="spacingWidth" />
+                android:verticalSpacing="15dp"
+                android:numColumns="2" />
     </com.srt.refresh.EXueELianRefreshLayout>
         <include
             android:id="@+id/tips_layout"
