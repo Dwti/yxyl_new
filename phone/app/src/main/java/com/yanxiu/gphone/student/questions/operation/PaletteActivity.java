@@ -51,14 +51,18 @@ public class PaletteActivity extends YanxiuBaseActivity implements View.OnClickL
     private PopupWindow mPopupWindow;
     private String mImgUrl;
     private String mStoredFilePath;
+    private int mFromId;
     public static final String IMAGE_URL = "IMAGE_URL";
     public static final String FILE_PATH = "FILE_PATH";  //保存涂画的path的文件名字
+    public static final String FROM_ID = "FROM_ID";
     public static final String SUFFIX = ".jpg";
 
-    public static void invoke(Context context,String filePath,String imgUrl) {
+    public static void invoke(Context context,String filePath,String imgUrl,int fromId) {
         Intent intent = new Intent(context, PaletteActivity.class);
         intent.putExtra(FILE_PATH,filePath);
         intent.putExtra(IMAGE_URL,imgUrl);
+        intent.putExtra(FROM_ID,fromId);
+
         context.startActivity(intent);
     }
 
@@ -132,6 +136,7 @@ public class PaletteActivity extends YanxiuBaseActivity implements View.OnClickL
     private void initData(){
         mImgUrl = getIntent().getStringExtra(IMAGE_URL);
         mStoredFilePath = getIntent().getStringExtra(FILE_PATH);
+        mFromId = getIntent().getIntExtra(FROM_ID,-1);
     }
 
     private void initListener() {
@@ -326,7 +331,7 @@ public class PaletteActivity extends YanxiuBaseActivity implements View.OnClickL
             String picPath = mStoredFilePath + SUFFIX;
             FileUtil.saveBitmapToFile(buffBmp,picPath);
             //通知图片被修改
-            EventBus.getDefault().post(new PictureModifiedMessage());
+            EventBus.getDefault().post(new PictureModifiedMessage(mFromId));
             //没有背景图直接返回
             return;
         }else {
@@ -343,7 +348,7 @@ public class PaletteActivity extends YanxiuBaseActivity implements View.OnClickL
             String picPath = mStoredFilePath + SUFFIX;
             FileUtil.saveBitmapToFile(newBmp,picPath);
             //通知图片被修改
-            EventBus.getDefault().post(new PictureModifiedMessage());
+            EventBus.getDefault().post(new PictureModifiedMessage(mFromId));
         }
     }
 

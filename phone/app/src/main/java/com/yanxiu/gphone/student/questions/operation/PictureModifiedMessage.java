@@ -7,4 +7,9 @@ import java.io.Serializable;
  */
 
 public class PictureModifiedMessage implements Serializable {
+    public int fromId;
+
+    public PictureModifiedMessage(int fromId) {
+        this.fromId = fromId;
+    }
 }
