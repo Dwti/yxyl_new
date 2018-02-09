@@ -161,6 +161,11 @@ public class NotesLayoutView extends LinearLayout implements View.OnClickListene
         if (viewHashCode == NotesLayoutView.this.hashCode()) {
             this.mContent = notesMessage.mNotesContent;
             mNoteContentView.setText(mContent);
+            if (TextUtils.isEmpty(mContent)){
+                mNoteContentView.setVisibility(GONE);
+            }else {
+                mNoteContentView.setVisibility(VISIBLE);
+            }
             this.mPhotoPath=notesMessage.mPaths;
             mJsonNoteBean.setText(mContent);
             mJsonNoteBean.setImages(mPhotoPath);
