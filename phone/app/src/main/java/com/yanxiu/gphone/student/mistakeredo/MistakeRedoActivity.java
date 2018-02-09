@@ -962,9 +962,6 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
                     child.setShowType(QuestionShowType.MISTAKE_ANALYSIS);
                     child.setMisTakeRedo(true);
                 }
-                if(!child.getTemplate().equals(QuestionTemplate.ANSWER)&&!child.getTemplate().equals(QuestionTemplate.OPERATION) && child.getStatus() == Constants.ANSWER_STATUS_WRONG){
-                    isRight = false;
-                }
                 if(response!=null){
                     PadBean padBean=child.getBean().getQuestions().getPad();
                     padBean.setStatus(response.data.get(i).status);
@@ -977,7 +974,7 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
                         isRight = false;
                     }
                 }else {
-                    if(!child.getTemplate().equals(QuestionTemplate.ANSWER) && child.getStatus() == Constants.ANSWER_STATUS_WRONG){
+                    if(!child.getTemplate().equals(QuestionTemplate.ANSWER)&&!child.getTemplate().equals(QuestionTemplate.OPERATION) && child.getStatus() == Constants.ANSWER_STATUS_WRONG){
                         isRight = false;
                     }
                 }
@@ -985,10 +982,7 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
             }
             mAdapter.notifyDataSetChanged();
         } else {
-            if(!question.getTemplate().equals(QuestionTemplate.ANSWER)&&!question.getTemplate().equals(QuestionTemplate.OPERATION) && question.getStatus() == Constants.ANSWER_STATUS_WRONG){
-                isRight = false;
-            }
-            if(response!=null) {
+             if(response!=null) {
                 PadBean padBean = question.getBean().getQuestions().getPad();
                 padBean.setStatus(response.data.get(0).status);
                 padBean.setObjectiveScore(response.data.get(0).objectiveScore);
@@ -997,10 +991,10 @@ public class MistakeRedoActivity extends YanxiuBaseActivity implements View.OnCl
                     isRight = false;
                 }
             }else {
-                if(!question.getTemplate().equals(QuestionTemplate.ANSWER) && question.getStatus() == Constants.ANSWER_STATUS_WRONG){
-                    isRight = false;
-                }
-            }
+                 if(!question.getTemplate().equals(QuestionTemplate.ANSWER)&&!question.getTemplate().equals(QuestionTemplate.OPERATION) && question.getStatus() == Constants.ANSWER_STATUS_WRONG){
+                     isRight = false;
+                 }
+             }
             mAdapter.notifyDataSetChanged();
         }
         showResultCard(isRight);
